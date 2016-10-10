@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="co.netguru.android.inbbbox">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="co.netguru.android.inbbbox">
+
+    <application>
+        <activity
+            android:name=".MainActivity"
+            android:autoRemoveFromRecents="true"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:stateNotNeeded="true"
+            tools:ignore="UnusedAttribute">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
 
 </manifest>
