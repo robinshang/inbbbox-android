@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".authentication.MainActivity"
             android:autoRemoveFromRecents="true"
             android:launchMode="singleInstance"
             android:noHistory="true"

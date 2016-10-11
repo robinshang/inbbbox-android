@@ -1,7 +1,17 @@
-package co.netguru.android.inbbbox;
+/*
+ * Created by Maciej Markiewicz
+ * Copyright (c) 2016.
+ * netguru.co
+ *
+ *
+ */
+
+package co.netguru.android.inbbbox.authentication;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import co.netguru.android.inbbbox.R;
 
 public class MainActivity extends AppCompatActivity {
 

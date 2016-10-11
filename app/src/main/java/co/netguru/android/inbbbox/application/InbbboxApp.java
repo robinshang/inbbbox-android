@@ -71,7 +71,6 @@ public class InbbboxApp extends Application {
                 .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                 .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                 .build());
-
     }
 
     private void initDevMetrics() {
