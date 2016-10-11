@@ -14,6 +14,7 @@ import co.netguru.android.inbbbox.data.api.AuthorizeApi;
 import co.netguru.android.inbbbox.data.models.TokenResponse;
 import co.netguru.android.inbbbox.utils.Constants;
 import rx.Observable;
+import rx.functions.Action1;
 
 public class ApiTokenProvider {
 
@@ -26,6 +27,11 @@ public class ApiTokenProvider {
     }
 
     public Observable<TokenResponse> getToken(String code) {
-        return api.getToken(Constants.OAUTH.CLIENT_ID_KEY, Constants.OAUTH.CLIENT_SECRET_KEY, code);
+        return api.getToken(Constants.OAUTH.CLIENT_ID_KEY, Constants.OAUTH.CLIENT_SECRET_KEY, code)
+                .doOnNext(tokenResponse -> saveTokenToDn(tokenResponse));
+    }
+
+    private void saveTokenToDn(TokenResponse tokenResponse) {
+        // TODO: 11.10.2016 caching token
     }
 }
