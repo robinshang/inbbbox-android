@@ -6,18 +6,17 @@
  *
  */
 
-package co.netguru.android.inbbbox.application.dagger;
+package co.netguru.android.inbbbox.application;
 
 
 import javax.inject.Singleton;
 
 import co.netguru.android.commons.di.BaseComponent;
 import dagger.Component;
-import dagger.Module;
 
 @Singleton
 @Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent extends BaseComponent {
 
-    
+
 }

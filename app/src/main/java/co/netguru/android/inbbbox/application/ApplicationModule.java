@@ -6,7 +6,7 @@
  *
  */
 
-package co.netguru.android.inbbbox.application.dagger;
+package co.netguru.android.inbbbox.application;
 
 import android.app.Application;
 import android.content.Context;

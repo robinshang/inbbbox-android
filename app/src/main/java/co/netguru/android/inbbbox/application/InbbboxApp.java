@@ -20,7 +20,7 @@ import com.nshmura.strictmodenotifier.StrictModeNotifier;
 import com.squareup.leakcanary.LeakCanary;
 
 import co.netguru.android.inbbbox.BuildConfig;
-import co.netguru.android.inbbbox.application.dagger.ApplicationComponent;
+import co.netguru.android.inbbbox.application.dagger.DaggerApplicationComponent;
 
 public class InbbboxApp extends Application {
 
@@ -78,12 +78,20 @@ public class InbbboxApp extends Application {
         AndroidDevMetrics.initWith(this);
     }
 
-
     public static ApplicationComponent getAppComponent(Context context) {
         return ((InbbboxApp) context.getApplicationContext()).getAppComponent();
     }
 
     private ApplicationComponent getAppComponent() {
         return applicationComponent;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        this.applicationComponent = DaggerApplicationComponent
+                .builder()
+                .applicationModule(new ApplicationModule(this))
+                .build();
     }
 }
