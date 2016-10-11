@@ -26,6 +26,5 @@ ext {
 }
 
 apply from: '../buildsystem/install.gradle'
-apply from: '../buildsystem/bintray.gradle'
 
 println "\nuploading '$publishedGroupId:$artifact:$libraryVersion' ...\n"
