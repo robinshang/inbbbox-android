@@ -6,12 +6,12 @@
  *
  */
 
-package co.netguru.android.inbbbox.data;
+package co.netguru.android.inbbbox.data.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class DribbleAccessTokenResponse {
+public class TokenResponse {
 
     @SerializedName("access_token")
     @Expose

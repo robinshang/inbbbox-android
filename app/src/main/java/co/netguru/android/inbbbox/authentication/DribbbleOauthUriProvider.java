@@ -16,14 +16,13 @@ import java.util.UUID;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.utils.Constants;
 import rx.Observable;
-import rx.functions.Func1;
+
+import static co.netguru.android.inbbbox.utils.Constants.OAUTH;
 
 public class DribbbleOauthUriProvider {
 
-    private static final String CLIENT_ID_KEY = "client_id";
-    private static final String SCOPE_KEY = "scope";
-    private static final String STATE_KEY = "state";
     private Resources resources;
 
     private String stateString;
@@ -45,10 +44,10 @@ public class DribbbleOauthUriProvider {
 
     private Uri getAuthorizeUri() {
         return new Uri.Builder()
-                .encodedPath(getStringValue(R.string.dribbleOauthAuthorizeBaseUrl))
-                .appendQueryParameter(CLIENT_ID_KEY, getStringValue(R.string.dribbbleClientId))
-                .appendQueryParameter(SCOPE_KEY, getStringValue(R.string.dribbleScope))
-                .appendQueryParameter(STATE_KEY, stateString)
+                .encodedPath(OAUTH.AUTHORIZE_URL)
+                .appendQueryParameter(OAUTH.CLIENT_ID_KEY, getStringValue(R.string.dribbbleClientId))
+                .appendQueryParameter(OAUTH.SCOPE_KEY, getStringValue(R.string.dribbleScope))
+                .appendQueryParameter(OAUTH.STATE_KEY, stateString)
                 .build();
     }
 
