@@ -9,7 +9,9 @@
 package co.netguru.android.inbbbox.utils;
 
 public class Constants {
-   public static class OAUTH {
+    public static final int UNDEFINED = -1;
+
+    public static class OAUTH {
 
        public static final String AUTHORIZE_URL = "https://dribbble.com/oauth/authorize";
        public static final String TOKEN_URL = "https://dribbble.com/oauth/token";
@@ -19,5 +21,6 @@ public class Constants {
        public static final String STATE_KEY = "state";
        public static final String CLIENT_SECRET_KEY = "client_secret";
        public static final String CODE_KEY = "code";
+       public static final String ERROR_KEY = "key";
    }
 }
