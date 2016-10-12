@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.application;
 
 import javax.inject.Singleton;
 
+import co.netguru.android.commons.di.BaseComponent;
 import dagger.Component;
 
 /**
@@ -10,8 +11,8 @@ import dagger.Component;
  * Created by lukaszjanyga on 08/09/16.
  */
 @Singleton
-@Component
-public interface ApplicationComponent {
+@Component(modules = {ApplicationModule.class, ConfigurationModule.class})
+public interface ApplicationComponent extends BaseComponent {
 
     DebugMetricsHelper getDebugMetricsHelper();
 
