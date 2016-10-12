@@ -26,8 +26,8 @@ android {
         applicationId "co.netguru.android.inbbbox"
         minSdkVersion 18
         targetSdkVersion 24
-        versionCode globalVersionCode
-        versionName globalVersionName
+        versionCode isBitrise ? Integer.parseInt(bitrise.io.buildNumber) : 1
+        versionName "0.1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -50,8 +50,7 @@ android {
             shrinkResources true
             zipAlignEnabled true
             useProguard true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
-                    'proguard-rules.pro'
+            proguardFiles 'proguard-rules.pro'
         }
     }
 
