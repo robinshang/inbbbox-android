@@ -31,16 +31,4 @@ public class ConfigurationModule {
                         .setLevel(HttpLoggingInterceptor.Level.HEADERS))
                 .build();
     }
-
-    @Singleton
-    @Provides
-    OkHttpClient provideOkHttpClient(RequestInterceptor interceptor) {
-        return new OkHttpClient.Builder()
-                .addInterceptor(new HttpLoggingInterceptor()
-                        .setLevel(HttpLoggingInterceptor.Level.HEADERS))
-                .addInterceptor(interceptor)
-                .build();
-    }
-
-
 }

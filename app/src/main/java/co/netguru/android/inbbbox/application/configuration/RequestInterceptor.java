@@ -34,11 +34,9 @@ public class RequestInterceptor implements Interceptor {
     }
 
     private String generateOauthField() {
-        StringBuilder oauthFiledBuilder = new StringBuilder();
-        oauthFiledBuilder.append(" ");
-        oauthFiledBuilder.append(token.getTokenType());
-        oauthFiledBuilder.append(" ");
-        oauthFiledBuilder.append(token.getAccessToken());
-        return oauthFiledBuilder.toString();
+        return " " +
+                token.getTokenType() +
+                " " +
+                token.getAccessToken();
     }
 }
