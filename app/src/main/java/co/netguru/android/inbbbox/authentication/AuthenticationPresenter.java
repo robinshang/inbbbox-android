@@ -14,16 +14,21 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
+import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.utils.ApiErrorParser;
 import co.netguru.android.inbbbox.utils.Constants;
 import rx.Subscription;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
+import static co.netguru.android.commons.rx.RxTransformers.androidIO;
+
+@FragmentScope
 public class AuthenticationPresenter
         extends MvpBasePresenter<AuthenticationContract.View>
         implements AuthenticationContract.Presenter {
 
+    private CompositeSubscription subscription = new CompositeSubscription();
     private DribbbleOauthUriProvider dribbbleOauthUriProvider;
     private ApiTokenProvider apiTokenProvider;
     private ApiErrorParser apiErrorParser;
@@ -57,12 +62,31 @@ public class AuthenticationPresenter
 
     private void selectAuthorizationAction() {
         if (code != null && !code.isEmpty()) {
-            apiTokenProvider.getToken(code);
+            getToken();
         } else if (oauthErrorMessage != null && oauthErrorMessage.isEmpty()) {
             getView().showApiError(oauthErrorMessage);
         } else {
             getView().showApiError(apiErrorParser.getApiError(Constants.UNDEFINED));
         }
+    }
+
+    private void getToken() {
+        subscription.add(
+                apiTokenProvider.getToken(code)
+                        .compose(androidIO())
+                        .doOnError(throwable -> handleError(throwable))
+                        .doOnNext(userData -> showMainScreen())
+                        .subscribe()
+        );
+    }
+
+    private void showMainScreen() {
+        getView().showNextScreen();
+    }
+
+    private void handleError(Throwable throwable) {
+        throwable.printStackTrace();
+        getView().showApiError(apiErrorParser.getApiError(throwable));
     }
 
     private void unpackParamsFromUri(Uri uri) {

@@ -4,6 +4,7 @@ package co.netguru.android.inbbbox.application;
 import javax.inject.Singleton;
 
 import co.netguru.android.commons.di.BaseComponent;
+import co.netguru.android.inbbbox.utils.ApiErrorParser;
 import dagger.Component;
 
 /**
@@ -15,5 +16,7 @@ import dagger.Component;
 public interface ApplicationComponent extends BaseComponent {
 
     DebugMetricsHelper getDebugMetricsHelper();
+
+    ApiErrorParser getApiErrorParser();
 
 }

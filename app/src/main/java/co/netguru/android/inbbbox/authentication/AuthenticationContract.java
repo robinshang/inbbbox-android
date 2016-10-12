@@ -19,6 +19,8 @@ public interface AuthenticationContract {
         void sendActionIntent(Uri uri);
 
         void showApiError(String oauthErrorMessage);
+
+        void showNextScreen();
     }
 
     interface Presenter extends MvpPresenter<View>{
