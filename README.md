@@ -17,8 +17,13 @@
 <!-- Add links to CI configs with build status and deployment environment, e.g.: -->
 | environment | deployment            | status             |
 |-------------|-----------------------|--------------------|
-| name        | HockeyApp/Fabric link | bitrise status tag |
+| Android        | [`HockeyApp`](https://rink.hockeyapp.net/manage/apps/404535) | [![Build Status](https://www.bitrise.io/app/cf503ac188f43ade.svg?token=k9n-sH184dmLSBSQRnW_qg&branch=master)](https://www.bitrise.io/app/cf503ac188f43ade) |
 <!--- If applies, add link to app on Google Play -->
+
+[![codecov](https://codecov.io/gh/netguru/sensorytreat-android/branch/master/graph/badge.svg?token=0UKDDNsV4s)](https://codecov.io/gh/netguru/inbbbox-android/)
+
+ [`JIRA`](https://netguru.atlassian.net/secure/RapidBoard.jspa?rapidView=214&projectKey=IA) 
+
 
 ## Synopsis
 <!-- Describe the project in few sentences -->
@@ -26,6 +31,7 @@
 ## Development
 
 ### Architecture
+Reactive MVP with Dagger2 dependency injection.
 <!-- Describe the main architectural pattern used in the project, optionally put a flowchart -->
 
 ### Integrations
@@ -42,6 +48,9 @@
 ## Testing
 <!-- Describe the project's testing methodology -->
 <!-- Examples: TDD? Using Espresso for views? What parts must be tested? etc -->
+
+### Coverage
+![codecov.io](https://codecov.io/gh/netguru/inbbbox-android/branch/master/graphs/commits.svg?token=0UKDDNsV4s)
 
 ## Building
 <!-- Aim to explain the process so that any new or external developer not familiar with the project can perform build and deploy -->
