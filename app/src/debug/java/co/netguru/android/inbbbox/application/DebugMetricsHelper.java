@@ -13,8 +13,6 @@ import com.squareup.leakcanary.LeakCanary;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.application.App;
-
 /**
  * Helper class that initializes a set of debugging tools
  * for the debug build type and does nothing for the release type.
