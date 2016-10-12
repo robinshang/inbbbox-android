@@ -3,7 +3,6 @@ package co.netguru.android.inbbbox.application;
 import android.content.Context;
 
 import javax.inject.Inject;
-
 /**
  * Helper class that initializes a set of debugging tools
  * for the debug build type and does nothing for the release type.

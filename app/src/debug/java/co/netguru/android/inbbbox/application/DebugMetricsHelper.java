@@ -1,6 +1,6 @@
 
 
-package co.android.inbbbox.application;
+package co.netguru.android.inbbbox.application;
 
 import android.content.Context;
 import android.os.Handler;
@@ -12,8 +12,6 @@ import com.nshmura.strictmodenotifier.StrictModeNotifier;
 import com.squareup.leakcanary.LeakCanary;
 
 import javax.inject.Inject;
-
-import co.netguru.android.inbbbox.application.App;
 
 /**
  * Helper class that initializes a set of debugging tools
