@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Font14">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Font14.Pink" parent="Font14">
+        <item name="android:textColor">@color/pink</item>
+    </style>
+
+    <style name="Font25">
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="Font25.PalePink" parent="Font25">
+        <item name="android:textColor">@color/palePink</item>
+    </style>
+
+    <style name="Font25.PalePink.RobotoLight" parent="Font25.PalePink">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
 </resources>
