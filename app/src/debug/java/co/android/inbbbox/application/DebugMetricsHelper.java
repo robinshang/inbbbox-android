@@ -1,6 +1,6 @@
 
 
-package co.android.inbbbox.application;
+package co.netguru.android.inbbbox.application;
 
 import android.content.Context;
 import android.os.Handler;
