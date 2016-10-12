@@ -11,7 +11,7 @@ package co.netguru.android.inbbbox.data.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TokenResponse {
+public class Token {
 
     @SerializedName("access_token")
     @Expose

@@ -23,4 +23,10 @@ public class Constants {
        public static final String CODE_KEY = "code";
        public static final String ERROR_KEY = "key";
    }
+
+   public static class API {
+      public static final String HEDAER_ACCEPT = "Accept";
+      public static final String HEADER_TYPE_JSON = "application/json";
+      public static final String HEADER_AUTHORIZATION = "Authorization";
+   }
 }
