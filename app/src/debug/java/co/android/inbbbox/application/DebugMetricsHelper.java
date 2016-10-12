@@ -57,7 +57,9 @@ public class DebugMetricsHelper {
             StrictMode.setThreadPolicy(threadPolicy);
 
             final StrictMode.VmPolicy vmPolicy =
-                    new StrictMode.VmPolicy.Builder().detectAll().penaltyLog() // Must!
+                    new StrictMode.VmPolicy.Builder()
+                            .detectAll()
+                            .penaltyLog() // Must!
                             .build();
             StrictMode.setVmPolicy(vmPolicy);
         });

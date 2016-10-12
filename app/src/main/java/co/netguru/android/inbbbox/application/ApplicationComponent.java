@@ -1,9 +1,9 @@
-
 package co.netguru.android.inbbbox.application;
 
 
 import javax.inject.Singleton;
 
+import co.android.inbbbox.application.DebugMetricsHelper;
 import dagger.Component;
 
 /**
