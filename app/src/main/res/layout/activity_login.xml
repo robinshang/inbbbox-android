@@ -1,52 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_login"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/bcg_intro"
-    tools:context="co.netguru.android.inbbbox.feature.login.LoginActivity">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/login_logo_ball"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/logo_ball"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="81dp"/>
+        android:background="@drawable/bcg_intro"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="co.netguru.android.inbbbox.feature.login.LoginActivity">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logo_type"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="18dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/login_logo_ball"/>
+        <ImageView
+            android:id="@+id/login_logo_ball"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/activity_login_logo_margin_top"
+            android:src="@drawable/logo_ball" />
 
-    <TextView
-        style="@style/Font25.PalePink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/login_inbbbox_text" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login_logo_ball"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/activity_login_logo_text_margin_top"
+            android:contentDescription="@null"
+            android:src="@drawable/logo_type" />
 
-    <Button
-        style="@style/Font14.Pink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="start|center_vertical"
-        android:background="@drawable/bg_btn_login_dribble"
-        android:text="@string/login_button_text"
-        android:textAllCaps="false"
-        android:drawableStart="@drawable/ic_ball"
-        android:paddingStart="16dp"
-        android:drawablePadding="48dp"
-        android:layout_marginBottom="107dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-</RelativeLayout>
+        <TextView
+            style="@style/Font25.PalePink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/login_inbbbox_text" />
+
+        <Button
+            style="@style/Font14.Pink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/activity_login_button_margin_bottom"
+            android:background="@drawable/bg_btn_login_dribble"
+            android:drawablePadding="@dimen/activity_login_button_drawable_padding"
+            android:drawableStart="@drawable/ic_ball"
+            android:gravity="start|center_vertical"
+            android:paddingStart="@dimen/activity_login_button_padding_start"
+            android:text="@string/login_button_text"
+            android:textAllCaps="false" />
+    </RelativeLayout>
+</ScrollView>
