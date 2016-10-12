@@ -159,6 +159,14 @@ kapt {
     generateStubs = true
 }
 
+/*
+ * Created by Maciej Markiewicz
+ * Copyright (c) 2016.
+ * netguru.co
+ *
+ *
+ */
+
 // note: use only kapt for annotation processing
 // (see https://github.com/realm/realm-java/issues/2491)
 
@@ -178,9 +186,9 @@ configurations {
 }
 
 dependencies {
-    compile project(':commons')
-    testCompile project(':test-commons')
-    androidTestCompile project(':test-commons')
+    compile "co.netguru.android:commons:0.1.0"
+    testCompile "co.netguru.android:test-commons:0.1.0"
+    androidTestCompile "co.netguru.android:test-commons:0.1.0"
     // put entries from dependencies.gradle, for example:
 
     // Support
@@ -294,8 +302,8 @@ dependencies {
 }
 
 // hot fix - android plugin 2.2.0 loses this task dependency and results in "no aar file found"
-tasks.whenTaskAdded { task ->
-    if(task.name == "prepareCoNetguruAndroidTestCommons"+project(':test-commons').android.defaultConfig.versionName.replace(".","")+"Library") {
-        prepareCoNetguruAndroidTestCommons010Library.dependsOn project(':test-commons').tasks["assembleRelease"]
-    }
-}
+//tasks.whenTaskAdded { task ->
+//    if(task.name == "prepareCoNetguruAndroidTestCommons"+project(':test-commons').android.defaultConfig.versionName.replace(".","")+"Library") {
+//        prepareCoNetguruAndroidTestCommons010Library.dependsOn project(':test-commons').tasks["assembleRelease"]
+//    }
+//}
