@@ -34,7 +34,6 @@ public class LoginPresenter
         extends MvpBasePresenter<LoginContract.View>
         implements LoginContract.Presenter {
 
-    private CompositeSubscription subscription = new CompositeSubscription();
     private OauthUriProvider uriProvider;
     private ApiTokenProvider apiTokenProvider;
     private ApiErrorParser apiErrorParser;
@@ -85,7 +84,6 @@ public class LoginPresenter
     }
 
     private void getToken() {
-        subscription.add(
                 apiTokenProvider.getToken(code)
                         .compose(androidIO())
                         .unsubscribeOn(Schedulers.io())
@@ -104,8 +102,7 @@ public class LoginPresenter
                             public void onNext(Token token) {
                                 showMainScreen();
                             }
-                        })
-        );
+                        });
     }
 
     private void showMainScreen() {
