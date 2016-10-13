@@ -6,7 +6,7 @@
  *
  */
 
-package co.netguru.android.inbbbox.authentication;
+package co.netguru.android.inbbbox.feature.login;
 
 import android.net.Uri;
 
@@ -15,21 +15,21 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
+import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
+import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
 import co.netguru.android.inbbbox.utils.ApiErrorParser;
 import co.netguru.android.inbbbox.utils.Constants;
-import rx.Subscription;
-import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 
 @FragmentScope
-public class AuthenticationPresenter
-        extends MvpBasePresenter<AuthenticationContract.View>
-        implements AuthenticationContract.Presenter {
+public class LoginPresenter
+        extends MvpBasePresenter<LoginContract.View>
+        implements LoginContract.Presenter {
 
     private CompositeSubscription subscription = new CompositeSubscription();
-    private DribbbleOauthUriProvider dribbbleOauthUriProvider;
+    private OauthUriProvider dribbbleOauthUriProvider;
     private ApiTokenProvider apiTokenProvider;
     private ApiErrorParser apiErrorParser;
 
@@ -37,9 +37,9 @@ public class AuthenticationPresenter
     private String oauthErrorMessage;
 
     @Inject
-    public AuthenticationPresenter(DribbbleOauthUriProvider dribbbleOauthUriProvider,
-                                   ApiTokenProvider apiTokenProvider,
-                                   ApiErrorParser apiErrorParser) {
+    public LoginPresenter(OauthUriProvider dribbbleOauthUriProvider,
+                          ApiTokenProvider apiTokenProvider,
+                          ApiErrorParser apiErrorParser) {
         this.dribbbleOauthUriProvider = dribbbleOauthUriProvider;
         this.apiTokenProvider = apiTokenProvider;
         this.apiErrorParser = apiErrorParser;

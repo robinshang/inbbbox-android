@@ -6,14 +6,14 @@
  *
  */
 
-package co.netguru.android.inbbbox.authentication;
+package co.netguru.android.inbbbox.feature.login;
 
 import android.net.Uri;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
-public interface AuthenticationContract {
+public interface LoginContract {
     interface View extends MvpView{
 
         void sendActionIntent(Uri uri);

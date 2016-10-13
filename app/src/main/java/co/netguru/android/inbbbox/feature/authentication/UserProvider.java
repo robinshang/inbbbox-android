@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.authentication;
+package co.netguru.android.inbbbox.feature.authentication;
 
 import javax.inject.Inject;
 

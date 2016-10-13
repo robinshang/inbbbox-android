@@ -29,11 +29,9 @@ public class AuthorizeApiModule {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(Constants.OAUTH.AUTHORIZE_URL)
+                .baseUrl(Constants.OAUTH.OAUTH_BASE_URL)
                 .client(okHttpClient)
                 .build()
                 .create(AuthorizeApi.class);
     }
-
-
 }

@@ -3,4 +3,5 @@
 
     <string name="login_button_text">Login with Dribble</string>
     <string name="login_inbbbox_text">Each shot swipes</string>
+    <string name="undefined_api_error">Unknown server error</string>
 </resources>
