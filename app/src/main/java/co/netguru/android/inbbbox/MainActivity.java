@@ -6,7 +6,7 @@
  *
  */
 
-package co.netguru.android.inbbbox.authentication;
+package co.netguru.android.inbbbox;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
