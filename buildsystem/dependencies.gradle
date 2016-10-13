@@ -19,11 +19,13 @@ ext {
     espressoVersion = '2.2.2'
     runnerVersion = '0.5'
     greenDaoVersion = '2.2.0'
+    designLibVersion = "24.1.1"
 
     libs = [
             kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
             appCompat               : "com.android.support:appcompat-v7:$supportLibraryVersion",
             recyclerView            : "com.android.support:recyclerview-v7:$supportLibraryVersion",
+            supportDesignLib        : "com.android.support:design:$supportLibraryVersion",
             cardView                : "com.android.support:cardview-v7:$supportLibraryVersion",
             gridLayout              : "com.android.support:gridlayout-v7:$supportLibraryVersion",
             mediaRouter             : "com.android.support:mediarouter-v7:$supportLibraryVersion",

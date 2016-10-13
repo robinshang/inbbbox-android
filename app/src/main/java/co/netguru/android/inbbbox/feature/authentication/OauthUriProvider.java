@@ -34,21 +34,36 @@ public class OauthUriProvider {
 
     public Observable<Uri> getOauthAutorizeUri() {
         initStateString();
-        return Observable.just(getAuthorizeUri());
+        return Observable.just(Uri.parse(getAuthorizeUri()));
     }
 
     private void initStateString() {
         stateString = UUID.randomUUID().toString();
     }
 
-    private Uri getAuthorizeUri() {
-        return new Uri.Builder()
-                .encodedPath(OAUTH.OAUTH_BASE_URL)
-                .appendQueryParameter(OAUTH.CLIENT_ID_KEY, getStringValue(R.string.dribbbleClientId))
-                .appendQueryParameter(OAUTH.SCOPE_KEY, getStringValue(R.string.dribbleScope))
-                .appendQueryParameter(OAUTH.STATE_KEY, stateString)
-                .build();
+    private String getAuthorizeUri() {
+        return new StringBuilder(OAUTH.OAUTH_BASE_URL + OAUTH.OAUTH_AUTHORIZE_ENDPOINT)
+                .append("?")
+                .append(OAUTH.CLIENT_ID_KEY)
+                .append("=")
+                .append(getStringValue(R.string.dribbbleClientId))
+                .append("&")
+                .append(OAUTH.SCOPE_KEY)
+                .append("=")
+                .append(getStringValue(R.string.dribbleScope))
+                .append("&")
+                .append(OAUTH.STATE_KEY)
+                .append("=")
+                .append(stateString)
+                .toString();
     }
+
+//    private String getRedirectUri() {
+//        return new StringBuilder(getStringValue(R.string.redirectUriScheme))
+//                .append("://")
+//                .append(getStringValue(R.string.redirectUriHost))
+//                .toString();
+//    }
 
     private String getStringValue(int resId) {
         return resources.getString(resId);

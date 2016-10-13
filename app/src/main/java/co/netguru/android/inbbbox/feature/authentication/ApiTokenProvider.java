@@ -27,7 +27,7 @@ public class ApiTokenProvider {
 
     public Observable<Token> getToken(String code) {
         return api.getToken(Constants.OAUTH.CLIENT_ID_KEY, Constants.OAUTH.CLIENT_SECRET_KEY, code)
-                .doOnNext(tokenResponse -> saveTokenToDB(tokenResponse));
+                .doOnNext(this::saveTokenToDB);
     }
 
     private void saveTokenToDB(Token tokenResponse) {

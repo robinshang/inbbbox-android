@@ -16,7 +16,7 @@ import rx.Observable;
 
 public interface AuthorizeApi {
 
-    @POST(OAUTH.OAUTH_AUTHORIZE_ENDPOINT)
+    @POST(OAUTH.OAUTH_TOKEN_ENDPOINT)
     Observable<Token> getToken(
             @Field(OAUTH.CLIENT_ID_KEY) String clientId,
             @Field(OAUTH.CLIENT_SECRET_KEY) String clientSecret,

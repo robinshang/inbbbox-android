@@ -1,11 +1,16 @@
 package co.netguru.android.inbbbox.feature.login;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.netguru.android.commons.di.WithComponent;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
@@ -14,15 +19,19 @@ import co.netguru.android.inbbbox.data.api.AuthorizeApiModule;
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
         implements LoginContract.View, WithComponent<LoginComponent> {
 
+    @OnClick(R.id.btn_login)
+    void onLoginClick() {
+        getPresenter().showLoginView();
+    }
+
     private LoginComponent component;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         initComponent();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
     }
 
     private void initComponent() {
@@ -43,13 +52,21 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     }
 
     @Override
-    public void sendActionIntent(Uri uri) {
+    protected void onResume() {
+        super.onResume();
+        Uri uri = getIntent().getData();
+        getPresenter().handleOauthLoginResponse(uri);
+    }
 
+    @Override
+    public void sendActionIntent(Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 
     @Override
     public void showApiError(String oauthErrorMessage) {
-
+        Toast.makeText(this, oauthErrorMessage, Toast.LENGTH_LONG).show();
     }
 
     @Override

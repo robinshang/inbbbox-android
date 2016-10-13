@@ -13,7 +13,7 @@ public class Constants {
 
     public static class OAUTH {
 
-       public static final String OAUTH_BASE_URL = "https://dribbble.com/oauth/";
+       public static final String OAUTH_BASE_URL = "http://dribbble.com/oauth/";
        public static final String OAUTH_AUTHORIZE_ENDPOINT = "authorize";
        public static final String OAUTH_TOKEN_ENDPOINT = "token";
 
@@ -23,7 +23,8 @@ public class Constants {
        public static final String CLIENT_SECRET_KEY = "client_secret";
        public static final String CODE_KEY = "code";
        public static final String ERROR_KEY = "key";
-   }
+       public static final String REDIRECT_URI_KEY = "redirect_uri";
+    }
 
    public static class API {
       public static final String HEDAER_ACCEPT = "Accept";

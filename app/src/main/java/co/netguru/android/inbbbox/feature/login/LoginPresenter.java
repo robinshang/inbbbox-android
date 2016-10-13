@@ -14,6 +14,7 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
+import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
@@ -23,45 +24,54 @@ import rx.subscriptions.CompositeSubscription;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 
-@FragmentScope
+@ActivityScope
 public class LoginPresenter
         extends MvpBasePresenter<LoginContract.View>
         implements LoginContract.Presenter {
 
     private CompositeSubscription subscription = new CompositeSubscription();
-    private OauthUriProvider dribbbleOauthUriProvider;
+    private OauthUriProvider uriProvider;
     private ApiTokenProvider apiTokenProvider;
     private ApiErrorParser apiErrorParser;
 
     private String code;
     private String oauthErrorMessage;
+    private String currentState;
+    private String sentState;
 
     @Inject
     public LoginPresenter(OauthUriProvider dribbbleOauthUriProvider,
                           ApiTokenProvider apiTokenProvider,
                           ApiErrorParser apiErrorParser) {
-        this.dribbbleOauthUriProvider = dribbbleOauthUriProvider;
+        this.uriProvider = dribbbleOauthUriProvider;
         this.apiTokenProvider = apiTokenProvider;
         this.apiErrorParser = apiErrorParser;
     }
 
     @Override
     public void showLoginView() {
-        dribbbleOauthUriProvider
+        uriProvider
                 .getOauthAutorizeUri()
                 .doOnError(Throwable::printStackTrace)
-                .doOnNext(uri -> getView().sendActionIntent(uri))
+                .doOnNext(uri -> prepareAuthorization(uri))
                 .subscribe();
+    }
+
+    private void prepareAuthorization(Uri uri) {
+        sentState = uri.getQueryParameter(Constants.OAUTH.STATE_KEY);
+        getView().sendActionIntent(uri);
     }
 
     @Override
     public void handleOauthLoginResponse(Uri uri) {
-        unpackParamsFromUri(uri);
-        selectAuthorizationAction();
+        if (uri != null) {
+            unpackParamsFromUri(uri);
+            selectAuthorizationAction();
+        }
     }
 
     private void selectAuthorizationAction() {
-        if (code != null && !code.isEmpty()) {
+        if (code != null && !code.isEmpty() && sentState.equals(currentState)) {
             getToken();
         } else if (oauthErrorMessage != null && oauthErrorMessage.isEmpty()) {
             getView().showApiError(oauthErrorMessage);
@@ -91,6 +101,7 @@ public class LoginPresenter
 
     private void unpackParamsFromUri(Uri uri) {
         code = uri.getQueryParameter(Constants.OAUTH.CODE_KEY);
+        currentState = uri.getQueryParameter(Constants.OAUTH.STATE_KEY);
         oauthErrorMessage = uri.getQueryParameter(Constants.OAUTH.ERROR_KEY);
     }
 }
