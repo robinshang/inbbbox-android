@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.main;
+package co.netguru.android.inbbbox.model;
 
 import android.annotation.SuppressLint;
 

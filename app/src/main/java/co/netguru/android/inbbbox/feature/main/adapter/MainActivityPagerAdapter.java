@@ -5,7 +5,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import co.netguru.android.inbbbox.feature.main.MenuItem;
+import co.netguru.android.inbbbox.feature.buckets.BucketsFragment;
+import co.netguru.android.inbbbox.feature.followers.FollowersFragment;
+import co.netguru.android.inbbbox.feature.likes.LikesFragment;
+import co.netguru.android.inbbbox.model.MenuItem;
+import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 
 public class MainActivityPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -18,13 +22,13 @@ public class MainActivityPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (MenuItem.getMenuItemForPosition(position)) {
             case SHOTS:
-                return new Fragment();
+                return ShotsFragment.newInstance();
             case LIKES:
-                return new Fragment();
+                return LikesFragment.newInstance();
             case BUCKETS:
-                return new Fragment();
+                return BucketsFragment.newInstance();
             case FOLLOWERS:
-                return new Fragment();
+                return FollowersFragment.newInstance();
             default:
                 throw new IllegalArgumentException(String.format(
                         "There is no fragment defined for position: %d", position));
