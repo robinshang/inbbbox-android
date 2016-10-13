@@ -24,57 +24,49 @@ public class Token {
     private String scope;
 
     /**
-     *
-     * @return
-     * The accessToken
+     * @return The accessToken
      */
     public String getAccessToken() {
         return accessToken;
     }
 
     /**
-     *
-     * @param accessToken
-     * The access_token
+     * @param accessToken The access_token
      */
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
 
     /**
-     *
-     * @return
-     * The tokenType
+     * @return The tokenType
      */
     public String getTokenType() {
         return tokenType;
     }
 
     /**
-     *
-     * @param tokenType
-     * The token_type
+     * @param tokenType The token_type
      */
     public void setTokenType(String tokenType) {
         this.tokenType = tokenType;
     }
 
     /**
-     *
-     * @return
-     * The scope
+     * @return The scope
      */
     public String getScope() {
         return scope;
     }
 
     /**
-     *
-     * @param scope
-     * The scope
+     * @param scope The scope
      */
     public void setScope(String scope) {
         this.scope = scope;
     }
 
+    @Override
+    public String toString() {
+        return accessToken + " " + scope + " " + tokenType;
+    }
 }

@@ -16,10 +16,15 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.commons.di.FragmentScope;
+import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
 import co.netguru.android.inbbbox.utils.ApiErrorParser;
 import co.netguru.android.inbbbox.utils.Constants;
+import rx.Scheduler;
+import rx.Subscriber;
+import rx.plugins.RxJavaPlugins;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
@@ -37,7 +42,6 @@ public class LoginPresenter
     private String code;
     private String oauthErrorMessage;
     private String currentState;
-    private String sentState;
 
     @Inject
     public LoginPresenter(OauthUriProvider dribbbleOauthUriProvider,
@@ -58,7 +62,6 @@ public class LoginPresenter
     }
 
     private void prepareAuthorization(Uri uri) {
-        sentState = uri.getQueryParameter(Constants.OAUTH.STATE_KEY);
         getView().sendActionIntent(uri);
     }
 
@@ -71,7 +74,8 @@ public class LoginPresenter
     }
 
     private void selectAuthorizationAction() {
-        if (code != null && !code.isEmpty() && sentState.equals(currentState)) {
+        // TODO: 13.10.2016 sent state check
+        if (code != null && !code.isEmpty()) {
             getToken();
         } else if (oauthErrorMessage != null && oauthErrorMessage.isEmpty()) {
             getView().showApiError(oauthErrorMessage);
@@ -84,9 +88,23 @@ public class LoginPresenter
         subscription.add(
                 apiTokenProvider.getToken(code)
                         .compose(androidIO())
-                        .doOnError(throwable -> handleError(throwable))
-                        .doOnNext(userData -> showMainScreen())
-                        .subscribe()
+                        .unsubscribeOn(Schedulers.io())
+                        .subscribe(new Subscriber<Token>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                handleError(e);
+                            }
+
+                            @Override
+                            public void onNext(Token token) {
+                                showMainScreen();
+                            }
+                        })
         );
     }
 

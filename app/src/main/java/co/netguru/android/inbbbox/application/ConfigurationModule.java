@@ -28,7 +28,8 @@ public class ConfigurationModule {
     OkHttpClient provideOkHttpClient() {
         return new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor()
-                        .setLevel(HttpLoggingInterceptor.Level.HEADERS))
+                        .setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build();
     }
+
 }
