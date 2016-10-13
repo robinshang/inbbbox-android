@@ -20,6 +20,7 @@ ext {
     runnerVersion = '0.5'
     greenDaoVersion = '2.2.0'
     designLibVersion = "24.1.1"
+    realmVersion ="2.0.2"
 
     libs = [
             kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
@@ -68,7 +69,7 @@ ext {
             hockeyApp               : "net.hockeyapp.android:HockeySDK:3.7.1",
             autoBundle              : "com.github.yatatsu:autobundle:$autoBundleVersion",
             greenDao                : "org.greenrobot:greendao:$greenDaoVersion",
-            greenDaoGenerator       : "org.greenrobot:greendao-generator:$greenDaoVersion"
+            greenDaoGenerator       : "org.greenrobot:greendao-generator:$greenDaoVersion",
     ]
 
     proc = [

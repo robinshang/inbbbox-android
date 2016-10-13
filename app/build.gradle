@@ -9,6 +9,7 @@ apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'org.sonarqube'
 apply from: '../buildsystem/sonarqube.gradle'
 apply from: '../buildsystem/jacocoTasks.gradle'
+apply plugin: 'realm-android'
 
 ext {
 
@@ -297,6 +298,7 @@ dependencies {
     androidTestCompile(test.espressoIdlingResource) {
         exclude module: 'espresso-core'
     }
+
 }
 
 // hot fix - android plugin 2.2.0 loses this task dependency and results in "no aar file found"

@@ -54,6 +54,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     protected void onResume() {
         super.onResume();
+        // TODO: 13.10.2016 lock the loop here
         Uri uri = getIntent().getData();
         getPresenter().handleOauthLoginResponse(uri);
     }
@@ -71,6 +72,6 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @Override
     public void showNextScreen() {
-
+        throw new UnsupportedOperationException();
     }
 }

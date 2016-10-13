@@ -1,11 +1,3 @@
-/*
- * Created by Maciej Markiewicz
- * Copyright (c) 2016.
- * netguru.co
- *
- *
- */
-
 package co.netguru.android.inbbbox.feature.login;
 
 import android.net.Uri;
@@ -87,7 +79,7 @@ public class LoginPresenter
                 apiTokenProvider.getToken(code)
                         .compose(androidIO())
                         .unsubscribeOn(Schedulers.io())
-                        .subscribe(new Subscriber<Token>() {
+                        .subscribe(new Subscriber<Boolean>() {
                             @Override
                             public void onCompleted() {
 
@@ -99,7 +91,7 @@ public class LoginPresenter
                             }
 
                             @Override
-                            public void onNext(Token token) {
+                            public void onNext(Boolean token) {
                                 showMainScreen();
                             }
                         });
