@@ -19,11 +19,12 @@ public class LoginModule {
         return new OauthUriProvider(resources);
     }
 
-    @FragmentScope
-    @ActivityScope
-    LoginPresenter provideLoginPresenter(OauthUriProvider dribbbleOauthUriProvider,
-                                         ApiTokenProvider apiTokenProvider,
-                                         ApiErrorParser apiErrorParser) {
-        return new LoginPresenter(dribbbleOauthUriProvider, apiTokenProvider, apiErrorParser);
-    }
+    // TODO: 14.10.2016 remove this b'cos unusied 
+//    @FragmentScope
+//    @ActivityScope
+//    LoginPresenter provideLoginPresenter(OauthUriProvider dribbbleOauthUriProvider,
+//                                         ApiTokenProvider apiTokenProvider,
+//                                         ApiErrorParser apiErrorParser) {
+//        return new LoginPresenter(dribbbleOauthUriProvider, apiTokenProvider, apiErrorParser);
+//    }
 }

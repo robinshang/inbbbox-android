@@ -14,7 +14,7 @@ import com.google.gson.annotations.SerializedName;
 import io.realm.RealmModel;
 import io.realm.RealmObject;
 
-public class Token extends RealmObject{
+public class Token {
 
     @SerializedName("access_token")
     @Expose

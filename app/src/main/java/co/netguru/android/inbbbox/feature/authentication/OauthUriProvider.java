@@ -58,13 +58,6 @@ public class OauthUriProvider {
                 .toString();
     }
 
-//    private String getRedirectUri() {
-//        return new StringBuilder(getStringValue(R.string.redirectUriScheme))
-//                .append("://")
-//                .append(getStringValue(R.string.redirectUriHost))
-//                .toString();
-//    }
-
     private String getStringValue(int resId) {
         return resources.getString(resId);
     }

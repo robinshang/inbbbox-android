@@ -7,17 +7,11 @@ import dagger.Provides;
 import io.realm.RealmConfiguration;
 
 @Module
-public class CacheEndPointModule {
+public class StorageModule {
 
     @Singleton
     @Provides
-    RealmStorage providesRealmStorage(RealmConfiguration configuration) {
+    Storage providesRealmStorage(RealmConfiguration configuration) {
         return new RealmStorage(configuration);
-    }
-
-    @Singleton
-    @Provides
-    CacheEndpoint provideCacheEndpoint(RealmStorage storage) {
-        return new CacheMock();
     }
 }
