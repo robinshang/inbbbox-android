@@ -6,16 +6,14 @@ import javax.inject.Inject;
 
 import io.realm.RealmObject;
 import rx.Observable;
-import rx.functions.Action0;
-import rx.functions.Action1;
 
-public class CacheEndPointImpl implements CacheEndpoint {
+public class CacheRealmEndpointImpl implements CacheEndpoint {
 
-    private static final String LOG_TAG = CacheEndPointImpl.class.getSimpleName();
+    private static final String LOG_TAG = CacheRealmEndpointImpl.class.getSimpleName();
     private RealmStorage realmStorage;
 
     @Inject
-    public CacheEndPointImpl(RealmStorage realmStorage) {
+    public CacheRealmEndpointImpl(RealmStorage realmStorage) {
 
         this.realmStorage = realmStorage;
     }

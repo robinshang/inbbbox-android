@@ -18,6 +18,6 @@ public class CacheEndPointModule {
     @Singleton
     @Provides
     CacheEndpoint provideCacheEndpoint(RealmStorage storage) {
-        return new CacheEndPointImpl(storage);
+        return new CacheRealmEndpointImpl(storage);
     }
 }
