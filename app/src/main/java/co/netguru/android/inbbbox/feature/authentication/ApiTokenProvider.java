@@ -43,7 +43,6 @@ public class ApiTokenProvider {
     }
 
     private Observable saveTokenToStorage(Token tokenResponse) {
-        Log.d(LOG_TAG,"Token received: "+ tokenResponse.toString());
         return cacheEndpoint.save(Constants.Db.TOKEN_KEY, tokenResponse);
     }
 }

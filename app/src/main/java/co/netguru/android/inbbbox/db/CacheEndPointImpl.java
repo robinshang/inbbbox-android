@@ -21,7 +21,6 @@ public class CacheEndPointImpl implements CacheEndpoint {
     }
 
     public Observable save(String key, Serializable object) {
-        Log.d(LOG_TAG, "Type of the object to save: " + object.getClass());
         return Observable.create(subscriber -> {
             try {
                 storage.put(key, object);
