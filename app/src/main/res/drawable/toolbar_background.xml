@@ -8,6 +8,6 @@
     </item>
 
     <item>
-        <bitmap android:src="@drawable/toolbar_logo" android:gravity="center" />
+        <bitmap android:src="@drawable/logo_appbar" android:gravity="center" />
     </item>
 </layer-list>

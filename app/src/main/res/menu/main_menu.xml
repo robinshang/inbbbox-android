@@ -4,7 +4,7 @@
 
     <!--TODO Change icon-->
     <item android:id="@+id/action_settings"
-        android:icon="@drawable/ic_timeline_white_18dp"
+        android:icon="@drawable/ic_settings"
         android:title="@string/action_settings"
         app:showAsAction="ifRoom"/>
 </menu>
