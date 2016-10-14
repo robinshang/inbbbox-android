@@ -72,6 +72,6 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @Override
     public void showNextScreen() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Main screen not ready yet");
     }
 }

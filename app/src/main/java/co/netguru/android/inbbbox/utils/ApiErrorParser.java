@@ -21,6 +21,6 @@ public class ApiErrorParser {
     }
 
     public String getApiError(Throwable throwable) {
-        return resources.getString(R.string.undefined_api_error);
+        return throwable.getMessage();
     }
 }
