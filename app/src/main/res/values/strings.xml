@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="app_name">Inbbbox</string>
     <string name="login_button_text">Login with Dribble</string>
     <string name="login_inbbbox_text">Each shot swipes</string>
     <string name="undefined_api_error">Unknown server error</string>
