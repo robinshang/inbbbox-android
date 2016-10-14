@@ -32,7 +32,7 @@ public class Constants {
         public static final String HEADER_AUTHORIZATION = "Authorization";
     }
 
-    public class Realm {
+    public class Db {
         public static final String REALM_FILEM_NAME = "inbbbox_v1.realm";
         public static final String TOKEN_KEY = "Token";
     }

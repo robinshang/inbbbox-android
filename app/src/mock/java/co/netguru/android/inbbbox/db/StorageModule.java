@@ -1,17 +1,18 @@
 package co.netguru.android.inbbbox.db;
 
+import android.content.Context;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.realm.RealmConfiguration;
 
 @Module
 public class StorageModule {
 
     @Singleton
     @Provides
-    Storage providesRealmStorage(RealmConfiguration configuration) {
+    Storage providesRealmStorage(Context context) {
         return new StorageMock();
     }
 }

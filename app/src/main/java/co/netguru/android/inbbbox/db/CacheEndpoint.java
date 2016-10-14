@@ -1,12 +1,11 @@
 package co.netguru.android.inbbbox.db;
 
-import io.realm.RealmModel;
+import java.io.Serializable;
+
 import rx.Observable;
 
-public interface CacheEndpoint<T> {
-    Observable save(T object);
+public interface CacheEndpoint {
+    Observable save(String key, Serializable object);
 
-    Observable<T> get(Class<T> tClass);
-
-
+    Observable get(String key, Class tClass);
 }

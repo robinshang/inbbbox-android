@@ -21,6 +21,8 @@ ext {
     greenDaoVersion = '2.2.0'
     designLibVersion = "24.1.1"
     realmVersion ="2.0.2"
+    snappyVersion ="0.5.2"
+    kryoVersion = "2.24.0"
 
     libs = [
             kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
@@ -70,6 +72,8 @@ ext {
             autoBundle              : "com.github.yatatsu:autobundle:$autoBundleVersion",
             greenDao                : "org.greenrobot:greendao:$greenDaoVersion",
             greenDaoGenerator       : "org.greenrobot:greendao-generator:$greenDaoVersion",
+            snappyDb                : "com.snappydb:snappydb-lib:$snappyVersion",
+            kryo                    : "com.esotericsoftware.kryo:kryo:$kryoVersion"
     ]
 
     proc = [

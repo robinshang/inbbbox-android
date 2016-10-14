@@ -1,16 +1,25 @@
 package co.netguru.android.inbbbox.db;
 
-import io.realm.Realm;
-import io.realm.RealmModel;
-import io.realm.RealmObject;
-import rx.Observable;
+import java.io.Serializable;
 
 public interface Storage {
-    Realm openDb();
+    <EntityClass extends Serializable> EntityClass[] getArray(String s, Class<EntityClass> aClass)
+            throws Exception;
 
-    void closeDb();
+    boolean exists(String key) throws Exception;
 
-    <RealmEntity extends RealmObject> Observable<RealmEntity> get(Class<RealmEntity> vClass);
+    <EntityClass> EntityClass getObject(String var1, Class<EntityClass> var2) throws Exception;
 
-    <RealmEntity extends RealmObject> void save(Realm.Transaction transaction);
+    void put(String key, Object[] objects) throws Exception;
+
+    void put(String key, Serializable serializable) throws Exception;
+
+    boolean getBoolean(String var1) throws Exception;
+
+    void putBoolean(String key, boolean value) throws Exception;
+
+    void del(String key) throws Exception;
+
+    <EntityClass extends Serializable> EntityClass get(String key, Class<EntityClass> aClass)
+            throws Exception;
 }

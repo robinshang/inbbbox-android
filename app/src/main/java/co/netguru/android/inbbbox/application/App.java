@@ -4,8 +4,6 @@ package co.netguru.android.inbbbox.application;
 import android.app.Application;
 import android.content.Context;
 
-import io.realm.Realm;
-
 /**
  * Base application class
  * Created by lukaszjanyga on 08/09/16.
@@ -22,7 +20,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         appComponent.getDebugMetricsHelper().init(this);
-        Realm.init(this);
     }
 
     @Override

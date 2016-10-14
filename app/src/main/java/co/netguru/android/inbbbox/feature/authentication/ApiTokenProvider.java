@@ -17,7 +17,7 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.api.AuthorizeApi;
 import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.db.CacheEndpoint;
-import co.netguru.android.inbbbox.db.RealmStorage;
+import co.netguru.android.inbbbox.utils.Constants;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -25,7 +25,7 @@ public class ApiTokenProvider {
 
     private static final String LOG_TAG = "ApiTokenProvider";
     private AuthorizeApi api;
-    private CacheEndpoint<Token> cacheEndpoint;
+    private CacheEndpoint cacheEndpoint;
     private Resources resources;
 
     @Inject
@@ -44,6 +44,6 @@ public class ApiTokenProvider {
 
     private Observable saveTokenToStorage(Token tokenResponse) {
         Log.d(LOG_TAG,"Token received: "+ tokenResponse.toString());
-        return cacheEndpoint.save(tokenResponse);
+        return cacheEndpoint.save(Constants.Db.TOKEN_KEY, tokenResponse);
     }
 }

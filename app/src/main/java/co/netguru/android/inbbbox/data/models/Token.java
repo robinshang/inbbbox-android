@@ -11,10 +11,9 @@ package co.netguru.android.inbbbox.data.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import io.realm.RealmModel;
-import io.realm.RealmObject;
+import java.io.Serializable;
 
-public class Token {
+public class Token implements Serializable{
 
     @SerializedName("access_token")
     @Expose
