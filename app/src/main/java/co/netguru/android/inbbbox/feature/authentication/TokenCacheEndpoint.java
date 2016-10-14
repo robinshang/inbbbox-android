@@ -10,9 +10,12 @@ import co.netguru.android.inbbbox.db.CacheEndpoint;
 import co.netguru.android.inbbbox.db.RealmObjectMapper;
 import co.netguru.android.inbbbox.db.RealmStorage;
 import co.netguru.android.inbbbox.db.Storage;
+import io.realm.Realm;
+import io.realm.RealmModel;
 import rx.Observable;
+import rx.Subscriber;
 
-public class TokenCacheEndpoint implements CacheEndpoint<Token>{
+public class TokenCacheEndpoint implements CacheEndpoint<Token> {
 
     private static final String LOG_TAG = TokenCacheEndpoint.class.getSimpleName();
     private Storage realmStorage;
@@ -27,18 +30,16 @@ public class TokenCacheEndpoint implements CacheEndpoint<Token>{
 
     public Observable save(Token object) {
         Log.d(LOG_TAG, "Type of the object to save: " + object.getClass());
-        return realmStorage.save(RealmToken.class, mapToRealm(object))
-                .doOnSubscribe(this::openDb)
-                .doOnCompleted(this::closeDb);
-    }
+        return Observable.create(subscriber -> {
+            realmStorage.save(realm -> {
+                RealmModel token = realmObjectMapper.toRealmObject(object, realm);
+                realm.insertOrUpdate(token);
+                subscriber.onNext(true);
+                subscriber.onCompleted();
 
-    private RealmToken mapToRealm(Token token) {
-        return realmObjectMapper.toRealmObject(token);
-    }
+            });
 
-    private void closeDb() {
-        Log.d(LOG_TAG, "Closing Db");
-        realmStorage.closeDb();
+        });
     }
 
     public Observable get(Class aClass) {
@@ -47,8 +48,8 @@ public class TokenCacheEndpoint implements CacheEndpoint<Token>{
                 .doOnCompleted(() -> realmStorage.closeDb());
     }
 
-    private void openDb() {
+    private Realm openDb() {
         Log.d(LOG_TAG, "Opening Db");
-        realmStorage.openDb();
+        return realmStorage.openDb();
     }
 }

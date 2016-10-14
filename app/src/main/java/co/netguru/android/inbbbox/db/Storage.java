@@ -1,16 +1,16 @@
 package co.netguru.android.inbbbox.db;
 
+import io.realm.Realm;
 import io.realm.RealmModel;
 import io.realm.RealmObject;
 import rx.Observable;
 
 public interface Storage {
-    void openDb();
+    Realm openDb();
 
     void closeDb();
 
     <RealmEntity extends RealmObject> Observable<RealmEntity> get(Class<RealmEntity> vClass);
 
-    <RealmEntity extends RealmObject> Observable<Boolean> save(Class<RealmEntity> aClass,
-                                                               RealmObject toSave);
+    <RealmEntity extends RealmObject> void save(Realm.Transaction transaction);
 }

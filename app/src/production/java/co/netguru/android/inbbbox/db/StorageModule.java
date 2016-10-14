@@ -11,7 +11,7 @@ public class StorageModule {
 
     @Singleton
     @Provides
-    Storage providesRealmStorage(RealmConfiguration configuration) {
-        return new RealmStorage(configuration);
+    Storage providesRealmStorage() {
+        return new RealmStorage();
     }
 }

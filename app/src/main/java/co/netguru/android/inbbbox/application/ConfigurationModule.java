@@ -37,10 +37,10 @@ public class ConfigurationModule {
                 .build();
     }
 
-    @Singleton
-    @Provides
-    RealmConfiguration provideRealmStorage() {
-        return new RealmConfiguration.Builder().build();
-    }
+//    @Singleton
+//    @Provides
+//    RealmConfiguration provideRealmStorage() {
+//        return new RealmConfiguration.Builder().build();
+//    }
 
 }

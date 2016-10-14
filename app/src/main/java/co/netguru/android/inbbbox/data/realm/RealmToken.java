@@ -3,16 +3,22 @@ package co.netguru.android.inbbbox.data.realm;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
 
+@RealmClass
 public class RealmToken extends RealmObject {
 
     @PrimaryKey
-    private long id;
+    private String key;
     private String accessToken;
     private String tokenType;
     private String scope;
+
+    public RealmToken() {
+    }
 
     public String getAccessToken() {
         return accessToken;
@@ -38,4 +44,11 @@ public class RealmToken extends RealmObject {
         this.scope = scope;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 }

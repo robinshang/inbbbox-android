@@ -1,24 +1,28 @@
 package co.netguru.android.inbbbox.db;
 
-import io.realm.Realm;
+import co.netguru.android.inbbbox.utils.Constants;
 import io.realm.RealmConfiguration;
-import io.realm.RealmModel;
 import io.realm.RealmObject;
+import io.realm.Realm;
 import rx.Observable;
-import rx.Observable.OnSubscribe;
-import rx.Subscriber;
-import rx.functions.Func0;
 
 public class RealmStorage implements Storage {
 
-    private Realm realm;
+    private Realm realm = null;
+    RealmConfiguration configuration;
 
-    public RealmStorage(RealmConfiguration configuration) {
-        Realm.setDefaultConfiguration(configuration);
+    public RealmStorage() {
     }
 
-    public void openDb() {
+    public Realm openDb() {
+        configuration = new RealmConfiguration
+                .Builder()
+                .name(Constants.Realm.REALM_FILEM_NAME)
+                .build();
+
+        Realm.setDefaultConfiguration(configuration);
         realm = Realm.getDefaultInstance();
+        return realm;
     }
 
     public void closeDb() {
@@ -30,23 +34,10 @@ public class RealmStorage implements Storage {
                 .map(vs -> vs.first());
     }
 
-    public <RealmEntity extends RealmObject> Observable<Boolean> save(Class<RealmEntity> aClass,
-                                                                      RealmObject toSave) {
-        return Observable.create(new OnSubscribe<Boolean>() {
-            @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
-                saveToDb(aClass, toSave);
-                subscriber.onNext(true);
-                subscriber.onCompleted();
-            }
-        });
-    }
-
-    private void saveToDb(Class aClass, RealmObject toSave) {
-        realm.beginTransaction();
-        realm.copyToRealm(toSave);
-        realm.commitTransaction();
+    public <RealmEntity extends RealmObject> void save(Realm.Transaction transaction) {
+        openDb();
+        realm.executeTransaction(transaction);
+        closeDb();
 
     }
-
 }
