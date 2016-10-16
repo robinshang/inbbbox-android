@@ -254,7 +254,21 @@ dependencies {
         exclude module: 'hamcrest-core'
     }
     testCompile test.hamcrest
-    testCompile test.mockito
+    androidTestCompile(test.mockito) {
+        exclude module: 'hamcrest-integration'
+        exclude module: 'hamcrest-core'
+        exclude module: 'hamcrest-library'
+        exclude module: 'objenesis'
+        exclude group: 'org.homcrest'
+    }
+    androidTestCompile(test.dexmakerMockito) {
+        exclude module: 'objenesis'
+    }
+    androidTestCompile(test.dexmaker)
+            {
+                exclude module: 'objenesis'
+
+            }
 
     androidTestCompile test.hamcrest
     androidTestCompile libs.annotations

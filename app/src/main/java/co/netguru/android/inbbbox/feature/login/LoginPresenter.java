@@ -35,10 +35,10 @@ public class LoginPresenter
     private String currentState;
 
     @Inject
-    public LoginPresenter(OauthUriProvider dribbbleOauthUriProvider,
+    public LoginPresenter(OauthUriProvider oauthUriProvider,
                           ApiTokenProvider apiTokenProvider,
                           ApiErrorParser apiErrorParser) {
-        this.uriProvider = dribbbleOauthUriProvider;
+        this.uriProvider = oauthUriProvider;
         this.apiTokenProvider = apiTokenProvider;
         this.apiErrorParser = apiErrorParser;
     }
