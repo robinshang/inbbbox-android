@@ -1,29 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    tools:context="co.netguru.android.inbbbox.feature.main.MainActivity">
-    
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/toolbar_background" />
+    android:layout_height="match_parent">
 
-    <co.netguru.android.inbbbox.view.NonSwipeableViewPager
-        android:id="@+id/main_view_pager"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="co.netguru.android.inbbbox.feature.main.MainActivity">
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/main_tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/activity_main_tab_height"
-        android:background="@color/pink"
-        app:tabIndicatorColor="@color/white"
-        app:tabGravity="fill"/>
-</LinearLayout>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/toolbar_background" />
+
+        <co.netguru.android.inbbbox.view.NonSwipeableViewPager
+            android:id="@+id/main_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/main_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity_main_tab_height"
+            android:background="@drawable/tablayout_background"
+            app:tabGravity="fill"
+            app:tabTextAppearance="@style/TabText"
+            app:tabSelectedTextColor="@color/pink"
+            app:tabIndicatorHeight="@dimen/activity_main_tab_indicator_height"/>
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_fab_open"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_main_fab_margin_bottom"
+        app:fabSize="normal"
+        app:backgroundTint="@color/white" />
+</android.support.design.widget.CoordinatorLayout>

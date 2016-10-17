@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import co.netguru.android.inbbbox.feature.buckets.BucketsFragment;
 import co.netguru.android.inbbbox.feature.followers.FollowersFragment;
 import co.netguru.android.inbbbox.feature.likes.LikesFragment;
-import co.netguru.android.inbbbox.model.MenuItem;
+import co.netguru.android.inbbbox.model.ui.TabItemType;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 
 public class MainActivityPagerAdapter extends FragmentStatePagerAdapter {
@@ -20,7 +20,7 @@ public class MainActivityPagerAdapter extends FragmentStatePagerAdapter {
     @SuppressLint("DefaultLocale")
     @Override
     public Fragment getItem(int position) {
-        switch (MenuItem.getMenuItemForPosition(position)) {
+        switch (TabItemType.getTabItemForPosition(position)) {
             case SHOTS:
                 return ShotsFragment.newInstance();
             case LIKES:
@@ -37,6 +37,6 @@ public class MainActivityPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return MenuItem.values().length;
+        return TabItemType.values().length;
     }
 }

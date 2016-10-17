@@ -5,4 +5,9 @@
 
     <string name="login_button_text">Login with Dribble</string>
     <string name="login_inbbbox_text">Each shot swipes</string>
+
+    <string name="tab_shots_title">Shots</string>
+    <string name="tab_likes_title">Likes</string>
+    <string name="tab_buckets_title">Buckets</string>
+    <string name="tab_following_title">Following</string>
 </resources>
