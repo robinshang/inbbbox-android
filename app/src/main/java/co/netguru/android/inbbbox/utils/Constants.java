@@ -22,7 +22,7 @@ public class Constants {
         public static final String STATE_KEY = "state";
         public static final String CLIENT_SECRET_KEY = "client_secret";
         public static final String CODE_KEY = "code";
-        public static final String ERROR_KEY = "key";
+        public static final String ERROR_KEY = "error";
         public static final String REDIRECT_URI_KEY = "redirect_uri";
     }
 

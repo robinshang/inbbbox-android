@@ -6,12 +6,12 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
 
-public class ApiErrorParser {
+public class ErrorMessageParser {
 
     private Resources resources;
 
     @Inject
-    public ApiErrorParser(Resources resources) {
+    public ErrorMessageParser(Resources resources) {
 
         this.resources = resources;
     }
@@ -29,6 +29,9 @@ public class ApiErrorParser {
         switch (type) {
             case INVALID_USER_INSTANCE:
                 label = resources.getString(R.string.invalid_user_error);
+                break;
+            case INVALID_OAURH_URI:
+                label = resources.getString(R.string.invalid_outh_uri);
                 break;
         }
         return label;

@@ -11,12 +11,11 @@ import co.netguru.android.inbbbox.data.models.User;
 import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
-import co.netguru.android.inbbbox.feature.errorhandling.ApiErrorParser;
+import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorType;
 import co.netguru.android.inbbbox.utils.Constants;
 import rx.Subscriber;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import rx.android.schedulers.AndroidSchedulers;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 
@@ -27,7 +26,7 @@ public class LoginPresenter
 
     private OauthUriProvider uriProvider;
     private ApiTokenProvider apiTokenProvider;
-    private ApiErrorParser apiErrorParser;
+    private ErrorMessageParser errorHandler;
     private UserProvider userProvider;
 
     private String code;
@@ -37,11 +36,11 @@ public class LoginPresenter
     @Inject
     public LoginPresenter(OauthUriProvider oauthUriProvider,
                           ApiTokenProvider apiTokenProvider,
-                          ApiErrorParser apiErrorParser,
+                          ErrorMessageParser apiErrorParser,
                           UserProvider userProvider) {
         this.uriProvider = oauthUriProvider;
         this.apiTokenProvider = apiTokenProvider;
-        this.apiErrorParser = apiErrorParser;
+        this.errorHandler = apiErrorParser;
         this.userProvider = userProvider;
     }
 
@@ -70,38 +69,62 @@ public class LoginPresenter
         // TODO: 13.10.2016 sent state check
         if (code != null && !code.isEmpty()) {
             getToken();
-        } else if (oauthErrorMessage != null && oauthErrorMessage.isEmpty()) {
+        } else if (oauthErrorMessage != null && !oauthErrorMessage.isEmpty()) {
             getView().showApiError(oauthErrorMessage);
         } else {
-            getView().showApiError(apiErrorParser.getApiError(Constants.UNDEFINED));
+            getView().showApiError(errorHandler.getApiError(Constants.UNDEFINED));
         }
     }
 
     private void getToken() {
         apiTokenProvider.getToken(code)
                 .compose(androidIO())
-                .doOnError(this::handleError)
-                .doOnNext(saved -> {
-                    if (saved) {
-                        getUser();
+                .subscribe(new Subscriber<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+
                     }
-                })
-                .subscribe();
+
+                    @Override
+                    public void onError(Throwable e) {
+                        handleError(e);
+                    }
+
+                    @Override
+                    public void onNext(Boolean saved) {
+                        if (saved) {
+                            getUser();
+                        }
+                    }
+                });
     }
 
     private void getUser() {
         userProvider.getUser()
                 .compose(androidIO())
-                .doOnNext(this::verifyUser)
-                .doOnError(this::handleError)
-                .subscribe();
+                .subscribe(new Subscriber<User>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        handleError(e);
+                    }
+
+                    @Override
+                    public void onNext(User user) {
+                        verifyUser(user);
+                    }
+                });
     }
 
     private void verifyUser(User user) {
         if (user != null) {
-           showMainScreen();;
+            showMainScreen();
         } else {
-            getView().showApiError(apiErrorParser.getErrorLabel(ErrorType.INVALID_USER_INSTANCE));
+            getView().showApiError(errorHandler.getErrorLabel(ErrorType.INVALID_USER_INSTANCE));
         }
     }
 
@@ -111,8 +134,7 @@ public class LoginPresenter
     }
 
     private void handleError(Throwable throwable) {
-        throwable.printStackTrace();
-        getView().showApiError(apiErrorParser.getApiError(throwable));
+        getView().showApiError(errorHandler.getApiError(throwable));
     }
 
     private void unpackParamsFromUri(Uri uri) {

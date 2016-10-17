@@ -258,6 +258,9 @@ dependencies {
     testCompile test.hamcrest
     testCompile test.mockito
 
+    androidTestCompile test.rxJavaDebug
+    androidTestCompile libs.rxAndroid
+
     androidTestCompile(test.mockito) {
         exclude module: 'hamcrest-integration'
         exclude module: 'hamcrest-core'

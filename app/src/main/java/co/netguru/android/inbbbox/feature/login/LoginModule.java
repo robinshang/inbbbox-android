@@ -21,7 +21,7 @@ public class LoginModule {
 //    @ActivityScope
 //    LoginPresenter provideLoginPresenter(OauthUriProvider dribbbleOauthUriProvider,
 //                                         ApiTokenProvider apiTokenProvider,
-//                                         ApiErrorParser apiErrorParser) {
+//                                         ErrorMessageParser apiErrorParser) {
 //        return new LoginPresenter(dribbbleOauthUriProvider, apiTokenProvider, apiErrorParser);
 //    }
 }
