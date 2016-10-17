@@ -6,4 +6,9 @@
     <string name="undefined_api_error">Unknown server error</string>
     <string name="invalid_user_error">Invalid user</string>
     <string name="invalid_outh_uri">Invalid oauth uri</string>
+
+    <string name="tab_shots_title">Shots</string>
+    <string name="tab_likes_title">Likes</string>
+    <string name="tab_buckets_title">Buckets</string>
+    <string name="tab_following_title">Following</string>
 </resources>
