@@ -11,4 +11,6 @@
     <string name="tab_likes_title">Likes</string>
     <string name="tab_buckets_title">Buckets</string>
     <string name="tab_following_title">Following</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

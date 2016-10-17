@@ -13,6 +13,7 @@ import butterknife.OnClick;
 import co.netguru.android.commons.di.WithComponent;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
+import co.netguru.android.inbbbox.feature.main.MainActivity;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
         implements LoginContract.View, WithComponent<LoginComponent> {
@@ -69,6 +70,6 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @Override
     public void showNextScreen() {
-        Toast.makeText(this, "Show main screen", Toast.LENGTH_LONG).show();
+        MainActivity.startActivity(this);
     }
 }
