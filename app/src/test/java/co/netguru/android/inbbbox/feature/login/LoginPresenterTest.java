@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.feature.login;
 
 import android.net.Uri;
-import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Before;
@@ -9,33 +8,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
-
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import javax.annotation.meta.When;
 
 import co.netguru.android.inbbbox.data.models.User;
 import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
+import co.netguru.android.inbbbox.feature.errorhandling.ErrorType;
 import co.netguru.android.inbbbox.utils.Constants;
 import rx.Observable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
-import rx.functions.Func1;
-import rx.plugins.RxJavaCompletableExecutionHook;
 import rx.plugins.RxJavaHooks;
-import rx.plugins.RxJavaPlugins;
-import rx.plugins.RxJavaSchedulersHook;
 import rx.schedulers.Schedulers;
 
 import static org.mockito.Mockito.mock;
@@ -50,7 +36,7 @@ public class LoginPresenterTest {
     private OauthUriProvider oauthUriProviderMock;
 
     @Mock
-    private ErrorMessageParser apiErrorParserMock;
+    private ErrorMessageParser errorMessageParser;
 
     @Mock
     private ApiTokenProvider tokenProviderMock;
@@ -65,7 +51,6 @@ public class LoginPresenterTest {
     public Uri uri;
 
     private String code = "testCode";
-    private String errorLabel = "testError";
 
     @InjectMocks
     private LoginPresenter presenter;
@@ -79,8 +64,10 @@ public class LoginPresenterTest {
             }
         });
 
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
         presenter.attachView(viewMock);
-        when(tokenProviderMock.getToken(code)).thenReturn(Observable.just(true));
+        when(tokenProviderMock.getToken(code))
+                .thenReturn(Observable.just(true));
         when(userProviderMock.getUser()).
                 thenReturn(Observable.just(new User()));
     }
@@ -133,7 +120,7 @@ public class LoginPresenterTest {
 
         presenter.handleOauthLoginResponse(uri);
 
-        verify(viewMock, times(1)).showNextScreen();
+        verify(viewMock).showNextScreen();
     }
 
     //Errors
@@ -149,13 +136,75 @@ public class LoginPresenterTest {
     }
 
     @Test
-    public void  whenHandlingOauthResponseWithoutCode_thenShowReceivedError() {
+    public void whenHandlingOauthResponseWithoutCode_thenShowReceivedError() {
         String errorMessage = "test error";
         when(uri.getQueryParameter(Constants.OAUTH.ERROR_KEY)).thenReturn(errorMessage);
 
         presenter.handleOauthLoginResponse(uri);
 
         verify(viewMock).showApiError(errorMessage);
+    }
+
+    @Test
+    public void whenHandlingOauthResponseWithoutCodeAndError_thenShownInvalidUriError() {
+        String testError = "testError";
+        when(errorMessageParser.getErrorLabel(ErrorType.INVALID_OAURH_URI)).thenReturn(testError);
+        when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(null);
+        when(uri.getQueryParameter(Constants.OAUTH.ERROR_KEY)).thenReturn(null);
+
+        presenter.handleOauthLoginResponse(uri);
+
+        verify(viewMock, times(1)).showApiError(testError);
+    }
+
+    @Test
+    public void whenGettingErrorWhenTokenSaving_thenRunThroawbleMessageHanding(){
+        String throwableText = "test";
+        Throwable testThrowable = new Throwable(throwableText);
+        when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(code);
+        when(tokenProviderMock.getToken(code)).thenReturn(Observable.error(testThrowable));
+
+        presenter.handleOauthLoginResponse(uri);
+
+        verify(errorMessageParser, times(1)).getError(testThrowable);
+    }
+
+    @Test
+    public void whenGettingErrorWhenTokenSaving_thenShowErrorMessageFromThrowable() {
+        String throwableText = "test";
+        Throwable testThrowable = new Throwable(throwableText);
+        when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(code);
+        when(tokenProviderMock.getToken(code)).thenReturn(Observable.error(testThrowable));
+        when(errorMessageParser.getError(testThrowable)).thenReturn(throwableText);
+
+        presenter.handleOauthLoginResponse(uri);
+
+        verify(viewMock, times(1)).showApiError(throwableText);
+    }
+
+    @Test
+    public void whenGettingErrorWhenUserSaving_thenRunThroawbleMessageHanding(){
+        String throwableText = "test";
+        Throwable testThrowable = new Throwable(throwableText);
+        when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(code);
+        when(userProviderMock.getUser()).thenReturn(Observable.error(testThrowable));
+
+        presenter.handleOauthLoginResponse(uri);
+
+        verify(errorMessageParser, times(1)).getError(testThrowable);
+    }
+
+    @Test
+    public void whenGettingErrorWhenUserSaving_thenShowErrorMessageFromThrowable() {
+        String throwableText = "test";
+        Throwable testThrowable = new Throwable(throwableText);
+        when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(code);
+        when(userProviderMock.getUser()).thenReturn(Observable.error(testThrowable));
+        when(errorMessageParser.getError(testThrowable)).thenReturn(throwableText);
+
+        presenter.handleOauthLoginResponse(uri);
+
+        verify(viewMock).showApiError(throwableText);
     }
 
 }

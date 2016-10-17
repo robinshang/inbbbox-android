@@ -15,7 +15,6 @@ import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorType;
 import co.netguru.android.inbbbox.utils.Constants;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 
@@ -66,13 +65,12 @@ public class LoginPresenter
     }
 
     private void selectAuthorizationAction() {
-        // TODO: 13.10.2016 sent state check
         if (code != null && !code.isEmpty()) {
             getToken();
         } else if (oauthErrorMessage != null && !oauthErrorMessage.isEmpty()) {
             getView().showApiError(oauthErrorMessage);
         } else {
-            getView().showApiError(errorHandler.getApiError(Constants.UNDEFINED));
+            getView().showApiError(errorHandler.getErrorLabel(ErrorType.INVALID_OAURH_URI));
         }
     }
 
@@ -134,7 +132,7 @@ public class LoginPresenter
     }
 
     private void handleError(Throwable throwable) {
-        getView().showApiError(errorHandler.getApiError(throwable));
+        getView().showApiError(errorHandler.getError(throwable));
     }
 
     private void unpackParamsFromUri(Uri uri) {
@@ -143,13 +141,4 @@ public class LoginPresenter
         oauthErrorMessage = uri.getQueryParameter(Constants.OAUTH.ERROR_KEY);
     }
 
-    @Override
-    public void attachView(LoginContract.View view) {
-        super.attachView(view);
-    }
-
-    @Override
-    public void detachView(boolean retainInstance) {
-        super.detachView(true);
-    }
 }

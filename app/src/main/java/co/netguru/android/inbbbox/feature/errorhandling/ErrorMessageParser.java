@@ -16,11 +16,11 @@ public class ErrorMessageParser {
         this.resources = resources;
     }
 
-    public String getApiError(int errorCode) {
+    public String getError(int errorCode) {
         return resources.getString(R.string.undefined_api_error);
     }
 
-    public String getApiError(Throwable throwable) {
+    public String getError(Throwable throwable) {
         return throwable.getMessage();
     }
 

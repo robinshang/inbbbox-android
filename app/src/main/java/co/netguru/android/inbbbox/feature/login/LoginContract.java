@@ -21,6 +21,7 @@ public interface LoginContract {
         void showApiError(String oauthErrorMessage);
 
         void showNextScreen();
+
     }
 
     interface Presenter extends MvpPresenter<View>{
