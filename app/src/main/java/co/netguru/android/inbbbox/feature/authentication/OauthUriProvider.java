@@ -16,6 +16,7 @@ import java.util.UUID;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.utils.Constants;
 import rx.Observable;
 
 import static co.netguru.android.inbbbox.utils.Constants.OAUTH;
@@ -42,7 +43,7 @@ public class OauthUriProvider {
     }
 
     private String getAuthorizeUri() {
-        return new StringBuilder(OAUTH.OAUTH_BASE_URL + OAUTH.OAUTH_AUTHORIZE_ENDPOINT)
+        return new StringBuilder(OAUTH.BASE_URL + OAUTH.OAUTH_AUTHORIZE_ENDPOINT)
                 .append("?")
                 .append(OAUTH.CLIENT_ID_KEY)
                 .append("=")

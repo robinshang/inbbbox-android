@@ -36,13 +36,15 @@ public class ApiTokenProvider {
         this.resources = resources;
     }
 
-    public Observable getToken(String code) {
+    public Observable<Boolean> getToken(String code) {
         return api.getToken(resources.getString(R.string.dribbbleClientId),
                 resources.getString(R.string.dribbbleClientSecret), code)
-                .flatMap((Func1<Token, Observable<?>>) this::saveTokenToStorage);
+                .flatMap((Func1<Token, Observable<Boolean>>) this::saveTokenToStorage);
     }
 
     private Observable saveTokenToStorage(Token tokenResponse) {
         return cacheEndpoint.save(Constants.Db.TOKEN_KEY, tokenResponse);
     }
+
+
 }

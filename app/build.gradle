@@ -222,6 +222,8 @@ dependencies {
     compile libs.retrofitGsonConverter
     compile libs.retrofitRxJavaAdapter
 
+    compile libs.timber
+
     //persistent
     compile libs.kryo
     compile libs.snappyDb
@@ -254,6 +256,8 @@ dependencies {
         exclude module: 'hamcrest-core'
     }
     testCompile test.hamcrest
+    testCompile test.mockito
+
     androidTestCompile(test.mockito) {
         exclude module: 'hamcrest-integration'
         exclude module: 'hamcrest-core'

@@ -7,17 +7,16 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.commons.di.FragmentScope;
-import co.netguru.android.inbbbox.data.models.Token;
+import co.netguru.android.inbbbox.data.models.User;
 import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
-import co.netguru.android.inbbbox.utils.ApiErrorParser;
+import co.netguru.android.inbbbox.feature.authentication.UserProvider;
+import co.netguru.android.inbbbox.feature.errorhandling.ApiErrorParser;
+import co.netguru.android.inbbbox.feature.errorhandling.ErrorType;
 import co.netguru.android.inbbbox.utils.Constants;
-import rx.Scheduler;
 import rx.Subscriber;
-import rx.plugins.RxJavaPlugins;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 
@@ -29,6 +28,7 @@ public class LoginPresenter
     private OauthUriProvider uriProvider;
     private ApiTokenProvider apiTokenProvider;
     private ApiErrorParser apiErrorParser;
+    private UserProvider userProvider;
 
     private String code;
     private String oauthErrorMessage;
@@ -37,10 +37,12 @@ public class LoginPresenter
     @Inject
     public LoginPresenter(OauthUriProvider oauthUriProvider,
                           ApiTokenProvider apiTokenProvider,
-                          ApiErrorParser apiErrorParser) {
+                          ApiErrorParser apiErrorParser,
+                          UserProvider userProvider) {
         this.uriProvider = oauthUriProvider;
         this.apiTokenProvider = apiTokenProvider;
         this.apiErrorParser = apiErrorParser;
+        this.userProvider = userProvider;
     }
 
     @Override
@@ -76,26 +78,39 @@ public class LoginPresenter
     }
 
     private void getToken() {
-                apiTokenProvider.getToken(code)
-                        .compose(androidIO())
-                        .unsubscribeOn(Schedulers.io())
-                        .subscribe(new Subscriber<Boolean>() {
-                            @Override
-                            public void onCompleted() {
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                handleError(e);
-                            }
-
-                            @Override
-                            public void onNext(Boolean token) {
-                                showMainScreen();
-                            }
-                        });
+        apiTokenProvider.getToken(code)
+                .compose(androidIO())
+                .doOnError(this::handleError)
+                .doOnNext(saved -> {
+                    if (saved) {
+                        getUser();
+                    }
+                })
+                .subscribe();
     }
+
+    private void getUser() {
+        userProvider.getUser()
+                .compose(androidIO())
+
+                .doOnNext(this::verifyUser)
+                .doOnError(new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        handleError(throwable);
+                    }
+                })
+                .subscribe();
+    }
+
+    private void verifyUser(User user) {
+        if (user != null) {
+           showMainScreen();;
+        } else {
+            getView().showApiError(apiErrorParser.getErrorLabel(ErrorType.INVALID_USER_INSTANCE));
+        }
+    }
+
 
     private void showMainScreen() {
         getView().showNextScreen();
@@ -110,5 +125,15 @@ public class LoginPresenter
         code = uri.getQueryParameter(Constants.OAUTH.CODE_KEY);
         currentState = uri.getQueryParameter(Constants.OAUTH.STATE_KEY);
         oauthErrorMessage = uri.getQueryParameter(Constants.OAUTH.ERROR_KEY);
+    }
+
+    @Override
+    public void attachView(LoginContract.View view) {
+        super.attachView(view);
+    }
+
+    @Override
+    public void detachView(boolean retainInstance) {
+        super.detachView(true);
     }
 }

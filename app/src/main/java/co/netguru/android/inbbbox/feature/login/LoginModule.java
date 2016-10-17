@@ -3,10 +3,7 @@ package co.netguru.android.inbbbox.feature.login;
 import android.content.res.Resources;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.commons.di.FragmentScope;
-import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
-import co.netguru.android.inbbbox.utils.ApiErrorParser;
 import dagger.Module;
 import dagger.Provides;
 

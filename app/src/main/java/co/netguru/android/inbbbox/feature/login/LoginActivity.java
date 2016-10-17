@@ -8,13 +8,11 @@ import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.netguru.android.commons.di.WithComponent;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
-import co.netguru.android.inbbbox.data.api.AuthorizeApiModule;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
         implements LoginContract.View, WithComponent<LoginComponent> {
@@ -72,6 +70,6 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @Override
     public void showNextScreen() {
-        throw new UnsupportedOperationException("Main screen not ready yet");
+        Toast.makeText(this, "Show main screen", Toast.LENGTH_LONG).show();
     }
 }

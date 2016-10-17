@@ -6,6 +6,6 @@ import rx.Observable;
 
 public interface UserApi {
 
-    @GET("/user")
-    Observable<User> getUser();
+    @GET("/v1/user")
+    Observable<User> getAuthenticatedUser();
 }

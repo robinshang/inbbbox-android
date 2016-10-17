@@ -198,7 +198,8 @@ public class SynchronizedDb implements Storage{
         }
     }
 
-    public <EntityClass extends Serializable> EntityClass get(String s, Class<EntityClass> aClass) throws SnappydbException {
+    public <EntityClass extends Serializable> EntityClass get(String s, Class<EntityClass> aClass)
+            throws SnappydbException {
         EntityClass result = null;
         SnappydbException ex = null;
 
