@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/drawer_header_height"
+    android:background="@color/pink"
+    android:orientation="vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="@dimen/drawer_header_photo_size"
+        android:layout_height="@dimen/drawer_header_photo_size"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/drawer_header_photo_margin_top"
+        android:src="@color/lightGray"
+        android:foreground="@drawable/logo_ball"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="@dimen/drawer_header_photo_border" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            style="@style/Font14.White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center_vertical" />
+
+        <ToggleButton
+            android:id="@+id/drawer_header_toggle"
+            android:layout_width="@dimen/drawer_arrow_size"
+            android:layout_height="@dimen/drawer_arrow_size"
+            android:layout_marginEnd="@dimen/drawer_arrow_margin_end"
+            android:layout_gravity="center_vertical|end"
+            android:background="@drawable/drawer_toggle_button"
+            android:textOff="@string/empty_string"
+            android:textOn="@string/empty_string" />
+    </FrameLayout>
+</LinearLayout>

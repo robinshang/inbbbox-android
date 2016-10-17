@@ -2,6 +2,7 @@
 <resources>
 
     <string name="action_settings">Settings</string>
+    <string name="empty_string"></string>
 
     <string name="login_button_text">Login with Dribble</string>
     <string name="login_inbbbox_text">Each shot swipes</string>
@@ -10,4 +11,16 @@
     <string name="tab_likes_title">Likes</string>
     <string name="tab_buckets_title">Buckets</string>
     <string name="tab_following_title">Following</string>
+
+    <string name="drawer_group_notification">Notifications</string>
+    <string name="drawer_enable_reminder">Enable daily reminder</string>
+    <string name="drawer_set_reminder">Set daily reminder at</string>
+    <string name="drawer_group_stream">Inbbbox Stream Source</string>
+    <string name="drawer_following">Following</string>
+    <string name="drawer_new_today">New Today</string>
+    <string name="drawer_popular_today">Popular Today</string>
+    <string name="drawer_debuts">Debuts</string>
+    <string name="drawer_group_customization">Customization</string>
+    <string name="drawer_shot_details">Shot Details on Homescreen</string>
+    <string name="drawer_logout">Log out</string>
 </resources>

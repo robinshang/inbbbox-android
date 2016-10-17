@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:id="@+id/group_all"
+        android:checkableBehavior="single">
+
+        <item android:title="@string/drawer_group_notification">
+            <menu>
+                <group>
+                    <item
+                        android:title="@string/drawer_enable_reminder"
+                        app:actionLayout="@layout/drawer_item_switch" />
+                    <item android:title="@string/drawer_set_reminder"
+                        app:actionLayout="@layout/drawer_item_time"/>
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="@string/drawer_group_stream">
+            <menu>
+                <group>
+                    <item
+                        android:title="@string/drawer_following"
+                        app:actionLayout="@layout/drawer_item_switch" />
+                    <item
+                        android:title="@string/drawer_new_today"
+                        app:actionLayout="@layout/drawer_item_switch" />
+                    <item
+                        android:title="@string/drawer_popular_today"
+                        app:actionLayout="@layout/drawer_item_switch" />
+                    <item
+                        android:title="@string/drawer_debuts"
+                        app:actionLayout="@layout/drawer_item_switch" />
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="@string/drawer_group_customization">
+            <menu>
+                <group>
+                    <item
+                        android:title="@string/drawer_shot_details"
+                        app:actionLayout="@layout/drawer_item_switch" />
+                </group>
+            </menu>
+        </item>
+    </group>
+
+    <group android:id="@+id/group_logout">
+        <item android:title="@string/drawer_logout" />
+    </group>
+</menu>

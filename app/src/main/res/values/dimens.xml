@@ -15,4 +15,11 @@
     <dimen name="activity_main_tab_height">62dp</dimen>
     <dimen name="activity_main_fab_margin_bottom">76dp</dimen>
     <dimen name="activity_main_tab_indicator_height">0dp</dimen>
+
+    <dimen name="drawer_header_height">188dp</dimen>
+    <dimen name="drawer_header_photo_size">63dp</dimen>
+    <dimen name="drawer_header_photo_border">4dp</dimen>
+    <dimen name="drawer_header_photo_margin_top">52dp</dimen>
+    <dimen name="drawer_arrow_size">32dp</dimen>
+    <dimen name="drawer_arrow_margin_end">12dp</dimen>
 </resources>

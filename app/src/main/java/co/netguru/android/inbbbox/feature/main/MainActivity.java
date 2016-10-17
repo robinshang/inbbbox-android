@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.feature.main;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -17,14 +18,14 @@ import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
 
 public class MainActivity extends BaseActivity {
 
-    private static final String EMPTY_TEXT = "";
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.main_tab_layout)
     TabLayout tabLayout;
     @BindView(R.id.main_view_pager)
     NonSwipeableViewPager viewPager;
+    @BindView(R.id.activity_main_navigation_view)
+    NavigationView navigationView;
 
     private MainActivityPagerAdapter pagerAdapter;
 
@@ -76,7 +77,7 @@ public class MainActivity extends BaseActivity {
                 if (icon != null) {
                     icon.clearColorFilter();
                 }
-                tab.setText(EMPTY_TEXT);
+                tab.setText(getString(R.string.empty_string));
             }
 
             @Override
