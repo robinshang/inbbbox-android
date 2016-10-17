@@ -21,18 +21,17 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
-public class AuthorizeApiModule {
+public class ApiModule {
 
     @Singleton
     @Provides
     AuthorizeApi provideAuthorizeApi(OkHttpClient okHttpClient, Gson gson) {
-        // TODO: 13.10.2016 implement mock for tests
-        return new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(Constants.OAUTH.OAUTH_BASE_URL)
-                .client(okHttpClient)
-                .build()
-                .create(AuthorizeApi.class);
+        return new MockAuthorizeApi();
+    }
+
+    @Singleton
+    @Provides
+    UserApi provideAuthenticatedUserApi(OkHttpClient okHttpClient, Gson gson) {
+        return new MockedUserApi();
     }
 }

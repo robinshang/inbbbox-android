@@ -92,14 +92,8 @@ public class LoginPresenter
     private void getUser() {
         userProvider.getUser()
                 .compose(androidIO())
-
                 .doOnNext(this::verifyUser)
-                .doOnError(new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        handleError(throwable);
-                    }
-                })
+                .doOnError(this::handleError)
                 .subscribe();
     }
 
