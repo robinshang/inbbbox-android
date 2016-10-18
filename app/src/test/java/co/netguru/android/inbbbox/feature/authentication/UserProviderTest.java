@@ -58,7 +58,10 @@ public class UserProviderTest extends TestUtils{
     @Test
     public void whenSubscribeToGetUser_thenPassUserInstance(){
         User expectedUser = new User();
+        String expectedKey = Constants.Db.CURRENT_USER_KEY;
         when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.just(expectedUser));
+        when(cacheEndpointMock.save(expectedKey, expectedUser))
+                .thenReturn(Observable.just(expectedUser));
         TestSubscriber testSubscriber = new TestSubscriber();
 
         userProvider.getUser().subscribe(testSubscriber);
@@ -92,7 +95,7 @@ public class UserProviderTest extends TestUtils{
 
         userProvider.getUser().subscribe(testSubscriber);
 
-        testSubscriber.assertError(expectedThrowable);
+       testSubscriber.assertError(expectedThrowable);
     }
 
 

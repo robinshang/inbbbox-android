@@ -24,7 +24,7 @@ public class CacheEndPointImpl implements CacheEndpoint {
         return Observable.create(subscriber -> {
             try {
                 storage.put(key, object);
-                subscriber.onNext(true);
+                subscriber.onNext(object);
                 subscriber.onCompleted();
             } catch (Exception e) {
                 subscriber.onError(e);
