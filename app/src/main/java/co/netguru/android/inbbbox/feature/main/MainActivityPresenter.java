@@ -1,6 +1,6 @@
 package co.netguru.android.inbbbox.feature.main;
 
-import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
@@ -8,9 +8,8 @@ import co.netguru.android.inbbbox.di.scope.ActivityScope;
 import co.netguru.android.inbbbox.feature.main.MainViewContract.Presenter;
 import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
 
-@SuppressWarnings("ConstantConditions")
 @ActivityScope
-public class MainActivityPresenter extends MvpBasePresenter<MainViewContract.View>
+public final class MainActivityPresenter extends MvpNullObjectBasePresenter<MainViewContract.View>
         implements Presenter {
 
     // TODO: 18.10.2016 Get user data from db

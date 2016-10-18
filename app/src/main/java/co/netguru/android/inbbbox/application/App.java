@@ -16,10 +16,10 @@ import co.netguru.android.inbbbox.di.module.ApplicationModule;
  */
 public class App extends Application {
 
-    private ApplicationComponent appComponent;
+    private static ApplicationComponent appComponent;
 
-    public static ApplicationComponent getAppComponent(Context context) {
-        return ((App) context.getApplicationContext()).appComponent;
+    public static ApplicationComponent getAppComponent() {
+        return appComponent;
     }
 
     @Override

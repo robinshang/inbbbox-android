@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.feature.main;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -20,6 +21,7 @@ import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
@@ -47,10 +49,18 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     @BindView(R.id.activity_main_drawer_layout)
     DrawerLayout drawerLayout;
 
+    @BindString(R.string.empty_string)
+    String emptyString;
+
     private TextView drawerUserName;
     private CircleImageView drawerUserPhoto;
     private TextView drawerReminderTime;
     private MainActivityPagerAdapter pagerAdapter;
+
+    public static void startActivity(Context context) {
+        final Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +76,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     @Override
     public MainViewContract.Presenter createPresenter() {
         return DaggerMainActivityComponent.builder()
-                .applicationComponent(App.getAppComponent(getApplicationContext()))
+                .applicationComponent(App.getAppComponent())
                 .build()
                 .getMainActivityPresenter();
     }
@@ -120,7 +130,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
                 if (icon != null) {
                     icon.clearColorFilter();
                 }
-                tab.setText(getString(R.string.empty_string));
+                tab.setText(emptyString);
             }
 
             @Override
@@ -208,8 +218,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
 
     @Override
     public void showLoginActivity() {
-        final Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        LoginActivity.startActivity(this);
         finish();
     }
 

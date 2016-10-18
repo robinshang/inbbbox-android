@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,6 +11,11 @@ import co.netguru.android.inbbbox.feature.main.MainActivity;
 
 public class LoginActivity extends BaseActivity {
 
+    public static void startActivity(Context context) {
+        final Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,8 +25,7 @@ public class LoginActivity extends BaseActivity {
     @OnClick(R.id.login_button)
     public void onLoginButtonClick() {
         // TODO: 13.10.2016 Need to be changed
-        final Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        MainActivity.startActivity(this);
         finish();
     }
 }
