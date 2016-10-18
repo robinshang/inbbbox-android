@@ -260,6 +260,15 @@ dependencies {
     // StrictMode
     compile libs.strictmodeNotifier
 
+    //CircleImageView
+    compile libs.circleImageView
+
+    //ThreeTen
+    compile libs.threetenabp
+
+    //Glide
+    compile libs.glide
+
     // Unit testing
     testCompile(test.junit) {
         exclude module: 'hamcrest-core'
