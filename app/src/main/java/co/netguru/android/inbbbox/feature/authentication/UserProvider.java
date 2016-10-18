@@ -7,7 +7,6 @@ import co.netguru.android.inbbbox.data.models.User;
 import co.netguru.android.inbbbox.db.CacheEndpoint;
 import co.netguru.android.inbbbox.utils.Constants;
 import rx.Observable;
-import rx.functions.Action1;
 
 public class UserProvider {
 
@@ -23,6 +22,6 @@ public class UserProvider {
 
     public Observable<User> getUser() {
         return userApi.getAuthenticatedUser()
-                .doOnNext(user1 -> cacheEndpoint.save(Constants.Db.CURRENT_USER, user1));
+                .doOnNext(user1 -> cacheEndpoint.save(Constants.Db.CURRENT_USER_KEY, user1));
     }
 }

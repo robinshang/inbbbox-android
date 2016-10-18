@@ -37,6 +37,6 @@ public class Constants {
 
     public class Db {
         public static final String TOKEN_KEY = "Token";
-        public static final String CURRENT_USER = "current_user";
+        public static final String CURRENT_USER_KEY = "current_user";
     }
 }

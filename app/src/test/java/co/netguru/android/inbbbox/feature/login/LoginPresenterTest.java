@@ -16,13 +16,9 @@ import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorType;
+import co.netguru.android.inbbbox.feature.testutils.TestUtils;
 import co.netguru.android.inbbbox.utils.Constants;
 import rx.Observable;
-import rx.Scheduler;
-import rx.android.plugins.RxAndroidPlugins;
-import rx.android.plugins.RxAndroidSchedulersHook;
-import rx.plugins.RxJavaHooks;
-import rx.schedulers.Schedulers;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -30,7 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LoginPresenterTest {
+public class LoginPresenterTest extends TestUtils {
 
     @Mock
     private OauthUriProvider oauthUriProviderMock;
@@ -57,14 +53,8 @@ public class LoginPresenterTest {
 
     @Before
     public void setup() {
-        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
-            @Override
-            public Scheduler getMainThreadScheduler() {
-                return Schedulers.immediate();
-            }
-        });
+        setupJavaThreadingManagementForTests();
 
-        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
         presenter.attachView(viewMock);
         when(tokenProviderMock.getToken(code))
                 .thenReturn(Observable.just(true));
@@ -74,7 +64,7 @@ public class LoginPresenterTest {
 
     @After
     public void tearDown() {
-        RxAndroidPlugins.getInstance().reset();
+        resetJavaThreading();
     }
 
     @Test
@@ -158,7 +148,7 @@ public class LoginPresenterTest {
     }
 
     @Test
-    public void whenGettingErrorWhenTokenSaving_thenRunThroawbleMessageHanding(){
+    public void whenGettingErrorWhenTokenSaving_thenRunThroawbleMessageHanding() {
         String throwableText = "test";
         Throwable testThrowable = new Throwable(throwableText);
         when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(code);
@@ -183,7 +173,7 @@ public class LoginPresenterTest {
     }
 
     @Test
-    public void whenGettingErrorWhenUserSaving_thenRunThroawbleMessageHanding(){
+    public void whenGettingErrorWhenUserSaving_thenRunThroawbleMessageHanding() {
         String throwableText = "test";
         Throwable testThrowable = new Throwable(throwableText);
         when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(code);
