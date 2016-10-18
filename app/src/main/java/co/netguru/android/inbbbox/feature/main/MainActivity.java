@@ -3,20 +3,31 @@ package co.netguru.android.inbbbox.feature.main;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.feature.common.BaseActivity;
+import co.netguru.android.inbbbox.application.App;
+import co.netguru.android.inbbbox.di.component.DaggerMainActivityComponent;
+import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
 import co.netguru.android.inbbbox.model.ui.TabItemType;
 import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainViewContract.Presenter>
+        implements MainViewContract.View {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -26,6 +37,11 @@ public class MainActivity extends BaseActivity {
     NonSwipeableViewPager viewPager;
     @BindView(R.id.activity_main_navigation_view)
     NavigationView navigationView;
+    @BindView(R.id.activity_main_drawer_layout)
+    DrawerLayout drawerLayout;
+
+    private TextView drawerUserName;
+    private CircleImageView drawerUserPhoto;
 
     private MainActivityPagerAdapter pagerAdapter;
 
@@ -34,7 +50,17 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializePager();
+        initializeDrawer();
         initializeToolbar();
+    }
+
+    @NonNull
+    @Override
+    public MainViewContract.Presenter createPresenter() {
+        return DaggerMainActivityComponent.builder()
+                .applicationComponent(App.getAppComponent(getApplicationContext()))
+                .build()
+                .getMainActivityPresenter();
     }
 
     @Override
@@ -47,11 +73,20 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                // TODO: 13.10.2016  Add action on menu item click
+                drawerLayout.openDrawer(GravityCompat.START);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return;
+        }
+        super.onBackPressed();
     }
 
     private void initializePager() {
@@ -109,5 +144,31 @@ public class MainActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
         }
+    }
+
+    private void initializeDrawer() {
+        changeMenuGroupsVisibility(true, false);
+        final View header = navigationView.getHeaderView(0);
+        final ToggleButton drawerToggle = ButterKnife.findById(header, R.id.drawer_header_toggle);
+        drawerUserName = ButterKnife.findById(header, R.id.drawer_user_name);
+        drawerUserPhoto = ButterKnife.findById(header, R.id.drawer_user_photo);
+
+        drawerToggle.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> getPresenter().toggleButtonClicked(isChecked));
+    }
+
+    private void changeMenuGroupsVisibility(boolean isMainMenuVisible, boolean isLogoutMenuVisible) {
+        navigationView.getMenu().setGroupVisible(R.id.group_all, isMainMenuVisible);
+        navigationView.getMenu().setGroupVisible(R.id.group_logout, isLogoutMenuVisible);
+    }
+
+    @Override
+    public void showLogoutMenu() {
+        changeMenuGroupsVisibility(false, true);
+    }
+
+    @Override
+    public void showMainMenu() {
+        changeMenuGroupsVisibility(true, false);
     }
 }

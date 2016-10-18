@@ -4,6 +4,10 @@ package co.netguru.android.inbbbox.application;
 import android.app.Application;
 import android.content.Context;
 
+import co.netguru.android.inbbbox.di.component.ApplicationComponent;
+import co.netguru.android.inbbbox.di.component.DaggerApplicationComponent;
+import co.netguru.android.inbbbox.di.module.ApplicationModule;
+
 /**
  * Base application class
  * Created by lukaszjanyga on 08/09/16.
@@ -29,6 +33,7 @@ public class App extends Application {
         // init dagger appComponent
         this.appComponent = DaggerApplicationComponent
                 .builder()
+                .applicationModule(new ApplicationModule(getApplicationContext()))
                 .build();
     }
 

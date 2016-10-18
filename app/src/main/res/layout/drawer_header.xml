@@ -7,13 +7,14 @@
     android:orientation="vertical">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/drawer_user_photo"
         android:layout_width="@dimen/drawer_header_photo_size"
         android:layout_height="@dimen/drawer_header_photo_size"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/drawer_header_photo_margin_top"
-        android:src="@color/lightGray"
-        android:foreground="@drawable/logo_ball"
+        android:src="@drawable/ic_ball_active"
         app:civ_border_color="@color/white"
+        app:civ_fill_color="@color/lightGray"
         app:civ_border_width="@dimen/drawer_header_photo_border" />
 
     <FrameLayout
@@ -22,6 +23,7 @@
 
         <TextView
             style="@style/Font14.White"
+            android:id="@+id/drawer_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
