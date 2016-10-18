@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.main;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -13,11 +14,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
 import co.netguru.android.inbbbox.di.component.DaggerMainActivityComponent;
@@ -27,6 +30,8 @@ import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
 import co.netguru.android.inbbbox.model.ui.TabItemType;
 import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static butterknife.ButterKnife.findById;
 
 public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainViewContract.Presenter>
         implements MainViewContract.View {
@@ -44,7 +49,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
 
     private TextView drawerUserName;
     private CircleImageView drawerUserPhoto;
-
+    private TextView drawerReminderTime;
     private MainActivityPagerAdapter pagerAdapter;
 
     @Override
@@ -54,6 +59,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         initializePager();
         initializeDrawer();
         initializeToolbar();
+        getPresenter().prepareUserData();
     }
 
     @NonNull
@@ -151,21 +157,38 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     private void initializeDrawer() {
         changeMenuGroupsVisibility(true, false);
         final View header = navigationView.getHeaderView(0);
-        final ToggleButton drawerToggle = ButterKnife.findById(header, R.id.drawer_header_toggle);
-        drawerUserName = ButterKnife.findById(header, R.id.drawer_user_name);
-        drawerUserPhoto = ButterKnife.findById(header, R.id.drawer_user_photo);
+        final ToggleButton drawerToggle = findById(header, R.id.drawer_header_toggle);
+        drawerUserName = findById(header, R.id.drawer_user_name);
+        drawerUserPhoto = findById(header, R.id.drawer_user_photo);
+        drawerReminderTime = findById(navigationView.getMenu()
+                .findItem(R.id.drawer_item_reminder).getActionView(), R.id.drawer_item_time);
 
         drawerToggle.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> getPresenter().toggleButtonClicked(isChecked));
 
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.item_logout:
+                case R.id.drawer_item_logout:
                     presenter.performLogout();
                     break;
             }
             return true;
         });
+
+        initializeDrawerReminder();
+    }
+
+    private void initializeDrawerReminder() {
+        drawerReminderTime.setOnClickListener(v -> getPresenter().timeViewClicked());
+        drawerReminderTime.setEnabled(false);
+        initializeDrawerSwitches();
+    }
+
+    private void initializeDrawerSwitches() {
+        // TODO: 18.10.2016 Save user data in shared preferences
+        final Switch reminderSwitch = findById(navigationView.getMenu().findItem(R.id.drawer_item_enable_reminder)
+                .getActionView(), R.id.drawer_item_switch);
+        reminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> drawerReminderTime.setEnabled(isChecked));
     }
 
     private void changeMenuGroupsVisibility(boolean isMainMenuVisible, boolean isLogoutMenuVisible) {
@@ -176,13 +199,11 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     @Override
     public void showLogoutMenu() {
         changeMenuGroupsVisibility(false, true);
-        drawerUserName.setText("Some User");
     }
 
     @Override
     public void showMainMenu() {
         changeMenuGroupsVisibility(true, false);
-        drawerUserName.setText("someemail@gmail.com");
     }
 
     @Override
@@ -190,5 +211,29 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         final Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void showUserName(String username) {
+        drawerUserName.setText(username);
+    }
+
+    @Override
+    public void showUserPhoto(String url) {
+        Glide.with(this)
+                .load(url)
+                .placeholder(R.drawable.ic_ball_active)
+                .error(R.drawable.ic_ball_active)
+                .into(drawerUserPhoto);
+    }
+
+    @Override
+    public void showTimePickDialog(int startHour, int startMinute, TimePickerDialog.OnTimeSetListener onTimeSetListener) {
+        new TimePickerDialog(this, onTimeSetListener, startHour, startMinute, false).show();
+    }
+
+    @Override
+    public void showChangedTime(String time) {
+        drawerReminderTime.setText(time);
     }
 }

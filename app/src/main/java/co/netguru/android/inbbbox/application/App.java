@@ -4,6 +4,8 @@ package co.netguru.android.inbbbox.application;
 import android.app.Application;
 import android.content.Context;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
 import co.netguru.android.inbbbox.di.component.ApplicationComponent;
 import co.netguru.android.inbbbox.di.component.DaggerApplicationComponent;
 import co.netguru.android.inbbbox.di.module.ApplicationModule;
@@ -24,6 +26,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         appComponent.getDebugMetricsHelper().init(this);
+        AndroidThreeTen.init(this);
     }
 
     @Override

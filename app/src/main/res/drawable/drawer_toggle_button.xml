@@ -2,5 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@drawable/triangle_down" android:state_checked="true" />
+    <!--TODO 18.10.2016 Icon need to be changed -->
     <item android:drawable="@drawable/ic_triangle_down" />
 </selector>

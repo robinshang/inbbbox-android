@@ -5,14 +5,17 @@
     <group android:id="@+id/group_all"
         android:checkableBehavior="single">
 
-        <item android:title="@string/drawer_group_notification">
+        <item android:title="@string/drawer_group_notification"
+            android:id="@+id/drawer_item_notification">
             <menu>
                 <group>
                     <item
                         android:title="@string/drawer_enable_reminder"
-                        app:actionLayout="@layout/drawer_item_switch" />
+                        app:actionLayout="@layout/drawer_item_switch"
+                        android:id="@+id/drawer_item_enable_reminder"/>
                     <item android:title="@string/drawer_set_reminder"
-                        app:actionLayout="@layout/drawer_item_time"/>
+                        app:actionLayout="@layout/drawer_item_time"
+                        android:id="@+id/drawer_item_reminder"/>
                 </group>
             </menu>
         </item>
@@ -49,6 +52,6 @@
 
     <group android:id="@+id/group_logout">
         <item android:title="@string/drawer_logout"
-            android:id="@+id/item_logout"/>
+            android:id="@+id/drawer_item_logout"/>
     </group>
 </menu>
