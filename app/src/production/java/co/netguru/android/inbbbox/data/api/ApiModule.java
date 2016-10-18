@@ -50,4 +50,15 @@ public class ApiModule {
                 .create(UserApi.class);
     }
 
+    @Singleton
+    @Provides
+    ShotsApi provideShotsApi(OkHttpClient okHttpClient, Gson gson){
+        return new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .baseUrl(Constants.API.DRIBBLE_BASE_URL)
+                .client(okHttpClient)
+                .build()
+                .create(ShotsApi.class);
+    }
 }

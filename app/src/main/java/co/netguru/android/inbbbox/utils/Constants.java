@@ -33,6 +33,9 @@ public class Constants {
         public static final String HEADER_TYPE_JSON = "application/json";
         public static final String HEADER_AUTHORIZATION = "Authorization";
         public static final String DRIBBLE_BASE_URL = "https://api.dribbble.com/v1/";
+        public static final String SHOT_KEY_LIST = "list";
+        public static final String SHOTS_KEY_TIME_FRAME = "timeframe";
+        public static final String SHOTS_KEY_SORT = "sort";
     }
 
     public class Db {
