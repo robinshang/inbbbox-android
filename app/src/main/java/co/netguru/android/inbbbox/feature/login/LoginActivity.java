@@ -77,5 +77,6 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     public void showNextScreen() {
         MainActivity.startActivity(this);
+        finish();
     }
 }

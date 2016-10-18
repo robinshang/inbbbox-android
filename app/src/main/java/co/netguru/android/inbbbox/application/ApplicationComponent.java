@@ -6,6 +6,8 @@ import javax.inject.Singleton;
 import co.netguru.android.commons.di.BaseComponent;
 import co.netguru.android.inbbbox.data.api.ApiModule;
 import co.netguru.android.inbbbox.db.StorageModule;
+import co.netguru.android.inbbbox.di.component.MainActivityComponent;
+import co.netguru.android.inbbbox.di.module.MainActivityModule;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.feature.login.LoginComponent;
 import co.netguru.android.inbbbox.feature.login.LoginModule;
@@ -27,5 +29,7 @@ public interface ApplicationComponent extends BaseComponent {
     ErrorMessageParser getApiErrorParser();
 
     LoginComponent plus(LoginModule module);
+
+    MainActivityComponent plus(MainActivityModule module);
 
 }

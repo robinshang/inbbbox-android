@@ -16,12 +16,4 @@ public class LoginModule {
         return new OauthUriProvider(resources);
     }
 
-    // TODO: 14.10.2016 remove this b'cos unusied 
-//    @FragmentScope
-//    @ActivityScope
-//    LoginPresenter provideLoginPresenter(OauthUriProvider dribbbleOauthUriProvider,
-//                                         ApiTokenProvider apiTokenProvider,
-//                                         ErrorMessageParser apiErrorParser) {
-//        return new LoginPresenter(dribbbleOauthUriProvider, apiTokenProvider, apiErrorParser);
-//    }
 }
