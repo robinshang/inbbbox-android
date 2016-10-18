@@ -10,10 +10,14 @@ interface MainViewContract {
         void showLogoutMenu();
 
         void showMainMenu();
+
+        void showLoginActivity();
     }
 
     interface Presenter extends MvpPresenter<View> {
 
         void toggleButtonClicked(boolean isChecked);
+
+        void performLogout();
     }
 }

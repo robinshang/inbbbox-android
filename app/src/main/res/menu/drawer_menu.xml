@@ -48,6 +48,7 @@
     </group>
 
     <group android:id="@+id/group_logout">
-        <item android:title="@string/drawer_logout" />
+        <item android:title="@string/drawer_logout"
+            android:id="@+id/item_logout"/>
     </group>
 </menu>

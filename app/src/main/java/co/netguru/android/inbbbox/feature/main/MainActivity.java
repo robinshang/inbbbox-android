@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.main;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
 import co.netguru.android.inbbbox.di.component.DaggerMainActivityComponent;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
+import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
 import co.netguru.android.inbbbox.model.ui.TabItemType;
 import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
@@ -155,6 +157,15 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
 
         drawerToggle.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> getPresenter().toggleButtonClicked(isChecked));
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.item_logout:
+                    presenter.performLogout();
+                    break;
+            }
+            return true;
+        });
     }
 
     private void changeMenuGroupsVisibility(boolean isMainMenuVisible, boolean isLogoutMenuVisible) {
@@ -165,10 +176,19 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     @Override
     public void showLogoutMenu() {
         changeMenuGroupsVisibility(false, true);
+        drawerUserName.setText("Some User");
     }
 
     @Override
     public void showMainMenu() {
         changeMenuGroupsVisibility(true, false);
+        drawerUserName.setText("someemail@gmail.com");
+    }
+
+    @Override
+    public void showLoginActivity() {
+        final Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
