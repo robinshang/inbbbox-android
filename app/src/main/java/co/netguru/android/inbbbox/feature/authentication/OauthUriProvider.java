@@ -33,9 +33,9 @@ public class OauthUriProvider {
         this.resources = resources;
     }
 
-    public Observable<Uri> getOauthAutorizeUri() {
+    public Observable<String> getOauthAuthorizeUriString() {
         initStateString();
-        return Observable.just(Uri.parse(getAuthorizeUri()));
+        return Observable.just(getAuthorizeUri());
     }
 
     private void initStateString() {
@@ -59,7 +59,7 @@ public class OauthUriProvider {
                 .toString();
     }
 
-    private String getStringValue(int resId) {
+    private String getStringValue(Integer resId) {
         return resources.getString(resId);
     }
 }

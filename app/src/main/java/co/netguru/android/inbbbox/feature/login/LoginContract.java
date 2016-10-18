@@ -16,7 +16,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 public interface LoginContract {
     interface View extends MvpView{
 
-        void sendActionIntent(Uri uri);
+        void sendActionIntent(String uriString);
 
         void showApiError(String oauthErrorMessage);
 

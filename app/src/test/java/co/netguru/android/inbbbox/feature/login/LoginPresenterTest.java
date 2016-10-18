@@ -42,11 +42,12 @@ public class LoginPresenterTest extends TestUtils {
     private LoginContract.View viewMock;
 
     @Mock
-    private UserProvider userProviderMock;
+    private Uri uri;
 
     @Mock
-    public Uri uri;
+    private UserProvider userProviderMock;
 
+    private String uriString ="www.google.com";
     private String code = "testCode";
 
     @InjectMocks
@@ -70,20 +71,20 @@ public class LoginPresenterTest extends TestUtils {
 
     @Test
     public void whenLoginClick_thenGetUriFromUriProviderTest() {
-        when(oauthUriProviderMock.getOauthAutorizeUri()).thenReturn(Observable.just(uri));
+        when(oauthUriProviderMock.getOauthAuthorizeUriString()).thenReturn(Observable.just(uriString));
 
         presenter.showLoginView();
 
-        verify(viewMock).sendActionIntent(uri);
+        verify(viewMock).sendActionIntent(uriString);
     }
 
     @Test
     public void whenLoginClick_thenShowActionViewForOauthRequest() {
-        when(oauthUriProviderMock.getOauthAutorizeUri()).thenReturn(Observable.just(uri));
+        when(oauthUriProviderMock.getOauthAuthorizeUriString()).thenReturn(Observable.just(uriString));
 
         presenter.showLoginView();
 
-        verify(viewMock, times((1))).sendActionIntent(uri);
+        verify(viewMock, times((1))).sendActionIntent(uriString);
     }
 
     @Test

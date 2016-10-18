@@ -47,14 +47,14 @@ public class LoginPresenter
     @Override
     public void showLoginView() {
         uriProvider
-                .getOauthAutorizeUri()
+                .getOauthAuthorizeUriString()
                 .doOnError(Throwable::printStackTrace)
                 .doOnNext(uri -> prepareAuthorization(uri))
                 .subscribe();
     }
 
-    private void prepareAuthorization(Uri uri) {
-        getView().sendActionIntent(uri);
+    private void prepareAuthorization(String uriString) {
+        getView().sendActionIntent(uriString);
     }
 
     @Override
