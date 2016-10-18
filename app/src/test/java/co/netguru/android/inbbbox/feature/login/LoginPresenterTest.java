@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.data.models.User;
 import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
@@ -57,7 +58,7 @@ public class LoginPresenterTest extends TestUtils {
 
         presenter.attachView(viewMock);
         when(tokenProviderMock.getToken(code))
-                .thenReturn(Observable.just(true));
+                .thenReturn(Observable.just(new Token()));
         when(userProviderMock.getUser()).
                 thenReturn(Observable.just(new User()));
     }

@@ -36,10 +36,11 @@ public class ApiTokenProvider {
         this.resources = resources;
     }
 
-    public Observable<Boolean> getToken(String code) {
+    public Observable<Token> getToken(String code) {
         return api.getToken(resources.getString(R.string.dribbbleClientId),
                 resources.getString(R.string.dribbbleClientSecret), code)
-                .flatMap((Func1<Token, Observable<Boolean>>) this::saveTokenToStorage);
+                .concatMap((Func1<Token, Observable<? extends Token>>) token
+                        -> saveTokenToStorage(token));
     }
 
     private Observable saveTokenToStorage(Token tokenResponse) {

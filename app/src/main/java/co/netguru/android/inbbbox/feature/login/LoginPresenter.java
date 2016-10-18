@@ -7,6 +7,7 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
+import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.data.models.User;
 import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
@@ -77,7 +78,7 @@ public class LoginPresenter
     private void getToken() {
         apiTokenProvider.getToken(code)
                 .compose(androidIO())
-                .subscribe(new Subscriber<Boolean>() {
+                .subscribe(new Subscriber<Token>() {
                     @Override
                     public void onCompleted() {
 
@@ -89,8 +90,8 @@ public class LoginPresenter
                     }
 
                     @Override
-                    public void onNext(Boolean saved) {
-                        if (saved) {
+                    public void onNext(Token saved) {
+                        if (saved != null) {
                             getUser();
                         }
                     }
