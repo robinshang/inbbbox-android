@@ -1,26 +1,42 @@
 package co.netguru.android.inbbbox.feature.main;
 
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
+import com.bumptech.glide.Glide;
+
+import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.feature.common.BaseActivity;
+import co.netguru.android.inbbbox.application.App;
+import co.netguru.android.inbbbox.di.component.DaggerMainActivityComponent;
+import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
 import co.netguru.android.inbbbox.model.ui.TabItemType;
 import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity {
+import static butterknife.ButterKnife.findById;
 
-    private static final String EMPTY_TEXT = "";
+public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainViewContract.Presenter>
+        implements MainViewContract.View {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -28,15 +44,41 @@ public class MainActivity extends BaseActivity {
     TabLayout tabLayout;
     @BindView(R.id.main_view_pager)
     NonSwipeableViewPager viewPager;
+    @BindView(R.id.activity_main_navigation_view)
+    NavigationView navigationView;
+    @BindView(R.id.activity_main_drawer_layout)
+    DrawerLayout drawerLayout;
 
+    @BindString(R.string.empty_string)
+    String emptyString;
+
+    private TextView drawerUserName;
+    private CircleImageView drawerUserPhoto;
+    private TextView drawerReminderTime;
     private MainActivityPagerAdapter pagerAdapter;
+
+    public static void startActivity(Context context) {
+        final Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializePager();
+        initializeDrawer();
         initializeToolbar();
+        getPresenter().prepareUserData();
+    }
+
+    @NonNull
+    @Override
+    public MainViewContract.Presenter createPresenter() {
+        return DaggerMainActivityComponent.builder()
+                .applicationComponent(App.getAppComponent())
+                .build()
+                .getMainActivityPresenter();
     }
 
     @Override
@@ -49,11 +91,20 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                // TODO: 13.10.2016  Add action on menu item click
+                drawerLayout.openDrawer(GravityCompat.START);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return;
+        }
+        super.onBackPressed();
     }
 
     private void initializePager() {
@@ -79,7 +130,7 @@ public class MainActivity extends BaseActivity {
                 if (icon != null) {
                     icon.clearColorFilter();
                 }
-                tab.setText(EMPTY_TEXT);
+                tab.setText(emptyString);
             }
 
             @Override
@@ -113,8 +164,85 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public static void startActivity(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
-        context.startActivity(intent);
+    private void initializeDrawer() {
+        changeMenuGroupsVisibility(true, false);
+        final View header = navigationView.getHeaderView(0);
+        final ToggleButton drawerToggle = findById(header, R.id.drawer_header_toggle);
+        drawerUserName = findById(header, R.id.drawer_user_name);
+        drawerUserPhoto = findById(header, R.id.drawer_user_photo);
+        drawerReminderTime = findById(navigationView.getMenu()
+                .findItem(R.id.drawer_item_reminder).getActionView(), R.id.drawer_item_time);
+
+        drawerToggle.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> getPresenter().toggleButtonClicked(isChecked));
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.drawer_item_logout:
+                    presenter.performLogout();
+                    break;
+            }
+            return true;
+        });
+
+        initializeDrawerReminder();
+    }
+
+    private void initializeDrawerReminder() {
+        drawerReminderTime.setOnClickListener(v -> getPresenter().timeViewClicked());
+        drawerReminderTime.setEnabled(false);
+        initializeDrawerSwitches();
+    }
+
+    private void initializeDrawerSwitches() {
+        // TODO: 18.10.2016 Save user data in shared preferences
+        final Switch reminderSwitch = findById(navigationView.getMenu().findItem(R.id.drawer_item_enable_reminder)
+                .getActionView(), R.id.drawer_item_switch);
+        reminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> drawerReminderTime.setEnabled(isChecked));
+    }
+
+    private void changeMenuGroupsVisibility(boolean isMainMenuVisible, boolean isLogoutMenuVisible) {
+        navigationView.getMenu().setGroupVisible(R.id.group_all, isMainMenuVisible);
+        navigationView.getMenu().setGroupVisible(R.id.group_logout, isLogoutMenuVisible);
+    }
+
+    @Override
+    public void showLogoutMenu() {
+        changeMenuGroupsVisibility(false, true);
+    }
+
+    @Override
+    public void showMainMenu() {
+        changeMenuGroupsVisibility(true, false);
+    }
+
+    @Override
+    public void showLoginActivity() {
+        LoginActivity.startActivity(this);
+        finish();
+    }
+
+    @Override
+    public void showUserName(String username) {
+        drawerUserName.setText(username);
+    }
+
+    @Override
+    public void showUserPhoto(String url) {
+        Glide.with(this)
+                .load(url)
+                .placeholder(R.drawable.ic_ball_active)
+                .error(R.drawable.ic_ball_active)
+                .into(drawerUserPhoto);
+    }
+
+    @Override
+    public void showTimePickDialog(int startHour, int startMinute, TimePickerDialog.OnTimeSetListener onTimeSetListener) {
+        new TimePickerDialog(this, onTimeSetListener, startHour, startMinute, false).show();
+    }
+
+    @Override
+    public void showChangedTime(String time) {
+        drawerReminderTime.setText(time);
     }
 }

@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -24,6 +25,11 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     }
 
     private LoginComponent component;
+
+    public static void startActivity(Context context) {
+        final Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
