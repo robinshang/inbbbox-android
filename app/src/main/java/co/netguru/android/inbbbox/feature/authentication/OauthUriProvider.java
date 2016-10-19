@@ -1,11 +1,3 @@
-/*
- * Created by Maciej Markiewicz
- * Copyright (c) 2016.
- * netguru.co
- *
- *
- */
-
 package co.netguru.android.inbbbox.feature.authentication;
 
 import android.content.res.Resources;
@@ -15,6 +7,7 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
+import co.netguru.android.inbbbox.BuildConfig;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.utils.Constants;
 import rx.Observable;
@@ -47,7 +40,7 @@ public class OauthUriProvider {
                 .append("?")
                 .append(OAUTH.CLIENT_ID_KEY)
                 .append("=")
-                .append(getStringValue(R.string.dribbbleClientId))
+                .append(BuildConfig.DRIBBBLE_CLIENT_KEY)
                 .append("&")
                 .append(OAUTH.SCOPE_KEY)
                 .append("=")

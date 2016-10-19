@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Created by Maciej Markiewicz
-  ~ Copyright (c) 2016.
-  ~ netguru.co
-  ~
-  ~
-  -->
 
 <resources>
-    <string name="dribbbleClientId">847a06c0fd23a56dd256afd1839e544e29f9b7db3e6652c41b4d453dd3e1ae31</string>
-    <string name="dribbbleClientSecret">bc0b858bd606f52a6a445624b014140a2705d0627cb452ba4e2b0cddf252910b</string>
     <string name="dribbleScope">public+write+comment</string>
     <string name="redirectUriHost">oauth</string>
     <string name="redirectUriScheme">inbbbox</string>

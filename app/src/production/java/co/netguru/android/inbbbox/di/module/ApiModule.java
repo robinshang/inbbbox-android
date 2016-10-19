@@ -1,11 +1,3 @@
-/*
- * Created by Maciej Markiewicz
- * Copyright (c) 2016.
- * netguru.co
- *
- *
- */
-
 package co.netguru.android.inbbbox.di.module;
 
 import com.google.gson.Gson;

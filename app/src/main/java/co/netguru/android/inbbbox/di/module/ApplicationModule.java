@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
+@Singleton
 @Module
 public class ApplicationModule {
 
@@ -19,19 +20,17 @@ public class ApplicationModule {
         this.application = application;
     }
 
-    @Singleton
+
     @Provides
     Context provideContext() {
         return application;
     }
 
-    @Singleton
     @Provides
     Application provideApplication() {
         return application;
     }
 
-    @Singleton
     @Provides
     Resources provideResources() {
         return application.getResources();

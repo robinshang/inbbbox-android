@@ -10,9 +10,9 @@ import java.io.Serializable;
 
 import javax.inject.Inject;
 
-public class SynchronizedDb implements Storage{
-    final Object lock = new Object();
-    Context context;
+public class SynchronizedDb implements Storage {
+    private final Object lock = new Object();
+    private Context context;
 
     @Inject
     public SynchronizedDb(Context context) {

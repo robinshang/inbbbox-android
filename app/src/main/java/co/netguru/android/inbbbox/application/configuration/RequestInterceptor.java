@@ -27,30 +27,29 @@ public class RequestInterceptor implements Interceptor {
         loadToken();
         Request original = chain.request();
         Request.Builder requestBuilder = null;
-        if (token != null) {
-            requestBuilder = getRequestBuilderWithToken(original);
-        } else {
-            requestBuilder = getRequestBuilderWithoutToken(original);
-        }
+        requestBuilder = getRequestBuilderWithToken(original);
 
         Request request = requestBuilder.build();
         return chain.proceed(request);
     }
 
     private Request.Builder getRequestBuilderWithToken(Request original) {
-        return original.newBuilder()
-                .header(Constants.API.HEDAER_ACCEPT, Constants.API.HEADER_TYPE_JSON)
-                .header(Constants.API.HEADER_AUTHORIZATION, generateOauthField())
+        Request.Builder builder = original.newBuilder()
+                .header(Constants.API.HEADER_ACCEPT, Constants.API.HEADER_TYPE_JSON)
                 .method(original.method(), original.body());
-    }
-
-    private Request.Builder getRequestBuilderWithoutToken(Request original) {
-        return original.newBuilder()
-                .header(Constants.API.HEDAER_ACCEPT, Constants.API.HEADER_TYPE_JSON)
-                .method(original.method(), original.body());
+        if (token != null) {
+            builder.header(Constants.API.HEADER_AUTHORIZATION, generateOauthField());
+        }
+        return builder;
     }
 
     private void loadToken() {
+        if (token == null) {
+            loadTokenFromStorage();
+        }
+    }
+
+    private void loadTokenFromStorage() {
         try {
             token = storage.get(Constants.Db.TOKEN_KEY, Token.class);
         } catch (Exception e) {

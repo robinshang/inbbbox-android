@@ -1,11 +1,3 @@
-/*
- * Created by Maciej Markiewicz
- * Copyright (c) 2016.
- * netguru.co
- *
- *
- */
-
 package co.netguru.android.inbbbox.utils;
 
 public class Constants {
@@ -29,7 +21,7 @@ public class Constants {
     public static class API {
 
 
-        public static final String HEDAER_ACCEPT = "Accept";
+        public static final String HEADER_ACCEPT = "Accept";
         public static final String HEADER_TYPE_JSON = "application/json";
         public static final String HEADER_AUTHORIZATION = "Authorization";
         public static final String DRIBBLE_BASE_URL = "https://api.dribbble.com/v1/";
