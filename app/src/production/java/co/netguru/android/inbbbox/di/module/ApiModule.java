@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.application.configuration.RequestInterceptor;
 import co.netguru.android.inbbbox.data.api.AuthorizeApi;
+import co.netguru.android.inbbbox.data.api.ShotsApi;
 import co.netguru.android.inbbbox.data.api.UserApi;
 import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.data.models.User;

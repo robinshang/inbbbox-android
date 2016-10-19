@@ -10,9 +10,9 @@ import rx.Observable;
 
 public interface ShotsApi {
 
-    @GET
-    Observable<List<ShotEntity>> getShots(
-            @Query(API.SHOT_KEY_LIST) String shots,
-            @Query(API.SHOTS_KEY_TIME_FRAME) String timeFrame,
-            @Query(API.SHOTS_KEY_SORT) String sort);
+    @GET("/shots")
+    Observable<List<ShotEntity>> getFilteredShots();
+
+    @GET("/user/following/shots")
+    Observable<List<ShotEntity>> getFollowingShots();
 }

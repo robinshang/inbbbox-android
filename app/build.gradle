@@ -239,8 +239,9 @@ dependencies {
     apt proc.butterKnife
 
     // Auto
-    provided proc.autoValue
     apt proc.autoGson
+    provided proc.autoValue
+
     apt proc.autoParcel
 
     apt proc.retrolambda
