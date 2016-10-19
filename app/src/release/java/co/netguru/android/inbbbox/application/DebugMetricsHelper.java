@@ -15,7 +15,6 @@ import javax.inject.Inject;
  * <li> LeakCanary
  * </ul>
  * <p>
- * Created by lukaszjanyga on 08/09/16.
  */
 public class DebugMetricsHelper {
 

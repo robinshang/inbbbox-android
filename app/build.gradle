@@ -4,7 +4,6 @@ apply plugin: 'com.autoscout24.gradle.todo'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'com.frogermcs.androiddevmetrics'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'kotlin-android'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'org.sonarqube'
 apply from: '../buildsystem/sonarqube.gradle'
@@ -15,6 +14,8 @@ ext {
     secrets = [
             // define your app secrets, for example:
             // hockeyAppId: keyProperty("HOCKEY_APP_ID")
+             dribbbleClientKey= keyProperty("DribbbleClientKey"),
+             dribbleClientSecret= keyProperty("DribbbleClientSecret")
     ]
 }
 
@@ -30,6 +31,9 @@ android {
         versionName "0.1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'DRIBBBLE_CLIENT_KEY', '"' + dribbbleClientKey + '"'
+        buildConfigField 'String', 'DRIBBBLE_CLIENT_SECRET', '"' + dribbleClientSecret + '"'
     }
 
     buildTypes {
@@ -63,7 +67,7 @@ android {
             // buildConfigField 'String', 'HOCKEY_APP_ID', "\"${secrets.hockeyAppId}\""
         }
         production {
-            // inherit
+
         }
     }
 
@@ -154,18 +158,6 @@ android {
 
 }
 
-kapt {
-    generateStubs = true
-}
-
-/*
- * Created by Maciej Markiewicz
- * Copyright (c) 2016.
- * netguru.co
- *
- *
- */
-
 // note: use only kapt for annotation processing
 // (see https://github.com/realm/realm-java/issues/2491)
 
@@ -194,7 +186,6 @@ dependencies {
     compile libs.appCompat
     compile libs.design
     compile libs.recyclerView
-
     // MVP
     compile(libs.mosby) {
         exclude module: 'appcompat-v7'
@@ -203,7 +194,7 @@ dependencies {
 
     // Dagger
     compile libs.dagger
-    kapt proc.dagger
+    apt proc.dagger
     provided proc.javaxAnnotation
 
     compile libs.rxJava
@@ -237,16 +228,22 @@ dependencies {
     compile libs.retrofitGsonConverter
     compile libs.retrofitRxJavaAdapter
 
+    compile libs.timber
+
+    //persistent
+    compile libs.kryo
+    compile libs.snappyDb
+
     // View
     compile libs.butterKnife
-    kapt proc.butterKnife
+    apt proc.butterKnife
 
     // Auto
     provided proc.autoValue
-    kapt proc.autoGson
-    kapt proc.autoParcel
+    apt proc.autoGson
+    apt proc.autoParcel
 
-    kapt proc.retrolambda
+    apt proc.retrolambda
 
     // Stetho
     compile libs.stetho
@@ -275,6 +272,25 @@ dependencies {
     }
     testCompile test.hamcrest
     testCompile test.mockito
+
+    androidTestCompile test.rxJavaDebug
+    androidTestCompile libs.rxAndroid
+
+    androidTestCompile(test.mockito) {
+        exclude module: 'hamcrest-integration'
+        exclude module: 'hamcrest-core'
+        exclude module: 'hamcrest-library'
+        exclude module: 'objenesis'
+        exclude group: 'org.homcrest'
+    }
+    androidTestCompile(test.dexmakerMockito) {
+        exclude module: 'objenesis'
+    }
+    androidTestCompile(test.dexmaker)
+            {
+                exclude module: 'objenesis'
+
+            }
 
     androidTestCompile test.hamcrest
     androidTestCompile libs.annotations
@@ -308,11 +324,5 @@ dependencies {
     androidTestCompile(test.espressoIdlingResource) {
         exclude module: 'espresso-core'
     }
-}
 
-// hot fix - android plugin 2.2.0 loses this task dependency and results in "no aar file found"
-//tasks.whenTaskAdded { task ->
-//    if(task.name == "prepareCoNetguruAndroidTestCommons"+project(':test-commons').android.defaultConfig.versionName.replace(".","")+"Library") {
-//        prepareCoNetguruAndroidTestCommons010Library.dependsOn project(':test-commons').tasks["assembleRelease"]
-//    }
-//}
+}

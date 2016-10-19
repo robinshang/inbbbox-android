@@ -25,7 +25,8 @@ import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
-import co.netguru.android.inbbbox.di.component.DaggerMainActivityComponent;
+import co.netguru.android.inbbbox.di.component.MainActivityComponent;
+import co.netguru.android.inbbbox.di.module.MainActivityModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
@@ -52,6 +53,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     @BindString(R.string.empty_string)
     String emptyString;
 
+    private MainActivityComponent component;
     private TextView drawerUserName;
     private CircleImageView drawerUserPhoto;
     private TextView drawerReminderTime;
@@ -64,6 +66,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        initComponent();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializePager();
@@ -72,13 +75,17 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         getPresenter().prepareUserData();
     }
 
+    private void initComponent() {
+        component = App.getAppComponent(this)
+                .plus(new MainActivityModule());
+        component.inject(this);
+
+    }
+
     @NonNull
     @Override
     public MainViewContract.Presenter createPresenter() {
-        return DaggerMainActivityComponent.builder()
-                .applicationComponent(App.getAppComponent())
-                .build()
-                .getMainActivityPresenter();
+        return component.getMainActivityPresenter();
     }
 
     @Override
