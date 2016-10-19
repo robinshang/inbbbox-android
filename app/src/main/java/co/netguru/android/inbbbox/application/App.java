@@ -6,6 +6,10 @@ import android.content.Context;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
+import co.netguru.android.inbbbox.di.component.ApplicationComponent;
+import co.netguru.android.inbbbox.di.component.DaggerApplicationComponent;
+import co.netguru.android.inbbbox.di.module.ApplicationModule;
+
 /**
  * Base application class
  * Created by lukaszjanyga on 08/09/16.

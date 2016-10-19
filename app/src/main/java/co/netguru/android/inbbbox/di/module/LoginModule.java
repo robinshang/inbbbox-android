@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.login;
+package co.netguru.android.inbbbox.di.module;
 
 import android.content.res.Resources;
 

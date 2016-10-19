@@ -1,17 +1,13 @@
-/*
- * Created by Maciej Markiewicz
- * Copyright (c) 2016.
- * netguru.co
- *
- *
- */
-
-package co.netguru.android.inbbbox.data.api;
+package co.netguru.android.inbbbox.di.module;
 
 import com.google.gson.Gson;
 
 import javax.inject.Singleton;
 
+import co.netguru.android.inbbbox.data.api.AuthorizeApi;
+import co.netguru.android.inbbbox.data.api.MockAuthorizeApi;
+import co.netguru.android.inbbbox.data.api.MockedUserApi;
+import co.netguru.android.inbbbox.data.api.UserApi;
 import co.netguru.android.inbbbox.utils.Constants;
 import dagger.Module;
 import dagger.Provides;

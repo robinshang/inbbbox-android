@@ -14,6 +14,8 @@ import butterknife.OnClick;
 import co.netguru.android.commons.di.WithComponent;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
+import co.netguru.android.inbbbox.di.component.LoginComponent;
+import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>

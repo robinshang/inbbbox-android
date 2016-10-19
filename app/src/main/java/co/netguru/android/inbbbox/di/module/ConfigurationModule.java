@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.application;
+package co.netguru.android.inbbbox.di.module;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -1,16 +1,17 @@
-package co.netguru.android.inbbbox.application;
+package co.netguru.android.inbbbox.di.component;
 
 
 import javax.inject.Singleton;
 
 import co.netguru.android.commons.di.BaseComponent;
-import co.netguru.android.inbbbox.data.api.ApiModule;
-import co.netguru.android.inbbbox.db.StorageModule;
-import co.netguru.android.inbbbox.di.component.MainActivityComponent;
+import co.netguru.android.inbbbox.di.module.ApplicationModule;
+import co.netguru.android.inbbbox.di.module.ConfigurationModule;
+import co.netguru.android.inbbbox.application.DebugMetricsHelper;
+import co.netguru.android.inbbbox.di.module.ApiModule;
+import co.netguru.android.inbbbox.di.module.StorageModule;
 import co.netguru.android.inbbbox.di.module.MainActivityModule;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
-import co.netguru.android.inbbbox.feature.login.LoginComponent;
-import co.netguru.android.inbbbox.feature.login.LoginModule;
+import co.netguru.android.inbbbox.di.module.LoginModule;
 import dagger.Component;
 
 /**
