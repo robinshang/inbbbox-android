@@ -12,10 +12,10 @@ import dagger.Provides;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+@Singleton
 @Module
 public class ConfigurationModule {
 
-    @Singleton
     @Provides
     Gson provideGson() {
         return new GsonBuilder()
@@ -23,12 +23,10 @@ public class ConfigurationModule {
     }
 
     @Provides
-    @Singleton
     public RequestInterceptor providesRequestInterceptor(Storage storage) {
         return new RequestInterceptor(storage);
     }
 
-    @Singleton
     @Provides
     OkHttpClient provideOkHttpClient(RequestInterceptor interceptor) {
         return new OkHttpClient.Builder()

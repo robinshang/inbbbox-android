@@ -1,11 +1,3 @@
-/*
- * Created by Maciej Markiewicz
- * Copyright (c) 2016.
- * netguru.co
- *
- *
- */
-
 package co.netguru.android.inbbbox.data.models;
 
 import com.google.gson.annotations.Expose;
@@ -13,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Token implements Serializable{
+public class Token implements Serializable {
 
     @SerializedName("access_token")
     @Expose

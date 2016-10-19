@@ -7,13 +7,14 @@ import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
 import dagger.Module;
 import dagger.Provides;
 
+@ActivityScope
 @Module
 public class LoginModule {
 
     @Provides
-    @ActivityScope
     OauthUriProvider provideOauthUriProvider(Resources resources) {
         return new OauthUriProvider(resources);
     }
+
 
 }

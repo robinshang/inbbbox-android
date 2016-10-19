@@ -14,6 +14,8 @@ ext {
     secrets = [
             // define your app secrets, for example:
             // hockeyAppId: keyProperty("HOCKEY_APP_ID")
+             dribbbleClientKey= keyProperty("DribbbleClientKey"),
+             dribbleClientSecret= keyProperty("DribbbleClientSecret")
     ]
 }
 
@@ -29,6 +31,9 @@ android {
         versionName "0.1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'DRIBBBLE_CLIENT_KEY', '"' + dribbbleClientKey + '"'
+        buildConfigField 'String', 'DRIBBBLE_CLIENT_SECRET', '"' + dribbleClientSecret + '"'
     }
 
     buildTypes {
@@ -62,7 +67,7 @@ android {
             // buildConfigField 'String', 'HOCKEY_APP_ID', "\"${secrets.hockeyAppId}\""
         }
         production {
-            // inherit
+
         }
     }
 
