@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 import rx.Observable;
 
-public interface CacheEndpoint {
-    Observable save(String key, Serializable object);
+public interface CacheEndpoint<T> {
+    Observable<T> save(String key, Serializable object);
 
-    Observable get(String key, Class tClass);
+    Observable<T> get(String key, Class tClass);
 }

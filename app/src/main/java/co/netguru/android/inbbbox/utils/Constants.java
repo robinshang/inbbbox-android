@@ -36,10 +36,12 @@ public class Constants {
         public static final String SHOT_KEY_LIST = "list";
         public static final String SHOTS_KEY_TIME_FRAME = "timeframe";
         public static final String SHOTS_KEY_SORT = "sort";
+        public static final String LIST_TYPE = "debuts";
     }
 
     public class Db {
         public static final String TOKEN_KEY = "db_token";
         public static final String CURRENT_USER_KEY = "db_current_user";
+        public static final String SETTINGS_KEY = "db_settings";
     }
 }
