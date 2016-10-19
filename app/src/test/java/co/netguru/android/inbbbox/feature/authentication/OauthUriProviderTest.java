@@ -60,11 +60,7 @@ public class OauthUriProviderTest extends TestUtils {
     }
 
     private String generateExpectedUri() {
-        return "https://dribbble.com/oauth/authorize?client_id=" +
-                resourceString +
-                "&scope=" +
-                resourceString +
-                "&state=";
+        return "https://dribbble.com/oauth/authorize?client_id=";
     }
 
 

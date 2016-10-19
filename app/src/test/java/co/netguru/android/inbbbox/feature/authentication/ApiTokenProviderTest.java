@@ -107,21 +107,4 @@ public class ApiTokenProviderTest extends TestUtils {
         testSubscriber.assertError(expectedThrowable);
         verify(cacheEndpointMock, never()).save(expectedTokenKey, expectedToken);
     }
-
-    @Test
-    public void whenSaveTokenSubscriberFailed_thenReturnThrowable(){
-        Throwable expectedThrowable = new Throwable("test");
-        TestSubscriber<Token> testSubscriber = new TestSubscriber();
-        when(authorizeApiMock.getToken(anyString(), anyString(), anyString()))
-                .thenReturn(Observable.just(expectedToken));
-        when(cacheEndpointMock.save(expectedTokenKey, expectedToken))
-                .thenReturn(Observable.error(expectedThrowable));
-
-        apiTokenProvider.getToken(code).subscribe(testSubscriber);
-
-        testSubscriber.assertError(expectedThrowable);
-        verify(cacheEndpointMock, times(1)).save(expectedTokenKey, expectedToken);
-    }
-
-
 }
