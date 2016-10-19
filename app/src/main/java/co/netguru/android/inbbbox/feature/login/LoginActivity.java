@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -13,6 +14,8 @@ import butterknife.OnClick;
 import co.netguru.android.commons.di.WithComponent;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
+import co.netguru.android.inbbbox.di.component.LoginComponent;
+import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
@@ -24,6 +27,11 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     }
 
     private LoginComponent component;
+
+    public static void startActivity(Context context) {
+        final Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,5 +79,6 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     public void showNextScreen() {
         MainActivity.startActivity(this);
+        finish();
     }
 }

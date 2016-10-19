@@ -6,13 +6,15 @@
  *
  */
 
-package co.netguru.android.inbbbox.data.api;
+package co.netguru.android.inbbbox.di.module;
 
 import com.google.gson.Gson;
 
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.application.configuration.RequestInterceptor;
+import co.netguru.android.inbbbox.data.api.AuthorizeApi;
+import co.netguru.android.inbbbox.data.api.UserApi;
 import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.data.models.User;
 import co.netguru.android.inbbbox.utils.Constants;

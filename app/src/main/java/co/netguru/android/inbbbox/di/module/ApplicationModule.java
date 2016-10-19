@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.application;
+package co.netguru.android.inbbbox.di.module;
 
 import android.app.Application;
 import android.content.Context;
@@ -14,7 +14,7 @@ public class ApplicationModule {
 
     private Application application;
 
-    ApplicationModule(Application application) {
+    public ApplicationModule(Application application) {
 
         this.application = application;
     }
