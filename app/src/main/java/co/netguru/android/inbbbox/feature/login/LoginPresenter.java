@@ -14,6 +14,7 @@ import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorType;
+import co.netguru.android.inbbbox.feature.shots.ShotsProvider;
 import co.netguru.android.inbbbox.utils.Constants;
 import rx.Subscriber;
 

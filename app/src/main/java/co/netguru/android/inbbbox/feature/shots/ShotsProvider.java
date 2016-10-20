@@ -26,7 +26,9 @@ public class ShotsProvider {
     private ShotsRequestFactory shotsRequestFactory;
 
     @Inject
-    ShotsProvider(ShotsApi shotsApi, ShotsMapper mapper, CacheEndpoint cacheEndpoint,
+    ShotsProvider(ShotsApi shotsApi,
+                  ShotsMapper mapper,
+                  CacheEndpoint cacheEndpoint,
                   ShotsRequestFactory shotsRequestFactory) {
         this.shotsApi = shotsApi;
         this.mapper = mapper;
