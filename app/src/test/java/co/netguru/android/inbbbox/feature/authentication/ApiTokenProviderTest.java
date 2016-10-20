@@ -8,28 +8,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.api.AuthorizeApi;
 import co.netguru.android.inbbbox.data.models.Token;
-import co.netguru.android.inbbbox.db.CacheEndpoint;
+import co.netguru.android.inbbbox.db.datasource.DataSource;
 import co.netguru.android.inbbbox.feature.testutils.TestUtils;
-import co.netguru.android.inbbbox.utils.Constants;
 import rx.Observable;
-import rx.Scheduler;
-import rx.android.plugins.RxAndroidPlugins;
-import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.observers.TestSubscriber;
-import rx.plugins.RxJavaHooks;
-import rx.schedulers.Schedulers;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -40,7 +30,7 @@ public class ApiTokenProviderTest extends TestUtils {
     public AuthorizeApi authorizeApiMock;
 
     @Mock
-    public CacheEndpoint cacheEndpointMock;
+    public DataSource<Token> dataSourceMock;
 
     @Mock
     public Resources resourcesMock;
@@ -51,7 +41,6 @@ public class ApiTokenProviderTest extends TestUtils {
     private String code = "testCode";
     private String resourcesString = "clientId";
     private Token expectedToken = new Token();
-    private String expectedTokenKey = Constants.Db.TOKEN_KEY;
 
     @Before
     public void setUp() {
@@ -70,22 +59,22 @@ public class ApiTokenProviderTest extends TestUtils {
         TestSubscriber<Token> testSubscriber = new TestSubscriber();
         when(authorizeApiMock.getToken(anyString(), anyString(), anyString()))
                 .thenReturn(Observable.just(expectedToken));
-        when(cacheEndpointMock.save(expectedTokenKey, expectedToken))
-                .thenReturn(Observable.just(expectedToken));
+        when(dataSourceMock.save(expectedToken))
+                .thenReturn(Observable.just(true));
 
         apiTokenProvider.getToken(code).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(cacheEndpointMock).save(expectedTokenKey, expectedToken);
+        verify(dataSourceMock).save(expectedToken);
     }
 
     @Test
-    public void whenGetTokenSubscribed_thenReturnTokenInstance() {
+    public void whenGetTokenSubscribed_thenReturnTrue() {
         TestSubscriber<Token> testSubscriber = new TestSubscriber();
         when(authorizeApiMock.getToken(anyString(), anyString(), anyString()))
                 .thenReturn(Observable.just(expectedToken));
-        when(cacheEndpointMock.save(expectedTokenKey, expectedToken))
-                .thenReturn(Observable.just(expectedToken));
+        when(dataSourceMock.save(expectedToken))
+                .thenReturn(Observable.just(true));
 
         apiTokenProvider.getToken(code).subscribe(testSubscriber);
 
@@ -99,12 +88,12 @@ public class ApiTokenProviderTest extends TestUtils {
         TestSubscriber<Token> testSubscriber = new TestSubscriber();
         when(authorizeApiMock.getToken(anyString(), anyString(), anyString()))
                 .thenReturn(Observable.error(expectedThrowable));
-        when(cacheEndpointMock.save(expectedTokenKey, expectedToken))
-                .thenReturn(Observable.just(expectedToken));
+        when(dataSourceMock.save(expectedToken))
+                .thenReturn(Observable.just(false));
 
         apiTokenProvider.getToken(code).subscribe(testSubscriber);
 
         testSubscriber.assertError(expectedThrowable);
-        verify(cacheEndpointMock, never()).save(expectedTokenKey, expectedToken);
+        verify(dataSourceMock, never()).save(expectedToken);
     }
 }

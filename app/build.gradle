@@ -266,6 +266,9 @@ dependencies {
     //Glide
     compile libs.glide
 
+    //Timber
+    compile libs.timber
+
     // Unit testing
     testCompile(test.junit) {
         exclude module: 'hamcrest-core'

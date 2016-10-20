@@ -30,7 +30,7 @@ import co.netguru.android.inbbbox.di.module.MainActivityModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
-import co.netguru.android.inbbbox.model.ui.TabItemType;
+import co.netguru.android.inbbbox.data.ui.TabItemType;
 import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 

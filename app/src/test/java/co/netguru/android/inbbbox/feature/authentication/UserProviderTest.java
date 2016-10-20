@@ -6,29 +6,26 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.data.api.UserApi;
 import co.netguru.android.inbbbox.data.models.User;
-import co.netguru.android.inbbbox.db.CacheEndpoint;
+import co.netguru.android.inbbbox.db.datasource.DataSource;
 import co.netguru.android.inbbbox.feature.testutils.TestUtils;
-import co.netguru.android.inbbbox.utils.Constants;
 import rx.Observable;
 import rx.observers.TestSubscriber;
-import rx.subjects.TestSubject;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserProviderTest extends TestUtils{
+public class UserProviderTest extends TestUtils {
 
     @Mock
     UserApi userApiMock;
 
     @Mock
-    CacheEndpoint cacheEndpointMock;
+    DataSource<User> dataSourceMock;
 
     @InjectMocks
     UserProvider userProvider;
@@ -45,29 +42,27 @@ public class UserProviderTest extends TestUtils{
 
     @Test
     public void whenSubscribeToGetUser_thenSaveUserInStorage(){
-        String expectedKey = Constants.Db.CURRENT_USER_KEY;
         User expectedUser = new User();
         when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.just(expectedUser));
         TestSubscriber testSubscriber = new TestSubscriber();
 
         userProvider.getUser().subscribe(testSubscriber);
 
-        verify(cacheEndpointMock).save(expectedKey, expectedUser);
+        verify(dataSourceMock).save(expectedUser);
     }
 
     @Test
-    public void whenSubscribeToGetUser_thenPassUserInstance(){
+    public void whenSubscribeToGetUser_thenPassTrue(){
         User expectedUser = new User();
-        String expectedKey = Constants.Db.CURRENT_USER_KEY;
         when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.just(expectedUser));
-        when(cacheEndpointMock.save(expectedKey, expectedUser))
-                .thenReturn(Observable.just(expectedUser));
+        when(dataSourceMock.save(expectedUser))
+                .thenReturn(Observable.just(true));
         TestSubscriber testSubscriber = new TestSubscriber();
 
         userProvider.getUser().subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        testSubscriber.assertValue(expectedUser);
+        testSubscriber.assertValue(true);
     }
 
     //ERRORS
@@ -85,11 +80,10 @@ public class UserProviderTest extends TestUtils{
     @Test
     public void whenSubscribeToGerUserAndSavingFailed_thenGetExceptionFromDb(){
         Throwable expectedThrowable = new Throwable("exception");
-        String expectedKey = Constants.Db.CURRENT_USER_KEY;
         User expectedUser = new User();
         when(userApiMock.getAuthenticatedUser())
                 .thenReturn(Observable.just(expectedUser));
-        when(cacheEndpointMock.save(expectedKey, expectedUser))
+        when(dataSourceMock.save(expectedUser))
                 .thenReturn(Observable.error(expectedThrowable));
         TestSubscriber testSubscriber = new TestSubscriber();
 
