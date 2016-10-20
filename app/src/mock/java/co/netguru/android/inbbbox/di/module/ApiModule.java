@@ -35,6 +35,6 @@ public class ApiModule {
 
     @Provides
     ShotsApi provideShotsApi(Retrofit retrofit) {
-        return new MockShotsApi(5);
+        return new MockShotsApi();
     }
 }

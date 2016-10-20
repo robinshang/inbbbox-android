@@ -2,44 +2,47 @@ package co.netguru.android.inbbbox.data.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import co.netguru.android.inbbbox.data.models.FilteredShotsParams;
 import co.netguru.android.inbbbox.data.models.ShotEntity;
-import co.netguru.android.inbbbox.data.models.User;
 import retrofit2.http.Body;
 import rx.Observable;
 
 public class MockShotsApi implements ShotsApi {
 
-    private int mockListItemsCount;
+    public static int ITEM_COUNT = new Random().nextInt(1000);
 
-    public MockShotsApi(int mockListItemsCount) {
-
-        this.mockListItemsCount = mockListItemsCount;
+    public MockShotsApi() {
     }
 
     @Override
     public Observable<List<ShotEntity>> getFilteredShots(@Body FilteredShotsParams shotsParams) {
-        return Observable.just(getFollowingMock(mockListItemsCount));
+        return Observable.just(getFilteredMockedData());
     }
 
     @Override
     public Observable<List<ShotEntity>> getFollowingShots() {
-        return Observable.just(getFollowingMock(mockListItemsCount));
+        return Observable.just(getFollowingMockedData());
     }
 
-    private List<ShotEntity> getFollowingMock(int count) {
+    private static List<ShotEntity> getFollowingMock(int count, String label) {
         List<ShotEntity> result = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
             ShotEntity entity = new ShotEntity();
-            entity.setTitle("following: " + i);
+            entity.setTitle(label + i);
             result.add(entity);
         }
         return result;
     }
 
-    public List<ShotEntity> getMockedData() {
-        return getFollowingMock(mockListItemsCount);
+    public static List<ShotEntity> getFollowingMockedData() {
+        return getFollowingMock(ITEM_COUNT, "following");
     }
+
+    public static List<ShotEntity> getFilteredMockedData() {
+        return getFollowingMock(ITEM_COUNT, "filtered");
+    }
+
 }

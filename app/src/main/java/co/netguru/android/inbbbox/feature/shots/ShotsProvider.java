@@ -12,6 +12,7 @@ import co.netguru.android.inbbbox.data.models.StreamSourceState;
 import co.netguru.android.inbbbox.data.viewmodels.Shot;
 import co.netguru.android.inbbbox.db.datasource.DataSource;
 import rx.Observable;
+import rx.functions.FuncN;
 
 import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
 
@@ -54,14 +55,16 @@ public class ShotsProvider {
             observablesToExecute.add(getFilteredShots(sourceSettings));
         }
 
-        return Observable.zip(observablesToExecute, args -> {
-            List<ShotEntity> results = new ArrayList<>();
+        return Observable.zip(observablesToExecute, this::margeResults);
+    }
 
-            for (Object arg : args) {
-                results.add((ShotEntity) arg);
-            }
-            return results;
-        });
+    private List<ShotEntity> margeResults(Object[] args) {
+        List<ShotEntity> results = new ArrayList<>();
+
+        for (Object arg : args) {
+            results.addAll((List<ShotEntity>) arg);
+        }
+        return results;
     }
 
     private Observable<List<ShotEntity>> getFilteredShots(StreamSourceState sourceSettings) {

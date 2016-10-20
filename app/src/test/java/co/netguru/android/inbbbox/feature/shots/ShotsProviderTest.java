@@ -16,6 +16,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.data.api.MockShotsApi;
 import co.netguru.android.inbbbox.data.api.ShotsApi;
+import co.netguru.android.inbbbox.data.models.FilteredShotsParams;
 import co.netguru.android.inbbbox.data.models.Settings;
 import co.netguru.android.inbbbox.data.models.ShotEntity;
 import co.netguru.android.inbbbox.data.models.StreamSourceState;
@@ -38,9 +39,6 @@ public class ShotsProviderTest {
     public TestRule rule = new RxSyncTestRule();
 
     @Mock
-    public ShotsMapper shotsMapperMock;
-
-    @Mock
     public ShotsRequestFactory shotsRequestFactoryMock;
 
     @Mock
@@ -52,11 +50,14 @@ public class ShotsProviderTest {
     @Mock
     private StreamSourceState streamSourceState;
 
-    @InjectMocks
-    private ShotsProvider shotsProvider;
+    @Spy
+    public ShotsMapper shotsMapperMock = new ShotsMapper();
 
     @Spy
-    public ShotsApi shotsApiMock = new MockShotsApi(3);
+    public ShotsApi shotsApiMock = new MockShotsApi();
+
+    @InjectMocks
+    private ShotsProvider shotsProvider;
 
     private List<ShotEntity> followingEntity = new ArrayList<>();
 
@@ -103,15 +104,169 @@ public class ShotsProviderTest {
 
     @Test
     public void whenFollowingSourceEnabled_thenReturnFollowingViewItems() {
-        List<ShotEntity> listOfExpected = ((MockShotsApi) shotsApiMock).getMockedData();
+        List<ShotEntity> listOfExpected = MockShotsApi.getFollowingMockedData();
         setupStreamSourceStates(true, false, false, false);
         TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber();
 
         shotsProvider.getShots().subscribe(testSubscriber);
 
+        testSubscriber.assertNoErrors();
         List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
-        Assert.assertEquals(resultList.get(0).getTitle().equals(listOfExpected.get(0).getTitle()), true);
-        Assert.assertEquals(resultList.get(1).getTitle().equals(listOfExpected.get(1).getTitle()), true);
-        Assert.assertEquals(resultList.get(2).getTitle().equals(listOfExpected.get(2).getTitle()), true);
+        for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
+            Assert.assertEquals(resultList.get(i)
+                    .getTitle()
+                    .equals(listOfExpected.get(i).getTitle()), true);
+        }
+    }
+
+    @Test
+    public void whenNewTodayEnabled_thenCallGetFilteredShots() {
+        setupStreamSourceStates(false, true, false, false);
+        TestSubscriber testSubscriber = new TestSubscriber();
+        FilteredShotsParams params = FilteredShotsParams.newBuilder()
+                .date("testDate")
+                .timeFrame("testParam")
+                .sort("testSort")
+                .list("testList")
+                .build();
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+
+        shotsProvider.getShots().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        verify(shotsApiMock, times(1)).getFilteredShots(params);
+    }
+
+    @Test
+    public void whenPopularTodayEnabled_thenCallGetFilteredShots() {
+        setupStreamSourceStates(false, false, true, false);
+        TestSubscriber testSubscriber = new TestSubscriber();
+        FilteredShotsParams params = FilteredShotsParams.newBuilder()
+                .date("testDate")
+                .timeFrame("testParam")
+                .sort("testSort")
+                .list("testList")
+                .build();
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+
+        shotsProvider.getShots().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        verify(shotsApiMock, times(1)).getFilteredShots(params);
+    }
+
+    @Test
+    public void whenDebutTodayEnabled_thenCallGetFilteredShots() {
+        setupStreamSourceStates(false, false, false, true);
+        TestSubscriber testSubscriber = new TestSubscriber();
+        FilteredShotsParams params = FilteredShotsParams.newBuilder()
+                .date("testDate")
+                .timeFrame("testParam")
+                .sort("testSort")
+                .list("testList")
+                .build();
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+
+        shotsProvider.getShots().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        verify(shotsApiMock, times(1)).getFilteredShots(params);
+    }
+
+    @Test
+    public void whenAllFilteredEnabled_thenCallGetFilteredShotsThreeTimes() {
+        setupStreamSourceStates(false, true, true, true);
+        TestSubscriber testSubscriber = new TestSubscriber();
+        FilteredShotsParams params = FilteredShotsParams.newBuilder()
+                .date("testDate")
+                .timeFrame("testParam")
+                .sort("testSort")
+                .list("testList")
+                .build();
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+
+        shotsProvider.getShots().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        verify(shotsApiMock, times(3)).getFilteredShots(params);
+    }
+
+    @Test
+    public void whenNewTodayOfFilteredSourceEnabled_thenReturnFilteredViewItems() {
+        List<ShotEntity> listOfExpected = MockShotsApi.getFilteredMockedData();
+        setupStreamSourceStates(false, true, false, false);
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber();
+        FilteredShotsParams params = FilteredShotsParams.newBuilder()
+                .date("testDate")
+                .timeFrame("testParam")
+                .sort("testSort")
+                .list("testList")
+                .build();
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+
+        shotsProvider.getShots().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
+        for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
+            Assert.assertEquals(resultList.get(i)
+                    .getTitle()
+                    .equals(listOfExpected.get(i).getTitle()), true);
+        }
+    }
+
+    @Test
+    public void whenAllOfFilteredSourceEnabled_thenReturnFilteredViewItemsFromThreeSources() {
+        List<ShotEntity> listOfExpected = MockShotsApi.getFilteredMockedData();
+        setupStreamSourceStates(false, true, true, true);
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber();
+        FilteredShotsParams params = FilteredShotsParams.newBuilder()
+                .date("testDate")
+                .timeFrame("testParam")
+                .sort("testSort")
+                .list("testList")
+                .build();
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+
+        shotsProvider.getShots().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
+
+        for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
+            Assert.assertEquals(resultList.get(i)
+                    .getTitle()
+                    .equals(listOfExpected.get(i).getTitle()), true);
+        }
+    }
+
+    @Test
+    public void whenAllSourcesEnabled_thenReturnFilteredAndFollowingViewItemsFrom() {
+        List<ShotEntity> expectedItems = new ArrayList<>();
+        expectedItems.addAll(MockShotsApi.getFilteredMockedData());
+        expectedItems.addAll(MockShotsApi.getFollowingMockedData());
+        List<String> expetedTitltes = new ArrayList<>();
+        for (ShotEntity entity : expectedItems) {
+            expetedTitltes.add(entity.getTitle());
+        }
+
+        setupStreamSourceStates(false, true, true, true);
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber();
+        FilteredShotsParams params = FilteredShotsParams.newBuilder()
+                .date("testDate")
+                .timeFrame("testParam")
+                .sort("testSort")
+                .list("testList")
+                .build();
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+
+        shotsProvider.getShots().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
+
+        for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
+           Assert.assertEquals(expetedTitltes.contains(resultList.get(i).getTitle()), true);
+        }
     }
 }
