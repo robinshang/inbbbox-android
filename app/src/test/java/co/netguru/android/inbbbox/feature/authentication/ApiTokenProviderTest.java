@@ -4,7 +4,9 @@ import android.content.res.Resources;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -15,8 +17,8 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.api.AuthorizeApi;
 import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.db.CacheEndpoint;
-import co.netguru.android.inbbbox.feature.testutils.TestUtils;
 import co.netguru.android.inbbbox.utils.Constants;
+import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
@@ -34,7 +36,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ApiTokenProviderTest extends TestUtils {
+public class ApiTokenProviderTest {
+
+    @Rule
+    public TestRule rule = new RxSyncTestRule();
 
     @Mock
     public AuthorizeApi authorizeApiMock;
@@ -55,14 +60,7 @@ public class ApiTokenProviderTest extends TestUtils {
 
     @Before
     public void setUp() {
-        setupJavaThreadingManagementForTests();
         when(resourcesMock.getString(anyInt())).thenReturn(resourcesString);
-
-    }
-
-    @After
-    public void tearDown() {
-        resetJavaThreading();
     }
 
     @Test

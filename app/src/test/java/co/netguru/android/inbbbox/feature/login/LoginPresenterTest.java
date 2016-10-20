@@ -4,7 +4,9 @@ import android.net.Uri;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -17,8 +19,8 @@ import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorType;
-import co.netguru.android.inbbbox.feature.testutils.TestUtils;
 import co.netguru.android.inbbbox.utils.Constants;
+import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 
 import static org.mockito.Mockito.mock;
@@ -27,7 +29,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LoginPresenterTest extends TestUtils {
+public class LoginPresenterTest  {
+
+    @Rule
+    public TestRule rule = new RxSyncTestRule();
 
     @Mock
     private OauthUriProvider oauthUriProviderMock;
@@ -55,18 +60,11 @@ public class LoginPresenterTest extends TestUtils {
 
     @Before
     public void setup() {
-        setupJavaThreadingManagementForTests();
-
         presenter.attachView(viewMock);
         when(tokenProviderMock.getToken(code))
                 .thenReturn(Observable.just(new Token()));
         when(userProviderMock.getUser()).
                 thenReturn(Observable.just(new User()));
-    }
-
-    @After
-    public void tearDown() {
-        resetJavaThreading();
     }
 
     @Test

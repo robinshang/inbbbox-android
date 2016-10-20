@@ -2,7 +2,9 @@ package co.netguru.android.inbbbox.feature.authentication;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -12,8 +14,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import co.netguru.android.inbbbox.data.api.UserApi;
 import co.netguru.android.inbbbox.data.models.User;
 import co.netguru.android.inbbbox.db.CacheEndpoint;
-import co.netguru.android.inbbbox.feature.testutils.TestUtils;
 import co.netguru.android.inbbbox.utils.Constants;
+import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 import rx.subjects.TestSubject;
@@ -22,7 +24,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserProviderTest extends TestUtils{
+public class UserProviderTest {
+
+    @Rule
+    public TestRule rule = new RxSyncTestRule();
 
     @Mock
     UserApi userApiMock;
@@ -32,16 +37,6 @@ public class UserProviderTest extends TestUtils{
 
     @InjectMocks
     UserProvider userProvider;
-
-    @Before
-    public  void setUp(){
-        setupJavaThreadingManagementForTests();
-    }
-
-    @After
-    public void tearDown(){
-        resetJavaThreading();
-    }
 
     @Test
     public void whenSubscribeToGetUser_thenSaveUserInStorage(){
