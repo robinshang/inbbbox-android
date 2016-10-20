@@ -13,6 +13,8 @@ import com.squareup.leakcanary.LeakCanary;
 
 import javax.inject.Inject;
 
+import timber.log.Timber;
+
 /**
  * Helper class that initializes a set of debugging tools
  * for the debug build type and does nothing for the release type.
@@ -23,6 +25,7 @@ import javax.inject.Inject;
  * <li> Stetho
  * <li> StrictMode
  * <li> LeakCanary
+ * <li> Timber
  * </ul>
  * <p>
  * Created by lukaszjanyga on 08/09/16.
@@ -64,6 +67,9 @@ public class DebugMetricsHelper {
 
         // LeakCanary
         LeakCanary.install((App) context.getApplicationContext());
+
+        //Timber
+        Timber.plant(new Timber.DebugTree());
     }
 
 }
