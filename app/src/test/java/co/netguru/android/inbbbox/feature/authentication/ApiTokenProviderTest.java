@@ -15,8 +15,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import co.netguru.android.inbbbox.data.api.AuthorizeApi;
 import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.db.datasource.DataSource;
-import co.netguru.android.inbbbox.feature.testutils.TestUtils;
-import co.netguru.android.inbbbox.db.CacheEndpoint;
 import co.netguru.android.inbbbox.utils.Constants;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;

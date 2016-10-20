@@ -12,11 +12,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.data.api.UserApi;
 import co.netguru.android.inbbbox.data.models.User;
-import co.netguru.android.inbbbox.db.CacheEndpoint;
 import co.netguru.android.inbbbox.utils.Constants;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import co.netguru.android.inbbbox.db.datasource.DataSource;
-import co.netguru.android.inbbbox.feature.testutils.TestUtils;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
@@ -39,7 +37,7 @@ public class UserProviderTest {
     UserProvider userProvider;
 
     @Test
-    public void whenSubscribeToGetUser_thenSaveUserInStorage(){
+    public void whenSubscribeToGetUser_thenSaveUserInStorage() {
         User expectedUser = new User();
         when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.just(expectedUser));
         TestSubscriber testSubscriber = new TestSubscriber();
@@ -50,7 +48,7 @@ public class UserProviderTest {
     }
 
     @Test
-    public void whenSubscribeToGetUser_thenPassTrue(){
+    public void whenSubscribeToGetUser_thenPassTrue() {
         User expectedUser = new User();
         when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.just(expectedUser));
         when(dataSourceMock.save(expectedUser))
@@ -65,7 +63,7 @@ public class UserProviderTest {
 
     //ERRORS
     @Test
-    public void whenSubscribeToGetUserAndDownloadFailed_thenGetExceptionFromUser(){
+    public void whenSubscribeToGetUserAndDownloadFailed_thenGetExceptionFromUser() {
         Throwable expectedThrowable = new Throwable("exception");
         when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.error(expectedThrowable));
         TestSubscriber testSubscriber = new TestSubscriber();
@@ -76,7 +74,7 @@ public class UserProviderTest {
     }
 
     @Test
-    public void whenSubscribeToGerUserAndSavingFailed_thenGetExceptionFromDb(){
+    public void whenSubscribeToGerUserAndSavingFailed_thenGetExceptionFromDb() {
         Throwable expectedThrowable = new Throwable("exception");
         User expectedUser = new User();
         when(userApiMock.getAuthenticatedUser())
@@ -87,7 +85,7 @@ public class UserProviderTest {
 
         userProvider.getUser().subscribe(testSubscriber);
 
-       testSubscriber.assertError(expectedThrowable);
+        testSubscriber.assertError(expectedThrowable);
     }
 
 

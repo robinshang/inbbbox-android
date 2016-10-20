@@ -7,9 +7,10 @@ import co.netguru.android.inbbbox.data.viewmodels.Shot;
 
 public class ShotsMapper {
 
-    public Shot getShot(ShotEntity entity){
+    public Shot getShot(ShotEntity entity) {
         Shot shot = new Shot();
-        // TODO: 18.10.2016 mapping for the view requirements
+
+        shot.setTitle(entity.getTitle());
         return shot;
     }
 }
