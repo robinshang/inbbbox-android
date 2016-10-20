@@ -4,27 +4,22 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.data.api.UserApi;
 import co.netguru.android.inbbbox.data.models.User;
-import co.netguru.android.inbbbox.db.CacheEndpoint;
-import co.netguru.android.inbbbox.utils.Constants;
+import co.netguru.android.inbbbox.db.datasource.DataSource;
 import rx.Observable;
-import rx.functions.Action1;
-import rx.functions.Func1;
 
 public class UserProvider {
 
-    private static User user = null;
     private UserApi userApi;
-    private CacheEndpoint cacheEndpoint;
+    private DataSource<User> dataSource;
 
     @Inject
-    public UserProvider(UserApi userApi, CacheEndpoint cacheEndpoint) {
+    UserProvider(UserApi userApi, DataSource<User> dataSource) {
         this.userApi = userApi;
-        this.cacheEndpoint = cacheEndpoint;
+        this.dataSource = dataSource;
     }
 
-    public Observable<User> getUser() {
+    public Observable<Boolean> getUser() {
         return userApi.getAuthenticatedUser()
-                .concatMap((Func1<User, Observable<? extends User>>) user1 -> cacheEndpoint
-                        .save(Constants.Db.CURRENT_USER_KEY, user1));
+                .concatMap(user1 -> dataSource.save(user1));
     }
 }
