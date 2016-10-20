@@ -11,6 +11,7 @@ import co.netguru.android.inbbbox.di.scope.ActivityScope;
 @ActivityScope
 public final class LocalTimeFormatter {
 
+    private static final String DATE_PATTER = "YYYY-MM-DD";
     private static final String TIME_PATTER = "h:mm a";
     private final DateTimeFormatter dateTimeFormatter;
 
@@ -33,5 +34,10 @@ public final class LocalTimeFormatter {
 
     public String getFormattedCurrentTime() {
         return LocalTime.now().format(dateTimeFormatter);
+    }
+
+    public String getCurrentDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTER).withZone(ZoneId.systemDefault());
+        return LocalTime.now().format(formatter);
     }
 }

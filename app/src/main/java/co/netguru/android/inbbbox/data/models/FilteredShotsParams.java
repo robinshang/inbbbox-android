@@ -3,11 +3,15 @@ package co.netguru.android.inbbbox.data.models;
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
 
 import co.netguru.android.inbbbox.utils.Constants.API;
+
+import static android.R.attr.type;
 
 @AutoValue
 public abstract class FilteredShotsParams implements Serializable {
@@ -27,6 +31,10 @@ public abstract class FilteredShotsParams implements Serializable {
 
     public static TypeAdapter<FilteredShotsParams> typeAdapter(Gson gson) {
         return new AutoValue_FilteredShotsParams.GsonTypeAdapter(gson);
+    }
+
+    public static Builder newBuilder() {
+        return new AutoValue_FilteredShotsParams.Builder();
     }
 
     @AutoValue.Builder

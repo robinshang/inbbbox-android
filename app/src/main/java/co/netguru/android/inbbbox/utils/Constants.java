@@ -28,8 +28,8 @@ public class Constants {
         public static final String SHOTS_KEY_LIST = "list";
         public static final String SHOTS_KEY_TIME_FRAME = "timeframe";
         public static final String SHOTS_KEY_SORT = "sort";
-        public static final String LIST_TYPE = "debuts";
         public static final String SHOTS_KEY_DATE = "date";
+        public static final String LIST_PARAM_DEBUTS_PARAM = "debuts";
     }
 
     public class Db {
