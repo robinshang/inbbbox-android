@@ -59,8 +59,6 @@ public class ShotsProviderTest {
     @InjectMocks
     private ShotsProvider shotsProvider;
 
-    private List<ShotEntity> followingEntity = new ArrayList<>();
-
     @Before
     public void setUp() {
         when(settingsMock.getStreamSourceState()).thenReturn(streamSourceState);
@@ -250,7 +248,7 @@ public class ShotsProviderTest {
             expetedTitltes.add(entity.getTitle());
         }
 
-        setupStreamSourceStates(false, true, true, true);
+        setupStreamSourceStates(true, true, true, true);
         TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber();
         FilteredShotsParams params = FilteredShotsParams.newBuilder()
                 .date("testDate")
@@ -268,5 +266,33 @@ public class ShotsProviderTest {
         for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
            Assert.assertEquals(expetedTitltes.contains(resultList.get(i).getTitle()), true);
         }
+    }
+
+    @Test
+    public void whenNoSourcesEnabled_thenReturnEmptyResult() {
+        List<ShotEntity> expectedItems = new ArrayList<>();
+        expectedItems.addAll(MockShotsApi.getFilteredMockedData());
+        expectedItems.addAll(MockShotsApi.getFollowingMockedData());
+        List<String> expetedTitltes = new ArrayList<>();
+        for (ShotEntity entity : expectedItems) {
+            expetedTitltes.add(entity.getTitle());
+        }
+
+        setupStreamSourceStates(false, false, false, false);
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber();
+        FilteredShotsParams params = FilteredShotsParams.newBuilder()
+                .date("testDate")
+                .timeFrame("testParam")
+                .sort("testSort")
+                .list("testList")
+                .build();
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+
+        shotsProvider.getShots().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
+
+        Assert.assertEquals(resultList.isEmpty(), true);
     }
 }
