@@ -1,6 +1,8 @@
 package co.netguru.android.inbbbox.data.models;
 
-public class Settings {
+import java.io.Serializable;
+
+public class Settings implements Serializable{
     private StreamSourceState streamSourceState;
 
     public StreamSourceState getStreamSourceState() {

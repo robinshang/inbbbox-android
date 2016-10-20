@@ -23,37 +23,19 @@ public class ApiModule {
 
     @Singleton
     @Provides
-    AuthorizeApi provideAuthorizeApi(OkHttpClient okHttpClient, Gson gson) {
-        return new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(Constants.OAUTH.BASE_URL)
-                .client(okHttpClient)
-                .build()
-                .create(AuthorizeApi.class);
+    AuthorizeApi provideAuthorizeApi(Retrofit retrofit) {
+        return retrofit.create(AuthorizeApi.class);
     }
 
     @Singleton
     @Provides
-    UserApi provideAuthenticatedUserApi(OkHttpClient okHttpClient, Gson gson) {
-        return new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(Constants.API.DRIBBLE_BASE_URL)
-                .client(okHttpClient)
-                .build()
-                .create(UserApi.class);
+    UserApi provideAuthenticatedUserApi(Retrofit retrofit) {
+        return retrofit.create(UserApi.class);
     }
 
     @Singleton
     @Provides
-    ShotsApi provideShotsApi(OkHttpClient okHttpClient, Gson gson){
-        return new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(Constants.API.DRIBBLE_BASE_URL)
-                .client(okHttpClient)
-                .build()
-                .create(ShotsApi.class);
+    ShotsApi provideShotsApi(Retrofit retrofit) {
+        return retrofit.create(ShotsApi.class);
     }
 }

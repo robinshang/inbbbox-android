@@ -10,11 +10,8 @@ import co.netguru.android.inbbbox.data.models.Settings;
 import co.netguru.android.inbbbox.data.models.ShotEntity;
 import co.netguru.android.inbbbox.data.models.StreamSourceState;
 import co.netguru.android.inbbbox.data.viewmodels.Shot;
-import co.netguru.android.inbbbox.db.CacheEndpoint;
-import co.netguru.android.inbbbox.utils.Constants;
+import co.netguru.android.inbbbox.db.datasource.DataSource;
 import rx.Observable;
-import rx.functions.Func1;
-import rx.functions.FuncN;
 
 import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
 
@@ -22,17 +19,17 @@ public class ShotsProvider {
 
     private ShotsApi shotsApi;
     private ShotsMapper mapper;
-    private CacheEndpoint<Settings> cacheEndpoint;
+    private DataSource<Settings> settingsDataSource;
     private ShotsRequestFactory shotsRequestFactory;
 
     @Inject
     ShotsProvider(ShotsApi shotsApi,
                   ShotsMapper mapper,
-                  CacheEndpoint cacheEndpoint,
+                  DataSource<Settings> cacheEndpoint,
                   ShotsRequestFactory shotsRequestFactory) {
         this.shotsApi = shotsApi;
         this.mapper = mapper;
-        this.cacheEndpoint = cacheEndpoint;
+        this.settingsDataSource = cacheEndpoint;
         this.shotsRequestFactory = shotsRequestFactory;
     }
 
@@ -77,7 +74,7 @@ public class ShotsProvider {
     }
 
     private Observable<Settings> getSettings() {
-        return cacheEndpoint.get(Constants.Db.SETTINGS_KEY, Settings.class);
+        return settingsDataSource.get();
     }
 
     private int getRequestCount(StreamSourceState sourceSettings) {
