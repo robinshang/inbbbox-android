@@ -6,11 +6,9 @@ import android.content.Context;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
-import co.netguru.android.inbbbox.BuildConfig;
 import co.netguru.android.inbbbox.di.component.ApplicationComponent;
 import co.netguru.android.inbbbox.di.component.DaggerApplicationComponent;
 import co.netguru.android.inbbbox.di.module.ApplicationModule;
-import timber.log.Timber;
 
 
 public class App extends Application {
@@ -26,9 +24,6 @@ public class App extends Application {
         super.onCreate();
         appComponent.getDebugMetricsHelper().init(this);
         AndroidThreeTen.init(this);
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        }
     }
 
     @Override
