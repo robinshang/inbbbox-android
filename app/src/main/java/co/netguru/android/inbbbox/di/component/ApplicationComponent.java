@@ -1,10 +1,10 @@
 package co.netguru.android.inbbbox.di.component;
 
-
 import javax.inject.Singleton;
 
 import co.netguru.android.commons.di.BaseComponent;
 import co.netguru.android.inbbbox.di.module.ApplicationModule;
+import co.netguru.android.inbbbox.di.module.DataSourceModule;
 import co.netguru.android.inbbbox.di.module.ConfigurationModule;
 import co.netguru.android.inbbbox.application.DebugMetricsHelper;
 import co.netguru.android.inbbbox.di.module.ApiModule;
@@ -14,15 +14,12 @@ import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import dagger.Component;
 
-/**
- * Main application component
- * Created by lukaszjanyga on 08/09/16.
- */
 @Singleton
 @Component(modules = {ApplicationModule.class,
         ConfigurationModule.class,
         ApiModule.class,
-        StorageModule.class})
+        StorageModule.class,
+        DataSourceModule.class})
 public interface ApplicationComponent extends BaseComponent {
 
     DebugMetricsHelper getDebugMetricsHelper();

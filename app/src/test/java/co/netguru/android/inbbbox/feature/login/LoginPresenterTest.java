@@ -13,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.data.models.Token;
-import co.netguru.android.inbbbox.data.models.User;
 import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
@@ -23,7 +22,6 @@ import co.netguru.android.inbbbox.utils.Constants;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -64,7 +62,7 @@ public class LoginPresenterTest  {
         when(tokenProviderMock.getToken(code))
                 .thenReturn(Observable.just(new Token()));
         when(userProviderMock.getUser()).
-                thenReturn(Observable.just(new User()));
+                thenReturn(Observable.just(true));
     }
 
     @Test

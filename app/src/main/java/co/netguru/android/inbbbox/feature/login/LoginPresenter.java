@@ -2,13 +2,12 @@ package co.netguru.android.inbbbox.feature.login;
 
 import android.net.Uri;
 
-import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.data.models.Token;
-import co.netguru.android.inbbbox.data.models.User;
 import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
@@ -17,12 +16,13 @@ import co.netguru.android.inbbbox.feature.errorhandling.ErrorType;
 import co.netguru.android.inbbbox.feature.shots.ShotsProvider;
 import co.netguru.android.inbbbox.utils.Constants;
 import rx.Subscriber;
+import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 
 @ActivityScope
-public class LoginPresenter
-        extends MvpBasePresenter<LoginContract.View>
+public final class LoginPresenter
+        extends MvpNullObjectBasePresenter<LoginContract.View>
         implements LoginContract.Presenter {
 
     private OauthUriProvider uriProvider;
@@ -35,7 +35,7 @@ public class LoginPresenter
     private String currentState;
 
     @Inject
-    public LoginPresenter(OauthUriProvider oauthUriProvider,
+    LoginPresenter(OauthUriProvider oauthUriProvider,
                           ApiTokenProvider apiTokenProvider,
                           ErrorMessageParser apiErrorParser,
                           UserProvider userProvider) {
@@ -50,7 +50,7 @@ public class LoginPresenter
         uriProvider
                 .getOauthAuthorizeUriString()
                 .doOnError(Throwable::printStackTrace)
-                .doOnNext(uri -> prepareAuthorization(uri))
+                .doOnNext(this::prepareAuthorization)
                 .subscribe();
     }
 
@@ -102,33 +102,19 @@ public class LoginPresenter
     private void getUser() {
         userProvider.getUser()
                 .compose(androidIO())
-                .subscribe(new Subscriber<User>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        handleError(e);
-                    }
-
-                    @Override
-                    public void onNext(User user) {
-                        verifyUser(user);
-                    }
-                });
+                .subscribe(this::verifyUser, this::handleError);
     }
 
-    private void verifyUser(User user) {
-        if (user != null) {
+    private void verifyUser(Boolean status) {
+        if (status) {
             getView().showNextScreen();
-        } else {
-            getView().showApiError(errorHandler.getErrorLabel(ErrorType.INVALID_USER_INSTANCE));
+            return;
         }
+        getView().showApiError(errorHandler.getErrorLabel(ErrorType.INVALID_USER_INSTANCE));
     }
 
     private void handleError(Throwable throwable) {
+        Timber.e(throwable, "Error while getting user");
         getView().showApiError(errorHandler.getError(throwable));
     }
 
