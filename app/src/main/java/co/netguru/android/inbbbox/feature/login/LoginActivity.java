@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
@@ -17,14 +20,32 @@ import co.netguru.android.inbbbox.application.App;
 import co.netguru.android.inbbbox.di.component.LoginComponent;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
+import timber.log.Timber;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
         implements LoginContract.View, WithComponent<LoginComponent> {
+
+    private AlertDialog loginDialog;
 
     @OnClick(R.id.btn_login)
     void onLoginClick() {
         getPresenter().showLoginView();
     }
+
+    private WebViewClient webViewClient = new WebViewClient() {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            boolean result = true;
+            if (url.contains(getString(R.string.redirectUriScheme))) {
+                Timber.d(url);
+                getPresenter().handleOauthLoginResponse(Uri.parse(url));
+                result = false;
+            } else {
+                view.loadUrl(url);
+            }
+            return result;
+        }
+    };
 
     private LoginComponent component;
 
@@ -61,15 +82,20 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     protected void onResume() {
         super.onResume();
-        Uri uri = getIntent().getData();
-        getPresenter().handleOauthLoginResponse(uri);
     }
 
     @Override
-    public void sendActionIntent(String uriString) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uriString));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+    public void handleOauthUri(String uriString) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+
+        WebView webView = new WebView(this);
+        webView.loadUrl(uriString);
+        webView.setWebViewClient(webViewClient);
+        webView.getSettings().setUseWideViewPort(true);
+
+        dialogBuilder.setView(webView);
+        loginDialog = dialogBuilder.create();
+        loginDialog.show();
     }
 
     @Override
@@ -81,5 +107,12 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     public void showNextScreen() {
         MainActivity.startActivity(this);
         finish();
+    }
+
+    @Override
+    public void closeLoginDialog() {
+        if (loginDialog != null) {
+            loginDialog.dismiss();
+        }
     }
 }

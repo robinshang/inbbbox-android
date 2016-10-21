@@ -53,13 +53,14 @@ public final class LoginPresenter
     }
 
     private void prepareAuthorization(String uriString) {
-        getView().sendActionIntent(uriString);
+        getView().handleOauthUri(uriString);
     }
 
     @Override
     public void handleOauthLoginResponse(Uri uri) {
         if (uri != null) {
             Timber.d(uri.toString());
+            getView().closeLoginDialog();
             unpackParamsFromUri(uri);
             selectAuthorizationAction();
         } else {

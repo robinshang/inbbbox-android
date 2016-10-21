@@ -69,7 +69,7 @@ public class LoginPresenterTest  {
 
         presenter.showLoginView();
 
-        verify(viewMock).sendActionIntent(uriString);
+        verify(viewMock).handleOauthUri(uriString);
     }
 
     @Test
@@ -78,7 +78,7 @@ public class LoginPresenterTest  {
 
         presenter.showLoginView();
 
-        verify(viewMock, times((1))).sendActionIntent(uriString);
+        verify(viewMock, times((1))).handleOauthUri(uriString);
     }
 
     @Test
