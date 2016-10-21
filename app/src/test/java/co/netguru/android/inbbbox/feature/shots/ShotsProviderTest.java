@@ -26,7 +26,7 @@ import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -97,7 +97,10 @@ public class ShotsProviderTest {
         shotsProvider.getShots().subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(shotsApiMock, never()).getFilteredShots(anyObject());
+        verify(shotsApiMock, never()).getFilteredShots(anyString(),
+                anyString(),
+                anyString(),
+                anyString());
     }
 
     @Test
@@ -132,7 +135,10 @@ public class ShotsProviderTest {
         shotsProvider.getShots().subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(shotsApiMock, times(1)).getFilteredShots(params);
+        verify(shotsApiMock, times(1)).getFilteredShots(params.list(),
+                params.timeFrame(),
+                params.date(),
+                params.sort());
     }
 
     @Test
@@ -150,7 +156,10 @@ public class ShotsProviderTest {
         shotsProvider.getShots().subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(shotsApiMock, times(1)).getFilteredShots(params);
+        verify(shotsApiMock, times(1)).getFilteredShots(params.list(),
+                params.timeFrame(),
+                params.date(),
+                params.sort());
     }
 
     @Test
@@ -168,7 +177,10 @@ public class ShotsProviderTest {
         shotsProvider.getShots().subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(shotsApiMock, times(1)).getFilteredShots(params);
+        verify(shotsApiMock, times(1)).getFilteredShots(params.list(),
+                params.timeFrame(),
+                params.date(),
+                params.sort());
     }
 
     @Test
@@ -186,7 +198,10 @@ public class ShotsProviderTest {
         shotsProvider.getShots().subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(shotsApiMock, times(3)).getFilteredShots(params);
+        verify(shotsApiMock, times(3)).getFilteredShots(params.list(),
+                params.timeFrame(),
+                params.date(),
+                params.sort());
     }
 
     @Test
@@ -264,7 +279,7 @@ public class ShotsProviderTest {
         List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
 
         for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
-           Assert.assertEquals(expetedTitltes.contains(resultList.get(i).getTitle()), true);
+            Assert.assertEquals(expetedTitltes.contains(resultList.get(i).getTitle()), true);
         }
     }
 

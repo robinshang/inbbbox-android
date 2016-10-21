@@ -2,7 +2,6 @@ package co.netguru.android.inbbbox.feature.authentication;
 
 import android.content.res.Resources;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,7 +14,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import co.netguru.android.inbbbox.data.api.AuthorizeApi;
 import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.db.datasource.DataSource;
-import co.netguru.android.inbbbox.utils.Constants;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.observers.TestSubscriber;
@@ -55,7 +53,7 @@ public class ApiTokenProviderTest {
 
     @Test
     public void whenGetTokenSubscribed_thenSaveTokenCalled() {
-        TestSubscriber<Token> testSubscriber = new TestSubscriber();
+        TestSubscriber<Boolean> testSubscriber = new TestSubscriber();
         when(authorizeApiMock.getToken(anyString(), anyString(), anyString()))
                 .thenReturn(Observable.just(expectedToken));
         when(dataSourceMock.save(expectedToken))
@@ -69,7 +67,7 @@ public class ApiTokenProviderTest {
 
     @Test
     public void whenGetTokenSubscribed_thenReturnTrue() {
-        TestSubscriber<Token> testSubscriber = new TestSubscriber();
+        TestSubscriber<Boolean> testSubscriber = new TestSubscriber();
         when(authorizeApiMock.getToken(anyString(), anyString(), anyString()))
                 .thenReturn(Observable.just(expectedToken));
         when(dataSourceMock.save(expectedToken))
@@ -78,13 +76,13 @@ public class ApiTokenProviderTest {
         apiTokenProvider.getToken(code).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        testSubscriber.assertValue(expectedToken);
+        testSubscriber.assertValue(true);
     }
 
     @Test
     public void whenGetTokenSubscriberFailed_thenReturnThrowable() {
         Throwable expectedThrowable = new Throwable("test");
-        TestSubscriber<Token> testSubscriber = new TestSubscriber();
+        TestSubscriber<Boolean> testSubscriber = new TestSubscriber();
         when(authorizeApiMock.getToken(anyString(), anyString(), anyString()))
                 .thenReturn(Observable.error(expectedThrowable));
         when(dataSourceMock.save(expectedToken))

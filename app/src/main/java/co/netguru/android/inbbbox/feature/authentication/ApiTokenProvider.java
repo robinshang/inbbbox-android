@@ -19,13 +19,13 @@ public class ApiTokenProvider {
         this.dataSource = dataSource;
     }
 
-    public Observable<Token> getToken(String code) {
+    public Observable<Boolean> getToken(String code) {
         return api.getToken(BuildConfig.DRIBBBLE_CLIENT_KEY,
                 BuildConfig.DRIBBBLE_CLIENT_SECRET, code)
-                .doOnNext(this::saveTokenToStorage);
+                .flatMap(this::saveTokenToStorage);
     }
 
-    private void saveTokenToStorage(Token tokenResponse) {
-        dataSource.save(tokenResponse).subscribe();
+    private Observable<Boolean> saveTokenToStorage(Token tokenResponse) {
+        return dataSource.save(tokenResponse);
     }
 }

@@ -7,13 +7,11 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorType;
-import co.netguru.android.inbbbox.feature.shots.ShotsProvider;
 import co.netguru.android.inbbbox.utils.Constants;
 import rx.Subscriber;
 import timber.log.Timber;
@@ -36,9 +34,9 @@ public final class LoginPresenter
 
     @Inject
     LoginPresenter(OauthUriProvider oauthUriProvider,
-                          ApiTokenProvider apiTokenProvider,
-                          ErrorMessageParser apiErrorParser,
-                          UserProvider userProvider) {
+                   ApiTokenProvider apiTokenProvider,
+                   ErrorMessageParser apiErrorParser,
+                   UserProvider userProvider) {
         this.uriProvider = oauthUriProvider;
         this.apiTokenProvider = apiTokenProvider;
         this.errorHandler = apiErrorParser;
@@ -61,8 +59,11 @@ public final class LoginPresenter
     @Override
     public void handleOauthLoginResponse(Uri uri) {
         if (uri != null) {
+            Timber.d(uri.toString());
             unpackParamsFromUri(uri);
             selectAuthorizationAction();
+        } else {
+            Timber.d("Uri is null");
         }
     }
 
@@ -79,7 +80,7 @@ public final class LoginPresenter
     private void getToken() {
         apiTokenProvider.getToken(code)
                 .compose(androidIO())
-                .subscribe(new Subscriber<Token>() {
+                .subscribe(new Subscriber<Boolean>() {
                     @Override
                     public void onCompleted() {
 
@@ -91,8 +92,8 @@ public final class LoginPresenter
                     }
 
                     @Override
-                    public void onNext(Token saved) {
-                        if (saved != null) {
+                    public void onNext(Boolean saved) {
+                        if (saved) {
                             getUser();
                         }
                     }

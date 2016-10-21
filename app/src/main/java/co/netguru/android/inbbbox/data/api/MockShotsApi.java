@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import co.netguru.android.inbbbox.data.models.FilteredShotsParams;
 import co.netguru.android.inbbbox.data.models.ShotEntity;
-import retrofit2.http.Body;
+import co.netguru.android.inbbbox.utils.Constants;
+import retrofit2.http.Query;
 import rx.Observable;
 
 public class MockShotsApi implements ShotsApi {
@@ -17,7 +17,10 @@ public class MockShotsApi implements ShotsApi {
     }
 
     @Override
-    public Observable<List<ShotEntity>> getFilteredShots(@Body FilteredShotsParams shotsParams) {
+    public Observable<List<ShotEntity>> getFilteredShots(@Query(Constants.API.SHOTS_KEY_LIST) String list,
+                                                         @Query(Constants.API.SHOTS_KEY_TIME_FRAME) String timeFrame,
+                                                         @Query(Constants.API.SHOTS_KEY_DATE) String date,
+                                                         @Query(Constants.API.SHOTS_KEY_SORT) String sort) {
         return Observable.just(getFilteredMockedData());
     }
 

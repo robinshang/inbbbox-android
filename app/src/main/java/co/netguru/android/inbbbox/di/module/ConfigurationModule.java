@@ -45,7 +45,7 @@ public class ConfigurationModule {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(Constants.OAUTH.BASE_URL)
+                .baseUrl(Constants.API.DRIBBLE_BASE_URL)
                 .client(okHttpClient)
                 .build();
     }
