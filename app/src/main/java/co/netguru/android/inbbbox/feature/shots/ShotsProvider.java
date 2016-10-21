@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.data.api.ShotsApi;
+import co.netguru.android.inbbbox.data.models.FilteredShotsParams;
 import co.netguru.android.inbbbox.data.models.Settings;
 import co.netguru.android.inbbbox.data.models.ShotEntity;
 import co.netguru.android.inbbbox.data.models.StreamSourceState;
@@ -20,17 +21,17 @@ public class ShotsProvider {
     private ShotsApi shotsApi;
     private ShotsMapper mapper;
     private DataSource<Settings> settingsDataSource;
-    private ShotsRequestFactory shotsRequestFactory;
+    private ShotsParamsFactory shotsParamFactory;
 
     @Inject
     ShotsProvider(ShotsApi shotsApi,
                   ShotsMapper mapper,
                   DataSource<Settings> cacheEndpoint,
-                  ShotsRequestFactory shotsRequestFactory) {
+                  ShotsParamsFactory shotsRequestFactory) {
         this.shotsApi = shotsApi;
         this.mapper = mapper;
         this.settingsDataSource = cacheEndpoint;
-        this.shotsRequestFactory = shotsRequestFactory;
+        this.shotsParamFactory = shotsRequestFactory;
     }
 
     public Observable<List<Shot>> getShots() {
@@ -67,7 +68,11 @@ public class ShotsProvider {
     }
 
     private Observable<List<ShotEntity>> getFilteredShots(StreamSourceState sourceSettings) {
-        return shotsApi.getFilteredShots(shotsRequestFactory.getShotsParams(sourceSettings));
+        FilteredShotsParams params = shotsParamFactory.getShotsParams(sourceSettings);
+        return shotsApi.getFilteredShots(params.list(),
+                params.timeFrame(),
+                params.date(),
+                params.sort());
     }
 
 

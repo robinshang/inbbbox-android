@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.feature.shots;
 
-import com.google.auto.value.AutoValue;
-
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.data.models.FilteredShotsParams;
@@ -9,12 +7,12 @@ import co.netguru.android.inbbbox.data.models.StreamSourceState;
 import co.netguru.android.inbbbox.utils.Constants;
 import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
 
-public class ShotsRequestFactory {
+public class ShotsParamsFactory {
 
     private LocalTimeFormatter dateFormatter;
 
     @Inject
-    ShotsRequestFactory(LocalTimeFormatter dateFormatter) {
+    ShotsParamsFactory(LocalTimeFormatter dateFormatter) {
 
         this.dateFormatter = dateFormatter;
     }

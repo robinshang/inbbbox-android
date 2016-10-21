@@ -39,7 +39,7 @@ public class ShotsProviderTest {
     public TestRule rule = new RxSyncTestRule();
 
     @Mock
-    public ShotsRequestFactory shotsRequestFactoryMock;
+    public ShotsParamsFactory shotsRequestFactoryMock;
 
     @Mock
     public DataSource<Settings> dataSourceMock;
