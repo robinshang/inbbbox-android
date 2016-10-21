@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.data.viewmodels;
+package co.netguru.android.inbbbox.data.ui;
 
 public class Shot {
     private String title;

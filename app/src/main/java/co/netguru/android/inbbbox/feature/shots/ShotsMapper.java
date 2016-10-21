@@ -1,9 +1,7 @@
 package co.netguru.android.inbbbox.feature.shots;
 
-import java.util.List;
-
 import co.netguru.android.inbbbox.data.models.ShotEntity;
-import co.netguru.android.inbbbox.data.viewmodels.Shot;
+import co.netguru.android.inbbbox.data.ui.Shot;
 
 public class ShotsMapper {
 

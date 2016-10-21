@@ -20,7 +20,7 @@ import co.netguru.android.inbbbox.data.models.FilteredShotsParams;
 import co.netguru.android.inbbbox.data.models.Settings;
 import co.netguru.android.inbbbox.data.models.ShotEntity;
 import co.netguru.android.inbbbox.data.models.StreamSourceState;
-import co.netguru.android.inbbbox.data.viewmodels.Shot;
+import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.db.datasource.DataSource;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
