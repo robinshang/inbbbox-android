@@ -20,6 +20,7 @@ import co.netguru.android.inbbbox.application.App;
 import co.netguru.android.inbbbox.di.component.LoginComponent;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
+import co.netguru.android.inbbbox.view.FocusableWebView;
 import timber.log.Timber;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
@@ -31,6 +32,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     void onLoginClick() {
         getPresenter().showLoginView();
     }
+
 
     private WebViewClient webViewClient = new WebViewClient() {
         @Override
@@ -88,7 +90,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     public void handleOauthUri(String uriString) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
-        WebView webView = new WebView(this);
+        FocusableWebView webView = new FocusableWebView(this);
         webView.loadUrl(uriString);
         webView.setWebViewClient(webViewClient);
         webView.getSettings().setUseWideViewPort(true);
