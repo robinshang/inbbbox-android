@@ -23,12 +23,18 @@ public class Constants {
 
         public static final String HEADER_ACCEPT = "Accept";
         public static final String HEADER_TYPE_JSON = "application/json";
-        public static final String HEADER_AUTHORIZATION = "Authorization";
+        public static final String HEADER_AUTHORIZATION = "AUTHORIZATION";
         public static final String DRIBBLE_BASE_URL = "https://api.dribbble.com/v1/";
+        public static final String SHOTS_KEY_LIST = "list";
+        public static final String SHOTS_KEY_TIME_FRAME = "timeframe";
+        public static final String SHOTS_KEY_SORT = "sort";
+        public static final String SHOTS_KEY_DATE = "date";
+        public static final String LIST_PARAM_DEBUTS_PARAM = "debuts";
     }
 
     public class Db {
         public static final String TOKEN_KEY = "db_token";
         public static final String CURRENT_USER_KEY = "db_current_user";
+        public static final String SETTINGS_KEY = "db_settings";
     }
 }

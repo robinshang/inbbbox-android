@@ -7,7 +7,6 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
@@ -35,9 +34,9 @@ public final class LoginPresenter
 
     @Inject
     LoginPresenter(OauthUriProvider oauthUriProvider,
-                          ApiTokenProvider apiTokenProvider,
-                          ErrorMessageParser apiErrorParser,
-                          UserProvider userProvider) {
+                   ApiTokenProvider apiTokenProvider,
+                   ErrorMessageParser apiErrorParser,
+                   UserProvider userProvider) {
         this.uriProvider = oauthUriProvider;
         this.apiTokenProvider = apiTokenProvider;
         this.errorHandler = apiErrorParser;
@@ -54,14 +53,18 @@ public final class LoginPresenter
     }
 
     private void prepareAuthorization(String uriString) {
-        getView().sendActionIntent(uriString);
+        getView().handleOauthUri(uriString);
     }
 
     @Override
     public void handleOauthLoginResponse(Uri uri) {
         if (uri != null) {
+            Timber.d(uri.toString());
+            getView().closeLoginDialog();
             unpackParamsFromUri(uri);
             selectAuthorizationAction();
+        } else {
+            Timber.d("Uri is null");
         }
     }
 
@@ -78,7 +81,7 @@ public final class LoginPresenter
     private void getToken() {
         apiTokenProvider.getToken(code)
                 .compose(androidIO())
-                .subscribe(new Subscriber<Token>() {
+                .subscribe(new Subscriber<Boolean>() {
                     @Override
                     public void onCompleted() {
 
@@ -90,8 +93,8 @@ public final class LoginPresenter
                     }
 
                     @Override
-                    public void onNext(Token saved) {
-                        if (saved != null) {
+                    public void onNext(Boolean saved) {
+                        if (saved) {
                             getUser();
                         }
                     }
@@ -107,9 +110,9 @@ public final class LoginPresenter
     private void verifyUser(Boolean status) {
         if (status) {
             getView().showNextScreen();
-            return;
+        } else {
+            getView().showApiError(errorHandler.getErrorLabel(ErrorType.INVALID_USER_INSTANCE));
         }
-        getView().showApiError(errorHandler.getErrorLabel(ErrorType.INVALID_USER_INSTANCE));
     }
 
     private void handleError(Throwable throwable) {

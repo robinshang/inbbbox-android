@@ -7,7 +7,9 @@ import android.net.Uri;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -16,7 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
-import co.netguru.android.inbbbox.feature.testutils.TestUtils;
+import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.observers.TestSubscriber;
 import timber.log.Timber;
 
@@ -25,7 +27,10 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OauthUriProviderTest extends TestUtils {
+public class OauthUriProviderTest {
+
+    @Rule
+    public TestRule rule = new RxSyncTestRule();
 
     @Mock
     Resources resourcesMock;
@@ -37,13 +42,7 @@ public class OauthUriProviderTest extends TestUtils {
 
     @Before
     public void setUp() {
-        setupJavaThreadingManagementForTests();
         when(resourcesMock.getString(anyInt())).thenReturn(resourceString);
-    }
-
-    @After
-    public void tearDown() {
-        resetJavaThreading();
     }
 
     @Test

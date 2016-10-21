@@ -19,7 +19,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.1'
+        classpath 'com.android.tools.build:gradle:2.2.2'
         classpath "com.neenbedankt.gradle.plugins:android-apt:1.8"
         classpath "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.5.6"
         classpath "com.frogermcs.androiddevmetrics:androiddevmetrics-plugin:0.4"

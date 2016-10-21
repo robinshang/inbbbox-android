@@ -2,22 +2,22 @@ package co.netguru.android.inbbbox.feature.login;
 
 import android.net.Uri;
 
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorType;
-import co.netguru.android.inbbbox.feature.testutils.TestUtils;
 import co.netguru.android.inbbbox.utils.Constants;
+import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 
 import static org.mockito.Mockito.times;
@@ -25,7 +25,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LoginPresenterTest extends TestUtils {
+public class LoginPresenterTest  {
+
+    @Rule
+    public TestRule rule = new RxSyncTestRule();
 
     @Mock
     private OauthUriProvider oauthUriProviderMock;
@@ -53,18 +56,11 @@ public class LoginPresenterTest extends TestUtils {
 
     @Before
     public void setup() {
-        setupJavaThreadingManagementForTests();
-
         presenter.attachView(viewMock);
         when(tokenProviderMock.getToken(code))
-                .thenReturn(Observable.just(new Token()));
+                .thenReturn(Observable.just(true));
         when(userProviderMock.getUser()).
                 thenReturn(Observable.just(true));
-    }
-
-    @After
-    public void tearDown() {
-        resetJavaThreading();
     }
 
     @Test
@@ -73,7 +69,7 @@ public class LoginPresenterTest extends TestUtils {
 
         presenter.showLoginView();
 
-        verify(viewMock).sendActionIntent(uriString);
+        verify(viewMock).handleOauthUri(uriString);
     }
 
     @Test
@@ -82,7 +78,7 @@ public class LoginPresenterTest extends TestUtils {
 
         presenter.showLoginView();
 
-        verify(viewMock, times((1))).sendActionIntent(uriString);
+        verify(viewMock, times((1))).handleOauthUri(uriString);
     }
 
     @Test
@@ -112,6 +108,16 @@ public class LoginPresenterTest extends TestUtils {
 
         verify(viewMock).showNextScreen();
     }
+
+    @Test
+    public void whenHandlingOauthResponse_thenCloseDialog() {
+        when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(null);
+
+        presenter.handleOauthLoginResponse(uri);
+
+        verify(viewMock, times(1)).closeLoginDialog();
+    }
+
 
     //Errors
     @Test

@@ -14,7 +14,7 @@ public class StorageModule {
 
     @Singleton
     @Provides
-    Storage providesRealmStorage(Context context) {
+    Storage providesStorage(Context context) {
         return new StorageMock();
     }
 }
