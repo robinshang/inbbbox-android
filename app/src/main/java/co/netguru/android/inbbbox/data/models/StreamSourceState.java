@@ -1,40 +1,40 @@
 package co.netguru.android.inbbbox.data.models;
 
 public class StreamSourceState {
-    private Boolean followingState;
-    private Boolean newTodayState;
-    private Boolean popularTodayState;
-    private Boolean debut;
+    private boolean followingState;
+    private boolean newTodayState;
+    private boolean popularTodayState;
+    private boolean debut;
 
-    public Boolean getFollowingState() {
+    public boolean getFollowingState() {
         return followingState;
     }
 
-    public void setFollowingState(Boolean followingState) {
+    public void setFollowingState(boolean followingState) {
         this.followingState = followingState;
     }
 
-    public Boolean getNewTodayState() {
+    public boolean getNewTodayState() {
         return newTodayState;
     }
 
-    public void setNewTodayState(Boolean newTodayState) {
+    public void setNewTodayState(boolean newTodayState) {
         this.newTodayState = newTodayState;
     }
 
-    public Boolean getPopularTodayState() {
+    public boolean getPopularTodayState() {
         return popularTodayState;
     }
 
-    public void setPopularTodayState(Boolean popularTodayState) {
+    public void setPopularTodayState(boolean popularTodayState) {
         this.popularTodayState = popularTodayState;
     }
 
-    public Boolean getDebut() {
+    public boolean getDebut() {
         return debut;
     }
 
-    public void setDebut(Boolean debut) {
+    public void setDebut(boolean debut) {
         this.debut = debut;
     }
 }

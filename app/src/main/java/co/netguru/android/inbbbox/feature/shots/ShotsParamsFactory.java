@@ -9,7 +9,7 @@ import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
 
 public class ShotsParamsFactory {
 
-    private LocalTimeFormatter dateFormatter;
+    private final LocalTimeFormatter dateFormatter;
 
     @Inject
     ShotsParamsFactory(LocalTimeFormatter dateFormatter) {
