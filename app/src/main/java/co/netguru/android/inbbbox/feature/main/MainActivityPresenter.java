@@ -64,6 +64,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     public void performLogout() {
         // TODO: 18.10.2016 Clear user shared preferences
         getView().showLoginActivity();
+        notificationScheduler.cancelNotification();
     }
 
     @Override
