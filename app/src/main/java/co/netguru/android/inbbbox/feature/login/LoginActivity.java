@@ -68,6 +68,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     public void sendActionIntent(String uriString) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uriString));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

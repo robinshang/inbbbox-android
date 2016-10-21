@@ -2,7 +2,6 @@ package co.netguru.android.inbbbox.feature.login;
 
 import android.net.Uri;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
@@ -60,7 +58,7 @@ public class LoginPresenterTest  {
     public void setup() {
         presenter.attachView(viewMock);
         when(tokenProviderMock.getToken(code))
-                .thenReturn(Observable.just(new Token()));
+                .thenReturn(Observable.just(true));
         when(userProviderMock.getUser()).
                 thenReturn(Observable.just(true));
     }
