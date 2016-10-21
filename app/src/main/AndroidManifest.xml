@@ -34,6 +34,8 @@
         <meta-data
             android:name="net.hockeyapp.android.appIdentifier"
             android:value="${HOCKEYAPP_APP_ID_BETA}" />
+
+        <receiver android:name=".feature.notification.NotificationAlarmReceiver" />
     </application>
 
 </manifest>

@@ -28,6 +28,7 @@ public class DataSourceModule {
     }
 
     @Provides
+    @Singleton
     DataSource<Settings> provideSettingsDataSource(Storage storage) {
         return new SettingsDataSourceImpl(storage);
     }

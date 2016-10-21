@@ -57,6 +57,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     private TextView drawerUserName;
     private CircleImageView drawerUserPhoto;
     private TextView drawerReminderTime;
+    private Switch notificationSwitch;
     private MainActivityPagerAdapter pagerAdapter;
 
     public static void startActivity(Context context) {
@@ -202,10 +203,12 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     }
 
     private void initializeDrawerSwitches() {
-        // TODO: 18.10.2016 Save user data in shared preferences
-        final Switch reminderSwitch = findById(navigationView.getMenu().findItem(R.id.drawer_item_enable_reminder)
+        notificationSwitch = findById(navigationView.getMenu().findItem(R.id.drawer_item_enable_reminder)
                 .getActionView(), R.id.drawer_item_switch);
-        reminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> drawerReminderTime.setEnabled(isChecked));
+        notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            drawerReminderTime.setEnabled(isChecked);
+            getPresenter().notificationStatusChanged(isChecked);
+        });
     }
 
     private void changeMenuGroupsVisibility(boolean isMainMenuVisible, boolean isLogoutMenuVisible) {
@@ -250,7 +253,12 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     }
 
     @Override
-    public void showChangedTime(String time) {
+    public void showNotificationTime(String time) {
         drawerReminderTime.setText(time);
+    }
+
+    @Override
+    public void changeNotificationStatus(boolean status) {
+        notificationSwitch.setChecked(status);
     }
 }

@@ -1,6 +1,8 @@
 package co.netguru.android.inbbbox.di.module;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.res.Resources;
 
@@ -34,5 +36,15 @@ public class ApplicationModule {
     @Provides
     Resources provideResources() {
         return application.getResources();
+    }
+
+    @Provides
+    NotificationManager provideNotificationManager() {
+        return (NotificationManager) application.getSystemService(Context.NOTIFICATION_SERVICE);
+    }
+
+    @Provides
+    AlarmManager provideAlarmManager() {
+        return (AlarmManager) application.getSystemService(Context.ALARM_SERVICE);
     }
 }

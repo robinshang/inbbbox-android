@@ -1,14 +1,15 @@
 package co.netguru.android.inbbbox.utils;
 
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.di.scope.ActivityScope;
-
-@ActivityScope
+@Singleton
 public final class LocalTimeFormatter {
 
     private static final String DATE_PATTER = "YYYY-MM-DD";
@@ -20,24 +21,20 @@ public final class LocalTimeFormatter {
         dateTimeFormatter = DateTimeFormatter.ofPattern(TIME_PATTER).withZone(ZoneId.systemDefault());
     }
 
-    public int getCurrentHour() {
-        return LocalTime.now().getHour();
-    }
-
-    public int getCurrentMinute() {
-        return LocalTime.now().getMinute();
-    }
-
     public String getFormattedTime(int hour, int minute) {
         return LocalTime.of(hour, minute).format(dateTimeFormatter);
-    }
-
-    public String getFormattedCurrentTime() {
-        return LocalTime.now().format(dateTimeFormatter);
     }
 
     public String getCurrentDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTER).withZone(ZoneId.systemDefault());
         return LocalTime.now().format(formatter);
+    }
+
+    public long getSecondsFromTime(int hour, int minute) {
+        return LocalDateTime.of(LocalDate.now(), getLocalTime(hour, minute)).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
+    private LocalTime getLocalTime(int hour, int minute) {
+        return LocalTime.of(hour, minute, 0);
     }
 }
