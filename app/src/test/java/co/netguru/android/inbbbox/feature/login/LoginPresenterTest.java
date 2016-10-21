@@ -109,6 +109,16 @@ public class LoginPresenterTest  {
         verify(viewMock).showNextScreen();
     }
 
+    @Test
+    public void whenHandlingOauthResponse_thenCloseDialog() {
+        when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(null);
+
+        presenter.handleOauthLoginResponse(uri);
+
+        verify(viewMock, times(1)).closeLoginDialog();
+    }
+
+
     //Errors
     @Test
     public void whenHandlingOauthResponseWithoutCode_thenShowErrorFromMessageFromUri() {

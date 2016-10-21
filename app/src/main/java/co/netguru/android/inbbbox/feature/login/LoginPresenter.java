@@ -110,9 +110,9 @@ public final class LoginPresenter
     private void verifyUser(Boolean status) {
         if (status) {
             getView().showNextScreen();
-            return;
+        } else {
+            getView().showApiError(errorHandler.getErrorLabel(ErrorType.INVALID_USER_INSTANCE));
         }
-        getView().showApiError(errorHandler.getErrorLabel(ErrorType.INVALID_USER_INSTANCE));
     }
 
     private void handleError(Throwable throwable) {
