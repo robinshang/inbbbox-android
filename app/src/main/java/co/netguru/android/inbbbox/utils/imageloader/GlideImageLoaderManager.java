@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import co.netguru.android.inbbbox.data.ui.ImageThumbnail;
 import co.netguru.android.inbbbox.utils.Constants;
@@ -45,6 +46,7 @@ public class GlideImageLoaderManager implements ImageLoader {
                 && imageThumbnail.getErrorImageResId() != Constants.UNDEFINED) {
             requestBuilder.error(imageThumbnail.getErrorImageResId());
         }
+        requestBuilder.diskCacheStrategy(DiskCacheStrategy.ALL);
         requestBuilder.into(destinationView);
     }
 }
