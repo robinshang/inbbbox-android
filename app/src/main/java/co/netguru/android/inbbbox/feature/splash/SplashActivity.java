@@ -1,12 +1,15 @@
 package co.netguru.android.inbbbox.feature.splash;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+
+import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends MvpActivity<SplashContract.View, SplashContract.Presenter>
+        implements SplashContract.View {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,5 +18,11 @@ public class SplashActivity extends AppCompatActivity {
         final Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @NonNull
+    @Override
+    public SplashContract.Presenter createPresenter() {
+        return null;
     }
 }
