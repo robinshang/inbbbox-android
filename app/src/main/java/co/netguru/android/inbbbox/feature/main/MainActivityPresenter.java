@@ -6,10 +6,13 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.data.models.User;
 import co.netguru.android.inbbbox.db.datasource.DataSource;
+
+import co.netguru.android.inbbbox.R;
+
 import co.netguru.android.inbbbox.data.models.NotificationSettings;
-import co.netguru.android.inbbbox.data.models.Settings;
 import co.netguru.android.inbbbox.di.scope.ActivityScope;
 import co.netguru.android.inbbbox.feature.main.MainViewContract.Presenter;
+import co.netguru.android.inbbbox.feature.notification.NotificationController;
 import co.netguru.android.inbbbox.feature.notification.NotificationScheduler;
 import co.netguru.android.inbbbox.feature.settings.SettingsManager;
 import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
@@ -28,6 +31,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private final LocalTimeFormatter localTimeFormatter;
     private final DataSource<User> userDataSource;
     private final NotificationScheduler notificationScheduler;
+    private final NotificationController notificationController;
     private final SettingsManager settingsManager;
     private final CompositeSubscription subscriptions;
 
@@ -35,10 +39,12 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     @Inject
     MainActivityPresenter(LocalTimeFormatter localTimeFormatter, DataSource<User> userDataSource,
-                          NotificationScheduler notificationScheduler, SettingsManager settingsManager) {
+                          NotificationScheduler notificationScheduler, NotificationController notificationController,
+                          SettingsManager settingsManager) {
         this.localTimeFormatter = localTimeFormatter;
         this.userDataSource = userDataSource;
         this.notificationScheduler = notificationScheduler;
+        this.notificationController = notificationController;
         this.settingsManager = settingsManager;
         subscriptions = new CompositeSubscription();
     }
@@ -81,11 +87,13 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     @Override
     public void timeViewClicked() {
-        final Subscription subscription = settingsManager.getSettings()
-                .map(Settings::getNotificationSettings)
+        final Subscription subscription = settingsManager.getNotificationSettings()
                 .compose(androidIO())
                 .subscribe(this::showTimePickDialog,
-                        throwable -> Timber.e(throwable, "Error while getting settings"));
+                        throwable -> {
+                            Timber.e(throwable, "Error while getting settings");
+                            getView().showMessage(R.string.error_database);
+                        });
         subscriptions.add(subscription);
     }
 
@@ -96,17 +104,11 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
             notificationScheduler.cancelNotification();
             return;
         }
-        final Subscription subscription = settingsManager.getSettings()
-                .map(Settings::getNotificationSettings)
-                .doOnNext(settings -> notificationScheduler.scheduleRepeatingNotification(settings.getHour(), settings.getMinute()))
+        final Subscription subscription = notificationController.scheduleNotification()
                 .compose(androidIO())
-                .subscribe(time -> {}, throwable -> Timber.e(throwable, "Error while scheduling notification"));
-        subscriptions.add(subscription);
-    }
+                .subscribe(this::onScheduleNotificationNext, this::onScheduleNotificationError);
 
-    @Override
-    public void clearSubscriptions() {
-        subscriptions.clear();
+        subscriptions.add(subscription);
     }
 
     private void saveNotificationStatus(boolean status) {
@@ -124,17 +126,15 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     private void onTimePicked(int hour, int minute) {
         final Subscription subscription = settingsManager.changeNotificationTime(hour, minute)
-                .doOnNext(status -> notificationScheduler.scheduleRepeatingNotification(hour, minute))
+                .concatMap(status -> notificationController.scheduleNotification())
                 .compose(androidIO())
-                .subscribe(status -> Timber.d("Notification time changed : %s", status),
-                        throwable -> Timber.e(throwable, "Error while changing notification time"),
+                .subscribe(this::onScheduleNotificationNext, this::onScheduleNotificationError,
                         () -> getView().showNotificationTime(localTimeFormatter.getFormattedTime(hour, minute)));
         subscriptions.add(subscription);
     }
 
     private void prepareUserSettings() {
-        final Subscription subscription = settingsManager.getSettings()
-                .map(Settings::getNotificationSettings)
+        final Subscription subscription = settingsManager.getNotificationSettings()
                 .doOnNext(this::checkNotificationSchedule)
                 .compose(androidIO())
                 .subscribe(this::setNotificationSettings,
@@ -144,13 +144,23 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     private void checkNotificationSchedule(NotificationSettings settings) {
         if (settings.isEnabled()) {
-            notificationScheduler.scheduleRepeatingNotification(settings.getHour(), settings.getMinute());
+            notificationController.scheduleNotification()
+                    .compose(androidIO())
+                    .subscribe(this::onScheduleNotificationNext, this::onScheduleNotificationError);
         }
+    }
+
+    private void onScheduleNotificationNext(NotificationSettings settings) {
+        Timber.d("Notification scheduled : %s", settings);
+    }
+    private void onScheduleNotificationError(Throwable throwable) {
+        Timber.e(throwable, "Error while scheduling notification");
     }
 
     private void setNotificationSettings(NotificationSettings notificationSettings) {
         getView().changeNotificationStatus(notificationSettings.isEnabled());
-        getView().showNotificationTime(localTimeFormatter.getFormattedTime(notificationSettings.getHour(), notificationSettings.getMinute()));
+        getView().showNotificationTime(localTimeFormatter.getFormattedTime(notificationSettings.getHour(),
+                notificationSettings.getMinute()));
     }
 
     private void showUserData() {

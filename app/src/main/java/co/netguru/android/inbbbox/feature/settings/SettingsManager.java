@@ -28,6 +28,12 @@ public final class SettingsManager {
                 .onErrorReturn(throwable -> DEFAULT_SETTINGS);
     }
 
+    public Observable<NotificationSettings> getNotificationSettings() {
+        return settingsDataSource.get()
+                .map(Settings::getNotificationSettings)
+                .onErrorReturn(throwable -> DEFAULT_SETTINGS.getNotificationSettings());
+    }
+
     public Observable<Boolean> changeNotificationStatus(boolean isEnabled) {
         return getSettings()
                 .map(settings -> new Settings(settings.getStreamSourceState(),

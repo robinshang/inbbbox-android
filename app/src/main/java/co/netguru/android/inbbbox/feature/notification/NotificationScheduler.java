@@ -1,9 +1,11 @@
 package co.netguru.android.inbbbox.feature.notification;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import org.threeten.bp.LocalTime;
 
@@ -30,9 +32,16 @@ public final class NotificationScheduler {
     }
 
     public void scheduleRepeatingNotification(int hour, int minute) {
-        Timber.d("Scheduling notification at : %s", LocalTime.of(hour, minute));
+        Timber.d("Scheduling repeating notification at : %s", LocalTime.of(hour, minute));
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, localTimeFormatter.getSecondsFromTime(hour, minute),
                 AlarmManager.INTERVAL_DAY,
+                createBroadcastPendingIntent());
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public void scheduleNotificationWhileIdle(int hour, int minute) {
+        Timber.d("Scheduling idle notification at : %s", LocalTime.of(hour, minute));
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, localTimeFormatter.getSecondsFromTime(hour, minute),
                 createBroadcastPendingIntent());
     }
 

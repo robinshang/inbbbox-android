@@ -31,7 +31,14 @@ public final class LocalTimeFormatter {
     }
 
     public long getSecondsFromTime(int hour, int minute) {
-        return LocalDateTime.of(LocalDate.now(), getLocalTime(hour, minute)).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        return LocalDateTime.of(getDate(hour, minute), getLocalTime(hour, minute)).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
+    private LocalDate getDate(int hour, int minute) {
+        if (LocalTime.of(hour, minute).isAfter(LocalTime.now())) {
+            return LocalDate.now();
+        }
+        return LocalDate.now().plusDays(1);
     }
 
     private LocalTime getLocalTime(int hour, int minute) {

@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
@@ -74,12 +76,6 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         initializeDrawer();
         initializeToolbar();
         getPresenter().prepareUserData();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        getPresenter().clearSubscriptions();
     }
 
     private void initComponent() {
@@ -266,5 +262,10 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     @Override
     public void changeNotificationStatus(boolean status) {
         notificationSwitch.setChecked(status);
+    }
+
+    @Override
+    public void showMessage(@StringRes int message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
