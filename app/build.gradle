@@ -14,8 +14,10 @@ ext {
     secrets = [
             // define your app secrets, for example:
             // hockeyAppId: keyProperty("HOCKEY_APP_ID")
-             dribbbleClientKey= keyProperty("DribbbleClientKey"),
-             dribbleClientSecret= keyProperty("DribbbleClientSecret")
+            hockeyAppId        : keyProperty("HockeyAppAppId"),
+            dribbbleClientKey  : keyProperty("DribbbleClientKey"),
+            dribbleClientSecret: keyProperty("DribbbleClientSecret"),
+
     ]
 }
 
@@ -32,8 +34,10 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        buildConfigField 'String', 'DRIBBBLE_CLIENT_KEY', '"' + dribbbleClientKey + '"'
-        buildConfigField 'String', 'DRIBBBLE_CLIENT_SECRET', '"' + dribbleClientSecret + '"'
+        manifestPlaceholders = [HOCKEYAPP_APP_ID_BETA: secrets.hockeyAppId]
+
+        buildConfigField 'String', 'DRIBBBLE_CLIENT_KEY', '"' + secrets.dribbbleClientKey + '"'
+        buildConfigField 'String', 'DRIBBBLE_CLIENT_SECRET', '"' + secrets.dribbleClientSecret + '"'
     }
 
     buildTypes {
@@ -269,6 +273,9 @@ dependencies {
 
     //Timber
     compile libs.timber
+
+    //HockeyApp
+    compile libs.hockeyApp
 
     // Unit testing
     testCompile(test.junit) {
