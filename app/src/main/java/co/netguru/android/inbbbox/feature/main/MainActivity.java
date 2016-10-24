@@ -240,6 +240,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
                 .load(url)
                 .placeholder(R.drawable.ic_ball_active)
                 .error(R.drawable.ic_ball_active)
+                .dontAnimate()
                 .into(drawerUserPhoto);
     }
 
