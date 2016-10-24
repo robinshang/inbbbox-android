@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import co.netguru.android.inbbbox.data.models.Settings;
+import co.netguru.android.inbbbox.data.models.User;
 import co.netguru.android.inbbbox.db.Storage;
 import co.netguru.android.inbbbox.utils.Constants;
 import co.netguru.android.testcommons.RxSyncTestRule;
@@ -21,8 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SettingsDataSourceImplTest {
-
+public class UserDataSourceImplTest {
     @Rule
     public TestRule rule = new RxSyncTestRule();
 
@@ -30,18 +29,18 @@ public class SettingsDataSourceImplTest {
     public Storage storageMock;
 
     @InjectMocks
-    public SettingsDataSourceImpl settingsDataSource;
+    public UserDataSourceImpl userDataSource;
 
     @Test
     public void whenSaveMethodCalled_thenPutSettingsObjectToStorageWithSettingsKey() {
-        Settings objectToSave = new Settings();
+        User objectToSave = new User();
         TestSubscriber<Boolean> testSubscriber = new TestSubscriber<>();
 
-        settingsDataSource.save(objectToSave).subscribe(testSubscriber);
+        userDataSource.save(objectToSave).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         try {
-            verify(storageMock, times(1)).put(Constants.Db.SETTINGS_KEY, objectToSave);
+            verify(storageMock, times(1)).put(Constants.Db.CURRENT_USER_KEY, objectToSave);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,10 +48,10 @@ public class SettingsDataSourceImplTest {
 
     @Test
     public void whenObjectSaved_thenReturnTrueAsResult() {
-        Settings objectToSave = new Settings();
+        User objectToSave = new User();
         TestSubscriber<Boolean> testSubscriber = new TestSubscriber<>();
 
-        settingsDataSource.save(objectToSave).subscribe(testSubscriber);
+        userDataSource.save(objectToSave).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         Assert.assertEquals(testSubscriber.getOnNextEvents().get(0), true);
@@ -60,18 +59,18 @@ public class SettingsDataSourceImplTest {
 
     @Test
     public void whenGetExistingObjectFromDb_thenReturnTheObject() {
-        Settings object = new Settings();
+        User object = new User();
         try {
-            when(storageMock.get(Constants.Db.SETTINGS_KEY, Settings.class)).thenReturn(object);
+            when(storageMock.get(Constants.Db.CURRENT_USER_KEY, User.class)).thenReturn(object);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        TestSubscriber<Settings> testSubscriber = new TestSubscriber<>();
+        TestSubscriber<User> testSubscriber = new TestSubscriber<>();
 
-        settingsDataSource.get().subscribe(testSubscriber);
+        userDataSource.get().subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        Settings result = testSubscriber.getOnNextEvents().get(0);
+        User result = testSubscriber.getOnNextEvents().get(0);
         Assert.assertEquals(object, result);
     }
 
@@ -79,14 +78,14 @@ public class SettingsDataSourceImplTest {
     @Test
     public void whenSaveMethodFailed_thenReturnFalse() {
         try {
-            doThrow(new Throwable()).when(storageMock).put(Constants.Db.SETTINGS_KEY, Settings.class);
+            doThrow(new Throwable()).when(storageMock).put(Constants.Db.CURRENT_USER_KEY, User.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Settings objectToSave = new Settings();
+        User objectToSave = new User();
         TestSubscriber<Boolean> testSubscriber = new TestSubscriber<>();
 
-        settingsDataSource.save(objectToSave).subscribe(testSubscriber);
+        userDataSource.save(objectToSave).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         Assert.assertEquals(testSubscriber.getOnNextEvents().get(0), false);
@@ -95,14 +94,15 @@ public class SettingsDataSourceImplTest {
     @Test
     public void whenGettingNotExistingObjectFromDb_thenReturnReturnEmptyObservable() {
         try {
-            doThrow(new Exception()).when(storageMock).get(Constants.Db.SETTINGS_KEY, Settings.class);
+            doThrow(new Exception()).when(storageMock).get(Constants.Db.CURRENT_USER_KEY, User.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        TestSubscriber<Settings> testSubscriber = new TestSubscriber<>();
+        TestSubscriber<User> testSubscriber = new TestSubscriber<>();
 
-        settingsDataSource.get().subscribe(testSubscriber);
+        userDataSource.get().subscribe(testSubscriber);
 
         Assert.assertEquals(testSubscriber.getValueCount(), 0);
     }
+
 }
