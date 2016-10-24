@@ -10,7 +10,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import co.netguru.android.inbbbox.data.ui.ImageThumbnail;
 import co.netguru.android.inbbbox.utils.Constants;
 
-public class GlideImageLoaderManager implements ImageLoader {
+public final class GlideImageLoaderManager implements ImageLoader {
 
     private Context context;
 
