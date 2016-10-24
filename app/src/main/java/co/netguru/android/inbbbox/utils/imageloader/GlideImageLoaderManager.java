@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.utils;
+package co.netguru.android.inbbbox.utils.imageloader;
 
 import android.content.Context;
 import android.widget.ImageView;
@@ -7,13 +7,13 @@ import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 
 import co.netguru.android.inbbbox.data.ui.ImageThumbnail;
+import co.netguru.android.inbbbox.utils.Constants;
 
-public class ImageLoaderManager {
-
+public class GlideImageLoaderManager implements ImageLoader {
 
     private Context context;
 
-    public ImageLoaderManager(Context context) {
+    public GlideImageLoaderManager(Context context) {
 
         this.context = context;
     }
@@ -39,6 +39,11 @@ public class ImageLoaderManager {
 
         if (thumbnailRequest != null) {
             requestBuilder.thumbnail(thumbnailRequest);
+        }
+
+        if (imageThumbnail.getErrorImageResId() != null
+                && imageThumbnail.getErrorImageResId() != Constants.UNDEFINED) {
+            requestBuilder.error(imageThumbnail.getErrorImageResId());
         }
         requestBuilder.into(destinationView);
     }

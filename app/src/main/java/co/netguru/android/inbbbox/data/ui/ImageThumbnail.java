@@ -6,4 +6,6 @@ public interface ImageThumbnail {
     String getThumbnailUrl();
 
     Integer getPlaceholderResId();
+
+    Integer getErrorImageResId();
 }
