@@ -7,8 +7,8 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
+import co.netguru.android.inbbbox.feature.authentication.TokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorType;
@@ -24,7 +24,7 @@ public final class LoginPresenter
         implements LoginContract.Presenter {
 
     private OauthUriProvider uriProvider;
-    private ApiTokenProvider apiTokenProvider;
+    private TokenProvider apiTokenProvider;
     private ErrorMessageParser errorHandler;
     private UserProvider userProvider;
 
@@ -34,7 +34,7 @@ public final class LoginPresenter
 
     @Inject
     LoginPresenter(OauthUriProvider oauthUriProvider,
-                   ApiTokenProvider apiTokenProvider,
+                   TokenProvider apiTokenProvider,
                    ErrorMessageParser apiErrorParser,
                    UserProvider userProvider) {
         this.uriProvider = oauthUriProvider;

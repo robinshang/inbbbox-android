@@ -8,13 +8,13 @@ import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.db.datasource.DataSource;
 import rx.Observable;
 
-public class ApiTokenProvider {
+public class TokenProvider {
 
     private final AuthorizeApi api;
     private final DataSource<Token> dataSource;
 
     @Inject
-    ApiTokenProvider(AuthorizeApi api, DataSource<Token> dataSource) {
+    TokenProvider(AuthorizeApi api, DataSource<Token> dataSource) {
         this.api = api;
         this.dataSource = dataSource;
     }

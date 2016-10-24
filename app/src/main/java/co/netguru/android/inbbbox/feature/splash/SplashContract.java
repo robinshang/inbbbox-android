@@ -6,6 +6,9 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 public interface SplashContract {
 
     interface View extends MvpView {
+        void openLoginScreen();
+
+        void openMainScreen();
 
     }
 
