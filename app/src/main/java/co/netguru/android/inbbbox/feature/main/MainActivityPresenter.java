@@ -27,9 +27,9 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     private final LocalTimeFormatter localTimeFormatter;
     private final DataSource<User> userDataSource;
-    private final CompositeSubscription subscriptions;
     private final NotificationScheduler notificationScheduler;
     private final SettingsManager settingsManager;
+    private final CompositeSubscription subscriptions;
 
     private User user;
 
@@ -81,11 +81,12 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     @Override
     public void timeViewClicked() {
-        settingsManager.getSettings()
+        final Subscription subscription = settingsManager.getSettings()
                 .map(Settings::getNotificationSettings)
                 .compose(androidIO())
                 .subscribe(this::showTimePickDialog,
                         throwable -> Timber.e(throwable, "Error while getting settings"));
+        subscriptions.add(subscription);
     }
 
     @Override
@@ -95,18 +96,25 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
             notificationScheduler.cancelNotification();
             return;
         }
-        settingsManager.getSettings()
+        final Subscription subscription = settingsManager.getSettings()
                 .map(Settings::getNotificationSettings)
                 .doOnNext(settings -> notificationScheduler.scheduleRepeatingNotification(settings.getHour(), settings.getMinute()))
                 .compose(androidIO())
                 .subscribe(time -> {}, throwable -> Timber.e(throwable, "Error while scheduling notification"));
+        subscriptions.add(subscription);
+    }
+
+    @Override
+    public void clearSubscriptions() {
+        subscriptions.clear();
     }
 
     private void saveNotificationStatus(boolean status) {
-        settingsManager.changeNotificationStatus(status)
+        final Subscription subscription = settingsManager.changeNotificationStatus(status)
                 .compose(androidIO())
                 .subscribe(status1 -> Timber.d("Saving new notification status : %s", status),
                         throwable -> Timber.e(throwable, "Error while saving notification status"));
+        subscriptions.add(subscription);
     }
 
     private void showTimePickDialog(NotificationSettings notificationSettings) {
@@ -115,21 +123,23 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     }
 
     private void onTimePicked(int hour, int minute) {
-        settingsManager.changeNotificationTime(hour, minute)
+        final Subscription subscription = settingsManager.changeNotificationTime(hour, minute)
                 .doOnNext(status -> notificationScheduler.scheduleRepeatingNotification(hour, minute))
                 .compose(androidIO())
                 .subscribe(status -> Timber.d("Notification time changed : %s", status),
                         throwable -> Timber.e(throwable, "Error while changing notification time"),
                         () -> getView().showNotificationTime(localTimeFormatter.getFormattedTime(hour, minute)));
+        subscriptions.add(subscription);
     }
 
     private void prepareUserSettings() {
-        settingsManager.getSettings()
+        final Subscription subscription = settingsManager.getSettings()
                 .map(Settings::getNotificationSettings)
                 .doOnNext(this::checkNotificationSchedule)
                 .compose(androidIO())
                 .subscribe(this::setNotificationSettings,
                         throwable -> Timber.e(throwable, "Error while getting settings"));
+        subscriptions.add(subscription);
     }
 
     private void checkNotificationSchedule(NotificationSettings settings) {

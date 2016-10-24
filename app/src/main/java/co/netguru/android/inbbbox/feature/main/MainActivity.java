@@ -76,6 +76,12 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         getPresenter().prepareUserData();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getPresenter().clearSubscriptions();
+    }
+
     private void initComponent() {
         component = App.getAppComponent(this)
                 .plus(new MainActivityModule());

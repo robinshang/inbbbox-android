@@ -37,5 +37,7 @@ interface MainViewContract {
         void timeViewClicked();
 
         void notificationStatusChanged(boolean status);
+
+        void clearSubscriptions();
     }
 }
