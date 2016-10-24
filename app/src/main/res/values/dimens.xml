@@ -20,6 +20,6 @@
     <dimen name="drawer_header_photo_size">72dp</dimen>
     <dimen name="drawer_header_photo_border">5dp</dimen>
     <dimen name="drawer_header_photo_margin_top">52dp</dimen>
-    <dimen name="drawer_arrow_size">32dp</dimen>
-    <dimen name="drawer_arrow_margin_end">12dp</dimen>
+    <dimen name="drawer_arrow_size">24dp</dimen> 
+    <dimen name="drawer_arrow_margin_end">6dp</dimen>
 </resources>
