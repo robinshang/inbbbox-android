@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.di.module;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -8,6 +10,7 @@ import javax.inject.Singleton;
 import co.netguru.android.inbbbox.application.configuration.RequestInterceptor;
 import co.netguru.android.inbbbox.db.Storage;
 import co.netguru.android.inbbbox.utils.Constants;
+import co.netguru.android.inbbbox.utils.ImageLoaderManager;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
@@ -48,5 +51,10 @@ public class ConfigurationModule {
                 .baseUrl(Constants.API.DRIBBLE_BASE_URL)
                 .client(okHttpClient)
                 .build();
+    }
+
+    @Provides
+    ImageLoaderManager provideImageLoaderManager(Context context) {
+        return new ImageLoaderManager(context);
     }
 }
