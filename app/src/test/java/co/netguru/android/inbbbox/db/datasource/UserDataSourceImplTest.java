@@ -32,18 +32,14 @@ public class UserDataSourceImplTest {
     public UserDataSourceImpl userDataSource;
 
     @Test
-    public void whenSaveMethodCalled_thenPutSettingsObjectToStorageWithSettingsKey() {
+    public void whenSaveMethodCalled_thenPutSettingsObjectToStorageWithSettingsKey() throws Exception {
         User objectToSave = new User();
         TestSubscriber<Boolean> testSubscriber = new TestSubscriber<>();
 
         userDataSource.save(objectToSave).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        try {
-            verify(storageMock, times(1)).put(Constants.Db.CURRENT_USER_KEY, objectToSave);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        verify(storageMock, times(1)).put(Constants.Db.CURRENT_USER_KEY, objectToSave);
     }
 
     @Test
@@ -58,13 +54,9 @@ public class UserDataSourceImplTest {
     }
 
     @Test
-    public void whenGetExistingObjectFromDb_thenReturnTheObject() {
+    public void whenGetExistingObjectFromDb_thenReturnTheObject() throws Exception {
         User object = new User();
-        try {
-            when(storageMock.get(Constants.Db.CURRENT_USER_KEY, User.class)).thenReturn(object);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        when(storageMock.get(Constants.Db.CURRENT_USER_KEY, User.class)).thenReturn(object);
         TestSubscriber<User> testSubscriber = new TestSubscriber<>();
 
         userDataSource.get().subscribe(testSubscriber);
@@ -76,12 +68,8 @@ public class UserDataSourceImplTest {
 
     //ERRORS
     @Test
-    public void whenSaveMethodFailed_thenReturnFalse() {
-        try {
-            doThrow(new Throwable()).when(storageMock).put(Constants.Db.CURRENT_USER_KEY, User.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void whenSaveMethodFailed_thenReturnFalse() throws Exception {
+        doThrow(new Throwable()).doCallRealMethod();
         User objectToSave = new User();
         TestSubscriber<Boolean> testSubscriber = new TestSubscriber<>();
 
@@ -92,12 +80,8 @@ public class UserDataSourceImplTest {
     }
 
     @Test
-    public void whenGettingNotExistingObjectFromDb_thenReturnReturnEmptyObservable() {
-        try {
-            doThrow(new Exception()).when(storageMock).get(Constants.Db.CURRENT_USER_KEY, User.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void whenGettingNotExistingObjectFromDb_thenReturnReturnEmptyObservable() throws Exception {
+        doThrow(new Exception()).when(storageMock).get(Constants.Db.CURRENT_USER_KEY, User.class);
         TestSubscriber<User> testSubscriber = new TestSubscriber<>();
 
         userDataSource.get().subscribe(testSubscriber);

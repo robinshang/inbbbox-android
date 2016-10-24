@@ -33,18 +33,14 @@ public class SettingsDataSourceImplTest {
     public SettingsDataSourceImpl settingsDataSource;
 
     @Test
-    public void whenSaveMethodCalled_thenPutSettingsObjectToStorageWithSettingsKey() {
+    public void whenSaveMethodCalled_thenPutSettingsObjectToStorageWithSettingsKey() throws Exception {
         Settings objectToSave = new Settings();
         TestSubscriber<Boolean> testSubscriber = new TestSubscriber<>();
 
         settingsDataSource.save(objectToSave).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        try {
-            verify(storageMock, times(1)).put(Constants.Db.SETTINGS_KEY, objectToSave);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        verify(storageMock, times(1)).put(Constants.Db.SETTINGS_KEY, objectToSave);
     }
 
     @Test
@@ -59,13 +55,9 @@ public class SettingsDataSourceImplTest {
     }
 
     @Test
-    public void whenGetExistingObjectFromDb_thenReturnTheObject() {
+    public void whenGetExistingObjectFromDb_thenReturnTheObject() throws Exception {
         Settings object = new Settings();
-        try {
-            when(storageMock.get(Constants.Db.SETTINGS_KEY, Settings.class)).thenReturn(object);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        when(storageMock.get(Constants.Db.SETTINGS_KEY, Settings.class)).thenReturn(object);
         TestSubscriber<Settings> testSubscriber = new TestSubscriber<>();
 
         settingsDataSource.get().subscribe(testSubscriber);
@@ -77,12 +69,8 @@ public class SettingsDataSourceImplTest {
 
     //ERRORS
     @Test
-    public void whenSaveMethodFailed_thenReturnFalse() {
-        try {
-            doThrow(new Throwable()).when(storageMock).put(Constants.Db.SETTINGS_KEY, Settings.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void whenSaveMethodFailed_thenReturnFalse() throws Exception {
+        doThrow(new Throwable()).doCallRealMethod();
         Settings objectToSave = new Settings();
         TestSubscriber<Boolean> testSubscriber = new TestSubscriber<>();
 
@@ -93,12 +81,8 @@ public class SettingsDataSourceImplTest {
     }
 
     @Test
-    public void whenGettingNotExistingObjectFromDb_thenReturnReturnEmptyObservable() {
-        try {
-            doThrow(new Exception()).when(storageMock).get(Constants.Db.SETTINGS_KEY, Settings.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void whenGettingNotExistingObjectFromDb_thenReturnReturnEmptyObservable() throws Exception {
+        doThrow(new Exception()).when(storageMock).get(Constants.Db.SETTINGS_KEY, Settings.class);
         TestSubscriber<Settings> testSubscriber = new TestSubscriber<>();
 
         settingsDataSource.get().subscribe(testSubscriber);

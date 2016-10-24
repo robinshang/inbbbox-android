@@ -33,18 +33,14 @@ public class TokenDataSourceImplTest {
     public TokenDataSourceImpl tokkenDataSource;
 
     @Test
-    public void whenSaveMethodCalled_thenPutSettingsObjectToStorageWithSettingsKey() {
+    public void whenSaveMethodCalled_thenPutSettingsObjectToStorageWithSettingsKey() throws Exception {
         Token objectToSave = new Token();
         TestSubscriber<Boolean> testSubscriber = new TestSubscriber<>();
 
         tokkenDataSource.save(objectToSave).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        try {
-            verify(storageMock, times(1)).put(Constants.Db.TOKEN_KEY, objectToSave);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        verify(storageMock, times(1)).put(Constants.Db.TOKEN_KEY, objectToSave);
     }
 
     @Test
@@ -59,13 +55,9 @@ public class TokenDataSourceImplTest {
     }
 
     @Test
-    public void whenGetExistingObjectFromDb_thenReturnTheObject() {
+    public void whenGetExistingObjectFromDb_thenReturnTheObject() throws Exception {
         Token object = new Token();
-        try {
-            when(storageMock.get(Constants.Db.TOKEN_KEY, Token.class)).thenReturn(object);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        when(storageMock.get(Constants.Db.TOKEN_KEY, Token.class)).thenReturn(object);
         TestSubscriber<Token> testSubscriber = new TestSubscriber<>();
 
         tokkenDataSource.get().subscribe(testSubscriber);
@@ -77,28 +69,20 @@ public class TokenDataSourceImplTest {
 
     //ERRORS
     @Test
-    public void whenSaveMethodFailed_thenReturnFalse() {
-        try {
-            doThrow(new Throwable()).when(storageMock).put(Constants.Db.TOKEN_KEY, Token.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void whenSaveMethodFailed_thenReturnFalse() throws Exception {
+        doThrow(new Throwable()).doCallRealMethod();
         Token objectToSave = new Token();
         TestSubscriber<Boolean> testSubscriber = new TestSubscriber<>();
 
         tokkenDataSource.save(objectToSave).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        Assert.assertEquals(testSubscriber.getOnNextEvents().get(0), false);
+        Assert.assertEquals(false, testSubscriber.getOnNextEvents().get(0));
     }
 
     @Test
-    public void whenGettingNotExistingObjectFromDb_thenReturnReturnEmptyObservable() {
-        try {
-            doThrow(new Exception()).when(storageMock).get(Constants.Db.TOKEN_KEY, Token.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void whenGettingNotExistingObjectFromDb_thenReturnReturnEmptyObservable() throws Exception {
+        doThrow(new Exception()).when(storageMock).get(Constants.Db.TOKEN_KEY, Token.class);
         TestSubscriber<Token> testSubscriber = new TestSubscriber<>();
 
         tokkenDataSource.get().subscribe(testSubscriber);
