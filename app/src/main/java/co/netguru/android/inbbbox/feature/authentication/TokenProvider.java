@@ -28,4 +28,17 @@ public class TokenProvider {
     private Observable<Boolean> saveTokenToStorage(Token tokenResponse) {
         return dataSource.save(tokenResponse);
     }
+
+    public Observable<Boolean> isTokenValid() {
+        return dataSource.get()
+                .flatMap(this::checkToken);
+    }
+
+    private Observable<Boolean> checkToken(Token token) {
+        boolean result = false;
+        if (token != null && token.getAccessToken() != null) {
+            result = true;
+        }
+        return Observable.just(result);
+    }
 }

@@ -19,8 +19,6 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
     protected void onCreate(Bundle savedInstanceState) {
         initComponent();
         super.onCreate(savedInstanceState);
-
-        openMainScreen();
     }
 
     private void initComponent() {
@@ -36,13 +34,14 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
     }
 
     @Override
-    public void openLoginScreen() {
+    public void showLoginScreen() {
         LoginActivity.startActivity(this);
         finish();
     }
 
     @Override
-    public void openMainScreen() {
+    public void showMainScreen() {
         MainActivity.startActivity(this);
+        finish();
     }
 }
