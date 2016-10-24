@@ -18,10 +18,10 @@ import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
 
 public class ShotsProvider {
 
-    private ShotsApi shotsApi;
-    private ShotsMapper mapper;
-    private DataSource<Settings> settingsDataSource;
-    private ShotsParamsFactory shotsParamFactory;
+    private final ShotsApi shotsApi;
+    private final ShotsMapper mapper;
+    private final DataSource<Settings> settingsDataSource;
+    private final ShotsParamsFactory shotsParamFactory;
 
     @Inject
     ShotsProvider(ShotsApi shotsApi,
