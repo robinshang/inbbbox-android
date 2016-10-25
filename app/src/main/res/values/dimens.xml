@@ -22,4 +22,6 @@
     <dimen name="drawer_header_photo_margin_top">52dp</dimen>
     <dimen name="drawer_arrow_size">24dp</dimen> 
     <dimen name="drawer_arrow_margin_end">6dp</dimen>
+    <dimen name="shot_image_height">200dp</dimen>
+    <dimen name="shot_item_internal_padding">24dp</dimen>
 </resources>
