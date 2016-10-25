@@ -11,8 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import co.netguru.android.inbbbox.feature.authentication.ApiTokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
+import co.netguru.android.inbbbox.feature.authentication.TokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorType;
@@ -37,7 +37,7 @@ public class LoginPresenterTest  {
     private ErrorMessageParser errorMessageParser;
 
     @Mock
-    private ApiTokenProvider tokenProviderMock;
+    private TokenProvider tokenProviderMock;
 
     @Mock
     private LoginContract.View viewMock;

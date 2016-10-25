@@ -8,13 +8,13 @@ import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.db.datasource.DataSource;
 import rx.Observable;
 
-public class ApiTokenProvider {
+public class TokenProvider {
 
     private final AuthorizeApi api;
     private final DataSource<Token> dataSource;
 
     @Inject
-    ApiTokenProvider(AuthorizeApi api, DataSource<Token> dataSource) {
+    TokenProvider(AuthorizeApi api, DataSource<Token> dataSource) {
         this.api = api;
         this.dataSource = dataSource;
     }
@@ -27,5 +27,14 @@ public class ApiTokenProvider {
 
     private Observable<Boolean> saveTokenToStorage(Token tokenResponse) {
         return dataSource.save(tokenResponse);
+    }
+
+    public Observable<Boolean> isTokenValid() {
+        return dataSource.get()
+                .flatMap(this::checkToken);
+    }
+
+    private Observable<Boolean> checkToken(Token token) {
+        return Observable.just(token != null && token.getAccessToken() != null);
     }
 }

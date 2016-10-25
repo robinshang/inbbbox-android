@@ -40,7 +40,7 @@ public class ApiTokenProviderTest {
     public Resources resourcesMock;
 
     @InjectMocks
-    public ApiTokenProvider apiTokenProvider;
+    public TokenProvider apiTokenProvider;
 
     private String code = "testCode";
     private String resourcesString = "clientId";

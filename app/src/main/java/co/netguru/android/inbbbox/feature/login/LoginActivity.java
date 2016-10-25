@@ -97,7 +97,9 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
         dialogBuilder.setView(webView);
         loginDialog = dialogBuilder.create();
-        loginDialog.show();
+        if (!isFinishing()) {
+            loginDialog.show();
+        }
     }
 
     @Override
@@ -116,5 +118,11 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         if (loginDialog != null) {
             loginDialog.dismiss();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        closeLoginDialog();
     }
 }
