@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.feature.splash;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
@@ -43,5 +44,10 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
     public void showMainScreen() {
         MainActivity.startActivity(this);
         finish();
+    }
+
+    @Override
+    public void showError(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 }
