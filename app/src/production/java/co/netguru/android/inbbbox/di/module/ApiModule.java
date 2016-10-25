@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.data.api.AuthorizeApi;
+import co.netguru.android.inbbbox.data.api.LikesApi;
 import co.netguru.android.inbbbox.data.api.ShotsApi;
 import co.netguru.android.inbbbox.data.api.UserApi;
 import co.netguru.android.inbbbox.utils.Constants;
@@ -40,5 +41,11 @@ public class ApiModule {
     @Provides
     ShotsApi provideShotsApi(Retrofit retrofit) {
         return retrofit.create(ShotsApi.class);
+    }
+
+    @Singleton
+    @Provides
+    LikesApi provideLikesApi(Retrofit retrofit) {
+        return retrofit.create(LikesApi.class);
     }
 }

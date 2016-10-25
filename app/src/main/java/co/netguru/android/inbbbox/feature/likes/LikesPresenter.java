@@ -10,8 +10,10 @@ import co.netguru.android.inbbbox.di.scope.FragmentScope;
 public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewContract.View>
         implements LikesViewContract.Presenter {
 
-    @Inject
-    LikesPresenter() {
+    private final LikesProvider likesProvider;
 
+    @Inject
+    LikesPresenter(LikesProvider likesProvider) {
+        this.likesProvider = likesProvider;
     }
 }
