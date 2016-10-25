@@ -1,9 +1,13 @@
 package co.netguru.android.inbbbox.feature.main;
 
+import android.support.annotation.Nullable;
+
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
+import co.netguru.android.inbbbox.data.models.Settings;
+import co.netguru.android.inbbbox.data.models.StreamSourceSettings;
 import co.netguru.android.inbbbox.data.models.User;
 import co.netguru.android.inbbbox.db.datasource.DataSource;
 
@@ -111,10 +115,29 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         subscriptions.add(subscription);
     }
 
+    @Override
+    public void streamSourceStatusChanged(@Nullable Boolean isFollowing, @Nullable Boolean isNew,
+                                          @Nullable Boolean isPopular, @Nullable Boolean isDebuts) {
+        final Subscription subscription = settingsManager.changeStreamSourceSettings(isFollowing, isNew, isPopular, isDebuts)
+                .compose(androidIO())
+                .subscribe(status -> Timber.d("Stream source settings changed : %s", status),
+                        throwable -> Timber.e(throwable, "Error while changing stream source settings"));
+        subscriptions.add(subscription);
+    }
+
+    @Override
+    public void customizationStatusChanged(boolean isDetails) {
+        final Subscription subscription = settingsManager.changeShotsDetailsStatus(isDetails)
+                .compose(androidIO())
+                .subscribe(status -> Timber.d("Customization settings changed : %s", status),
+                        throwable -> Timber.e(throwable, "Error while changing customization settings"));
+        subscriptions.add(subscription);
+    }
+
     private void saveNotificationStatus(boolean status) {
         final Subscription subscription = settingsManager.changeNotificationStatus(status)
                 .compose(androidIO())
-                .subscribe(status1 -> Timber.d("Saving new notification status : %s", status),
+                .subscribe(status1 -> Timber.d("Saving new notification status : %s", status1),
                         throwable -> Timber.e(throwable, "Error while saving notification status"));
         subscriptions.add(subscription);
     }
@@ -134,10 +157,10 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     }
 
     private void prepareUserSettings() {
-        final Subscription subscription = settingsManager.getNotificationSettings()
-                .doOnNext(this::checkNotificationSchedule)
+        final Subscription subscription = settingsManager.getSettings()
+                .doOnNext(settings -> checkNotificationSchedule(settings.getNotificationSettings()))
                 .compose(androidIO())
-                .subscribe(this::setNotificationSettings,
+                .subscribe(this::setSettings,
                         throwable -> Timber.e(throwable, "Error while getting settings"));
         subscriptions.add(subscription);
     }
@@ -150,11 +173,10 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         }
     }
 
-    private void onScheduleNotificationNext(NotificationSettings settings) {
-        Timber.d("Notification scheduled : %s", settings);
-    }
-    private void onScheduleNotificationError(Throwable throwable) {
-        Timber.e(throwable, "Error while scheduling notification");
+    private void setSettings(Settings settings) {
+        setNotificationSettings(settings.getNotificationSettings());
+        setStreamSourceSettings(settings.getStreamSourceSettings());
+        getView().changeCustomizationStatus(settings.getCustomizationSettings().isShowDetails());
     }
 
     private void setNotificationSettings(NotificationSettings notificationSettings) {
@@ -162,6 +184,20 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         getView().showNotificationTime(localTimeFormatter.getFormattedTime(notificationSettings.getHour(),
                 notificationSettings.getMinute()));
     }
+
+    private void setStreamSourceSettings(StreamSourceSettings streamSourceSettings) {
+        getView().changeStreamSourceStatus(streamSourceSettings.isFollowing(), streamSourceSettings.isNewToday(),
+                streamSourceSettings.isPopularToday(), streamSourceSettings.isDebut());
+    }
+
+    private void onScheduleNotificationNext(NotificationSettings settings) {
+        Timber.d("Notification scheduled : %s", settings);
+    }
+    private void onScheduleNotificationError(Throwable throwable) {
+        Timber.e(throwable, "Error while scheduling notification");
+    }
+
+
 
     private void showUserData() {
         getView().showUserName(user.getUsername());

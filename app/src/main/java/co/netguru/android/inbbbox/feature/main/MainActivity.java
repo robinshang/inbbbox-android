@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
@@ -60,6 +61,11 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     private CircleImageView drawerUserPhoto;
     private TextView drawerReminderTime;
     private Switch notificationSwitch;
+    private Switch followingSwitch;
+    private Switch newSwitch;
+    private Switch popularSwitch;
+    private Switch debutsSwitch;
+    private Switch shotDetailsSwitch;
     private MainActivityPagerAdapter pagerAdapter;
 
     public static void startActivity(Context context) {
@@ -205,12 +211,29 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     }
 
     private void initializeDrawerSwitches() {
-        notificationSwitch = findById(navigationView.getMenu().findItem(R.id.drawer_item_enable_reminder)
-                .getActionView(), R.id.drawer_item_switch);
+        notificationSwitch = findDrawerSwitch(R.id.drawer_item_enable_reminder);
         notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             drawerReminderTime.setEnabled(isChecked);
             getPresenter().notificationStatusChanged(isChecked);
         });
+        followingSwitch = findDrawerSwitch(R.id.drawer_item_following);
+        followingSwitch.setOnCheckedChangeListener(((buttonView, isChecked) ->
+                getPresenter().streamSourceStatusChanged(isChecked, null, null, null)));
+        newSwitch = findDrawerSwitch(R.id.drawer_item_new);
+        newSwitch.setOnCheckedChangeListener(((buttonView, isChecked) ->
+                getPresenter().streamSourceStatusChanged(null, isChecked, null, null)));
+        popularSwitch = findDrawerSwitch(R.id.drawer_item_popular);
+        popularSwitch.setOnCheckedChangeListener(((buttonView, isChecked) ->
+                getPresenter().streamSourceStatusChanged(null, null, isChecked, null)));
+        debutsSwitch = findDrawerSwitch(R.id.drawer_item_debuts);
+        debutsSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                getPresenter().streamSourceStatusChanged(null, null, null, isChecked));
+        shotDetailsSwitch = findDrawerSwitch(R.id.drawer_item_shot_details);
+        shotDetailsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().customizationStatusChanged(isChecked));
+    }
+
+    private Switch findDrawerSwitch(@IdRes int itemId) {
+        return findById(navigationView.getMenu().findItem(itemId).getActionView(), R.id.drawer_item_switch);
     }
 
     private void changeMenuGroupsVisibility(boolean isMainMenuVisible, boolean isLogoutMenuVisible) {
@@ -262,6 +285,19 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     @Override
     public void changeNotificationStatus(boolean status) {
         notificationSwitch.setChecked(status);
+    }
+
+    @Override
+    public void changeStreamSourceStatus(boolean isFollowing, boolean isNew, boolean isPopular, boolean isDebuts) {
+        followingSwitch.setChecked(isFollowing);
+        newSwitch.setChecked(isNew);
+        popularSwitch.setChecked(isPopular);
+        debutsSwitch.setChecked(isDebuts);
+    }
+
+    @Override
+    public void changeCustomizationStatus(boolean isDetails) {
+        shotDetailsSwitch.setChecked(isDetails);
     }
 
     @Override
