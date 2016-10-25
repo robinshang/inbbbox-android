@@ -21,7 +21,8 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     private Boolean isValid = false;
 
     @Inject
-    SplashPresenter(TokenProvider tokenProvider, UserProvider userProvider,
+    SplashPresenter(TokenProvider tokenProvider,
+                    UserProvider userProvider,
                     ErrorMessageParser errorParser) {
 
         this.tokenProvider = tokenProvider;
