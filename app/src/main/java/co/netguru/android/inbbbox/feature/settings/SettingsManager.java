@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.feature.settings;
 
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -15,21 +16,20 @@ import rx.Observable;
 @Singleton
 public final class SettingsManager {
 
-    private final DataSource<Settings> settingsDataSource;
-    private static final Settings DEFAULT_SETTINGS;
+    @VisibleForTesting
+    final Settings defaultSettings;
 
-    static  {
-        DEFAULT_SETTINGS = new Settings();
-    }
+    private final DataSource<Settings> settingsDataSource;
 
     @Inject
     public SettingsManager(DataSource<Settings> settingsDataSource) {
         this.settingsDataSource = settingsDataSource;
+        defaultSettings = new Settings();
     }
 
     public Observable<Settings> getSettings() {
         return settingsDataSource.get()
-                .onErrorReturn(throwable -> DEFAULT_SETTINGS);
+                .onErrorReturn(throwable -> defaultSettings);
     }
 
     public Observable<NotificationSettings> getNotificationSettings() {
