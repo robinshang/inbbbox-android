@@ -60,6 +60,8 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
 
     @Inject
     ImageLoader imageLoader;
+    @Inject
+    MainActivityPresenter presenter;
 
     private MainActivityComponent component;
     private TextView drawerUserName;
@@ -86,20 +88,19 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         initializePager();
         initializeDrawer();
         initializeToolbar();
-        getPresenter().prepareUserData();
+        presenter.prepareUserData();
     }
 
     private void initComponent() {
         component = App.getAppComponent(this)
                 .plus(new MainActivityModule());
         component.inject(this);
-
     }
 
     @NonNull
     @Override
     public MainViewContract.Presenter createPresenter() {
-        return component.getMainActivityPresenter();
+        return presenter;
     }
 
     @Override
@@ -195,7 +196,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
                 .findItem(R.id.drawer_item_reminder).getActionView(), R.id.drawer_item_time);
 
         drawerToggle.setOnCheckedChangeListener(
-                (buttonView, isChecked) -> getPresenter().toggleButtonClicked(isChecked));
+                (buttonView, isChecked) -> presenter.toggleButtonClicked(isChecked));
 
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -210,7 +211,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     }
 
     private void initializeDrawerReminder() {
-        drawerReminderTime.setOnClickListener(v -> getPresenter().timeViewClicked());
+        drawerReminderTime.setOnClickListener(v -> presenter.timeViewClicked());
         drawerReminderTime.setEnabled(false);
         initializeDrawerSwitches();
     }
@@ -219,18 +220,18 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         notificationSwitch = findDrawerSwitch(R.id.drawer_item_enable_reminder);
         notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             drawerReminderTime.setEnabled(isChecked);
-            getPresenter().notificationStatusChanged(isChecked);
+            presenter.notificationStatusChanged(isChecked);
         });
         followingSwitch = findDrawerSwitch(R.id.drawer_item_following);
-        followingSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().followingStatusChanged(isChecked)));
+        followingSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> presenter.followingStatusChanged(isChecked)));
         newSwitch = findDrawerSwitch(R.id.drawer_item_new);
-        newSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().newStatusChanged(isChecked)));
+        newSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> presenter.newStatusChanged(isChecked)));
         popularSwitch = findDrawerSwitch(R.id.drawer_item_popular);
-        popularSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().popularStatusChanged(isChecked)));
+        popularSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> presenter.popularStatusChanged(isChecked)));
         debutsSwitch = findDrawerSwitch(R.id.drawer_item_debuts);
-        debutsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().debutsStatusChanged(isChecked));
+        debutsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> presenter.debutsStatusChanged(isChecked));
         shotDetailsSwitch = findDrawerSwitch(R.id.drawer_item_shot_details);
-        shotDetailsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().customizationStatusChanged(isChecked));
+        shotDetailsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> presenter.customizationStatusChanged(isChecked));
     }
 
     private Switch findDrawerSwitch(@IdRes int itemId) {

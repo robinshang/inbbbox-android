@@ -8,6 +8,7 @@ import co.netguru.android.inbbbox.di.module.ApiModule;
 import co.netguru.android.inbbbox.di.module.ApplicationModule;
 import co.netguru.android.inbbbox.di.module.ConfigurationModule;
 import co.netguru.android.inbbbox.di.module.DataSourceModule;
+import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.di.module.MainActivityModule;
 import co.netguru.android.inbbbox.di.module.StorageModule;
@@ -36,6 +37,8 @@ public interface ApplicationComponent extends BaseComponent {
     SplashScreenComponent plusSplashScreenComponent();
 
     ShotsComponent plusShotsComponent();
+
+    LikesFragmentComponent plus(LikesFragmentModule module);
 
     void inject(NotificationAlarmReceiver receiver);
 }
