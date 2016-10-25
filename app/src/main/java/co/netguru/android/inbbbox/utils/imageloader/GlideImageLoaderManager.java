@@ -47,6 +47,7 @@ public final class GlideImageLoaderManager implements ImageLoader {
             requestBuilder.error(imageThumbnail.getErrorImageResId());
         }
         requestBuilder.diskCacheStrategy(DiskCacheStrategy.ALL);
+        requestBuilder.animate(android.R.anim.fade_in);
         requestBuilder.into(destinationView);
     }
 }

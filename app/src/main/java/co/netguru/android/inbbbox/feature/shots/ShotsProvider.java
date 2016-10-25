@@ -9,7 +9,7 @@ import co.netguru.android.inbbbox.data.api.ShotsApi;
 import co.netguru.android.inbbbox.data.models.FilteredShotsParams;
 import co.netguru.android.inbbbox.data.models.Settings;
 import co.netguru.android.inbbbox.data.models.ShotEntity;
-import co.netguru.android.inbbbox.data.models.StreamSourceState;
+import co.netguru.android.inbbbox.data.models.StreamSourceSettings;
 import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.db.datasource.DataSource;
 import rx.Observable;
@@ -39,15 +39,15 @@ public class ShotsProvider {
     }
 
     private Observable<List<Shot>> getShotsObservable(Settings settings) {
-        return selectRequest(settings.getStreamSourceState())
+        return selectRequest(settings.getStreamSourceSettings())
                 .compose(fromListObservable())
-                .map(entity -> mapper.getShot(entity))
+                .map(mapper::getShot)
                 .toList();
     }
 
-    private Observable<List<ShotEntity>> selectRequest(StreamSourceState sourceSettings) {
+    private Observable<List<ShotEntity>> selectRequest(StreamSourceSettings sourceSettings) {
         List<Observable<List<ShotEntity>>> observablesToExecute = new ArrayList<>();
-        if (sourceSettings.getFollowingState()) {
+        if (sourceSettings.isFollowing()) {
             observablesToExecute.add(getFollowingShotsData());
         }
 
@@ -67,7 +67,7 @@ public class ShotsProvider {
         return results;
     }
 
-    private Observable<List<ShotEntity>> getFilteredShots(StreamSourceState sourceSettings) {
+    private Observable<List<ShotEntity>> getFilteredShots(StreamSourceSettings sourceSettings) {
         FilteredShotsParams params = shotsParamFactory.getShotsParams(sourceSettings);
         return shotsApi.getFilteredShots(params.list(),
                 params.timeFrame(),
@@ -84,17 +84,17 @@ public class ShotsProvider {
         return settingsDataSource.get();
     }
 
-    private int getRequestCount(StreamSourceState sourceSettings) {
+    private int getRequestCount(StreamSourceSettings sourceSettings) {
         int count = 0;
-        if (sourceSettings.getPopularTodayState()) {
+        if (sourceSettings.isPopularToday()) {
             count++;
         }
 
-        if (sourceSettings.getDebut()) {
+        if (sourceSettings.isDebut()) {
             count++;
         }
 
-        if (sourceSettings.getNewTodayState()) {
+        if (sourceSettings.isNewToday()) {
             count++;
         }
         return count;

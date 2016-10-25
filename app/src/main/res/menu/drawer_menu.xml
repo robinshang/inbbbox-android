@@ -25,16 +25,20 @@
                 <group>
                     <item
                         android:title="@string/drawer_following"
-                        app:actionLayout="@layout/drawer_item_switch" />
+                        app:actionLayout="@layout/drawer_item_switch"
+                        android:id="@+id/drawer_item_following"/>
                     <item
                         android:title="@string/drawer_new_today"
-                        app:actionLayout="@layout/drawer_item_switch" />
+                        app:actionLayout="@layout/drawer_item_switch"
+                        android:id="@+id/drawer_item_new"/>
                     <item
                         android:title="@string/drawer_popular_today"
-                        app:actionLayout="@layout/drawer_item_switch" />
+                        app:actionLayout="@layout/drawer_item_switch"
+                        android:id="@+id/drawer_item_popular"/>
                     <item
                         android:title="@string/drawer_debuts"
-                        app:actionLayout="@layout/drawer_item_switch" />
+                        app:actionLayout="@layout/drawer_item_switch"
+                        android:id="@+id/drawer_item_debuts"/>
                 </group>
             </menu>
         </item>
@@ -44,7 +48,8 @@
                 <group>
                     <item
                         android:title="@string/drawer_shot_details"
-                        app:actionLayout="@layout/drawer_item_switch" />
+                        app:actionLayout="@layout/drawer_item_switch"
+                        android:id="@+id/drawer_item_shot_details"/>
                 </group>
             </menu>
         </item>

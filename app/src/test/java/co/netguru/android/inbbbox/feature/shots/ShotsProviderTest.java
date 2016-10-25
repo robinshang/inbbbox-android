@@ -19,7 +19,7 @@ import co.netguru.android.inbbbox.data.api.ShotsApi;
 import co.netguru.android.inbbbox.data.models.FilteredShotsParams;
 import co.netguru.android.inbbbox.data.models.Settings;
 import co.netguru.android.inbbbox.data.models.ShotEntity;
-import co.netguru.android.inbbbox.data.models.StreamSourceState;
+import co.netguru.android.inbbbox.data.models.StreamSourceSettings;
 import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.db.datasource.DataSource;
 import co.netguru.android.testcommons.RxSyncTestRule;
@@ -48,7 +48,7 @@ public class ShotsProviderTest {
     private Settings settingsMock;
 
     @Mock
-    private StreamSourceState streamSourceState;
+    private StreamSourceSettings streamSourceSettings;
 
     @Spy
     public ShotsMapper shotsMapperMock = new ShotsMapper();
@@ -61,7 +61,7 @@ public class ShotsProviderTest {
 
     @Before
     public void setUp() {
-        when(settingsMock.getStreamSourceState()).thenReturn(streamSourceState);
+        when(settingsMock.getStreamSourceSettings()).thenReturn(streamSourceSettings);
         when(dataSourceMock.get()).thenReturn(Observable.just(settingsMock));
 
     }
@@ -70,10 +70,10 @@ public class ShotsProviderTest {
                                          boolean newToday,
                                          boolean popularToday,
                                          boolean debut) {
-        when(streamSourceState.getFollowingState()).thenReturn(following);
-        when(streamSourceState.getNewTodayState()).thenReturn(newToday);
-        when(streamSourceState.getPopularTodayState()).thenReturn(popularToday);
-        when(streamSourceState.getDebut()).thenReturn(debut);
+        when(streamSourceSettings.isFollowing()).thenReturn(following);
+        when(streamSourceSettings.isNewToday()).thenReturn(newToday);
+        when(streamSourceSettings.isPopularToday()).thenReturn(popularToday);
+        when(streamSourceSettings.isDebut()).thenReturn(debut);
     }
 
     //Following shots
@@ -130,7 +130,7 @@ public class ShotsProviderTest {
                 .sort("testSort")
                 .list("testList")
                 .build();
-        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
         shotsProvider.getShots().subscribe(testSubscriber);
 
@@ -151,7 +151,7 @@ public class ShotsProviderTest {
                 .sort("testSort")
                 .list("testList")
                 .build();
-        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
         shotsProvider.getShots().subscribe(testSubscriber);
 
@@ -172,7 +172,7 @@ public class ShotsProviderTest {
                 .sort("testSort")
                 .list("testList")
                 .build();
-        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
         shotsProvider.getShots().subscribe(testSubscriber);
 
@@ -193,7 +193,7 @@ public class ShotsProviderTest {
                 .sort("testSort")
                 .list("testList")
                 .build();
-        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
         shotsProvider.getShots().subscribe(testSubscriber);
 
@@ -215,7 +215,7 @@ public class ShotsProviderTest {
                 .sort("testSort")
                 .list("testList")
                 .build();
-        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
         shotsProvider.getShots().subscribe(testSubscriber);
 
@@ -239,7 +239,7 @@ public class ShotsProviderTest {
                 .sort("testSort")
                 .list("testList")
                 .build();
-        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
         shotsProvider.getShots().subscribe(testSubscriber);
 
@@ -271,7 +271,7 @@ public class ShotsProviderTest {
                 .sort("testSort")
                 .list("testList")
                 .build();
-        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
         shotsProvider.getShots().subscribe(testSubscriber);
 
@@ -301,7 +301,7 @@ public class ShotsProviderTest {
                 .sort("testSort")
                 .list("testList")
                 .build();
-        when(shotsRequestFactoryMock.getShotsParams(streamSourceState)).thenReturn(params);
+        when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
         shotsProvider.getShots().subscribe(testSubscriber);
 

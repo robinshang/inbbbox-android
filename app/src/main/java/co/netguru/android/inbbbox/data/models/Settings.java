@@ -3,28 +3,32 @@ package co.netguru.android.inbbbox.data.models;
 import java.io.Serializable;
 
 public class Settings implements Serializable{
-    private StreamSourceState streamSourceState;
-    private NotificationSettings notificationSettings;
+    private final StreamSourceSettings streamSourceSettings;
+    private final NotificationSettings notificationSettings;
+    private final CustomizationSettings customizationSettings;
 
     public Settings() {
-        this.streamSourceState = new StreamSourceState();
+        this.streamSourceSettings = new StreamSourceSettings();
         this.notificationSettings = new NotificationSettings();
+        this.customizationSettings = new CustomizationSettings();
     }
 
-    public Settings(StreamSourceState streamSourceState, NotificationSettings notificationSettings) {
-        this.streamSourceState = streamSourceState;
+    public Settings(StreamSourceSettings streamSourceSettings, NotificationSettings notificationSettings,
+                    CustomizationSettings customizationSettings) {
+        this.streamSourceSettings = streamSourceSettings;
         this.notificationSettings = notificationSettings;
+        this.customizationSettings = customizationSettings;
     }
 
-    public StreamSourceState getStreamSourceState() {
-        return streamSourceState;
-    }
-
-    public void setStreamSourceState(StreamSourceState streamSourceState) {
-        this.streamSourceState = streamSourceState;
+    public StreamSourceSettings getStreamSourceSettings() {
+        return streamSourceSettings;
     }
 
     public NotificationSettings getNotificationSettings() {
         return notificationSettings;
+    }
+
+    public CustomizationSettings getCustomizationSettings() {
+        return customizationSettings;
     }
 }
