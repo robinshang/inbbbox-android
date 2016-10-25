@@ -116,13 +116,23 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     }
 
     @Override
-    public void streamSourceStatusChanged(@Nullable Boolean isFollowing, @Nullable Boolean isNew,
-                                          @Nullable Boolean isPopular, @Nullable Boolean isDebuts) {
-        final Subscription subscription = settingsManager.changeStreamSourceSettings(isFollowing, isNew, isPopular, isDebuts)
-                .compose(androidIO())
-                .subscribe(status -> Timber.d("Stream source settings changed : %s", status),
-                        throwable -> Timber.e(throwable, "Error while changing stream source settings"));
-        subscriptions.add(subscription);
+    public void followingStatusChanged(boolean status) {
+        changeStreamSourceStatus(status, null, null, null);
+    }
+
+    @Override
+    public void newStatusChanged(boolean status) {
+        changeStreamSourceStatus(null, status, null, null);
+    }
+
+    @Override
+    public void popularStatusChanged(boolean status) {
+        changeStreamSourceStatus(null, null, status, null);
+    }
+
+    @Override
+    public void debutsStatusChanged(boolean status) {
+        changeStreamSourceStatus(null, null, null, status);
     }
 
     @Override
@@ -131,6 +141,15 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                 .compose(androidIO())
                 .subscribe(status -> Timber.d("Customization settings changed : %s", status),
                         throwable -> Timber.e(throwable, "Error while changing customization settings"));
+        subscriptions.add(subscription);
+    }
+
+    private void changeStreamSourceStatus(@Nullable Boolean isFollowing, @Nullable Boolean isNew,
+                                          @Nullable Boolean isPopular, @Nullable Boolean isDebuts) {
+        final Subscription subscription = settingsManager.changeStreamSourceSettings(isFollowing, isNew, isPopular, isDebuts)
+                .compose(androidIO())
+                .subscribe(status -> Timber.d("Stream source settings changed : %s", status),
+                        throwable -> Timber.e(throwable, "Error while changing stream source settings"));
         subscriptions.add(subscription);
     }
 
@@ -186,8 +205,10 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     }
 
     private void setStreamSourceSettings(StreamSourceSettings streamSourceSettings) {
-        getView().changeStreamSourceStatus(streamSourceSettings.isFollowing(), streamSourceSettings.isNewToday(),
-                streamSourceSettings.isPopularToday(), streamSourceSettings.isDebut());
+        getView().changeFollowingStatus(streamSourceSettings.isFollowing());
+        getView().changeNewStatus(streamSourceSettings.isNewToday());
+        getView().changePopularStatus(streamSourceSettings.isPopularToday());
+        getView().changeDebutsStatus(streamSourceSettings.isDebut());
     }
 
     private void onScheduleNotificationNext(NotificationSettings settings) {
@@ -196,8 +217,6 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private void onScheduleNotificationError(Throwable throwable) {
         Timber.e(throwable, "Error while scheduling notification");
     }
-
-
 
     private void showUserData() {
         getView().showUserName(user.getUsername());

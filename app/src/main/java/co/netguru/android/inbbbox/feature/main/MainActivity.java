@@ -22,18 +22,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.bumptech.glide.Glide;
+import javax.inject.Inject;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
+import co.netguru.android.inbbbox.data.ui.UserPhoto;
 import co.netguru.android.inbbbox.di.component.MainActivityComponent;
 import co.netguru.android.inbbbox.di.module.MainActivityModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
 import co.netguru.android.inbbbox.data.ui.TabItemType;
+import co.netguru.android.inbbbox.utils.imageloader.ImageLoader;
 import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -55,6 +57,9 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
 
     @BindString(R.string.empty_string)
     String emptyString;
+
+    @Inject
+    ImageLoader imageLoader;
 
     private MainActivityComponent component;
     private TextView drawerUserName;
@@ -217,17 +222,13 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
             getPresenter().notificationStatusChanged(isChecked);
         });
         followingSwitch = findDrawerSwitch(R.id.drawer_item_following);
-        followingSwitch.setOnCheckedChangeListener(((buttonView, isChecked) ->
-                getPresenter().streamSourceStatusChanged(isChecked, null, null, null)));
+        followingSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().followingStatusChanged(isChecked)));
         newSwitch = findDrawerSwitch(R.id.drawer_item_new);
-        newSwitch.setOnCheckedChangeListener(((buttonView, isChecked) ->
-                getPresenter().streamSourceStatusChanged(null, isChecked, null, null)));
+        newSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().newStatusChanged(isChecked)));
         popularSwitch = findDrawerSwitch(R.id.drawer_item_popular);
-        popularSwitch.setOnCheckedChangeListener(((buttonView, isChecked) ->
-                getPresenter().streamSourceStatusChanged(null, null, isChecked, null)));
+        popularSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().popularStatusChanged(isChecked)));
         debutsSwitch = findDrawerSwitch(R.id.drawer_item_debuts);
-        debutsSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
-                getPresenter().streamSourceStatusChanged(null, null, null, isChecked));
+        debutsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().debutsStatusChanged(isChecked));
         shotDetailsSwitch = findDrawerSwitch(R.id.drawer_item_shot_details);
         shotDetailsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().customizationStatusChanged(isChecked));
     }
@@ -264,12 +265,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
 
     @Override
     public void showUserPhoto(String url) {
-        Glide.with(this)
-                .load(url)
-                .placeholder(R.drawable.ic_ball_active)
-                .error(R.drawable.ic_ball_active)
-                .dontAnimate()
-                .into(drawerUserPhoto);
+        imageLoader.loadImageWithThumbnail(drawerUserPhoto, new UserPhoto(url));
     }
 
     @Override
@@ -288,11 +284,23 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     }
 
     @Override
-    public void changeStreamSourceStatus(boolean isFollowing, boolean isNew, boolean isPopular, boolean isDebuts) {
-        followingSwitch.setChecked(isFollowing);
-        newSwitch.setChecked(isNew);
-        popularSwitch.setChecked(isPopular);
-        debutsSwitch.setChecked(isDebuts);
+    public void changeFollowingStatus(boolean status) {
+        followingSwitch.setChecked(status);
+    }
+
+    @Override
+    public void changeNewStatus(boolean status) {
+        newSwitch.setChecked(status);
+    }
+
+    @Override
+    public void changePopularStatus(boolean status) {
+        popularSwitch.setChecked(status);
+    }
+
+    @Override
+    public void changeDebutsStatus(boolean status) {
+        debutsSwitch.setChecked(status);
     }
 
     @Override

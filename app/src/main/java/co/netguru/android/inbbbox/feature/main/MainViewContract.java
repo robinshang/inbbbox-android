@@ -27,7 +27,13 @@ interface MainViewContract {
 
         void changeNotificationStatus(boolean status);
 
-        void changeStreamSourceStatus(boolean isFollowing, boolean isNew, boolean isPopular, boolean isDebuts);
+        void changeFollowingStatus(boolean status);
+
+        void changeNewStatus(boolean status);
+
+        void changePopularStatus(boolean status);
+
+        void changeDebutsStatus(boolean status);
 
         void changeCustomizationStatus(boolean isDetails);
 
@@ -46,8 +52,13 @@ interface MainViewContract {
 
         void notificationStatusChanged(boolean status);
 
-        void streamSourceStatusChanged(@Nullable Boolean isFollowing, @Nullable Boolean isNew,
-                                       @Nullable Boolean isPopular, @Nullable Boolean isDebuts);
+        void followingStatusChanged(boolean status);
+
+        void newStatusChanged(boolean status);
+
+        void popularStatusChanged(boolean status);
+
+        void debutsStatusChanged(boolean status);
 
         void customizationStatusChanged(boolean isDetails);
     }
