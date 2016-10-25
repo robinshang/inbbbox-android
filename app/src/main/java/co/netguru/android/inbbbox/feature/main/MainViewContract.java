@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.feature.main;
 
 import android.app.TimePickerDialog;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
@@ -26,6 +27,16 @@ interface MainViewContract {
 
         void changeNotificationStatus(boolean status);
 
+        void changeFollowingStatus(boolean status);
+
+        void changeNewStatus(boolean status);
+
+        void changePopularStatus(boolean status);
+
+        void changeDebutsStatus(boolean status);
+
+        void changeCustomizationStatus(boolean isDetails);
+
         void showMessage(@StringRes int message);
     }
 
@@ -40,5 +51,15 @@ interface MainViewContract {
         void timeViewClicked();
 
         void notificationStatusChanged(boolean status);
+
+        void followingStatusChanged(boolean status);
+
+        void newStatusChanged(boolean status);
+
+        void popularStatusChanged(boolean status);
+
+        void debutsStatusChanged(boolean status);
+
+        void customizationStatusChanged(boolean isDetails);
     }
 }

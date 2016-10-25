@@ -15,6 +15,4 @@ public class LoginModule {
     OauthUriProvider provideOauthUriProvider(Resources resources) {
         return new OauthUriProvider(resources);
     }
-
-
 }

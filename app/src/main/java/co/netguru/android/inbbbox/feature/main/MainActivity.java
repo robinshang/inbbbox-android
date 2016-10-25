@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
@@ -21,18 +22,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.bumptech.glide.Glide;
+import javax.inject.Inject;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
+import co.netguru.android.inbbbox.data.ui.UserPhoto;
 import co.netguru.android.inbbbox.di.component.MainActivityComponent;
 import co.netguru.android.inbbbox.di.module.MainActivityModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
 import co.netguru.android.inbbbox.data.ui.TabItemType;
+import co.netguru.android.inbbbox.utils.imageloader.ImageLoader;
 import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -55,11 +58,19 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     @BindString(R.string.empty_string)
     String emptyString;
 
+    @Inject
+    ImageLoader imageLoader;
+
     private MainActivityComponent component;
     private TextView drawerUserName;
     private CircleImageView drawerUserPhoto;
     private TextView drawerReminderTime;
     private Switch notificationSwitch;
+    private Switch followingSwitch;
+    private Switch newSwitch;
+    private Switch popularSwitch;
+    private Switch debutsSwitch;
+    private Switch shotDetailsSwitch;
     private MainActivityPagerAdapter pagerAdapter;
 
     public static void startActivity(Context context) {
@@ -205,12 +216,25 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     }
 
     private void initializeDrawerSwitches() {
-        notificationSwitch = findById(navigationView.getMenu().findItem(R.id.drawer_item_enable_reminder)
-                .getActionView(), R.id.drawer_item_switch);
+        notificationSwitch = findDrawerSwitch(R.id.drawer_item_enable_reminder);
         notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             drawerReminderTime.setEnabled(isChecked);
             getPresenter().notificationStatusChanged(isChecked);
         });
+        followingSwitch = findDrawerSwitch(R.id.drawer_item_following);
+        followingSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().followingStatusChanged(isChecked)));
+        newSwitch = findDrawerSwitch(R.id.drawer_item_new);
+        newSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().newStatusChanged(isChecked)));
+        popularSwitch = findDrawerSwitch(R.id.drawer_item_popular);
+        popularSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().popularStatusChanged(isChecked)));
+        debutsSwitch = findDrawerSwitch(R.id.drawer_item_debuts);
+        debutsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().debutsStatusChanged(isChecked));
+        shotDetailsSwitch = findDrawerSwitch(R.id.drawer_item_shot_details);
+        shotDetailsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().customizationStatusChanged(isChecked));
+    }
+
+    private Switch findDrawerSwitch(@IdRes int itemId) {
+        return findById(navigationView.getMenu().findItem(itemId).getActionView(), R.id.drawer_item_switch);
     }
 
     private void changeMenuGroupsVisibility(boolean isMainMenuVisible, boolean isLogoutMenuVisible) {
@@ -241,12 +265,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
 
     @Override
     public void showUserPhoto(String url) {
-        Glide.with(this)
-                .load(url)
-                .placeholder(R.drawable.ic_ball_active)
-                .error(R.drawable.ic_ball_active)
-                .dontAnimate()
-                .into(drawerUserPhoto);
+        imageLoader.loadImageWithThumbnail(drawerUserPhoto, new UserPhoto(url));
     }
 
     @Override
@@ -262,6 +281,31 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     @Override
     public void changeNotificationStatus(boolean status) {
         notificationSwitch.setChecked(status);
+    }
+
+    @Override
+    public void changeFollowingStatus(boolean status) {
+        followingSwitch.setChecked(status);
+    }
+
+    @Override
+    public void changeNewStatus(boolean status) {
+        newSwitch.setChecked(status);
+    }
+
+    @Override
+    public void changePopularStatus(boolean status) {
+        popularSwitch.setChecked(status);
+    }
+
+    @Override
+    public void changeDebutsStatus(boolean status) {
+        debutsSwitch.setChecked(status);
+    }
+
+    @Override
+    public void changeCustomizationStatus(boolean isDetails) {
+        shotDetailsSwitch.setChecked(isDetails);
     }
 
     @Override

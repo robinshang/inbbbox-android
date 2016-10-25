@@ -32,6 +32,8 @@ public interface ApplicationComponent extends BaseComponent {
 
     MainActivityComponent plus(MainActivityModule module);
 
+    SplashScreenComponent plusSplashScreenComponent();
+
     ShotsComponent plus(ShotsModule shotsModule);
 
     void inject(NotificationAlarmReceiver receiver);
