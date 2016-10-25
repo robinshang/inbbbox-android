@@ -12,6 +12,9 @@ import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.di.module.MainActivityModule;
 import co.netguru.android.inbbbox.di.module.StorageModule;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
+
+import co.netguru.android.inbbbox.feature.notification.NotificationAlarmReceiver;
+
 import dagger.Component;
 
 @Singleton
@@ -32,4 +35,7 @@ public interface ApplicationComponent extends BaseComponent {
 
     SplashScreenComponent plusSplashScreenComponent();
 
+    ShotsComponent plusShotsComponent();
+
+    void inject(NotificationAlarmReceiver receiver);
 }

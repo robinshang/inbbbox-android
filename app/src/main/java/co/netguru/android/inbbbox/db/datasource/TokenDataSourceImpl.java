@@ -27,15 +27,17 @@ public class TokenDataSourceImpl implements DataSource<Token> {
     }
 
     private boolean saveTokenToDatabase(Token token) {
+        boolean result;
         try {
             storage.put(Constants.Db.TOKEN_KEY, token);
 
-            return true;
+            result = true;
         } catch (Exception e) {
             Timber.e(e, "Error while saving token to database");
 
-            return false;
+            result = false;
         }
+        return result;
     }
 
     private Observable<Token> getTokenFromDatabase(String key) {

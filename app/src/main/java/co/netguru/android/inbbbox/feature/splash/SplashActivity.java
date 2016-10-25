@@ -22,6 +22,9 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
         super.onCreate(savedInstanceState);
     }
 
+        CrashManager.register(this);
+
+        startActivity(intent);
     private void initComponent() {
         this.component = App.getAppComponent(this)
                 .plusSplashScreenComponent();

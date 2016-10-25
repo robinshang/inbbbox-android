@@ -45,8 +45,8 @@ public class SettingsDataSourceImpl implements DataSource<Settings> {
             return Observable.just(storage.get(key, Settings.class));
         } catch (Exception e) {
             Timber.e(e, "Error while getting Settings from database");
-        }
 
-        return Observable.empty();
+            return Observable.error(e);
+        }
     }
 }

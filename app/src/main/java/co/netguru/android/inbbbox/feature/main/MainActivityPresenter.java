@@ -4,34 +4,65 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
+import co.netguru.android.inbbbox.data.models.User;
+import co.netguru.android.inbbbox.db.datasource.DataSource;
+
+import co.netguru.android.inbbbox.R;
+
+import co.netguru.android.inbbbox.data.models.NotificationSettings;
 import co.netguru.android.inbbbox.di.scope.ActivityScope;
 import co.netguru.android.inbbbox.feature.main.MainViewContract.Presenter;
+import co.netguru.android.inbbbox.feature.notification.NotificationController;
+import co.netguru.android.inbbbox.feature.notification.NotificationScheduler;
+import co.netguru.android.inbbbox.feature.settings.SettingsManager;
 import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
+
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
+
+import timber.log.Timber;
+
+import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 
 @ActivityScope
 public final class MainActivityPresenter extends MvpNullObjectBasePresenter<MainViewContract.View>
         implements Presenter {
 
-    // TODO: 18.10.2016 Get user data from db
-    private static final String MOCK_USER_NAME = "Some User";
-    private static final String MOCK_USER_EMAIL = "some.user@gmail.com";
-    private static final String MOCK_USER_PHOTO = "";
-
     private final LocalTimeFormatter localTimeFormatter;
+    private final DataSource<User> userDataSource;
+    private final NotificationScheduler notificationScheduler;
+    private final NotificationController notificationController;
+    private final SettingsManager settingsManager;
+    private final CompositeSubscription subscriptions;
+
+    private User user;
 
     @Inject
-    MainActivityPresenter(LocalTimeFormatter localTimeFormatter) {
+    MainActivityPresenter(LocalTimeFormatter localTimeFormatter, DataSource<User> userDataSource,
+                          NotificationScheduler notificationScheduler, NotificationController notificationController,
+                          SettingsManager settingsManager) {
         this.localTimeFormatter = localTimeFormatter;
+        this.userDataSource = userDataSource;
+        this.notificationScheduler = notificationScheduler;
+        this.notificationController = notificationController;
+        this.settingsManager = settingsManager;
+        subscriptions = new CompositeSubscription();
+    }
+
+    @Override
+    public void detachView(boolean retainInstance) {
+        super.detachView(retainInstance);
+        subscriptions.clear();
     }
 
     @Override
     public void toggleButtonClicked(boolean isChecked) {
         if (isChecked) {
             getView().showLogoutMenu();
-            getView().showUserName(MOCK_USER_NAME);
+            getView().showUserName(user.getName());
         } else {
             getView().showMainMenu();
-            getView().showUserName(MOCK_USER_EMAIL);
+            getView().showUserName(user.getUsername());
         }
     }
 
@@ -39,21 +70,101 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     public void performLogout() {
         // TODO: 18.10.2016 Clear user shared preferences
         getView().showLoginActivity();
+        notificationScheduler.cancelNotification();
     }
 
     @Override
     public void prepareUserData() {
-        getView().showUserName(MOCK_USER_EMAIL);
-        getView().showUserPhoto(MOCK_USER_PHOTO);
-        getView().showChangedTime(localTimeFormatter.getFormattedCurrentTime());
+        final Subscription subscription = userDataSource.get()
+                .compose(androidIO())
+                .subscribe(user -> this.user = user,
+                        throwable -> Timber.e(throwable, "Error while getting user"),
+                        this::showUserData);
+        subscriptions.add(subscription);
+        prepareUserSettings();
     }
+
 
     @Override
     public void timeViewClicked() {
-        getView().showTimePickDialog(localTimeFormatter.getCurrentHour(),
-                localTimeFormatter.getCurrentMinute(),
-                (view, hourOfDay, minute) ->
-                        getView().showChangedTime(localTimeFormatter.getFormattedTime(hourOfDay, minute))
-                );
+        final Subscription subscription = settingsManager.getNotificationSettings()
+                .compose(androidIO())
+                .subscribe(this::showTimePickDialog,
+                        throwable -> {
+                            Timber.e(throwable, "Error while getting settings");
+                            getView().showMessage(R.string.error_database);
+                        });
+        subscriptions.add(subscription);
+    }
+
+    @Override
+    public void notificationStatusChanged(boolean status) {
+        saveNotificationStatus(status);
+        if (!status) {
+            notificationScheduler.cancelNotification();
+            return;
+        }
+        final Subscription subscription = notificationController.scheduleNotification()
+                .compose(androidIO())
+                .subscribe(this::onScheduleNotificationNext, this::onScheduleNotificationError);
+
+        subscriptions.add(subscription);
+    }
+
+    private void saveNotificationStatus(boolean status) {
+        final Subscription subscription = settingsManager.changeNotificationStatus(status)
+                .compose(androidIO())
+                .subscribe(status1 -> Timber.d("Saving new notification status : %s", status),
+                        throwable -> Timber.e(throwable, "Error while saving notification status"));
+        subscriptions.add(subscription);
+    }
+
+    private void showTimePickDialog(NotificationSettings notificationSettings) {
+        getView().showTimePickDialog(notificationSettings.getHour(), notificationSettings.getMinute(),
+                (view, hour, minute) -> onTimePicked(hour, minute));
+    }
+
+    private void onTimePicked(int hour, int minute) {
+        final Subscription subscription = settingsManager.changeNotificationTime(hour, minute)
+                .concatMap(status -> notificationController.scheduleNotification())
+                .compose(androidIO())
+                .subscribe(this::onScheduleNotificationNext, this::onScheduleNotificationError,
+                        () -> getView().showNotificationTime(localTimeFormatter.getFormattedTime(hour, minute)));
+        subscriptions.add(subscription);
+    }
+
+    private void prepareUserSettings() {
+        final Subscription subscription = settingsManager.getNotificationSettings()
+                .doOnNext(this::checkNotificationSchedule)
+                .compose(androidIO())
+                .subscribe(this::setNotificationSettings,
+                        throwable -> Timber.e(throwable, "Error while getting settings"));
+        subscriptions.add(subscription);
+    }
+
+    private void checkNotificationSchedule(NotificationSettings settings) {
+        if (settings.isEnabled()) {
+            notificationController.scheduleNotification()
+                    .compose(androidIO())
+                    .subscribe(this::onScheduleNotificationNext, this::onScheduleNotificationError);
+        }
+    }
+
+    private void onScheduleNotificationNext(NotificationSettings settings) {
+        Timber.d("Notification scheduled : %s", settings);
+    }
+    private void onScheduleNotificationError(Throwable throwable) {
+        Timber.e(throwable, "Error while scheduling notification");
+    }
+
+    private void setNotificationSettings(NotificationSettings notificationSettings) {
+        getView().changeNotificationStatus(notificationSettings.isEnabled());
+        getView().showNotificationTime(localTimeFormatter.getFormattedTime(notificationSettings.getHour(),
+                notificationSettings.getMinute()));
+    }
+
+    private void showUserData() {
+        getView().showUserName(user.getUsername());
+        getView().showUserPhoto(user.getAvatarUrl());
     }
 }

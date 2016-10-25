@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
@@ -57,6 +59,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     private TextView drawerUserName;
     private CircleImageView drawerUserPhoto;
     private TextView drawerReminderTime;
+    private Switch notificationSwitch;
     private MainActivityPagerAdapter pagerAdapter;
 
     public static void startActivity(Context context) {
@@ -202,10 +205,12 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     }
 
     private void initializeDrawerSwitches() {
-        // TODO: 18.10.2016 Save user data in shared preferences
-        final Switch reminderSwitch = findById(navigationView.getMenu().findItem(R.id.drawer_item_enable_reminder)
+        notificationSwitch = findById(navigationView.getMenu().findItem(R.id.drawer_item_enable_reminder)
                 .getActionView(), R.id.drawer_item_switch);
-        reminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> drawerReminderTime.setEnabled(isChecked));
+        notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            drawerReminderTime.setEnabled(isChecked);
+            getPresenter().notificationStatusChanged(isChecked);
+        });
     }
 
     private void changeMenuGroupsVisibility(boolean isMainMenuVisible, boolean isLogoutMenuVisible) {
@@ -240,6 +245,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
                 .load(url)
                 .placeholder(R.drawable.ic_ball_active)
                 .error(R.drawable.ic_ball_active)
+                .dontAnimate()
                 .into(drawerUserPhoto);
     }
 
@@ -249,7 +255,17 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     }
 
     @Override
-    public void showChangedTime(String time) {
+    public void showNotificationTime(String time) {
         drawerReminderTime.setText(time);
+    }
+
+    @Override
+    public void changeNotificationStatus(boolean status) {
+        notificationSwitch.setChecked(status);
+    }
+
+    @Override
+    public void showMessage(@StringRes int message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
