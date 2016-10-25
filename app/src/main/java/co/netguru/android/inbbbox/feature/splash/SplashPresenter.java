@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import co.netguru.android.inbbbox.feature.authentication.TokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
-import rx.Subscriber;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
@@ -58,22 +57,23 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     private void getCurrentUserInstance() {
         userProvider.getUser()
                 .compose(androidIO())
-                .subscribe(new Subscriber<Boolean>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        handleError(e);
-                    }
-
-                    @Override
-                    public void onNext(Boolean isValid) {
-                        handleUserDownloadComplete(isValid);
-                    }
-                });
+                .subscribe(isValid -> handleUserDownloadComplete(isValid), e -> handleError(e));
+//                        new Subscriber<Boolean>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        handleError(e);
+//                    }
+//
+//                    @Override
+//                    public void onNext(Boolean isValid) {
+//                        handleUserDownloadComplete(isValid);
+//                    }
+//                });
 
     }
 

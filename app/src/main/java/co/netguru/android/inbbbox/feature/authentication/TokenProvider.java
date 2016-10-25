@@ -35,10 +35,6 @@ public class TokenProvider {
     }
 
     private Observable<Boolean> checkToken(Token token) {
-        boolean result = false;
-        if (token != null && token.getAccessToken() != null) {
-            result = true;
-        }
-        return Observable.just(result);
+        return Observable.just(token != null && token.getAccessToken() != null);
     }
 }
