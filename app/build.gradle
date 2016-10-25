@@ -14,7 +14,8 @@ ext {
     secrets = [
             // define your app secrets, for example:
             // hockeyAppId: keyProperty("HOCKEY_APP_ID")
-            hockeyAppId        : keyProperty("HockeyAppAppId"),
+            hockeyAppIdDev     : keyProperty("HockeyAppAppIdDev"),
+            hockeyAppIdProd    : keyProperty("HockeyAppAppIdProd"),
             dribbbleClientKey  : keyProperty("DribbbleClientKey"),
             dribbleClientSecret: keyProperty("DribbbleClientSecret"),
 
@@ -34,8 +35,6 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        manifestPlaceholders = [HOCKEYAPP_APP_ID_BETA: secrets.hockeyAppId]
-
         buildConfigField 'String', 'DRIBBBLE_CLIENT_KEY', '"' + secrets.dribbbleClientKey + '"'
         buildConfigField 'String', 'DRIBBBLE_CLIENT_SECRET', '"' + secrets.dribbleClientSecret + '"'
     }
@@ -51,6 +50,8 @@ android {
             useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro', 'proguard-rules-test.pro'
+
+            manifestPlaceholders = [HOCKEYAPP_APP_ID_BETA: secrets.hockeyAppIdDev]
         }
         release {
             debuggable false
@@ -59,6 +60,8 @@ android {
             zipAlignEnabled true
             useProguard true
             proguardFiles 'proguard-rules.pro'
+
+            manifestPlaceholders = [HOCKEYAPP_APP_ID_BETA: secrets.hockeyAppIdProd]
         }
     }
 
