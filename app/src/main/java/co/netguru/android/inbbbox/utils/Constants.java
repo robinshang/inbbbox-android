@@ -37,4 +37,8 @@ public class Constants {
         public static final String CURRENT_USER_KEY = "db_current_user";
         public static final String SETTINGS_KEY = "db_settings";
     }
+
+    public class Notification {
+        public static final int NOTIFICATION_ID = 0;
+    }
 }
