@@ -6,6 +6,8 @@ import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
+import net.hockeyapp.android.CrashManager;
+
 import co.netguru.android.inbbbox.application.App;
 import co.netguru.android.inbbbox.di.component.SplashScreenComponent;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
@@ -20,11 +22,10 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
     protected void onCreate(Bundle savedInstanceState) {
         initComponent();
         super.onCreate(savedInstanceState);
+        CrashManager.register(this);
     }
 
-        CrashManager.register(this);
 
-        startActivity(intent);
     private void initComponent() {
         this.component = App.getAppComponent(this)
                 .plusSplashScreenComponent();
