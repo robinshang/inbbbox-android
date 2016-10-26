@@ -8,19 +8,26 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindDrawable;
+import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
+import co.netguru.android.inbbbox.data.ui.LikedShot;
 import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
@@ -37,9 +44,18 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
     Drawable icGridView;
     @BindDrawable(R.drawable.ic_gridview_active)
     Drawable icGridViewActive;
+    @BindDrawable(R.drawable.ic_like_emptystate)
+    Drawable emptyTextDrawable;
 
-    @BindView(R.id.likes_recycler_view)
+    @BindString(R.string.fragment_like_empty_text)
+    String emptyString;
+
+    @BindView(R.id.fragment_likes_recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.fragment_likes_empty_view)
+    RelativeLayout emptyView;
+    @BindView(R.id.fragment_like_empty_text)
+    TextView emptyViewText;
 
     @Inject
     LikesPresenter presenter;
@@ -77,8 +93,10 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-      //  recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(likesAdapter);
+        presenter.getLikesFromServer();
+        emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
+        presenter.addIconToText(emptyString, emptyTextDrawable);
     }
 
     @Override
@@ -109,6 +127,26 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
     @Override
     public LikesViewContract.Presenter createPresenter() {
         return presenter;
+    }
+
+    @Override
+    public void showLikes(List<LikedShot> likedShotList) {
+        likesAdapter.setLikeList(likedShotList);
+    }
+
+    @Override
+    public void hideEmptyLikesInfo() {
+        emptyView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showEmptyLikesInfo() {
+        emptyView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setEmptyViewText(SpannableStringBuilder spannableStringBuilder) {
+        emptyViewText.setText(spannableStringBuilder, TextView.BufferType.SPANNABLE);
     }
 
     private void changeMenuItemIcons(boolean isGridViewClicked) {

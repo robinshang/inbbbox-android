@@ -45,7 +45,15 @@
         <item name="android:textColor">@color/palePink</item>
     </style>
 
-    <style name="Font25.PalePink.RobotoLight" parent="Font25.PalePink">
+    <style name="Font25.RobotoLight" parent="Font25">
         <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="Font25.RobotoLight.PalePink" parent="Font25.RobotoLight">
+        <item name="android:textColor">@color/palePink</item>
+    </style>
+
+    <style name="Font25.RobotoLight.Gray" parent="Font25.RobotoLight">
+        <item name="android:textColor">@color/gray</item>
     </style>
 </resources>
