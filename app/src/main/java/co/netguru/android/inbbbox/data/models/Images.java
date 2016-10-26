@@ -9,7 +9,7 @@ public class Images implements Serializable{
 
     @SerializedName("hidpi")
     @Expose
-    private Object hidpi;
+    private String hidpi;
     @SerializedName("normal")
     @Expose
     private String normal;
@@ -22,7 +22,7 @@ public class Images implements Serializable{
      * @return
      * The hidpi
      */
-    public Object getHidpi() {
+    public String getHidpi() {
         return hidpi;
     }
 
@@ -31,7 +31,7 @@ public class Images implements Serializable{
      * @param hidpi
      * The hidpi
      */
-    public void setHidpi(Object hidpi) {
+    public void setHidpi(String hidpi) {
         this.hidpi = hidpi;
     }
 
