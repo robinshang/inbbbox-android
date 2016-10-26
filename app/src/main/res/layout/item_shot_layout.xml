@@ -5,13 +5,12 @@
     android:gravity="center"
     android:orientation="vertical"
     android:paddingLeft="@dimen/shot_item_internal_padding"
-    android:paddingRight="@dimen/shot_item_internal_padding"
-    android:background="#232323">
-    <!--TODO remove this background-->
+    android:paddingRight="@dimen/shot_item_internal_padding">
 
     <ImageView
         android:id="@+id/iv_shot_image"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/shot_image_height" />
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true" />
 
 </LinearLayout>

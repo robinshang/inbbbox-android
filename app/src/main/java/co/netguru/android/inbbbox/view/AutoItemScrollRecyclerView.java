@@ -6,8 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-import timber.log.Timber;
-
 public class AutoItemScrollRecyclerView extends RecyclerView {
     private int lastVisibleItemIndex;
     private int firstVisibleItemIndex;
@@ -62,7 +60,6 @@ public class AutoItemScrollRecyclerView extends RecyclerView {
     @Override
     public void onScrolled(int dx, int dy) {
         super.onScrolled(dx, dy);
-        Timber.i("dx: " + dx + " dy: " + dy);
         if (dy > 0) {
             isScrollingNext = true;
             isScrollingBack = false;
@@ -74,7 +71,7 @@ public class AutoItemScrollRecyclerView extends RecyclerView {
 
     @Override
     public boolean fling(int velocityX, int velocityY) {
-        Timber.i("velX: " + velocityX + " velY: " + velocityY);
+        //fling disabled
         return super.fling(0, 0);
     }
 }

@@ -10,7 +10,11 @@ public interface ImageLoader {
 
     void loadImageWithThumbnail(ImageView destinationView, ImageThumbnail imageThumbnail);
 
+    void enableRoundCornersTransformationForNextRequest(float radius);
+
     void loadImage(ImageView destinationView,
                    DrawableRequestBuilder<String> thumbnailRequest,
                    ImageThumbnail imageThumbnail);
+
+    void disableRoundCornerTransformation();
 }

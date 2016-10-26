@@ -273,6 +273,7 @@ dependencies {
 
     //Glide
     compile libs.glide
+    compile libs.glideTransformations
 
     //Timber
     compile libs.timber
