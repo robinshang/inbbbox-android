@@ -74,6 +74,7 @@ public class ShotsFragment
     private void initRecycler() {
         shotsRecyclerView.setAdapter(adapter);
         shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        shotsRecyclerView.setHasFixedSize(true);
     }
 
     @Override

@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.data.ui;
 
-import co.netguru.android.inbbbox.R;
-
 public class Shot implements ImageThumbnail {
     private Integer id;
     private String title;
@@ -20,7 +18,7 @@ public class Shot implements ImageThumbnail {
 
     @Override
     public String getImageUrl() {
-        return getNormalImage();
+        return getHdpiImage();
     }
 
     @Override
@@ -31,7 +29,7 @@ public class Shot implements ImageThumbnail {
     // TODO: 26.10.2016 Replace with suitable placeholder
     @Override
     public Integer getPlaceholderResId() {
-        return R.drawable.ic_ball;
+        return null;
     }
 
     @Override
