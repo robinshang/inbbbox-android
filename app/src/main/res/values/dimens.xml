@@ -22,4 +22,7 @@
     <dimen name="drawer_header_photo_margin_top">52dp</dimen>
     <dimen name="drawer_arrow_size">24dp</dimen> 
     <dimen name="drawer_arrow_margin_end">6dp</dimen>
+
+    <dimen name="like_list_view_holder_height">240dp</dimen>
+    <dimen name="like_grid_view_holder_height">117dp</dimen>
 </resources>

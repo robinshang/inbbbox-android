@@ -5,13 +5,10 @@
     <item android:id="@+id/action_grid_view"
         android:icon="@drawable/ic_gridview"
         android:title="@string/action_grid_view"
-        android:checkable="true"
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/action_list_view"
-        android:icon="@drawable/ic_listview_active"
+        android:icon="@drawable/ic_listview"
         android:title="@string/action_list_view"
-        android:checkable="true"
-        android:checked="true"
         app:showAsAction="ifRoom"/>
 </menu>
