@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.feature.shots;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,5 +64,11 @@ public class ShotsFragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        initRecycler();
+    }
+
+    private void initRecycler() {
+        shotsRecyclerView.setAdapter(adapter);
+        shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 }
