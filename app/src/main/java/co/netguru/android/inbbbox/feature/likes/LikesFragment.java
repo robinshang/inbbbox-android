@@ -15,15 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
+import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
@@ -47,7 +45,12 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
     LikesPresenter presenter;
     @Inject
     LikesAdapter likesAdapter;
+    @Inject
+    GridLayoutManager gridLayoutManager;
+    @Inject
+    LinearLayoutManager linearLayoutManager;
 
+    private LikesFragmentComponent component;
     private MenuItem listViewItem;
     private MenuItem gridViewItem;
 
@@ -58,9 +61,9 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        App.getAppComponent(getContext())
-                .plus(new LikesFragmentModule())
-                .inject(this);
+        component = App.getAppComponent(getContext())
+                .plus(new LikesFragmentModule(context));
+        component.inject(this);
     }
 
     @Nullable
@@ -74,16 +77,8 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+      //  recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(likesAdapter);
-        List<Object> test = new LinkedList<>();
-        test.add(new Object());
-        test.add(new Object());
-        test.add(new Object());
-        test.add(new Object());
-        test.add(new Object());
-        test.add(new Object());
-        likesAdapter.setLikeList(test);
     }
 
     @Override
@@ -99,11 +94,11 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
         switch (item.getItemId()) {
             case R.id.action_grid_view:
                 changeMenuItemIcons(true);
-                recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                recyclerView.setLayoutManager(gridLayoutManager);
                 return true;
             case R.id.action_list_view:
                 changeMenuItemIcons(false);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                recyclerView.setLayoutManager(linearLayoutManager);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

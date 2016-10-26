@@ -9,8 +9,10 @@
     android:layout_height="@dimen/like_grid_view_holder_height">
 
     <ImageView
+        android:id="@+id/like_item_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/splash_background"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitXY"
+        android:contentDescription="@null"/>
 </LinearLayout>

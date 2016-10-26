@@ -13,7 +13,7 @@
     <dimen name='activity_login_button_padding_start'>16dp</dimen>
 
     <dimen name="activity_main_tab_height">62dp</dimen>
-    <dimen name="activity_main_fab_margin_bottom">76dp</dimen>
+    <dimen name="activity_main_fab_margin_bottom">26dp</dimen>
     <dimen name="activity_main_tab_indicator_height">0dp</dimen>
 
     <dimen name="drawer_header_height">188dp</dimen>

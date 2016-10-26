@@ -1,6 +1,8 @@
 package co.netguru.android.inbbbox.data.ui;
 
-public class LikedShot {
+import android.support.annotation.Nullable;
+
+public class LikedShot implements ImageThumbnail {
 
     private final int id;
     private final String imageUrl;
@@ -14,7 +16,26 @@ public class LikedShot {
         return id;
     }
 
+    @Override
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    @Nullable
+    @Override
+    public String getThumbnailUrl() {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public Integer getPlaceholderResId() {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public Integer getErrorImageResId() {
+        return null;
     }
 }

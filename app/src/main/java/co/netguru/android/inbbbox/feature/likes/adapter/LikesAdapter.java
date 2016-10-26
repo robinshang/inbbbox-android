@@ -13,27 +13,32 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.data.ui.LikedShot;
 import co.netguru.android.inbbbox.di.scope.FragmentScope;
+import co.netguru.android.inbbbox.utils.imageloader.ImageLoader;
 
 @FragmentScope
 public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder> {
 
-    private List<Object> likeList;
+    private final ImageLoader imageLoader;
+
+    private List<LikedShot> likeList;
 
     @Inject
-    LikesAdapter() {
+    LikesAdapter(ImageLoader imageLoader) {
+        this.imageLoader = imageLoader;
         likeList = new ArrayList<>();
     }
 
     @Override
     public LikesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(getViewHolderLayout(parent), parent, false);
-        return new LikesViewHolder(view);
+        return new LikesViewHolder(view, imageLoader);
     }
 
     @Override
     public void onBindViewHolder(LikesViewHolder holder, int position) {
-        holder.bind();
+        holder.bind(likeList.get(holder.getAdapterPosition()));
     }
 
     @Override
@@ -41,7 +46,7 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder> {
         return likeList.size();
     }
 
-    public void setLikeList(List<Object> likeList) {
+    public void setLikeList(List<LikedShot> likeList) {
         this.likeList = likeList;
         notifyDataSetChanged();
     }

@@ -3,7 +3,9 @@ package co.netguru.android.inbbbox.utils;
 public class Constants {
     public static final int UNDEFINED = -1;
 
-
+    public static class VIEW {
+        public static final int LIKE_FRAGMENT_COLUMN_COUNT = 2;
+    }
     public static class OAUTH {
         public static final String BASE_URL = "https://dribbble.com/";
         public static final String OAUTH_AUTHORIZE_ENDPOINT = "oauth/authorize";
