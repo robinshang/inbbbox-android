@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,7 +44,12 @@ public class SwipeableImagePanel extends LinearLayout {
 
             if (leftOffset > (640 / 2) - 80 && leftOffset < (640 / 2)) {
                 Timber.d("TRIGGERED--------->");
-                layout.setRightSwipeEnabled(false);
+                layout.addSwipeDenier(new SwipeLayout.SwipeDenier() {
+                    @Override
+                    public boolean shouldDenySwipe(MotionEvent ev) {
+                        return false;
+                    }
+                });
             } else {
                 layout.setRightSwipeEnabled(true);
                 Timber.d("leftOffset: " + leftOffset);

@@ -21,7 +21,7 @@ import co.netguru.android.inbbbox.data.models.Settings;
 import co.netguru.android.inbbbox.data.models.ShotEntity;
 import co.netguru.android.inbbbox.data.models.StreamSourceSettings;
 import co.netguru.android.inbbbox.data.ui.Shot;
-import co.netguru.android.inbbbox.db.datasource.DataSource;
+import co.netguru.android.inbbbox.feature.settings.SettingsManager;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.observers.TestSubscriber;
@@ -42,7 +42,7 @@ public class ShotsProviderTest {
     public ShotsParamsFactory shotsRequestFactoryMock;
 
     @Mock
-    public DataSource<Settings> dataSourceMock;
+    public SettingsManager settingsManagerMock;
 
     @Mock
     private Settings settingsMock;
@@ -62,7 +62,7 @@ public class ShotsProviderTest {
     @Before
     public void setUp() {
         when(settingsMock.getStreamSourceSettings()).thenReturn(streamSourceSettings);
-        when(dataSourceMock.get()).thenReturn(Observable.just(settingsMock));
+        when(settingsManagerMock.getSettings()).thenReturn(Observable.just(settingsMock));
 
     }
 
