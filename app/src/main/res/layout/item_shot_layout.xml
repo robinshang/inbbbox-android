@@ -7,53 +7,58 @@
     android:paddingLeft="@dimen/shot_item_internal_padding"
     android:paddingRight="@dimen/shot_item_internal_padding">
 
-
-    <com.daimajia.swipe.SwipeLayout
-        android:id="@+id/swipe_layout"
+    <co.netguru.android.inbbbox.view.SwipeableImagePanel
+        android:id="@+id/swipeable_image_panel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shot_item_swipe_bottom_background">
-        <!-- Bottom View Start-->
-        <LinearLayout
-            android:id="@+id/bottom_wrapper"
-            android:layout_width="@dimen/right_swipe_action_panel_width"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:orientation="horizontal"
-            android:weightSum="1">
-            <!--What you want to show-->
-            <ImageView
-                style="@style/SwipeActionIcons"
-                android:src="@drawable/ic_ball_active" />
+        android:layout_height="match_parent" />
 
-        </LinearLayout>
+    <!--<com.daimajia.swipe.SwipeLayout-->
+    <!--android:id="@+id/swipe_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/shot_item_swipe_bottom_background">-->
+    <!--&lt;!&ndash; Bottom View Start&ndash;&gt;-->
+    <!--<LinearLayout-->
+    <!--android:id="@+id/bottom_wrapper"-->
+    <!--android:layout_width="@dimen/right_swipe_action_panel_width"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="end"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="1">-->
+    <!--&lt;!&ndash;What you want to show&ndash;&gt;-->
+    <!--<ImageView-->
+    <!--style="@style/SwipeActionIcons"-->
+    <!--android:src="@drawable/ic_ball_active" />-->
 
-        <LinearLayout
-            android:id="@+id/bottom_wrapper2"
-            android:layout_width="@dimen/left_swipe_action_panel_width"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:orientation="horizontal"
-            android:weightSum="1">
+    <!--</LinearLayout>-->
 
-            <ImageView
-                style="@style/SwipeActionIcons"
-                android:src="@drawable/ic_buckets" />
+    <!--<LinearLayout-->
+    <!--android:id="@+id/bottom_wrapper2"-->
+    <!--android:layout_width="@dimen/left_swipe_action_panel_width"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="start"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="1">-->
 
-            <ImageView
-                style="@style/SwipeActionIcons"
-                android:src="@drawable/ic_following" />
+    <!--<ImageView-->
+    <!--style="@style/SwipeActionIcons"-->
+    <!--android:src="@drawable/ic_buckets" />-->
 
-        </LinearLayout>
+    <!--<ImageView-->
+    <!--style="@style/SwipeActionIcons"-->
+    <!--android:src="@drawable/ic_following" />-->
 
-        <ImageView
-            android:id="@+id/iv_shot_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true" />
-        <!-- Surface View End -->
-    </com.daimajia.swipe.SwipeLayout>
+    <!--</LinearLayout>-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_shot_image"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:adjustViewBounds="true" />-->
+    <!--&lt;!&ndash; Surface View End &ndash;&gt;-->
+    <!--</com.daimajia.swipe.SwipeLayout>-->
 
 
+    <!--</LinearLayout>-->
 </LinearLayout>
