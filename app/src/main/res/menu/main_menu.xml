@@ -2,8 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/action_grid_view"
+        android:icon="@drawable/ic_gridview"
+        android:title="@string/action_grid_view"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/action_list_view"
+        android:icon="@drawable/ic_listview_active"
+        android:title="@string/action_list_view"
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
+
     <item android:id="@+id/action_settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/action_settings"
+        android:visible="false"
         app:showAsAction="ifRoom"/>
 </menu>
