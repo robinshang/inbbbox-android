@@ -5,7 +5,9 @@
     android:gravity="center"
     android:orientation="vertical"
     android:paddingLeft="@dimen/shot_item_internal_padding"
-    android:paddingRight="@dimen/shot_item_internal_padding">
+    android:paddingRight="@dimen/shot_item_internal_padding"
+    android:background="#232323">
+    <!--TODO remove this background-->
 
     <ImageView
         android:id="@+id/iv_shot_image"

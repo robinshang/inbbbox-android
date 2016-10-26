@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.feature.shots;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,12 +11,15 @@ import android.view.ViewGroup;
 
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
+import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.di.component.ShotsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
@@ -70,5 +74,15 @@ public class ShotsFragment
     private void initRecycler() {
         shotsRecyclerView.setAdapter(adapter);
         shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    @Override
+    public void showItems(List<Shot> items) {
+        adapter.setItems(items);
+    }
+
+    @Override
+    public void showError(String error) {
+        Snackbar.make(shotsRecyclerView, error, Snackbar.LENGTH_LONG).show();
     }
 }

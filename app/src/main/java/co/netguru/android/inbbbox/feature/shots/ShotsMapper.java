@@ -8,7 +8,12 @@ public class ShotsMapper {
     public Shot getShot(ShotEntity entity) {
         Shot shot = new Shot();
 
+        shot.setId(entity.getId());
         shot.setTitle(entity.getTitle());
+        shot.setDescription(entity.getDescription());
+        shot.setHdpiImage(entity.getImages().getHidpi());
+        shot.setNormalImage(entity.getImages().getNormal());
+        shot.setThumbnail(entity.getImages().getTeaser());
         return shot;
     }
 }

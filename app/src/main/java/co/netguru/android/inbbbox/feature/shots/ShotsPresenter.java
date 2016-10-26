@@ -28,6 +28,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     @Override
     public void attachView(ShotsContract.View view) {
+        super.attachView(view);
         getShotsData();
     }
 
@@ -45,7 +46,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     }
 
     private void handleException(Throwable exception) {
-        Timber.e("Shots item receiving exception: " + exception.getMessage());
+        Timber.e(exception, "Shots item receiving exception ");
         getView().showError(errorMessageParser.getError(exception));
     }
 }

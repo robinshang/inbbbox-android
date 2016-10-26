@@ -42,7 +42,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
     }
 
     public void setItems(List<Shot> items) {
-
         this.items = items;
+        notifyDataSetChanged();
     }
 }
