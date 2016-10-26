@@ -7,10 +7,53 @@
     android:paddingLeft="@dimen/shot_item_internal_padding"
     android:paddingRight="@dimen/shot_item_internal_padding">
 
-    <ImageView
-        android:id="@+id/iv_shot_image"
+
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true" />
+        android:background="@drawable/shot_item_swipe_bottom_background">
+        <!-- Bottom View Start-->
+        <LinearLayout
+            android:id="@+id/bottom_wrapper"
+            android:layout_width="@dimen/right_swipe_action_panel_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <!--What you want to show-->
+            <ImageView
+                style="@style/SwipeActionIcons"
+                android:src="@drawable/ic_ball_active" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_wrapper2"
+            android:layout_width="@dimen/left_swipe_action_panel_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <ImageView
+                style="@style/SwipeActionIcons"
+                android:src="@drawable/ic_buckets" />
+
+            <ImageView
+                style="@style/SwipeActionIcons"
+                android:src="@drawable/ic_following" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_shot_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true" />
+        <!-- Surface View End -->
+    </com.daimajia.swipe.SwipeLayout>
+
 
 </LinearLayout>

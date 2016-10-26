@@ -275,6 +275,9 @@ dependencies {
     compile libs.glide
     compile libs.glideTransformations
 
+    //Swipe layput
+    compile libs.swipeLayout
+
     //Timber
     compile libs.timber
 

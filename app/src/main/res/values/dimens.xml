@@ -25,4 +25,6 @@
     <dimen name="shot_image_height">200dp</dimen>
     <dimen name="shot_item_internal_padding">24dp</dimen>
     <dimen name="shot_corner_radius">30px</dimen>
+    <dimen name="right_swipe_action_panel_width">85dp</dimen>
+    <dimen name="left_swipe_action_panel_width">160dp</dimen>
 </resources>
