@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.feature.shots.recycler;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -10,12 +11,15 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.utils.imageloader.ImageLoader;
 import co.netguru.android.inbbbox.view.swipingpanel.ItemSwipeListener;
-import co.netguru.android.inbbbox.view.swipingpanel.SwipeableImagePanel;
+import co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout;
 
 public class ShotsViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.swipeable_image_panel)
-    SwipeableImagePanel imagePanel;
+    @BindView(R.id.long_swipe_layout)
+    LongSwipeLayout longSwipeLayout;
+
+    @BindView(R.id.iv_shot_image)
+    ImageView shotImageView;
 
     private ImageLoader imageLoader;
 
@@ -23,17 +27,17 @@ public class ShotsViewHolder extends RecyclerView.ViewHolder {
     private ItemSwipeListener swipeListener = new ItemSwipeListener() {
         @Override
         public void onLeftSwipe() {
-            Toast.makeText(imagePanel.getContext(), "Left swipie", Toast.LENGTH_SHORT).show();
+            Toast.makeText(longSwipeLayout.getContext(), "Left swipie", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onLeftLongSwipe() {
-            Toast.makeText(imagePanel.getContext(), "Left LONG swipie", Toast.LENGTH_SHORT).show();
+            Toast.makeText(longSwipeLayout.getContext(), "Left LONG swipie", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onRightSwipe() {
-            Toast.makeText(imagePanel.getContext(), "Right swipie", Toast.LENGTH_SHORT).show();
+            Toast.makeText(longSwipeLayout.getContext(), "Right swipie", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -45,13 +49,14 @@ public class ShotsViewHolder extends RecyclerView.ViewHolder {
 
     void bind(Shot shot) {
         setupImage(shot);
-        imagePanel.setItemSwipeListener(swipeListener);
+        longSwipeLayout.setItemSwipeListener(swipeListener);
     }
 
     private void setupImage(Shot shot) {
         float radius = itemView.getContext().getResources().getDimension(R.dimen.shot_corner_radius);
         imageLoader.enableRoundCornersTransformationForNextRequest(radius);
-        imageLoader.loadImageWithThumbnail(imagePanel.getImageView(), shot);
+        imageLoader.loadImageWithThumbnail(shotImageView, shot);
     }
+
 }
 
