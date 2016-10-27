@@ -58,7 +58,7 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
     TextView emptyViewText;
 
     @Inject
-    LikesPresenter presenter;
+    LikesPresenter likesPresenter;
     @Inject
     LikesAdapter likesAdapter;
     @Inject
@@ -94,9 +94,9 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView.setAdapter(likesAdapter);
-        presenter.getLikesFromServer();
+        likesPresenter.getLikesFromServer();
         emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
-        presenter.addIconToText(emptyString, emptyTextDrawable);
+        likesPresenter.addIconToText(emptyString, emptyTextDrawable);
     }
 
     @Override
@@ -126,7 +126,7 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
     @NonNull
     @Override
     public LikesViewContract.Presenter createPresenter() {
-        return presenter;
+        return likesPresenter;
     }
 
     @Override

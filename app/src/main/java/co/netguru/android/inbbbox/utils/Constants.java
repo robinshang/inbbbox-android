@@ -1,6 +1,6 @@
 package co.netguru.android.inbbbox.utils;
 
-public class Constants {
+public final class Constants {
     public static final int UNDEFINED = -1;
 
     public static class VIEW {
@@ -42,5 +42,8 @@ public class Constants {
 
     public class Notification {
         public static final int NOTIFICATION_ID = 0;
+    }
+
+    private Constants() {
     }
 }
