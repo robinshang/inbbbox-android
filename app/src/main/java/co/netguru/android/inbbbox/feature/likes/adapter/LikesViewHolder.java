@@ -25,6 +25,6 @@ public class LikesViewHolder extends RecyclerView.ViewHolder {
     }
 
     void bind(LikedShot item) {
-        imageLoader.loadImageWithThumbnail(imageView, item);
+        imageLoader.loadImageWithRoundedCorners(imageView, null, item);
     }
 }

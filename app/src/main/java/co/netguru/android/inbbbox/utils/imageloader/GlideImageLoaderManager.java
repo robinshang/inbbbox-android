@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.utils.imageloader;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableRequestBuilder;
@@ -9,8 +10,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import co.netguru.android.inbbbox.data.ui.ImageThumbnail;
 import co.netguru.android.inbbbox.utils.Constants;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public final class GlideImageLoaderManager implements ImageLoader {
+
+    private static final int RADIUS_DP = 2;
+    private static final int RADIUS_MARGIN = 0;
 
     private Context context;
 
@@ -19,6 +24,7 @@ public final class GlideImageLoaderManager implements ImageLoader {
         this.context = context;
     }
 
+    @Override
     public void loadImageWithThumbnail(ImageView destinationView, ImageThumbnail imageThumbnail) {
         DrawableRequestBuilder<String> thumbnailRequest = Glide
                 .with(context)
@@ -27,9 +33,26 @@ public final class GlideImageLoaderManager implements ImageLoader {
         loadImage(destinationView, thumbnailRequest, imageThumbnail);
     }
 
+    @Override
+    public void loadImageWithRoundedCorners(ImageView destinationView,
+                                            DrawableRequestBuilder<String> thumbnailRequest,
+                                            ImageThumbnail imageThumbnail) {
+        final DrawableRequestBuilder requestBuilder = createDrawableRequest(thumbnailRequest, imageThumbnail);
+        requestBuilder.bitmapTransform(new RoundedCornersTransformation(context, convertToPx(RADIUS_DP), RADIUS_MARGIN));
+        requestBuilder.into(destinationView);
+    }
+
+    @Override
     public void loadImage(ImageView destinationView,
                           DrawableRequestBuilder<String> thumbnailRequest,
                           ImageThumbnail imageThumbnail) {
+
+        final DrawableRequestBuilder requestBuilder = createDrawableRequest(thumbnailRequest, imageThumbnail);
+        requestBuilder.into(destinationView);
+    }
+
+    private DrawableRequestBuilder createDrawableRequest(DrawableRequestBuilder<String> thumbnailRequest,
+                                                         ImageThumbnail imageThumbnail) {
         DrawableRequestBuilder requestBuilder = Glide.with(context)
                 .load(imageThumbnail.getImageUrl());
 
@@ -48,6 +71,12 @@ public final class GlideImageLoaderManager implements ImageLoader {
         }
         requestBuilder.diskCacheStrategy(DiskCacheStrategy.ALL);
         requestBuilder.animate(android.R.anim.fade_in);
-        requestBuilder.into(destinationView);
+
+        return requestBuilder;
+    }
+
+    private int convertToPx(int number) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, number,
+                context.getResources().getDisplayMetrics());
     }
 }

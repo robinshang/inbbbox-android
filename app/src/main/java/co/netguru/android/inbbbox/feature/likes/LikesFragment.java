@@ -15,7 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
     @BindView(R.id.fragment_likes_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.fragment_likes_empty_view)
-    RelativeLayout emptyView;
+    ScrollView emptyView;
     @BindView(R.id.fragment_like_empty_text)
     TextView emptyViewText;
 

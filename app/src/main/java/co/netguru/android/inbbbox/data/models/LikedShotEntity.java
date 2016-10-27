@@ -16,6 +16,22 @@ public abstract class LikedShotEntity {
     public abstract ShotEntity shot();
 
     public static TypeAdapter<LikedShotEntity> typeAdapter(Gson gson) {
-        return null;
+        return new AutoValue_LikedShotEntity.GsonTypeAdapter(gson);
+    }
+
+    public static Builder builder() {
+        return new AutoValue_LikedShotEntity.Builder();
+    }
+
+    @AutoValue.Builder
+    public abstract static class Builder {
+
+        public abstract Builder id(long value);
+
+        public abstract Builder createdAt(String value);
+
+        public abstract Builder shot(ShotEntity value);
+
+        public abstract LikedShotEntity build();
     }
 }

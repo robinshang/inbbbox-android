@@ -25,4 +25,8 @@
 
     <dimen name="like_list_view_holder_height">240dp</dimen>
     <dimen name="like_grid_view_holder_height">117dp</dimen>
+
+    <dimen name="fragment_like_recycler_view_padding_top">16dp</dimen>
+    <dimen name="fragment_like_empty_view_logo_size">140dp</dimen>
+    <dimen name="fragment_like_empty_view_text_margin_top">48dp</dimen>
 </resources>

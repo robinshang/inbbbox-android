@@ -24,6 +24,7 @@ import android.widget.ToggleButton;
 
 import javax.inject.Inject;
 
+import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
@@ -54,6 +55,11 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     NavigationView navigationView;
     @BindView(R.id.activity_main_drawer_layout)
     DrawerLayout drawerLayout;
+
+    @BindDrawable(R.drawable.toolbar_center_background)
+    Drawable toolbarCenterBackground;
+    @BindDrawable(R.drawable.toolbar_start_background)
+    Drawable toolbarStartBackground;
 
     @BindString(R.string.empty_string)
     String emptyString;
@@ -144,6 +150,8 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 selectTab(tab);
+                toolbar.setBackground(tab.getPosition() == TabItemType.SHOTS.getPosition()
+                        ? toolbarCenterBackground : toolbarStartBackground);
             }
 
             @Override

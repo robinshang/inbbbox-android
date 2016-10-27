@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/toolbar_background" />
+            android:background="@drawable/toolbar_center_background" />
 
         <co.netguru.android.inbbbox.view.NonSwipeableViewPager
             android:id="@+id/main_view_pager"

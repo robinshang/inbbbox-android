@@ -47,7 +47,8 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder> {
     }
 
     public void setLikeList(List<LikedShot> likeList) {
-        this.likeList = likeList;
+        this.likeList.clear();
+        this.likeList.addAll(likeList);
         notifyDataSetChanged();
     }
 
