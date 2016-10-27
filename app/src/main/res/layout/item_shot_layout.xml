@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/shot_item_internal_padding"
     android:paddingRight="@dimen/shot_item_internal_padding">
 
-    <co.netguru.android.inbbbox.view.SwipeableImagePanel
+    <co.netguru.android.inbbbox.view.swipingpanel.SwipeableImagePanel
         android:id="@+id/swipeable_image_panel"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

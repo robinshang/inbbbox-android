@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.view;
+package co.netguru.android.inbbbox.view.swipingpanel;
 
 import android.content.Context;
 import android.os.Handler;
@@ -13,6 +13,7 @@ import com.daimajia.swipe.SwipeLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.netguru.android.inbbbox.R;
+import timber.log.Timber;
 
 public class SwipeableImagePanel extends LinearLayout {
 
@@ -38,6 +39,7 @@ public class SwipeableImagePanel extends LinearLayout {
         @Override
         public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
             //you are swiping.
+            Timber.d("LEFT OFFSET: " + leftOffset);
         }
 
         @Override
@@ -61,6 +63,7 @@ public class SwipeableImagePanel extends LinearLayout {
             delayClose();
         }
     };
+    private ItemSwipeListener itemSwipeListener;
 
     public SwipeableImagePanel(Context context) {
         super(context);
@@ -98,4 +101,11 @@ public class SwipeableImagePanel extends LinearLayout {
     public ImageView getImageView() {
         return shotImageView;
     }
+
+    public void setItemSwipeListener(ItemSwipeListener itemSwipeListener) {
+
+        this.itemSwipeListener = itemSwipeListener;
+        swipeLayout.setSwipeListener(itemSwipeListener);
+    }
 }
+
