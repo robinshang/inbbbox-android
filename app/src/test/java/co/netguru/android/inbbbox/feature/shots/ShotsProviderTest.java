@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.feature.shots;
 
+import android.media.Image;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -45,6 +47,9 @@ public class ShotsProviderTest {
     public SettingsManager settingsManagerMock;
 
     @Mock
+    public Image imageMock;
+
+    @Mock
     private Settings settingsMock;
 
     @Mock
@@ -70,6 +75,7 @@ public class ShotsProviderTest {
                                          boolean newToday,
                                          boolean popularToday,
                                          boolean debut) {
+
         when(streamSourceSettings.isFollowing()).thenReturn(following);
         when(streamSourceSettings.isNewToday()).thenReturn(newToday);
         when(streamSourceSettings.isPopularToday()).thenReturn(popularToday);
