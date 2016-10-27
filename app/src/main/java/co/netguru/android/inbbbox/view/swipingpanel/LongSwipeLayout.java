@@ -13,19 +13,22 @@ import timber.log.Timber;
 public class LongSwipeLayout extends SwipeLayout {
 
     private static final long AUTO_CLOSE_DELAY = 300;
-    private static final float LONG_SWIPE_TRIGGERING_THRESHOLD = 200;
+    private static final float LONG_SWIPE_TRIGGERING_THRESHOLD = 300;
+    private static final int LONG_SWIPE_ACTIVATION_TOLERANCE = 100;
     private View surfaceView;
 
     private int initialPadding;
     private float offsetX;
     private boolean wasChecked = false;
-    private boolean isFirstItemSelectionTriggered;
+    private boolean isNormalLeftSwipeTriggered;
     private int firstElementEndThreshold;
     private boolean wasFirstElementWidthCollected = false;
+    private boolean isLongSwipeTriggered;
     private ItemSwipeListener itemSwipeListener;
 
     private final Handler closeHandler = new Handler();
 
+    private boolean isRightSwipeTriggered;
     private SwipeListener internalSwipeListener = new SwipeListener() {
         @Override
         public void onStartOpen(SwipeLayout layout) {
@@ -49,7 +52,7 @@ public class LongSwipeLayout extends SwipeLayout {
 
         @Override
         public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-
+            handleRightSwipeAction(leftOffset);
         }
 
         @Override
@@ -86,7 +89,10 @@ public class LongSwipeLayout extends SwipeLayout {
     }
 
     private void getElementWidth() {
-        firstElementEndThreshold = (getPaddingLeft() - getDragDistance());
+        if (!wasFirstElementWidthCollected) {
+            wasFirstElementWidthCollected = true;
+            firstElementEndThreshold = getLimitForLeftSwipe();
+        }
     }
 
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -96,49 +102,82 @@ public class LongSwipeLayout extends SwipeLayout {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            wasChecked = false;
-            isFirstItemSelectionTriggered = false;
-            if (!wasFirstElementWidthCollected) {
-                getElementWidth();
-                wasFirstElementWidthCollected = true;
-            }
+            initSwipeActionHandling();
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            checkItemSelection();
+        } else {
+            handleSwipingActions(event);
         }
+        return super.onTouchEvent(event);
+    }
 
+    private void handleSwipingActions(MotionEvent event) {
         int difference = initialPadding - surfaceView.getLeft();
 
         if (difference < firstElementEndThreshold && !wasChecked) {
             offsetX = event.getX();
             wasChecked = true;
-            isFirstItemSelectionTriggered = true;
+            isNormalLeftSwipeTriggered = true;
+            isLongSwipeTriggered = false;
         }
         if (event.getX() - offsetX > LONG_SWIPE_TRIGGERING_THRESHOLD) {
-            isFirstItemSelectionTriggered = false;
+            isNormalLeftSwipeTriggered = false;
         }
-        if (isFirstItemSelectionTriggered) {
+
+        int swipingLimit = getLimitForLeftSwipe() + LONG_SWIPE_ACTIVATION_TOLERANCE;
+        Timber.d("difference: " + difference + " limit: " + swipingLimit);
+        if (difference < swipingLimit) {
+            isLongSwipeTriggered = true;
+        }
+
+        if (isNormalLeftSwipeTriggered) {
             event.setLocation(offsetX, event.getY());
         } else if (wasChecked) {
 
             float offset = event.getX() - LONG_SWIPE_TRIGGERING_THRESHOLD;
             event.setLocation(offset, event.getY());
         }
+    }
 
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            checkItemSelection();
+    private int getLimitForLeftSwipe() {
+        return getPaddingLeft() - getDragDistance();
+    }
+
+    private void initSwipeActionHandling() {
+        wasChecked = false;
+        isNormalLeftSwipeTriggered = false;
+        isLongSwipeTriggered = false;
+        getElementWidth();
+    }
+
+    private void handleRightSwipeAction(int offset) {
+        int limit = getLimitForLeftSwipe() + LONG_SWIPE_ACTIVATION_TOLERANCE;
+        if (offset < 0 && offset <= limit) {
+            isRightSwipeTriggered = true;
+        } else {
+            isRightSwipeTriggered = false;
         }
-
-        return super.onTouchEvent(event);
     }
 
     private void checkItemSelection() {
-        if (isFirstItemSelectionTriggered) {
+        if (isRightSwipeTriggered) {
+            rightSwipeSelected();
+        } else if (isNormalLeftSwipeTriggered) {
             normalSwipeElementSelected();
-        } else {
+        } else if (isLongSwipeTriggered) {
             longSwipeElementSelected();
         }
     }
 
+    private void rightSwipeSelected() {
+        Timber.d("Normal right swipe item selected");
+        if (itemSwipeListener != null) {
+            itemSwipeListener.onRightSwipe();
+        }
+    }
+
     private void normalSwipeElementSelected() {
-        Timber.d("Normal swipe item selected");
+        Timber.d("Normal left swipe item selected");
         if (itemSwipeListener != null) {
             itemSwipeListener.onLeftSwipe();
         }
@@ -165,4 +204,5 @@ public class LongSwipeLayout extends SwipeLayout {
     private void delayClose() {
         closeHandler.postDelayed(() -> close(true, true), AUTO_CLOSE_DELAY);
     }
+
 }
