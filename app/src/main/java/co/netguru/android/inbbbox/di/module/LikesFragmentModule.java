@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 
-import co.netguru.android.inbbbox.di.scope.FragmentScope;
+import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.utils.Constants;
 import dagger.Module;
 import dagger.Provides;

@@ -12,9 +12,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.ui.LikedShot;
-import co.netguru.android.inbbbox.di.scope.FragmentScope;
 import co.netguru.android.inbbbox.utils.imageloader.ImageLoader;
 
 @FragmentScope
@@ -38,7 +38,7 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder> {
 
     @Override
     public void onBindViewHolder(LikesViewHolder holder, int position) {
-        holder.bind(likeList.get(holder.getAdapterPosition()));
+        holder.bind(likeList.get(position));
     }
 
     @Override

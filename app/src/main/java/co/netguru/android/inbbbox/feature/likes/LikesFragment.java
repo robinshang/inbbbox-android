@@ -58,8 +58,6 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
     TextView emptyViewText;
 
     @Inject
-    LikesPresenter likesPresenter;
-    @Inject
     LikesAdapter likesAdapter;
     @Inject
     GridLayoutManager gridLayoutManager;
@@ -94,9 +92,9 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView.setAdapter(likesAdapter);
-        likesPresenter.getLikesFromServer();
+        getPresenter().getLikesFromServer();
         emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
-        likesPresenter.addIconToText(emptyString, emptyTextDrawable);
+        getPresenter().addIconToText(emptyString, emptyTextDrawable);
     }
 
     @Override
@@ -109,24 +107,27 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        boolean isGridView;
         switch (item.getItemId()) {
             case R.id.action_grid_view:
-                changeMenuItemIcons(true);
-                recyclerView.setLayoutManager(gridLayoutManager);
-                return true;
+                isGridView = true;
+                break;
             case R.id.action_list_view:
-                changeMenuItemIcons(false);
-                recyclerView.setLayoutManager(linearLayoutManager);
-                return true;
+                isGridView = false;
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        changeMenuItemIcons(isGridView);
+        recyclerView.setLayoutManager(isGridView ? gridLayoutManager : linearLayoutManager);
+
+        return true;
     }
 
     @NonNull
     @Override
     public LikesViewContract.Presenter createPresenter() {
-        return likesPresenter;
+        return component.getPresenter();
     }
 
     @Override

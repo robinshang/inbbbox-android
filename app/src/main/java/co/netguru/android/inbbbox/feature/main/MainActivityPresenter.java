@@ -6,6 +6,7 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
+import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.data.models.Settings;
 import co.netguru.android.inbbbox.data.models.StreamSourceSettings;
 import co.netguru.android.inbbbox.data.models.User;
@@ -14,7 +15,6 @@ import co.netguru.android.inbbbox.db.datasource.DataSource;
 import co.netguru.android.inbbbox.R;
 
 import co.netguru.android.inbbbox.data.models.NotificationSettings;
-import co.netguru.android.inbbbox.di.scope.ActivityScope;
 import co.netguru.android.inbbbox.feature.main.MainViewContract.Presenter;
 import co.netguru.android.inbbbox.feature.notification.NotificationController;
 import co.netguru.android.inbbbox.feature.notification.NotificationScheduler;
