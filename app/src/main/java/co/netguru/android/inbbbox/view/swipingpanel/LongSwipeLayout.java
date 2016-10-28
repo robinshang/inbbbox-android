@@ -2,8 +2,10 @@ package co.netguru.android.inbbbox.view.swipingpanel;
 
 import android.content.Context;
 import android.os.Handler;
+import android.support.v4.view.VelocityTrackerCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 
 import com.daimajia.swipe.SwipeLayout;
@@ -25,6 +27,7 @@ public class LongSwipeLayout extends SwipeLayout {
     private boolean wasFirstElementWidthCollected = false;
     private boolean isLongSwipeTriggered;
     private ItemSwipeListener itemSwipeListener;
+    private VelocityTracker mVelocityTracker = null;
 
     private final Handler closeHandler = new Handler();
 
@@ -101,11 +104,42 @@ public class LongSwipeLayout extends SwipeLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        int index = event.getActionIndex();
+        int action = event.getActionMasked();
+        int pointerId = event.getPointerId(index);
+
+        // TODO: 28.10.2016 HANDLING VELOCITY
+
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             initSwipeActionHandling();
+
+            if (mVelocityTracker == null) {
+                // Retrieve a new VelocityTracker object to watch the velocity of a motion.
+                mVelocityTracker = VelocityTracker.obtain();
+            } else {
+                // Reset the velocity tracker back to its initial state.
+                mVelocityTracker.clear();
+            }
+            // Add a user's movement to the tracker.
+
+            mVelocityTracker.addMovement(event);
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             checkItemSelection();
-        } else {
+            mVelocityTracker.recycle();
+            mVelocityTracker = null;
+        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+
+            mVelocityTracker.addMovement(event);
+            // When you want to determine the velocity, call
+            // computeCurrentVelocity(). Then call getXVelocity()
+            // and getYVelocity() to retrieve the velocity for each pointer ID.
+            mVelocityTracker.computeCurrentVelocity(1000, 1000);
+            // Log velocity of pixels per second
+            // Best practice to use VelocityTrackerCompat where possible.
+
+            Timber.d("Y velocity: " +
+                    VelocityTrackerCompat.getYVelocity(mVelocityTracker,
+                            pointerId));
             handleSwipingActions(event);
         }
         return super.onTouchEvent(event);
