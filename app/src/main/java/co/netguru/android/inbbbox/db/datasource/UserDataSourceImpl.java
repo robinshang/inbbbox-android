@@ -32,7 +32,7 @@ public class UserDataSourceImpl implements DataSource<User> {
 
             return true;
         } catch (Exception e) {
-            Timber.e(e, "Error while saving user to database");
+            Timber.i(e, "Error while saving user to database");
             return false;
         }
     }
@@ -42,7 +42,7 @@ public class UserDataSourceImpl implements DataSource<User> {
         try {
             resultObservable = Observable.just(storage.get(key, User.class));
         } catch (Exception e) {
-            Timber.e(e, "Error while getting user from database");
+            Timber.i(e, "Error while getting user from database");
             resultObservable = Observable.empty();
         }
 

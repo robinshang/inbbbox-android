@@ -27,6 +27,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         implements LoginContract.View, WithComponent<LoginComponent> {
 
     private AlertDialog loginDialog;
+    private FocusableWebView webView;
 
     @OnClick(R.id.btn_login)
     void onLoginClick() {
@@ -88,16 +89,19 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @Override
     public void handleOauthUri(String uriString) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-
-        FocusableWebView webView = new FocusableWebView(this);
-        webView.loadUrl(uriString);
-        webView.setWebViewClient(webViewClient);
-        webView.getSettings().setUseWideViewPort(true);
-
-        dialogBuilder.setView(webView);
-        loginDialog = dialogBuilder.create();
         if (!isFinishing()) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+
+            webView = new FocusableWebView(getApplicationContext());
+
+            dialogBuilder.setView(webView);
+            loginDialog = dialogBuilder.create();
+
+            webView.loadUrl(uriString);
+            webView.setWebViewClient(webViewClient);
+            webView.getSettings().setUseWideViewPort(true);
+
+
             loginDialog.show();
         }
     }
@@ -116,6 +120,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     public void closeLoginDialog() {
         if (loginDialog != null) {
+            webView.destroy();
             loginDialog.dismiss();
         }
     }

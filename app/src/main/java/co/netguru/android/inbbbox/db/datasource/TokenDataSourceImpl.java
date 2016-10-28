@@ -33,7 +33,7 @@ public class TokenDataSourceImpl implements DataSource<Token> {
 
             result = true;
         } catch (Exception e) {
-            Timber.e(e, "Error while saving token to database");
+            Timber.i(e, "Error while saving token to database");
 
             result = false;
         }
@@ -44,7 +44,7 @@ public class TokenDataSourceImpl implements DataSource<Token> {
         try {
             return Observable.just(storage.get(key, Token.class));
         } catch (Exception e) {
-            Timber.e(e, "Error while getting token from database");
+            Timber.i(e, "Error while getting token from database");
         }
 
         return Observable.empty();
