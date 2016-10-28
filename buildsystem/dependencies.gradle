@@ -25,11 +25,11 @@ ext {
     kryoVersion = "2.24.0"
 
     libs = [
-            kotlin              : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
-            design              : "com.android.support:design:$supportLibraryVersion",
-            appCompat           : "com.android.support:appcompat-v7:$supportLibraryVersion",
-            recyclerView        : "com.android.support:recyclerview-v7:$supportLibraryVersion",
-            supportDesignLib    : "com.android.support:design:$supportLibraryVersion",
+            kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+            design                  : "com.android.support:design:$supportLibraryVersion",
+            appCompat               : "com.android.support:appcompat-v7:$supportLibraryVersion",
+            recyclerView            : "com.android.support:recyclerview-v7:$supportLibraryVersion",
+            supportDesignLib        : "com.android.support:design:$supportLibraryVersion",
             cardView                : "com.android.support:cardview-v7:$supportLibraryVersion",
             gridLayout              : "com.android.support:gridlayout-v7:$supportLibraryVersion",
             mediaRouter             : "com.android.support:mediarouter-v7:$supportLibraryVersion",
@@ -66,6 +66,7 @@ ext {
             stethoOkhttp        : "com.facebook.stetho:stetho-okhttp3:$stethoVersion",
             once                : "com.jonathanfinerty.once:once:1.0.3",
             glide               : "com.github.bumptech.glide:glide:3.7.0",
+            glideTransformations: "jp.wasabeef:glide-transformations:2.0.1",
             strictmodeNotifier  : "com.nshmura:strictmode-notifier:0.9.3",
             blockCanary         : "com.github.moduth:blockcanary-android:1.2.1",
             leakCanary          : "com.squareup.leakcanary:leakcanary-android:1.3.1",
@@ -77,10 +78,6 @@ ext {
             kryo                : "com.esotericsoftware.kryo:kryo:$kryoVersion",
             greenDaoGenerator   : "org.greenrobot:greendao-generator:$greenDaoVersion",
             circleImageView     : "de.hdodenhof:circleimageview:2.1.0",
-
-//            GlideTransformation
-            glideTransformations: "jp.wasabeef:glide-transformations:2.0.1",
-
             swipeLayout         : "com.daimajia.swipelayout:library:1.2.0@aar"
     ]
 

@@ -17,4 +17,8 @@ public interface ImageLoader {
                    ImageThumbnail imageThumbnail);
 
     void disableRoundCornerTransformation();
+
+    void loadImageWithRoundedCorners(ImageView destinationView,
+                                     DrawableRequestBuilder<String> thumbnailRequest,
+                                     ImageThumbnail imageThumbnail);
 }

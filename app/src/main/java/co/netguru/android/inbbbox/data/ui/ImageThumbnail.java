@@ -10,9 +10,11 @@ public interface ImageThumbnail {
     @Nullable
     String getThumbnailUrl();
 
+    @Nullable
     @DrawableRes
     Integer getPlaceholderResId();
 
+    @Nullable
     @DrawableRes
     Integer getErrorImageResId();
 }

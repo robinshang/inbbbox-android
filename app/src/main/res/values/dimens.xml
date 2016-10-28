@@ -13,7 +13,7 @@
     <dimen name='activity_login_button_padding_start'>16dp</dimen>
 
     <dimen name="activity_main_tab_height">62dp</dimen>
-    <dimen name="activity_main_fab_margin_bottom">76dp</dimen>
+    <dimen name="activity_main_fab_margin_bottom">26dp</dimen>
     <dimen name="activity_main_tab_indicator_height">0dp</dimen>
 
     <dimen name="drawer_header_height">188dp</dimen>
@@ -28,4 +28,11 @@
     <dimen name="right_swipe_action_panel_width">85dp</dimen>
     <dimen name="left_swipe_action_panel_width">160dp</dimen>
     <dimen name="like_action_width">64dp</dimen>
+
+    <dimen name="like_list_view_holder_height">240dp</dimen>
+    <dimen name="like_grid_view_holder_height">117dp</dimen>
+
+    <dimen name="fragment_like_recycler_view_padding_top">16dp</dimen>
+    <dimen name="fragment_like_empty_view_logo_size">140dp</dimen>
+    <dimen name="fragment_like_empty_view_text_margin_top">48dp</dimen>
 </resources>

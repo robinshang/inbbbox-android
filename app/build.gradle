@@ -247,6 +247,8 @@ dependencies {
 
     // Auto
     apt proc.autoGson
+    apt proc.autoValue
+    provided proc.autoGson
     provided proc.autoValue
 
     apt proc.autoParcel
@@ -277,6 +279,9 @@ dependencies {
 
     //Swipe layput
     compile libs.swipeLayout
+
+    //Glide Transformations
+    compile libs.glideTransformations
 
     //Timber
     compile libs.timber
