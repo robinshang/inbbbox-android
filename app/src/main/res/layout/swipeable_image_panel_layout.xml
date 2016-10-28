@@ -7,7 +7,7 @@
     android:background="@drawable/shot_item_swipe_bottom_background">
     <!-- Bottom View Start-->
     <LinearLayout
-        android:id="@+id/bottom_wrapper"
+        android:id="@+id/bottom_right_wrapper"
         android:layout_width="@dimen/right_swipe_action_panel_width"
         android:layout_height="match_parent"
         android:layout_gravity="end"
@@ -30,14 +30,14 @@
 
         <ImageView
             android:id="@+id/iv_like_action"
-            android:layout_width="@dimen/like_action_width"
+            android:layout_width="@dimen/swipe_action_icon_width"
             style="@style/SwipeActionIcons"
             android:src="@drawable/ic_buckets" />
 
         <ImageView
             android:id="@+id/iv_bucket_action"
             style="@style/SwipeActionIcons"
-            android:layout_width="@dimen/like_action_width"
+            android:layout_width="@dimen/swipe_action_icon_width"
             android:src="@drawable/ic_following" />
 
     </LinearLayout>
