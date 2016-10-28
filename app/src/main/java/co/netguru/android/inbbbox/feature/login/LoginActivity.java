@@ -101,7 +101,6 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
             webView.setWebViewClient(webViewClient);
             webView.getSettings().setUseWideViewPort(true);
 
-
             loginDialog.show();
         }
     }
