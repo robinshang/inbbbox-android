@@ -1,56 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="co.netguru.android.inbbbox.feature.main.MainActivity">
 
-        <LinearLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:context="co.netguru.android.inbbbox.feature.main.MainActivity">
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/toolbar_center_background" />
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@drawable/toolbar_background" />
+        <co.netguru.android.inbbbox.view.NonSwipeableViewPager
+            android:id="@+id/main_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-            <co.netguru.android.inbbbox.view.NonSwipeableViewPager
-                android:id="@+id/main_view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <android.support.design.widget.TabLayout
-                android:id="@+id/main_tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/activity_main_tab_height"
-                android:background="@drawable/tablayout_background"
-                app:tabGravity="fill"
-                app:tabIndicatorHeight="@dimen/activity_main_tab_indicator_height"
-                app:tabSelectedTextColor="@color/pink"
-                app:tabTextAppearance="@style/TabText" />
-        </LinearLayout>
-
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_marginBottom="@dimen/activity_main_fab_margin_bottom"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:scaleType="center"
-            android:src="@drawable/ic_fab_open"
-            app:backgroundTint="@color/white"
-            app:fabSize="normal" />
-    </android.support.design.widget.CoordinatorLayout>
+        <android.support.design.widget.TabLayout
+            android:id="@+id/main_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity_main_tab_height"
+            android:background="@drawable/tablayout_background"
+            app:tabGravity="fill"
+            app:tabIndicatorHeight="@dimen/activity_main_tab_indicator_height"
+            app:tabSelectedTextColor="@color/pink"
+            app:tabTextAppearance="@style/TabText" />
+    </LinearLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/activity_main_navigation_view"

@@ -9,8 +9,12 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
     </style>
 
+    <style name="ActionButtonStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:padding">10dp</item>
+    </style>
 
     <style name="TabText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
@@ -41,7 +45,15 @@
         <item name="android:textColor">@color/palePink</item>
     </style>
 
-    <style name="Font25.PalePink.RobotoLight" parent="Font25.PalePink">
+    <style name="Font25.RobotoLight" parent="Font25">
         <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="Font25.RobotoLight.PalePink" parent="Font25.RobotoLight">
+        <item name="android:textColor">@color/palePink</item>
+    </style>
+
+    <style name="Font25.RobotoLight.Gray" parent="Font25.RobotoLight">
+        <item name="android:textColor">@color/gray</item>
     </style>
 </resources>

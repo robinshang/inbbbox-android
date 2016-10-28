@@ -13,4 +13,8 @@ public interface ImageLoader {
     void loadImage(ImageView destinationView,
                    DrawableRequestBuilder<String> thumbnailRequest,
                    ImageThumbnail imageThumbnail);
+
+    void loadImageWithRoundedCorners(ImageView destinationView,
+                                     DrawableRequestBuilder<String> thumbnailRequest,
+                                     ImageThumbnail imageThumbnail);
 }

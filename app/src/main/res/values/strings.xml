@@ -16,6 +16,8 @@
     <string name="tab_following_title">Following</string>
 
     <string name="action_settings">Settings</string>
+    <string name="action_list_view">List view</string>
+    <string name="action_grid_view">Grid view</string>
 
     <string name="drawer_group_notification">Notifications</string>
     <string name="drawer_enable_reminder">Enable daily reminder</string>
@@ -28,6 +30,8 @@
     <string name="drawer_group_customization">Customization</string>
     <string name="drawer_shot_details">Shot Details on Homescreen</string>
     <string name="drawer_logout">Log out</string>
+
+    <string name="fragment_like_empty_text">Like some shots first!</string>
 
     <string name="notification_text">Check Inbbbox for daily dose of design shots</string>
 

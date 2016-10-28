@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.application.configuration.RequestInterceptor;
+import co.netguru.android.inbbbox.data.adapter.AutoGsonAdapterFactory;
 import co.netguru.android.inbbbox.db.Storage;
 import co.netguru.android.inbbbox.utils.Constants;
 import co.netguru.android.inbbbox.utils.imageloader.GlideImageLoaderManager;
@@ -27,6 +28,7 @@ public class ConfigurationModule {
     @Provides
     Gson provideGson() {
         return new GsonBuilder()
+                .registerTypeAdapterFactory(AutoGsonAdapterFactory.create())
                 .create();
     }
 
