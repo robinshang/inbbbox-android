@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.feature.likes.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -12,12 +11,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.ui.LikedShot;
+import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static co.netguru.android.inbbbox.utils.PixelConverter.convertToPx;
 
 
-public class LikesViewHolder extends RecyclerView.ViewHolder {
+public class LikesViewHolder extends BaseViewHolder<LikedShot> {
 
     private static final int RADIUS_DP = 2;
     private static final int RADIUS_MARGIN = 0;
@@ -30,13 +30,14 @@ public class LikesViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    void bind(LikedShot item) {
+    public void bind(LikedShot item) {
         Context context = itemView.getContext();
         Glide.with(itemView.getContext())
                 .load(item.getImageUrl())
                 .bitmapTransform(new RoundedCornersTransformation(context,
                         convertToPx(RADIUS_DP, context),
                         RADIUS_MARGIN))
+                .placeholder(R.drawable.ic_likes)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
     }

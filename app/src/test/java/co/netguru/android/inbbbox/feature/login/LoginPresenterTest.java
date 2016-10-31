@@ -11,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
+import co.netguru.android.inbbbox.feature.authentication.OauthUrlProvider;
 import co.netguru.android.inbbbox.feature.authentication.TokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
@@ -31,7 +31,7 @@ public class LoginPresenterTest  {
     public TestRule rule = new RxSyncTestRule();
 
     @Mock
-    private OauthUriProvider oauthUriProviderMock;
+    private OauthUrlProvider oauthUriProviderMock;
 
     @Mock
     private ErrorMessageParser errorMessageParser;
@@ -65,20 +65,20 @@ public class LoginPresenterTest  {
 
     @Test
     public void whenLoginClick_thenGetUriFromUriProviderTest() {
-        when(oauthUriProviderMock.getOauthAuthorizeUriString()).thenReturn(Observable.just(uriString));
+        when(oauthUriProviderMock.getOauthAuthorizeUrlString()).thenReturn(Observable.just(uriString));
 
         presenter.showLoginView();
 
-        verify(viewMock).handleOauthUri(uriString);
+        verify(viewMock).handleOauthUrl(uriString);
     }
 
     @Test
     public void whenLoginClick_thenShowActionViewForOauthRequest() {
-        when(oauthUriProviderMock.getOauthAuthorizeUriString()).thenReturn(Observable.just(uriString));
+        when(oauthUriProviderMock.getOauthAuthorizeUrlString()).thenReturn(Observable.just(uriString));
 
         presenter.showLoginView();
 
-        verify(viewMock, times((1))).handleOauthUri(uriString);
+        verify(viewMock, times((1))).handleOauthUrl(uriString);
     }
 
     @Test

@@ -68,8 +68,8 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     }
 
     @Override
-    public void handleOauthUri(String uriString) {
-        dialogFragment = WebviewDialogFragment.newInstance(uriString);
+    public void handleOauthUrl(String url) {
+        dialogFragment = WebviewDialogFragment.newInstance(url);
         dialogFragment.show(getFragmentManager(), WebviewDialogFragment.DIALOG_TAG);
     }
 
@@ -90,7 +90,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     }
 
     @Override
-    public void redirectUrlCallbackLoaded(Uri uri) {
-        getPresenter().handleOauthLoginResponse(uri);
+    public void redirectUrlCallbackLoaded(String url) {
+        getPresenter().handleOauthLoginResponse(Uri.parse(url));
     }
 }

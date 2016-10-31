@@ -7,7 +7,7 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
+import co.netguru.android.inbbbox.feature.authentication.OauthUrlProvider;
 import co.netguru.android.inbbbox.feature.authentication.TokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
@@ -23,7 +23,7 @@ public final class LoginPresenter
         extends MvpNullObjectBasePresenter<LoginContract.View>
         implements LoginContract.Presenter {
 
-    private OauthUriProvider uriProvider;
+    private OauthUrlProvider uriProvider;
     private TokenProvider apiTokenProvider;
     private ErrorMessageParser errorHandler;
     private UserProvider userProvider;
@@ -33,7 +33,7 @@ public final class LoginPresenter
     private String currentState;
 
     @Inject
-    LoginPresenter(OauthUriProvider oauthUriProvider,
+    LoginPresenter(OauthUrlProvider oauthUriProvider,
                    TokenProvider apiTokenProvider,
                    ErrorMessageParser apiErrorParser,
                    UserProvider userProvider) {
@@ -46,14 +46,14 @@ public final class LoginPresenter
     @Override
     public void showLoginView() {
         uriProvider
-                .getOauthAuthorizeUriString()
+                .getOauthAuthorizeUrlString()
                 .doOnError(Throwable::printStackTrace)
                 .doOnNext(this::prepareAuthorization)
                 .subscribe();
     }
 
     private void prepareAuthorization(String uriString) {
-        getView().handleOauthUri(uriString);
+        getView().handleOauthUrl(uriString);
     }
 
     @Override

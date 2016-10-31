@@ -1,10 +1,7 @@
 package co.netguru.android.inbbbox.feature.authentication;
 
 import android.content.res.Resources;
-import android.net.TrafficStats;
-import android.net.Uri;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -15,15 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.observers.TestSubscriber;
-import timber.log.Timber;
 
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -36,7 +28,7 @@ public class OauthUriProviderTest {
     Resources resourcesMock;
 
     @InjectMocks
-    OauthUriProvider uriProvider;
+    OauthUrlProvider uriProvider;
 
     private String resourceString = "TEST";
 
@@ -50,7 +42,7 @@ public class OauthUriProviderTest {
         String expected = generateExpectedUri();
         TestSubscriber<String> testSubscriber = new TestSubscriber();
 
-        uriProvider.getOauthAuthorizeUriString().subscribe(testSubscriber);
+        uriProvider.getOauthAuthorizeUrlString().subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         String uriString = testSubscriber.getOnNextEvents().get(0);
