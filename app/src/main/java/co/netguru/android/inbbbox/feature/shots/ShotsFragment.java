@@ -9,23 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hannesdorfmann.mosby.mvp.MvpFragment;
-
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
 import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.di.component.ShotsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
+import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
 
 public class ShotsFragment
-        extends MvpFragment<ShotsContract.View, ShotsContract.Presenter>
+        extends BaseMvpFragment<ShotsContract.View, ShotsContract.Presenter>
         implements ShotsContract.View {
 
     @BindView(R.id.shots_recycler_view)
@@ -67,7 +65,6 @@ public class ShotsFragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
         initRecycler();
     }
 
