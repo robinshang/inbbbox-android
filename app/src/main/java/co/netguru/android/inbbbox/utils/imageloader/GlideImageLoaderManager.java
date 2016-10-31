@@ -1,22 +1,15 @@
 package co.netguru.android.inbbbox.utils.imageloader;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.TypedValue;
 import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import co.netguru.android.inbbbox.data.ui.ImageThumbnail;
 import co.netguru.android.inbbbox.utils.Constants;
-import jp.wasabeef.glide.transformations.BlurTransformation;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public final class GlideImageLoaderManager implements ImageLoader {
@@ -26,27 +19,17 @@ public final class GlideImageLoaderManager implements ImageLoader {
 
     private Context context;
 
-    @Nullable
-    private List<Transformation> transformations;
-
     private RoundedCornersTransformation roundedCornersTransformation;
 
     public GlideImageLoaderManager(Context context) {
-        transformations = new ArrayList<>();
         this.context = context;
     }
 
-    @Override
     public void enableRoundCornersTransformationForNextRequest(float radius) {
         if (roundedCornersTransformation == null) {
             roundedCornersTransformation = new RoundedCornersTransformation(context,
                     Math.round(radius), 2);
         }
-        transformations.add(roundedCornersTransformation);
-    }
-
-    public void disableRoundCornerTransformation() {
-        roundedCornersTransformation = null;
     }
 
     public void loadImageWithThumbnail(ImageView destinationView, ImageThumbnail imageThumbnail) {
@@ -64,7 +47,6 @@ public final class GlideImageLoaderManager implements ImageLoader {
         final DrawableRequestBuilder requestBuilder = createDrawableRequest(thumbnailRequest, imageThumbnail);
         requestBuilder.bitmapTransform(new RoundedCornersTransformation(context, convertToPx(RADIUS_DP), RADIUS_MARGIN));
         requestBuilder.into(destinationView);
-        transformations.clear();
     }
 
     @Override
@@ -95,11 +77,10 @@ public final class GlideImageLoaderManager implements ImageLoader {
             requestBuilder.error(imageThumbnail.getErrorImageResId());
         }
 
-        if (!transformations.isEmpty()) {
-            Transformation[] transformationsArray = transformations
-                    .toArray(new Transformation[transformations.size()]);
-
-            requestBuilder.bitmapTransform(transformationsArray);
+        if (imageThumbnail.getRoundCornersRadius() != null) {
+            requestBuilder.bitmapTransform(new RoundedCornersTransformation(context,
+                    convertToPx(imageThumbnail.getRoundCornersRadius()),
+                    RADIUS_MARGIN));
         }
         requestBuilder.diskCacheStrategy(DiskCacheStrategy.ALL);
         requestBuilder.animate(android.R.anim.fade_in);

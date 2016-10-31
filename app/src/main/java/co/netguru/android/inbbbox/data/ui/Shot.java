@@ -4,6 +4,8 @@ import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
+import co.netguru.android.inbbbox.R;
+
 @AutoValue
 public abstract class Shot implements ImageThumbnail {
     public abstract Integer id();
@@ -61,5 +63,10 @@ public abstract class Shot implements ImageThumbnail {
     @Override
     public Integer getErrorImageResId() {
         return null;
+    }
+
+    @Override
+    public Integer getRoundCornersRadius() {
+        return R.dimen.shot_corner_radius;
     }
 }
