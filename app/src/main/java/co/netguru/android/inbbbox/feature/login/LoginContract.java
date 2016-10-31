@@ -8,7 +8,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 public interface LoginContract {
     interface View extends MvpView{
 
-        void handleOauthUrl(String uriString);
+        void handleOauthUrl(String urlString);
 
         void showApiError(String oauthErrorMessage);
 

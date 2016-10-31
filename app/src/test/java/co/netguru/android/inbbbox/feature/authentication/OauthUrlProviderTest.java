@@ -19,7 +19,7 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OauthUriProviderTest {
+public class OauthUrlProviderTest {
 
     @Rule
     public TestRule rule = new RxSyncTestRule();
@@ -28,7 +28,7 @@ public class OauthUriProviderTest {
     Resources resourcesMock;
 
     @InjectMocks
-    OauthUrlProvider uriProvider;
+    OauthUrlProvider urlProvider;
 
     private String resourceString = "TEST";
 
@@ -38,19 +38,19 @@ public class OauthUriProviderTest {
     }
 
     @Test
-    public void whenUriRequested_thenGenerateUriFromConstants() {
-        String expected = generateExpectedUri();
+    public void whenUrlRequested_thenGenerateUrlFromConstants() {
+        String expected = generateExpectedUrl();
         TestSubscriber<String> testSubscriber = new TestSubscriber();
 
-        uriProvider.getOauthAuthorizeUrlString().subscribe(testSubscriber);
+        urlProvider.getOauthAuthorizeUrlString().subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        String uriString = testSubscriber.getOnNextEvents().get(0);
+        String urlString = testSubscriber.getOnNextEvents().get(0);
 
-        Assert.assertEquals(uriString.startsWith(expected), true);
+        Assert.assertEquals(urlString.startsWith(expected), true);
     }
 
-    private String generateExpectedUri() {
+    private String generateExpectedUrl() {
         return "https://dribbble.com/oauth/authorize?client_id=";
     }
 

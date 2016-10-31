@@ -23,21 +23,20 @@ public final class LoginPresenter
         extends MvpNullObjectBasePresenter<LoginContract.View>
         implements LoginContract.Presenter {
 
-    private OauthUrlProvider uriProvider;
+    private OauthUrlProvider urlProvider;
     private TokenProvider apiTokenProvider;
     private ErrorMessageParser errorHandler;
     private UserProvider userProvider;
 
     private String code;
     private String oauthErrorMessage;
-    private String currentState;
 
     @Inject
-    LoginPresenter(OauthUrlProvider oauthUriProvider,
+    LoginPresenter(OauthUrlProvider oauthUrlProvider,
                    TokenProvider apiTokenProvider,
                    ErrorMessageParser apiErrorParser,
                    UserProvider userProvider) {
-        this.uriProvider = oauthUriProvider;
+        this.urlProvider = oauthUrlProvider;
         this.apiTokenProvider = apiTokenProvider;
         this.errorHandler = apiErrorParser;
         this.userProvider = userProvider;
@@ -45,26 +44,26 @@ public final class LoginPresenter
 
     @Override
     public void showLoginView() {
-        uriProvider
+        urlProvider
                 .getOauthAuthorizeUrlString()
                 .doOnError(Throwable::printStackTrace)
                 .doOnNext(this::prepareAuthorization)
                 .subscribe();
     }
 
-    private void prepareAuthorization(String uriString) {
-        getView().handleOauthUrl(uriString);
+    private void prepareAuthorization(String urlString) {
+        getView().handleOauthUrl(urlString);
     }
 
     @Override
-    public void handleOauthLoginResponse(Uri uri) {
-        if (uri != null) {
-            Timber.d(uri.toString());
+    public void handleOauthLoginResponse(Uri url) {
+        if (url != null) {
+            Timber.d(url.toString());
             getView().closeLoginDialog();
-            unpackParamsFromUri(uri);
+            unpackParamsFromUri(url);
             selectAuthorizationAction();
         } else {
-            Timber.d("Uri is null");
+            Timber.d("url is null");
         }
     }
 
@@ -74,7 +73,7 @@ public final class LoginPresenter
         } else if (oauthErrorMessage != null && !oauthErrorMessage.isEmpty()) {
             getView().showApiError(oauthErrorMessage);
         } else {
-            getView().showApiError(errorHandler.getErrorLabel(ErrorType.INVALID_OAURH_URI));
+            getView().showApiError(errorHandler.getErrorLabel(ErrorType.INVALID_OAURH_URL));
         }
     }
 
@@ -122,7 +121,6 @@ public final class LoginPresenter
 
     private void unpackParamsFromUri(Uri uri) {
         code = uri.getQueryParameter(Constants.OAUTH.CODE_KEY);
-        currentState = uri.getQueryParameter(Constants.OAUTH.STATE_KEY);
         oauthErrorMessage = uri.getQueryParameter(Constants.OAUTH.ERROR_KEY);
     }
 

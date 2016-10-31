@@ -13,7 +13,7 @@ import timber.log.Timber;
 
 public class WebviewDialogFragment extends DialogFragment {
 
-    public static final String DIALOG_TAG = "webview_dialog_tag";
+    public static final String TAG = WebviewDialogFragment.class.getSimpleName();
     private static final String ARG_URL = "arg_url";
 
     private OnRedirectUrlCallbackListener callback;

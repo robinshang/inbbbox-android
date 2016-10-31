@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
@@ -43,9 +42,9 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
 
     ShotsViewHolder(View itemView) {
         super(itemView);
-        ButterKnife.bind(this, itemView);
     }
 
+    @Override
     public void bind(Shot shot) {
         setupImage(shot);
         longSwipeLayout.setItemSwipeListener(swipeListener);
