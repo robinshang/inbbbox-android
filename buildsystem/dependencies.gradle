@@ -76,7 +76,6 @@ ext {
             greenDaoGenerator       : "org.greenrobot:greendao-generator:$greenDaoVersion",
             snappyDb                : "com.snappydb:snappydb-lib:$snappyVersion",
             kryo                    : "com.esotericsoftware.kryo:kryo:$kryoVersion",
-            greenDaoGenerator       : "org.greenrobot:greendao-generator:$greenDaoVersion",
             circleImageView         : "de.hdodenhof:circleimageview:2.1.0",
             swipeLayout             : "com.daimajia.swipelayout:library:1.2.0@aar"
     ]
