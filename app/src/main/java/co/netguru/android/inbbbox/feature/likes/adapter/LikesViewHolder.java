@@ -19,6 +19,7 @@ import static co.netguru.android.inbbbox.utils.PixelConverter.convertToPx;
 
 public class LikesViewHolder extends BaseViewHolder<LikedShot> {
 
+    // TODO: 31.10.2016 move this constants to resources
     private static final int RADIUS_DP = 2;
     private static final int RADIUS_MARGIN = 0;
 

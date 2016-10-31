@@ -64,7 +64,7 @@ public class WebviewDialogFragment extends DialogFragment {
         } catch (ClassCastException e) {
             Timber.e(e.getMessage());
             throw new ClassCastException(activity.toString()
-                    + " must implement OnRedirectUriCallbackListener");
+                    + " must implement OnRedirectUrlCallbackListener");
         }
     }
 }
