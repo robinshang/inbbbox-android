@@ -1,24 +1,45 @@
 package co.netguru.android.inbbbox.view;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import co.netguru.android.inbbbox.R;
+import timber.log.Timber;
 
 public class WebviewDialogFragment extends DialogFragment {
 
-    private WebViewClient client;
-    private String url;
+    public static final String DIALOG_TAG = "webview_dialog_tag";
+    private static final String ARG_URL = "arg_url";
 
-    public void setWebViewClient(WebViewClient client) {
+    private OnRedirectUrlCallbackListener callback;
 
-        this.client = client;
-    }
+    private final WebViewClient webViewClient = new WebViewClient() {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            boolean result = true;
+            if (url.contains(getString(R.string.redirectUriScheme))) {
+                Timber.d(url);
+                callback.redirectUrlCallbackLoaded(Uri.parse(url));
+                result = false;
+            } else {
+                view.loadUrl(url);
+            }
+            return result;
+        }
+    };
 
-    public void setUrl(String url) {
-
-        this.url = url;
+    public static WebviewDialogFragment newInstance(String url) {
+        WebviewDialogFragment dialogFragment = new WebviewDialogFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_URL, url);
+        dialogFragment.setArguments(args);
+        return dialogFragment;
     }
 
     @Override
@@ -28,10 +49,22 @@ public class WebviewDialogFragment extends DialogFragment {
 
         dialogBuilder.setView(webView);
 
-        webView.loadUrl(url);
-        webView.setWebViewClient(client);
+        webView.loadUrl(getArguments().getString(ARG_URL));
+        webView.setWebViewClient(webViewClient);
         webView.getSettings().setUseWideViewPort(true);
 
         return dialogBuilder.create();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            callback = (OnRedirectUrlCallbackListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 }

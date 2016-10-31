@@ -10,9 +10,9 @@ public class ShotsMapper {
                 .id(entity.getId())
                 .title(entity.getTitle())
                 .description(entity.getDescription())
-                .hdpiImageUrl(entity.getImages().hiDpiUrl())
-                .normalImageUrl(entity.getImages().normalUrl())
-                .thumbnailUrl(entity.getImages().teaserUrl())
+                .hdpiImageUrl(entity.getImage().hiDpiUrl())
+                .normalImageUrl(entity.getImage().normalUrl())
+                .thumbnailUrl(entity.getImage().teaserUrl())
                 .build();
     }
 }

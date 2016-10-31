@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.di.module;
 
 import android.content.Context;
-import android.content.res.Resources;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -58,7 +57,7 @@ public class ConfigurationModule {
     }
 
     @Provides
-    ImageLoader provideImageLoaderManager(Context context, Resources resources) {
-        return new GlideImageLoaderManager(context, resources);
+    ImageLoader provideImageLoaderManager(Context context) {
+        return new GlideImageLoaderManager(context);
     }
 }
