@@ -42,5 +42,4 @@ public abstract class Image implements Serializable {
     public static TypeAdapter<Image> typeAdapter(Gson gson) {
         return new AutoValue_Image.GsonTypeAdapter(gson);
     }
-
 }

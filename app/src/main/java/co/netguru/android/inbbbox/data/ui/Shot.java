@@ -1,32 +1,58 @@
 package co.netguru.android.inbbbox.data.ui;
 
-public class Shot implements ImageThumbnail {
-    private Integer id;
-    private String title;
-    private String description;
-    private String hdpiImage;
-    private String normalImage;
-    private String thumbnail;
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 
-    public void setTitle(String title) {
-        this.title = title;
+@AutoValue
+public abstract class Shot implements ImageThumbnail {
+    public abstract Integer id();
+
+    public abstract String title();
+
+    public abstract String description();
+
+    public abstract String hdpiImageUrl();
+
+    public abstract String normalImageUrl();
+
+    public abstract String thumbnailUrl();
+
+    @AutoValue.Builder
+    public abstract static class Builder {
+        public abstract Shot.Builder id(Integer id);
+
+        public abstract Shot.Builder title(String title);
+
+        public abstract Shot.Builder description(String description);
+
+        public abstract Shot.Builder hdpiImageUrl(String hdpiImageUrl);
+
+        public abstract Shot.Builder normalImageUrl(String normalImageUrl);
+
+        public abstract Shot.Builder thumbnailUrl(String thumbnailUrl);
+
+        public abstract Shot build();
     }
 
-    public String getTitle() {
-        return title;
+    public static Shot.Builder builder() {
+        return new AutoValue_Shot.Builder();
+    }
+
+    public static TypeAdapter<Shot> typeAdapter(Gson gson) {
+        return new AutoValue_Shot.GsonTypeAdapter(gson);
     }
 
     @Override
     public String getImageUrl() {
-        return getHdpiImage();
+        return normalImageUrl();
     }
 
     @Override
     public String getThumbnailUrl() {
-        return getThumbnail();
+        return thumbnailUrl();
     }
 
-    // TODO: 26.10.2016 Replace with suitable placeholder
     @Override
     public Integer getPlaceholderResId() {
         return null;
@@ -35,45 +61,5 @@ public class Shot implements ImageThumbnail {
     @Override
     public Integer getErrorImageResId() {
         return null;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setHdpiImage(String hdpiImage) {
-        this.hdpiImage = hdpiImage;
-    }
-
-    public void setNormalImage(String normalImage) {
-        this.normalImage = normalImage;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getHdpiImage() {
-        return hdpiImage;
-    }
-
-    public String getNormalImage() {
-        return normalImage;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
     }
 }
