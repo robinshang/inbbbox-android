@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.webkit.WebViewClient;
 
-public class WebViewDialogFragment extends DialogFragment {
+public class WebviewDialogFragment extends DialogFragment {
 
     private WebViewClient client;
     private String url;

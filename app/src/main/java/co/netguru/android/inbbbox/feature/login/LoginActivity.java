@@ -19,14 +19,14 @@ import co.netguru.android.inbbbox.application.App;
 import co.netguru.android.inbbbox.di.component.LoginComponent;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
-import co.netguru.android.inbbbox.view.WebViewDialogFragment;
+import co.netguru.android.inbbbox.view.WebviewDialogFragment;
 import timber.log.Timber;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
         implements LoginContract.View, WithComponent<LoginComponent> {
 
     private static final String DIALOG_TAG = "webview_dialog_tag";
-    private WebViewDialogFragment dialogFragment;
+    private WebviewDialogFragment dialogFragment;
 
     @OnClick(R.id.btn_login)
     void onLoginClick() {
@@ -88,7 +88,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @Override
     public void handleOauthUri(String uriString) {
-        dialogFragment = new WebViewDialogFragment();
+        dialogFragment = new WebviewDialogFragment();
         dialogFragment.setUrl(uriString);
         dialogFragment.setWebViewClient(webViewClient);
         dialogFragment.show(getFragmentManager(), DIALOG_TAG);
