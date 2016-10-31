@@ -54,7 +54,7 @@ public class ShotsViewHolder extends RecyclerView.ViewHolder {
     private void setupImage(Shot shot) {
         float radius = itemView.getContext().getResources().getDimension(R.dimen.shot_corner_radius);
         Glide.with(itemView.getContext())
-                .load(shot.hdpiImageUrl())
+                .load(shot.normalImageUrl())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(shotImageView);
     }
