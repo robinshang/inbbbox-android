@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center"
-              android:orientation="vertical"
-              android:paddingLeft="@dimen/shot_item_internal_padding"
-              android:paddingRight="@dimen/shot_item_internal_padding">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/shot_item_internal_padding"
+                android:paddingRight="@dimen/shot_item_internal_padding">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/shot_placeholder"/>
 
     <co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                                   android:id="@+id/long_swipe_layout"
                                                                   android:layout_width="match_parent"
                                                                   android:layout_height="wrap_content"
-                                                                  android:layout_gravity="center"
-                                                                  android:background="@drawable/shot_item_swipe_bottom_background">
+                                                                  android:layout_centerInParent="true"
+                                                                  android:layout_gravity="center">
         <!-- Bottom View Start-->
         <LinearLayout
             android:id="@+id/bottom_right_wrapper"
@@ -34,8 +38,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="1">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,4 +74,4 @@
             android:adjustViewBounds="true"/>
         <!-- Surface View End -->
     </co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout>
-</LinearLayout>
+</RelativeLayout>

@@ -65,7 +65,7 @@ public abstract class Shot implements ImageThumbnail {
 
     @Override
     public Integer getPlaceholderResId() {
-        return null;
+        return R.drawable.shot_placeholder;
     }
 
     @Override

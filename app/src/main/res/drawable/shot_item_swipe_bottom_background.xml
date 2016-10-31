@@ -3,6 +3,6 @@
 
     <solid android:color="@color/accent" />
 
-    <corners android:radius="@dimen/shot_corner_radius" />
+    <corners android:radius="@dimen/shot_corner_radius_dp"/>
 
 </shape>
