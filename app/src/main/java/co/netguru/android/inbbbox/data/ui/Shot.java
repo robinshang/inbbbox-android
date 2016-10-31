@@ -66,7 +66,7 @@ public abstract class Shot implements ImageThumbnail {
     }
 
     @Override
-    public Integer getRoundCornersRadius() {
+    public Integer getRoundCornersRadiusResId() {
         return R.dimen.shot_corner_radius;
     }
 }

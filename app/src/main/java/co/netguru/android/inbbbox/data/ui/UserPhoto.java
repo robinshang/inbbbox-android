@@ -32,4 +32,10 @@ public class UserPhoto implements ImageThumbnail {
     public Integer getErrorImageResId() {
         return R.drawable.ic_ball_active;
     }
+
+    @Nullable
+    @Override
+    public Integer getRoundCornersRadiusResId() {
+        return null;
+    }
 }

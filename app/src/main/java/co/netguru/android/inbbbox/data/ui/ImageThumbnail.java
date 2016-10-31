@@ -20,5 +20,5 @@ public interface ImageThumbnail {
 
     //Leave it null to disable rounded corners
     @Nullable
-    Integer getRoundCornersRadius();
+    Integer getRoundCornersRadiusResId();
 }

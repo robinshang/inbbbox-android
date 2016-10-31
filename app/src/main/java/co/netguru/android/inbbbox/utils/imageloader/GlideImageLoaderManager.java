@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.utils.imageloader;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.TypedValue;
 import android.widget.ImageView;
 
@@ -18,11 +19,13 @@ public final class GlideImageLoaderManager implements ImageLoader {
     private static final int RADIUS_MARGIN = 0;
 
     private Context context;
+    private Resources resources;
 
     private RoundedCornersTransformation roundedCornersTransformation;
 
-    public GlideImageLoaderManager(Context context) {
+    public GlideImageLoaderManager(Context context, Resources resources) {
         this.context = context;
+        this.resources = resources;
     }
 
     public void enableRoundCornersTransformationForNextRequest(float radius) {
@@ -77,9 +80,10 @@ public final class GlideImageLoaderManager implements ImageLoader {
             requestBuilder.error(imageThumbnail.getErrorImageResId());
         }
 
-        if (imageThumbnail.getRoundCornersRadius() != null) {
+        if (imageThumbnail.getRoundCornersRadiusResId() != null) {
+            float radius = resources.getDimension(imageThumbnail.getRoundCornersRadiusResId());
             requestBuilder.bitmapTransform(new RoundedCornersTransformation(context,
-                    convertToPx(imageThumbnail.getRoundCornersRadius()),
+                    Math.round(radius),
                     RADIUS_MARGIN));
         }
         requestBuilder.diskCacheStrategy(DiskCacheStrategy.ALL);

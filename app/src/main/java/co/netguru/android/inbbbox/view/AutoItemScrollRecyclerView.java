@@ -7,8 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
 public class AutoItemScrollRecyclerView extends RecyclerView {
-    private int lastVisibleItemIndex;
-    private int firstVisibleItemIndex;
     private boolean isScrollingNext;
     private boolean isScrollingBack;
 
@@ -19,10 +17,12 @@ public class AutoItemScrollRecyclerView extends RecyclerView {
 
     public AutoItemScrollRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public AutoItemScrollRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init();
     }
 
     private void init() {
@@ -42,18 +42,13 @@ public class AutoItemScrollRecyclerView extends RecyclerView {
     }
 
     private void scrollToBack() {
-        getFirstAndLastItemPosition();
+        int firstVisibleItemIndex = ((LinearLayoutManager) getLayoutManager()).findFirstVisibleItemPosition();
         super.smoothScrollToPosition(firstVisibleItemIndex);
     }
 
     private void scrollToNext() {
-        getFirstAndLastItemPosition();
+        int lastVisibleItemIndex = ((LinearLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
         super.smoothScrollToPosition(lastVisibleItemIndex);
-    }
-
-    private void getFirstAndLastItemPosition() {
-        firstVisibleItemIndex = ((LinearLayoutManager) getLayoutManager()).findFirstVisibleItemPosition();
-        lastVisibleItemIndex = ((LinearLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
     }
 
     @Override
@@ -71,6 +66,6 @@ public class AutoItemScrollRecyclerView extends RecyclerView {
     @Override
     public boolean fling(int velocityX, int velocityY) {
         //fling disabled
-        return super.fling(0, 0);
+        return false;
     }
 }
