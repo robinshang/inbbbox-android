@@ -17,18 +17,17 @@ public class AutoItemScrollRecyclerView extends RecyclerView {
         init();
     }
 
-    private void init() {
-        setOverScrollMode(OVER_SCROLL_NEVER);
-        setNestedScrollingEnabled(false);
-
-    }
-
     public AutoItemScrollRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
     public AutoItemScrollRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+    }
+
+    private void init() {
+        setOverScrollMode(OVER_SCROLL_NEVER);
+        setNestedScrollingEnabled(false);
     }
 
     @Override

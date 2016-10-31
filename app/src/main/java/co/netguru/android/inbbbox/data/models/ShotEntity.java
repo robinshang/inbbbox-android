@@ -26,7 +26,7 @@ public class ShotEntity implements Serializable{
     private Integer height;
     @SerializedName("images")
     @Expose
-    private Images images;
+    private Image images;
     @SerializedName("views_count")
     @Expose
     private Integer viewsCount;
@@ -180,7 +180,7 @@ public class ShotEntity implements Serializable{
      * @return
      * The images
      */
-    public Images getImages() {
+    public Image getImages() {
         return images;
     }
 
@@ -189,7 +189,7 @@ public class ShotEntity implements Serializable{
      * @param images
      * The images
      */
-    public void setImages(Images images) {
+    public void setImages(Image images) {
         this.images = images;
     }
 

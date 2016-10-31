@@ -11,9 +11,9 @@ public class ShotsMapper {
         shot.setId(entity.getId());
         shot.setTitle(entity.getTitle());
         shot.setDescription(entity.getDescription());
-        shot.setHdpiImage(entity.getImages().getHidpi());
-        shot.setNormalImage(entity.getImages().getNormal());
-        shot.setThumbnail(entity.getImages().getTeaser());
+        shot.setHdpiImage(entity.getImages().hiDpiUrl());
+        shot.setNormalImage(entity.getImages().normalUrl());
+        shot.setThumbnail(entity.getImages().teaserUrl());
         return shot;
     }
 }
