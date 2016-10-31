@@ -1,36 +1,71 @@
 package co.netguru.android.inbbbox.data.ui;
 
+import android.support.annotation.Nullable;
+
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
+
 import co.netguru.android.inbbbox.R;
 
-public class Shot implements ImageThumbnail {
-    private Integer id;
-    private String title;
-    private String description;
-    private String hdpiImage;
-    private String normalImage;
-    private String thumbnail;
+@AutoValue
+public abstract class Shot implements ImageThumbnail {
+    @Nullable
+    public abstract Integer id();
 
-    public void setTitle(String title) {
-        this.title = title;
+    @Nullable
+    public abstract String title();
+
+    @Nullable
+    public abstract String description();
+
+    @Nullable
+    public abstract String hdpiImageUrl();
+
+    @Nullable
+    public abstract String normalImageUrl();
+
+    @Nullable
+    public abstract String thumbnailUrl();
+
+    @AutoValue.Builder
+    public abstract static class Builder {
+        public abstract Shot.Builder id(Integer id);
+
+        public abstract Shot.Builder title(String title);
+
+        public abstract Shot.Builder description(String description);
+
+        public abstract Shot.Builder hdpiImageUrl(String hdpiImageUrl);
+
+        public abstract Shot.Builder normalImageUrl(String normalImageUrl);
+
+        public abstract Shot.Builder thumbnailUrl(String thumbnailUrl);
+
+        public abstract Shot build();
     }
 
-    public String getTitle() {
-        return title;
+    public static Shot.Builder builder() {
+        return new AutoValue_Shot.Builder();
+    }
+
+    public static TypeAdapter<Shot> typeAdapter(Gson gson) {
+        return new AutoValue_Shot.GsonTypeAdapter(gson);
     }
 
     @Override
     public String getImageUrl() {
-        return getHdpiImage();
+        return normalImageUrl();
     }
 
     @Override
     public String getThumbnailUrl() {
-        return getThumbnail();
+        return thumbnailUrl();
     }
 
     @Override
     public Integer getPlaceholderResId() {
-        return R.drawable.shot_placeholder;
+        return null;
     }
 
     @Override
@@ -38,43 +73,9 @@ public class Shot implements ImageThumbnail {
         return null;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setHdpiImage(String hdpiImage) {
-        this.hdpiImage = hdpiImage;
-    }
-
-    public void setNormalImage(String normalImage) {
-        this.normalImage = normalImage;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getHdpiImage() {
-        return hdpiImage;
-    }
-
-    public String getNormalImage() {
-        return normalImage;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
+    @Override
+    public Integer getRoundCornersRadiusResId() {
+        return R.dimen.shot_corner_radius;
     }
 }

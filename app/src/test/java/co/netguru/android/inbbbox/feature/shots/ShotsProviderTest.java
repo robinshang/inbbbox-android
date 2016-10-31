@@ -121,7 +121,7 @@ public class ShotsProviderTest {
         List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
         for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
             Assert.assertEquals(resultList.get(i)
-                    .getTitle()
+                    .title()
                     .equals(listOfExpected.get(i).getTitle()), true);
         }
     }
@@ -229,7 +229,7 @@ public class ShotsProviderTest {
         List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
         for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
             Assert.assertEquals(resultList.get(i)
-                    .getTitle()
+                    .title()
                     .equals(listOfExpected.get(i).getTitle()), true);
         }
     }
@@ -254,7 +254,7 @@ public class ShotsProviderTest {
 
         for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
             Assert.assertEquals(resultList.get(i)
-                    .getTitle()
+                    .title()
                     .equals(listOfExpected.get(i).getTitle()), true);
         }
     }
@@ -285,7 +285,7 @@ public class ShotsProviderTest {
         List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
 
         for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
-            Assert.assertEquals(expetedTitltes.contains(resultList.get(i).getTitle()), true);
+            Assert.assertEquals(expetedTitltes.contains(resultList.get(i).title()), true);
         }
     }
 

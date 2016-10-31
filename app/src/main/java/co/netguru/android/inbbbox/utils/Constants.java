@@ -31,9 +31,6 @@ public final class Constants {
         public static final String SHOTS_KEY_SORT = "sort";
         public static final String SHOTS_KEY_DATE = "date";
         public static final String LIST_PARAM_DEBUTS_PARAM = "debuts";
-        public static final String USER_ENDPOINT = "user";
-        public static final String SHOTS_ENDPOINT = "shots";
-        public static final String FOLLOWING_SHOTS_ENDPOINT = "user/following/shots";
     }
 
     public class Db {

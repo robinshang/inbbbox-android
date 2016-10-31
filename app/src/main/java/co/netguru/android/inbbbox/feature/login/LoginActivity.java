@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -20,14 +19,14 @@ import co.netguru.android.inbbbox.application.App;
 import co.netguru.android.inbbbox.di.component.LoginComponent;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
-import co.netguru.android.inbbbox.view.FocusableWebView;
+import co.netguru.android.inbbbox.view.WebviewDialogFragment;
 import timber.log.Timber;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
         implements LoginContract.View, WithComponent<LoginComponent> {
 
-    private AlertDialog loginDialog;
-    private FocusableWebView webView;
+    private static final String DIALOG_TAG = "webview_dialog_tag";
+    private WebviewDialogFragment dialogFragment;
 
     @OnClick(R.id.btn_login)
     void onLoginClick() {
@@ -89,20 +88,10 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @Override
     public void handleOauthUri(String uriString) {
-        if (!isFinishing()) {
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-
-            webView = new FocusableWebView(getApplicationContext());
-
-            dialogBuilder.setView(webView);
-            loginDialog = dialogBuilder.create();
-
-            webView.loadUrl(uriString);
-            webView.setWebViewClient(webViewClient);
-            webView.getSettings().setUseWideViewPort(true);
-
-            loginDialog.show();
-        }
+        dialogFragment = new WebviewDialogFragment();
+        dialogFragment.setUrl(uriString);
+        dialogFragment.setWebViewClient(webViewClient);
+        dialogFragment.show(getFragmentManager(), DIALOG_TAG);
     }
 
     @Override
@@ -118,15 +107,11 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @Override
     public void closeLoginDialog() {
-        if (loginDialog != null) {
-            webView.destroy();
-            loginDialog.dismiss();
-        }
+        dialogFragment.dismiss();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        closeLoginDialog();
     }
 }

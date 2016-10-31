@@ -8,8 +8,7 @@ public class Settings implements Serializable{
     private final CustomizationSettings customizationSettings;
 
     public Settings() {
-        //Following stream enabled by default
-        this.streamSourceSettings = new StreamSourceSettings(true, false, false, false);
+        this.streamSourceSettings = new StreamSourceSettings();
         this.notificationSettings = new NotificationSettings();
         this.customizationSettings = new CustomizationSettings();
     }

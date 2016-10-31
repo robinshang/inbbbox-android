@@ -38,4 +38,10 @@ public class LikedShot implements ImageThumbnail {
     public Integer getErrorImageResId() {
         return null;
     }
+
+    @Nullable
+    @Override
+    public Integer getRoundCornersRadiusResId() {
+        return null;
+    }
 }
