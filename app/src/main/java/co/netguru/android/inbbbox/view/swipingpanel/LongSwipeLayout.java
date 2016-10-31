@@ -29,25 +29,25 @@ public class LongSwipeLayout extends SwipeLayout {
     private final Handler closeHandler = new Handler();
 
     private boolean isRightSwipeTriggered;
-    private SwipeListener internalSwipeListener = new SwipeListener() {
+    private final SwipeListener internalSwipeListener = new SwipeListener() {
         @Override
         public void onStartOpen(SwipeLayout layout) {
-
+            //no-op
         }
 
         @Override
         public void onOpen(SwipeLayout layout) {
-
+            //no-op
         }
 
         @Override
         public void onStartClose(SwipeLayout layout) {
-
+            //no-op
         }
 
         @Override
         public void onClose(SwipeLayout layout) {
-
+            //no-op
         }
 
         @Override
@@ -83,22 +83,6 @@ public class LongSwipeLayout extends SwipeLayout {
         initialPadding = surfaceView.getLeft();
     }
 
-    private void init() {
-        setShowMode(SwipeLayout.ShowMode.LayDown);
-        addSwipeListener(internalSwipeListener);
-    }
-
-    private void getElementWidth() {
-        if (!wasFirstElementWidthCollected) {
-            wasFirstElementWidthCollected = true;
-            firstElementEndThreshold = getLimitForLeftSwipe();
-        }
-    }
-
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return super.onInterceptTouchEvent(ev);
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -109,6 +93,29 @@ public class LongSwipeLayout extends SwipeLayout {
             handleSwipingActions(event);
         }
         return super.onTouchEvent(event);
+    }
+
+    public void setItemSwipeListener(ItemSwipeListener itemSwipeListener) {
+
+        this.itemSwipeListener = itemSwipeListener;
+    }
+
+    @Override
+    protected void processHandRelease(float xvel, float yvel, boolean isCloseBeforeDragged) {
+        //keep it false to automatically close the surface
+        super.processHandRelease(xvel, yvel, false);
+    }
+
+    private void init() {
+        setShowMode(SwipeLayout.ShowMode.LayDown);
+        addSwipeListener(internalSwipeListener);
+    }
+
+    private void getElementWidth() {
+        if (!wasFirstElementWidthCollected) {
+            wasFirstElementWidthCollected = true;
+            firstElementEndThreshold = getLimitForLeftSwipe();
+        }
     }
 
     private void handleSwipingActions(MotionEvent event) {
@@ -190,19 +197,7 @@ public class LongSwipeLayout extends SwipeLayout {
         }
     }
 
-    public void setItemSwipeListener(ItemSwipeListener itemSwipeListener) {
-
-        this.itemSwipeListener = itemSwipeListener;
-    }
-
-    @Override
-    protected void processHandRelease(float xvel, float yvel, boolean isCloseBeforeDragged) {
-        //keep it false to automatically close the surface
-        super.processHandRelease(xvel, yvel, false);
-    }
-
     private void delayClose() {
         closeHandler.postDelayed(() -> close(true, true), AUTO_CLOSE_DELAY);
     }
-
 }
