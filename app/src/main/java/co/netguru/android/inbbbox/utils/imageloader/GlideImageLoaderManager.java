@@ -25,13 +25,6 @@ public final class GlideImageLoaderManager implements ImageLoader {
         this.context = context;
     }
 
-    public void enableRoundCornersTransformationForNextRequest(float radius) {
-        if (roundedCornersTransformation == null) {
-            roundedCornersTransformation = new RoundedCornersTransformation(context,
-                    Math.round(radius), 2);
-        }
-    }
-
     public void loadImageWithThumbnail(ImageView destinationView, ImageThumbnail imageThumbnail) {
         DrawableRequestBuilder<String> thumbnailRequest = Glide
                 .with(context)
