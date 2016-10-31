@@ -28,13 +28,6 @@ public final class GlideImageLoaderManager implements ImageLoader {
         this.resources = resources;
     }
 
-    public void enableRoundCornersTransformationForNextRequest(float radius) {
-        if (roundedCornersTransformation == null) {
-            roundedCornersTransformation = new RoundedCornersTransformation(context,
-                    Math.round(radius), 2);
-        }
-    }
-
     public void loadImageWithThumbnail(ImageView destinationView, ImageThumbnail imageThumbnail) {
         DrawableRequestBuilder<String> thumbnailRequest = Glide
                 .with(context)
@@ -50,6 +43,19 @@ public final class GlideImageLoaderManager implements ImageLoader {
         final DrawableRequestBuilder requestBuilder = createDrawableRequest(thumbnailRequest, imageThumbnail);
         requestBuilder.bitmapTransform(new RoundedCornersTransformation(context, convertToPx(RADIUS_DP), RADIUS_MARGIN));
         requestBuilder.into(destinationView);
+    }
+
+    @Override
+    public void loadImageFromResourcesWithRoundedCorners(Integer drawableResId,
+                                                         Integer radiusResId,
+                                                         ImageView destinationView) {
+        Glide.with(context)
+                .load(drawableResId)
+                .bitmapTransform(new RoundedCornersTransformation(context,
+                        getRadiusFromResources(radiusResId),
+                        RADIUS_MARGIN))
+                .into(destinationView);
+
     }
 
     @Override
@@ -81,15 +87,20 @@ public final class GlideImageLoaderManager implements ImageLoader {
         }
 
         if (imageThumbnail.getRoundCornersRadiusResId() != null) {
-            float radius = resources.getDimension(imageThumbnail.getRoundCornersRadiusResId());
+            int radius = getRadiusFromResources(imageThumbnail.getRoundCornersRadiusResId());
             requestBuilder.bitmapTransform(new RoundedCornersTransformation(context,
-                    Math.round(radius),
+                    radius,
                     RADIUS_MARGIN));
         }
         requestBuilder.diskCacheStrategy(DiskCacheStrategy.ALL);
         requestBuilder.animate(android.R.anim.fade_in);
 
         return requestBuilder;
+    }
+
+    private int getRadiusFromResources(Integer roundCornersRadiusResId) {
+        float radius = resources.getDimension(roundCornersRadiusResId);
+        return Math.round(radius);
     }
 
     private int convertToPx(int number) {

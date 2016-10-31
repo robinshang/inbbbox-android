@@ -21,6 +21,9 @@ public class ShotsViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.iv_shot_image)
     ImageView shotImageView;
 
+    @BindView(R.id.iv_background)
+    ImageView backgroundImageView;
+
     private ImageLoader imageLoader;
 
     // TODO: 27.10.2016 bind with recycler action listener
@@ -53,7 +56,9 @@ public class ShotsViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void setupImage(Shot shot) {
-        float radius = itemView.getContext().getResources().getDimension(R.dimen.shot_corner_radius);
+        imageLoader.loadImageFromResourcesWithRoundedCorners(R.drawable.shot_placeholder,
+                R.dimen.shot_corner_radius,
+                backgroundImageView);
         imageLoader.loadImageWithThumbnail(shotImageView, shot);
     }
 

@@ -6,6 +6,7 @@
                 android:paddingRight="@dimen/shot_item_internal_padding">
 
     <ImageView
+        android:id="@+id/iv_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

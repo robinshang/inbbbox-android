@@ -17,4 +17,9 @@ public interface ImageLoader {
     void loadImageWithRoundedCorners(ImageView destinationView,
                                      DrawableRequestBuilder<String> thumbnailRequest,
                                      ImageThumbnail imageThumbnail);
+
+    void loadImageFromResourcesWithRoundedCorners(Integer drawableResId,
+                                                  Integer radiusResId,
+                                                  ImageView destinationView);
 }
+
