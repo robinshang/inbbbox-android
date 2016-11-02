@@ -9,8 +9,9 @@
         android:id="@+id/iv_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="20dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/shot_placeholder"/>
+        android:src="@drawable/ic"/>
 
     <co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                                   android:id="@+id/long_swipe_layout"

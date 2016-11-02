@@ -13,6 +13,7 @@ import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 import co.netguru.android.inbbbox.view.swipingpanel.ItemSwipeListener;
 import co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class ShotsViewHolder extends BaseViewHolder<Shot> {
 
@@ -46,15 +47,29 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
 
     @Override
     public void bind(Shot shot) {
+        setupBackground();
         setupImage(shot);
         longSwipeLayout.setItemSwipeListener(swipeListener);
     }
 
+    private void setupBackground() {
+        float radius = itemView.getResources().getDimension(R.dimen.shot_corner_radius);
+        Glide.with(itemView.getContext())
+                .load(R.drawable.shot_placeholder)
+                .centerCrop()
+                .bitmapTransform(new RoundedCornersTransformation(itemView.getContext(),
+                        Math.round(radius), 0))
+                .into(shotImageView);
+    }
+
     private void setupImage(Shot shot) {
+        float radius = itemView.getResources().getDimension(R.dimen.shot_corner_radius);
         Glide.with(itemView.getContext())
                 .load(shot.normalImageUrl())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.shot_item_swipe_bottom_background)
+                .bitmapTransform(new RoundedCornersTransformation(itemView.getContext(),
+                        Math.round(radius), 0))
                 .into(shotImageView);
     }
 
