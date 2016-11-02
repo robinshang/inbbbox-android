@@ -41,6 +41,7 @@ public class ShotsProvider {
     private Observable<List<Shot>> getShotsObservable(Settings settings) {
         return selectRequest(settings.getStreamSourceSettings())
                 .compose(fromListObservable())
+                .distinct()
                 .map(mapper::getShot)
                 .toList();
     }

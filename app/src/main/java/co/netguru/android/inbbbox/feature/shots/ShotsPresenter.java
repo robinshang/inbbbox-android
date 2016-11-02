@@ -29,10 +29,10 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     @Override
     public void attachView(ShotsContract.View view) {
         super.attachView(view);
-        getShotsData();
+        loadShotsData();
     }
 
-    private void getShotsData() {
+    private void loadShotsData() {
         shotsProvider.getShots()
                 .compose(androidIO())
                 .subscribe(this::showRetrievedItems,
