@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.application.configuration;
+package co.netguru.android.inbbbox.api;
 
 import java.io.IOException;
 
@@ -26,8 +26,7 @@ public class RequestInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         loadToken();
         Request original = chain.request();
-        Request.Builder requestBuilder = null;
-        requestBuilder = getRequestBuilderWithToken(original);
+        Request.Builder requestBuilder = getRequestBuilderWithToken(original);
 
         Request request = requestBuilder.build();
         return chain.proceed(request);

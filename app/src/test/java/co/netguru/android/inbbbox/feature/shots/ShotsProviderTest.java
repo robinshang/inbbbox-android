@@ -14,8 +14,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.api.MockShotsApi;
-import co.netguru.android.inbbbox.data.api.ShotsApi;
+import co.netguru.android.inbbbox.api.MockShotsApi;
+import co.netguru.android.inbbbox.api.ShotsApi;
 import co.netguru.android.inbbbox.data.models.FilteredShotsParams;
 import co.netguru.android.inbbbox.data.models.Settings;
 import co.netguru.android.inbbbox.data.models.ShotEntity;

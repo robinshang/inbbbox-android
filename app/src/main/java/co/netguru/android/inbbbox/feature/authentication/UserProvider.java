@@ -2,7 +2,7 @@ package co.netguru.android.inbbbox.feature.authentication;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.data.api.UserApi;
+import co.netguru.android.inbbbox.api.UserApi;
 import co.netguru.android.inbbbox.data.models.User;
 import co.netguru.android.inbbbox.db.datasource.DataSource;
 import rx.Observable;

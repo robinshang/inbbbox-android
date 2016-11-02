@@ -1,5 +1,5 @@
 
-package co.netguru.android.inbbbox.application;
+package co.netguru.android.inbbbox;
 
 import android.app.Application;
 import android.content.Context;

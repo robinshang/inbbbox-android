@@ -8,7 +8,7 @@ import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 import net.hockeyapp.android.CrashManager;
 
-import co.netguru.android.inbbbox.application.App;
+import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.di.component.SplashScreenComponent;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.MainActivity;

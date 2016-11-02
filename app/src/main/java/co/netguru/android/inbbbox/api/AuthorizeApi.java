@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.data.api;
+package co.netguru.android.inbbbox.api;
 
 import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.utils.Constants.OAUTH;

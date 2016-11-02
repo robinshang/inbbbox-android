@@ -3,7 +3,7 @@ package co.netguru.android.inbbbox.feature.authentication;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.BuildConfig;
-import co.netguru.android.inbbbox.data.api.AuthorizeApi;
+import co.netguru.android.inbbbox.api.AuthorizeApi;
 import co.netguru.android.inbbbox.data.models.Token;
 import co.netguru.android.inbbbox.db.datasource.DataSource;
 import rx.Observable;

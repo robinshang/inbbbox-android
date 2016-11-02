@@ -5,9 +5,12 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.threeten.bp.LocalDateTime;
+
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.application.configuration.RequestInterceptor;
+import co.netguru.android.inbbbox.api.RequestInterceptor;
+import co.netguru.android.inbbbox.api.converter.DateTimeConverter;
 import co.netguru.android.inbbbox.data.adapter.AutoGsonAdapterFactory;
 import co.netguru.android.inbbbox.db.Storage;
 import co.netguru.android.inbbbox.utils.Constants;
@@ -29,6 +32,7 @@ public class ConfigurationModule {
     Gson provideGson() {
         return new GsonBuilder()
                 .registerTypeAdapterFactory(AutoGsonAdapterFactory.create())
+                .registerTypeAdapter(LocalDateTime.class, new DateTimeConverter())
                 .create();
     }
 

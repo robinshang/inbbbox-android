@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.feature.authentication;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
@@ -10,9 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import co.netguru.android.inbbbox.data.api.UserApi;
+import co.netguru.android.inbbbox.api.UserApi;
 import co.netguru.android.inbbbox.data.models.User;
-import co.netguru.android.inbbbox.utils.Constants;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import co.netguru.android.inbbbox.db.datasource.DataSource;
 import rx.Observable;

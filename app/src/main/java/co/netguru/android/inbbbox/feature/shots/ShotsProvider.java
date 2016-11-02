@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.data.api.ShotsApi;
+import co.netguru.android.inbbbox.api.ShotsApi;
 import co.netguru.android.inbbbox.data.models.FilteredShotsParams;
 import co.netguru.android.inbbbox.data.models.Settings;
 import co.netguru.android.inbbbox.data.models.ShotEntity;

@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.data.api;
+package co.netguru.android.inbbbox.api;
 
 import java.util.ArrayList;
 import java.util.List;
