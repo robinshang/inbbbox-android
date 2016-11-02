@@ -275,7 +275,6 @@ dependencies {
 
     //Glide
     compile libs.glide
-    compile libs.glideTransformations
 
     //Swipe layput
     compile libs.swipeLayout
@@ -285,6 +284,9 @@ dependencies {
 
     //Timber
     compile libs.timber
+
+    //EventBus
+    compile libs.eventBus
 
     //HockeyApp
     compile libs.hockeyApp

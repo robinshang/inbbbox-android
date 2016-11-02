@@ -24,7 +24,7 @@ import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
 
 public class ShotsFragment
         extends BaseMvpFragment<ShotsContract.View, ShotsContract.Presenter>
-        implements ShotsContract.View {
+        implements ShotsContract.View, ShotsAdapter.OnItemLeftSwipeListener {
 
     @BindView(R.id.shots_recycler_view)
     RecyclerView shotsRecyclerView;
@@ -69,6 +69,7 @@ public class ShotsFragment
     }
 
     private void initRecycler() {
+        adapter.setOnLeftSwipeListener(this);
         shotsRecyclerView.setAdapter(adapter);
         shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shotsRecyclerView.setHasFixedSize(true);
@@ -82,5 +83,15 @@ public class ShotsFragment
     @Override
     public void showError(String error) {
         Snackbar.make(shotsRecyclerView, error, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void changeShotLikeStatus(Shot shot) {
+        adapter.changeShotLikeStatus(shot);
+    }
+
+    @Override
+    public void onItemLeftSwipe(Shot shot) {
+        getPresenter().likeShot(shot);
     }
 }

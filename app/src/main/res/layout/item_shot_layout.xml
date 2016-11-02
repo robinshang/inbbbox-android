@@ -37,8 +37,7 @@
             <ImageView
                 android:id="@+id/iv_like_action"
                 android:layout_width="@dimen/like_action_width"
-                style="@style/SwipeActionIcons"
-                android:src="@drawable/ic_buckets" />
+                style="@style/SwipeActionIcons" />
 
             <ImageView
                 android:id="@+id/iv_bucket_action"

@@ -21,16 +21,16 @@ import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewContract.View>
         implements LikesViewContract.Presenter {
 
-    private final LikesProvider likesProvider;
+    private final LikedShotsProvider likedShotsProvider;
 
     @Inject
-    LikesPresenter(LikesProvider likesProvider) {
-        this.likesProvider = likesProvider;
+    LikesPresenter(LikedShotsProvider likedShotsProvider) {
+        this.likedShotsProvider = likedShotsProvider;
     }
 
     @Override
     public void getLikesFromServer() {
-        likesProvider.getLikedShots()
+        likedShotsProvider.getLikedShots()
                 .toList()
                 .compose(androidIO())
                 .subscribe(this::onGetLikeShotListNext,
