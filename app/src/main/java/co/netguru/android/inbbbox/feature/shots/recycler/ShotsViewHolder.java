@@ -65,6 +65,7 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
                 .placeholder(R.drawable.shot_placeholder)
                 .thumbnail(ThumbnailHelper.getThumbnailRequest(context, shot.thumbnailUrl()))
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .animate(android.R.anim.fade_in)
                 .into(shotImageView);
     }
 

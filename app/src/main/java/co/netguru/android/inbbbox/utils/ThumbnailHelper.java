@@ -14,6 +14,7 @@ public class ThumbnailHelper {
     public static DrawableTypeRequest<String> getThumbnailRequest(Context context, String url) {
         return Glide.with(context)
                 .load(url);
+
     }
 
 }
