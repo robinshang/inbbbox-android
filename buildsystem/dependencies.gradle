@@ -20,8 +20,8 @@ ext {
     runnerVersion = '0.5'
     greenDaoVersion = '2.2.0'
     designLibVersion = "24.1.1"
-    realmVersion ="2.0.2"
-    snappyVersion ="0.5.2"
+    realmVersion = "2.0.2"
+    snappyVersion = "0.5.2"
     kryoVersion = "2.24.0"
 
     libs = [
@@ -76,8 +76,8 @@ ext {
             greenDaoGenerator       : "org.greenrobot:greendao-generator:$greenDaoVersion",
             snappyDb                : "com.snappydb:snappydb-lib:$snappyVersion",
             kryo                    : "com.esotericsoftware.kryo:kryo:$kryoVersion",
-            greenDaoGenerator       : "org.greenrobot:greendao-generator:$greenDaoVersion",
-            circleImageView         : "de.hdodenhof:circleimageview:2.1.0"
+            circleImageView         : "de.hdodenhof:circleimageview:2.1.0",
+            swipeLayout             : "com.daimajia.swipelayout:library:1.2.0@aar"
     ]
 
     proc = [

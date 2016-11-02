@@ -6,9 +6,13 @@ import co.netguru.android.inbbbox.data.ui.Shot;
 public class ShotsMapper {
 
     public Shot getShot(ShotEntity entity) {
-        Shot shot = new Shot();
-
-        shot.setTitle(entity.getTitle());
-        return shot;
+        return Shot.builder()
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .hdpiImageUrl(entity.getImage().hiDpiUrl())
+                .normalImageUrl(entity.getImage().normalUrl())
+                .thumbnailUrl(entity.getImage().teaserUrl())
+                .build();
     }
 }

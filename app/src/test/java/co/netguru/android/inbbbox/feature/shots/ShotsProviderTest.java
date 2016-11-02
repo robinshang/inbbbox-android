@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.feature.shots;
 
+import android.media.Image;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,7 +23,7 @@ import co.netguru.android.inbbbox.data.models.Settings;
 import co.netguru.android.inbbbox.data.models.ShotEntity;
 import co.netguru.android.inbbbox.data.models.StreamSourceSettings;
 import co.netguru.android.inbbbox.data.ui.Shot;
-import co.netguru.android.inbbbox.db.datasource.DataSource;
+import co.netguru.android.inbbbox.feature.settings.SettingsManager;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.observers.TestSubscriber;
@@ -42,7 +44,10 @@ public class ShotsProviderTest {
     public ShotsParamsFactory shotsRequestFactoryMock;
 
     @Mock
-    public DataSource<Settings> dataSourceMock;
+    public SettingsManager settingsManagerMock;
+
+    @Mock
+    public Image imageMock;
 
     @Mock
     private Settings settingsMock;
@@ -62,7 +67,7 @@ public class ShotsProviderTest {
     @Before
     public void setUp() {
         when(settingsMock.getStreamSourceSettings()).thenReturn(streamSourceSettings);
-        when(dataSourceMock.get()).thenReturn(Observable.just(settingsMock));
+        when(settingsManagerMock.getSettings()).thenReturn(Observable.just(settingsMock));
 
     }
 
@@ -70,6 +75,7 @@ public class ShotsProviderTest {
                                          boolean newToday,
                                          boolean popularToday,
                                          boolean debut) {
+
         when(streamSourceSettings.isFollowing()).thenReturn(following);
         when(streamSourceSettings.isNewToday()).thenReturn(newToday);
         when(streamSourceSettings.isPopularToday()).thenReturn(popularToday);
@@ -115,7 +121,7 @@ public class ShotsProviderTest {
         List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
         for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
             Assert.assertEquals(resultList.get(i)
-                    .getTitle()
+                    .title()
                     .equals(listOfExpected.get(i).getTitle()), true);
         }
     }
@@ -223,7 +229,7 @@ public class ShotsProviderTest {
         List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
         for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
             Assert.assertEquals(resultList.get(i)
-                    .getTitle()
+                    .title()
                     .equals(listOfExpected.get(i).getTitle()), true);
         }
     }
@@ -248,7 +254,7 @@ public class ShotsProviderTest {
 
         for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
             Assert.assertEquals(resultList.get(i)
-                    .getTitle()
+                    .title()
                     .equals(listOfExpected.get(i).getTitle()), true);
         }
     }
@@ -279,7 +285,7 @@ public class ShotsProviderTest {
         List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
 
         for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
-            Assert.assertEquals(expetedTitltes.contains(resultList.get(i).getTitle()), true);
+            Assert.assertEquals(expetedTitltes.contains(resultList.get(i).title()), true);
         }
     }
 

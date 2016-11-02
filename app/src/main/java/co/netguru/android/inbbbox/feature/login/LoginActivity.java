@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
@@ -20,36 +17,20 @@ import co.netguru.android.inbbbox.application.App;
 import co.netguru.android.inbbbox.di.component.LoginComponent;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
-import co.netguru.android.inbbbox.view.FocusableWebView;
-import timber.log.Timber;
+import co.netguru.android.inbbbox.view.OnRedirectUrlCallbackListener;
+import co.netguru.android.inbbbox.view.WebviewDialogFragment;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
-        implements LoginContract.View, WithComponent<LoginComponent> {
+        implements LoginContract.View, WithComponent<LoginComponent>,
+        OnRedirectUrlCallbackListener {
 
-    private AlertDialog loginDialog;
+    private WebviewDialogFragment dialogFragment;
+    private LoginComponent component;
 
     @OnClick(R.id.btn_login)
     void onLoginClick() {
         getPresenter().showLoginView();
     }
-
-
-    private WebViewClient webViewClient = new WebViewClient() {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            boolean result = true;
-            if (url.contains(getString(R.string.redirectUriScheme))) {
-                Timber.d(url);
-                getPresenter().handleOauthLoginResponse(Uri.parse(url));
-                result = false;
-            } else {
-                view.loadUrl(url);
-            }
-            return result;
-        }
-    };
-
-    private LoginComponent component;
 
     public static void startActivity(Context context) {
         final Intent intent = new Intent(context, LoginActivity.class);
@@ -87,19 +68,9 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     }
 
     @Override
-    public void handleOauthUri(String uriString) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-
-        FocusableWebView webView = new FocusableWebView(this);
-        webView.loadUrl(uriString);
-        webView.setWebViewClient(webViewClient);
-        webView.getSettings().setUseWideViewPort(true);
-
-        dialogBuilder.setView(webView);
-        loginDialog = dialogBuilder.create();
-        if (!isFinishing()) {
-            loginDialog.show();
-        }
+    public void handleOauthUrl(String url) {
+        dialogFragment = WebviewDialogFragment.newInstance(url);
+        dialogFragment.show(getFragmentManager(), WebviewDialogFragment.TAG);
     }
 
     @Override
@@ -115,14 +86,11 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @Override
     public void closeLoginDialog() {
-        if (loginDialog != null) {
-            loginDialog.dismiss();
-        }
+        dialogFragment.dismiss();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        closeLoginDialog();
+    public void redirectUrlCallbackLoaded(String url) {
+        getPresenter().handleOauthLoginResponse(Uri.parse(url));
     }
 }

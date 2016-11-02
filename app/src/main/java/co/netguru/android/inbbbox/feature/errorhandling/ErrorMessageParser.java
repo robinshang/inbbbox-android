@@ -30,8 +30,8 @@ public class ErrorMessageParser {
             case INVALID_USER_INSTANCE:
                 label = resources.getString(R.string.invalid_user_error);
                 break;
-            case INVALID_OAURH_URI:
-                label = resources.getString(R.string.invalid_outh_uri);
+            case INVALID_OAURH_URL:
+                label = resources.getString(R.string.invalid_outh_url);
                 break;
         }
         return label;

@@ -2,7 +2,6 @@ package co.netguru.android.inbbbox.feature.errorhandling;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.test.InstrumentationRegistry;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,7 +14,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.utils.Constants;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -38,7 +36,7 @@ public class ErrorMessageParserTest {
     public void setUp(){
         when(contextMock.getResources()).thenReturn(resourcesMock);
         when(resourcesMock.getString(R.string.invalid_user_error)).thenReturn(invalidUserLabel);
-        when(resourcesMock.getString(R.string.invalid_outh_uri)).thenReturn(invalidOauthLabel);
+        when(resourcesMock.getString(R.string.invalid_outh_url)).thenReturn(invalidOauthLabel);
         when(resourcesMock.getString(R.string.undefined_api_error)).thenReturn(unrecognizedErrorLabel);
     }
 
@@ -62,9 +60,9 @@ public class ErrorMessageParserTest {
 
     @Test
     public void whenPassInvalidUserInstanceErrorType_thenGetInvalidInstanceLabel() {
-        String expected = contextMock.getResources().getString(R.string.invalid_outh_uri);
+        String expected = contextMock.getResources().getString(R.string.invalid_outh_url);
 
-        String result = parser.getErrorLabel(ErrorType.INVALID_OAURH_URI);
+        String result = parser.getErrorLabel(ErrorType.INVALID_OAURH_URL);
 
         Assert.assertEquals(expected, result);
     }

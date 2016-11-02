@@ -8,7 +8,7 @@
     <string name="login_inbbbox_text">Each shot swipes</string>
     <string name="undefined_api_error">Unknown server error</string>
     <string name="invalid_user_error">Invalid user</string>
-    <string name="invalid_outh_uri">Invalid oauth uri</string>
+    <string name="invalid_outh_url">Invalid oauth url</string>
 
     <string name="tab_shots_title">Shots</string>
     <string name="tab_likes_title">Likes</string>

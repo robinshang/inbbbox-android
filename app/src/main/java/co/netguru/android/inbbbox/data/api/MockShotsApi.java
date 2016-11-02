@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import co.netguru.android.inbbbox.data.models.Image;
 import co.netguru.android.inbbbox.data.models.ShotEntity;
 import co.netguru.android.inbbbox.utils.Constants;
 import retrofit2.http.Query;
@@ -33,8 +34,10 @@ public class MockShotsApi implements ShotsApi {
         List<ShotEntity> result = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
+            Image image = Image.builder().build();
             ShotEntity entity = new ShotEntity();
             entity.setTitle(label + i);
+            entity.setImage(image);
             result.add(entity);
         }
         return result;

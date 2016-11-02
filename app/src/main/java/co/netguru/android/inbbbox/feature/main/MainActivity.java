@@ -22,21 +22,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import javax.inject.Inject;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
-import co.netguru.android.inbbbox.data.ui.UserPhoto;
+import co.netguru.android.inbbbox.data.ui.TabItemType;
 import co.netguru.android.inbbbox.di.component.MainActivityComponent;
 import co.netguru.android.inbbbox.di.module.MainActivityModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
-import co.netguru.android.inbbbox.data.ui.TabItemType;
-import co.netguru.android.inbbbox.utils.imageloader.ImageLoader;
 import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -63,9 +62,6 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
 
     @BindString(R.string.empty_string)
     String emptyString;
-
-    @Inject
-    ImageLoader imageLoader;
 
     private MainActivityComponent component;
     private TextView drawerUserName;
@@ -272,7 +268,11 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
 
     @Override
     public void showUserPhoto(String url) {
-        imageLoader.loadImageWithThumbnail(drawerUserPhoto, new UserPhoto(url));
+        Glide.with(MainActivity.this)
+                .load(url)
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(drawerUserPhoto);
     }
 
     @Override

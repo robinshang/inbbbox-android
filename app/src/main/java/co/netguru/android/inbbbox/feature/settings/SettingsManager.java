@@ -14,7 +14,7 @@ import co.netguru.android.inbbbox.db.datasource.DataSource;
 import rx.Observable;
 
 @Singleton
-public final class SettingsManager {
+public class SettingsManager {
 
     @VisibleForTesting
     final Settings defaultSettings;

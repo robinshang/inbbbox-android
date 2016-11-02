@@ -22,7 +22,6 @@ public final class Constants {
 
     public static class API {
 
-
         public static final String HEADER_ACCEPT = "Accept";
         public static final String HEADER_TYPE_JSON = "application/json";
         public static final String HEADER_AUTHORIZATION = "AUTHORIZATION";
