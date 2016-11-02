@@ -35,7 +35,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/bottom_left_wrapper"
+            android:id="@+id/_left_wrapper"
             android:layout_width="@dimen/left_swipe_action_panel_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"

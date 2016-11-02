@@ -84,7 +84,6 @@ public class LongSwipeLayout extends SwipeLayout {
             isNormalLeftSwipeTriggered = false;
         }
 
-        Timber.d("difference: " + difference + " limit: " + swipingLimit);
         if (difference < swipingLimit) {
             isLongSwipeTriggered = true;
         }
@@ -93,7 +92,7 @@ public class LongSwipeLayout extends SwipeLayout {
             event.setLocation(offsetX, event.getY());
         } else if (wasChecked) {
 
-            float offset = event.getX() - LONG_SWIPE_TRIGGERING_THRESHOLD;
+            float offset = event.getRawX() - LONG_SWIPE_TRIGGERING_THRESHOLD;
             event.setLocation(offset, event.getY());
         }
     }
@@ -107,7 +106,6 @@ public class LongSwipeLayout extends SwipeLayout {
         isNormalLeftSwipeTriggered = false;
         isLongSwipeTriggered = false;
         touchInitialPosition = event.getRawX();
-        Timber.d("Initial rawX: " + touchInitialPosition);
         getElementWidth();
     }
 
