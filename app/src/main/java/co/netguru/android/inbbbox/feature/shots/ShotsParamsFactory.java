@@ -24,12 +24,13 @@ public class ShotsParamsFactory {
 
         if (streamSourceSettings.isNewToday()) {
             builder.date(dateFormatter.getCurrentDate())
-                    .list(Constants.API.LIST_PARAM_DEBUTS_PARAM);
+                    .sort(Constants.API.LIST_PARAM_SORT_RECENT_PARAM);
             wasHandled = true;
         }
 
         if (streamSourceSettings.isPopularToday() && !wasHandled) {
-            builder.date(dateFormatter.getCurrentDate());
+            builder.date(dateFormatter.getCurrentDate())
+                    .sort(Constants.API.LIST_PARAM_SORT_VIEWS_PARAM);
             wasHandled = true;
         }
 

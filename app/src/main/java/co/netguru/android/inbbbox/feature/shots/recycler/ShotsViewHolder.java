@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.shots.recycler;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
 
@@ -10,6 +11,7 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
+import co.netguru.android.inbbbox.utils.ThumbnailHelper;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 import co.netguru.android.inbbbox.view.swipingpanel.ItemSwipeListener;
 import co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout;
@@ -55,12 +57,14 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
 
     private void setupImage(Shot shot) {
         float radius = itemView.getResources().getDimension(R.dimen.shot_corner_radius);
+        Context context = itemView.getContext();
         backgroundImageView.setRadius(radius);
         shotImageView.setRadius(radius);
-        Glide.with(itemView.getContext())
+        Glide.with(context)
                 .load(shot.normalImageUrl())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.shot_placeholder)
+                .thumbnail(ThumbnailHelper.getThumbnailRequest(context, shot.thumbnailUrl()))
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(shotImageView);
     }
 
