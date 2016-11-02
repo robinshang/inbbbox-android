@@ -4,7 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import co.netguru.android.inbbbox.data.models.LikedShotEntity;
-import co.netguru.android.inbbbox.data.ui.LikedShot;
+import okhttp3.MediaType;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+import retrofit2.http.Path;
 import rx.Observable;
 
 public class MockedLikesApi implements LikesApi {
@@ -18,5 +21,10 @@ public class MockedLikesApi implements LikesApi {
     @Override
     public Observable<List<LikedShotEntity>> getLikedShots() {
         return Observable.just(shots);
+    }
+
+    @Override
+    public Observable<Response<ResponseBody>> likeShot(@Path("id") long id) {
+        return Observable.just(Response.success(ResponseBody.create(MediaType.parse(""), "success")));
     }
 }
