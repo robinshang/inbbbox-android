@@ -3,14 +3,12 @@ package co.netguru.android.inbbbox.feature.shots;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -36,7 +34,7 @@ public class ShotsFragment
     ShotsAdapter adapter;
 
     private ShotsComponent component;
-    private OnShotLikeStatusChanged onShotLikeStatusChanged;
+    private ShotLikeStatusListener shotLikeStatusListener;
 
     public static ShotsFragment newInstance() {
         return new ShotsFragment();
@@ -45,10 +43,12 @@ public class ShotsFragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (!(context instanceof OnShotLikeStatusChanged)) {
-            throw new IllegalStateException("Activity should implement OnShotLikeStatusChanged!");
+        try {
+            shotLikeStatusListener = (ShotLikeStatusListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement ShotLikeStatusListener");
         }
-        onShotLikeStatusChanged = (OnShotLikeStatusChanged) context;
     }
 
     @Override
@@ -99,14 +99,9 @@ public class ShotsFragment
     }
 
     @Override
-    public void showMessage(@StringRes int res) {
-        Toast.makeText(getContext(), res, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void changeShotLikeStatus(Shot shot) {
         adapter.changeShotLikeStatus(shot);
-        onShotLikeStatusChanged.shotLikeStatusChanged();
+        shotLikeStatusListener.shotLikeStatusChanged();
     }
 
     @Override
@@ -114,7 +109,7 @@ public class ShotsFragment
         getPresenter().likeShot(shot);
     }
 
-    public interface OnShotLikeStatusChanged {
+    public interface ShotLikeStatusListener {
         void shotLikeStatusChanged();
     }
 }

@@ -47,7 +47,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static butterknife.ButterKnife.findById;
 
 public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainViewContract.Presenter>
-        implements MainViewContract.View, ShotsFragment.OnShotLikeStatusChanged {
+        implements MainViewContract.View, ShotsFragment.ShotLikeStatusListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;

@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.ui.LikedShot;
 import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
@@ -53,7 +52,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     @Override
     public void likeShot(Shot shot) {
-        if (shot.likeStatus() == Shot.UNLIKED) {
+        if (!shot.isLiked()) {
             final Subscription subscription = likeResponseMapper.likeShot(shot.id())
                     .compose(androidIO())
                     .subscribe(status -> onShotLikeNext(shot, status), this::onShotLikeError);
@@ -86,16 +85,16 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private void onShotLikeNext(Shot shot, boolean status) {
         Timber.d("Shot liked : %s", status);
         if (status) {
-            getView().changeShotLikeStatus(changeShotLikeStatus(shot, true));
+            getView().changeShotLikeStatus(changeShotLikeStatus(shot));
         }
     }
 
     private void onShotLikeError(Throwable throwable) {
         Timber.e(throwable, "Error while sending shot like");
-        getView().showMessage(R.string.error_shot_like);
+        getView().showError(errorMessageParser.getError(throwable));
     }
 
-    private Shot changeShotLikeStatus(Shot shot, boolean isLiked) {
+    private Shot changeShotLikeStatus(Shot shot) {
         return Shot.builder()
                 .id(shot.id())
                 .title(shot.title())
@@ -103,7 +102,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                 .hdpiImageUrl(shot.hdpiImageUrl())
                 .normalImageUrl(shot.normalImageUrl())
                 .thumbnailUrl(shot.thumbnailUrl())
-                .likeStatus(isLiked ? Shot.LIKED : Shot.UNLIKED)
+                .isLiked(true)
                 .build();
     }
 }

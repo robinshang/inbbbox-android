@@ -71,7 +71,7 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
                 .placeholder(R.drawable.shot_item_swipe_bottom_background)
                 .into(shotImageView);
 
-        likeIconImageView.setImageDrawable(shot.likeStatus() == Shot.LIKED ? shotLikedIcon : shotUnlikedIcon);
+        likeIconImageView.setImageDrawable(shot.isLiked() ? shotLikedIcon : shotUnlikedIcon);
     }
 
     public interface OnShotLeftSwipeListener {

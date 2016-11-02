@@ -1,24 +1,13 @@
 package co.netguru.android.inbbbox.data.ui;
 
-import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
 @AutoValue
 public abstract class Shot {
-
-    public static final int UNLIKED = 0;
-    public static final int LIKED = 1;
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({UNLIKED, LIKED})
-    public @interface LikeStatus{}
 
     @Nullable
     public abstract Integer id();
@@ -38,8 +27,7 @@ public abstract class Shot {
     @Nullable
     public abstract String thumbnailUrl();
 
-    @LikeStatus
-    public abstract Integer likeStatus();
+    public abstract boolean isLiked();
 
     @AutoValue.Builder
     public abstract static class Builder {
@@ -55,7 +43,7 @@ public abstract class Shot {
 
         public abstract Shot.Builder thumbnailUrl(String thumbnailUrl);
 
-        public abstract Shot.Builder likeStatus(@LikeStatus Integer likeStatus);
+        public abstract Shot.Builder isLiked(boolean isLiked);
 
         public abstract Shot build();
     }
