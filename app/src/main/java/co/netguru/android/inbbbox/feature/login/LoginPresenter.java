@@ -46,9 +46,9 @@ public final class LoginPresenter
     public void showLoginView() {
         urlProvider
                 .getOauthAuthorizeUrlString()
-                .doOnError(Throwable::printStackTrace)
-                .doOnNext(this::prepareAuthorization)
-                .subscribe();
+                .compose(androidIO())
+                .subscribe(this::prepareAuthorization,
+                        this::handleError);
     }
 
     private void prepareAuthorization(String urlString) {

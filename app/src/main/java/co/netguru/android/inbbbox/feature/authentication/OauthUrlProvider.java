@@ -42,7 +42,7 @@ public class OauthUrlProvider {
                 "&" +
                 OAUTH.SCOPE_KEY +
                 "=" +
-                getStringValue(R.string.dribbleScope) +
+                getStringValue(R.string.dribbbleScope) +
                 "&" +
                 OAUTH.STATE_KEY +
                 "=" +

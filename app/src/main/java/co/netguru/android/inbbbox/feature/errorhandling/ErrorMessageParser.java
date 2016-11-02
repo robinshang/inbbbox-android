@@ -31,7 +31,7 @@ public class ErrorMessageParser {
                 label = resources.getString(R.string.invalid_user_error);
                 break;
             case INVALID_OAURH_URL:
-                label = resources.getString(R.string.invalid_outh_uri);
+                label = resources.getString(R.string.invalid_outh_url);
                 break;
         }
         return label;

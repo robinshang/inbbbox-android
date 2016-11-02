@@ -36,7 +36,7 @@ public class ErrorMessageParserTest {
     public void setUp(){
         when(contextMock.getResources()).thenReturn(resourcesMock);
         when(resourcesMock.getString(R.string.invalid_user_error)).thenReturn(invalidUserLabel);
-        when(resourcesMock.getString(R.string.invalid_outh_uri)).thenReturn(invalidOauthLabel);
+        when(resourcesMock.getString(R.string.invalid_outh_url)).thenReturn(invalidOauthLabel);
         when(resourcesMock.getString(R.string.undefined_api_error)).thenReturn(unrecognizedErrorLabel);
     }
 
@@ -60,7 +60,7 @@ public class ErrorMessageParserTest {
 
     @Test
     public void whenPassInvalidUserInstanceErrorType_thenGetInvalidInstanceLabel() {
-        String expected = contextMock.getResources().getString(R.string.invalid_outh_uri);
+        String expected = contextMock.getResources().getString(R.string.invalid_outh_url);
 
         String result = parser.getErrorLabel(ErrorType.INVALID_OAURH_URL);
 
