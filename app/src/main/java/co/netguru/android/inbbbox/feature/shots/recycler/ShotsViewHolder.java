@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.feature.shots.recycler;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -11,9 +10,9 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
+import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 import co.netguru.android.inbbbox.view.swipingpanel.ItemSwipeListener;
 import co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class ShotsViewHolder extends BaseViewHolder<Shot> {
 
@@ -21,7 +20,10 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
     LongSwipeLayout longSwipeLayout;
 
     @BindView(R.id.iv_shot_image)
-    ImageView shotImageView;
+    RoundedCornersImageView shotImageView;
+
+    @BindView(R.id.iv_background)
+    RoundedCornersImageView backgorundImageView;
 
     // TODO: 27.10.2016 bind with recycler action listener
     private ItemSwipeListener swipeListener = new ItemSwipeListener() {
@@ -54,12 +56,11 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
 
     private void setupBackground() {
         float radius = itemView.getResources().getDimension(R.dimen.shot_corner_radius);
-        Glide.with(itemView.getContext())
-                .load(R.drawable.shot_placeholder)
-                .centerCrop()
-                .bitmapTransform(new RoundedCornersTransformation(itemView.getContext(),
-                        Math.round(radius), 0))
-                .into(shotImageView);
+//        Glide.with(itemView.getContext())
+//                .load(R.drawable.shot_item_swipe_bottom_background)
+//                .bitmapTransform(new RoundedCornersTransformation(itemView.getContext(),
+//                        Math.round(radius), 0))
+//                .into(backgorundImageView);
     }
 
     private void setupImage(Shot shot) {
@@ -67,9 +68,9 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
         Glide.with(itemView.getContext())
                 .load(shot.normalImageUrl())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.shot_item_swipe_bottom_background)
-                .bitmapTransform(new RoundedCornersTransformation(itemView.getContext(),
-                        Math.round(radius), 0))
+                .placeholder(R.drawable.shot_placeholder)
+//                .bitmapTransform(new RoundedCornersTransformation(itemView.getContext(),
+//                        Math.round(radius), 0))
                 .into(shotImageView);
     }
 
