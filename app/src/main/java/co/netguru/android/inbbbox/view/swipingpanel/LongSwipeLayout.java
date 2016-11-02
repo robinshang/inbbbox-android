@@ -60,7 +60,7 @@ public class LongSwipeLayout extends SwipeLayout {
     }
 
     private void init() {
-        setShowMode(SwipeLayout.ShowMode.LayDown);
+        setShowMode(ShowMode.PullOut);
         addSwipeListener(getSwipeListener());
     }
 
