@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.shots;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -35,9 +36,19 @@ public class ShotsFragment
     ShotsAdapter adapter;
 
     private ShotsComponent component;
+    private OnShotLikeStatusChanged onShotLikeStatusChanged;
 
     public static ShotsFragment newInstance() {
         return new ShotsFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (!(context instanceof OnShotLikeStatusChanged)) {
+            throw new IllegalStateException("Activity should implement OnShotLikeStatusChanged!");
+        }
+        onShotLikeStatusChanged = (OnShotLikeStatusChanged) context;
     }
 
     @Override
@@ -95,12 +106,15 @@ public class ShotsFragment
     @Override
     public void changeShotLikeStatus(Shot shot) {
         adapter.changeShotLikeStatus(shot);
+        onShotLikeStatusChanged.shotLikeStatusChanged();
     }
 
     @Override
     public void onItemLeftSwipe(Shot shot) {
-        if (shot.likeStatus() == Shot.UNLIKED) {
-            getPresenter().likeShot(shot);
-        }
+        getPresenter().likeShot(shot);
+    }
+
+    public interface OnShotLikeStatusChanged {
+        void shotLikeStatusChanged();
     }
 }

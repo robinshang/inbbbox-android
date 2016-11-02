@@ -285,9 +285,6 @@ dependencies {
     //Timber
     compile libs.timber
 
-    //EventBus
-    compile libs.eventBus
-
     //HockeyApp
     compile libs.hockeyApp
 

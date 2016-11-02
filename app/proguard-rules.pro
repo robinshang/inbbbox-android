@@ -136,8 +136,3 @@
 -keep,allowshrinking class sun.nio.ch.** { *; }
 -dontwarn sun.nio.ch.**
 -dontwarn sun.misc.**
-
--keepclassmembers class ** {
-    @org.greenrobot.eventbus.Subscribe <methods>;
-}
--keep enum org.greenrobot.eventbus.ThreadMode { *; }

@@ -2,8 +2,6 @@ package co.netguru.android.inbbbox.feature.shots;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -11,7 +9,6 @@ import javax.inject.Inject;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.ui.LikedShot;
 import co.netguru.android.inbbbox.data.ui.Shot;
-import co.netguru.android.inbbbox.event.LikeRefreshEvent;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.feature.likes.LikedShotsProvider;
 import co.netguru.android.inbbbox.feature.shots.like.LikeResponseMapper;
@@ -56,10 +53,12 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     @Override
     public void likeShot(Shot shot) {
-        final Subscription subscription = likeResponseMapper.likeShot(shot.id())
-                .compose(androidIO())
-                .subscribe(status -> onShotLikeNext(shot, status), this::onShotLikeError);
-        subscriptions.add(subscription);
+        if (shot.likeStatus() == Shot.UNLIKED) {
+            final Subscription subscription = likeResponseMapper.likeShot(shot.id())
+                    .compose(androidIO())
+                    .subscribe(status -> onShotLikeNext(shot, status), this::onShotLikeError);
+            subscriptions.add(subscription);
+        }
     }
 
     private void getShotsData() {
@@ -88,7 +87,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         Timber.d("Shot liked : %s", status);
         if (status) {
             getView().changeShotLikeStatus(changeShotLikeStatus(shot, true));
-            EventBus.getDefault().post(new LikeRefreshEvent());
         }
     }
 

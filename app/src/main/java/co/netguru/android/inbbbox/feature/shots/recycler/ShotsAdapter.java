@@ -66,7 +66,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder>
                 return i;
             }
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("There is no shot with id :" + id);
     }
 
     public interface OnItemLeftSwipeListener {

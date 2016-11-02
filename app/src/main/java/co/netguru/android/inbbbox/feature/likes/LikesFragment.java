@@ -18,9 +18,6 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,7 +30,6 @@ import co.netguru.android.inbbbox.application.App;
 import co.netguru.android.inbbbox.data.ui.LikedShot;
 import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
-import co.netguru.android.inbbbox.event.LikeRefreshEvent;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
 
@@ -127,23 +123,6 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
         return true;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe
-    public void onEvent(LikeRefreshEvent event) {
-        getPresenter().getLikesFromServer();
-    }
-
     @NonNull
     @Override
     public LikesViewContract.Presenter createPresenter() {
@@ -168,6 +147,10 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
     @Override
     public void setEmptyViewText(SpannableStringBuilder spannableStringBuilder) {
         emptyViewText.setText(spannableStringBuilder, TextView.BufferType.SPANNABLE);
+    }
+
+    public void refreshFragmentData() {
+        getPresenter().getLikesFromServer();
     }
 
     private void changeMenuItemIcons(boolean isGridViewClicked) {
