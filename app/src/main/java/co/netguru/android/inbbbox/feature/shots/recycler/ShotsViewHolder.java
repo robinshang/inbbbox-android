@@ -26,9 +26,9 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
     @BindView(R.id.iv_like_action)
     ImageView likeIconImageView;
 
-    @BindDrawable(R.drawable.ic_ball_active)
+    @BindDrawable(R.drawable.ic_like_swipe_filled)
     Drawable shotLikedIcon;
-    @BindDrawable(R.drawable.ic_buckets)
+    @BindDrawable(R.drawable.ic_like_swipe)
     Drawable shotUnlikedIcon;
 
     private OnShotLeftSwipeListener onLeftSwipeListener = OnShotLeftSwipeListener.NULL;
