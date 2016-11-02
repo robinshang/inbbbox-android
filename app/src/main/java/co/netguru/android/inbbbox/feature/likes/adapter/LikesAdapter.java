@@ -15,25 +15,21 @@ import javax.inject.Inject;
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.ui.LikedShot;
-import co.netguru.android.inbbbox.utils.imageloader.ImageLoader;
 
 @FragmentScope
 public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder> {
 
-    private final ImageLoader imageLoader;
-
     private List<LikedShot> likeList;
 
     @Inject
-    LikesAdapter(ImageLoader imageLoader) {
-        this.imageLoader = imageLoader;
+    LikesAdapter() {
         likeList = new ArrayList<>();
     }
 
     @Override
     public LikesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(getViewHolderLayout(parent), parent, false);
-        return new LikesViewHolder(view, imageLoader);
+        return new LikesViewHolder(view);
     }
 
     @Override

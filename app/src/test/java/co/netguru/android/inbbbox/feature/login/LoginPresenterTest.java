@@ -11,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import co.netguru.android.inbbbox.feature.authentication.OauthUriProvider;
+import co.netguru.android.inbbbox.feature.authentication.OauthUrlProvider;
 import co.netguru.android.inbbbox.feature.authentication.TokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
@@ -31,7 +31,7 @@ public class LoginPresenterTest  {
     public TestRule rule = new RxSyncTestRule();
 
     @Mock
-    private OauthUriProvider oauthUriProviderMock;
+    private OauthUrlProvider oauthUrlProviderMock;
 
     @Mock
     private ErrorMessageParser errorMessageParser;
@@ -48,7 +48,7 @@ public class LoginPresenterTest  {
     @Mock
     private UserProvider userProviderMock;
 
-    private String uriString ="www.google.com";
+    private String urlString = "www.google.com";
     private String code = "testCode";
 
     @InjectMocks
@@ -64,25 +64,25 @@ public class LoginPresenterTest  {
     }
 
     @Test
-    public void whenLoginClick_thenGetUriFromUriProviderTest() {
-        when(oauthUriProviderMock.getOauthAuthorizeUriString()).thenReturn(Observable.just(uriString));
+    public void whenLoginClick_thenGetUrlFromUrlProviderTest() {
+        when(oauthUrlProviderMock.getOauthAuthorizeUrlString()).thenReturn(Observable.just(urlString));
 
         presenter.showLoginView();
 
-        verify(viewMock).handleOauthUri(uriString);
+        verify(viewMock).handleOauthUrl(urlString);
     }
 
     @Test
     public void whenLoginClick_thenShowActionViewForOauthRequest() {
-        when(oauthUriProviderMock.getOauthAuthorizeUriString()).thenReturn(Observable.just(uriString));
+        when(oauthUrlProviderMock.getOauthAuthorizeUrlString()).thenReturn(Observable.just(urlString));
 
         presenter.showLoginView();
 
-        verify(viewMock, times((1))).handleOauthUri(uriString);
+        verify(viewMock, times((1))).handleOauthUrl(urlString);
     }
 
     @Test
-    public void whenRedirectUriFromActionViewDetected_sendAuthorizationRequestWithReceivedCode() {
+    public void whenRedirectUrlFromActionViewDetected_sendAuthorizationRequestWithReceivedCode() {
         when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(code);
 
         presenter.handleOauthLoginResponse(uri);
@@ -144,7 +144,7 @@ public class LoginPresenterTest  {
     @Test
     public void whenHandlingOauthResponseWithoutCodeAndError_thenShownInvalidUriError() {
         String testError = "testError";
-        when(errorMessageParser.getErrorLabel(ErrorType.INVALID_OAURH_URI)).thenReturn(testError);
+        when(errorMessageParser.getErrorLabel(ErrorType.INVALID_OAURH_URL)).thenReturn(testError);
         when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(null);
         when(uri.getQueryParameter(Constants.OAUTH.ERROR_KEY)).thenReturn(null);
 

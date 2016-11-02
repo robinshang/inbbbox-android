@@ -6,10 +6,8 @@ import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
-import co.netguru.android.inbbbox.R;
-
 @AutoValue
-public abstract class Shot implements ImageThumbnail {
+public abstract class Shot {
     @Nullable
     public abstract Integer id();
 
@@ -51,31 +49,5 @@ public abstract class Shot implements ImageThumbnail {
 
     public static TypeAdapter<Shot> typeAdapter(Gson gson) {
         return new AutoValue_Shot.GsonTypeAdapter(gson);
-    }
-
-    @Override
-    public String getImageUrl() {
-        return normalImageUrl();
-    }
-
-    @Override
-    public String getThumbnailUrl() {
-        return thumbnailUrl();
-    }
-
-    @Override
-    public Integer getPlaceholderResId() {
-        return R.drawable.shot_placeholder;
-    }
-
-    @Override
-    public Integer getErrorImageResId() {
-        return null;
-    }
-
-
-    @Override
-    public Integer getRoundCornersRadiusResId() {
-        return R.dimen.shot_corner_radius;
     }
 }

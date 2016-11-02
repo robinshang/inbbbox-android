@@ -16,6 +16,6 @@ final class LikedShotsMapper {
 
     public LikedShot toLikedShot(LikedShotEntity entity) {
         return new LikedShot(entity.shot().getId(),
-                entity.shot().getImages().normalUrl());
+                entity.shot().getImage().normalUrl());
     }
 }
