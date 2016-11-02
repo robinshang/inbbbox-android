@@ -74,7 +74,7 @@ public class LongSwipeLayout extends SwipeLayout {
         int difference = (int) (touchInitialPosition - event.getRawX());
         int swipingLimit = getLimitForLeftSwipe() + LONG_SWIPE_ACTIVATION_TOLERANCE;
 
-        if (difference < swipingLimit / 2 && !wasChecked) {
+        if (difference < swipingLimit / 3 && !wasChecked) {
             offsetX = event.getRawX();
             wasChecked = true;
             isNormalLeftSwipeTriggered = true;
