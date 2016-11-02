@@ -3,7 +3,6 @@ package co.netguru.android.inbbbox.data.ui;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
-import com.google.common.base.Objects;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
@@ -50,15 +49,5 @@ public abstract class Shot {
 
     public static TypeAdapter<Shot> typeAdapter(Gson gson) {
         return new AutoValue_Shot.GsonTypeAdapter(gson);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj != null && this.getClass() == obj.getClass() && id().equals(((Shot) obj).id());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id().hashCode(), normalImageUrl());
     }
 }
