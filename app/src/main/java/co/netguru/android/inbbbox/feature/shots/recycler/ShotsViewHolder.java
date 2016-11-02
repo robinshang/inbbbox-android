@@ -23,7 +23,7 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
     RoundedCornersImageView shotImageView;
 
     @BindView(R.id.iv_background)
-    RoundedCornersImageView backgorundImageView;
+    RoundedCornersImageView backgroundImageView;
 
     // TODO: 27.10.2016 bind with recycler action listener
     private ItemSwipeListener swipeListener = new ItemSwipeListener() {
@@ -49,28 +49,18 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
 
     @Override
     public void bind(Shot shot) {
-        setupBackground();
         setupImage(shot);
         longSwipeLayout.setItemSwipeListener(swipeListener);
     }
 
-    private void setupBackground() {
-        float radius = itemView.getResources().getDimension(R.dimen.shot_corner_radius);
-//        Glide.with(itemView.getContext())
-//                .load(R.drawable.shot_item_swipe_bottom_background)
-//                .bitmapTransform(new RoundedCornersTransformation(itemView.getContext(),
-//                        Math.round(radius), 0))
-//                .into(backgorundImageView);
-    }
-
     private void setupImage(Shot shot) {
         float radius = itemView.getResources().getDimension(R.dimen.shot_corner_radius);
+        backgroundImageView.setRadius(radius);
+        shotImageView.setRadius(radius);
         Glide.with(itemView.getContext())
                 .load(shot.normalImageUrl())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.shot_placeholder)
-//                .bitmapTransform(new RoundedCornersTransformation(itemView.getContext(),
-//                        Math.round(radius), 0))
                 .into(shotImageView);
     }
 
