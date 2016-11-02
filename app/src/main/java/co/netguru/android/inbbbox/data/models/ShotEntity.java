@@ -57,7 +57,6 @@ public class ShotEntity implements Serializable{
     @SerializedName("user")
     private User user;
     @SerializedName("team")
-
     private Team team;
 
     public Integer getId() {
