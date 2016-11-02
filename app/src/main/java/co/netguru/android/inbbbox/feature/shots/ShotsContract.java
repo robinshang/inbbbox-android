@@ -14,9 +14,12 @@ interface ShotsContract {
         void showItems(List<Shot> items);
 
         void showError(String error);
+
+        void hideLoadingIndicator();
     }
 
     interface Presenter extends MvpPresenter<View> {
 
+        void loadData();
     }
 }

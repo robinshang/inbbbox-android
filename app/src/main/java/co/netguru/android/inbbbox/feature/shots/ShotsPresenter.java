@@ -29,24 +29,26 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     @Override
     public void attachView(ShotsContract.View view) {
         super.attachView(view);
-        loadShotsData();
-    }
-
-    private void loadShotsData() {
-        shotsProvider.getShots()
-                .compose(androidIO())
-                .subscribe(this::showRetrievedItems,
-                        this::handleException);
     }
 
     private void showRetrievedItems(List<Shot> shotsList) {
         Timber.d("Shots received!");
         this.items = shotsList;
         getView().showItems(shotsList);
+        getView().hideLoadingIndicator();
     }
 
     private void handleException(Throwable exception) {
         Timber.e(exception, "Shots item receiving exception ");
+        getView().hideLoadingIndicator();
         getView().showError(errorMessageParser.getError(exception));
+    }
+
+    @Override
+    public void loadData() {
+        shotsProvider.getShots()
+                .compose(androidIO())
+                .subscribe(this::showRetrievedItems,
+                        this::handleException);
     }
 }

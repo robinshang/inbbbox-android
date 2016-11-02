@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.feature.shots;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,6 +29,9 @@ public class ShotsFragment
 
     @BindView(R.id.shots_recycler_view)
     RecyclerView shotsRecyclerView;
+
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Inject
     ShotsAdapter adapter;
@@ -66,6 +70,13 @@ public class ShotsFragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecycler();
+        initRefreshLayout();
+        getPresenter().loadData();
+    }
+
+    private void initRefreshLayout() {
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.accent));
+        swipeRefreshLayout.setOnRefreshListener(getPresenter()::loadData);
     }
 
     private void initRecycler() {
@@ -82,5 +93,10 @@ public class ShotsFragment
     @Override
     public void showError(String error) {
         Snackbar.make(shotsRecyclerView, error, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void hideLoadingIndicator() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 }
