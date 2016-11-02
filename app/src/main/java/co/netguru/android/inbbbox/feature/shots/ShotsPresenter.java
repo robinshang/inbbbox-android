@@ -4,18 +4,17 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.ui.LikedShot;
 import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.event.LikeRefreshEvent;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.feature.likes.LikedShotsProvider;
 import co.netguru.android.inbbbox.feature.shots.like.LikeResponseMapper;
-import rx.Observable;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -59,38 +58,19 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     public void likeShot(Shot shot) {
         final Subscription subscription = likeResponseMapper.likeShot(shot.id())
                 .compose(androidIO())
-                .subscribe(status -> onShotLikeNext(shot, status),
-                        throwable -> Timber.e(throwable, "Error while sending shot like"));
+                .subscribe(status -> onShotLikeNext(shot, status), this::onShotLikeError);
         subscriptions.add(subscription);
     }
 
     private void getShotsData() {
-        final Subscription subscription = Observable.zip(shotsProvider.getShots(),
-                likedShotsProvider.getLikedShots().map(LikedShot::getId).toList(), this::setShotLikeStatus)
+        final Subscription subscription = likedShotsProvider.getLikedShots()
+                .map(LikedShot::getId)
+                .toList()
+                .flatMap(shotsProvider::getShots)
                 .compose(androidIO())
                 .subscribe(this::showRetrievedItems,
                         this::handleException);
         subscriptions.add(subscription);
-    }
-
-    private List<Shot> setShotLikeStatus(List<Shot> shots, List<Integer> likedShots) {
-        final List<Shot> finalList = new LinkedList<>();
-        for (final Shot shot : shots) {
-            finalList.add(createShot(shot, likedShots.contains(shot.id())));
-        }
-        return finalList;
-    }
-
-    private Shot createShot(Shot shot, boolean isLiked) {
-        return Shot.builder()
-                .id(shot.id())
-                .title(shot.title())
-                .description(shot.description())
-                .hdpiImageUrl(shot.hdpiImageUrl())
-                .normalImageUrl(shot.normalImageUrl())
-                .thumbnailUrl(shot.thumbnailUrl())
-                .likeStatus(isLiked ? Shot.LIKED : Shot.UNLIKED)
-                .build();
     }
 
     private void showRetrievedItems(List<Shot> shotsList) {
@@ -107,8 +87,25 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private void onShotLikeNext(Shot shot, boolean status) {
         Timber.d("Shot liked : %s", status);
         if (status) {
-            getView().changeShotLikeStatus(createShot(shot, true));
+            getView().changeShotLikeStatus(changeShotLikeStatus(shot, true));
             EventBus.getDefault().post(new LikeRefreshEvent());
         }
+    }
+
+    private void onShotLikeError(Throwable throwable) {
+        Timber.e(throwable, "Error while sending shot like");
+        getView().showMessage(R.string.error_shot_like);
+    }
+
+    private Shot changeShotLikeStatus(Shot shot, boolean isLiked) {
+        return Shot.builder()
+                .id(shot.id())
+                .title(shot.title())
+                .description(shot.description())
+                .hdpiImageUrl(shot.hdpiImageUrl())
+                .normalImageUrl(shot.normalImageUrl())
+                .thumbnailUrl(shot.thumbnailUrl())
+                .likeStatus(isLiked ? Shot.LIKED : Shot.UNLIKED)
+                .build();
     }
 }

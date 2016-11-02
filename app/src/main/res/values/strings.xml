@@ -36,4 +36,5 @@
     <string name="notification_text">Check Inbbbox for daily dose of design shots</string>
 
     <string name="error_database">Cannot change notification time</string>
+    <string name="error_shot_like">Cannot like this shot</string>
 </resources>

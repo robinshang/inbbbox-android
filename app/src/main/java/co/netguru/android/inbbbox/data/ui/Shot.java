@@ -38,7 +38,6 @@ public abstract class Shot {
     @Nullable
     public abstract String thumbnailUrl();
 
-    @Nullable
     @LikeStatus
     public abstract Integer likeStatus();
 
