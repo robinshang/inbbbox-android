@@ -5,7 +5,7 @@ import android.util.TypedValue;
 
 public class PixelConverter {
 
-    public PixelConverter() {
+    private PixelConverter() {
         throw new AssertionError();
     }
 
