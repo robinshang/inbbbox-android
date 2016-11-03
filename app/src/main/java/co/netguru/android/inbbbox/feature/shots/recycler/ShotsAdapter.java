@@ -12,9 +12,11 @@ import javax.inject.Inject;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.ui.Shot;
 
-public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
+public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder>
+        implements ShotsViewHolder.OnShotLeftSwipeListener {
 
     private List<Shot> items;
+    private OnItemLeftSwipeListener onItemLeftSwipeListener = OnItemLeftSwipeListener.NULL;
 
     @Inject
     public ShotsAdapter() {
@@ -24,7 +26,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
     public ShotsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_shot_layout, parent, false);
-        return new ShotsViewHolder(itemView);
+        return new ShotsViewHolder(itemView, this);
     }
 
     @Override
@@ -40,5 +42,36 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
     public void setItems(List<Shot> items) {
         this.items = items;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLeftSwipe(int position) {
+        onItemLeftSwipeListener.onItemLeftSwipe(items.get(position));
+    }
+
+    public void setOnLeftSwipeListener(OnItemLeftSwipeListener onItemLeftSwipeListener) {
+        this.onItemLeftSwipeListener = onItemLeftSwipeListener == null
+                ? OnItemLeftSwipeListener.NULL : onItemLeftSwipeListener;
+    }
+
+    public void changeShotLikeStatus(Shot shot) {
+        final int position = findShotPosition(shot.id());
+        items.set(position, shot);
+        notifyItemChanged(position);
+    }
+
+    private int findShotPosition(int id) {
+        for (int i = 0;i<items.size();i++) {
+            if (items.get(i).id() == id) {
+                return i;
+            }
+        }
+        throw new IllegalArgumentException("There is no shot with id :" + id);
+    }
+
+    public interface OnItemLeftSwipeListener {
+        OnItemLeftSwipeListener NULL = shot -> {};
+
+        void onItemLeftSwipe(Shot shot);
     }
 }

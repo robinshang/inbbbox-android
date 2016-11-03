@@ -1,12 +1,14 @@
 package co.netguru.android.inbbbox.feature.shots.recycler;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.ui.Shot;
@@ -23,14 +25,21 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
 
     @BindView(R.id.iv_shot_image)
     RoundedCornersImageView shotImageView;
+    @BindView(R.id.iv_like_action)
+    ImageView likeIconImageView;
 
-    @BindView(R.id.iv_background)
-    RoundedCornersImageView backgroundImageView;
+    @BindDrawable(R.drawable.ic_like_swipe_filled)
+    Drawable shotLikedIcon;
+    @BindDrawable(R.drawable.ic_like_swipe)
+    Drawable shotUnlikedIcon;
+
+    private OnShotLeftSwipeListener onLeftSwipeListener = OnShotLeftSwipeListener.NULL;
 
     // TODO: 27.10.2016 bind with recycler action listener
     private ItemSwipeListener swipeListener = new ItemSwipeListener() {
         @Override
         public void onLeftSwipe() {
+            onLeftSwipeListener.onLeftSwipe(getAdapterPosition());
             Toast.makeText(longSwipeLayout.getContext(), "Left swipie", Toast.LENGTH_SHORT).show();
         }
 
@@ -45,8 +54,10 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
         }
     };
 
-    ShotsViewHolder(View itemView) {
+    ShotsViewHolder(View itemView, OnShotLeftSwipeListener onLeftSwipeListener) {
         super(itemView);
+        this.onLeftSwipeListener = onLeftSwipeListener == null
+                ? OnShotLeftSwipeListener.NULL : onLeftSwipeListener;
     }
 
     @Override
@@ -67,7 +78,15 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .animate(android.R.anim.fade_in)
                 .into(shotImageView);
+
+        likeIconImageView.setImageDrawable(shot.isLiked() ? shotLikedIcon : shotUnlikedIcon);
     }
 
+    public interface OnShotLeftSwipeListener {
+
+        OnShotLeftSwipeListener NULL = position -> {};
+
+        void onLeftSwipe(int position);
+    }
 }
 

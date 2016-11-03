@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.shots;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -25,7 +26,7 @@ import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
 
 public class ShotsFragment
         extends BaseMvpFragment<ShotsContract.View, ShotsContract.Presenter>
-        implements ShotsContract.View {
+        implements ShotsContract.View, ShotsAdapter.OnItemLeftSwipeListener {
 
     @BindView(R.id.shots_recycler_view)
     RecyclerView shotsRecyclerView;
@@ -37,9 +38,21 @@ public class ShotsFragment
     ShotsAdapter adapter;
 
     private ShotsComponent component;
+    private ShotLikeStatusListener shotLikeStatusListener;
 
     public static ShotsFragment newInstance() {
         return new ShotsFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            shotLikeStatusListener = (ShotLikeStatusListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement ShotLikeStatusListener");
+        }
     }
 
     @Override
@@ -80,6 +93,7 @@ public class ShotsFragment
     }
 
     private void initRecycler() {
+        adapter.setOnLeftSwipeListener(this);
         shotsRecyclerView.setAdapter(adapter);
         shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shotsRecyclerView.setHasFixedSize(true);
@@ -93,6 +107,21 @@ public class ShotsFragment
     @Override
     public void showError(String error) {
         Snackbar.make(shotsRecyclerView, error, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void changeShotLikeStatus(Shot shot) {
+        adapter.changeShotLikeStatus(shot);
+        shotLikeStatusListener.shotLikeStatusChanged();
+    }
+
+    @Override
+    public void onItemLeftSwipe(Shot shot) {
+        getPresenter().likeShot(shot);
+    }
+
+    public interface ShotLikeStatusListener {
+        void shotLikeStatusChanged();
     }
 
     @Override

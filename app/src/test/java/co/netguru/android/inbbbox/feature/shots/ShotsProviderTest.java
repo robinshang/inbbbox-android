@@ -64,6 +64,8 @@ public class ShotsProviderTest {
     @InjectMocks
     private ShotsProvider shotsProvider;
 
+    private List<Integer> likedShotsIds = new ArrayList<>();
+
     @Before
     public void setUp() {
         when(settingsMock.getStreamSourceSettings()).thenReturn(streamSourceSettings);
@@ -88,7 +90,7 @@ public class ShotsProviderTest {
         setupStreamSourceStates(true, false, false, false);
         TestSubscriber testSubscriber = new TestSubscriber();
 
-        shotsProvider.getShots().subscribe(testSubscriber);
+        shotsProvider.getShots(likedShotsIds).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         verify(shotsApiMock, times(1)).getFollowingShots();
@@ -100,7 +102,7 @@ public class ShotsProviderTest {
         when(shotsApiMock.getFollowingShots()).thenReturn(Observable.empty());
         TestSubscriber testSubscriber = new TestSubscriber();
 
-        shotsProvider.getShots().subscribe(testSubscriber);
+        shotsProvider.getShots(likedShotsIds).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         verify(shotsApiMock, never()).getFilteredShots(anyString(),
@@ -115,7 +117,7 @@ public class ShotsProviderTest {
         setupStreamSourceStates(true, false, false, false);
         TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber();
 
-        shotsProvider.getShots().subscribe(testSubscriber);
+        shotsProvider.getShots(likedShotsIds).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
@@ -138,7 +140,7 @@ public class ShotsProviderTest {
                 .build();
         when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
-        shotsProvider.getShots().subscribe(testSubscriber);
+        shotsProvider.getShots(likedShotsIds).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         verify(shotsApiMock, times(1)).getFilteredShots(params.list(),
@@ -159,7 +161,7 @@ public class ShotsProviderTest {
                 .build();
         when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
-        shotsProvider.getShots().subscribe(testSubscriber);
+        shotsProvider.getShots(likedShotsIds).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         verify(shotsApiMock, times(1)).getFilteredShots(params.list(),
@@ -180,7 +182,7 @@ public class ShotsProviderTest {
                 .build();
         when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
-        shotsProvider.getShots().subscribe(testSubscriber);
+        shotsProvider.getShots(likedShotsIds).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         verify(shotsApiMock, times(1)).getFilteredShots(params.list(),
@@ -201,7 +203,7 @@ public class ShotsProviderTest {
                 .build();
         when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
-        shotsProvider.getShots().subscribe(testSubscriber);
+        shotsProvider.getShots(likedShotsIds).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         verify(shotsApiMock, times(3)).getFilteredShots(params.list(),
@@ -223,7 +225,7 @@ public class ShotsProviderTest {
                 .build();
         when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
-        shotsProvider.getShots().subscribe(testSubscriber);
+        shotsProvider.getShots(likedShotsIds).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
@@ -247,7 +249,7 @@ public class ShotsProviderTest {
                 .build();
         when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
-        shotsProvider.getShots().subscribe(testSubscriber);
+        shotsProvider.getShots(likedShotsIds).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
@@ -279,7 +281,7 @@ public class ShotsProviderTest {
                 .build();
         when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
-        shotsProvider.getShots().subscribe(testSubscriber);
+        shotsProvider.getShots(likedShotsIds).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
@@ -309,7 +311,7 @@ public class ShotsProviderTest {
                 .build();
         when(shotsRequestFactoryMock.getShotsParams(streamSourceSettings)).thenReturn(params);
 
-        shotsProvider.getShots().subscribe(testSubscriber);
+        shotsProvider.getShots(likedShotsIds).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
