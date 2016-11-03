@@ -33,7 +33,8 @@ public class SettingsDataSourceImpl implements DataSource<Settings> {
 
             result = true;
         } catch (Exception e) {
-            Timber.e(e, "Error while saving Settings to database");
+            //Use i() for loging exception from SnappyDb because that is how SnappyI inform that there is no such object in Db
+            Timber.i(e, "Error while saving Settings to database");
 
             result = false;
         }
@@ -44,7 +45,7 @@ public class SettingsDataSourceImpl implements DataSource<Settings> {
         try {
             return Observable.just(storage.get(key, Settings.class));
         } catch (Exception e) {
-            Timber.e(e, "Error while getting Settings from database");
+            Timber.i(e, "Error while getting Settings from database");
 
             return Observable.error(e);
         }

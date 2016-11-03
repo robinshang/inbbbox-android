@@ -17,7 +17,6 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     private final TokenProvider tokenProvider;
     private final UserProvider userProvider;
     private ErrorMessageParser errorParser;
-    private Boolean isValid = false;
 
     @Inject
     SplashPresenter(TokenProvider tokenProvider,
@@ -38,13 +37,10 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     private void checkToken() {
         tokenProvider.isTokenValid()
                 .compose(androidIO())
-                .doOnNext(isValid1 -> SplashPresenter.this.isValid = isValid1)
-                .doOnCompleted(this::handleTokenVerificationResult)
-                .doOnError(this::handleError)
-                .subscribe();
+                .subscribe(this::handleTokenVerificationResult, this::handleError);
     }
 
-    private void handleTokenVerificationResult() {
+    private void handleTokenVerificationResult(boolean isValid) {
         if (isValid) {
             Timber.d("Token valid");
             getCurrentUserInstance();
@@ -57,24 +53,9 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     private void getCurrentUserInstance() {
         userProvider.getUser()
                 .compose(androidIO())
-                .subscribe(isValid -> handleUserDownloadComplete(isValid), e -> handleError(e));
-//                        new Subscriber<Boolean>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        handleError(e);
-//                    }
-//
-//                    @Override
-//                    public void onNext(Boolean isValid) {
-//                        handleUserDownloadComplete(isValid);
-//                    }
-//                });
-
+                .subscribe(
+                        this::handleUserDownloadComplete,
+                        this::handleError);
     }
 
     private void handleUserDownloadComplete(Boolean isValid) {

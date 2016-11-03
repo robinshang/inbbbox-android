@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.data.models;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -8,91 +7,62 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     @SerializedName("id")
-    @Expose
     private Integer id;
     @SerializedName("name")
-    @Expose
     private String name;
     @SerializedName("username")
-    @Expose
     private String username;
     @SerializedName("html_url")
-    @Expose
     private String htmlUrl;
     @SerializedName("avatar_url")
-    @Expose
     private String avatarUrl;
     @SerializedName("bio")
-    @Expose
     private String bio;
     @SerializedName("location")
-    @Expose
     private String location;
     @SerializedName("links")
-    @Expose
     private Links links;
     @SerializedName("buckets_count")
-    @Expose
     private Integer bucketsCount;
     @SerializedName("comments_received_count")
-    @Expose
     private Integer commentsReceivedCount;
     @SerializedName("followers_count")
-    @Expose
     private Integer followersCount;
     @SerializedName("followings_count")
-    @Expose
     private Integer followingsCount;
     @SerializedName("likes_count")
-    @Expose
     private Integer likesCount;
     @SerializedName("likes_received_count")
-    @Expose
     private Integer likesReceivedCount;
     @SerializedName("projects_count")
-    @Expose
     private Integer projectsCount;
     @SerializedName("rebounds_received_count")
-    @Expose
     private Integer reboundsReceivedCount;
     @SerializedName("shots_count")
-    @Expose
     private Integer shotsCount;
     @SerializedName("teams_count")
-    @Expose
     private Integer teamsCount;
     @SerializedName("can_upload_shot")
-    @Expose
     private Boolean canUploadShot;
     @SerializedName("type")
-    @Expose
     private String type;
     @SerializedName("pro")
-    @Expose
     private Boolean pro;
     @SerializedName("buckets_url")
-    @Expose
     private String bucketsUrl;
     @SerializedName("followers_url")
-    @Expose
     private String followersUrl;
     @SerializedName("following_url")
-    @Expose
     private String followingUrl;
     @SerializedName("likes_url")
-    @Expose
     private String likesUrl;
     @SerializedName("shots_url")
-    @Expose
     private String shotsUrl;
     @SerializedName("teams_url")
-    @Expose
     private String teamsUrl;
     @SerializedName("created_at")
-    @Expose
     private String createdAt;
     @SerializedName("updated_at")
-    @Expose
     private String updatedAt;
 
     /**

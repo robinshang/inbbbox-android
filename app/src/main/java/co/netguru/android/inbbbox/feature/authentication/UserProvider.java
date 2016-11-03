@@ -20,6 +20,6 @@ public class UserProvider {
 
     public Observable<Boolean> getUser() {
         return userApi.getAuthenticatedUser()
-                .concatMap(user1 -> dataSource.save(user1));
+                .concatMap(dataSource::save);
     }
 }

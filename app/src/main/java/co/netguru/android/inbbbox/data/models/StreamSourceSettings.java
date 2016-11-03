@@ -7,6 +7,8 @@ public class StreamSourceSettings {
     private boolean debut;
 
     public StreamSourceSettings() {
+        //following stream should be enabled by default
+        this.following = true;
     }
 
     public StreamSourceSettings(boolean following, boolean newToday, boolean popularToday, boolean debut) {

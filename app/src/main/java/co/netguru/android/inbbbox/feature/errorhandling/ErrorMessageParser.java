@@ -16,24 +16,18 @@ public class ErrorMessageParser {
         this.resources = resources;
     }
 
-    public String getError(int errorCode) {
-        return resources.getString(R.string.undefined_api_error);
-    }
-
     public String getError(Throwable throwable) {
         return throwable.getMessage();
     }
 
     public String getErrorLabel(ErrorType type) {
-        String label = resources.getString(R.string.undefined_api_error);
         switch (type) {
             case INVALID_USER_INSTANCE:
-                label = resources.getString(R.string.invalid_user_error);
-                break;
-            case INVALID_OAURH_URI:
-                label = resources.getString(R.string.invalid_outh_uri);
-                break;
+                return resources.getString(R.string.invalid_user_error);
+            case INVALID_OAUTH_URL:
+                return resources.getString(R.string.invalid_outh_url);
+            default:
+                return resources.getString(R.string.undefined_api_error);
         }
-        return label;
     }
 }

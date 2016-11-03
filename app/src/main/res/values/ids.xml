@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="dribbleScope">public+write+comment</string>
+    <string name="dribbbleScope">public+write+comment</string>
     <string name="redirectUriHost">oauth</string>
     <string name="redirectUriScheme">inbbbox</string>
 </resources>
