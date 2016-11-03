@@ -84,7 +84,6 @@ public class LongSwipeLayout extends SwipeLayout {
         }
 
         if (-getSurfaceView().getLeft() > swipingLimit / 3) {
-
             isNormalSwipeTriggered = false;
         }
 

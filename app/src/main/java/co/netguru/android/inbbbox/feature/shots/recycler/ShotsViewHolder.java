@@ -73,17 +73,20 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
 
     @Override
     public void onLeftSwipe() {
-//        onLeftSwipeListener.onLeftSwipe(getAdapterPosition());
+        onLeftSwipeListener.onLeftSwipe(getAdapterPosition());
+        // TODO: 03.11.2016 remove toasts or change to propare info after all action implemented
         Toast.makeText(longSwipeLayout.getContext(), "Left swipie", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onLeftLongSwipe() {
+        // TODO: 03.11.2016 remove toasts or change to propare info after all action implemented
         Toast.makeText(longSwipeLayout.getContext(), "Left LONG swipie", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRightSwipe() {
+        // TODO: 03.11.2016 remove toasts or change to propare info after all action implemented
         Toast.makeText(longSwipeLayout.getContext(), "Right swipie", Toast.LENGTH_SHORT).show();
     }
 
