@@ -26,11 +26,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         this.errorMessageParser = errorMessageParser;
     }
 
-    @Override
-    public void attachView(ShotsContract.View view) {
-        super.attachView(view);
-    }
-
     private void showRetrievedItems(List<Shot> shotsList) {
         Timber.d("Shots received!");
         this.items = shotsList;
