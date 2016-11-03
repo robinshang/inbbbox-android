@@ -20,7 +20,9 @@ import co.netguru.android.inbbbox.feature.shots.like.LikeResponseMapper;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -85,6 +87,56 @@ public class ShotsPresenterTest {
         verify(viewMock, times(1)).showItems(expectedShots);
     }
 
+    @Test
+    public void whenShotNotLikedAndLikeActionCalled_thenCallLikeShotMethod() {
+        when(likeResponseMapperMock.likeShot(anyInt())).thenReturn(Observable.empty());
+        int exampleId = 99;
+        Shot exampleShot = Shot.builder()
+                .id(exampleId)
+                .title("test")
+                .isLiked(false)
+                .build();
+
+        presenter.likeShot(exampleShot);
+
+        verify(likeResponseMapperMock, times(1)).likeShot(exampleId);
+    }
+
+    @Test
+    public void whenShotLiked_thenChangeShotStatus() {
+        when(likeResponseMapperMock.likeShot(anyInt())).thenReturn(Observable.empty());
+        int exampleId = 99;
+        Shot exampleShot = Shot.builder()
+                .id(exampleId)
+                .title("test")
+                .isLiked(false)
+                .build();
+        Shot expectedShot = Shot.builder()
+                .id(exampleId)
+                .title("test")
+                .isLiked(true)
+                .build();
+
+        presenter.likeShot(exampleShot);
+
+        verify(viewMock, times(1)).changeShotLikeStatus(expectedShot);
+    }
+
+    @Test
+    public void whenShotLikedAndLikeActionCalled_thenCallLikeShotMethod() {
+        when(likeResponseMapperMock.likeShot(anyInt())).thenReturn(Observable.empty());
+        int exampleId = 99;
+        Shot exampleShot = Shot.builder()
+                .id(exampleId)
+                .title("test")
+                .isLiked(true)
+                .build();
+
+        presenter.likeShot(exampleShot);
+
+        verify(likeResponseMapperMock, never()).likeShot(exampleId);
+    }
+
     //ERRORS
     @Test
     public void whenDataLoadingFailed_thenHideLoadingIndicator() {
@@ -109,4 +161,21 @@ public class ShotsPresenterTest {
         verify(viewMock, times(1)).showError(message);
     }
 
+    @Test
+    public void whenShotLikeingFailed_thenShowApiError() {
+        String message = "test";
+        Exception exampleException = new Exception(message);
+        when(likeResponseMapperMock.likeShot(anyInt())).thenReturn(Observable.error(exampleException));
+        when(errorMessageParserMock.getError(exampleException)).thenCallRealMethod();
+        int exampleId = 99;
+        Shot exampleShot = Shot.builder()
+                .id(exampleId)
+                .title("test")
+                .isLiked(false)
+                .build();
+
+        presenter.likeShot(exampleShot);
+
+        verify(viewMock, times(1)).showError(message);
+    }
 }

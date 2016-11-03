@@ -25,7 +25,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private final ErrorMessageParser errorMessageParser;
     private final LikeResponseMapper likeResponseMapper;
     private final CompositeSubscription subscriptions;
-    private List<Shot> items;
 
     @Inject
     ShotsPresenter(ShotsProvider shotsProvider,
@@ -69,7 +68,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     private void showRetrievedItems(List<Shot> shotsList) {
         Timber.d("Shots received!");
-        this.items = shotsList;
         getView().showItems(shotsList);
         getView().hideLoadingIndicator();
     }
