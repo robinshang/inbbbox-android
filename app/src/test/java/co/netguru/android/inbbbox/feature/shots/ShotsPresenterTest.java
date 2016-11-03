@@ -10,7 +10,9 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
@@ -49,7 +51,49 @@ public class ShotsPresenterTest {
         presenter.loadData();
 
         verify(shotsProviderMock, times(1)).getShots();
+    }
 
+    @Test
+    public void whenDataLoadedCorrectly_thenHideLoadingIndicator() {
+        when(shotsProviderMock.getShots()).thenReturn(Observable.just(new ArrayList<>()));
+
+        presenter.loadData();
+
+        verify(viewMock, times(1)).hideLoadingIndicator();
+    }
+
+    @Test
+    public void whenDataLoadedCorrectly_thenShowDownloadedItems() {
+        List<Shot> expectedShots = new ArrayList<>();
+        when(shotsProviderMock.getShots()).thenReturn(Observable.just(expectedShots));
+
+        presenter.loadData();
+
+        verify(viewMock, times(1)).showItems(expectedShots);
+    }
+
+    //ERRORS
+    @Test
+    public void whenDataLoadingFailed_thenHideLoadingIndicator() {
+        String message = "test";
+        Exception exampleException = new Exception(message);
+        when(shotsProviderMock.getShots()).thenReturn(Observable.error(exampleException));
+
+        presenter.loadData();
+
+        verify(viewMock, times(1)).hideLoadingIndicator();
+    }
+
+    @Test
+    public void whenDataLoadingFailed_thenShowErrorMessage() {
+        String message = "test";
+        Throwable exampleException = new Exception(message);
+        when(shotsProviderMock.getShots()).thenReturn(Observable.error(exampleException));
+        when(errorMessageParserMock.getError(exampleException)).thenCallRealMethod();
+
+        presenter.loadData();
+
+        verify(viewMock, times(1)).showError(message);
     }
 
 }
