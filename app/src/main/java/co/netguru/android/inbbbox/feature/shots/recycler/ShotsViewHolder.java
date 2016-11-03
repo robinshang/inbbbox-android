@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.feature.shots.recycler;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +26,10 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
 
     @BindView(R.id.iv_shot_image)
     RoundedCornersImageView shotImageView;
+
+    @BindView(R.id.iv_background)
+    RoundedCornersImageView backgroundImageView;
+
     @BindView(R.id.iv_like_action)
     ImageView likeIconImageView;
 

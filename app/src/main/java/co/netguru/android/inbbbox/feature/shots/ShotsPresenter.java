@@ -28,8 +28,10 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private List<Shot> items;
 
     @Inject
-    ShotsPresenter(ShotsProvider shotsProvider, LikedShotsProvider likedShotsProvider,
-                   ErrorMessageParser errorMessageParser, LikeResponseMapper likeResponseMapper) {
+    ShotsPresenter(ShotsProvider shotsProvider,
+                   LikedShotsProvider likedShotsProvider,
+                   ErrorMessageParser errorMessageParser,
+                   LikeResponseMapper likeResponseMapper) {
 
         this.shotsProvider = shotsProvider;
         this.likedShotsProvider = likedShotsProvider;
@@ -108,9 +110,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     @Override
     public void loadData() {
-        shotsProvider.getShots()
-                .compose(androidIO())
-                .subscribe(this::showRetrievedItems,
-                        this::handleException);
+        getShotsData();
     }
 }

@@ -11,7 +11,7 @@ import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 
 @FragmentScope
-public final class LikeResponseMapper {
+public class LikeResponseMapper {
 
     private final LikesApi likesApi;
 
