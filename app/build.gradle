@@ -52,6 +52,7 @@ android {
                     'proguard-rules.pro', 'proguard-rules-test.pro'
 
             manifestPlaceholders = [HOCKEYAPP_APP_ID: secrets.hockeyAppId]
+            buildConfigField 'String', 'HOCKEY_APP_ID', '"' + secrets.hockeyAppId + '"'
         }
         release {
             debuggable false
@@ -61,7 +62,8 @@ android {
             useProguard true
             proguardFiles 'proguard-rules.pro'
 
-            manifestPlaceholders = [HOCKEYAPP_APP_ID: secrets.hockeyAppId]
+            manifestPlaceholders = [HOCKEYAPP_APP_ID: secrets.hockeyAppIdProd]
+            buildConfigField 'String', 'HOCKEY_APP_ID', '"' + secrets.hockeyAppIdProd + '"'
         }
     }
 
