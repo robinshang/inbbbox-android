@@ -39,9 +39,7 @@ public class ShotsProvider {
                 ;
     }
 
-    private List<Integer> list = new ArrayList<>();
     private Observable<List<Shot>> getShotsObservable(Settings settings, List<Integer> likedShotsIds) {
-        list.clear();
         return selectRequest(settings.getStreamSourceSettings())
                 .compose(fromListObservable())
                 .map(shotEntity -> mapper.getShot(shotEntity, likedShotsIds))
