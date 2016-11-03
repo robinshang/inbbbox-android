@@ -7,6 +7,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import rx.Observable;
 
+@FunctionalInterface
 public interface AuthorizeApi {
 
     @FormUrlEncoded
