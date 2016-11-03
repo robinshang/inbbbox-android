@@ -20,9 +20,9 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        CrashManager.register(this);
         initComponent();
         super.onCreate(savedInstanceState);
-        CrashManager.register(this);
     }
 
 

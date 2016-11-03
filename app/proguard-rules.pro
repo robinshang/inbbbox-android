@@ -50,6 +50,13 @@
 # retrofit
 -dontwarn retrofit2.**
 -keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+-keepattributes *Annotation*
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
+}
+
 
 # dagger
 -keepclassmembers,allowobfuscation class * {
@@ -136,3 +143,18 @@
 -keep,allowshrinking class sun.nio.ch.** { *; }
 -dontwarn sun.nio.ch.**
 -dontwarn sun.misc.**
+
+#SnappyDB
+-dontwarn sun.reflect.**
+-dontwarn java.beans.**
+-dontwarn sun.nio.ch.**
+-dontwarn sun.misc.**
+
+-keep class com.esotericsoftware.** {*;}
+
+-keep class java.beans.** { *; }
+-keep class sun.reflect.** { *; }
+-keep class sun.nio.ch.** { *; }
+
+-keep class com.snappydb.** { *; }
+-dontwarn com.snappydb.**
