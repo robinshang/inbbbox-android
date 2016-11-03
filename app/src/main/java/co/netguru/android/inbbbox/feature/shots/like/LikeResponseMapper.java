@@ -7,6 +7,7 @@ import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.data.api.LikesApi;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 
 @FragmentScope
@@ -19,12 +20,15 @@ public final class LikeResponseMapper {
         this.likesApi = likesApi;
     }
 
-    public Observable<Boolean> likeShot(long id) {
+    public Observable<Void> likeShot(long id) {
         return likesApi.likeShot(id)
-                .map(this::mapLikeResponse);
+                .flatMap(this::mapLikeResponse);
     }
 
-    private boolean mapLikeResponse(Response<ResponseBody> response) {
-        return response.code() == HttpsURLConnection.HTTP_CREATED;
+    private Observable<Void> mapLikeResponse(Response<ResponseBody> response) {
+        if (response.code() == HttpsURLConnection.HTTP_CREATED) {
+            return Observable.empty();
+        }
+        return Observable.error(new HttpException(response));
     }
 }

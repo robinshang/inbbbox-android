@@ -55,7 +55,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         if (!shot.isLiked()) {
             final Subscription subscription = likeResponseMapper.likeShot(shot.id())
                     .compose(androidIO())
-                    .subscribe(status -> onShotLikeNext(shot, status), this::onShotLikeError);
+                    .subscribe(aVoid -> {}, this::onShotLikeError, () -> onShotLikeCompleted(shot));
             subscriptions.add(subscription);
         }
     }
@@ -82,11 +82,9 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         getView().showError(errorMessageParser.getError(exception));
     }
 
-    private void onShotLikeNext(Shot shot, boolean status) {
-        Timber.d("Shot liked : %s", status);
-        if (status) {
-            getView().changeShotLikeStatus(changeShotLikeStatus(shot));
-        }
+    private void onShotLikeCompleted(Shot shot) {
+        Timber.d("Shot liked : %s", shot);
+        getView().changeShotLikeStatus(changeShotLikeStatus(shot));
     }
 
     private void onShotLikeError(Throwable throwable) {
