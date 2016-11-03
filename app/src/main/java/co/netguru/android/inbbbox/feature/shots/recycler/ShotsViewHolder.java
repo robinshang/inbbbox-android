@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.feature.shots.recycler;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -9,7 +8,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import butterknife.BindDrawable;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.ui.Shot;
@@ -19,7 +17,8 @@ import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 import co.netguru.android.inbbbox.view.swipingpanel.ItemSwipeListener;
 import co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout;
 
-public class ShotsViewHolder extends BaseViewHolder<Shot> {
+class ShotsViewHolder extends BaseViewHolder<Shot>
+        implements ItemSwipeListener {
 
     @BindView(R.id.long_swipe_layout)
     LongSwipeLayout longSwipeLayout;
@@ -33,31 +32,15 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
     @BindView(R.id.iv_like_action)
     ImageView likeIconImageView;
 
-    @BindDrawable(R.drawable.ic_like_swipe_filled)
-    Drawable shotLikedIcon;
-    @BindDrawable(R.drawable.ic_like_swipe)
-    Drawable shotUnlikedIcon;
+    @BindView(R.id.iv_bucket_action)
+    ImageView bucketImageView;
+
+    @BindView(R.id.iv_comment)
+    ImageView commentImageView;
+
 
     private OnShotLeftSwipeListener onLeftSwipeListener = OnShotLeftSwipeListener.NULL;
-
-    // TODO: 27.10.2016 bind with recycler action listener
-    private ItemSwipeListener swipeListener = new ItemSwipeListener() {
-        @Override
-        public void onLeftSwipe() {
-            onLeftSwipeListener.onLeftSwipe(getAdapterPosition());
-            Toast.makeText(longSwipeLayout.getContext(), "Left swipie", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onLeftLongSwipe() {
-            Toast.makeText(longSwipeLayout.getContext(), "Left LONG swipie", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onRightSwipe() {
-            Toast.makeText(longSwipeLayout.getContext(), "Right swipie", Toast.LENGTH_SHORT).show();
-        }
-    };
+    private Shot shot;
 
     ShotsViewHolder(View itemView, OnShotLeftSwipeListener onLeftSwipeListener) {
         super(itemView);
@@ -67,8 +50,9 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
 
     @Override
     public void bind(Shot shot) {
+        this.shot = shot;
         setupImage(shot);
-        longSwipeLayout.setItemSwipeListener(swipeListener);
+        longSwipeLayout.setItemSwipeListener(this);
     }
 
     private void setupImage(Shot shot) {
@@ -84,14 +68,51 @@ public class ShotsViewHolder extends BaseViewHolder<Shot> {
                 .animate(android.R.anim.fade_in)
                 .into(shotImageView);
 
-        likeIconImageView.setImageDrawable(shot.isLiked() ? shotLikedIcon : shotUnlikedIcon);
+        likeIconImageView.setActivated(shot.isLiked());
     }
 
-    public interface OnShotLeftSwipeListener {
+    @Override
+    public void onLeftSwipe() {
+//        onLeftSwipeListener.onLeftSwipe(getAdapterPosition());
+        Toast.makeText(longSwipeLayout.getContext(), "Left swipie", Toast.LENGTH_SHORT).show();
+    }
 
-        OnShotLeftSwipeListener NULL = position -> {};
+    @Override
+    public void onLeftLongSwipe() {
+        Toast.makeText(longSwipeLayout.getContext(), "Left LONG swipie", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRightSwipe() {
+        Toast.makeText(longSwipeLayout.getContext(), "Right swipie", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLeftSwipeActivate(boolean isActive) {
+        if (!shot.isLiked()) {
+            likeIconImageView.setActivated(isActive);
+        }
+    }
+
+    @Override
+    public void onLeftLongSwipeActivate(boolean isActive) {
+        bucketImageView.setActivated(isActive);
+    }
+
+    @Override
+    public void onRightSwipeActivate(boolean isActive) {
+        commentImageView.setActivated(isActive);
+    }
+
+    @FunctionalInterface
+    interface OnShotLeftSwipeListener {
+
+        OnShotLeftSwipeListener NULL = position -> {
+        };
 
         void onLeftSwipe(int position);
     }
+
+
 }
 
