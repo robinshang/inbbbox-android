@@ -35,13 +35,17 @@ public class ShotsProvider {
     }
 
     public Observable<List<Shot>> getShots(List<Integer> likedShotsIds) {
-        return getSettings().flatMap(settings -> getShotsObservable(settings, likedShotsIds));
+        return getSettings().flatMap(settings -> getShotsObservable(settings, likedShotsIds))
+                ;
     }
 
+    private List<Integer> list = new ArrayList<>();
     private Observable<List<Shot>> getShotsObservable(Settings settings, List<Integer> likedShotsIds) {
+        list.clear();
         return selectRequest(settings.getStreamSourceSettings())
                 .compose(fromListObservable())
                 .map(shotEntity -> mapper.getShot(shotEntity, likedShotsIds))
+                .distinct()
                 .toList();
     }
 
