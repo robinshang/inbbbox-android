@@ -41,12 +41,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     }
 
     @Override
-    public void attachView(ShotsContract.View view) {
-        super.attachView(view);
-        getShotsData();
-    }
-
-    @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
         subscriptions.clear();
