@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -25,6 +26,8 @@ import android.widget.ToggleButton;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.util.List;
+
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
@@ -34,15 +37,17 @@ import co.netguru.android.inbbbox.data.ui.TabItemType;
 import co.netguru.android.inbbbox.di.component.MainActivityComponent;
 import co.netguru.android.inbbbox.di.module.MainActivityModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
+import co.netguru.android.inbbbox.feature.likes.LikesFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
+import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static butterknife.ButterKnife.findById;
 
 public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainViewContract.Presenter>
-        implements MainViewContract.View {
+        implements MainViewContract.View, ShotsFragment.ShotLikeStatusListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -318,5 +323,16 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     @Override
     public void showMessage(@StringRes int message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void shotLikeStatusChanged() {
+        final List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (final Fragment fragment : fragments) {
+            if (fragment instanceof LikesFragment) {
+                ((LikesFragment) fragment).refreshFragmentData();
+                break;
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ import com.google.gson.TypeAdapter;
 
 @AutoValue
 public abstract class Shot {
+
     @Nullable
     public abstract Integer id();
 
@@ -26,6 +27,8 @@ public abstract class Shot {
     @Nullable
     public abstract String thumbnailUrl();
 
+    public abstract boolean isLiked();
+
     @AutoValue.Builder
     public abstract static class Builder {
         public abstract Shot.Builder id(Integer id);
@@ -39,6 +42,8 @@ public abstract class Shot {
         public abstract Shot.Builder normalImageUrl(String normalImageUrl);
 
         public abstract Shot.Builder thumbnailUrl(String thumbnailUrl);
+
+        public abstract Shot.Builder isLiked(boolean isLiked);
 
         public abstract Shot build();
     }
