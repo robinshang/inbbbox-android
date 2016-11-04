@@ -7,7 +7,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
 import co.netguru.android.inbbbox.data.ui.Shot;
@@ -28,22 +28,28 @@ import co.netguru.android.inbbbox.di.module.ShotsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
 import co.netguru.android.inbbbox.utils.Constants;
+import co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView;
 
 public class ShotsFragment
         extends BaseMvpFragment<ShotsContract.View, ShotsContract.Presenter>
         implements ShotsContract.View, ShotsAdapter.OnItemLeftSwipeListener {
 
     @BindView(R.id.shots_recycler_view)
-    RecyclerView shotsRecyclerView;
+    AutoItemScrollRecyclerView shotsRecyclerView;
 
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
 
     @BindView(R.id.fab_menu)
-    FloatingActionMenu menuFAB;
+    FloatingActionMenu fabMenu;
 
     @BindView(R.id.container_fog_view)
     View fogContainerView;
+
+    @OnClick(R.id.fab_like_menu)
+    void onLikeFabClick() {
+        getPresenter().likeShot(shotsRecyclerView.getCurrentItem());
+    }
 
     @Inject
     ShotsAdapter adapter;
@@ -100,7 +106,7 @@ public class ShotsFragment
     }
 
     private void initFabMenu() {
-        menuFAB.setOnMenuToggleListener(this::handleFabMenuToggle);
+        fabMenu.setOnMenuToggleListener(this::handleFabMenuToggle);
     }
 
     private void handleFabMenuToggle(boolean opened) {
@@ -158,8 +164,15 @@ public class ShotsFragment
     }
 
     @Override
-    public void onItemLeftSwipe(Shot shot) {
-        getPresenter().likeShot(shot);
+    public void closeFabMenu() {
+        if (fabMenu.isOpened()) {
+            fabMenu.close(true);
+        }
+    }
+
+    @Override
+    public void onItemLeftSwipe(int itemPosition) {
+        getPresenter().likeShot(itemPosition);
     }
 
     public interface ShotLikeStatusListener {

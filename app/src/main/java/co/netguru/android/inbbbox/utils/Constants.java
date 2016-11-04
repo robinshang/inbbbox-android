@@ -49,6 +49,6 @@ public final class Constants {
     }
 
     public class Animations {
-        public static final long FOG_ANIM_DURATION = 300;
+        public static final long FOG_ANIM_DURATION = 200;
     }
 }

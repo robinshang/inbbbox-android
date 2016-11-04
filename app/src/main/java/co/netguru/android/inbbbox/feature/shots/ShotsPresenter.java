@@ -22,6 +22,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private final ErrorMessageParser errorMessageParser;
     private final LikeResponseMapper likeResponseMapper;
     private final CompositeSubscription subscriptions;
+    private List<Shot> shotItems;
 
     @Inject
     ShotsPresenter(ShotsProvider shotsProvider, ErrorMessageParser errorMessageParser,
@@ -39,16 +40,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         subscriptions.clear();
     }
 
-    @Override
-    public void likeShot(Shot shot) {
-        if (!shot.isLiked()) {
-            final Subscription subscription = likeResponseMapper.likeShot(shot.id())
-                    .compose(androidIO())
-                    .subscribe(aVoid -> {}, this::onShotLikeError, () -> onShotLikeCompleted(shot));
-            subscriptions.add(subscription);
-        }
-    }
-
     private void getShotsData() {
         final Subscription subscription = shotsProvider.getShots()
                 .compose(androidIO())
@@ -59,7 +50,8 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     private void showRetrievedItems(List<Shot> shotsList) {
         Timber.d("Shots received!");
-        getView().showItems(shotsList);
+        shotItems = shotsList;
+        getView().showItems(shotItems);
         getView().hideLoadingIndicator();
     }
 
@@ -67,6 +59,16 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         Timber.e(exception, "Shots item receiving exception ");
         getView().hideLoadingIndicator();
         getView().showError(errorMessageParser.getError(exception));
+    }
+
+    private void likeShot(Shot shot) {
+        if (!shot.isLiked()) {
+            final Subscription subscription = likeResponseMapper.likeShot(shot.id())
+                    .compose(androidIO())
+                    .subscribe(aVoid -> {
+                    }, this::onShotLikeError, () -> onShotLikeCompleted(shot));
+            subscriptions.add(subscription);
+        }
     }
 
     private void onShotLikeCompleted(Shot shot) {
@@ -89,6 +91,12 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                 .thumbnailUrl(shot.thumbnailUrl())
                 .isLiked(true)
                 .build();
+    }
+
+    @Override
+    public void likeShot(int shotPosition) {
+        likeShot(shotItems.get(shotPosition));
+        getView().closeFabMenu();
     }
 
     @Override
