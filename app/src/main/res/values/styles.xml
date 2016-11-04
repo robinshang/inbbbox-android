@@ -72,7 +72,7 @@
     </style>
 
     <style name="FabMenuLabel">
-        <item name="android:background">@drawable/shape_fab_label_background</item>
+        <item name="android:background">@drawable/fab_menu_label_background</item>
         <item name="android:paddingLeft">@dimen/fab_menu_label_side_padding</item>
         <item name="android:paddingRight">@dimen/fab_menu_label_side_padding</item>
         <item name="android:paddingTop">@dimen/fab_menu_label_bottom_top_padding</item>
