@@ -24,11 +24,11 @@ ext {
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         applicationId "co.netguru.android.inbbbox"
-        minSdkVersion 18
+        minSdkVersion 19
         targetSdkVersion 24
         versionCode isBitrise ? Integer.parseInt(bitrise.io.buildNumber) : 1
         versionName "0.1.0"
