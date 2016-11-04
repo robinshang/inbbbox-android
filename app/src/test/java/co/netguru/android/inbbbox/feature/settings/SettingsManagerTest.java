@@ -7,9 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import co.netguru.android.inbbbox.data.models.NotificationSettings;
-import co.netguru.android.inbbbox.data.models.Settings;
-import co.netguru.android.inbbbox.db.datasource.DataSource;
+import co.netguru.android.inbbbox.models.NotificationSettings;
+import co.netguru.android.inbbbox.models.Settings;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 

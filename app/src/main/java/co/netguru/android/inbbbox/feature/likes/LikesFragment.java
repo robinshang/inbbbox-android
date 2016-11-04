@@ -27,7 +27,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.App;
-import co.netguru.android.inbbbox.data.ui.LikedShot;
+import co.netguru.android.inbbbox.models.ui.LikedShot;
 import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;

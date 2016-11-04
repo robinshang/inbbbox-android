@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.data.api;
 
-import co.netguru.android.inbbbox.data.models.User;
 import rx.Observable;
 
 public class MockedUserApi implements UserApi {

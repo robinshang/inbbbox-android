@@ -6,6 +6,7 @@ public final class Constants {
     public static class VIEW {
         public static final int LIKE_FRAGMENT_COLUMN_COUNT = 2;
     }
+
     public static class OAUTH {
         public static final String BASE_URL = "https://dribbble.com/";
         public static final String OAUTH_AUTHORIZE_ENDPOINT = "oauth/authorize";
@@ -21,10 +22,6 @@ public final class Constants {
     }
 
     public static class API {
-
-        public static final String HEADER_ACCEPT = "Accept";
-        public static final String HEADER_TYPE_JSON = "application/json";
-        public static final String HEADER_AUTHORIZATION = "AUTHORIZATION";
         public static final String DRIBBLE_BASE_URL = "https://api.dribbble.com/v1/";
         public static final String SHOTS_KEY_LIST = "list";
         public static final String SHOTS_KEY_TIME_FRAME = "timeframe";

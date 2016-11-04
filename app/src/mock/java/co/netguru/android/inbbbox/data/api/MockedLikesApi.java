@@ -3,8 +3,8 @@ package co.netguru.android.inbbbox.data.api;
 import java.util.LinkedList;
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.models.LikedShotEntity;
-import co.netguru.android.inbbbox.data.ui.LikedShot;
+import co.netguru.android.inbbbox.models.LikedShotEntity;
+import co.netguru.android.inbbbox.models.ui.LikedShot;
 import rx.Observable;
 
 public class MockedLikesApi implements LikesApi {

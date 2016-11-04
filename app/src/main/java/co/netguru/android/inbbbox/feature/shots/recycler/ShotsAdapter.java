@@ -10,7 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.ui.Shot;
+import co.netguru.android.inbbbox.models.ui.Shot;
 
 public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 

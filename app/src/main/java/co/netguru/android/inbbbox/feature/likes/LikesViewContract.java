@@ -8,7 +8,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.ui.LikedShot;
+import co.netguru.android.inbbbox.models.ui.LikedShot;
 
 interface LikesViewContract {
 

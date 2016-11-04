@@ -1,6 +1,6 @@
 package co.netguru.android.inbbbox.data.api;
 
-import co.netguru.android.inbbbox.data.models.Token;
+import co.netguru.android.inbbbox.models.Token;
 import co.netguru.android.inbbbox.utils.Constants;
 import retrofit2.http.Field;
 import rx.Observable;

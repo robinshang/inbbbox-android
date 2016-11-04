@@ -5,9 +5,9 @@ import android.os.Build;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.data.models.NotificationSettings;
 import co.netguru.android.inbbbox.feature.settings.SettingsManager;
-import rx.Observable;
+import co.netguru.android.inbbbox.models.NotificationSettings;
+import rx.Single;
 
 @Singleton
 public final class NotificationController {
@@ -21,24 +21,25 @@ public final class NotificationController {
         this.notificationScheduler = notificationScheduler;
     }
 
-    public Observable<NotificationSettings> scheduleNotification() {
+    public Single<NotificationSettings> scheduleNotification() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return settingsManager.getNotificationSettings()
-                    .doOnNext(settings -> notificationScheduler.scheduleRepeatingNotification(settings.getHour(),
+                    .doOnSuccess(settings -> notificationScheduler.scheduleRepeatingNotification(settings.getHour(),
                             settings.getMinute()));
         }
 
         return settingsManager.getNotificationSettings()
-                .doOnNext(settings -> notificationScheduler.scheduleNotificationWhileIdle(settings.getHour(),
+                .doOnSuccess(settings -> notificationScheduler.scheduleNotificationWhileIdle(settings.getHour(),
                         settings.getMinute()));
     }
-    public Observable<Boolean> rescheduleNotification() {
+
+    public Single<Boolean> rescheduleNotification() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return Observable.just(false);
+            return Single.just(false);
         }
         return settingsManager.getNotificationSettings()
-                .doOnNext(settings -> notificationScheduler.scheduleNotificationWhileIdle(settings.getHour() ,
+                .doOnSuccess(settings -> notificationScheduler.scheduleNotificationWhileIdle(settings.getHour(),
                         settings.getMinute()))
-                .map(settings -> true);
+                .flatMap(notificationSettings -> Single.just(true));
     }
 }

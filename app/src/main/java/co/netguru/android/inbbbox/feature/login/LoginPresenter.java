@@ -23,7 +23,7 @@ public final class LoginPresenter
         extends MvpNullObjectBasePresenter<LoginContract.View>
         implements LoginContract.Presenter {
 
-    private final OauthUrlProvider urlProvider;
+    private final OauthUrlProvider oauthUrlProvider;
     private final TokenProvider apiTokenProvider;
     private final ErrorMessageParser errorHandler;
     private final UserProvider userProvider;
@@ -37,7 +37,7 @@ public final class LoginPresenter
                    TokenProvider apiTokenProvider,
                    ErrorMessageParser apiErrorParser,
                    UserProvider userProvider) {
-        this.urlProvider = oauthUrlProvider;
+        this.oauthUrlProvider = oauthUrlProvider;
         this.apiTokenProvider = apiTokenProvider;
         this.errorHandler = apiErrorParser;
         this.userProvider = userProvider;
@@ -54,7 +54,7 @@ public final class LoginPresenter
     @Override
     public void showLoginView() {
         compositeSubscription.add(
-                urlProvider.getOauthAuthorizeUrlString()
+                oauthUrlProvider.getOauthAuthorizeUrlString()
                         .compose(androidIO())
                         .subscribe(
                                 getView()::handleOauthUrl,
@@ -84,30 +84,20 @@ public final class LoginPresenter
     }
 
     private void requestNewToken() {
-        compositeSubscription.add(apiTokenProvider.getToken(code)
-                .compose(androidIO())
-                .subscribe(saved -> {
-                            if (saved) {
-                                getUser();
-                            }
-                        },
-                        this::handleError
-                ));
+        compositeSubscription.add(
+                apiTokenProvider.requestNewToken(code)
+                        .compose(androidIO())
+                        .subscribe(token -> getUser(),
+                                this::handleError
+                        ));
     }
 
     private void getUser() {
         compositeSubscription.add(
-                userProvider.getUser()
+                userProvider.requestUser()
                         .compose(androidIO())
-                        .subscribe(this::verifyUser, this::handleError));
-    }
-
-    private void verifyUser(Boolean status) {
-        if (status) {
-            getView().showNextScreen();
-        } else {
-            getView().showApiError(errorHandler.getErrorLabel(ErrorType.INVALID_USER_INSTANCE));
-        }
+                        .subscribe(user -> getView().showNextScreen(),
+                                this::handleError));
     }
 
     private void handleError(Throwable throwable) {

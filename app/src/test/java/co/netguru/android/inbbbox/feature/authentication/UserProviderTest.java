@@ -8,10 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import co.netguru.android.inbbbox.api.UserApi;
-import co.netguru.android.inbbbox.data.models.User;
+import co.netguru.android.inbbbox.data.api.UserApi;
 import co.netguru.android.testcommons.RxSyncTestRule;
-import co.netguru.android.inbbbox.db.datasource.DataSource;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
@@ -39,7 +37,7 @@ public class UserProviderTest {
         when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.just(expectedUser));
         TestSubscriber testSubscriber = new TestSubscriber();
 
-        userProvider.getUser().subscribe(testSubscriber);
+        userProvider.requestUser().subscribe(testSubscriber);
 
         verify(dataSourceMock).save(expectedUser);
     }
@@ -52,7 +50,7 @@ public class UserProviderTest {
                 .thenReturn(Observable.just(true));
         TestSubscriber testSubscriber = new TestSubscriber();
 
-        userProvider.getUser().subscribe(testSubscriber);
+        userProvider.requestUser().subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         testSubscriber.assertValue(true);
@@ -65,7 +63,7 @@ public class UserProviderTest {
         when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.error(expectedThrowable));
         TestSubscriber testSubscriber = new TestSubscriber();
 
-        userProvider.getUser().subscribe(testSubscriber);
+        userProvider.requestUser().subscribe(testSubscriber);
 
         testSubscriber.assertError(expectedThrowable);
     }
@@ -80,7 +78,7 @@ public class UserProviderTest {
                 .thenReturn(Observable.error(expectedThrowable));
         TestSubscriber testSubscriber = new TestSubscriber();
 
-        userProvider.getUser().subscribe(testSubscriber);
+        userProvider.requestUser().subscribe(testSubscriber);
 
         testSubscriber.assertError(expectedThrowable);
     }

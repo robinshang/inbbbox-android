@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.data.ui.Shot;
+import co.netguru.android.inbbbox.models.ui.Shot;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import timber.log.Timber;
 

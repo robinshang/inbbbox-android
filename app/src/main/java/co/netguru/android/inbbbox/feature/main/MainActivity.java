@@ -30,7 +30,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.ui.TabItemType;
+import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.di.component.MainActivityComponent;
 import co.netguru.android.inbbbox.di.module.MainActivityModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;

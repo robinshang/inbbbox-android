@@ -4,15 +4,14 @@ import javax.inject.Singleton;
 
 import co.netguru.android.commons.di.BaseComponent;
 import co.netguru.android.inbbbox.application.DebugMetricsHelper;
-import co.netguru.android.inbbbox.di.module.ApiModule;import co.netguru.android.inbbbox.di.module.ApplicationModule;
 import co.netguru.android.inbbbox.di.module.ApiModule;
+import co.netguru.android.inbbbox.di.module.ApplicationModule;
 import co.netguru.android.inbbbox.di.module.ConfigurationModule;
 import co.netguru.android.inbbbox.di.module.DataSourceModule;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.di.module.MainActivityModule;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
-import co.netguru.android.inbbbox.di.module.StorageModule;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.feature.notification.NotificationAlarmReceiver;
 import dagger.Component;
@@ -21,7 +20,6 @@ import dagger.Component;
 @Component(modules = {ApplicationModule.class,
         ConfigurationModule.class,
         ApiModule.class,
-        StorageModule.class,
         DataSourceModule.class})
 public interface ApplicationComponent extends BaseComponent {
 

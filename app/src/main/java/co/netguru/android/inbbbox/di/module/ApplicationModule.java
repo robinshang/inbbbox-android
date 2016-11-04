@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 
 import javax.inject.Singleton;
@@ -14,6 +15,8 @@ import dagger.Provides;
 @Singleton
 @Module
 public class ApplicationModule {
+
+    private static final String SHARED_PREFERENCES_NAME = "co.netguru.sidebench.securityapp.shared.preferences";
 
     private Application application;
 
@@ -36,6 +39,11 @@ public class ApplicationModule {
     @Provides
     Resources provideResources() {
         return application.getResources();
+    }
+
+    @Provides
+    public SharedPreferences provideSharedPreferences(Context context) {
+        return context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
     @Provides

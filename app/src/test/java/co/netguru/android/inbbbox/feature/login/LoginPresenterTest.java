@@ -57,9 +57,9 @@ public class LoginPresenterTest  {
     @Before
     public void setup() {
         presenter.attachView(viewMock);
-        when(tokenProviderMock.getToken(code))
+        when(tokenProviderMock.requestNewToken(code))
                 .thenReturn(Observable.just(true));
-        when(userProviderMock.getUser()).
+        when(userProviderMock.requestUser()).
                 thenReturn(Observable.just(true));
     }
 
@@ -87,7 +87,7 @@ public class LoginPresenterTest  {
 
         presenter.handleOauthLoginResponse(uri);
 
-        verify(tokenProviderMock, times(1)).getToken(code);
+        verify(tokenProviderMock, times(1)).requestNewToken(code);
     }
 
     @Test
@@ -96,7 +96,7 @@ public class LoginPresenterTest  {
 
         presenter.handleOauthLoginResponse(uri);
 
-        verify(userProviderMock, times(1)).getUser();
+        verify(userProviderMock, times(1)).requestUser();
     }
 
     @Test
@@ -158,7 +158,7 @@ public class LoginPresenterTest  {
         String throwableText = "test";
         Throwable testThrowable = new Throwable(throwableText);
         when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(code);
-        when(tokenProviderMock.getToken(code)).thenReturn(Observable.error(testThrowable));
+        when(tokenProviderMock.requestNewToken(code)).thenReturn(Observable.error(testThrowable));
 
         presenter.handleOauthLoginResponse(uri);
 
@@ -170,7 +170,7 @@ public class LoginPresenterTest  {
         String throwableText = "test";
         Throwable testThrowable = new Throwable(throwableText);
         when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(code);
-        when(tokenProviderMock.getToken(code)).thenReturn(Observable.error(testThrowable));
+        when(tokenProviderMock.requestNewToken(code)).thenReturn(Observable.error(testThrowable));
         when(errorMessageParser.getError(testThrowable)).thenReturn(throwableText);
 
         presenter.handleOauthLoginResponse(uri);
@@ -183,7 +183,7 @@ public class LoginPresenterTest  {
         String throwableText = "test";
         Throwable testThrowable = new Throwable(throwableText);
         when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(code);
-        when(userProviderMock.getUser()).thenReturn(Observable.error(testThrowable));
+        when(userProviderMock.requestUser()).thenReturn(Observable.error(testThrowable));
 
         presenter.handleOauthLoginResponse(uri);
 
@@ -195,7 +195,7 @@ public class LoginPresenterTest  {
         String throwableText = "test";
         Throwable testThrowable = new Throwable(throwableText);
         when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(code);
-        when(userProviderMock.getUser()).thenReturn(Observable.error(testThrowable));
+        when(userProviderMock.requestUser()).thenReturn(Observable.error(testThrowable));
         when(errorMessageParser.getError(testThrowable)).thenReturn(throwableText);
 
         presenter.handleOauthLoginResponse(uri);

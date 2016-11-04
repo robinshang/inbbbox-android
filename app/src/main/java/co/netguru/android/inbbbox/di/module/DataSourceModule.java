@@ -1,15 +1,14 @@
 package co.netguru.android.inbbbox.di.module;
 
+import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
+
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.data.models.Settings;
-import co.netguru.android.inbbbox.data.models.Token;
-import co.netguru.android.inbbbox.data.models.User;
-import co.netguru.android.inbbbox.db.datasource.DataSource;
-import co.netguru.android.inbbbox.db.Storage;
-import co.netguru.android.inbbbox.db.datasource.SettingsDataSourceImpl;
-import co.netguru.android.inbbbox.db.datasource.TokenDataSourceImpl;
-import co.netguru.android.inbbbox.db.datasource.UserDataSourceImpl;
+import co.netguru.android.inbbbox.data.local.SettingsPrefsController;
+import co.netguru.android.inbbbox.data.local.TokenPrefsController;
+import co.netguru.android.inbbbox.data.local.UserPrefsController;
 import dagger.Module;
 import dagger.Provides;
 
@@ -18,18 +17,18 @@ import dagger.Provides;
 public class DataSourceModule {
 
     @Provides
-    DataSource<Token> provideTokenDataSource(Storage storage) {
-        return new TokenDataSourceImpl(storage);
+    SettingsPrefsController provideSettingsPrefsController(SharedPreferences sharedPreferences) {
+        return new SettingsPrefsController(sharedPreferences);
     }
 
     @Provides
-    DataSource<User> provideUserDataSource(Storage storage) {
-        return new UserDataSourceImpl(storage);
+    TokenPrefsController provideTokenPrefsController(SharedPreferences sharedPreferences) {
+        return new TokenPrefsController(sharedPreferences);
     }
 
     @Provides
-    @Singleton
-    DataSource<Settings> provideSettingsDataSource(Storage storage) {
-        return new SettingsDataSourceImpl(storage);
+    UserPrefsController provideUserPrefsController(SharedPreferences sharedPreferences, Gson gson) {
+        return new UserPrefsController(sharedPreferences, gson);
     }
+
 }

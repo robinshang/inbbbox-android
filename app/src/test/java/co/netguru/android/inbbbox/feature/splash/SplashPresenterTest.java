@@ -42,7 +42,7 @@ public class SplashPresenterTest {
     @Test
     public void whenViewAttached_thenCheckTokenValidity() {
         when(tokenProviderMock.isTokenValid()).thenReturn(Observable.just(true));
-        when(userProviderMock.getUser()).thenReturn(Observable.just(true));
+        when(userProviderMock.requestUser()).thenReturn(Observable.just(true));
 
         splashPresenter.attachView(splashViewMock);
 
@@ -52,17 +52,17 @@ public class SplashPresenterTest {
     @Test
     public void whenViewAttachedAndTokenIsInvalid_thenGetUserInstance() {
         when(tokenProviderMock.isTokenValid()).thenReturn(Observable.just(true));
-        when(userProviderMock.getUser()).thenReturn(Observable.just(true));
+        when(userProviderMock.requestUser()).thenReturn(Observable.just(true));
 
         splashPresenter.attachView(splashViewMock);
 
-        verify(userProviderMock, times(1)).getUser();
+        verify(userProviderMock, times(1)).requestUser();
     }
 
     @Test
     public void whenViewAttachedAndUserInstanceIsSaved_thenShowMainView() {
         when(tokenProviderMock.isTokenValid()).thenReturn(Observable.just(true));
-        when(userProviderMock.getUser()).thenReturn(Observable.just(true));
+        when(userProviderMock.requestUser()).thenReturn(Observable.just(true));
 
         splashPresenter.attachView(splashViewMock);
 
@@ -82,7 +82,7 @@ public class SplashPresenterTest {
     public void whenViewAttachedAndUserInstanceErrorOccurred_thenShowLoginScreen() {
         Throwable exampleThrowable = new Throwable();
         when(tokenProviderMock.isTokenValid()).thenReturn(Observable.just(true));
-        when(userProviderMock.getUser()).thenReturn(Observable.error(exampleThrowable));
+        when(userProviderMock.requestUser()).thenReturn(Observable.error(exampleThrowable));
 
         splashPresenter.attachView(splashViewMock);
 
@@ -92,7 +92,7 @@ public class SplashPresenterTest {
     @Test
     public void whenViewAttachedAndUserInstanceNotSaved_thenShowLoginScreen() {
         when(tokenProviderMock.isTokenValid()).thenReturn(Observable.just(true));
-        when(userProviderMock.getUser()).thenReturn(Observable.just(false));
+        when(userProviderMock.requestUser()).thenReturn(Observable.just(false));
 
         splashPresenter.attachView(splashViewMock);
 
@@ -104,7 +104,7 @@ public class SplashPresenterTest {
         String test = "test";
         Throwable exampleThrowable = new Throwable(test);
         when(tokenProviderMock.isTokenValid()).thenReturn(Observable.just(true));
-        when(userProviderMock.getUser()).thenReturn(Observable.error(exampleThrowable));
+        when(userProviderMock.requestUser()).thenReturn(Observable.error(exampleThrowable));
         when(errorMessageParserMock.getError(exampleThrowable)).thenReturn(test);
 
         splashPresenter.attachView(splashViewMock);

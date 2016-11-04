@@ -3,38 +3,38 @@ package co.netguru.android.inbbbox.feature.authentication;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.BuildConfig;
-import co.netguru.android.inbbbox.api.AuthorizeApi;
-import co.netguru.android.inbbbox.data.models.Token;
-import co.netguru.android.inbbbox.db.datasource.DataSource;
+import co.netguru.android.inbbbox.data.api.AuthorizeApi;
+import co.netguru.android.inbbbox.data.local.TokenPrefsController;
+import co.netguru.android.inbbbox.models.Token;
+import co.netguru.android.inbbbox.utils.StringUtils;
 import rx.Observable;
 
 public class TokenProvider {
 
     private final AuthorizeApi api;
-    private final DataSource<Token> dataSource;
+    private final TokenPrefsController tokenPrefsController;
 
     @Inject
-    TokenProvider(AuthorizeApi api, DataSource<Token> dataSource) {
+    TokenProvider(AuthorizeApi api, TokenPrefsController tokenPrefsController) {
         this.api = api;
-        this.dataSource = dataSource;
+        this.tokenPrefsController = tokenPrefsController;
     }
 
-    public Observable<Boolean> getToken(String code) {
+    /**
+     * Request new token from api.
+     * Side effect: token is saved to prefs
+     */
+    public Observable<Token> requestNewToken(String code) {
         return api.getToken(BuildConfig.DRIBBBLE_CLIENT_KEY,
                 BuildConfig.DRIBBBLE_CLIENT_SECRET, code)
-                .flatMap(this::saveTokenToStorage);
+                .doOnNext(tokenPrefsController::saveToken);
     }
 
-    private Observable<Boolean> saveTokenToStorage(Token tokenResponse) {
-        return dataSource.save(tokenResponse);
-    }
 
     public Observable<Boolean> isTokenValid() {
-        return dataSource.get()
-                .flatMap(this::checkToken);
-    }
-
-    private Observable<Boolean> checkToken(Token token) {
-        return Observable.just(token != null && token.getAccessToken() != null);
+        return Observable.fromCallable(() -> {
+            Token token = tokenPrefsController.getToken();
+            return token != null && StringUtils.isBlank(token.getAccessToken());
+        });
     }
 }

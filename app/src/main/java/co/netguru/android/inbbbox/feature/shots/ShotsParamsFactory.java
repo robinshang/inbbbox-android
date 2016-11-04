@@ -2,8 +2,8 @@ package co.netguru.android.inbbbox.feature.shots;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.data.models.FilteredShotsParams;
-import co.netguru.android.inbbbox.data.models.StreamSourceSettings;
+import co.netguru.android.inbbbox.models.FilteredShotsParams;
+import co.netguru.android.inbbbox.models.StreamSourceSettings;
 import co.netguru.android.inbbbox.utils.Constants;
 import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
 

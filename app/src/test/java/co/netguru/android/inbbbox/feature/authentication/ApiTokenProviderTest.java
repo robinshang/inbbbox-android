@@ -11,9 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import co.netguru.android.inbbbox.api.AuthorizeApi;
-import co.netguru.android.inbbbox.data.models.Token;
-import co.netguru.android.inbbbox.db.datasource.DataSource;
+import co.netguru.android.inbbbox.data.api.AuthorizeApi;
+import co.netguru.android.inbbbox.models.Token;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.observers.TestSubscriber;
@@ -44,7 +43,8 @@ public class ApiTokenProviderTest {
 
     private String code = "testCode";
     private String resourcesString = "clientId";
-    private Token expectedToken = new Token();
+    //// TODO: 04.11.2016 improve
+    private Token expectedToken = new Token("","","");
 
     @Before
     public void setUp() {
@@ -59,7 +59,7 @@ public class ApiTokenProviderTest {
         when(dataSourceMock.save(expectedToken))
                 .thenReturn(Observable.just(true));
 
-        apiTokenProvider.getToken(code).subscribe(testSubscriber);
+        apiTokenProvider.requestNewToken(code).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         verify(dataSourceMock).save(expectedToken);
@@ -73,7 +73,7 @@ public class ApiTokenProviderTest {
         when(dataSourceMock.save(expectedToken))
                 .thenReturn(Observable.just(true));
 
-        apiTokenProvider.getToken(code).subscribe(testSubscriber);
+        apiTokenProvider.requestNewToken(code).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         testSubscriber.assertValue(true);
@@ -88,7 +88,7 @@ public class ApiTokenProviderTest {
         when(dataSourceMock.save(expectedToken))
                 .thenReturn(Observable.just(false));
 
-        apiTokenProvider.getToken(code).subscribe(testSubscriber);
+        apiTokenProvider.requestNewToken(code).subscribe(testSubscriber);
 
         testSubscriber.assertError(expectedThrowable);
         verify(dataSourceMock, never()).save(expectedToken);

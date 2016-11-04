@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.ui.Shot;
+import co.netguru.android.inbbbox.models.ui.Shot;
 import co.netguru.android.inbbbox.di.component.ShotsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;

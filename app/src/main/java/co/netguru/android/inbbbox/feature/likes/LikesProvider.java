@@ -3,8 +3,8 @@ package co.netguru.android.inbbbox.feature.likes;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
-import co.netguru.android.inbbbox.api.LikesApi;
-import co.netguru.android.inbbbox.data.ui.LikedShot;
+import co.netguru.android.inbbbox.data.api.LikesApi;
+import co.netguru.android.inbbbox.models.ui.LikedShot;
 import rx.Observable;
 
 @FragmentScope

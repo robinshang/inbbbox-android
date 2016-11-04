@@ -12,7 +12,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
-import co.netguru.android.inbbbox.data.ui.LikedShot;
+import co.netguru.android.inbbbox.models.ui.LikedShot;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;

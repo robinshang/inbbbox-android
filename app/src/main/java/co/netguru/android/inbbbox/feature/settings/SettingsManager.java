@@ -1,81 +1,76 @@
 package co.netguru.android.inbbbox.feature.settings;
 
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.data.models.CustomizationSettings;
-import co.netguru.android.inbbbox.data.models.NotificationSettings;
-import co.netguru.android.inbbbox.data.models.Settings;
-import co.netguru.android.inbbbox.data.models.StreamSourceSettings;
-import co.netguru.android.inbbbox.db.datasource.DataSource;
+import co.netguru.android.inbbbox.data.local.SettingsPrefsController;
+import co.netguru.android.inbbbox.models.CustomizationSettings;
+import co.netguru.android.inbbbox.models.NotificationSettings;
+import co.netguru.android.inbbbox.models.Settings;
+import co.netguru.android.inbbbox.models.StreamSourceSettings;
+import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 @Singleton
 public class SettingsManager {
 
-    @VisibleForTesting
-    final Settings defaultSettings;
-
-    private final DataSource<Settings> settingsDataSource;
+    private final SettingsPrefsController settingsPrefsController;
 
     @Inject
-    public SettingsManager(DataSource<Settings> settingsDataSource) {
-        this.settingsDataSource = settingsDataSource;
-        defaultSettings = new Settings();
+    public SettingsManager(SettingsPrefsController settingsPrefsController) {
+        this.settingsPrefsController = settingsPrefsController;
     }
 
-    public Observable<Settings> getSettings() {
-        return settingsDataSource.get()
-                .onErrorReturn(throwable -> defaultSettings);
+    public Single<Settings> getSettings() {
+        return Single.zip(
+                settingsPrefsController.getStreamSourceSettings(),
+                settingsPrefsController.getNotificationsSettings(),
+                settingsPrefsController.detailsShowed(),
+                (streamSourceSettings, notificationSettings, detailsShowed) ->
+                        new Settings(streamSourceSettings, notificationSettings, new CustomizationSettings(detailsShowed))
+        );
     }
 
-    public Observable<NotificationSettings> getNotificationSettings() {
-        return getSettings()
-                .map(Settings::getNotificationSettings);
+    public Single<NotificationSettings> getNotificationSettings() {
+        return settingsPrefsController.getNotificationsSettings();
     }
 
-    public Observable<Boolean> changeNotificationStatus(boolean isEnabled) {
-        return getSettings()
-                .map(settings -> new Settings(settings.getStreamSourceSettings(),
-                        new NotificationSettings(isEnabled,
-                                settings.getNotificationSettings().getHour(),
-                                settings.getNotificationSettings().getMinute()),
-                        settings.getCustomizationSettings()))
-                .flatMap(settingsDataSource::save);
+    public Completable changeNotificationStatus(boolean isEnabled) {
+        return settingsPrefsController.getNotificationsSettings()
+                .map(notificationSettings -> new NotificationSettings(isEnabled,
+                        notificationSettings.getHour(),
+                        notificationSettings.getMinute()))
+                .doOnSuccess(settingsPrefsController::saveNotificationSettings)
+                .toCompletable();
     }
 
-    public Observable<Boolean> changeNotificationTime(int hour, int minute) {
-        return getSettings()
-                .map(settings -> new Settings(settings.getStreamSourceSettings(),
-                        new NotificationSettings(settings.getNotificationSettings().isEnabled(), hour, minute),
-                        settings.getCustomizationSettings()))
-                .flatMap(settingsDataSource::save);
+    public Completable changeNotificationTime(int hour, int minute) {
+        return settingsPrefsController.getNotificationsSettings()
+                .map(notificationSettings -> new NotificationSettings(notificationSettings.isEnabled(),
+                        hour,
+                        minute))
+                .doOnSuccess(settingsPrefsController::saveNotificationSettings)
+                .toCompletable();
     }
 
-    public Observable<Boolean> changeStreamSourceSettings(@Nullable Boolean isFollowing, @Nullable Boolean isNew,
-                                                          @Nullable Boolean isPopular, @Nullable Boolean isDebuts) {
-        return getSettings()
-                .map(settings -> new Settings(
-                        getNewStreamSourceSettings(settings.getStreamSourceSettings(), isFollowing, isNew, isPopular, isDebuts),
-                        settings.getNotificationSettings(),
-                        settings.getCustomizationSettings())
-                )
-                .flatMap(settingsDataSource::save);
+    public Completable changeStreamSourceSettings(@Nullable Boolean isFollowing, @Nullable Boolean isNew,
+                                                  @Nullable Boolean isPopular, @Nullable Boolean isDebuts) {
+        return settingsPrefsController.getStreamSourceSettings()
+                .map(streamSourceSettings -> getNewStreamSourceSettings(streamSourceSettings,
+                        isFollowing, isNew, isPopular, isDebuts))
+                .doOnSuccess(settingsPrefsController::saveStreamSourceSettingsToPrefs)
+                .toCompletable();
     }
 
-    public Observable<Boolean> changeShotsDetailsStatus(boolean isEnabled) {
-        return getSettings()
-                .map(settings -> new Settings(settings.getStreamSourceSettings(),
-                        settings.getNotificationSettings(),
-                        new CustomizationSettings(isEnabled)))
-                .flatMap(settingsDataSource::save);
+    public Completable changeShotsDetailsStatus(boolean isEnabled) {
+        return settingsPrefsController.saveDetailsShowed(isEnabled);
     }
 
     private StreamSourceSettings getNewStreamSourceSettings(StreamSourceSettings settings, @Nullable Boolean isFollowing,
-                                                            @Nullable  Boolean isNew, @Nullable Boolean isPopular,
+                                                            @Nullable Boolean isNew, @Nullable Boolean isPopular,
                                                             @Nullable Boolean isDebut) {
         return new StreamSourceSettings(
                 isFollowing == null ? settings.isFollowing() : isFollowing,

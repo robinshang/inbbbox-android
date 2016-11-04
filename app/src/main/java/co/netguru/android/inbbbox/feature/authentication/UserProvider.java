@@ -2,24 +2,28 @@ package co.netguru.android.inbbbox.feature.authentication;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.api.UserApi;
-import co.netguru.android.inbbbox.data.models.User;
-import co.netguru.android.inbbbox.db.datasource.DataSource;
+import co.netguru.android.inbbbox.data.api.UserApi;
+import co.netguru.android.inbbbox.data.local.UserPrefsController;
+import co.netguru.android.inbbbox.models.User;
 import rx.Observable;
 
 public class UserProvider {
 
     private UserApi userApi;
-    private DataSource<User> dataSource;
+    private UserPrefsController userPrefsController;
 
     @Inject
-    UserProvider(UserApi userApi, DataSource<User> dataSource) {
+    UserProvider(UserApi userApi, UserPrefsController userPrefsController) {
         this.userApi = userApi;
-        this.dataSource = dataSource;
+        this.userPrefsController = userPrefsController;
     }
 
-    public Observable<Boolean> getUser() {
+    /**
+     * Request user from api
+     * Side effect user is saved to prefs
+     */
+    public Observable<User> requestUser() {
         return userApi.getAuthenticatedUser()
-                .concatMap(dataSource::save);
+                .doOnNext(userPrefsController::saveUser);
     }
 }

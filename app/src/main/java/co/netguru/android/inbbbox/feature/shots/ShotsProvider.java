@@ -5,13 +5,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.api.ShotsApi;
-import co.netguru.android.inbbbox.data.models.FilteredShotsParams;
-import co.netguru.android.inbbbox.data.models.Settings;
-import co.netguru.android.inbbbox.data.models.ShotEntity;
-import co.netguru.android.inbbbox.data.models.StreamSourceSettings;
-import co.netguru.android.inbbbox.data.ui.Shot;
+import co.netguru.android.inbbbox.data.api.ShotsApi;
 import co.netguru.android.inbbbox.feature.settings.SettingsManager;
+import co.netguru.android.inbbbox.models.FilteredShotsParams;
+import co.netguru.android.inbbbox.models.Settings;
+import co.netguru.android.inbbbox.models.ShotEntity;
+import co.netguru.android.inbbbox.models.StreamSourceSettings;
+import co.netguru.android.inbbbox.models.ui.Shot;
 import rx.Observable;
 
 import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
@@ -35,7 +35,8 @@ public class ShotsProvider {
     }
 
     public Observable<List<Shot>> getShots() {
-        return getSettings().flatMap(this::getShotsObservable);
+        return settingsManager.getSettings()
+                .flatMapObservable(this::getShotsObservable);
     }
 
     private Observable<List<Shot>> getShotsObservable(Settings settings) {
@@ -78,10 +79,6 @@ public class ShotsProvider {
 
     private Observable<List<ShotEntity>> getFollowingShotsData() {
         return shotsApi.getFollowingShots();
-    }
-
-    private Observable<Settings> getSettings() {
-        return settingsManager.getSettings();
     }
 
     private int getRequestCount(StreamSourceSettings sourceSettings) {

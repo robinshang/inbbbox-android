@@ -51,21 +51,10 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     }
 
     private void getCurrentUserInstance() {
-        userProvider.getUser()
+        userProvider.requestUser()
                 .compose(androidIO())
-                .subscribe(
-                        this::handleUserDownloadComplete,
+                .subscribe(user -> getView().showMainScreen(),
                         this::handleError);
-    }
-
-    private void handleUserDownloadComplete(Boolean isValid) {
-        if (isValid) {
-            Timber.d("User is valid");
-            getView().showMainScreen();
-        } else {
-            Timber.d("User saving failed");
-            getView().showLoginScreen();
-        }
     }
 
     private void handleError(Throwable throwable) {

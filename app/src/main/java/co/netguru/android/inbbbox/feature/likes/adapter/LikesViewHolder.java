@@ -9,7 +9,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.ui.LikedShot;
+import co.netguru.android.inbbbox.models.ui.LikedShot;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
