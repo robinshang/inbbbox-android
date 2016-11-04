@@ -49,8 +49,7 @@ public class SettingsManager {
                 .map(notificationSettings -> new NotificationSettings(isEnabled,
                         notificationSettings.getHour(),
                         notificationSettings.getMinute()))
-                .doOnSuccess(settingsPrefsController::saveNotificationSettings)
-                .toCompletable();
+                .flatMapCompletable(settingsPrefsController::saveNotificationSettings);
     }
 
     public Completable changeNotificationTime(int hour, int minute) {
@@ -58,8 +57,7 @@ public class SettingsManager {
                 .map(notificationSettings -> new NotificationSettings(notificationSettings.isEnabled(),
                         hour,
                         minute))
-                .doOnSuccess(settingsPrefsController::saveNotificationSettings)
-                .toCompletable();
+                .flatMapCompletable(settingsPrefsController::saveNotificationSettings);
     }
 
     public Completable changeStreamSourceSettings(@Nullable Boolean isFollowing, @Nullable Boolean isNew,
@@ -67,8 +65,7 @@ public class SettingsManager {
         return settingsPrefsController.getStreamSourceSettings()
                 .map(streamSourceSettings -> getNewStreamSourceSettings(streamSourceSettings,
                         isFollowing, isNew, isPopular, isDebuts))
-                .doOnSuccess(settingsPrefsController::saveStreamSourceSettingsToPrefs)
-                .toCompletable();
+                .flatMapCompletable(settingsPrefsController::saveStreamSourceSettingsToPrefs);
     }
 
     public Completable changeShotsDetailsStatus(boolean isEnabled) {

@@ -1,6 +1,6 @@
 package co.netguru.android.inbbbox.models;
 
-import android.os.Build;
+import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
@@ -11,90 +11,119 @@ import com.google.gson.annotations.SerializedName;
 public abstract class User {
 
     @SerializedName("id")
+    @Nullable
     public abstract Integer id();
 
     @SerializedName("name")
+    @Nullable
     public abstract String name();
 
     @SerializedName("username")
+    @Nullable
     public abstract String username();
 
     @SerializedName("html_url")
+    @Nullable
     public abstract String htmlUrl();
 
     @SerializedName("avatar_url")
+    @Nullable
     public abstract String avatarUrl();
 
     @SerializedName("bio")
+    @Nullable
     public abstract String bio();
 
     @SerializedName("location")
+    @Nullable
     public abstract String location();
 
     @SerializedName("links")
+    @Nullable
     public abstract Links links();
 
     @SerializedName("buckets_count")
+    @Nullable
     public abstract Integer bucketsCount();
 
     @SerializedName("comments_received_count")
+    @Nullable
     public abstract Integer commentsReceivedCount();
 
     @SerializedName("followers_count")
+    @Nullable
     public abstract Integer followersCount();
 
     @SerializedName("followings_count")
+    @Nullable
     public abstract Integer followingsCount();
 
     @SerializedName("likes_count")
+    @Nullable
     public abstract Integer likesCount();
 
     @SerializedName("likes_received_count")
+    @Nullable
     public abstract Integer likesReceivedCount();
 
     @SerializedName("projects_count")
+    @Nullable
     public abstract Integer projectsCount();
 
     @SerializedName("rebounds_received_count")
+    @Nullable
     public abstract Integer reboundsReceivedCount();
 
     @SerializedName("shots_count")
+    @Nullable
     public abstract Integer shotsCount();
 
     @SerializedName("teams_count")
+    @Nullable
     public abstract Integer teamsCount();
 
     @SerializedName("can_upload_shot")
+    @Nullable
     public abstract Boolean canUploadShot();
 
     @SerializedName("type")
+    @Nullable
     public abstract String type();
 
     @SerializedName("pro")
+    @Nullable
     public abstract Boolean pro();
 
     @SerializedName("buckets_url")
+    @Nullable
     public abstract String bucketsUrl();
 
     @SerializedName("followers_url")
+    @Nullable
     public abstract String followersUrl();
 
     @SerializedName("following_url")
+    @Nullable
     public abstract String followingUrl();
 
     @SerializedName("likes_url")
+    @Nullable
     public abstract String likesUrl();
 
     @SerializedName("shots_url")
+    @Nullable
     public abstract String shotsUrl();
 
     @SerializedName("teams_url")
+    @Nullable
     public abstract String teamsUrl();
 
     @SerializedName("created_at")
+    @Nullable
     public abstract String createdAt();
 
     @SerializedName("updated_at")
+    @Nullable
     public abstract String updatedAt();
 
     public static Builder builder() {

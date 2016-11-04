@@ -13,9 +13,11 @@ import co.netguru.android.inbbbox.data.local.UserPrefsController;
 import co.netguru.android.inbbbox.feature.Statics;
 import co.netguru.android.inbbbox.models.User;
 import co.netguru.android.testcommons.RxSyncTestRule;
+import rx.Completable;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,6 +40,7 @@ public class UserProviderTest {
     @Test
     public void whenSubscribeToGetUser_thenSaveUserInStorage() {
         when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.just(Statics.USER));
+        when(userPrefsController.saveUser(any())).thenReturn(Completable.complete());
         TestSubscriber<User> testSubscriber = new TestSubscriber<>();
 
         userProvider.requestUser().subscribe(testSubscriber);

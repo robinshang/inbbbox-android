@@ -24,6 +24,6 @@ public class UserProvider {
      */
     public Observable<User> requestUser() {
         return userApi.getAuthenticatedUser()
-                .doOnNext(userPrefsController::saveUser);
+                .flatMap(user -> userPrefsController.saveUser(user).andThen(Observable.just(user)));
     }
 }
