@@ -37,8 +37,8 @@ public class LikesViewHolder extends BaseViewHolder<LikedShot> {
                 .bitmapTransform(new RoundedCornersTransformation(context,
                         convertToPx(RADIUS_DP, context),
                         RADIUS_MARGIN))
-                .placeholder(R.drawable.ic_likes)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.shot_placeholder)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(imageView);
     }
 }

@@ -1,9 +1,6 @@
 package co.netguru.android.inbbbox.feature.likes;
 
 import android.graphics.drawable.Drawable;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ImageSpan;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
@@ -13,6 +10,9 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.data.ui.LikedShot;
+import co.netguru.android.inbbbox.utils.TextFormatter;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
@@ -22,31 +22,35 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
         implements LikesViewContract.Presenter {
 
     private final LikedShotsProvider likedShotsProvider;
+    private final TextFormatter textFormatter;
+    private final CompositeSubscription subscriptions;
 
     @Inject
-    LikesPresenter(LikedShotsProvider likedShotsProvider) {
+    LikesPresenter(LikedShotsProvider likedShotsProvider, TextFormatter textFormatter) {
         this.likedShotsProvider = likedShotsProvider;
+        this.textFormatter = textFormatter;
+        subscriptions = new CompositeSubscription();
+    }
+
+    @Override
+    public void detachView(boolean retainInstance) {
+        super.detachView(retainInstance);
+        subscriptions.clear();
     }
 
     @Override
     public void getLikesFromServer() {
-        likedShotsProvider.getLikedShots()
+        final Subscription subscription = likedShotsProvider.getLikedShots()
                 .toList()
                 .compose(androidIO())
                 .subscribe(this::onGetLikeShotListNext,
                         throwable -> Timber.e(throwable, "Error while getting likes from server"));
+        subscriptions.add(subscription);
     }
 
     @Override
     public void addIconToText(String text, Drawable icon) {
-        final int index = text.indexOf(' ');
-        final ImageSpan imageSpan = new ImageSpan(icon, ImageSpan.ALIGN_BASELINE);
-        final SpannableStringBuilder builder = new SpannableStringBuilder();
-        builder.append(text.substring(0 , index + 1))
-                .append(" ")
-                .setSpan(imageSpan, builder.length() - 1, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.append(text.substring(index));
-        getView().setEmptyViewText(builder);
+        getView().setEmptyViewText(textFormatter.addDrawableToTextAtFirstSpace(text, icon));
     }
 
     private void onGetLikeShotListNext(List<LikedShot> likedShotList) {

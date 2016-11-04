@@ -1,18 +1,25 @@
 package co.netguru.android.inbbbox.feature.followers;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindDrawable;
+import butterknife.BindString;
+import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.application.App;
 import co.netguru.android.inbbbox.data.ui.Follower;
@@ -23,6 +30,17 @@ import co.netguru.android.inbbbox.feature.followers.adapter.FollowersAdapter;
 
 public class FollowersFragment extends BaseFragmentWithMenu<FollowersContract.View, FollowersContract.Presenter>
         implements FollowersContract.View {
+
+    @BindDrawable(R.drawable.ic_like_emptystate)
+    Drawable emptyTextDrawable;
+
+    @BindString(R.string.fragment_like_empty_text)
+    String emptyString;
+
+    @BindView(R.id.fragment_likes_empty_view)
+    ScrollView emptyView;
+    @BindView(R.id.fragment_like_empty_text)
+    TextView emptyViewText;
 
     @Inject
     FollowersAdapter adapter;
@@ -52,6 +70,7 @@ public class FollowersFragment extends BaseFragmentWithMenu<FollowersContract.Vi
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getPresenter().getFollowedUsersFromServer();
+        getPresenter().addIconToText(emptyString, emptyTextDrawable);
     }
 
     @Override
@@ -68,5 +87,10 @@ public class FollowersFragment extends BaseFragmentWithMenu<FollowersContract.Vi
     @Override
     public void showFollowedUsers(List<Follower> followerList) {
         adapter.setFollowersList(followerList);
+    }
+
+    @Override
+    public void setEmptyViewText(SpannableStringBuilder spannableStringBuilder) {
+        emptyViewText.setText(spannableStringBuilder, TextView.BufferType.SPANNABLE);
     }
 }

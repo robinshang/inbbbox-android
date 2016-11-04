@@ -32,6 +32,7 @@
     <string name="drawer_logout">Log out</string>
 
     <string name="fragment_like_empty_text">Like some shots first!</string>
+    <string name="fragment_followers_empty_text">Follow someone first!</string>
 
     <string name="notification_text">Check Inbbbox for daily dose of design shots</string>
 
