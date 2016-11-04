@@ -22,7 +22,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private final ErrorMessageParser errorMessageParser;
     private final LikeResponseMapper likeResponseMapper;
     private final CompositeSubscription subscriptions;
-    private List<Shot> items;
 
     @Inject
     ShotsPresenter(ShotsProvider shotsProvider, ErrorMessageParser errorMessageParser,
@@ -32,12 +31,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         this.errorMessageParser = errorMessageParser;
         this.likeResponseMapper = likeResponseMapper;
         subscriptions = new CompositeSubscription();
-    }
-
-    @Override
-    public void attachView(ShotsContract.View view) {
-        super.attachView(view);
-        getShotsData();
     }
 
     @Override
@@ -66,12 +59,13 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     private void showRetrievedItems(List<Shot> shotsList) {
         Timber.d("Shots received!");
-        this.items = shotsList;
         getView().showItems(shotsList);
+        getView().hideLoadingIndicator();
     }
 
     private void handleException(Throwable exception) {
         Timber.e(exception, "Shots item receiving exception ");
+        getView().hideLoadingIndicator();
         getView().showError(errorMessageParser.getError(exception));
     }
 
@@ -95,5 +89,10 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                 .thumbnailUrl(shot.thumbnailUrl())
                 .isLiked(true)
                 .build();
+    }
+
+    @Override
+    public void loadData() {
+        getShotsData();
     }
 }

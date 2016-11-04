@@ -12,7 +12,7 @@ import javax.inject.Singleton;
 @Singleton
 public final class LocalTimeFormatter {
 
-    private static final String DATE_PATTER = "YYYY-MM-DD";
+    private static final String DATE_PATTER = "yyyy-MM-dd";
     private static final String TIME_PATTER = "h:mm a";
     private final DateTimeFormatter dateTimeFormatter;
 
@@ -27,7 +27,7 @@ public final class LocalTimeFormatter {
 
     public String getCurrentDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTER).withZone(ZoneId.systemDefault());
-        return LocalTime.now().format(formatter);
+        return LocalDate.now().format(formatter);
     }
 
     public long getSecondsFromTime(int hour, int minute) {
