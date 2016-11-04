@@ -21,7 +21,6 @@ import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -61,16 +60,16 @@ public class ShotsPresenterTest {
 
     @Test
     public void whenDataLoadedCalled_thenRequestDataFromProvider() {
-        when(shotsProviderMock.getShots(anyObject())).thenReturn(Observable.just(new ArrayList<>()));
+        when(shotsProviderMock.getShots()).thenReturn(Observable.just(new ArrayList<>()));
 
         presenter.loadData();
 
-        verify(shotsProviderMock, times(1)).getShots(anyObject());
+        verify(shotsProviderMock, times(1)).getShots();
     }
 
     @Test
     public void whenDataLoadedCorrectly_thenHideLoadingIndicator() {
-        when(shotsProviderMock.getShots(anyObject())).thenReturn(Observable.just(new ArrayList<>()));
+        when(shotsProviderMock.getShots()).thenReturn(Observable.just(new ArrayList<>()));
 
         presenter.loadData();
 
@@ -80,7 +79,7 @@ public class ShotsPresenterTest {
     @Test
     public void whenDataLoadedCorrectly_thenShowDownloadedItems() {
         List<Shot> expectedShots = new ArrayList<>();
-        when(shotsProviderMock.getShots(anyObject())).thenReturn(Observable.just(expectedShots));
+        when(shotsProviderMock.getShots()).thenReturn(Observable.just(expectedShots));
 
         presenter.loadData();
 
@@ -142,7 +141,7 @@ public class ShotsPresenterTest {
     public void whenDataLoadingFailed_thenHideLoadingIndicator() {
         String message = "test";
         Exception exampleException = new Exception(message);
-        when(shotsProviderMock.getShots(anyObject())).thenReturn(Observable.error(exampleException));
+        when(shotsProviderMock.getShots()).thenReturn(Observable.error(exampleException));
 
         presenter.loadData();
 
@@ -153,7 +152,7 @@ public class ShotsPresenterTest {
     public void whenDataLoadingFailed_thenShowErrorMessage() {
         String message = "test";
         Throwable exampleException = new Exception(message);
-        when(shotsProviderMock.getShots(anyObject())).thenReturn(Observable.error(exampleException));
+        when(shotsProviderMock.getShots()).thenReturn(Observable.error(exampleException));
         when(errorMessageParserMock.getError(exampleException)).thenCallRealMethod();
 
         presenter.loadData();
