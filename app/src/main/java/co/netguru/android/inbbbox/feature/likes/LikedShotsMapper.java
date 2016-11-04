@@ -7,7 +7,7 @@ import co.netguru.android.inbbbox.models.LikedShotEntity;
 import co.netguru.android.inbbbox.models.ui.LikedShot;
 
 @FragmentScope
-final class LikedShotsMapper {
+public class LikedShotsMapper {
 
     @Inject
     LikedShotsMapper() {

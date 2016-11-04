@@ -13,6 +13,7 @@ public class ShotsMapper {
                 .hdpiImageUrl(entity.getImage().hiDpiUrl())
                 .normalImageUrl(entity.getImage().normalUrl())
                 .thumbnailUrl(entity.getImage().teaserUrl())
+                .isLiked(false)
                 .build();
     }
 }

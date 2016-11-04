@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.shots.recycler;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -11,52 +12,110 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.models.ui.Shot;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
+import co.netguru.android.inbbbox.utils.ThumbnailHelper;
+import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 import co.netguru.android.inbbbox.view.swipingpanel.ItemSwipeListener;
 import co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout;
 
-public class ShotsViewHolder extends BaseViewHolder<Shot> {
+class ShotsViewHolder extends BaseViewHolder<Shot>
+        implements ItemSwipeListener {
 
     @BindView(R.id.long_swipe_layout)
     LongSwipeLayout longSwipeLayout;
 
     @BindView(R.id.iv_shot_image)
-    ImageView shotImageView;
+    RoundedCornersImageView shotImageView;
 
-    // TODO: 27.10.2016 bind with recycler action listener
-    private ItemSwipeListener swipeListener = new ItemSwipeListener() {
-        @Override
-        public void onLeftSwipe() {
-            Toast.makeText(longSwipeLayout.getContext(), "Left swipie", Toast.LENGTH_SHORT).show();
-        }
+    @BindView(R.id.iv_background)
+    RoundedCornersImageView backgroundImageView;
 
-        @Override
-        public void onLeftLongSwipe() {
-            Toast.makeText(longSwipeLayout.getContext(), "Left LONG swipie", Toast.LENGTH_SHORT).show();
-        }
+    @BindView(R.id.iv_like_action)
+    ImageView likeIconImageView;
 
-        @Override
-        public void onRightSwipe() {
-            Toast.makeText(longSwipeLayout.getContext(), "Right swipie", Toast.LENGTH_SHORT).show();
-        }
-    };
+    @BindView(R.id.iv_bucket_action)
+    ImageView bucketImageView;
 
-    ShotsViewHolder(View itemView) {
+    @BindView(R.id.iv_comment)
+    ImageView commentImageView;
+
+
+    private OnShotLeftSwipeListener onLeftSwipeListener = OnShotLeftSwipeListener.NULL;
+    private Shot shot;
+
+    ShotsViewHolder(View itemView, OnShotLeftSwipeListener onLeftSwipeListener) {
         super(itemView);
+        this.onLeftSwipeListener = onLeftSwipeListener == null
+                ? OnShotLeftSwipeListener.NULL : onLeftSwipeListener;
     }
 
     @Override
     public void bind(Shot shot) {
+        this.shot = shot;
         setupImage(shot);
-        longSwipeLayout.setItemSwipeListener(swipeListener);
+        longSwipeLayout.setItemSwipeListener(this);
     }
 
     private void setupImage(Shot shot) {
-        Glide.with(itemView.getContext())
+        float radius = itemView.getResources().getDimension(R.dimen.shot_corner_radius);
+        final Context context = itemView.getContext();
+        backgroundImageView.setRadius(radius);
+        shotImageView.setRadius(radius);
+        Glide.with(context)
                 .load(shot.normalImageUrl())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.shot_item_swipe_bottom_background)
+                .placeholder(R.drawable.shot_placeholder)
+                .thumbnail(ThumbnailHelper.getThumbnailRequest(context, shot.thumbnailUrl()))
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .animate(android.R.anim.fade_in)
                 .into(shotImageView);
+
+        likeIconImageView.setActivated(shot.isLiked());
     }
+
+    @Override
+    public void onLeftSwipe() {
+        onLeftSwipeListener.onLeftSwipe(getAdapterPosition());
+        // TODO: 03.11.2016 remove toasts or change to propare info after all action implemented
+        Toast.makeText(longSwipeLayout.getContext(), "Left swipie", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLeftLongSwipe() {
+        // TODO: 03.11.2016 remove toasts or change to propare info after all action implemented
+        Toast.makeText(longSwipeLayout.getContext(), "Left LONG swipie", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRightSwipe() {
+        // TODO: 03.11.2016 remove toasts or change to propare info after all action implemented
+        Toast.makeText(longSwipeLayout.getContext(), "Right swipie", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLeftSwipeActivate(boolean isActive) {
+        if (!shot.isLiked()) {
+            likeIconImageView.setActivated(isActive);
+        }
+    }
+
+    @Override
+    public void onLeftLongSwipeActivate(boolean isActive) {
+        bucketImageView.setActivated(isActive);
+    }
+
+    @Override
+    public void onRightSwipeActivate(boolean isActive) {
+        commentImageView.setActivated(isActive);
+    }
+
+    @FunctionalInterface
+    interface OnShotLeftSwipeListener {
+
+        OnShotLeftSwipeListener NULL = position -> {
+        };
+
+        void onLeftSwipe(int position);
+    }
+
 
 }
 

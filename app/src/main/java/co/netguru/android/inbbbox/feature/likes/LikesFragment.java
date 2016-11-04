@@ -149,6 +149,10 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
         emptyViewText.setText(spannableStringBuilder, TextView.BufferType.SPANNABLE);
     }
 
+    public void refreshFragmentData() {
+        getPresenter().getLikesFromServer();
+    }
+
     private void changeMenuItemIcons(boolean isGridViewClicked) {
         listViewItem.setIcon(isGridViewClicked ? icListView : icListViewActive);
         gridViewItem.setIcon(isGridViewClicked ? icGridViewActive : icGridView);

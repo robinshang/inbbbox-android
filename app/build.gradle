@@ -14,7 +14,7 @@ ext {
     secrets = [
             // define your app secrets, for example:
             // hockeyAppId: keyProperty("HOCKEY_APP_ID")
-            hockeyAppIdDev     : keyProperty("HockeyAppAppIdDev"),
+            hockeyAppId        : keyProperty("HockeyAppAppIdDev"),
             hockeyAppIdProd    : keyProperty("HockeyAppAppIdProd"),
             dribbbleClientKey  : keyProperty("DribbbleClientKey"),
             dribbleClientSecret: keyProperty("DribbbleClientSecret"),
@@ -51,7 +51,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro', 'proguard-rules-test.pro'
 
-            manifestPlaceholders = [HOCKEYAPP_APP_ID_BETA: secrets.hockeyAppIdDev]
+            manifestPlaceholders = [HOCKEYAPP_APP_ID: secrets.hockeyAppId]
+            buildConfigField 'String', 'HOCKEY_APP_ID', '"' + secrets.hockeyAppId + '"'
         }
         release {
             debuggable false
@@ -61,7 +62,8 @@ android {
             useProguard true
             proguardFiles 'proguard-rules.pro'
 
-            manifestPlaceholders = [HOCKEYAPP_APP_ID_BETA: secrets.hockeyAppIdProd]
+            manifestPlaceholders = [HOCKEYAPP_APP_ID: secrets.hockeyAppIdProd]
+            buildConfigField 'String', 'HOCKEY_APP_ID', '"' + secrets.hockeyAppIdProd + '"'
         }
     }
 
@@ -275,7 +277,6 @@ dependencies {
 
     //Glide
     compile libs.glide
-    compile libs.glideTransformations
 
     //Swipe layput
     compile libs.swipeLayout

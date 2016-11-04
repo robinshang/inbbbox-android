@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <solid android:color="@color/accent" />
+    <size
+        android:width="@dimen/shot_image_width"
+        android:height="@dimen/shot_image_height"/>
 
-    <corners android:radius="@dimen/shot_corner_radius" />
-
+    <solid android:color="@color/accent"/>
 </shape>

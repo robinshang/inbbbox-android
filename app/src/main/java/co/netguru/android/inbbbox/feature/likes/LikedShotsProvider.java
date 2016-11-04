@@ -8,13 +8,13 @@ import co.netguru.android.inbbbox.models.ui.LikedShot;
 import rx.Observable;
 
 @FragmentScope
-public final class LikesProvider {
+public class LikedShotsProvider {
 
     private final LikesApi likesApi;
     private final LikedShotsMapper likedShotsMapper;
 
     @Inject
-    LikesProvider(LikesApi likesApi, LikedShotsMapper likedShotsMapper) {
+    LikedShotsProvider(LikesApi likesApi, LikedShotsMapper likedShotsMapper) {
         this.likesApi = likesApi;
         this.likedShotsMapper = likedShotsMapper;
     }
