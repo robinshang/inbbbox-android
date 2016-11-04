@@ -3,33 +3,35 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView
-            android:id="@+id/shots_recycler_view"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent">
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="end|bottom"-->
-    <!--android:layout_marginBottom="@dimen/activity_main_fab_margin_bottom"-->
-    <!--android:layout_marginEnd="@dimen/activity_horizontal_margin"-->
-    <!--android:scaleType="center"-->
-    <!--android:src="@drawable/ic_fab_open"-->
-    <!--app:backgroundTint="@color/white"-->
-    <!--app:fabSize="normal"/>-->
+            <co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView
+                android:id="@+id/shots_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <View
+            android:id="@+id/container_fog_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:alpha="0.1"
+            android:clickable="false"
+            android:background="@color/whiteFog"/>
+    </FrameLayout>
 
     <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/menu"
+        android:id="@+id/fab_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
@@ -49,9 +51,9 @@
         fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
         fab:menu_labels_margin="0dp"
         fab:menu_labels_maxLines="-1"
+        fab:menu_labels_paddingBottom="@dimen/fab_menu_label_bottom_top_padding"
         fab:menu_labels_paddingLeft="@dimen/fab_menu_label_side_padding"
         fab:menu_labels_paddingRight="@dimen/fab_menu_label_side_padding"
-        fab:menu_labels_paddingBottom="@dimen/fab_menu_label_bottom_top_padding"
         fab:menu_labels_paddingTop="@dimen/fab_menu_label_bottom_top_padding"
         fab:menu_labels_position="left"
         fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"

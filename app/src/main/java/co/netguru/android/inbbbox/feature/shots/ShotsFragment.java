@@ -11,6 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.List;
 
@@ -24,6 +27,7 @@ import co.netguru.android.inbbbox.di.component.ShotsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
+import co.netguru.android.inbbbox.utils.Constants;
 
 public class ShotsFragment
         extends BaseMvpFragment<ShotsContract.View, ShotsContract.Presenter>
@@ -34,6 +38,12 @@ public class ShotsFragment
 
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.fab_menu)
+    FloatingActionMenu menuFAB;
+
+    @BindView(R.id.container_fog_view)
+    View fogContainerView;
 
     @Inject
     ShotsAdapter adapter;
@@ -85,7 +95,38 @@ public class ShotsFragment
         super.onViewCreated(view, savedInstanceState);
         initRecycler();
         initRefreshLayout();
+        initFabMenu();
         getPresenter().loadData();
+    }
+
+    private void initFabMenu() {
+        menuFAB.setOnMenuToggleListener(this::handleFabMenuToggle);
+    }
+
+    private void handleFabMenuToggle(boolean opened) {
+        if (opened) {
+            showFog();
+        } else {
+            hideFog();
+        }
+    }
+
+    private void hideFog() {
+        fogContainerView
+                .animate()
+                .alpha(0)
+                .setDuration(Constants.Animations.FOG_ANIM_DURATION)
+                .setInterpolator(new AccelerateInterpolator())
+                .withEndAction(() -> fogContainerView.setVisibility(View.GONE));
+    }
+
+    private void showFog() {
+        fogContainerView
+                .animate()
+                .alpha(1)
+                .setDuration(Constants.Animations.FOG_ANIM_DURATION)
+                .setInterpolator(new AccelerateInterpolator())
+                .withStartAction(() -> fogContainerView.setVisibility(View.VISIBLE));
     }
 
     private void initRefreshLayout() {

@@ -6,6 +6,7 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="lightGray">#BDBDBD</color>
+    <color name="whiteFog">#c1ffffff</color>
     <color name="gray">#DEDEDE</color>
     <color name="palePink">#F9D4E2</color>
     <color name="pink">#F0377E</color>
