@@ -34,14 +34,14 @@ public class ShotsProvider {
         this.shotsParamFactory = shotsRequestFactory;
     }
 
-    public Observable<List<Shot>> getShots(List<Integer> likedShotsIds) {
-        return getSettings().flatMap(settings -> getShotsObservable(settings, likedShotsIds));
+    public Observable<List<Shot>> getShots() {
+        return getSettings().flatMap(this::getShotsObservable);
     }
 
-    private Observable<List<Shot>> getShotsObservable(Settings settings, List<Integer> likedShotsIds) {
+    private Observable<List<Shot>> getShotsObservable(Settings settings) {
         return selectRequest(settings.getStreamSourceSettings())
                 .compose(fromListObservable())
-                .map(shotEntity -> mapper.getShot(shotEntity, likedShotsIds))
+                .map(mapper::getShot)
                 .toList();
     }
 
