@@ -5,8 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
@@ -46,10 +44,6 @@ public class LikesFragment extends BaseFragmentWithMenu<LikesViewContract.View, 
 
     @Inject
     LikesAdapter likesAdapter;
-    @Inject
-    GridLayoutManager gridLayoutManager;
-    @Inject
-    LinearLayoutManager linearLayoutManager;
 
     private LikesFragmentComponent component;
 

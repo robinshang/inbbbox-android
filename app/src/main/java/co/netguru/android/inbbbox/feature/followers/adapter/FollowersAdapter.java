@@ -13,10 +13,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.data.ui.Follower;
 
 public class FollowersAdapter extends RecyclerView.Adapter<FollowersViewHolder> {
 
-    private List<Object> followersList;
+    private List<Follower> followersList;
 
     @Inject
     public FollowersAdapter() {
@@ -39,7 +40,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersViewHolder> 
         return followersList.size();
     }
 
-    public void setFollowersList(List<Object> followersList) {
+    public void setFollowersList(List<Follower> followersList) {
         this.followersList.clear();
         this.followersList.addAll(followersList);
         notifyDataSetChanged();
