@@ -36,4 +36,7 @@
     <string name="notification_text">Check Inbbbox for daily dose of design shots</string>
 
     <string name="error_database">Cannot change notification time</string>
+    <string name="like">LIKE</string>
+    <string name="follow">FOLLOW</string>
+    <string name="add_to_bucket">ADD TO BUCKET</string>
 </resources>
