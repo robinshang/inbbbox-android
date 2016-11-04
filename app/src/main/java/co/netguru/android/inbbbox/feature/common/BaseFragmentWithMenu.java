@@ -30,7 +30,7 @@ public abstract class BaseFragmentWithMenu<V extends MvpView, P extends MvpPrese
     @BindDrawable(R.drawable.ic_gridview_active)
     Drawable icGridViewActive;
 
-    @BindView(R.id.fragment_likes_recycler_view)
+    @BindView(R.id.fragment_recycler_view)
     RecyclerView recyclerView;
 
     @Inject

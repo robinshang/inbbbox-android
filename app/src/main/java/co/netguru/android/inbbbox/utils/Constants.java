@@ -5,6 +5,7 @@ public final class Constants {
 
     public static class VIEW {
         public static final int LIKE_FRAGMENT_COLUMN_COUNT = 2;
+        public static final int FOLLOWERS_FRAGMENT_COLUMN_COUNT = 2;
     }
     public static class OAUTH {
         public static final String BASE_URL = "https://dribbble.com/";

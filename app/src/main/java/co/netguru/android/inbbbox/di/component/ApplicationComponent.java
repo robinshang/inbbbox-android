@@ -8,6 +8,7 @@ import co.netguru.android.inbbbox.di.module.ApiModule;
 import co.netguru.android.inbbbox.di.module.ApplicationModule;
 import co.netguru.android.inbbbox.di.module.ConfigurationModule;
 import co.netguru.android.inbbbox.di.module.DataSourceModule;
+import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.di.module.MainActivityModule;
@@ -38,6 +39,8 @@ public interface ApplicationComponent extends BaseComponent {
     ShotsComponent plus(ShotsModule shotsModule);
 
     LikesFragmentComponent plus(LikesFragmentModule module);
+
+    FollowersFragmentComponent plus(FollowersFragmentModule module);
 
     void inject(NotificationAlarmReceiver receiver);
 }

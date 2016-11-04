@@ -5,7 +5,7 @@
     android:background="@color/white">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_likes_recycler_view"
+        android:id="@+id/fragment_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="@dimen/fragment_like_recycler_view_padding_top" />
