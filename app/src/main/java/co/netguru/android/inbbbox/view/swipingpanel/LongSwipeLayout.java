@@ -23,7 +23,6 @@ public class LongSwipeLayout extends SwipeLayout {
     private boolean wasFirstElementWidthCollected = false;
     private boolean isLongSwipeTriggered;
     private boolean isRightSwipeTriggered;
-    private float touchInitialPosition;
     private boolean isNormalSwipeTriggered;
     private ItemSwipeListener itemSwipeListener;
 
@@ -119,7 +118,6 @@ public class LongSwipeLayout extends SwipeLayout {
         isNormalSwipeScope = false;
         isNormalSwipeTriggered = false;
         isLongSwipeTriggered = false;
-        touchInitialPosition = event.getRawX();
         getElementWidth();
     }
 

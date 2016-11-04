@@ -57,7 +57,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
 
     private void setupImage(Shot shot) {
         float radius = itemView.getResources().getDimension(R.dimen.shot_corner_radius);
-        Context context = itemView.getContext();
+        final Context context = itemView.getContext();
         backgroundImageView.setRadius(radius);
         shotImageView.setRadius(radius);
         Glide.with(context)
