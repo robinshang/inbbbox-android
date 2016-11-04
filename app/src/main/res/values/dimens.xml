@@ -42,4 +42,5 @@
     <dimen name="shot_corner_radius_dp">30dp</dimen>
     <dimen name="fab_menu_label_side_padding">6dp</dimen>
     <dimen name="fab_menu_label_bottom_top_padding">2dp</dimen>
+    <dimen name="fab_label_font_size">12sp</dimen>
 </resources>
