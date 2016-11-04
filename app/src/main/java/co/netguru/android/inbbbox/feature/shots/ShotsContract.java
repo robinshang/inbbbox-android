@@ -15,10 +15,14 @@ interface ShotsContract {
 
         void showError(String error);
 
+        void hideLoadingIndicator();
+
         void changeShotLikeStatus(Shot shot);
     }
 
     interface Presenter extends MvpPresenter<View> {
         void likeShot(Shot shot);
+
+        void loadData();
     }
 }

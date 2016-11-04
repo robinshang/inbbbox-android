@@ -7,105 +7,25 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView
-        android:id="@+id/shots_recycler_view"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/layout_actions"
+        <co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView
+            android:id="@+id/shots_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="end|bottom"
         android:layout_marginBottom="@dimen/activity_main_fab_margin_bottom"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:orientation="vertical">
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_btn_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="8dp"
-            android:alpha="0"
-            android:contentDescription="@string/like"
-            android:scaleX="0"
-            android:scaleY="0"
-            android:src="@drawable/ic_fab_open"
-            android:visibility="visible"
-            app:borderWidth="0dp"
-            app:elevation="4dp"
-            app:fabSize="mini"
-            tools:alpha="1"
-            tools:scaleX="1"
-            tools:scaleY="1"
-            />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_btn_bucket"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="8dp"
-            android:alpha="0"
-            android:contentDescription="@string/add_to_bucket"
-            android:scaleX="0"
-            android:scaleY="0"
-            android:src="@drawable/ic_fab_open"
-            android:visibility="visible"
-            app:borderWidth="0dp"
-            app:elevation="4dp"
-            app:fabSize="mini"
-            tools:alpha="1"
-            tools:scaleX="1"
-            tools:scaleY="1"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_btn_follow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="8dp"
-            android:alpha="0"
-            android:contentDescription="@string/add_to_bucket"
-            android:scaleX="0"
-            android:scaleY="0"
-            android:src="@drawable/ic_fab_open"
-            android:visibility="visible"
-            app:borderWidth="0dp"
-            app:elevation="4dp"
-            app:fabSize="mini"
-            tools:alpha="1"
-            tools:scaleX="1"
-            tools:scaleY="1"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_btn_like"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="8dp"
-            android:alpha="0"
-            android:contentDescription="@string/add_to_bucket"
-            android:scaleX="0"
-            android:scaleY="0"
-            android:src="@drawable/ic_fab_open"
-            android:visibility="visible"
-            app:borderWidth="0dp"
-            app:elevation="4dp"
-            app:fabSize="mini"
-            tools:alpha="1"
-            tools:scaleX="1"
-            tools:scaleY="1"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:scaleType="center"
-            android:src="@drawable/ic_fab_open"
-            app:backgroundTint="@color/white"
-            app:fabSize="normal"/>
-    </LinearLayout>
-
+        android:scaleType="center"
+        android:src="@drawable/ic_fab_open"
+        app:backgroundTint="@color/white"
+        app:fabSize="normal"/>
 </android.support.design.widget.CoordinatorLayout>

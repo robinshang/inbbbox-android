@@ -36,6 +36,7 @@ public class MockShotsApi implements ShotsApi {
         for (int i = 0; i < count; i++) {
             Image image = Image.builder().build();
             ShotEntity entity = new ShotEntity();
+            entity.setId(i);
             entity.setTitle(label + i);
             entity.setImage(image);
             result.add(entity);

@@ -5,5 +5,8 @@
         android:width="@dimen/shot_image_width"
         android:height="@dimen/shot_image_height"/>
 
-    <solid android:color="@color/accent"/>
+    <solid android:color="@color/lightGray"/>
+
+    <corners android:radius="@dimen/shot_corner_radius"/>
+
 </shape>

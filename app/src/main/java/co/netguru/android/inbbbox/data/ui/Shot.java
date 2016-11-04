@@ -9,7 +9,6 @@ import com.google.gson.TypeAdapter;
 @AutoValue
 public abstract class Shot {
 
-    @Nullable
     public abstract Integer id();
 
     @Nullable
