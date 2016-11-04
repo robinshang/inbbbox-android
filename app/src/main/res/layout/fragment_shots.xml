@@ -17,9 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="80dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginBottom="@dimen/activity_main_fab_margin_bottom"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:orientation="vertical">
 
         <android.support.design.widget.FloatingActionButton
@@ -103,8 +102,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            android:layout_marginBottom="@dimen/activity_main_fab_margin_bottom"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:scaleType="center"
             android:src="@drawable/ic_fab_open"
             app:backgroundTint="@color/white"
