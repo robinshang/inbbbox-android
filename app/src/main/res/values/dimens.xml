@@ -40,4 +40,6 @@
 
     <dimen name="shot_corner_radius">30px</dimen>
     <dimen name="shot_corner_radius_dp">30dp</dimen>
+    <dimen name="fab_menu_label_side_padding">6dp</dimen>
+    <dimen name="fab_menu_label_bottom_top_padding">2dp</dimen>
 </resources>
