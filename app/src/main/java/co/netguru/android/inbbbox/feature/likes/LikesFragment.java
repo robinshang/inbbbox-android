@@ -10,9 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
@@ -30,28 +27,18 @@ import co.netguru.android.inbbbox.application.App;
 import co.netguru.android.inbbbox.data.ui.LikedShot;
 import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
-import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
+import co.netguru.android.inbbbox.feature.common.BaseFragmentWithMenu;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
 
-public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, LikesViewContract.Presenter>
+public class LikesFragment extends BaseFragmentWithMenu<LikesViewContract.View, LikesViewContract.Presenter>
         implements LikesViewContract.View {
 
-    @BindDrawable(R.drawable.ic_listview)
-    Drawable icListView;
-    @BindDrawable(R.drawable.ic_listview_active)
-    Drawable icListViewActive;
-    @BindDrawable(R.drawable.ic_gridview)
-    Drawable icGridView;
-    @BindDrawable(R.drawable.ic_gridview_active)
-    Drawable icGridViewActive;
     @BindDrawable(R.drawable.ic_like_emptystate)
     Drawable emptyTextDrawable;
 
     @BindString(R.string.fragment_like_empty_text)
     String emptyString;
 
-    @BindView(R.id.fragment_likes_recycler_view)
-    RecyclerView recyclerView;
     @BindView(R.id.fragment_likes_empty_view)
     ScrollView emptyView;
     @BindView(R.id.fragment_like_empty_text)
@@ -65,8 +52,6 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
     LinearLayoutManager linearLayoutManager;
 
     private LikesFragmentComponent component;
-    private MenuItem listViewItem;
-    private MenuItem gridViewItem;
 
     public static LikesFragment newInstance() {
         return new LikesFragment();
@@ -84,43 +69,20 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_likes, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView.setAdapter(likesAdapter);
         getPresenter().getLikesFromServer();
         emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
         getPresenter().addIconToText(emptyString, emptyTextDrawable);
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.fragment_menu, menu);
-        listViewItem = menu.findItem(R.id.action_list_view);
-        gridViewItem = menu.findItem(R.id.action_grid_view);
-        onOptionsItemSelected(listViewItem);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        boolean isGridView;
-        switch (item.getItemId()) {
-            case R.id.action_grid_view:
-                isGridView = true;
-                break;
-            case R.id.action_list_view:
-                isGridView = false;
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        changeMenuItemIcons(isGridView);
-        recyclerView.setLayoutManager(isGridView ? gridLayoutManager : linearLayoutManager);
-        return true;
+    protected RecyclerView.Adapter getRecyclerViewAdapter() {
+        return likesAdapter;
     }
 
     @NonNull
@@ -151,10 +113,5 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
 
     public void refreshFragmentData() {
         getPresenter().getLikesFromServer();
-    }
-
-    private void changeMenuItemIcons(boolean isGridViewClicked) {
-        listViewItem.setIcon(isGridViewClicked ? icListView : icListViewActive);
-        gridViewItem.setIcon(isGridViewClicked ? icGridViewActive : icGridView);
     }
 }
