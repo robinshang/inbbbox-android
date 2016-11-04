@@ -11,11 +11,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import co.netguru.android.inbbbox.feature.Statics;
 import co.netguru.android.inbbbox.feature.authentication.OauthUrlProvider;
 import co.netguru.android.inbbbox.feature.authentication.TokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorType;
+import co.netguru.android.inbbbox.models.Token;
+import co.netguru.android.inbbbox.models.User;
 import co.netguru.android.inbbbox.utils.Constants;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
@@ -25,7 +28,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LoginPresenterTest  {
+public class LoginPresenterTest {
 
     @Rule
     public TestRule rule = new RxSyncTestRule();
@@ -51,16 +54,20 @@ public class LoginPresenterTest  {
     private String urlString = "www.google.com";
     private String code = "testCode";
 
+    private Token expectedToken;
+
     @InjectMocks
     private LoginPresenter presenter;
 
     @Before
     public void setup() {
+        expectedToken = new Token("", "", "");
+
         presenter.attachView(viewMock);
         when(tokenProviderMock.requestNewToken(code))
-                .thenReturn(Observable.just(true));
+                .thenReturn(Observable.just(expectedToken));
         when(userProviderMock.requestUser()).
-                thenReturn(Observable.just(true));
+                thenReturn(Observable.just(Statics.USER));
     }
 
     @Test

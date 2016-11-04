@@ -9,10 +9,14 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.data.api.UserApi;
+import co.netguru.android.inbbbox.data.local.UserPrefsController;
+import co.netguru.android.inbbbox.feature.Statics;
+import co.netguru.android.inbbbox.models.User;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -26,34 +30,23 @@ public class UserProviderTest {
     UserApi userApiMock;
 
     @Mock
-    DataSource<User> dataSourceMock;
+    UserPrefsController userPrefsController;
 
     @InjectMocks
     UserProvider userProvider;
 
     @Test
     public void whenSubscribeToGetUser_thenSaveUserInStorage() {
-        User expectedUser = new User();
-        when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.just(expectedUser));
-        TestSubscriber testSubscriber = new TestSubscriber();
+        when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.just(Statics.USER));
+        TestSubscriber<User> testSubscriber = new TestSubscriber<>();
 
         userProvider.requestUser().subscribe(testSubscriber);
 
-        verify(dataSourceMock).save(expectedUser);
-    }
+        verify(userPrefsController, times(1)).saveUser(Statics.USER);
 
-    @Test
-    public void whenSubscribeToGetUser_thenPassTrue() {
-        User expectedUser = new User();
-        when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.just(expectedUser));
-        when(dataSourceMock.save(expectedUser))
-                .thenReturn(Observable.just(true));
-        TestSubscriber testSubscriber = new TestSubscriber();
-
-        userProvider.requestUser().subscribe(testSubscriber);
-
+        testSubscriber.assertValue(Statics.USER);
+        testSubscriber.assertCompleted();
         testSubscriber.assertNoErrors();
-        testSubscriber.assertValue(true);
     }
 
     //ERRORS
@@ -61,27 +54,11 @@ public class UserProviderTest {
     public void whenSubscribeToGetUserAndDownloadFailed_thenGetExceptionFromUser() {
         Throwable expectedThrowable = new Throwable("exception");
         when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.error(expectedThrowable));
-        TestSubscriber testSubscriber = new TestSubscriber();
+        TestSubscriber<User> testSubscriber = new TestSubscriber<>();
 
         userProvider.requestUser().subscribe(testSubscriber);
 
         testSubscriber.assertError(expectedThrowable);
     }
-
-    @Test
-    public void whenSubscribeToGerUserAndSavingFailed_thenGetExceptionFromDb() {
-        Throwable expectedThrowable = new Throwable("exception");
-        User expectedUser = new User();
-        when(userApiMock.getAuthenticatedUser())
-                .thenReturn(Observable.just(expectedUser));
-        when(dataSourceMock.save(expectedUser))
-                .thenReturn(Observable.error(expectedThrowable));
-        TestSubscriber testSubscriber = new TestSubscriber();
-
-        userProvider.requestUser().subscribe(testSubscriber);
-
-        testSubscriber.assertError(expectedThrowable);
-    }
-
 
 }

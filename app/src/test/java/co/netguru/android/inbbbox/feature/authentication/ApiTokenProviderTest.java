@@ -12,12 +12,15 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.data.api.AuthorizeApi;
+import co.netguru.android.inbbbox.data.local.TokenPrefsController;
 import co.netguru.android.inbbbox.models.Token;
 import co.netguru.android.testcommons.RxSyncTestRule;
+import rx.Completable;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -33,7 +36,7 @@ public class ApiTokenProviderTest {
     public AuthorizeApi authorizeApiMock;
 
     @Mock
-    public DataSource<Token> dataSourceMock;
+    public TokenPrefsController tokenPrefsController;
 
     @Mock
     public Resources resourcesMock;
@@ -41,56 +44,56 @@ public class ApiTokenProviderTest {
     @InjectMocks
     public TokenProvider apiTokenProvider;
 
-    private String code = "testCode";
-    private String resourcesString = "clientId";
-    //// TODO: 04.11.2016 improve
-    private Token expectedToken = new Token("","","");
+    private static final String CODE = "testCode";
+    private static final String RESOURCES_STRING = "clientId";
+
+    private Token expectedToken;
 
     @Before
     public void setUp() {
-        when(resourcesMock.getString(anyInt())).thenReturn(resourcesString);
+        when(resourcesMock.getString(anyInt())).thenReturn(RESOURCES_STRING);
+        expectedToken = new Token("", "", "");
     }
 
     @Test
     public void whenGetTokenSubscribed_thenSaveTokenCalled() {
-        TestSubscriber<Boolean> testSubscriber = new TestSubscriber();
+        TestSubscriber<Token> testSubscriber = new TestSubscriber<>();
         when(authorizeApiMock.getToken(anyString(), anyString(), anyString()))
                 .thenReturn(Observable.just(expectedToken));
-        when(dataSourceMock.save(expectedToken))
-                .thenReturn(Observable.just(true));
+        when(tokenPrefsController.saveToken(expectedToken))
+                .thenReturn(Completable.complete());
 
-        apiTokenProvider.requestNewToken(code).subscribe(testSubscriber);
+        apiTokenProvider.requestNewToken(CODE).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(dataSourceMock).save(expectedToken);
+        testSubscriber.assertCompleted();
+        verify(tokenPrefsController).saveToken(expectedToken);
     }
 
     @Test
     public void whenGetTokenSubscribed_thenReturnTrue() {
-        TestSubscriber<Boolean> testSubscriber = new TestSubscriber();
+        TestSubscriber<Token> testSubscriber = new TestSubscriber<>();
         when(authorizeApiMock.getToken(anyString(), anyString(), anyString()))
                 .thenReturn(Observable.just(expectedToken));
-        when(dataSourceMock.save(expectedToken))
-                .thenReturn(Observable.just(true));
+        when(tokenPrefsController.saveToken(expectedToken))
+                .thenReturn(Completable.complete());
 
-        apiTokenProvider.requestNewToken(code).subscribe(testSubscriber);
+        apiTokenProvider.requestNewToken(CODE).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        testSubscriber.assertValue(true);
+        testSubscriber.assertValue(expectedToken);
     }
 
     @Test
     public void whenGetTokenSubscriberFailed_thenReturnThrowable() {
         Throwable expectedThrowable = new Throwable("test");
-        TestSubscriber<Boolean> testSubscriber = new TestSubscriber();
+        TestSubscriber<Token> testSubscriber = new TestSubscriber<>();
         when(authorizeApiMock.getToken(anyString(), anyString(), anyString()))
                 .thenReturn(Observable.error(expectedThrowable));
-        when(dataSourceMock.save(expectedToken))
-                .thenReturn(Observable.just(false));
 
-        apiTokenProvider.requestNewToken(code).subscribe(testSubscriber);
+        apiTokenProvider.requestNewToken(CODE).subscribe(testSubscriber);
 
         testSubscriber.assertError(expectedThrowable);
-        verify(dataSourceMock, never()).save(expectedToken);
+        verify(tokenPrefsController, never()).saveToken(anyObject());
     }
 }

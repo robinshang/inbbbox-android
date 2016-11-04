@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.netguru.android.inbbbox.data.api.LikesApi;
-import co.netguru.android.inbbbox.data.models.Image;
-import co.netguru.android.inbbbox.data.models.LikedShotEntity;
-import co.netguru.android.inbbbox.data.models.ShotEntity;
-import co.netguru.android.inbbbox.data.ui.LikedShot;
+import co.netguru.android.inbbbox.models.Image;
+import co.netguru.android.inbbbox.models.LikedShotEntity;
+import co.netguru.android.inbbbox.models.ShotEntity;
+import co.netguru.android.inbbbox.models.ui.LikedShot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.observers.TestSubscriber;
@@ -62,7 +62,7 @@ public class LikedShotsProviderTest {
 
     @Test
     public void whenGetLikedShot_thenObservableReturnsListOfLikedShots() {
-        TestSubscriber<LikedShot> testSubscriber = new TestSubscriber();
+        TestSubscriber<LikedShot> testSubscriber = new TestSubscriber<>();
 
         likedShotsProvider.getLikedShots().subscribe(testSubscriber);
 

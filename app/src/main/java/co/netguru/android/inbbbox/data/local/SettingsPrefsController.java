@@ -8,6 +8,7 @@ import org.threeten.bp.LocalTime;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import co.netguru.android.inbbbox.models.CustomizationSettings;
 import co.netguru.android.inbbbox.models.NotificationSettings;
 import co.netguru.android.inbbbox.models.StreamSourceSettings;
 import rx.Completable;
@@ -85,8 +86,8 @@ public class SettingsPrefsController {
         });
     }
 
-    public Single<Boolean> detailsShowed() {
+    public Single<CustomizationSettings> getCustomizationSettings() {
         return Single.fromCallable(() ->
-                sharedPreferences.getBoolean(DETAILS_SHOWED_KEY, false));
+                new CustomizationSettings(sharedPreferences.getBoolean(DETAILS_SHOWED_KEY, false)));
     }
 }

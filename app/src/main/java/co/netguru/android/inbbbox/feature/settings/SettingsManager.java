@@ -11,7 +11,6 @@ import co.netguru.android.inbbbox.models.NotificationSettings;
 import co.netguru.android.inbbbox.models.Settings;
 import co.netguru.android.inbbbox.models.StreamSourceSettings;
 import rx.Completable;
-import rx.Observable;
 import rx.Single;
 
 @Singleton
@@ -28,14 +27,21 @@ public class SettingsManager {
         return Single.zip(
                 settingsPrefsController.getStreamSourceSettings(),
                 settingsPrefsController.getNotificationsSettings(),
-                settingsPrefsController.detailsShowed(),
-                (streamSourceSettings, notificationSettings, detailsShowed) ->
-                        new Settings(streamSourceSettings, notificationSettings, new CustomizationSettings(detailsShowed))
+                settingsPrefsController.getCustomizationSettings(),
+                Settings::new
         );
     }
 
     public Single<NotificationSettings> getNotificationSettings() {
         return settingsPrefsController.getNotificationsSettings();
+    }
+
+    public Single<StreamSourceSettings> getStreamSourceSettings() {
+        return settingsPrefsController.getStreamSourceSettings();
+    }
+
+    public Single<CustomizationSettings> getCustomizationSettings() {
+        return settingsPrefsController.getCustomizationSettings();
     }
 
     public Completable changeNotificationStatus(boolean isEnabled) {

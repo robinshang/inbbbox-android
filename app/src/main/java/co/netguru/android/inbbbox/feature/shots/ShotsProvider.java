@@ -35,12 +35,12 @@ public class ShotsProvider {
     }
 
     public Observable<List<Shot>> getShots() {
-        return settingsManager.getSettings()
+        return settingsManager.getStreamSourceSettings()
                 .flatMapObservable(this::getShotsObservable);
     }
 
-    private Observable<List<Shot>> getShotsObservable(Settings settings) {
-        return selectRequest(settings.getStreamSourceSettings())
+    private Observable<List<Shot>> getShotsObservable(StreamSourceSettings streamSourceSettings) {
+        return selectRequest(streamSourceSettings)
                 .compose(fromListObservable())
                 .map(mapper::getShot)
                 .distinct()

@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import co.netguru.android.inbbbox.feature.Statics;
 import co.netguru.android.inbbbox.feature.authentication.TokenProvider;
 import co.netguru.android.inbbbox.feature.authentication.UserProvider;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
@@ -42,7 +43,7 @@ public class SplashPresenterTest {
     @Test
     public void whenViewAttached_thenCheckTokenValidity() {
         when(tokenProviderMock.isTokenValid()).thenReturn(Observable.just(true));
-        when(userProviderMock.requestUser()).thenReturn(Observable.just(true));
+        when(userProviderMock.requestUser()).thenReturn(Observable.just(Statics.USER));
 
         splashPresenter.attachView(splashViewMock);
 
@@ -52,7 +53,7 @@ public class SplashPresenterTest {
     @Test
     public void whenViewAttachedAndTokenIsInvalid_thenGetUserInstance() {
         when(tokenProviderMock.isTokenValid()).thenReturn(Observable.just(true));
-        when(userProviderMock.requestUser()).thenReturn(Observable.just(true));
+        when(userProviderMock.requestUser()).thenReturn(Observable.just(Statics.USER));
 
         splashPresenter.attachView(splashViewMock);
 
@@ -62,7 +63,7 @@ public class SplashPresenterTest {
     @Test
     public void whenViewAttachedAndUserInstanceIsSaved_thenShowMainView() {
         when(tokenProviderMock.isTokenValid()).thenReturn(Observable.just(true));
-        when(userProviderMock.requestUser()).thenReturn(Observable.just(true));
+        when(userProviderMock.requestUser()).thenReturn(Observable.just(Statics.USER));
 
         splashPresenter.attachView(splashViewMock);
 
@@ -83,16 +84,6 @@ public class SplashPresenterTest {
         Throwable exampleThrowable = new Throwable();
         when(tokenProviderMock.isTokenValid()).thenReturn(Observable.just(true));
         when(userProviderMock.requestUser()).thenReturn(Observable.error(exampleThrowable));
-
-        splashPresenter.attachView(splashViewMock);
-
-        verify(splashViewMock, times(1)).showLoginScreen();
-    }
-
-    @Test
-    public void whenViewAttachedAndUserInstanceNotSaved_thenShowLoginScreen() {
-        when(tokenProviderMock.isTokenValid()).thenReturn(Observable.just(true));
-        when(userProviderMock.requestUser()).thenReturn(Observable.just(false));
 
         splashPresenter.attachView(splashViewMock);
 

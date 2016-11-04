@@ -18,14 +18,15 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.data.api.MockShotsApi;
 import co.netguru.android.inbbbox.data.api.ShotsApi;
+import co.netguru.android.inbbbox.feature.settings.SettingsManager;
 import co.netguru.android.inbbbox.models.FilteredShotsParams;
 import co.netguru.android.inbbbox.models.Settings;
 import co.netguru.android.inbbbox.models.ShotEntity;
 import co.netguru.android.inbbbox.models.StreamSourceSettings;
 import co.netguru.android.inbbbox.models.ui.Shot;
-import co.netguru.android.inbbbox.feature.settings.SettingsManager;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
+import rx.Single;
 import rx.observers.TestSubscriber;
 
 import static org.mockito.Matchers.anyString;
@@ -66,9 +67,7 @@ public class ShotsProviderTest {
 
     @Before
     public void setUp() {
-        when(settingsMock.getStreamSourceSettings()).thenReturn(streamSourceSettings);
-        when(settingsManagerMock.getSettings()).thenReturn(Observable.just(settingsMock));
-
+        when(settingsManagerMock.getStreamSourceSettings()).thenReturn(Single.just(streamSourceSettings));
     }
 
     private void setupStreamSourceStates(boolean following,

@@ -12,11 +12,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.ui.LikedShot;
-import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
 import co.netguru.android.inbbbox.feature.likes.LikedShotsProvider;
 import co.netguru.android.inbbbox.feature.shots.like.LikeResponseMapper;
+import co.netguru.android.inbbbox.models.ui.LikedShot;
+import co.netguru.android.inbbbox.models.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 

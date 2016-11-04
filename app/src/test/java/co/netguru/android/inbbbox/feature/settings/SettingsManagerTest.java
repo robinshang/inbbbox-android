@@ -7,11 +7,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import co.netguru.android.inbbbox.data.local.SettingsPrefsController;
+import co.netguru.android.inbbbox.models.CustomizationSettings;
 import co.netguru.android.inbbbox.models.NotificationSettings;
 import co.netguru.android.inbbbox.models.Settings;
-import rx.Observable;
+import co.netguru.android.inbbbox.models.StreamSourceSettings;
+import rx.Completable;
+import rx.Single;
 import rx.observers.TestSubscriber;
 
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -21,153 +26,74 @@ import static org.mockito.Mockito.when;
 public class SettingsManagerTest {
 
     @Mock
-    DataSource<Settings> settingsDataSource;
+    SettingsPrefsController settingsPrefsController;
     @InjectMocks
     SettingsManager settingsManager;
 
-    private Settings settings = new Settings();
-    private TestSubscriber<Boolean> booleanTestSubscriber;
+    private NotificationSettings notificationSettings = new NotificationSettings();
+    private StreamSourceSettings streamSourceSettings = new StreamSourceSettings();
+    private CustomizationSettings customizationSettings = new CustomizationSettings();
 
     @Before
     public void setup() {
-        when(settingsDataSource.get()).thenReturn(Observable.just(settings));
-        when(settingsDataSource.save(anyObject())).thenReturn(Observable.just(true));
-        booleanTestSubscriber = new TestSubscriber<>();
+        when(settingsPrefsController.getNotificationsSettings()).thenReturn(Single.just(notificationSettings));
+        when(settingsPrefsController.getStreamSourceSettings()).thenReturn(Single.just(streamSourceSettings));
+        when(settingsPrefsController.getCustomizationSettings()).thenReturn(Single.just(customizationSettings));
+
+        when(settingsPrefsController.saveDetailsShowed(anyBoolean())).thenReturn(Completable.complete());
+        when(settingsPrefsController.saveNotificationSettings(anyObject())).thenReturn(Completable.complete());
+        when(settingsPrefsController.saveStreamSourceSettingsToPrefs(anyObject())).thenReturn(Completable.complete());
+
     }
 
     @Test
-    public void shouldGetSettingsFromDatabaseWhenNoErrors() {
+    public void shouldGetSettingsFromPrefs() {
         //given
         TestSubscriber<Settings> testSubscriber = new TestSubscriber<>();
         //when
         settingsManager.getSettings().subscribe(testSubscriber);
         //then
-        verify(settingsDataSource, times(1)).get();
-        testSubscriber.assertValue(settings);
+        verify(settingsPrefsController, times(1)).getCustomizationSettings();
+        verify(settingsPrefsController, times(1)).getStreamSourceSettings();
+        verify(settingsPrefsController, times(1)).getNotificationsSettings();
+
         testSubscriber.assertNoErrors();
+        testSubscriber.assertCompleted();
     }
 
     @Test
-    public void shouldReturnDefaultSettingsWhenDatabaseError() {
-        //given
-        when(settingsDataSource.get()).thenReturn(Observable.error(new Throwable()));
-        TestSubscriber<Settings> testSubscriber = new TestSubscriber<>();
-        //when
-        settingsManager.getSettings().subscribe(testSubscriber);
-        //then
-        testSubscriber.assertValue(settingsManager.defaultSettings);
-        testSubscriber.assertNoErrors();
-    }
-
-    @Test
-    public void shouldGetNotificationSettingsFromDatabaseWhenNoErrors() {
+    public void shouldGetNotificationSettingsFromPrefs() {
         //given
         TestSubscriber<NotificationSettings> testSubscriber = new TestSubscriber<>();
         //when
         settingsManager.getNotificationSettings().subscribe(testSubscriber);
         //then
-        verify(settingsDataSource, times(1)).get();
-        testSubscriber.assertValue(settings.getNotificationSettings());
+        verify(settingsPrefsController, times(1)).getNotificationsSettings();
+        testSubscriber.assertValue(notificationSettings);
         testSubscriber.assertNoErrors();
     }
 
     @Test
-    public void shouldReturnDefaultNotificationSettingsWhenDatabaseError() {
+    public void shouldGetStreamSourceSettingsFromPrefs() {
         //given
-        when(settingsDataSource.get()).thenReturn(Observable.error(new Throwable()));
-        TestSubscriber<NotificationSettings> testSubscriber = new TestSubscriber<>();
+        TestSubscriber<StreamSourceSettings> testSubscriber = new TestSubscriber<>();
         //when
-        settingsManager.getNotificationSettings().subscribe(testSubscriber);
+        settingsManager.getStreamSourceSettings().subscribe(testSubscriber);
         //then
-        testSubscriber.assertValue(settingsManager.defaultSettings.getNotificationSettings());
+        verify(settingsPrefsController, times(1)).getStreamSourceSettings();
+        testSubscriber.assertValue(streamSourceSettings);
         testSubscriber.assertNoErrors();
     }
 
     @Test
-    public void shouldReturnTrueWhenSavingNotificationStatusCompleted() {
-        //when
-        settingsManager.changeNotificationStatus(false).subscribe(booleanTestSubscriber);
-        //then
-        verify(settingsDataSource, times(1)).save(anyObject());
-        booleanTestSubscriber.assertValue(true);
-        booleanTestSubscriber.assertNoErrors();
-    }
-
-    @Test
-    public void shouldReturnFalseWhenSavingNotificationStatusFailed() {
+    public void shouldGetCustomizationSettingsFromPrefs() {
         //given
-        when(settingsDataSource.save(anyObject())).thenReturn(Observable.just(false));
+        TestSubscriber<CustomizationSettings> testSubscriber = new TestSubscriber<>();
         //when
-        settingsManager.changeNotificationStatus(true).subscribe(booleanTestSubscriber);
+        settingsManager.getCustomizationSettings().subscribe(testSubscriber);
         //then
-        verify(settingsDataSource, times(1)).save(anyObject());
-        booleanTestSubscriber.assertValue(false);
-        booleanTestSubscriber.assertNoErrors();
-    }
-
-    @Test
-    public void shouldReturnTrueWhenSavingNotificationTimeCompleted() {
-        //when
-        settingsManager.changeNotificationTime(1, 1).subscribe(booleanTestSubscriber);
-        //then
-        verify(settingsDataSource, times(1)).save(anyObject());
-        booleanTestSubscriber.assertValue(true);
-        booleanTestSubscriber.assertNoErrors();
-    }
-
-    @Test
-    public void shouldReturnFalseWhenSavingNotificationTimeFailed() {
-        //given
-        when(settingsDataSource.save(anyObject())).thenReturn(Observable.just(false));
-        //when
-        settingsManager.changeNotificationTime(1, 1).subscribe(booleanTestSubscriber);
-        //then
-        verify(settingsDataSource, times(1)).save(anyObject());
-        booleanTestSubscriber.assertValue(false);
-        booleanTestSubscriber.assertNoErrors();
-    }
-
-    @Test
-    public void shouldReturnTrueWhenSavingStreamSourceCompleted() {
-        //when
-        settingsManager.changeStreamSourceSettings(false, false, false, false).subscribe(booleanTestSubscriber);
-        //then
-        verify(settingsDataSource, times(1)).save(anyObject());
-        booleanTestSubscriber.assertValue(true);
-        booleanTestSubscriber.assertNoErrors();
-    }
-
-    @Test
-    public void shouldReturnFalseWhenSavingStreamSourceFailed() {
-        //given
-        when(settingsDataSource.save(anyObject())).thenReturn(Observable.just(false));
-        //when
-        settingsManager.changeStreamSourceSettings(true, true, true, true).subscribe(booleanTestSubscriber);
-        //then
-        verify(settingsDataSource, times(1)).save(anyObject());
-        booleanTestSubscriber.assertValue(false);
-        booleanTestSubscriber.assertNoErrors();
-    }
-
-    @Test
-    public void shouldReturnTrueWhenSavingShotDetailsCompleted() {
-        //when
-        settingsManager.changeShotsDetailsStatus(false).subscribe(booleanTestSubscriber);
-        //then
-        verify(settingsDataSource, times(1)).save(anyObject());
-        booleanTestSubscriber.assertValue(true);
-        booleanTestSubscriber.assertNoErrors();
-    }
-
-    @Test
-    public void shouldReturnFalseWhenSavingShotDetailsFailed() {
-        //given
-        when(settingsDataSource.save(anyObject())).thenReturn(Observable.just(false));
-        //when
-        settingsManager.changeShotsDetailsStatus(true).subscribe(booleanTestSubscriber);
-        //then
-        verify(settingsDataSource, times(1)).save(anyObject());
-        booleanTestSubscriber.assertValue(false);
-        booleanTestSubscriber.assertNoErrors();
+        verify(settingsPrefsController, times(1)).getCustomizationSettings();
+        testSubscriber.assertValue(customizationSettings);
+        testSubscriber.assertNoErrors();
     }
 }
