@@ -10,8 +10,10 @@ import co.netguru.android.commons.di.FragmentScope;
 public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersContract.View>
         implements FollowersContract.Presenter {
 
-    @Inject
-    public FollowersPresenter() {
+    private final FollowersProvider followersProvider;
 
+    @Inject
+    public FollowersPresenter(FollowersProvider followersProvider) {
+        this.followersProvider = followersProvider;
     }
 }

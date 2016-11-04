@@ -6,9 +6,9 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
 @AutoValue
-public abstract class FollowersEntity {
+public abstract class FollowerEntity {
 
-    public abstract long id();
+    public abstract int id();
 
     @SerializedName("created_at")
     public abstract String createdAt();
@@ -16,23 +16,23 @@ public abstract class FollowersEntity {
     @SerializedName("followee")
     public abstract User user();
 
-    public static TypeAdapter<FollowersEntity> typeAdapter(Gson gson) {
-        return new AutoValue_FollowersEntity.GsonTypeAdapter(gson);
+    public static TypeAdapter<FollowerEntity> typeAdapter(Gson gson) {
+        return new AutoValue_FollowerEntity.GsonTypeAdapter(gson);
     }
 
     public static Builder builder() {
-        return new AutoValue_FollowersEntity.Builder();
+        return new AutoValue_FollowerEntity.Builder();
     }
 
     @AutoValue.Builder
     public abstract static class Builder {
 
-        public abstract Builder id(long id);
+        public abstract Builder id(int id);
 
         public abstract Builder createdAt(String createdAt);
 
         public abstract Builder user(User user);
 
-        public abstract FollowersEntity build();
+        public abstract FollowerEntity build();
     }
 }
