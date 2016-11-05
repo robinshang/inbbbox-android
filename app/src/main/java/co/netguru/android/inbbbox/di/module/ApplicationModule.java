@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -16,7 +17,10 @@ import dagger.Provides;
 @Module
 public class ApplicationModule {
 
-    private static final String SHARED_PREFERENCES_NAME = "co.netguru.sidebench.securityapp.shared.preferences";
+    public static final String SETTINGS_SHARED_PREFERENCES_NAME = "settings";
+    public static final String TOKEN_SHARED_PREFERENCES_NAME = "token";
+    public static final String USER_SHARED_PREFERENCES_NAME = "user";
+
 
     private Application application;
 
@@ -24,7 +28,6 @@ public class ApplicationModule {
 
         this.application = application;
     }
-
 
     @Provides
     Context provideContext() {
@@ -41,9 +44,22 @@ public class ApplicationModule {
         return application.getResources();
     }
 
+    @Named(SETTINGS_SHARED_PREFERENCES_NAME)
     @Provides
-    public SharedPreferences provideSharedPreferences(Context context) {
-        return context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+    SharedPreferences provideSettingsSharedPreferences(Context context) {
+        return context.getSharedPreferences(context.getPackageName().concat(SETTINGS_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
+    }
+
+    @Named(TOKEN_SHARED_PREFERENCES_NAME)
+    @Provides
+    SharedPreferences provideTokenSharedPreferences(Context context) {
+        return context.getSharedPreferences(context.getPackageName().concat(TOKEN_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
+    }
+
+    @Named(USER_SHARED_PREFERENCES_NAME)
+    @Provides
+    SharedPreferences provideUserSharedPreferences(Context context) {
+        return context.getSharedPreferences(context.getPackageName().concat(USER_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
     }
 
     @Provides

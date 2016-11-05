@@ -6,10 +6,8 @@ import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
-import java.io.Serializable;
-
 @AutoValue
-public abstract class FilteredShotsParams implements Serializable {
+public abstract class FilteredShotsParams{
 
     @Nullable
     public abstract String list();

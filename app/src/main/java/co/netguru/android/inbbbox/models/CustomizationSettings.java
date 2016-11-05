@@ -1,8 +1,6 @@
 package co.netguru.android.inbbbox.models;
 
-import java.io.Serializable;
-
-public class CustomizationSettings implements Serializable {
+public class CustomizationSettings{
 
     private boolean showDetails;
 

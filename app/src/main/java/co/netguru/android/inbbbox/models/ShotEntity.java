@@ -2,11 +2,10 @@ package co.netguru.android.inbbbox.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShotEntity implements Serializable{
+public class ShotEntity {
 
     @SerializedName("id")
     private Integer id;

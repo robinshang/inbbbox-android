@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.data.local.SettingsPrefsController;
@@ -17,17 +18,20 @@ import dagger.Provides;
 public class DataSourceModule {
 
     @Provides
-    SettingsPrefsController provideSettingsPrefsController(SharedPreferences sharedPreferences) {
+    SettingsPrefsController provideSettingsPrefsController(
+            @Named(ApplicationModule.SETTINGS_SHARED_PREFERENCES_NAME) SharedPreferences sharedPreferences) {
         return new SettingsPrefsController(sharedPreferences);
     }
 
     @Provides
-    TokenPrefsController provideTokenPrefsController(SharedPreferences sharedPreferences) {
+    TokenPrefsController provideTokenPrefsController(
+            @Named(ApplicationModule.TOKEN_SHARED_PREFERENCES_NAME) SharedPreferences sharedPreferences) {
         return new TokenPrefsController(sharedPreferences);
     }
 
     @Provides
-    UserPrefsController provideUserPrefsController(SharedPreferences sharedPreferences, Gson gson) {
+    UserPrefsController provideUserPrefsController(
+            @Named(ApplicationModule.USER_SHARED_PREFERENCES_NAME) SharedPreferences sharedPreferences, Gson gson) {
         return new UserPrefsController(sharedPreferences, gson);
     }
 

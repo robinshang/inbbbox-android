@@ -1,8 +1,6 @@
 package co.netguru.android.inbbbox.models;
 
-import java.io.Serializable;
-
-public class Settings implements Serializable {
+public class Settings{
     private final StreamSourceSettings streamSourceSettings;
     private final NotificationSettings notificationSettings;
     private final CustomizationSettings customizationSettings;

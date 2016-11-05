@@ -85,7 +85,7 @@ public class ShotsProviderTest {
     @Test
     public void whenFollowingSourceEnabled_thenCallGetFollowingShots() {
         setupStreamSourceStates(true, false, false, false);
-        TestSubscriber testSubscriber = new TestSubscriber();
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
 
         shotsProvider.getShots().subscribe(testSubscriber);
 
@@ -97,7 +97,7 @@ public class ShotsProviderTest {
     public void whenFilteredSourceDisabled_thenFilteredNotCalled() {
         setupStreamSourceStates(true, false, false, false);
         when(shotsApiMock.getFollowingShots()).thenReturn(Observable.empty());
-        TestSubscriber testSubscriber = new TestSubscriber();
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
 
         shotsProvider.getShots().subscribe(testSubscriber);
 
@@ -112,7 +112,7 @@ public class ShotsProviderTest {
     public void whenFollowingSourceEnabled_thenReturnFollowingViewItems() {
         List<ShotEntity> listOfExpected = MockShotsApi.getFollowingMockedData();
         setupStreamSourceStates(true, false, false, false);
-        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber();
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
 
         shotsProvider.getShots().subscribe(testSubscriber);
 
@@ -128,7 +128,7 @@ public class ShotsProviderTest {
     @Test
     public void whenNewTodayEnabled_thenCallGetFilteredShots() {
         setupStreamSourceStates(false, true, false, false);
-        TestSubscriber testSubscriber = new TestSubscriber();
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
         FilteredShotsParams params = FilteredShotsParams.newBuilder()
                 .date("testDate")
                 .timeFrame("testParam")
@@ -149,7 +149,7 @@ public class ShotsProviderTest {
     @Test
     public void whenPopularTodayEnabled_thenCallGetFilteredShots() {
         setupStreamSourceStates(false, false, true, false);
-        TestSubscriber testSubscriber = new TestSubscriber();
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
         FilteredShotsParams params = FilteredShotsParams.newBuilder()
                 .date("testDate")
                 .timeFrame("testParam")
@@ -170,7 +170,7 @@ public class ShotsProviderTest {
     @Test
     public void whenDebutTodayEnabled_thenCallGetFilteredShots() {
         setupStreamSourceStates(false, false, false, true);
-        TestSubscriber testSubscriber = new TestSubscriber();
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
         FilteredShotsParams params = FilteredShotsParams.newBuilder()
                 .date("testDate")
                 .timeFrame("testParam")
@@ -191,7 +191,7 @@ public class ShotsProviderTest {
     @Test
     public void whenAllFilteredEnabled_thenCallGetFilteredShotsThreeTimes() {
         setupStreamSourceStates(false, true, true, true);
-        TestSubscriber testSubscriber = new TestSubscriber();
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
         FilteredShotsParams params = FilteredShotsParams.newBuilder()
                 .date("testDate")
                 .timeFrame("testParam")
@@ -213,7 +213,7 @@ public class ShotsProviderTest {
     public void whenNewTodayOfFilteredSourceEnabled_thenReturnFilteredViewItems() {
         List<ShotEntity> listOfExpected = MockShotsApi.getFilteredMockedData();
         setupStreamSourceStates(false, true, false, false);
-        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber();
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
         FilteredShotsParams params = FilteredShotsParams.newBuilder()
                 .date("testDate")
                 .timeFrame("testParam")
@@ -237,7 +237,7 @@ public class ShotsProviderTest {
     public void whenAllOfFilteredSourceEnabled_thenReturnFilteredViewItemsFromThreeSources() {
         List<ShotEntity> listOfExpected = MockShotsApi.getFilteredMockedData();
         setupStreamSourceStates(false, true, true, true);
-        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber();
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
         FilteredShotsParams params = FilteredShotsParams.newBuilder()
                 .date("testDate")
                 .timeFrame("testParam")
@@ -269,7 +269,7 @@ public class ShotsProviderTest {
         }
 
         setupStreamSourceStates(true, true, true, true);
-        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber();
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
         FilteredShotsParams params = FilteredShotsParams.newBuilder()
                 .date("testDate")
                 .timeFrame("testParam")
@@ -290,16 +290,8 @@ public class ShotsProviderTest {
 
     @Test
     public void whenNoSourcesEnabled_thenReturnEmptyResult() {
-        List<ShotEntity> expectedItems = new ArrayList<>();
-        expectedItems.addAll(MockShotsApi.getFilteredMockedData());
-        expectedItems.addAll(MockShotsApi.getFollowingMockedData());
-        List<String> expetedTitltes = new ArrayList<>();
-        for (ShotEntity entity : expectedItems) {
-            expetedTitltes.add(entity.getTitle());
-        }
-
         setupStreamSourceStates(false, false, false, false);
-        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber();
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
         FilteredShotsParams params = FilteredShotsParams.newBuilder()
                 .date("testDate")
                 .timeFrame("testParam")

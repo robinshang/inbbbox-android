@@ -7,10 +7,9 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 
 @AutoValue
-public abstract class Image implements Serializable {
+public abstract class Image{
 
     @Nullable
     @SerializedName("hidpi")

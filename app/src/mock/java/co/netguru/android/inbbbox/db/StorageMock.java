@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.db;
 
-import java.io.Serializable;
-
 public class StorageMock implements Storage {
 
 

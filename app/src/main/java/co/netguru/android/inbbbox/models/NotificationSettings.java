@@ -2,9 +2,7 @@ package co.netguru.android.inbbbox.models;
 
 import org.threeten.bp.LocalTime;
 
-import java.io.Serializable;
-
-public class NotificationSettings implements Serializable {
+public class NotificationSettings{
 
     private boolean enabled;
     private int hour;

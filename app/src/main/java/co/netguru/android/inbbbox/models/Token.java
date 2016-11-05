@@ -2,9 +2,7 @@ package co.netguru.android.inbbbox.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-
-public class Token implements Serializable {
+public class Token {
 
     @SerializedName("access_token")
     private String accessToken;

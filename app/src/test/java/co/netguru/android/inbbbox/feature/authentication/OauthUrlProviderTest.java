@@ -40,7 +40,7 @@ public class OauthUrlProviderTest {
     @Test
     public void whenUrlRequested_thenGenerateUrlFromConstants() {
         String expected = generateExpectedUrl();
-        TestSubscriber<String> testSubscriber = new TestSubscriber();
+        TestSubscriber<String> testSubscriber = new TestSubscriber<>();
 
         urlProvider.getOauthAuthorizeUrlString().subscribe(testSubscriber);
 
