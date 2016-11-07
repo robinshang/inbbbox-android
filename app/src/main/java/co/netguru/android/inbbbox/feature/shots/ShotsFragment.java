@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -52,6 +53,24 @@ public class ShotsFragment
     @OnClick(R.id.fab_like_menu)
     void onLikeFabClick() {
         getPresenter().likeShot(shotsRecyclerView.getCurrentItem());
+    }
+
+    @OnClick(R.id.fab_bucket_menu)
+    void onBucketClick() {
+        // TODO: 07.11.2016 replace this when feature will be implemented
+        Toast.makeText(getContext(), "Bucket", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.fab_comment_menu)
+    void onCommentClick() {
+        // TODO: 07.11.2016 replace this when feature will be implemented
+        Toast.makeText(getContext(), "Comment", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.fab_follow_menu)
+    void onFollowClick() {
+        // TODO: 07.11.2016 replace this when feature will be implemented
+        Toast.makeText(getContext(), "Follow", Toast.LENGTH_SHORT).show();
     }
 
     public static ShotsFragment newInstance() {
