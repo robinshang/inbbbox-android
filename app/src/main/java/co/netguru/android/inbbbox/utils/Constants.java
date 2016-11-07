@@ -3,9 +3,18 @@ package co.netguru.android.inbbbox.utils;
 public final class Constants {
     public static final int UNDEFINED = -1;
 
-    public static class VIEW {
-        public static final int LIKE_FRAGMENT_COLUMN_COUNT = 2;
+    private Constants() {
+        throw new AssertionError();
     }
+
+    public static class View {
+        public static final int LIKE_FRAGMENT_COLUMN_COUNT = 2;
+
+        private View() {
+            throw new AssertionError();
+        }
+    }
+
     public static class OAUTH {
         public static final String BASE_URL = "https://dribbble.com/";
         public static final String OAUTH_AUTHORIZE_ENDPOINT = "oauth/authorize";
@@ -17,11 +26,13 @@ public final class Constants {
         public static final String CLIENT_SECRET_KEY = "client_secret";
         public static final String CODE_KEY = "code";
         public static final String ERROR_KEY = "error";
-        public static final String REDIRECT_URI_KEY = "redirect_uri";
+
+        private OAUTH() {
+            throw new AssertionError();
+        }
     }
 
     public static class API {
-
         public static final String HEADER_ACCEPT = "Accept";
         public static final String HEADER_TYPE_JSON = "application/json";
         public static final String HEADER_AUTHORIZATION = "AUTHORIZATION";
@@ -33,22 +44,36 @@ public final class Constants {
         public static final String LIST_PARAM_DEBUTS_PARAM = "debuts";
         public static final String LIST_PARAM_SORT_RECENT_PARAM = "recent";
         public static final String LIST_PARAM_SORT_VIEWS_PARAM = "views";
+
+        private API() {
+            throw new AssertionError();
+        }
     }
 
     public class Db {
         public static final String TOKEN_KEY = "db_token";
         public static final String CURRENT_USER_KEY = "db_current_user";
         public static final String SETTINGS_KEY = "db_settings";
+
+        private Db() {
+            throw new AssertionError();
+        }
     }
 
     public class Notification {
         public static final int NOTIFICATION_ID = 0;
-    }
 
-    private Constants() {
+        private Notification() {
+            throw new AssertionError();
+        }
     }
 
     public class Animations {
         public static final long FOG_ANIM_DURATION = 200;
+
+        private Animations() {
+            throw new AssertionError();
+        }
+
     }
 }

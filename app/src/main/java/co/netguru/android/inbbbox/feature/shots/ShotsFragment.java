@@ -31,6 +31,12 @@ public class ShotsFragment
         extends BaseMvpFragment<ShotsContract.View, ShotsContract.Presenter>
         implements ShotsContract.View, ShotsAdapter.OnItemLeftSwipeListener {
 
+    private ShotsComponent component;
+    private ShotLikeStatusListener shotLikeStatusListener;
+
+    @Inject
+    ShotsAdapter adapter;
+
     @BindView(R.id.shots_recycler_view)
     AutoItemScrollRecyclerView shotsRecyclerView;
 
@@ -47,12 +53,6 @@ public class ShotsFragment
     void onLikeFabClick() {
         getPresenter().likeShot(shotsRecyclerView.getCurrentItem());
     }
-
-    @Inject
-    ShotsAdapter adapter;
-
-    private ShotsComponent component;
-    private ShotLikeStatusListener shotLikeStatusListener;
 
     public static ShotsFragment newInstance() {
         return new ShotsFragment();
@@ -146,6 +146,7 @@ public class ShotsFragment
         getPresenter().likeShot(itemPosition);
     }
 
+    @FunctionalInterface
     public interface ShotLikeStatusListener {
         void shotLikeStatusChanged();
     }

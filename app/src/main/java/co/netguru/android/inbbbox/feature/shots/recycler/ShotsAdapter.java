@@ -20,6 +20,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder>
 
     @Inject
     public ShotsAdapter() {
+        //DI Injection
     }
 
     @Override
@@ -69,6 +70,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder>
         throw new IllegalArgumentException("There is no shot with id :" + id);
     }
 
+    @FunctionalInterface
     public interface OnItemLeftSwipeListener {
         OnItemLeftSwipeListener NULL = shot -> {
         };

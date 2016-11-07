@@ -12,7 +12,6 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.utils.Constants;
 
 public class FogFloatingActionMenu extends FloatingActionMenu {
-    private static final long HIDE_ICON_ANIMATION_DURATION = 500;
     private View fogView;
 
     public FogFloatingActionMenu(Context context) {
