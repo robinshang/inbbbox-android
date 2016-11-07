@@ -4,9 +4,12 @@ import android.graphics.drawable.Drawable;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
+import co.netguru.android.inbbbox.data.ui.Follower;
 import co.netguru.android.inbbbox.utils.TextFormatter;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -40,7 +43,7 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
         final Subscription subscription = followersProvider.getFollowedUsers()
                 .toList()
                 .compose(androidIO())
-                .subscribe(followers -> getView().showFollowedUsers(followers),
+                .subscribe(this::onGetShotsNext,
                         throwable -> Timber.e(throwable, "Error while getting followed users form server"));
         subscriptions.add(subscription);
     }
@@ -48,5 +51,14 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     @Override
     public void addIconToText(String text, Drawable icon) {
         getView().setEmptyViewText(textFormatter.addDrawableToTextAtFirstSpace(text, icon));
+    }
+
+    private void onGetShotsNext(List<Follower> followersList) {
+        if (followersList.isEmpty()) {
+            getView().showEmptyLikesInfo();
+            return;
+        }
+        getView().hideEmptyLikesInfo();
+        getView().showFollowedUsers(followersList);
     }
 }

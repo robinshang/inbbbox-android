@@ -16,6 +16,10 @@ interface FollowersContract {
 
         void showFollowedUsers(List<Follower> followerList);
 
+        void hideEmptyLikesInfo();
+
+        void showEmptyLikesInfo();
+
         void setEmptyViewText(SpannableStringBuilder spannableStringBuilder);
     }
 

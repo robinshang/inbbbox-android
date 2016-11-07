@@ -31,15 +31,15 @@ import co.netguru.android.inbbbox.feature.followers.adapter.FollowersAdapter;
 public class FollowersFragment extends BaseFragmentWithMenu<FollowersContract.View, FollowersContract.Presenter>
         implements FollowersContract.View {
 
-    @BindDrawable(R.drawable.ic_like_emptystate)
+    @BindDrawable(R.drawable.ic_following_emptystate)
     Drawable emptyTextDrawable;
 
-    @BindString(R.string.fragment_like_empty_text)
+    @BindString(R.string.fragment_followers_empty_text)
     String emptyString;
 
-    @BindView(R.id.fragment_likes_empty_view)
+    @BindView(R.id.fragment_followers_empty_view)
     ScrollView emptyView;
-    @BindView(R.id.fragment_like_empty_text)
+    @BindView(R.id.fragment_followers_empty_text)
     TextView emptyViewText;
 
     @Inject
@@ -69,6 +69,7 @@ public class FollowersFragment extends BaseFragmentWithMenu<FollowersContract.Vi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
         getPresenter().getFollowedUsersFromServer();
         getPresenter().addIconToText(emptyString, emptyTextDrawable);
     }
@@ -87,6 +88,16 @@ public class FollowersFragment extends BaseFragmentWithMenu<FollowersContract.Vi
     @Override
     public void showFollowedUsers(List<Follower> followerList) {
         adapter.setFollowersList(followerList);
+    }
+
+    @Override
+    public void hideEmptyLikesInfo() {
+        emptyView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showEmptyLikesInfo() {
+        emptyView.setVisibility(View.VISIBLE);
     }
 
     @Override
