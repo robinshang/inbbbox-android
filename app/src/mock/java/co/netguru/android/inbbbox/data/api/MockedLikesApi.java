@@ -3,7 +3,7 @@ package co.netguru.android.inbbbox.data.api;
 import java.util.LinkedList;
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.models.LikedShotEntity;
+import co.netguru.android.inbbbox.models.LikedShotEntity;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
