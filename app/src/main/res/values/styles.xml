@@ -21,8 +21,24 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <style name="Font12">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Font12.Gray" parent="Font12">
+        <item name="android:textColor">@color/lightGray</item>
+    </style>
+
     <style name="Font14">
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Font14.RobotoSmallCaps" parent="Font14">
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+    </style>
+
+    <style name="Font14.RobotoSmallCaps.Pink" parent="Font14.RobotoSmallCaps">
+        <item name="android:textColor">@color/pink</item>
     </style>
 
     <style name="Font14.Pink" parent="Font14">
