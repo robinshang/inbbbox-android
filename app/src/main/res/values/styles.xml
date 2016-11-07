@@ -71,4 +71,16 @@
         <item name="android:layout_marginRight">15dp</item>
     </style>
 
+    <style name="FabMenuLabel">
+        <item name="android:background">@drawable/fab_menu_label_background</item>
+        <item name="android:paddingLeft">@dimen/fab_menu_label_side_padding</item>
+        <item name="android:paddingRight">@dimen/fab_menu_label_side_padding</item>
+        <item name="android:paddingTop">@dimen/fab_menu_label_bottom_top_padding</item>
+        <item name="android:paddingBottom">@dimen/fab_menu_label_bottom_top_padding</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:textSize">@dimen/fab_label_font_size</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

@@ -38,7 +38,6 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     @BindView(R.id.iv_comment)
     ImageView commentImageView;
 
-
     private OnShotLeftSwipeListener onLeftSwipeListener = OnShotLeftSwipeListener.NULL;
     private Shot shot;
 

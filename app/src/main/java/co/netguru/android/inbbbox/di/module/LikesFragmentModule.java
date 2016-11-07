@@ -27,6 +27,6 @@ public class LikesFragmentModule {
     @Provides
     @FragmentScope
     GridLayoutManager provideGridLayoutManager() {
-        return new GridLayoutManager(context, Constants.VIEW.LIKE_FRAGMENT_COLUMN_COUNT);
+        return new GridLayoutManager(context, Constants.View.LIKE_FRAGMENT_COLUMN_COUNT);
     }
 }
