@@ -30,7 +30,7 @@
             android:background="@color/whiteFog"/>
     </FrameLayout>
 
-    <com.github.clans.fab.FloatingActionMenu
+    <co.netguru.android.inbbbox.view.FogFloatingActionMenu
         android:id="@+id/fab_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,6 +74,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_comment"
             fab:fab_colorNormal="@color/white"
+            fab:fab_colorPressed="@color/accent"
             fab:fab_label="@string/comment"
             fab:fab_size="mini"/>
 
@@ -83,6 +84,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_bucket"
             fab:fab_colorNormal="@color/white"
+            fab:fab_colorPressed="@color/accent"
             fab:fab_label="@string/add_to_bucket"
             fab:fab_size="mini"/>
 
@@ -92,6 +94,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_follow"
             fab:fab_colorNormal="@color/white"
+            fab:fab_colorPressed="@color/accent"
             fab:fab_label="@string/follow"
             fab:fab_size="mini"/>
 
@@ -100,9 +103,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_like"
+            fab:fab_colorPressed="@color/accent"
             fab:fab_colorNormal="@color/white"
             fab:fab_label="@string/like"
             fab:fab_size="mini"/>
 
-    </com.github.clans.fab.FloatingActionMenu>
+    </co.netguru.android.inbbbox.view.FogFloatingActionMenu>
 </android.support.design.widget.CoordinatorLayout>
