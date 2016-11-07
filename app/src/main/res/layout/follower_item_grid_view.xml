@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
 
+    <co.netguru.android.inbbbox.view.RoundedCornersImageView
+        android:id="@+id/follower_item_user_shot"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/follower_grid_shot_height"
+        android:scaleType="fitXY" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/follower_list_text_padding_top">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/follower_item_user_photo"
+            android:layout_width="@dimen/follower_list_user_photo_size"
+            android:layout_height="@dimen/follower_list_user_photo_size" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/follower_grid_text_padding_top">
+
+            <TextView
+                android:id="@+id/follower_item_username"
+                style="@style/Font14.RobotoSmallCaps.Pink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/follower_item_shots_count"
+                style="@style/Font12.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
