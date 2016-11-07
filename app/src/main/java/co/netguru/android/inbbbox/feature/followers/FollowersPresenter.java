@@ -22,12 +22,15 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
         implements FollowersContract.Presenter {
 
     private final FollowersProvider followersProvider;
+    private final FollowersShotProvider followersShotProvider;
     private final TextFormatter textFormatter;
     private final CompositeSubscription subscriptions;
 
     @Inject
-    FollowersPresenter(FollowersProvider followersProvider, TextFormatter textFormatter) {
+    FollowersPresenter(FollowersProvider followersProvider, FollowersShotProvider followersShotProvider,
+                       TextFormatter textFormatter) {
         this.followersProvider = followersProvider;
+        this.followersShotProvider = followersShotProvider;
         this.textFormatter = textFormatter;
         subscriptions = new CompositeSubscription();
     }
@@ -41,6 +44,7 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     @Override
     public void getFollowedUsersFromServer() {
         final Subscription subscription = followersProvider.getFollowedUsers()
+                .flatMap(followersShotProvider::getFollowedUserWithShots)
                 .toList()
                 .compose(androidIO())
                 .subscribe(this::onGetShotsNext,

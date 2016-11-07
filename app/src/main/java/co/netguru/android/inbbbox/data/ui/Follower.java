@@ -1,9 +1,13 @@
 package co.netguru.android.inbbbox.data.ui;
 
+import android.support.annotation.Nullable;
+
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 @AutoValue
 public abstract class Follower {
@@ -19,6 +23,9 @@ public abstract class Follower {
 
     @SerializedName("shots_count")
     public abstract int shotsCount();
+
+    @Nullable
+    public abstract List<Shot> shotList();
 
     public static Builder builder() {
         return new AutoValue_Follower.Builder();
@@ -40,6 +47,8 @@ public abstract class Follower {
         public abstract Builder avatarUrl(String avatarUrl);
 
         public abstract Builder shotsCount(int shotsCount);
+
+        public abstract Builder shotList(List<Shot> shotList);
 
         public abstract Follower build();
     }

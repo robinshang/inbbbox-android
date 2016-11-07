@@ -10,6 +10,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.ui.Follower;
+import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
@@ -39,7 +40,7 @@ public class FollowersViewHolder extends BaseViewHolder<Follower> {
         userName.setText(item.name());
         shotsCount.setText(getShotCountString(item.shotsCount()));
         loadUserPhoto(item.avatarUrl());
-        loadUserShot();
+        loadUserShot(item.shotList().get(0)); // TODO: 07.11.2016 Should be changed
     }
 
     private String getShotCountString(int shotCount) {
@@ -55,11 +56,11 @@ public class FollowersViewHolder extends BaseViewHolder<Follower> {
                 .into(userPhoto);
     }
 
-    private void loadUserShot() {
+    private void loadUserShot(Shot shot) {
         final float radius = itemView.getResources().getDimension(R.dimen.shot_radius_dp);
         userShot.setRadius(radius);
         Glide.with(itemView.getContext())
-                .load("") // TODO: 07.11.2016 Change to user shot
+                .load(shot.normalImageUrl())
                 .placeholder(R.drawable.shot_placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(userShot);
