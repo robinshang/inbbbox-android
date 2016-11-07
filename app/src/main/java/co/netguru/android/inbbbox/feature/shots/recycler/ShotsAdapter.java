@@ -20,6 +20,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder>
 
     @Inject
     public ShotsAdapter() {
+        //DI Injection
     }
 
     @Override
@@ -46,7 +47,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder>
 
     @Override
     public void onLeftSwipe(int position) {
-        onItemLeftSwipeListener.onItemLeftSwipe(items.get(position));
+        onItemLeftSwipeListener.onItemLeftSwipe(position);
     }
 
     public void setOnLeftSwipeListener(OnItemLeftSwipeListener onItemLeftSwipeListener) {
@@ -61,7 +62,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder>
     }
 
     private int findShotPosition(int id) {
-        for (int i = 0;i<items.size();i++) {
+        for (int i = 0; i < items.size(); i++) {
             if (items.get(i).id() == id) {
                 return i;
             }
@@ -69,9 +70,11 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder>
         throw new IllegalArgumentException("There is no shot with id :" + id);
     }
 
+    @FunctionalInterface
     public interface OnItemLeftSwipeListener {
-        OnItemLeftSwipeListener NULL = shot -> {};
+        OnItemLeftSwipeListener NULL = shot -> {
+        };
 
-        void onItemLeftSwipe(Shot shot);
+        void onItemLeftSwipe(int itemPosition);
     }
 }

@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 public class AutoItemScrollRecyclerView extends RecyclerView {
     private boolean isScrollingNext;
     private boolean isScrollingBack;
+    private int currentItem;
 
     public AutoItemScrollRecyclerView(Context context) {
         super(context);
@@ -27,6 +28,7 @@ public class AutoItemScrollRecyclerView extends RecyclerView {
 
     private void init() {
         setOverScrollMode(OVER_SCROLL_NEVER);
+        currentItem = 0;
         setNestedScrollingEnabled(false);
     }
 
@@ -44,11 +46,13 @@ public class AutoItemScrollRecyclerView extends RecyclerView {
     private void scrollToBack() {
         int firstVisibleItemIndex = ((LinearLayoutManager) getLayoutManager()).findFirstVisibleItemPosition();
         super.smoothScrollToPosition(firstVisibleItemIndex);
+        currentItem = firstVisibleItemIndex;
     }
 
     private void scrollToNext() {
         int lastVisibleItemIndex = ((LinearLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
         super.smoothScrollToPosition(lastVisibleItemIndex);
+        currentItem = lastVisibleItemIndex;
     }
 
     @Override
@@ -67,5 +71,9 @@ public class AutoItemScrollRecyclerView extends RecyclerView {
     public boolean fling(int velocityX, int velocityY) {
         //fling disabled
         return false;
+    }
+
+    public int getCurrentItem() {
+        return currentItem;
     }
 }

@@ -5,7 +5,10 @@
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="shadowBlack">#04000000</color>
     <color name="lightGray">#BDBDBD</color>
+    <color name="lightShadow">#b58b8b8b</color>
+    <color name="whiteFog">#c1ffffff</color>
     <color name="gray">#DEDEDE</color>
     <color name="palePink">#F9D4E2</color>
     <color name="pink">#F0377E</color>

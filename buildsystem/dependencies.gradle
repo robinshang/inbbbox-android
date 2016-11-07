@@ -77,7 +77,8 @@ ext {
             snappyDb                : "com.snappydb:snappydb-lib:$snappyVersion",
             kryo                    : "com.esotericsoftware.kryo:kryo:$kryoVersion",
             circleImageView         : "de.hdodenhof:circleimageview:2.1.0",
-            swipeLayout             : "com.daimajia.swipelayout:library:1.2.0@aar"
+            swipeLayout             : "com.daimajia.swipelayout:library:1.2.0@aar",
+            fabMenu                 : "com.github.clans:fab:1.6.4"
     ]
 
     proc = [

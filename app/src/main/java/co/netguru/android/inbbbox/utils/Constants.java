@@ -3,8 +3,16 @@ package co.netguru.android.inbbbox.utils;
 public final class Constants {
     public static final int UNDEFINED = -1;
 
-    public static class VIEW {
+    private Constants() {
+        throw new AssertionError();
+    }
+
+    public static class View {
         public static final int LIKE_FRAGMENT_COLUMN_COUNT = 2;
+
+        private View() {
+            throw new AssertionError();
+        }
     }
 
     public static class OAUTH {
@@ -18,7 +26,10 @@ public final class Constants {
         public static final String CLIENT_SECRET_KEY = "client_secret";
         public static final String CODE_KEY = "code";
         public static final String ERROR_KEY = "error";
-        public static final String REDIRECT_URI_KEY = "redirect_uri";
+
+        private OAUTH() {
+            throw new AssertionError();
+        }
     }
 
     public static class API {
@@ -30,18 +41,26 @@ public final class Constants {
         public static final String LIST_PARAM_DEBUTS_PARAM = "debuts";
         public static final String LIST_PARAM_SORT_RECENT_PARAM = "recent";
         public static final String LIST_PARAM_SORT_VIEWS_PARAM = "views";
+
+        private API() {
+            throw new AssertionError();
+        }
     }
 
-    public class Db {
-        public static final String TOKEN_KEY = "db_token";
-        public static final String CURRENT_USER_KEY = "db_current_user";
-        public static final String SETTINGS_KEY = "db_settings";
-    }
-
-    public class Notification {
+    public static class Notification {
         public static final int NOTIFICATION_ID = 0;
+
+        private Notification() {
+            throw new AssertionError();
+        }
     }
 
-    private Constants() {
+    public static class Animations {
+        public static final long FOG_ANIM_DURATION = 200;
+
+        private Animations() {
+            throw new AssertionError();
+        }
+
     }
 }
