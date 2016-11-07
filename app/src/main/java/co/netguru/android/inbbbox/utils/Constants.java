@@ -50,7 +50,7 @@ public final class Constants {
         }
     }
 
-    public class Db {
+    public static class Db {
         public static final String TOKEN_KEY = "db_token";
         public static final String CURRENT_USER_KEY = "db_current_user";
         public static final String SETTINGS_KEY = "db_settings";
@@ -60,7 +60,7 @@ public final class Constants {
         }
     }
 
-    public class Notification {
+    public static class Notification {
         public static final int NOTIFICATION_ID = 0;
 
         private Notification() {
@@ -68,7 +68,7 @@ public final class Constants {
         }
     }
 
-    public class Animations {
+    public static class Animations {
         public static final long FOG_ANIM_DURATION = 200;
 
         private Animations() {
