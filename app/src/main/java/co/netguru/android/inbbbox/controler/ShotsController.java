@@ -56,10 +56,10 @@ public class ShotsController {
             observablesToExecute.add(getFilteredShots(sourceSettings));
         }
 
-        return Observable.zip(observablesToExecute, this::margeResults);
+        return Observable.zip(observablesToExecute, this::mergeResults);
     }
 
-    private List<ShotEntity> margeResults(Object[] args) {
+    private List<ShotEntity> mergeResults(Object[] args) {
         List<ShotEntity> results = new ArrayList<>();
 
         for (Object arg : args) {

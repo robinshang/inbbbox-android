@@ -12,7 +12,7 @@ import rx.Observable;
 
 public class MockShotsApi implements ShotsApi {
 
-    public static int ITEM_COUNT = new Random().nextInt(1000);
+    public static final int ITEM_COUNT = new Random().nextInt(1000);
 
     @Override
     public Observable<List<ShotEntity>> getFilteredShots(@Query(Constants.API.SHOTS_KEY_LIST) String list,

@@ -4,7 +4,6 @@ import javax.inject.Singleton;
 
 import co.netguru.android.commons.di.BaseComponent;
 import co.netguru.android.inbbbox.application.DebugMetricsHelper;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.notification.NotificationAlarmReceiver;
 import co.netguru.android.inbbbox.di.module.ApiModule;
 import co.netguru.android.inbbbox.di.module.ApplicationModule;

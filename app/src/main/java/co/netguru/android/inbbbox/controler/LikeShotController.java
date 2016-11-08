@@ -4,7 +4,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.net.ssl.HttpsURLConnection;
 
-import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.api.LikesApi;
 import okhttp3.ResponseBody;
 import retrofit2.Response;

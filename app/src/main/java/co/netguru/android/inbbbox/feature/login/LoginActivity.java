@@ -30,7 +30,6 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @OnClick(R.id.btn_login)
     void onLoginClick() {
         getPresenter().showLoginView();
-        net.hockeyapp.android.LoginActivity.class.getSimpleName();
     }
 
     public static void startActivity(Context context) {
