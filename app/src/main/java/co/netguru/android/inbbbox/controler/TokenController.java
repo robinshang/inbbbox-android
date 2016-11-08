@@ -9,6 +9,7 @@ import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import co.netguru.android.inbbbox.model.api.Token;
 import co.netguru.android.inbbbox.utils.StringUtils;
 import rx.Observable;
+import timber.log.Timber;
 
 @Singleton
 public class TokenController {
@@ -37,7 +38,8 @@ public class TokenController {
     public Observable<Boolean> isTokenValid() {
         return Observable.fromCallable(() -> {
             Token token = tokenPrefsRepository.getToken();
-            return token != null && StringUtils.isBlank(token.getAccessToken());
+            Timber.d(token.toString());
+            return token != null && !StringUtils.isBlank(token.getAccessToken());
         });
     }
 }
