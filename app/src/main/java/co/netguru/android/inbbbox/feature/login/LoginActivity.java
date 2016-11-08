@@ -12,8 +12,8 @@ import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.netguru.android.commons.di.WithComponent;
+import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.application.App;
 import co.netguru.android.inbbbox.di.component.LoginComponent;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
@@ -63,11 +63,6 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void handleOauthUrl(String url) {
         dialogFragment = WebviewDialogFragment.newInstance(url);
         dialogFragment.show(getFragmentManager(), WebviewDialogFragment.TAG);
@@ -76,6 +71,11 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     public void showApiError(String oauthErrorMessage) {
         Toast.makeText(this, oauthErrorMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showInvalidOauthUrlError() {
+        Toast.makeText(this, R.string.invalid_outh_url, Toast.LENGTH_LONG).show();
     }
 
     @Override

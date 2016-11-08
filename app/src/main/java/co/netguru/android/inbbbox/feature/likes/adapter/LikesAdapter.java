@@ -14,7 +14,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.ui.LikedShot;
+import co.netguru.android.inbbbox.model.ui.LikedShot;
 
 @FragmentScope
 public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder> {

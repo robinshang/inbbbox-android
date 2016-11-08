@@ -240,10 +240,6 @@ dependencies {
     compile libs.timber
     compile libs.fabMenu
 
-    //persistent
-    compile libs.kryo
-    compile libs.snappyDb
-
     // View
     compile libs.butterKnife
     apt proc.butterKnife

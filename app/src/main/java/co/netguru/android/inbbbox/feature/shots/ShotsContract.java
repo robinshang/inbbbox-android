@@ -5,7 +5,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.ui.Shot;
+import co.netguru.android.inbbbox.model.ui.Shot;
 
 interface ShotsContract {
 

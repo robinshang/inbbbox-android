@@ -31,11 +31,10 @@ import java.util.List;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
+import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.application.App;
-import co.netguru.android.inbbbox.data.ui.TabItemType;
+import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.di.component.MainActivityComponent;
-import co.netguru.android.inbbbox.di.module.MainActivityModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.likes.LikesFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
@@ -98,7 +97,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
 
     private void initComponent() {
         component = App.getAppComponent(this)
-                .plus(new MainActivityModule());
+                .plusMainActivityComponent();
         component.inject(this);
     }
 

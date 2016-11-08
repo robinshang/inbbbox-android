@@ -15,6 +15,8 @@ public interface LoginContract {
         void showNextScreen();
 
         void closeLoginDialog();
+
+        void showInvalidOauthUrlError();
     }
 
     interface Presenter extends MvpPresenter<View>{
