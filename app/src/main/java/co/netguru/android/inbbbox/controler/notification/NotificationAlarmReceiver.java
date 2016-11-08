@@ -21,7 +21,6 @@ public class NotificationAlarmReceiver extends BroadcastReceiver {
     private static final int MAIN_ACTIVITY_REQUEST_CODE = 1;
     private static final int NOTIFICATION_ID = 0;
 
-
     @Inject
     NotificationManager notificationManager;
     @Inject
