@@ -281,7 +281,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
 
     @Override
     public void showTimePickDialog(int startHour, int startMinute, TimePickerDialog.OnTimeSetListener onTimeSetListener) {
-        new TimePickerDialog(this, onTimeSetListener, startHour, startMinute, false).show();
+        new TimePickerDialog(this, R.style.TimePickerDialog, onTimeSetListener, startHour, startMinute, false).show();
     }
 
     @Override
