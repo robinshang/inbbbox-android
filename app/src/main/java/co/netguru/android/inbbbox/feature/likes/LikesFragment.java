@@ -120,6 +120,7 @@ public class LikesFragment extends BaseMvpFragment<LikesViewContract.View, Likes
         }
         changeMenuItemIcons(isGridView);
         recyclerView.setLayoutManager(isGridView ? gridLayoutManager : linearLayoutManager);
+        recyclerView.setAdapter(likesAdapter);
         return true;
     }
 
