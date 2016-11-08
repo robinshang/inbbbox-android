@@ -52,7 +52,7 @@ public class ShotEntity {
     @SerializedName("animated")
     private Boolean animated;
     @SerializedName("tags")
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags = new ArrayList<>();
     @SerializedName("user")
     private User user;
     @SerializedName("team")
