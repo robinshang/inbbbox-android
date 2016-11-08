@@ -80,9 +80,9 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     }
 
     private void onGetLikeShotListNext(List<LikedShot> likedShotList) {
+        hasMore = likedShotList.size() == PAGE_COUNT;
         if (likedShotList.isEmpty()) {
             getView().showEmptyLikesInfo();
-            hasMore = false;
             return;
         }
         getView().hideEmptyLikesInfo();
@@ -90,10 +90,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     }
 
     private void onGetMoreLikeShotListNext(List<LikedShot> likedShotList) {
-        if (likedShotList.isEmpty()) {
-            hasMore = false;
-            return;
-        }
+        hasMore = likedShotList.size() == PAGE_COUNT;
         getView().showMoreLikes(likedShotList);
     }
 }

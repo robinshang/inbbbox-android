@@ -90,7 +90,7 @@ public class LikesFragment extends BaseFragmentWithMenu<LikesViewContract.View, 
     protected void changeGridMode(boolean isGridMode) {
         likesAdapter.setGridMode(isGridMode);
         recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
-        recyclerView.setAdapter(likesAdapter);
+        likesAdapter.notifyDataSetChanged();
     }
 
     @NonNull
@@ -129,6 +129,8 @@ public class LikesFragment extends BaseFragmentWithMenu<LikesViewContract.View, 
     }
 
     private void initRecyclerView() {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(likesAdapter);
         recyclerView.addOnScrollListener(new LoadMoreScrollListener(LIKES_TO_LOAD_MORE) {
             @Override
             public void requestMoreData() {
