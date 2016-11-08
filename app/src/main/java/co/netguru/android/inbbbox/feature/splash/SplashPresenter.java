@@ -4,9 +4,9 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.feature.authentication.TokenProvider;
-import co.netguru.android.inbbbox.feature.authentication.UserProvider;
-import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
+import co.netguru.android.inbbbox.controler.TokenController;
+import co.netguru.android.inbbbox.controler.UserController;
+import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
@@ -14,17 +14,17 @@ import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.View>
         implements SplashContract.Presenter {
 
-    private final TokenProvider tokenProvider;
-    private final UserProvider userProvider;
-    private ErrorMessageParser errorParser;
+    private final TokenController tokenController;
+    private final UserController userController;
+    private ErrorMessageController errorParser;
 
     @Inject
-    SplashPresenter(TokenProvider tokenProvider,
-                    UserProvider userProvider,
-                    ErrorMessageParser errorParser) {
+    SplashPresenter(TokenController tokenController,
+                    UserController userController,
+                    ErrorMessageController errorParser) {
 
-        this.tokenProvider = tokenProvider;
-        this.userProvider = userProvider;
+        this.tokenController = tokenController;
+        this.userController = userController;
         this.errorParser = errorParser;
     }
 
@@ -35,7 +35,7 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     }
 
     private void checkToken() {
-        tokenProvider.isTokenValid()
+        tokenController.isTokenValid()
                 .compose(androidIO())
                 .subscribe(this::handleTokenVerificationResult, this::handleError);
     }
@@ -51,7 +51,7 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     }
 
     private void getCurrentUserInstance() {
-        userProvider.requestUser()
+        userController.requestUser()
                 .compose(androidIO())
                 .subscribe(user -> getView().showMainScreen(),
                         this::handleError);

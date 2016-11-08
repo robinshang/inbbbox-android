@@ -17,11 +17,6 @@ import dagger.Provides;
 @Module
 public class ApplicationModule {
 
-    public static final String SETTINGS_SHARED_PREFERENCES_NAME = "settings";
-    public static final String TOKEN_SHARED_PREFERENCES_NAME = "token";
-    public static final String USER_SHARED_PREFERENCES_NAME = "user";
-
-
     private Application application;
 
     public ApplicationModule(Application application) {
@@ -42,24 +37,6 @@ public class ApplicationModule {
     @Provides
     Resources provideResources() {
         return application.getResources();
-    }
-
-    @Named(SETTINGS_SHARED_PREFERENCES_NAME)
-    @Provides
-    SharedPreferences provideSettingsSharedPreferences(Context context) {
-        return context.getSharedPreferences(context.getPackageName().concat(SETTINGS_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
-    }
-
-    @Named(TOKEN_SHARED_PREFERENCES_NAME)
-    @Provides
-    SharedPreferences provideTokenSharedPreferences(Context context) {
-        return context.getSharedPreferences(context.getPackageName().concat(TOKEN_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
-    }
-
-    @Named(USER_SHARED_PREFERENCES_NAME)
-    @Provides
-    SharedPreferences provideUserSharedPreferences(Context context) {
-        return context.getSharedPreferences(context.getPackageName().concat(USER_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
     }
 
     @Provides

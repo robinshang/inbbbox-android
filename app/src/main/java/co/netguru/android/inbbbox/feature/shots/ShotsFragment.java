@@ -24,7 +24,7 @@ import co.netguru.android.inbbbox.di.component.ShotsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
-import co.netguru.android.inbbbox.models.ui.Shot;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView;
 import co.netguru.android.inbbbox.view.FogFloatingActionMenu;
 

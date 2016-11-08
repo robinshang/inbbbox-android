@@ -35,7 +35,7 @@
             android:name="net.hockeyapp.android.appIdentifier"
             android:value="${HOCKEYAPP_APP_ID}"/>
 
-        <receiver android:name=".feature.notification.NotificationAlarmReceiver" />
+        <receiver android:name="co.netguru.android.inbbbox.controler.notification.NotificationAlarmReceiver" />
     </application>
 
 </manifest>

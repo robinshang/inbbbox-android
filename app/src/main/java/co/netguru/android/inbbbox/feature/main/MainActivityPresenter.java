@@ -8,43 +8,41 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.local.UserPrefsController;
+import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
 import co.netguru.android.inbbbox.feature.main.MainViewContract.Presenter;
-import co.netguru.android.inbbbox.feature.notification.NotificationController;
-import co.netguru.android.inbbbox.feature.notification.NotificationScheduler;
-import co.netguru.android.inbbbox.feature.settings.SettingsManager;
-import co.netguru.android.inbbbox.models.NotificationSettings;
-import co.netguru.android.inbbbox.models.Settings;
-import co.netguru.android.inbbbox.models.StreamSourceSettings;
-import co.netguru.android.inbbbox.models.User;
+import co.netguru.android.inbbbox.controler.notification.NotificationController;
+import co.netguru.android.inbbbox.controler.notification.NotificationScheduler;
+import co.netguru.android.inbbbox.controler.SettingsController;
+import co.netguru.android.inbbbox.model.localrepository.NotificationSettings;
+import co.netguru.android.inbbbox.model.localrepository.Settings;
+import co.netguru.android.inbbbox.model.localrepository.StreamSourceSettings;
+import co.netguru.android.inbbbox.model.api.User;
 import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
-import co.netguru.android.inbbbox.utils.RxTransformers;
+import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
-
-import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 
 @ActivityScope
 public final class MainActivityPresenter extends MvpNullObjectBasePresenter<MainViewContract.View>
         implements Presenter {
 
     private final LocalTimeFormatter localTimeFormatter;
-    private final UserPrefsController userPrefsController;
+    private final UserPrefsRepository userPrefsRepository;
     private final NotificationScheduler notificationScheduler;
     private final NotificationController notificationController;
-    private final SettingsManager settingsManager;
+    private final SettingsController settingsController;
     private final CompositeSubscription subscriptions;
 
     @Inject
-    MainActivityPresenter(LocalTimeFormatter localTimeFormatter, UserPrefsController userPrefsController,
+    MainActivityPresenter(LocalTimeFormatter localTimeFormatter, UserPrefsRepository userPrefsRepository,
                           NotificationScheduler notificationScheduler, NotificationController notificationController,
-                          SettingsManager settingsManager) {
+                          SettingsController settingsController) {
         this.localTimeFormatter = localTimeFormatter;
-        this.userPrefsController = userPrefsController;
+        this.userPrefsRepository = userPrefsRepository;
         this.notificationScheduler = notificationScheduler;
         this.notificationController = notificationController;
-        this.settingsManager = settingsManager;
+        this.settingsController = settingsController;
         subscriptions = new CompositeSubscription();
     }
 
@@ -72,8 +70,8 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     @Override
     public void prepareUserData() {
-        final Subscription subscription = userPrefsController.getUser()
-                .compose(RxTransformers.applySingleIoSchedulers())
+        final Subscription subscription = userPrefsRepository.getUser()
+                .compose(RxTransformerUtils.applySingleIoSchedulers())
                 .subscribe(this::showUserData,
                         throwable -> Timber.e(throwable, "Error while getting user"));
         subscriptions.add(subscription);
@@ -83,8 +81,8 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     @Override
     public void timeViewClicked() {
-        final Subscription subscription = settingsManager.getNotificationSettings()
-                .compose(RxTransformers.applySingleIoSchedulers())
+        final Subscription subscription = settingsController.getNotificationSettings()
+                .compose(RxTransformerUtils.applySingleIoSchedulers())
                 .subscribe(this::showTimePickDialog,
                         throwable -> {
                             Timber.e(throwable, "Error while getting settings");
@@ -101,7 +99,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
             return;
         }
         final Subscription subscription = notificationController.scheduleNotification()
-                .compose(RxTransformers.applySingleIoSchedulers())
+                .compose(RxTransformerUtils.applySingleIoSchedulers())
                 .subscribe(this::onScheduleNotificationNext, this::onScheduleNotificationError);
 
         subscriptions.add(subscription);
@@ -129,8 +127,8 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     @Override
     public void customizationStatusChanged(boolean isDetails) {
-        final Subscription subscription = settingsManager.changeShotsDetailsStatus(isDetails)
-                .compose(RxTransformers.applyCompletableIoSchedulers())
+        final Subscription subscription = settingsController.changeShotsDetailsStatus(isDetails)
+                .compose(RxTransformerUtils.applyCompletableIoSchedulers())
                 .subscribe(() -> Timber.d("Customization settings changed"),
                         throwable -> Timber.e(throwable, "Error while changing customization settings"));
         subscriptions.add(subscription);
@@ -138,16 +136,16 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     private void changeStreamSourceStatus(@Nullable Boolean isFollowing, @Nullable Boolean isNew,
                                           @Nullable Boolean isPopular, @Nullable Boolean isDebuts) {
-        final Subscription subscription = settingsManager.changeStreamSourceSettings(isFollowing, isNew, isPopular, isDebuts)
-                .compose(RxTransformers.applyCompletableIoSchedulers())
+        final Subscription subscription = settingsController.changeStreamSourceSettings(isFollowing, isNew, isPopular, isDebuts)
+                .compose(RxTransformerUtils.applyCompletableIoSchedulers())
                 .subscribe(() -> Timber.d("Stream source settings changed"),
                         throwable -> Timber.e(throwable, "Error while changing stream source settings"));
         subscriptions.add(subscription);
     }
 
     private void saveNotificationStatus(boolean status) {
-        final Subscription subscription = settingsManager.changeNotificationStatus(status)
-                .compose(RxTransformers.applyCompletableIoSchedulers())
+        final Subscription subscription = settingsController.changeNotificationStatus(status)
+                .compose(RxTransformerUtils.applyCompletableIoSchedulers())
                 .subscribe(() -> Timber.d("New notification status saved"),
                         throwable -> Timber.e(throwable, "Error while saving notification status"));
         subscriptions.add(subscription);
@@ -159,9 +157,9 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     }
 
     private void onTimePicked(int hour, int minute) {
-        final Subscription subscription = settingsManager.changeNotificationTime(hour, minute)
+        final Subscription subscription = settingsController.changeNotificationTime(hour, minute)
                 .andThen(notificationController.scheduleNotification())
-                .compose(RxTransformers.applySingleIoSchedulers())
+                .compose(RxTransformerUtils.applySingleIoSchedulers())
                 .subscribe(notificationSettings ->
                                 getView().showNotificationTime(localTimeFormatter.getFormattedTime(hour, minute)),
                         this::onScheduleNotificationError);
@@ -170,9 +168,9 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     }
 
     private void prepareUserSettings() {
-        final Subscription subscription = settingsManager.getSettings()
+        final Subscription subscription = settingsController.getSettings()
                 .doOnSuccess(settings -> checkNotificationSchedule(settings.getNotificationSettings()))
-                .compose(RxTransformers.applySingleIoSchedulers())
+                .compose(RxTransformerUtils.applySingleIoSchedulers())
                 .subscribe(this::setSettings,
                         throwable -> Timber.e(throwable, "Error while getting settings"));
         subscriptions.add(subscription);
@@ -181,7 +179,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private void checkNotificationSchedule(NotificationSettings settings) {
         if (settings.isEnabled()) {
             notificationController.scheduleNotification()
-                    .compose(RxTransformers.applySingleIoSchedulers())
+                    .compose(RxTransformerUtils.applySingleIoSchedulers())
                     .subscribe(this::onScheduleNotificationNext, this::onScheduleNotificationError);
         }
     }

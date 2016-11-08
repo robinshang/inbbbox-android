@@ -7,10 +7,10 @@ import org.threeten.bp.LocalDateTime;
 
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.data.api.RequestInterceptor;
-import co.netguru.android.inbbbox.data.api.converter.DateTimeConverter;
-import co.netguru.android.inbbbox.data.local.TokenPrefsController;
-import co.netguru.android.inbbbox.utils.Constants;
+import co.netguru.android.inbbbox.api.RequestInterceptor;
+import co.netguru.android.inbbbox.api.DateTimeConverter;
+import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
+import co.netguru.android.inbbbox.Constants;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
@@ -32,8 +32,8 @@ public class ConfigurationModule {
     }
 
     @Provides
-    RequestInterceptor providesRequestInterceptor(TokenPrefsController tokenPrefsController) {
-        return new RequestInterceptor(tokenPrefsController);
+    RequestInterceptor providesRequestInterceptor(TokenPrefsRepository tokenPrefsRepository) {
+        return new RequestInterceptor(tokenPrefsRepository);
     }
 
     @Provides

@@ -9,7 +9,7 @@ import android.view.animation.AccelerateInterpolator;
 import com.github.clans.fab.FloatingActionMenu;
 
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.utils.Constants;
+import co.netguru.android.inbbbox.Constants;
 
 public class FogFloatingActionMenu extends FloatingActionMenu {
     private View fogView;

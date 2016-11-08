@@ -9,11 +9,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.models.ui.LikedShot;
+import co.netguru.android.inbbbox.model.ui.LikedShot;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
-import static co.netguru.android.inbbbox.utils.PixelConverter.convertToPx;
+import static co.netguru.android.inbbbox.utils.PixelConverterUtil.convertToPx;
 
 
 public class LikesViewHolder extends BaseViewHolder<LikedShot> {

@@ -10,7 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.models.ui.Shot;
+import co.netguru.android.inbbbox.model.ui.Shot;
 
 public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder>
         implements ShotsViewHolder.OnShotLeftSwipeListener {

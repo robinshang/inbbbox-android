@@ -3,7 +3,7 @@ package co.netguru.android.inbbbox.di.module;
 import android.content.res.Resources;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.inbbbox.feature.authentication.OauthUrlProvider;
+import co.netguru.android.inbbbox.controler.OauthUrlController;
 import dagger.Module;
 import dagger.Provides;
 
@@ -12,7 +12,7 @@ import dagger.Provides;
 public class LoginModule {
 
     @Provides
-    OauthUrlProvider provideOauthUriProvider(Resources resources) {
-        return new OauthUrlProvider(resources);
+    OauthUrlController provideOauthUriProvider(Resources resources) {
+        return new OauthUrlController(resources);
     }
 }

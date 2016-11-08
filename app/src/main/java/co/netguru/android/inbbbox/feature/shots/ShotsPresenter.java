@@ -6,9 +6,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.models.ui.Shot;
-import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
-import co.netguru.android.inbbbox.feature.shots.like.LikeResponseMapper;
+import co.netguru.android.inbbbox.controler.ShotsController;
+import co.netguru.android.inbbbox.controler.LikeShotController;
+import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -18,19 +19,19 @@ import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.View>
         implements ShotsContract.Presenter {
 
-    private final ShotsProvider shotsProvider;
-    private final ErrorMessageParser errorMessageParser;
-    private final LikeResponseMapper likeResponseMapper;
+    private final ShotsController shotsController;
+    private final ErrorMessageController errorMessageController;
+    private final LikeShotController likeShotController;
     private final CompositeSubscription subscriptions;
     private List<Shot> shotItems;
 
     @Inject
-    ShotsPresenter(ShotsProvider shotsProvider, ErrorMessageParser errorMessageParser,
-                   LikeResponseMapper likeResponseMapper) {
+    ShotsPresenter(ShotsController shotsController, ErrorMessageController errorMessageController,
+                   LikeShotController likeShotController) {
 
-        this.shotsProvider = shotsProvider;
-        this.errorMessageParser = errorMessageParser;
-        this.likeResponseMapper = likeResponseMapper;
+        this.shotsController = shotsController;
+        this.errorMessageController = errorMessageController;
+        this.likeShotController = likeShotController;
         subscriptions = new CompositeSubscription();
     }
 
@@ -41,7 +42,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     }
 
     private void getShotsData() {
-        final Subscription subscription = shotsProvider.getShots()
+        final Subscription subscription = shotsController.getShots()
                 .compose(androidIO())
                 .subscribe(this::showRetrievedItems,
                         this::handleException);
@@ -58,12 +59,12 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private void handleException(Throwable exception) {
         Timber.e(exception, "Shots item receiving exception ");
         getView().hideLoadingIndicator();
-        getView().showError(errorMessageParser.getError(exception));
+        getView().showError(errorMessageController.getError(exception));
     }
 
     private void likeShot(Shot shot) {
         if (!shot.isLiked()) {
-            final Subscription subscription = likeResponseMapper.likeShot(shot.id())
+            final Subscription subscription = likeShotController.likeShot(shot.id())
                     .compose(androidIO())
                     .subscribe(aVoid -> {
                     }, this::onShotLikeError, () -> onShotLikeCompleted(shot));
@@ -78,7 +79,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     private void onShotLikeError(Throwable throwable) {
         Timber.e(throwable, "Error while sending shot like");
-        getView().showError(errorMessageParser.getError(throwable));
+        getView().showError(errorMessageController.getError(throwable));
     }
 
     private Shot changeShotLikeStatus(Shot shot) {

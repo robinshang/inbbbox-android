@@ -12,7 +12,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
-import co.netguru.android.inbbbox.models.ui.LikedShot;
+import co.netguru.android.inbbbox.controler.LikedShotsController;
+import co.netguru.android.inbbbox.model.ui.LikedShot;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
@@ -21,16 +22,16 @@ import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewContract.View>
         implements LikesViewContract.Presenter {
 
-    private final LikedShotsProvider likedShotsProvider;
+    private final LikedShotsController likedShotsController;
 
     @Inject
-    LikesPresenter(LikedShotsProvider likedShotsProvider) {
-        this.likedShotsProvider = likedShotsProvider;
+    LikesPresenter(LikedShotsController likedShotsController) {
+        this.likedShotsController = likedShotsController;
     }
 
     @Override
     public void getLikesFromServer() {
-        likedShotsProvider.getLikedShots()
+        likedShotsController.getLikedShots()
                 .toList()
                 .compose(androidIO())
                 .subscribe(this::onGetLikeShotListNext,
