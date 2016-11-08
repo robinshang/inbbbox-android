@@ -38,7 +38,6 @@ public class TokenController {
     public Observable<Boolean> isTokenValid() {
         return Observable.fromCallable(() -> {
             Token token = tokenPrefsRepository.getToken();
-            Timber.d(token.toString());
             return token != null && !StringUtils.isBlank(token.getAccessToken());
         });
     }
