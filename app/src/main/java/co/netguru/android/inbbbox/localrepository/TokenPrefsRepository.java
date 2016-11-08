@@ -39,4 +39,11 @@ public class TokenPrefsRepository {
                 sharedPreferences.getString(TOKEN_TYPE_TOKEN_KEY, null),
                 sharedPreferences.getString(TOKEN_SCOPE_KEY, null));
     }
+
+    public Completable clear() {
+        return Completable.fromCallable(() -> {
+            sharedPreferences.edit().clear().apply();
+            return null;
+        });
+    }
 }

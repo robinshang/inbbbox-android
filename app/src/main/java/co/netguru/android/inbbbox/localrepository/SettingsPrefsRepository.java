@@ -90,4 +90,11 @@ public class SettingsPrefsRepository {
         return Single.fromCallable(() ->
                 new CustomizationSettings(sharedPreferences.getBoolean(DETAILS_SHOWED_KEY, false)));
     }
+
+    public Completable clear() {
+        return Completable.fromCallable(() -> {
+            sharedPreferences.edit().clear().apply();
+            return null;
+        });
+    }
 }

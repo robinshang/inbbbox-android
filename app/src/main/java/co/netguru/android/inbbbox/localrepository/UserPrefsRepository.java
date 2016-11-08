@@ -58,4 +58,11 @@ public class UserPrefsRepository {
             super(message);
         }
     }
+
+    public Completable clear() {
+        return Completable.fromCallable(() -> {
+            sharedPreferences.edit().clear().apply();
+            return null;
+        });
+    }
 }

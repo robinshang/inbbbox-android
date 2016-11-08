@@ -8,15 +8,15 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
-import co.netguru.android.inbbbox.feature.main.MainViewContract.Presenter;
+import co.netguru.android.inbbbox.controler.SettingsController;
 import co.netguru.android.inbbbox.controler.notification.NotificationController;
 import co.netguru.android.inbbbox.controler.notification.NotificationScheduler;
-import co.netguru.android.inbbbox.controler.SettingsController;
+import co.netguru.android.inbbbox.feature.main.MainViewContract.Presenter;
+import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
+import co.netguru.android.inbbbox.model.api.User;
 import co.netguru.android.inbbbox.model.localrepository.NotificationSettings;
 import co.netguru.android.inbbbox.model.localrepository.Settings;
 import co.netguru.android.inbbbox.model.localrepository.StreamSourceSettings;
-import co.netguru.android.inbbbox.model.api.User;
 import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.Subscription;
@@ -34,6 +34,9 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private final SettingsController settingsController;
     private final CompositeSubscription subscriptions;
 
+    @Nullable
+    private User user;
+
     @Inject
     MainActivityPresenter(LocalTimeFormatter localTimeFormatter, UserPrefsRepository userPrefsRepository,
                           NotificationScheduler notificationScheduler, NotificationController notificationController,
@@ -43,7 +46,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         this.notificationScheduler = notificationScheduler;
         this.notificationController = notificationController;
         this.settingsController = settingsController;
-        subscriptions = new CompositeSubscription();
+        this.subscriptions = new CompositeSubscription();
     }
 
     @Override
@@ -56,8 +59,14 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     public void toggleButtonClicked(boolean isChecked) {
         if (isChecked) {
             getView().showLogoutMenu();
+            if (user != null) {
+                getView().showUserName(user.name());
+            }
         } else {
             getView().showMainMenu();
+            if (user != null) {
+                getView().showUserName(user.username());
+            }
         }
     }
 
@@ -71,8 +80,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     @Override
     public void prepareUserData() {
         final Subscription subscription = userPrefsRepository.getUser()
-                .compose(RxTransformerUtils.applySingleIoSchedulers())
-                .subscribe(this::showUserData,
+                .subscribe(this::handleUserData,
                         throwable -> Timber.e(throwable, "Error while getting user"));
         subscriptions.add(subscription);
         prepareUserSettings();
@@ -211,7 +219,8 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         Timber.e(throwable, "Error while scheduling notification");
     }
 
-    private void showUserData(User user) {
+    private void handleUserData(User user) {
+        this.user = user;
         getView().showUserName(user.username());
         getView().showUserPhoto(user.avatarUrl());
     }
