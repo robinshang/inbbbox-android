@@ -17,8 +17,8 @@ public class LikedShotsController {
         this.likesApi = likesApi;
     }
 
-    public Observable<LikedShot> getLikedShots() {
-        return likesApi.getLikedShots()
+    public Observable<LikedShot> getLikedShots(int pageNumber, int pageCount) {
+        return likesApi.getLikedShots(pageNumber, pageCount)
                 .flatMap(Observable::from)
                 .map(LikedShot::new);
     }

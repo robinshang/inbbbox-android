@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.feature.likes.adapter;
 
-import android.support.annotation.LayoutRes;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +19,8 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder> {
 
     private List<LikedShot> likeList;
 
+    private boolean isGridMode;
+
     @Inject
     LikesAdapter() {
         likeList = new ArrayList<>();
@@ -28,7 +28,8 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder> {
 
     @Override
     public LikesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(getViewHolderLayout(parent), parent, false);
+        final View view = LayoutInflater.from(parent.getContext())
+                .inflate(isGridMode ? R.layout.like_item_grid_view : R.layout.like_item_list_view , parent, false);
         return new LikesViewHolder(view);
     }
 
@@ -48,12 +49,13 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder> {
         notifyDataSetChanged();
     }
 
-    @LayoutRes
-    private int getViewHolderLayout(ViewGroup viewGroup) {
-        RecyclerView.LayoutManager layoutManager = ((RecyclerView) viewGroup).getLayoutManager();
-        if (layoutManager == null) {
-            throw new IllegalStateException("Recycler view should have layout manager already!");
-        }
-        return layoutManager instanceof GridLayoutManager ? R.layout.like_item_grid_view : R.layout.like_item_list_view;
+    public void setGridMode(boolean isGridMode) {
+        this.isGridMode = isGridMode;
+    }
+
+    public void addMoreLikes(List<LikedShot> likeList) {
+        final int currentSize = this.likeList.size();
+        this.likeList.addAll(likeList);
+        notifyItemRangeChanged(currentSize, likeList.size());
     }
 }
