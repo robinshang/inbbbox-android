@@ -5,7 +5,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.ui.Shot;
+import co.netguru.android.inbbbox.model.ui.Shot;
 
 interface ShotsContract {
 
@@ -18,10 +18,12 @@ interface ShotsContract {
         void hideLoadingIndicator();
 
         void changeShotLikeStatus(Shot shot);
+
+        void closeFabMenu();
     }
 
     interface Presenter extends MvpPresenter<View> {
-        void likeShot(Shot shot);
+        void likeShot(int shotPosition);
 
         void loadData();
     }

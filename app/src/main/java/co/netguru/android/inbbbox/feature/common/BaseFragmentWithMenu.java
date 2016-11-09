@@ -2,9 +2,6 @@ package co.netguru.android.inbbbox.feature.common;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,14 +9,10 @@ import android.view.MenuItem;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
-import javax.inject.Inject;
-
 import butterknife.BindDrawable;
-import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 
-
-public abstract class BaseFragmentWithMenu<V extends MvpView, P extends MvpPresenter<V>> extends BaseMvpFragment<V, P> {
+public abstract class BaseFragmentWithMenu<V extends MvpView, P extends MvpPresenter<V>>  extends BaseMvpFragment<V, P>  {
 
     @BindDrawable(R.drawable.ic_listview)
     Drawable icListView;
@@ -30,18 +23,10 @@ public abstract class BaseFragmentWithMenu<V extends MvpView, P extends MvpPrese
     @BindDrawable(R.drawable.ic_gridview_active)
     Drawable icGridViewActive;
 
-    @BindView(R.id.fragment_recycler_view)
-    RecyclerView recyclerView;
-
-    @Inject
-    LinearLayoutManager linearLayoutManager;
-    @Inject
-    GridLayoutManager gridLayoutManager;
+    protected boolean isGridMode;
 
     private MenuItem listViewItem;
     private MenuItem gridViewItem;
-//    private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-//    private GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
 
     @Override
     public void onAttach(Context context) {
@@ -51,7 +36,6 @@ public abstract class BaseFragmentWithMenu<V extends MvpView, P extends MvpPrese
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_menu, menu);
         listViewItem = menu.findItem(R.id.action_list_view);
         gridViewItem = menu.findItem(R.id.action_grid_view);
@@ -60,27 +44,25 @@ public abstract class BaseFragmentWithMenu<V extends MvpView, P extends MvpPrese
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        boolean isGridView;
         switch (item.getItemId()) {
             case R.id.action_grid_view:
-                isGridView = true;
+                isGridMode = true;
                 break;
             case R.id.action_list_view:
-                isGridView = false;
+                isGridMode = false;
                 break;
             default:
                 return super.onOptionsItemSelected(item);
         }
-        changeMenuItemIcons(isGridView);
-        recyclerView.setLayoutManager(isGridView ? gridLayoutManager : linearLayoutManager);
-        recyclerView.setAdapter(getRecyclerViewAdapter());
+        changeMenuItemIcons();
+        changeGridMode(isGridMode);
         return true;
     }
 
-    protected abstract RecyclerView.Adapter getRecyclerViewAdapter();
+    protected abstract void changeGridMode(boolean isGridMode);
 
-    private void changeMenuItemIcons(boolean isGridViewClicked) {
-        listViewItem.setIcon(isGridViewClicked ? icListView : icListViewActive);
-        gridViewItem.setIcon(isGridViewClicked ? icGridViewActive : icGridView);
+    private void changeMenuItemIcons() {
+        listViewItem.setIcon(isGridMode ? icListView : icListViewActive);
+        gridViewItem.setIcon(isGridMode ? icGridViewActive : icGridView);
     }
 }

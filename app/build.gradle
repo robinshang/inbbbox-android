@@ -238,10 +238,7 @@ dependencies {
     compile libs.retrofitRxJavaAdapter
 
     compile libs.timber
-
-    //persistent
-    compile libs.kryo
-    compile libs.snappyDb
+    compile libs.fabMenu
 
     // View
     compile libs.butterKnife

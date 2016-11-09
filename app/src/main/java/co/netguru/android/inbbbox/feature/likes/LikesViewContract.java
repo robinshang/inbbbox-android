@@ -8,13 +8,15 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.ui.LikedShot;
+import co.netguru.android.inbbbox.model.ui.LikedShot;
 
 interface LikesViewContract {
 
     interface View extends MvpView {
 
         void showLikes(List<LikedShot> likedShotList);
+
+        void showMoreLikes(List<LikedShot> likedShotList);
 
         void hideEmptyLikesInfo();
 
@@ -25,6 +27,8 @@ interface LikesViewContract {
 
     interface Presenter extends MvpPresenter<View> {
         void getLikesFromServer();
+
+        void getMoreLikesFromServer();
 
         void addIconToText(String text, Drawable icon);
     }

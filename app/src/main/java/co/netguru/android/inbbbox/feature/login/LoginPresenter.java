@@ -7,13 +7,12 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.inbbbox.feature.authentication.OauthUrlProvider;
-import co.netguru.android.inbbbox.feature.authentication.TokenProvider;
-import co.netguru.android.inbbbox.feature.authentication.UserProvider;
-import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
-import co.netguru.android.inbbbox.feature.errorhandling.ErrorType;
-import co.netguru.android.inbbbox.utils.Constants;
-import rx.Subscriber;
+import co.netguru.android.inbbbox.controler.OauthUrlController;
+import co.netguru.android.inbbbox.controler.TokenController;
+import co.netguru.android.inbbbox.controler.UserController;
+import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.Constants;
+import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
@@ -23,36 +22,42 @@ public final class LoginPresenter
         extends MvpNullObjectBasePresenter<LoginContract.View>
         implements LoginContract.Presenter {
 
-    private OauthUrlProvider urlProvider;
-    private TokenProvider apiTokenProvider;
-    private ErrorMessageParser errorHandler;
-    private UserProvider userProvider;
+    private final OauthUrlController oauthUrlController;
+    private final TokenController apiTokenController;
+    private final ErrorMessageController errorHandler;
+    private final UserController userController;
+    private final CompositeSubscription compositeSubscription;
 
     private String code;
     private String oauthErrorMessage;
 
     @Inject
-    LoginPresenter(OauthUrlProvider oauthUrlProvider,
-                   TokenProvider apiTokenProvider,
-                   ErrorMessageParser apiErrorParser,
-                   UserProvider userProvider) {
-        this.urlProvider = oauthUrlProvider;
-        this.apiTokenProvider = apiTokenProvider;
+    LoginPresenter(OauthUrlController oauthUrlController,
+                   TokenController apiTokenController,
+                   ErrorMessageController apiErrorParser,
+                   UserController userController) {
+        this.oauthUrlController = oauthUrlController;
+        this.apiTokenController = apiTokenController;
         this.errorHandler = apiErrorParser;
-        this.userProvider = userProvider;
+        this.userController = userController;
+        compositeSubscription = new CompositeSubscription();
+
+    }
+
+    @Override
+    public void detachView(boolean retainInstance) {
+        super.detachView(retainInstance);
+        compositeSubscription.clear();
     }
 
     @Override
     public void showLoginView() {
-        urlProvider
-                .getOauthAuthorizeUrlString()
-                .compose(androidIO())
-                .subscribe(this::prepareAuthorization,
-                        this::handleError);
-    }
-
-    private void prepareAuthorization(String urlString) {
-        getView().handleOauthUrl(urlString);
+        compositeSubscription.add(
+                oauthUrlController.getOauthAuthorizeUrlString()
+                        .compose(androidIO())
+                        .subscribe(
+                                getView()::handleOauthUrl,
+                                this::handleError));
     }
 
     @Override
@@ -69,49 +74,29 @@ public final class LoginPresenter
 
     private void selectAuthorizationAction() {
         if (code != null && !code.isEmpty()) {
-            getToken();
+            requestNewToken();
         } else if (oauthErrorMessage != null && !oauthErrorMessage.isEmpty()) {
             getView().showApiError(oauthErrorMessage);
         } else {
-            getView().showApiError(errorHandler.getErrorLabel(ErrorType.INVALID_OAURH_URL));
+            getView().showInvalidOauthUrlError();
         }
     }
 
-    private void getToken() {
-        apiTokenProvider.getToken(code)
-                .compose(androidIO())
-                .subscribe(new Subscriber<Boolean>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        handleError(e);
-                    }
-
-                    @Override
-                    public void onNext(Boolean saved) {
-                        if (saved) {
-                            getUser();
-                        }
-                    }
-                });
+    private void requestNewToken() {
+        compositeSubscription.add(
+                apiTokenController.requestNewToken(code)
+                        .compose(androidIO())
+                        .subscribe(token -> getUser(),
+                                this::handleError
+                        ));
     }
 
     private void getUser() {
-        userProvider.getUser()
-                .compose(androidIO())
-                .subscribe(this::verifyUser, this::handleError);
-    }
-
-    private void verifyUser(Boolean status) {
-        if (status) {
-            getView().showNextScreen();
-        } else {
-            getView().showApiError(errorHandler.getErrorLabel(ErrorType.INVALID_USER_INSTANCE));
-        }
+        compositeSubscription.add(
+                userController.requestUser()
+                        .compose(androidIO())
+                        .subscribe(user -> getView().showNextScreen(),
+                                this::handleError));
     }
 
     private void handleError(Throwable throwable) {

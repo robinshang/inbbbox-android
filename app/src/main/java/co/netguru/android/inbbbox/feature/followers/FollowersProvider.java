@@ -3,8 +3,8 @@ package co.netguru.android.inbbbox.feature.followers;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
-import co.netguru.android.inbbbox.data.api.FollowersApi;
-import co.netguru.android.inbbbox.data.ui.Follower;
+import co.netguru.android.inbbbox.api.FollowersApi;
+import co.netguru.android.inbbbox.model.ui.Follower;
 import rx.Observable;
 
 @FragmentScope

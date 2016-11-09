@@ -22,7 +22,6 @@ public class ApplicationModule {
         this.application = application;
     }
 
-
     @Provides
     Context provideContext() {
         return application;

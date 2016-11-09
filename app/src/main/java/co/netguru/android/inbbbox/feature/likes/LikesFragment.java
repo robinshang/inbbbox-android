@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
@@ -21,15 +23,18 @@ import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.application.App;
-import co.netguru.android.inbbbox.data.ui.LikedShot;
+import co.netguru.android.inbbbox.App;
+import co.netguru.android.inbbbox.feature.common.BaseFragmentWithMenu;
+import co.netguru.android.inbbbox.model.ui.LikedShot;
 import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
-import co.netguru.android.inbbbox.feature.common.BaseFragmentWithMenu;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
+import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class LikesFragment extends BaseFragmentWithMenu<LikesViewContract.View, LikesViewContract.Presenter>
         implements LikesViewContract.View {
+
+    private static final int LIKES_TO_LOAD_MORE = 10;
 
     @BindDrawable(R.drawable.ic_like_emptystate)
     Drawable emptyTextDrawable;
@@ -37,6 +42,8 @@ public class LikesFragment extends BaseFragmentWithMenu<LikesViewContract.View, 
     @BindString(R.string.fragment_like_empty_text)
     String emptyString;
 
+    @BindView(R.id.fragment_likes_recycler_view)
+    RecyclerView recyclerView;
     @BindView(R.id.fragment_likes_empty_view)
     ScrollView emptyView;
     @BindView(R.id.fragment_like_empty_text)
@@ -44,6 +51,10 @@ public class LikesFragment extends BaseFragmentWithMenu<LikesViewContract.View, 
 
     @Inject
     LikesAdapter likesAdapter;
+    @Inject
+    GridLayoutManager gridLayoutManager;
+    @Inject
+    LinearLayoutManager linearLayoutManager;
 
     private LikesFragmentComponent component;
 
@@ -69,14 +80,16 @@ public class LikesFragment extends BaseFragmentWithMenu<LikesViewContract.View, 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getPresenter().getLikesFromServer();
+        initRecyclerView();
         emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
         getPresenter().addIconToText(emptyString, emptyTextDrawable);
+        getPresenter().getLikesFromServer();
     }
 
     @Override
-    protected RecyclerView.Adapter getRecyclerViewAdapter() {
-        return likesAdapter;
+    protected void changeGridMode(boolean isGridMode) {
+        likesAdapter.setGridMode(isGridMode);
+        recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
     }
 
     @NonNull
@@ -88,6 +101,11 @@ public class LikesFragment extends BaseFragmentWithMenu<LikesViewContract.View, 
     @Override
     public void showLikes(List<LikedShot> likedShotList) {
         likesAdapter.setLikeList(likedShotList);
+    }
+
+    @Override
+    public void showMoreLikes(List<LikedShot> likedShotList) {
+        likesAdapter.addMoreLikes(likedShotList);
     }
 
     @Override
@@ -107,5 +125,16 @@ public class LikesFragment extends BaseFragmentWithMenu<LikesViewContract.View, 
 
     public void refreshFragmentData() {
         getPresenter().getLikesFromServer();
+    }
+
+    private void initRecyclerView() {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(likesAdapter);
+        recyclerView.addOnScrollListener(new LoadMoreScrollListener(LIKES_TO_LOAD_MORE) {
+            @Override
+            public void requestMoreData() {
+                presenter.getMoreLikesFromServer();
+            }
+        });
     }
 }

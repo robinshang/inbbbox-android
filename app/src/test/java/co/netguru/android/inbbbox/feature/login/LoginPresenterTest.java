@@ -11,12 +11,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import co.netguru.android.inbbbox.feature.authentication.OauthUrlProvider;
-import co.netguru.android.inbbbox.feature.authentication.TokenProvider;
-import co.netguru.android.inbbbox.feature.authentication.UserProvider;
-import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
-import co.netguru.android.inbbbox.feature.errorhandling.ErrorType;
-import co.netguru.android.inbbbox.utils.Constants;
+import co.netguru.android.inbbbox.Constants;
+import co.netguru.android.inbbbox.Statics;
+import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.OauthUrlController;
+import co.netguru.android.inbbbox.controler.TokenController;
+import co.netguru.android.inbbbox.controler.UserController;
+import co.netguru.android.inbbbox.model.api.Token;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 
@@ -25,19 +26,19 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LoginPresenterTest  {
+public class LoginPresenterTest {
 
     @Rule
     public TestRule rule = new RxSyncTestRule();
 
     @Mock
-    private OauthUrlProvider oauthUrlProviderMock;
+    private OauthUrlController oauthUrlControllerMock;
 
     @Mock
-    private ErrorMessageParser errorMessageParser;
+    private ErrorMessageController errorMessageController;
 
     @Mock
-    private TokenProvider tokenProviderMock;
+    private TokenController tokenControllerMock;
 
     @Mock
     private LoginContract.View viewMock;
@@ -46,26 +47,30 @@ public class LoginPresenterTest  {
     private Uri uri;
 
     @Mock
-    private UserProvider userProviderMock;
+    private UserController userControllerMock;
 
     private String urlString = "www.google.com";
     private String code = "testCode";
+
+    private Token expectedToken;
 
     @InjectMocks
     private LoginPresenter presenter;
 
     @Before
     public void setup() {
+        expectedToken = new Token("", "", "");
+
         presenter.attachView(viewMock);
-        when(tokenProviderMock.getToken(code))
-                .thenReturn(Observable.just(true));
-        when(userProviderMock.getUser()).
-                thenReturn(Observable.just(true));
+        when(tokenControllerMock.requestNewToken(code))
+                .thenReturn(Observable.just(expectedToken));
+        when(userControllerMock.requestUser()).
+                thenReturn(Observable.just(Statics.USER));
     }
 
     @Test
     public void whenLoginClick_thenGetUrlFromUrlProviderTest() {
-        when(oauthUrlProviderMock.getOauthAuthorizeUrlString()).thenReturn(Observable.just(urlString));
+        when(oauthUrlControllerMock.getOauthAuthorizeUrlString()).thenReturn(Observable.just(urlString));
 
         presenter.showLoginView();
 
@@ -74,7 +79,7 @@ public class LoginPresenterTest  {
 
     @Test
     public void whenLoginClick_thenShowActionViewForOauthRequest() {
-        when(oauthUrlProviderMock.getOauthAuthorizeUrlString()).thenReturn(Observable.just(urlString));
+        when(oauthUrlControllerMock.getOauthAuthorizeUrlString()).thenReturn(Observable.just(urlString));
 
         presenter.showLoginView();
 
@@ -87,7 +92,7 @@ public class LoginPresenterTest  {
 
         presenter.handleOauthLoginResponse(uri);
 
-        verify(tokenProviderMock, times(1)).getToken(code);
+        verify(tokenControllerMock, times(1)).requestNewToken(code);
     }
 
     @Test
@@ -96,7 +101,7 @@ public class LoginPresenterTest  {
 
         presenter.handleOauthLoginResponse(uri);
 
-        verify(userProviderMock, times(1)).getUser();
+        verify(userControllerMock, times(1)).requestUser();
     }
 
     @Test
@@ -144,13 +149,12 @@ public class LoginPresenterTest  {
     @Test
     public void whenHandlingOauthResponseWithoutCodeAndError_thenShownInvalidUriError() {
         String testError = "testError";
-        when(errorMessageParser.getErrorLabel(ErrorType.INVALID_OAURH_URL)).thenReturn(testError);
         when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(null);
         when(uri.getQueryParameter(Constants.OAUTH.ERROR_KEY)).thenReturn(null);
 
         presenter.handleOauthLoginResponse(uri);
 
-        verify(viewMock, times(1)).showApiError(testError);
+        verify(viewMock, times(1)).showInvalidOauthUrlError();
     }
 
     @Test
@@ -158,11 +162,11 @@ public class LoginPresenterTest  {
         String throwableText = "test";
         Throwable testThrowable = new Throwable(throwableText);
         when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(code);
-        when(tokenProviderMock.getToken(code)).thenReturn(Observable.error(testThrowable));
+        when(tokenControllerMock.requestNewToken(code)).thenReturn(Observable.error(testThrowable));
 
         presenter.handleOauthLoginResponse(uri);
 
-        verify(errorMessageParser, times(1)).getError(testThrowable);
+        verify(errorMessageController, times(1)).getError(testThrowable);
     }
 
     @Test
@@ -170,8 +174,8 @@ public class LoginPresenterTest  {
         String throwableText = "test";
         Throwable testThrowable = new Throwable(throwableText);
         when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(code);
-        when(tokenProviderMock.getToken(code)).thenReturn(Observable.error(testThrowable));
-        when(errorMessageParser.getError(testThrowable)).thenReturn(throwableText);
+        when(tokenControllerMock.requestNewToken(code)).thenReturn(Observable.error(testThrowable));
+        when(errorMessageController.getError(testThrowable)).thenReturn(throwableText);
 
         presenter.handleOauthLoginResponse(uri);
 
@@ -183,11 +187,11 @@ public class LoginPresenterTest  {
         String throwableText = "test";
         Throwable testThrowable = new Throwable(throwableText);
         when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(code);
-        when(userProviderMock.getUser()).thenReturn(Observable.error(testThrowable));
+        when(userControllerMock.requestUser()).thenReturn(Observable.error(testThrowable));
 
         presenter.handleOauthLoginResponse(uri);
 
-        verify(errorMessageParser, times(1)).getError(testThrowable);
+        verify(errorMessageController, times(1)).getError(testThrowable);
     }
 
     @Test
@@ -195,8 +199,8 @@ public class LoginPresenterTest  {
         String throwableText = "test";
         Throwable testThrowable = new Throwable(throwableText);
         when(uri.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(code);
-        when(userProviderMock.getUser()).thenReturn(Observable.error(testThrowable));
-        when(errorMessageParser.getError(testThrowable)).thenReturn(throwableText);
+        when(userControllerMock.requestUser()).thenReturn(Observable.error(testThrowable));
+        when(errorMessageController.getError(testThrowable)).thenReturn(throwableText);
 
         presenter.handleOauthLoginResponse(uri);
 

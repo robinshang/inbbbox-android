@@ -9,7 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
-import co.netguru.android.inbbbox.data.ui.Follower;
+import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.utils.TextFormatter;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;

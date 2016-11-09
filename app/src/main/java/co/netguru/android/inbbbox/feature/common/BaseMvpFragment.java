@@ -2,6 +2,8 @@ package co.netguru.android.inbbbox.feature.common;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
@@ -25,5 +27,11 @@ public abstract class BaseMvpFragment<V extends MvpView, P extends MvpPresenter<
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    protected void showTextOnSnackbar(@StringRes int stringRes) {
+        if (getView() != null) {
+            Snackbar.make(getView(), stringRes, Snackbar.LENGTH_LONG).show();
+        }
     }
 }

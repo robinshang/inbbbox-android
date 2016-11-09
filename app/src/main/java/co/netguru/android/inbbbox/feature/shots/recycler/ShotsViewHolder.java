@@ -10,9 +10,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.ui.Shot;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
-import co.netguru.android.inbbbox.utils.ThumbnailHelper;
+import co.netguru.android.inbbbox.utils.ThumbnailUtil;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 import co.netguru.android.inbbbox.view.swipingpanel.ItemSwipeListener;
 import co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout;
@@ -38,7 +38,6 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     @BindView(R.id.iv_comment)
     ImageView commentImageView;
 
-
     private OnShotLeftSwipeListener onLeftSwipeListener = OnShotLeftSwipeListener.NULL;
     private Shot shot;
 
@@ -63,7 +62,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
         Glide.with(context)
                 .load(shot.normalImageUrl())
                 .placeholder(R.drawable.shot_placeholder)
-                .thumbnail(ThumbnailHelper.getThumbnailRequest(context, shot.thumbnailUrl()))
+                .thumbnail(ThumbnailUtil.getThumbnailRequest(context, shot.thumbnailUrl()))
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .animate(android.R.anim.fade_in)
                 .into(shotImageView);

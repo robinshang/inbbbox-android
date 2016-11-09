@@ -4,9 +4,9 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.feature.authentication.TokenProvider;
-import co.netguru.android.inbbbox.feature.authentication.UserProvider;
-import co.netguru.android.inbbbox.feature.errorhandling.ErrorMessageParser;
+import co.netguru.android.inbbbox.controler.TokenController;
+import co.netguru.android.inbbbox.controler.UserController;
+import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
@@ -14,18 +14,17 @@ import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.View>
         implements SplashContract.Presenter {
 
-    private final TokenProvider tokenProvider;
-    private final UserProvider userProvider;
-    private ErrorMessageParser errorParser;
-    private Boolean isValid = false;
+    private final TokenController tokenController;
+    private final UserController userController;
+    private ErrorMessageController errorParser;
 
     @Inject
-    SplashPresenter(TokenProvider tokenProvider,
-                    UserProvider userProvider,
-                    ErrorMessageParser errorParser) {
+    SplashPresenter(TokenController tokenController,
+                    UserController userController,
+                    ErrorMessageController errorParser) {
 
-        this.tokenProvider = tokenProvider;
-        this.userProvider = userProvider;
+        this.tokenController = tokenController;
+        this.userController = userController;
         this.errorParser = errorParser;
     }
 
@@ -36,15 +35,12 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     }
 
     private void checkToken() {
-        tokenProvider.isTokenValid()
+        tokenController.isTokenValid()
                 .compose(androidIO())
-                .doOnNext(isValid1 -> SplashPresenter.this.isValid = isValid1)
-                .doOnCompleted(this::handleTokenVerificationResult)
-                .doOnError(this::handleError)
-                .subscribe();
+                .subscribe(this::handleTokenVerificationResult, this::handleError);
     }
 
-    private void handleTokenVerificationResult() {
+    private void handleTokenVerificationResult(boolean isValid) {
         if (isValid) {
             Timber.d("Token valid");
             getCurrentUserInstance();
@@ -55,36 +51,10 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     }
 
     private void getCurrentUserInstance() {
-        userProvider.getUser()
+        userController.requestUser()
                 .compose(androidIO())
-                .subscribe(isValid -> handleUserDownloadComplete(isValid), e -> handleError(e));
-//                        new Subscriber<Boolean>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        handleError(e);
-//                    }
-//
-//                    @Override
-//                    public void onNext(Boolean isValid) {
-//                        handleUserDownloadComplete(isValid);
-//                    }
-//                });
-
-    }
-
-    private void handleUserDownloadComplete(Boolean isValid) {
-        if (isValid) {
-            Timber.d("User is valid");
-            getView().showMainScreen();
-        } else {
-            Timber.d("User saving failed");
-            getView().showLoginScreen();
-        }
+                .subscribe(user -> getView().showMainScreen(),
+                        this::handleError);
     }
 
     private void handleError(Throwable throwable) {

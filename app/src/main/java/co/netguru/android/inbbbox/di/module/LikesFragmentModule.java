@@ -5,7 +5,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 
 import co.netguru.android.commons.di.FragmentScope;
-import co.netguru.android.inbbbox.utils.Constants;
+import co.netguru.android.inbbbox.Constants;
 import dagger.Module;
 import dagger.Provides;
 
@@ -27,6 +27,6 @@ public class LikesFragmentModule {
     @Provides
     @FragmentScope
     GridLayoutManager provideGridLayoutManager() {
-        return new GridLayoutManager(context, Constants.VIEW.LIKE_FRAGMENT_COLUMN_COUNT);
+        return new GridLayoutManager(context, Constants.View.LIKE_FRAGMENT_COLUMN_COUNT);
     }
 }

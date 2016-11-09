@@ -3,12 +3,14 @@ package co.netguru.android.inbbbox.di.module;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.threeten.bp.LocalDateTime;
+
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.application.configuration.RequestInterceptor;
-import co.netguru.android.inbbbox.data.adapter.AutoGsonAdapterFactory;
-import co.netguru.android.inbbbox.db.Storage;
-import co.netguru.android.inbbbox.utils.Constants;
+import co.netguru.android.inbbbox.api.RequestInterceptor;
+import co.netguru.android.inbbbox.api.DateTimeConverter;
+import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
+import co.netguru.android.inbbbox.Constants;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
@@ -25,12 +27,13 @@ public class ConfigurationModule {
     Gson provideGson() {
         return new GsonBuilder()
                 .registerTypeAdapterFactory(AutoGsonAdapterFactory.create())
+                .registerTypeAdapter(LocalDateTime.class, new DateTimeConverter())
                 .create();
     }
 
     @Provides
-    RequestInterceptor providesRequestInterceptor(Storage storage) {
-        return new RequestInterceptor(storage);
+    RequestInterceptor providesRequestInterceptor(TokenPrefsRepository tokenPrefsRepository) {
+        return new RequestInterceptor(tokenPrefsRepository);
     }
 
     @Provides

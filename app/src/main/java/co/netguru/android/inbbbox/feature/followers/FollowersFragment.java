@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
@@ -20,9 +22,10 @@ import javax.inject.Inject;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
+import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.application.App;
-import co.netguru.android.inbbbox.data.ui.Follower;
+
+import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.di.component.FollowersFragmentComponent;
 import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
 import co.netguru.android.inbbbox.feature.common.BaseFragmentWithMenu;
@@ -37,6 +40,8 @@ public class FollowersFragment extends BaseFragmentWithMenu<FollowersContract.Vi
     @BindString(R.string.fragment_followers_empty_text)
     String emptyString;
 
+    @BindView(R.id.fragment_followers_recycler_view)
+    RecyclerView recyclerView;
     @BindView(R.id.fragment_followers_empty_view)
     ScrollView emptyView;
     @BindView(R.id.fragment_followers_empty_text)
@@ -44,6 +49,10 @@ public class FollowersFragment extends BaseFragmentWithMenu<FollowersContract.Vi
 
     @Inject
     FollowersAdapter adapter;
+    @Inject
+    GridLayoutManager gridLayoutManager;
+    @Inject
+    LinearLayoutManager linearLayoutManager;
 
     private FollowersFragmentComponent component;
 
@@ -59,6 +68,12 @@ public class FollowersFragment extends BaseFragmentWithMenu<FollowersContract.Vi
         component.inject(this);
     }
 
+    @Override
+    protected void changeGridMode(boolean isGridMode) {
+        adapter.setGridMode(isGridMode);
+        recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -72,11 +87,6 @@ public class FollowersFragment extends BaseFragmentWithMenu<FollowersContract.Vi
         emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
         getPresenter().getFollowedUsersFromServer();
         getPresenter().addIconToText(emptyString, emptyTextDrawable);
-    }
-
-    @Override
-    protected RecyclerView.Adapter getRecyclerViewAdapter() {
-        return adapter;
     }
 
     @NonNull

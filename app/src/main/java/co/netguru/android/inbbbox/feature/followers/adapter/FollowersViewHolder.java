@@ -9,10 +9,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.ui.Follower;
-import co.netguru.android.inbbbox.data.ui.Shot;
+import co.netguru.android.inbbbox.model.ui.Follower;
+
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -57,7 +58,7 @@ public class FollowersViewHolder extends BaseViewHolder<Follower> {
     }
 
     private void loadUserShot(Shot shot) {
-        final float radius = itemView.getResources().getDimension(R.dimen.shot_radius_dp);
+        final float radius = itemView.getResources().getDimension(R.dimen.like_corner_radius); // TODO: 09.11.2016 Change 
         userShot.setRadius(radius);
         Glide.with(itemView.getContext())
                 .load(shot.normalImageUrl())

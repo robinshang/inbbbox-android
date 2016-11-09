@@ -7,39 +7,71 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.application.App;
-import co.netguru.android.inbbbox.data.ui.Shot;
 import co.netguru.android.inbbbox.di.component.ShotsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
+import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView;
+import co.netguru.android.inbbbox.view.FogFloatingActionMenu;
 
 public class ShotsFragment
         extends BaseMvpFragment<ShotsContract.View, ShotsContract.Presenter>
         implements ShotsContract.View, ShotsAdapter.OnItemLeftSwipeListener {
 
-    @BindView(R.id.shots_recycler_view)
-    RecyclerView shotsRecyclerView;
-
-    @BindView(R.id.swipe_refresh_layout)
-    SwipeRefreshLayout swipeRefreshLayout;
+    private ShotsComponent component;
+    private ShotLikeStatusListener shotLikeStatusListener;
 
     @Inject
     ShotsAdapter adapter;
 
-    private ShotsComponent component;
-    private ShotLikeStatusListener shotLikeStatusListener;
+    @BindView(R.id.shots_recycler_view)
+    AutoItemScrollRecyclerView shotsRecyclerView;
+
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.fab_menu)
+    FogFloatingActionMenu fabMenu;
+
+    @BindView(R.id.container_fog_view)
+    View fogContainerView;
+
+    @OnClick(R.id.fab_like_menu)
+    void onLikeFabClick() {
+        getPresenter().likeShot(shotsRecyclerView.getCurrentItem());
+    }
+
+    @OnClick(R.id.fab_bucket_menu)
+    void onBucketClick() {
+        // TODO: 07.11.2016 replace this when feature will be implemented
+        Toast.makeText(getContext(), "Bucket", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.fab_comment_menu)
+    void onCommentClick() {
+        // TODO: 07.11.2016 replace this when feature will be implemented
+        Toast.makeText(getContext(), "Comment", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.fab_follow_menu)
+    void onFollowClick() {
+        // TODO: 07.11.2016 replace this when feature will be implemented
+        Toast.makeText(getContext(), "Follow", Toast.LENGTH_SHORT).show();
+    }
 
     public static ShotsFragment newInstance() {
         return new ShotsFragment();
@@ -85,7 +117,12 @@ public class ShotsFragment
         super.onViewCreated(view, savedInstanceState);
         initRecycler();
         initRefreshLayout();
+        initFabMenu();
         getPresenter().loadData();
+    }
+
+    private void initFabMenu() {
+        fabMenu.addFogView(fogContainerView);
     }
 
     private void initRefreshLayout() {
@@ -117,10 +154,18 @@ public class ShotsFragment
     }
 
     @Override
-    public void onItemLeftSwipe(Shot shot) {
-        getPresenter().likeShot(shot);
+    public void closeFabMenu() {
+        if (fabMenu.isOpened()) {
+            fabMenu.close(true);
+        }
     }
 
+    @Override
+    public void onItemLeftSwipe(int itemPosition) {
+        getPresenter().likeShot(itemPosition);
+    }
+
+    @FunctionalInterface
     public interface ShotLikeStatusListener {
         void shotLikeStatusChanged();
     }

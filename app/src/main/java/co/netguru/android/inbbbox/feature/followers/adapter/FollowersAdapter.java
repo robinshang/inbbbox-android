@@ -13,11 +13,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.ui.Follower;
+import co.netguru.android.inbbbox.model.ui.Follower;
 
 public class FollowersAdapter extends RecyclerView.Adapter<FollowersViewHolder> {
 
-    private List<Follower> followersList;
+    private final List<Follower> followersList;
+
+    private boolean isGridMode;
 
     @Inject
     public FollowersAdapter() {
@@ -43,6 +45,11 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersViewHolder> 
     public void setFollowersList(List<Follower> followersList) {
         this.followersList.clear();
         this.followersList.addAll(followersList);
+        notifyDataSetChanged();
+    }
+
+    public void setGridMode(boolean isGridMode) {
+        this.isGridMode = isGridMode;
         notifyDataSetChanged();
     }
 
