@@ -8,7 +8,7 @@ import java.util.List;
 public class ShotEntity {
 
     @SerializedName("id")
-    private Integer id;
+    private long id;
     @SerializedName("title")
     private String title;
     @SerializedName("description")
@@ -58,7 +58,7 @@ public class ShotEntity {
     @SerializedName("team")
     private Team team;
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 

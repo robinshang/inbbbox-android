@@ -23,7 +23,7 @@ interface ShotsContract {
     }
 
     interface Presenter extends MvpPresenter<View> {
-        void likeShot(int shotPosition);
+        void likeShot(Shot shot);
 
         void loadData();
     }

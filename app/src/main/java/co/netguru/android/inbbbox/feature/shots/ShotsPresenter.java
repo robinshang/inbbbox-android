@@ -6,10 +6,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.controler.ShotsController;
-import co.netguru.android.inbbbox.controler.LikeShotController;
-import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.LikeShotController;
+import co.netguru.android.inbbbox.controler.ShotsController;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -23,7 +23,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private final ErrorMessageController errorMessageController;
     private final LikeShotController likeShotController;
     private final CompositeSubscription subscriptions;
-    private List<Shot> shotItems;
 
     @Inject
     ShotsPresenter(ShotsController shotsController, ErrorMessageController errorMessageController,
@@ -51,8 +50,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     private void showRetrievedItems(List<Shot> shotsList) {
         Timber.d("Shots received!");
-        shotItems = shotsList;
-        getView().showItems(shotItems);
+        getView().showItems(shotsList);
         getView().hideLoadingIndicator();
     }
 
@@ -62,7 +60,9 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         getView().showError(errorMessageController.getError(exception));
     }
 
-    private void likeShot(Shot shot) {
+    @Override
+    public void likeShot(Shot shot) {
+        getView().closeFabMenu();
         if (!shot.isLiked()) {
             final Subscription subscription = likeShotController.likeShot(shot.id())
                     .compose(androidIO())
@@ -92,12 +92,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                 .thumbnailUrl(shot.thumbnailUrl())
                 .isLiked(true)
                 .build();
-    }
-
-    @Override
-    public void likeShot(int shotPosition) {
-        likeShot(shotItems.get(shotPosition));
-        getView().closeFabMenu();
     }
 
     @Override

@@ -4,7 +4,7 @@ import co.netguru.android.inbbbox.model.api.LikedShotEntity;
 
 public class LikedShot {
 
-    private final int id;
+    private final long id;
     private final String imageUrl;
 
     public LikedShot(int id, String imageUrl) {
@@ -17,7 +17,7 @@ public class LikedShot {
         this.imageUrl = likedShotEntity.shot().getImage().normalUrl();
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

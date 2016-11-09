@@ -23,6 +23,7 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
+import co.netguru.android.inbbbox.feature.shots.recycler.ShotSwipeListener;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView;
@@ -30,7 +31,7 @@ import co.netguru.android.inbbbox.view.FogFloatingActionMenu;
 
 public class ShotsFragment
         extends BaseMvpFragment<ShotsContract.View, ShotsContract.Presenter>
-        implements ShotsContract.View, ShotsAdapter.OnItemLeftSwipeListener {
+        implements ShotsContract.View, ShotSwipeListener {
 
     private ShotsComponent component;
     private ShotLikeStatusListener shotLikeStatusListener;
@@ -52,13 +53,12 @@ public class ShotsFragment
 
     @OnClick(R.id.fab_like_menu)
     void onLikeFabClick() {
-        getPresenter().likeShot(shotsRecyclerView.getCurrentItem());
+        getPresenter().likeShot(adapter.getShotFromPosition(shotsRecyclerView.getCurrentItem()));
     }
 
     @OnClick(R.id.fab_bucket_menu)
     void onBucketClick() {
-        // TODO: 07.11.2016 replace this when feature will be implemented
-        Toast.makeText(getContext(), "Bucket", Toast.LENGTH_SHORT).show();
+        handleAddToBucketClick(1);
     }
 
     @OnClick(R.id.fab_comment_menu)
@@ -103,7 +103,7 @@ public class ShotsFragment
 
     private void initComponent() {
         component = App.getAppComponent(getContext())
-                .plus(new ShotsModule());
+                .plus(new ShotsModule(this));
         component.inject(this);
     }
 
@@ -131,7 +131,6 @@ public class ShotsFragment
     }
 
     private void initRecycler() {
-        adapter.setOnLeftSwipeListener(this);
         shotsRecyclerView.setAdapter(adapter);
         shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shotsRecyclerView.setHasFixedSize(true);
@@ -161,8 +160,18 @@ public class ShotsFragment
     }
 
     @Override
-    public void onItemLeftSwipe(int itemPosition) {
-        getPresenter().likeShot(itemPosition);
+    public void onShotLikedSwipe(Shot shot) {
+        getPresenter().likeShot(shot);
+    }
+
+    @Override
+    public void onAddShotToBucketSwipe(Shot shot) {
+
+    }
+
+    @Override
+    public void onCommentShotSwipe(Shot shot) {
+
     }
 
     @FunctionalInterface
@@ -173,5 +182,10 @@ public class ShotsFragment
     @Override
     public void hideLoadingIndicator() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+
+    private void handleAddToBucketClick(int i) {
+        Toast.makeText(getContext(), "Bucket", Toast.LENGTH_SHORT).show();
     }
 }

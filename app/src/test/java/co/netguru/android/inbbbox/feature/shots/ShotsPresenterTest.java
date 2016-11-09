@@ -16,18 +16,21 @@ import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.LikedShotsController;
 import co.netguru.android.inbbbox.controler.ShotsController;
-import co.netguru.android.inbbbox.model.ui.LikedShot;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ShotsPresenterTest {
+
+    private static final Shot MOCK_NOT_LIKED_SHOT = Shot.builder().id(1).isLiked(false).build();
+    private static final Shot MOCK_LIKED_SHOT = Shot.builder().id(1).isLiked(true).build();
 
     @Rule
     public TestRule rule = new RxSyncTestRule();
@@ -65,7 +68,6 @@ public class ShotsPresenterTest {
                 .build();
         shotsList.add(exampleShot);
 
-        LikedShot likedShot = new LikedShot(99, "test");
         when(shotsControllerMock.getShots()).thenReturn(Observable.just(shotsList));
     }
 
@@ -101,9 +103,9 @@ public class ShotsPresenterTest {
         when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Observable.empty());
         presenter.loadData();
 
-        presenter.likeShot(0);
+        presenter.likeShot(MOCK_NOT_LIKED_SHOT);
 
-        verify(likeShotControllerMock, times(1)).likeShot(exampleId);
+        verify(likeShotControllerMock, times(1)).likeShot(MOCK_NOT_LIKED_SHOT.id());
     }
 
     @Test
@@ -111,24 +113,23 @@ public class ShotsPresenterTest {
         when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Observable.empty());
         presenter.loadData();
         Shot expectedShot = Shot.builder()
-                .id(exampleId)
-                .title("test")
+                .id(MOCK_NOT_LIKED_SHOT.id())
                 .isLiked(true)
                 .build();
 
-        presenter.likeShot(0);
+        presenter.likeShot(MOCK_NOT_LIKED_SHOT);
 
         verify(viewMock, times(1)).changeShotLikeStatus(expectedShot);
     }
 
     @Test
-    public void whenShotLikedAndLikeActionCalled_thenCallLikeShotMethod() {
+    public void whenShotLikedAndLikeActionCalled_thenDoNotCallLikeShotMethod() {
         when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Observable.empty());
         presenter.loadData();
 
-        presenter.likeShot(0);
+        presenter.likeShot(MOCK_LIKED_SHOT);
 
-        verify(likeShotControllerMock, times(1)).likeShot(exampleId);
+        verify(likeShotControllerMock, never()).likeShot(MOCK_LIKED_SHOT.id());
     }
 
     //ERRORS
@@ -163,7 +164,7 @@ public class ShotsPresenterTest {
         when(errorMessageControllerMock.getError(exampleException)).thenCallRealMethod();
         presenter.loadData();
 
-        presenter.likeShot(0);
+        presenter.likeShot(MOCK_NOT_LIKED_SHOT);
 
         verify(viewMock, times(1)).showError(message);
     }

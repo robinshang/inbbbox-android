@@ -11,7 +11,7 @@ import co.netguru.android.inbbbox.model.api.ShotEntity;
 @AutoValue
 public abstract class Shot {
 
-    public abstract Integer id();
+    public abstract long id();
 
     @Nullable
     public abstract String title();
@@ -32,7 +32,7 @@ public abstract class Shot {
 
     @AutoValue.Builder
     public abstract static class Builder {
-        public abstract Shot.Builder id(Integer id);
+        public abstract Shot.Builder id(long id);
 
         public abstract Shot.Builder title(String title);
 
