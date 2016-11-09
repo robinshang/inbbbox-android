@@ -12,7 +12,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 import butterknife.BindDrawable;
 import co.netguru.android.inbbbox.R;
 
-public abstract class BaseFragmentWithMenu<V extends MvpView, P extends MvpPresenter<V>>  extends BaseMvpFragment<V, P>  {
+public abstract class BaseMvpFragmentWithWithListTypeSelection<V extends MvpView, P extends MvpPresenter<V>>  extends BaseMvpFragment<V, P>  {
 
     @BindDrawable(R.drawable.ic_listview)
     Drawable icListView;

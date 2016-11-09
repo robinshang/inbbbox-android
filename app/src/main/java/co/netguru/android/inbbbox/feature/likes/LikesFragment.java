@@ -24,14 +24,14 @@ import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.App;
-import co.netguru.android.inbbbox.feature.common.BaseFragmentWithMenu;
+import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
 import co.netguru.android.inbbbox.model.ui.LikedShot;
 import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
-public class LikesFragment extends BaseFragmentWithMenu<LikesViewContract.View, LikesViewContract.Presenter>
+public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<LikesViewContract.View, LikesViewContract.Presenter>
         implements LikesViewContract.View {
 
     private static final int LIKES_TO_LOAD_MORE = 10;

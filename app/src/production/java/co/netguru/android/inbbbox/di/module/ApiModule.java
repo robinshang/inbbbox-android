@@ -4,12 +4,14 @@ import com.google.gson.Gson;
 
 import javax.inject.Singleton;
 
+import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.api.AuthorizeApi;
+
+import co.netguru.android.inbbbox.api.BucketApi;
 import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.api.LikesApi;
 import co.netguru.android.inbbbox.api.ShotsApi;
 import co.netguru.android.inbbbox.api.UserApi;
-import co.netguru.android.inbbbox.Constants;
 
 import dagger.Module;
 import dagger.Provides;
@@ -55,5 +57,11 @@ public class ApiModule {
     @Provides
     FollowersApi provideFollowersApi(Retrofit retrofit) {
         return retrofit.create(FollowersApi.class);
+    }
+
+    @Singleton
+    @Provides
+    BucketApi providesBucketApi(Retrofit retrofit) {
+        return retrofit.create(BucketApi.class);
     }
 }
