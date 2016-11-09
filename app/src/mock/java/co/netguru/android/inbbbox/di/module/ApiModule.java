@@ -3,9 +3,11 @@ package co.netguru.android.inbbbox.di.module;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.api.AuthorizeApi;
+import co.netguru.android.inbbbox.api.BucketApi;
 import co.netguru.android.inbbbox.api.LikesApi;
 import co.netguru.android.inbbbox.api.MockAuthorizeApi;
 import co.netguru.android.inbbbox.api.MockShotsApi;
+import co.netguru.android.inbbbox.api.MockedBucketApi;
 import co.netguru.android.inbbbox.api.MockedLikesApi;
 import co.netguru.android.inbbbox.api.MockedUserApi;
 import co.netguru.android.inbbbox.api.ShotsApi;
@@ -35,5 +37,10 @@ public class ApiModule {
     @Provides
     LikesApi provideLikesApi() {
         return new MockedLikesApi();
+    }
+
+    @Provides
+    BucketApi provideBucketApi() {
+        return new MockedBucketApi();
     }
 }

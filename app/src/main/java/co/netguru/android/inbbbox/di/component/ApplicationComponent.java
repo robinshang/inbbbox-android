@@ -12,6 +12,7 @@ import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.di.module.LocalRepositoryModule;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
+import co.netguru.android.inbbbox.feature.buckets.BucketsFragment;
 import dagger.Component;
 
 @Singleton
@@ -32,6 +33,8 @@ public interface ApplicationComponent extends BaseComponent {
     ShotsComponent plus(ShotsModule shotsModule);
 
     LikesFragmentComponent plus(LikesFragmentModule module);
+
+    BucketsFragmentComponent inject();
 
     void inject(NotificationAlarmReceiver receiver);
 }

@@ -31,4 +31,25 @@ public abstract class BucketShot {
     public static TypeAdapter<BucketShot> typeAdapter(Gson gson) {
         return new AutoValue_BucketShot.GsonTypeAdapter(gson);
     }
+
+    public static Builder builder() {
+        return new AutoValue_BucketShot.Builder();
+    }
+
+    @AutoValue.Builder
+    public abstract static class Builder {
+        public abstract Builder id(long id);
+
+        public abstract Builder title(String title);
+
+        public abstract Builder description(String description);
+
+        public abstract Builder image(Image image);
+
+        public abstract Builder createdAt(LocalDateTime createdAt);
+
+        public abstract Builder updatedAt(LocalDateTime updatedAt);
+
+        public abstract BucketShot build();
+    }
 }
