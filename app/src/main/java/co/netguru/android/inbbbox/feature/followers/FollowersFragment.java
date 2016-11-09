@@ -25,13 +25,13 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 
+import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.di.component.FollowersFragmentComponent;
 import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
-import co.netguru.android.inbbbox.feature.common.BaseFragmentWithMenu;
 import co.netguru.android.inbbbox.feature.followers.adapter.FollowersAdapter;
 
-public class FollowersFragment extends BaseFragmentWithMenu<FollowersContract.View, FollowersContract.Presenter>
+public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowersContract.View, FollowersContract.Presenter>
         implements FollowersContract.View {
 
     @BindDrawable(R.drawable.ic_following_emptystate)
