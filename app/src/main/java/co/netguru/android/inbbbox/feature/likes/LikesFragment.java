@@ -90,7 +90,6 @@ public class LikesFragment extends BaseFragmentWithMenu<LikesViewContract.View, 
     protected void changeGridMode(boolean isGridMode) {
         likesAdapter.setGridMode(isGridMode);
         recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
-        likesAdapter.notifyDataSetChanged();
     }
 
     @NonNull

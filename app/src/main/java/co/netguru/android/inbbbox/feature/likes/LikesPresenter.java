@@ -83,10 +83,10 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
         hasMore = likedShotList.size() == PAGE_COUNT;
         if (likedShotList.isEmpty()) {
             getView().showEmptyLikesInfo();
-            return;
+        } else {
+            getView().hideEmptyLikesInfo();
+            getView().showLikes(likedShotList);
         }
-        getView().hideEmptyLikesInfo();
-        getView().showLikes(likedShotList);
     }
 
     private void onGetMoreLikeShotListNext(List<LikedShot> likedShotList) {

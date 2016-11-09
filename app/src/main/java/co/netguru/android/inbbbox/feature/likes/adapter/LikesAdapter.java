@@ -68,5 +68,6 @@ public class LikesAdapter extends RecyclerView.Adapter<BaseViewHolder<LikedShot>
 
     public void setGridMode(boolean isGridMode) {
         this.isGridMode = isGridMode;
+        notifyDataSetChanged();
     }
 }

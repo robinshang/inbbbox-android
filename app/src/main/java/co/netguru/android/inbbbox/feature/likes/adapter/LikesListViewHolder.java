@@ -29,7 +29,6 @@ public class LikesListViewHolder extends BaseViewHolder<LikedShot> {
         Glide.with(itemView.getContext())
                 .load(item.getImageUrl())
                 .placeholder(R.drawable.shot_placeholder)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .animate(android.R.anim.fade_in)
                 .into(imageView);
     }

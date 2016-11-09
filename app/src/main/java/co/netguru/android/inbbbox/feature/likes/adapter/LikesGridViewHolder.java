@@ -18,7 +18,6 @@ public class LikesGridViewHolder extends BaseViewHolder<LikedShot> {
     @BindView(R.id.like_item_image_view)
     RoundedCornersImageView imageView;
 
-
     LikesGridViewHolder(ViewGroup parent) {
         super(LayoutInflater.from(parent.getContext()).inflate(R.layout.like_item_list_view, parent, false));
     }
@@ -30,7 +29,6 @@ public class LikesGridViewHolder extends BaseViewHolder<LikedShot> {
         Glide.with(itemView.getContext())
                 .load(item.getImageUrl())
                 .placeholder(R.drawable.shot_placeholder)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .animate(android.R.anim.fade_in)
                 .into(imageView);
     }
