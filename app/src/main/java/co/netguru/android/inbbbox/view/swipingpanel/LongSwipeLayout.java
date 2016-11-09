@@ -44,7 +44,7 @@ public class LongSwipeLayout extends SwipeLayout {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            initSwipeActionHandling(event);
+            initSwipeActionHandling();
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             checkItemSelection();
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
@@ -97,11 +97,11 @@ public class LongSwipeLayout extends SwipeLayout {
         }
 
         if (isNormalSwipeScope) {
-            event.setLocation(offsetX, event.getY());
+//            event.setLocation(offsetX, event.getY());
         } else if (wasChecked) {
 
-            float offset = event.getRawX() - LONG_SWIPE_TRIGGERING_THRESHOLD;
-            event.setLocation(offset, event.getY());
+//            float offset = event.getRawX() - LONG_SWIPE_TRIGGERING_THRESHOLD;
+//            event.setLocation(offset, event.getY());
         }
 
         itemSwipeListener.onLeftSwipeActivate(isNormalSwipeTriggered);
@@ -113,7 +113,7 @@ public class LongSwipeLayout extends SwipeLayout {
         return getPaddingLeft() - getDragDistance();
     }
 
-    private void initSwipeActionHandling(MotionEvent event) {
+    private void initSwipeActionHandling() {
         wasChecked = false;
         isNormalSwipeScope = false;
         isNormalSwipeTriggered = false;
