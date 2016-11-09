@@ -27,6 +27,9 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class LikedShotsControllerTest {
 
+    private static final int PAGE_COUNT = 20;
+    private static final int PAGE_NUMBER = 1;
+
     @Rule
     public TestRule rule = new RxSyncTestRule();
 
@@ -54,14 +57,14 @@ public class LikedShotsControllerTest {
         expectedItems = new ArrayList<>();
         expectedItems.add(entity);
         when(shotEntityMock.getImage()).thenReturn(imageMock);
-        when(likesApiMock.getLikedShots()).thenReturn(Observable.just(expectedItems));
+        when(likesApiMock.getLikedShots(PAGE_NUMBER, PAGE_COUNT)).thenReturn(Observable.just(expectedItems));
     }
 
     @Test
     public void whenGetLikedShot_thenObservableReturnsListOfLikedShots() {
         TestSubscriber<LikedShot> testSubscriber = new TestSubscriber<>();
 
-        likedShotsController.getLikedShots().subscribe(testSubscriber);
+        likedShotsController.getLikedShots(PAGE_NUMBER, PAGE_COUNT).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
     }

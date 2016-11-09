@@ -16,6 +16,8 @@ interface LikesViewContract {
 
         void showLikes(List<LikedShot> likedShotList);
 
+        void showMoreLikes(List<LikedShot> likedShotList);
+
         void hideEmptyLikesInfo();
 
         void showEmptyLikesInfo();
@@ -25,6 +27,8 @@ interface LikesViewContract {
 
     interface Presenter extends MvpPresenter<View> {
         void getLikesFromServer();
+
+        void getMoreLikesFromServer();
 
         void addIconToText(String text, Drawable icon);
     }
