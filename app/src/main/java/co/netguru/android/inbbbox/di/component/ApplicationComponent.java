@@ -33,5 +33,7 @@ public interface ApplicationComponent extends BaseComponent {
 
     LikesFragmentComponent plus(LikesFragmentModule module);
 
+    BucketsFragmentComponent inject();
+
     void inject(NotificationAlarmReceiver receiver);
 }
