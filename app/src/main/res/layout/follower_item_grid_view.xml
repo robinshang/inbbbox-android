@@ -8,11 +8,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <co.netguru.android.inbbbox.view.RoundedCornersImageView
-        android:id="@+id/follower_item_user_shot"
+    <co.netguru.android.inbbbox.view.RoundedCornersFourImagesView
+        android:id="@+id/four_image_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/follower_grid_shot_height"
-        android:scaleType="fitXY" />
+        android:layout_gravity="center"
+        android:background="@drawable/shot_placeholder"/>
 
     <LinearLayout
         android:layout_width="match_parent"

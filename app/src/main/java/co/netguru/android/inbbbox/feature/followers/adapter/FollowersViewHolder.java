@@ -13,8 +13,7 @@ import co.netguru.android.inbbbox.model.ui.Follower;
 
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 
-import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.view.RoundedCornersImageView;
+import co.netguru.android.inbbbox.view.RoundedCornersFourImagesView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FollowersViewHolder extends BaseViewHolder<Follower> {
@@ -22,8 +21,8 @@ public class FollowersViewHolder extends BaseViewHolder<Follower> {
     @BindString(R.string.follower_item_shot)
     String shotCountString;
 
-    @BindView(R.id.follower_item_user_shot)
-    RoundedCornersImageView userShot;
+    @BindView(R.id.four_image_view)
+    RoundedCornersFourImagesView fourImagesView;
     @BindView(R.id.follower_item_user_photo)
     CircleImageView userPhoto;
     @BindView(R.id.follower_item_username)
@@ -31,17 +30,38 @@ public class FollowersViewHolder extends BaseViewHolder<Follower> {
     @BindView(R.id.follower_item_shots_count)
     TextView shotsCount;
 
-
     FollowersViewHolder(View view) {
         super(view);
     }
 
     @Override
     public void bind(Follower item) {
+        final float radius = itemView.getResources().getDimension(R.dimen.like_corner_radius);
         userName.setText(item.name());
         shotsCount.setText(getShotCountString(item.shotsCount()));
+        fourImagesView.setRadius(radius);
         loadUserPhoto(item.avatarUrl());
-        loadUserShot(item.shotList().get(0)); // TODO: 07.11.2016 Should be changed
+
+        Glide.with(itemView.getContext())
+                .load(item.shotList().get(0).normalImageUrl())
+                .placeholder(R.drawable.shot_placeholder)
+                .animate(android.R.anim.fade_in)
+                .into(fourImagesView.getTopLeftImageView());
+        Glide.with(itemView.getContext())
+                .load(item.shotList().get(1).normalImageUrl())
+                .placeholder(R.drawable.shot_placeholder)
+                .animate(android.R.anim.fade_in)
+                .into(fourImagesView.getTopRightImageView());
+        Glide.with(itemView.getContext())
+                .load(item.shotList().get(2).normalImageUrl())
+                .placeholder(R.drawable.shot_placeholder)
+                .animate(android.R.anim.fade_in)
+                .into(fourImagesView.getBottomLeftImageView());
+        Glide.with(itemView.getContext())
+                .load(item.shotList().get(3).normalImageUrl())
+                .placeholder(R.drawable.shot_placeholder)
+                .animate(android.R.anim.fade_in)
+                .into(fourImagesView.getBottomRightImageView());
     }
 
     private String getShotCountString(int shotCount) {
@@ -55,15 +75,5 @@ public class FollowersViewHolder extends BaseViewHolder<Follower> {
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .animate(android.R.anim.fade_in)
                 .into(userPhoto);
-    }
-
-    private void loadUserShot(Shot shot) {
-        final float radius = itemView.getResources().getDimension(R.dimen.like_corner_radius); // TODO: 09.11.2016 Change 
-        userShot.setRadius(radius);
-        Glide.with(itemView.getContext())
-                .load(shot.normalImageUrl())
-                .placeholder(R.drawable.shot_placeholder)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                .into(userShot);
     }
 }

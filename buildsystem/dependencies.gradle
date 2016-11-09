@@ -34,6 +34,7 @@ ext {
             palette                 : "com.android.support:palette-v7:$supportLibraryVersion",
             preference              : "com.android.support:preference-v7:$supportLibraryVersion",
             annotations             : "com.android.support:support-annotations:$supportLibraryVersion",
+            percent                 : "com.android.support:percent:$supportLibraryVersion",
             multiDex                : "com.android.support:multidex:$multiDexVersion",
             constraintLayout        : "com.android.support.constraint:constraint-layout:$constraintLayoutVersion",
             safelyAndroid           : "com.github.piasy:safelyandroid:$safelyAndroidVersion",

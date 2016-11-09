@@ -275,8 +275,11 @@ dependencies {
     //Glide
     compile libs.glide
 
-    //Swipe layput
+    //Swipe layout
     compile libs.swipeLayout
+
+    //Percent layout
+    compile libs.percent
 
     //Glide Transformations
     compile libs.glideTransformations
