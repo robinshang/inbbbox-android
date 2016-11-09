@@ -9,6 +9,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.model.api.FollowerEntity;
+
 @AutoValue
 public abstract class Follower {
 
@@ -29,6 +31,16 @@ public abstract class Follower {
 
     public static Builder builder() {
         return new AutoValue_Follower.Builder();
+    }
+
+    public static Follower create(FollowerEntity followerEntity) {
+        return Follower.builder()
+                .id(followerEntity.user().id())
+                .name(followerEntity.user().name())
+                .username(followerEntity.user().username())
+                .avatarUrl(followerEntity.user().avatarUrl())
+                .shotsCount(followerEntity.user().shotsCount())
+                .build();
     }
 
     public static TypeAdapter<Follower> typeAdapter(Gson gson) {

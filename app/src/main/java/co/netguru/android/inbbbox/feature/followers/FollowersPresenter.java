@@ -9,6 +9,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
+import co.netguru.android.inbbbox.controler.FollowersController;
+import co.netguru.android.inbbbox.controler.FollowersShotController;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.utils.TextFormatter;
 import rx.Subscription;
@@ -21,16 +23,16 @@ import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersContract.View>
         implements FollowersContract.Presenter {
 
-    private final FollowersProvider followersProvider;
-    private final FollowersShotProvider followersShotProvider;
+    private final FollowersController followersController;
+    private final FollowersShotController followersShotController;
     private final TextFormatter textFormatter;
     private final CompositeSubscription subscriptions;
 
     @Inject
-    FollowersPresenter(FollowersProvider followersProvider, FollowersShotProvider followersShotProvider,
+    FollowersPresenter(FollowersController followersController, FollowersShotController followersShotController,
                        TextFormatter textFormatter) {
-        this.followersProvider = followersProvider;
-        this.followersShotProvider = followersShotProvider;
+        this.followersController = followersController;
+        this.followersShotController = followersShotController;
         this.textFormatter = textFormatter;
         subscriptions = new CompositeSubscription();
     }
@@ -43,8 +45,8 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
 
     @Override
     public void getFollowedUsersFromServer() {
-        final Subscription subscription = followersProvider.getFollowedUsers()
-                .flatMap(followersShotProvider::getFollowedUserWithShots)
+        final Subscription subscription = followersController.getFollowedUsers()
+                .flatMap(followersShotController::getFollowedUserWithShots)
                 .toList()
                 .compose(androidIO())
                 .subscribe(this::onGetShotsNext,

@@ -1,9 +1,6 @@
 package co.netguru.android.inbbbox.feature.likes;
 
 import android.graphics.drawable.Drawable;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ImageSpan;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
@@ -14,6 +11,7 @@ import javax.inject.Inject;
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.controler.LikedShotsController;
 import co.netguru.android.inbbbox.model.ui.LikedShot;
+import co.netguru.android.inbbbox.utils.TextFormatter;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -27,14 +25,16 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     private static final int PAGE_COUNT = 30;
 
     private final LikedShotsController likedShotsController;
+    private final TextFormatter textFormatter;
     private final CompositeSubscription subscriptions;
 
     private boolean hasMore = true;
     private int pageNumber = 1;
 
     @Inject
-    LikesPresenter(LikedShotsController likedShotsController) {
+    LikesPresenter(LikedShotsController likedShotsController, TextFormatter textFormatter) {
         this.likedShotsController = likedShotsController;
+        this.textFormatter = textFormatter;
         subscriptions = new CompositeSubscription();
     }
 
@@ -69,14 +69,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
 
     @Override
     public void addIconToText(String text, Drawable icon) {
-        final int index = text.indexOf(' ');
-        final ImageSpan imageSpan = new ImageSpan(icon, ImageSpan.ALIGN_BASELINE);
-        final SpannableStringBuilder builder = new SpannableStringBuilder();
-        builder.append(text.substring(0 , index + 1))
-                .append(" ")
-                .setSpan(imageSpan, builder.length() - 1, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.append(text.substring(index));
-        getView().setEmptyViewText(builder);
+        getView().setEmptyViewText(textFormatter.addDrawableToTextAtFirstSpace(text, icon));
     }
 
     private void onGetLikeShotListNext(List<LikedShot> likedShotList) {

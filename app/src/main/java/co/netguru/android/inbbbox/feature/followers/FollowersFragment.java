@@ -72,6 +72,7 @@ public class FollowersFragment extends BaseFragmentWithMenu<FollowersContract.Vi
     protected void changeGridMode(boolean isGridMode) {
         adapter.setGridMode(isGridMode);
         recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
+        recyclerView.setAdapter(adapter);
     }
 
     @Nullable
