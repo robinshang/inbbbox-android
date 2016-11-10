@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -33,8 +34,8 @@ import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.di.component.MainActivityComponent;
+import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.likes.LikesFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
@@ -59,6 +60,9 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     @BindView(R.id.activity_main_drawer_layout)
     DrawerLayout drawerLayout;
 
+    @BindView(R.id.bottom_sheet)
+    View bottomSheetView;
+
     @BindDrawable(R.drawable.toolbar_center_background)
     Drawable toolbarCenterBackground;
     @BindDrawable(R.drawable.toolbar_start_background)
@@ -78,6 +82,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     private Switch debutsSwitch;
     private Switch shotDetailsSwitch;
     private MainActivityPagerAdapter pagerAdapter;
+    private BottomSheetBehavior bottomSheetBehavior;
 
     public static void startActivity(Context context) {
         final Intent intent = new Intent(context, MainActivity.class);
@@ -92,6 +97,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         initializePager();
         initializeDrawer();
         initializeToolbar();
+        initializeBottomSheet();
         getPresenter().prepareUserData();
     }
 
@@ -117,7 +123,13 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                drawerLayout.openDrawer(GravityCompat.START);
+                // TODO: 10.11.2016 for tests only
+//                drawerLayout.openDrawer(GravityCompat.START);
+                if(!isBottomSheetExpanded()){
+                    showBottomSheet();
+                }else{
+                    hideBottomSheet();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -214,6 +226,26 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         });
 
         initializeDrawerReminder();
+    }
+
+    private void initializeBottomSheet() {
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
+    }
+
+    private void showBottomSheet() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    private void hideBottomSheet() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+    private boolean isBottomSheetExpanded() {
+        boolean isExpanded = false;
+        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            isExpanded = true;
+        }
+        return isExpanded;
     }
 
     private void initializeDrawerReminder() {

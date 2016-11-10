@@ -3,7 +3,6 @@ package co.netguru.android.inbbbox.feature.shots;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -35,7 +34,6 @@ public class ShotsFragment
 
     private ShotsComponent component;
     private ShotLikeStatusListener shotLikeStatusListener;
-    private BottomSheetBehavior bottomSheetBehavior;
 
     @Inject
     ShotsAdapter adapter;
@@ -52,12 +50,6 @@ public class ShotsFragment
     @BindView(R.id.container_fog_view)
     View fogContainerView;
 
-    @BindView(R.id.bottom_sheet)
-    View shotDetailsBottomSheet;
-
-    // TODO: 10.11.2016 remove it after bottom sheet implementation
-    private boolean isExpanded =false;
-
     @OnClick(R.id.fab_like_menu)
     void onLikeFabClick() {
         getPresenter().likeShot(shotsRecyclerView.getCurrentItem());
@@ -67,13 +59,6 @@ public class ShotsFragment
     void onBucketClick() {
         // TODO: 07.11.2016 replace this when feature will be implemented
         Toast.makeText(getContext(), "Bucket", Toast.LENGTH_SHORT).show();
-        if (!isExpanded) {
-            showDetailsSheet();
-            isExpanded=true;
-        } else {
-            hideDetailsSheet();
-            isExpanded= false;
-        }
     }
 
     @OnClick(R.id.fab_comment_menu)
@@ -133,12 +118,7 @@ public class ShotsFragment
         initRecycler();
         initRefreshLayout();
         initFabMenu();
-        initBottomSheet();
         getPresenter().loadData();
-    }
-
-    private void initBottomSheet() {
-        bottomSheetBehavior = BottomSheetBehavior.from(shotDetailsBottomSheet);
     }
 
     private void initFabMenu() {
@@ -155,14 +135,6 @@ public class ShotsFragment
         shotsRecyclerView.setAdapter(adapter);
         shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shotsRecyclerView.setHasFixedSize(true);
-    }
-
-    private void showDetailsSheet() {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-    }
-
-    private void hideDetailsSheet() {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override
