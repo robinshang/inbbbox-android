@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -20,10 +19,8 @@ public abstract class Follower {
 
     public abstract String username();
 
-    @SerializedName("avatar_url")
     public abstract String avatarUrl();
 
-    @SerializedName("shots_count")
     public abstract int shotsCount();
 
     @Nullable
