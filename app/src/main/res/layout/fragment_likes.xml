@@ -32,7 +32,7 @@
                 android:id="@+id/fragment_like_empty_text"
                 style="@style/Font25.RobotoLight.Gray"
                 android:layout_width="wrap_content"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/fragment_like_empty_logo"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/fragment_like_empty_view_text_margin_top"

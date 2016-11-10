@@ -1,8 +1,5 @@
 package co.netguru.android.inbbbox.feature.likes;
 
-import android.graphics.drawable.Drawable;
-import android.text.SpannableStringBuilder;
-
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -21,15 +18,11 @@ interface LikesViewContract {
         void hideEmptyLikesInfo();
 
         void showEmptyLikesInfo();
-
-        void setEmptyViewText(SpannableStringBuilder spannableStringBuilder);
     }
 
     interface Presenter extends MvpPresenter<View> {
         void getLikesFromServer();
 
         void getMoreLikesFromServer();
-
-        void addIconToText(String text, Drawable icon);
     }
 }

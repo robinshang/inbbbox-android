@@ -5,28 +5,23 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 
 import co.netguru.android.commons.di.FragmentScope;
-import co.netguru.android.inbbbox.feature.likes.LikesFragment;
+
+import co.netguru.android.inbbbox.feature.followers.FollowersFragment;
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class LikesFragmentModule {
-
-    private final Context context;
-
-    public LikesFragmentModule(Context context) {
-        this.context = context;
-    }
+public class FollowersFragmentModule {
 
     @Provides
     @FragmentScope
-    LinearLayoutManager provideLinearLayoutManager() {
+    LinearLayoutManager provideLinearLayoutManager(Context context) {
         return new LinearLayoutManager(context);
     }
 
     @Provides
     @FragmentScope
-    GridLayoutManager provideGridLayoutManager() {
-        return new GridLayoutManager(context, LikesFragment.GRID_VIEW_COLUMN_COUNT);
+    GridLayoutManager provideGridLayoutManager(Context context) {
+        return new GridLayoutManager(context, FollowersFragment.GRID_VIEW_COLUMN_COUNT);
     }
 }

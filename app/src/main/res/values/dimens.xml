@@ -36,8 +36,16 @@
     <dimen name="fragment_like_empty_view_text_margin_top">48dp</dimen>
     <dimen name="swipe_action_plus_size">12dp</dimen>
 
+    <dimen name="follower_list_shot_height">250dp</dimen>
+    <dimen name="follower_grid_shot_height">130dp</dimen>
+    <dimen name="follower_list_text_padding_top">8dp</dimen>
+    <dimen name="follower_list_user_photo_size">20dp</dimen>
+    <dimen name="follower_list_user_name_padding_start">6dp</dimen>
+    <dimen name="follower_grid_text_padding_top">8dp</dimen>
+
     <dimen name="shot_corner_radius">30px</dimen>
     <dimen name="shot_corner_radius_dp">30dp</dimen>
+
     <dimen name="fab_menu_label_side_padding">6dp</dimen>
     <dimen name="fab_menu_label_bottom_top_padding">2dp</dimen>
     <dimen name="fab_label_font_size">12sp</dimen>
