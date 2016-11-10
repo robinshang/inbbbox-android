@@ -30,11 +30,13 @@ import co.netguru.android.inbbbox.di.component.FollowersFragmentComponent;
 import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
 import co.netguru.android.inbbbox.feature.followers.adapter.FollowersAdapter;
 import co.netguru.android.inbbbox.utils.TextFormatter;
+import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowersContract.View, FollowersContract.Presenter>
         implements FollowersContract.View {
 
     public static final int GRID_VIEW_COLUMN_COUNT = 2;
+    private static final int FOLLOWERS_TO_LOAD_MORE = 5;
 
     @BindDrawable(R.drawable.ic_following_emptystate)
     Drawable emptyTextDrawable;
@@ -103,6 +105,11 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
     }
 
     @Override
+    public void showMoreFollowedUsers(List<Follower> followerList) {
+        adapter.addMoreFollowers(followerList);
+    }
+
+    @Override
     public void hideEmptyLikesInfo() {
         emptyView.setVisibility(View.GONE);
     }
@@ -121,5 +128,11 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
     private void initRecyclerView() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new LoadMoreScrollListener(FOLLOWERS_TO_LOAD_MORE) {
+            @Override
+            public void requestMoreData() {
+                presenter.getMoreFollowedUsersFromServer();
+            }
+        });
     }
 }

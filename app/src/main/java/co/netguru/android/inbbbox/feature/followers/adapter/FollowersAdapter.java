@@ -77,6 +77,12 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
         notifyDataSetChanged();
     }
 
+    public void addMoreFollowers(List<Follower> followersList) {
+        final int currentSize = this.followersList.size();
+        this.followersList.addAll(followersList);
+        notifyItemRangeChanged(currentSize - 1, followersList.size());
+    }
+
     public void setGridMode(boolean isGridMode) {
         this.isGridMode = isGridMode;
         notifyDataSetChanged();
