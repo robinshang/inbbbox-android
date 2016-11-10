@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/white"
-              android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="SHOOOOOOTS FRAGMENT "/>
-</LinearLayout>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="384dp" android:layout_height="271dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/block_canary_icon"/>
+    <LinearLayout
+        android:layout_width="355dp"
+        android:layout_height="238dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp" android:layout_marginTop="48dp"
+        android:background="@color/lightGray"
+        android:orientation="horizontal" app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2">
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
