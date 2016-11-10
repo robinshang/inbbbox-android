@@ -352,6 +352,4 @@ dependencies {
     androidTestCompile(test.espressoIdlingResource) {
         exclude module: 'espresso-core'
     }
-
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
 }
