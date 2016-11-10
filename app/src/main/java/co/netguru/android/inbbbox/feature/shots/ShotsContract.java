@@ -20,11 +20,15 @@ interface ShotsContract {
         void changeShotLikeStatus(Shot shot);
 
         void closeFabMenu();
+
+        void showBucketChoosing(long id);
     }
 
     interface Presenter extends MvpPresenter<View> {
         void likeShot(Shot shot);
 
         void loadData();
+
+        void handleAddShotToBucket(Shot shot);
     }
 }

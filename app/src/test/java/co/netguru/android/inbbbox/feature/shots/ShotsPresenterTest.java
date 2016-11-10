@@ -53,8 +53,7 @@ public class ShotsPresenterTest {
     @InjectMocks
     ShotsPresenter presenter;
 
-    private List<Shot> shotsList = new ArrayList<>();
-    private int exampleId = 99;
+    private final List<Shot> shotsList = new ArrayList<>();
 
     @Before
     public void setUp() {

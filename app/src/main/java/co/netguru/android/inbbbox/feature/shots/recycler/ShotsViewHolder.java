@@ -70,7 +70,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
 
     @Override
     public void onLeftSwipe() {
-        shotSwipeListener.onShotLikedSwipe(shot);
+        shotSwipeListener.onShotLikeSwipe(shot);
     }
 
     @Override

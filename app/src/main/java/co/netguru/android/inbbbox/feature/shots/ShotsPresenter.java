@@ -98,4 +98,9 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     public void loadData() {
         getShotsData();
     }
+
+    @Override
+    public void handleAddShotToBucket(Shot shot) {
+        getView().showBucketChoosing(shot.id());
+    }
 }

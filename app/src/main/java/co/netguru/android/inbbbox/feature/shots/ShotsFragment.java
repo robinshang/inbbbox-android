@@ -160,18 +160,24 @@ public class ShotsFragment
     }
 
     @Override
-    public void onShotLikedSwipe(Shot shot) {
+    public void showBucketChoosing(long id) {
+
+    }
+
+    @Override
+    public void onShotLikeSwipe(Shot shot) {
         getPresenter().likeShot(shot);
     }
 
     @Override
     public void onAddShotToBucketSwipe(Shot shot) {
-
+        getPresenter().handleAddShotToBucket(shot);
     }
 
     @Override
     public void onCommentShotSwipe(Shot shot) {
-
+        //// TODO: 09.11.2016 Implement comment shot callback
+        Toast.makeText(getContext(), "todo", Toast.LENGTH_SHORT).show();
     }
 
     @FunctionalInterface
