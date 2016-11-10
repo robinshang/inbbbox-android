@@ -2,25 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:paddingLeft="@dimen/shot_item_internal_padding"
                 android:paddingRight="@dimen/shot_item_internal_padding">
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <co.netguru.android.inbbbox.view.RoundedCornersImageView
         android:id="@+id/iv_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:adjustViewBounds="true"
-        app:riv_corner_radius="@dimen/shot_corner_radius"
         android:src="@drawable/shot_item_swipe_bottom_background"/>
 
-    <co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                                  android:id="@+id/long_swipe_layout"
-                                                                  android:layout_width="match_parent"
-                                                                  android:layout_height="wrap_content"
-                                                                  android:layout_centerInParent="true"
-                                                                  android:layout_gravity="center">
+    <co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/long_swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center">
         <!-- Bottom View Start-->
         <LinearLayout
             android:id="@+id/bottom_right_wrapper"
@@ -54,8 +53,8 @@
                 <ImageView
                     android:id="@+id/iv_like_action"
                     style="@style/LongSwipeActionIcons"
-                    android:src="@drawable/selector_like_swipe"
-                    android:layout_width="wrap_content"/>
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/selector_like_swipe"/>
 
                 <ImageView
                     android:layout_width="@dimen/swipe_action_plus_size"
@@ -71,13 +70,13 @@
 
         </LinearLayout>
 
-        <com.makeramen.roundedimageview.RoundedImageView
+        <co.netguru.android.inbbbox.view.RoundedCornersImageView
             android:id="@+id/iv_shot_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:riv_corner_radius="@dimen/shot_corner_radius"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            android:padding="@dimen/shot_background_padding"/>
         <!-- Surface View End -->
     </co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout>
 </RelativeLayout>

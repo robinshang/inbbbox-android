@@ -49,4 +49,6 @@
     <dimen name="shots_label_radius">24dp</dimen>
 
     <dimen name="shot_corner_radius">8dp</dimen>
+
+    <dimen name="shot_background_padding">-0.5dp</dimen>
 </resources>
