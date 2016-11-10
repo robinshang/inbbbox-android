@@ -37,6 +37,8 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.MainActivityComponent;
 import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsFragmentCallback;
+import co.netguru.android.inbbbox.feature.details.ShotDetialsFragmentDialog;
 import co.netguru.android.inbbbox.feature.likes.LikesFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
@@ -46,8 +48,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static butterknife.ButterKnife.findById;
 
-public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainViewContract.Presenter>
-        implements MainViewContract.View, ShotsFragment.ShotLikeStatusListener {
+public class MainActivity
+        extends BaseMvpActivity<MainViewContract.View,
+        MainViewContract.Presenter>
+        implements MainViewContract.View,
+        ShotsFragment.ShotLikeStatusListener,
+        ShotDetailsFragmentCallback {
+
+    private static final String TAG = ShotDetialsFragmentDialog.class.getSimpleName();
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -82,7 +90,6 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     private Switch debutsSwitch;
     private Switch shotDetailsSwitch;
     private MainActivityPagerAdapter pagerAdapter;
-    private BottomSheetBehavior bottomSheetBehavior;
 
     public static void startActivity(Context context) {
         final Intent intent = new Intent(context, MainActivity.class);
@@ -97,7 +104,6 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         initializePager();
         initializeDrawer();
         initializeToolbar();
-        initializeBottomSheet();
         getPresenter().prepareUserData();
     }
 
@@ -123,17 +129,22 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                // TODO: 10.11.2016 for tests only
 //                drawerLayout.openDrawer(GravityCompat.START);
-                if(!isBottomSheetExpanded()){
-                    showBottomSheet();
-                }else{
-                    hideBottomSheet();
-                }
+//                ShotDetialsFragmentDialog.newInstnace(1).show(getSupportFragmentManager(), TAG);
+
+                showFragmentDetails();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showFragmentDetails() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, ShotDetialsFragmentDialog.newInstnace(2), "TEST")
+                .commit();
+        getBottomSheetBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     @Override
@@ -226,26 +237,6 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         });
 
         initializeDrawerReminder();
-    }
-
-    private void initializeBottomSheet() {
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
-    }
-
-    private void showBottomSheet() {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-    }
-
-    private void hideBottomSheet() {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-    }
-
-    private boolean isBottomSheetExpanded() {
-        boolean isExpanded = false;
-        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            isExpanded = true;
-        }
-        return isExpanded;
     }
 
     private void initializeDrawerReminder() {
@@ -365,5 +356,10 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
                 break;
             }
         }
+    }
+
+    @Override
+    public BottomSheetBehavior getBottomSheetBehavior() {
+        return BottomSheetBehavior.from(bottomSheetView);
     }
 }
