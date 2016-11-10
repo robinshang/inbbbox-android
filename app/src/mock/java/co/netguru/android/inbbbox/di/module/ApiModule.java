@@ -4,14 +4,18 @@ import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.api.AuthorizeApi;
 import co.netguru.android.inbbbox.api.BucketApi;
+import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.api.LikesApi;
 import co.netguru.android.inbbbox.api.MockAuthorizeApi;
 import co.netguru.android.inbbbox.api.MockShotsApi;
 import co.netguru.android.inbbbox.api.MockedBucketApi;
+import co.netguru.android.inbbbox.api.MockedFollowersApi;
+
 import co.netguru.android.inbbbox.api.MockedLikesApi;
 import co.netguru.android.inbbbox.api.MockedUserApi;
 import co.netguru.android.inbbbox.api.ShotsApi;
 import co.netguru.android.inbbbox.api.UserApi;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -39,6 +43,10 @@ public class ApiModule {
         return new MockedLikesApi();
     }
 
+    @Provides
+    FollowersApi provideFollowersApi() {
+        return new MockedFollowersApi();
+    }
     @Provides
     BucketApi provideBucketApi() {
         return new MockedBucketApi();

@@ -8,6 +8,8 @@ import co.netguru.android.inbbbox.controler.notification.NotificationAlarmReceiv
 import co.netguru.android.inbbbox.di.module.ApiModule;
 import co.netguru.android.inbbbox.di.module.ApplicationModule;
 import co.netguru.android.inbbbox.di.module.ConfigurationModule;
+
+import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.di.module.LocalRepositoryModule;
 import co.netguru.android.inbbbox.di.module.LoginModule;
@@ -32,6 +34,8 @@ public interface ApplicationComponent extends BaseComponent {
     ShotsComponent plus(ShotsModule shotsModule);
 
     LikesFragmentComponent plus(LikesFragmentModule module);
+
+    FollowersFragmentComponent plus(FollowersFragmentModule module);
 
     BucketsFragmentComponent inject();
 
