@@ -13,7 +13,8 @@ public class LongSwipeLayout extends SwipeLayout {
 
     private static final long AUTO_CLOSE_DELAY = 300;
     private static final float LONG_SWIPE_TRIGGERING_THRESHOLD = 300;
-    private static final int LONG_SWIPE_ACTIVATION_TOLERANCE = 20;
+    private static final int LONG_SWIPE_ACTIVATION_TOLERANCE = 80;
+    private static final int RIGHT_SWIPE_ACTIVATION_TOLERANCE = 80;
 
     private final Handler closeHandler = new Handler();
 
@@ -114,7 +115,7 @@ public class LongSwipeLayout extends SwipeLayout {
     }
 
     private void handleRightSwipeAction(int offset) {
-        int limit = getLimitForLeftSwipe() + LONG_SWIPE_ACTIVATION_TOLERANCE;
+        int limit = getLimitForLeftSwipe() + RIGHT_SWIPE_ACTIVATION_TOLERANCE;
         if (offset < 0 && offset <= limit) {
             isRightSwipeTriggered = true;
         } else {
