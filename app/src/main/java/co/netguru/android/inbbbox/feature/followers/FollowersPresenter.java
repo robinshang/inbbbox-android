@@ -20,9 +20,16 @@ import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersContract.View>
         implements FollowersContract.Presenter {
 
+    private static final int FOLLOWERS_PAGE_COUNT = 15;
+    private static final int FOLLOWERS_SHOT_PAGE_COUNT = 30;
+    private static final int FOLLOWERS_SHOT_PAGE_NUMBER = 1;
+
     private final FollowersController followersController;
     private final FollowersShotController followersShotController;
     private final CompositeSubscription subscriptions;
+
+    private boolean hasMore = true;
+    private int pageNumber = 1;
 
     @Inject
     FollowersPresenter(FollowersController followersController, FollowersShotController followersShotController) {
@@ -39,22 +46,43 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
 
     @Override
     public void getFollowedUsersFromServer() {
-        // TODO: 10.11.2016 Add paging, it will cause error when there will be more than 60 users
-        final Subscription subscription = followersController.getFollowedUsers()
-                .flatMap(followersShotController::getFollowedUserWithShots)
+        final Subscription subscription = followersController.getFollowedUsers(pageNumber, FOLLOWERS_PAGE_COUNT)
+                .flatMap(follower -> followersShotController.getFollowedUserWithShots(follower,
+                        FOLLOWERS_SHOT_PAGE_NUMBER, FOLLOWERS_SHOT_PAGE_COUNT))
                 .toList()
                 .compose(androidIO())
-                .subscribe(this::onGetShotsNext,
+                .subscribe(this::onGetFollowersNext,
                         throwable -> Timber.e(throwable, "Error while getting followed users form server"));
         subscriptions.add(subscription);
     }
 
-    private void onGetShotsNext(List<Follower> followersList) {
+    @Override
+    public void getMoreFollowedUsersFromServer() {
+        if (hasMore) {
+            pageNumber++;
+            final Subscription subscription = followersController.getFollowedUsers(pageNumber, FOLLOWERS_PAGE_COUNT)
+                    .flatMap(follower -> followersShotController.getFollowedUserWithShots(follower,
+                            FOLLOWERS_SHOT_PAGE_NUMBER, FOLLOWERS_SHOT_PAGE_COUNT))
+                    .toList()
+                    .compose(androidIO())
+                    .subscribe(this::onGetMoreFollowersNext,
+                            throwable -> Timber.e(throwable, "Error while getting followed users form server"));
+            subscriptions.add(subscription);
+        }
+    }
+
+    private void onGetFollowersNext(List<Follower> followersList) {
+        hasMore = followersList.size() == FOLLOWERS_PAGE_COUNT;
         if (followersList.isEmpty()) {
             getView().showEmptyLikesInfo();
         } else {
             getView().hideEmptyLikesInfo();
             getView().showFollowedUsers(followersList);
         }
+    }
+
+    private void onGetMoreFollowersNext(List<Follower> followersList) {
+        hasMore = followersList.size() == FOLLOWERS_PAGE_COUNT;
+        getView().showMoreFollowedUsers(followersList);
     }
 }
