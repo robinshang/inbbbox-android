@@ -129,4 +129,5 @@
     static ** CREATOR;
 }
 
+# RoundImageView
 -dontwarn com.makeramen.**
