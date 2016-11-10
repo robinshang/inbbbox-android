@@ -34,6 +34,8 @@ import co.netguru.android.inbbbox.utils.TextFormatter;
 public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowersContract.View, FollowersContract.Presenter>
         implements FollowersContract.View {
 
+    public static final int GRID_VIEW_COLUMN_COUNT = 2;
+
     @BindDrawable(R.drawable.ic_following_emptystate)
     Drawable emptyTextDrawable;
 
@@ -78,10 +80,8 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
-        emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
-        emptyViewText.setText(TextFormatter.addDrawableToTextAtFirstSpace(emptyString, emptyTextDrawable), TextView.BufferType.SPANNABLE);
+        initRecyclerView();
+        initEmptyView();
         getPresenter().getFollowedUsersFromServer();
     }
 
@@ -110,5 +110,16 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
     @Override
     public void showEmptyLikesInfo() {
         emptyView.setVisibility(View.VISIBLE);
+    }
+
+    private void initEmptyView() {
+        emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
+        emptyViewText.setText(TextFormatter
+                .addDrawableToTextAtFirstSpace(emptyString, emptyTextDrawable), TextView.BufferType.SPANNABLE);
+    }
+
+    private void initRecyclerView() {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
     }
 }

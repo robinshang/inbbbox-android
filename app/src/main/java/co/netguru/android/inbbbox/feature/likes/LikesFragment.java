@@ -34,6 +34,7 @@ import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<LikesViewContract.View, LikesViewContract.Presenter>
         implements LikesViewContract.View {
 
+    public static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final int LIKES_TO_LOAD_MORE = 10;
 
     @BindDrawable(R.drawable.ic_like_emptystate)
@@ -81,8 +82,7 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
-        emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
-        emptyViewText.setText(TextFormatter.addDrawableToTextAtFirstSpace(emptyString, emptyTextDrawable), TextView.BufferType.SPANNABLE);
+        initEmptyView();
         getPresenter().getLikesFromServer();
     }
 
@@ -120,6 +120,12 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
 
     public void refreshFragmentData() {
         getPresenter().getLikesFromServer();
+    }
+
+    private void initEmptyView() {
+        emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
+        emptyViewText.setText(TextFormatter
+                .addDrawableToTextAtFirstSpace(emptyString, emptyTextDrawable), TextView.BufferType.SPANNABLE);
     }
 
     private void initRecyclerView() {
