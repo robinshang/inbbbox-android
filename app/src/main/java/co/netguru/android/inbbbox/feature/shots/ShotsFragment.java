@@ -58,7 +58,7 @@ public class ShotsFragment
 
     @OnClick(R.id.fab_bucket_menu)
     void onBucketClick() {
-        handleAddToBucketClick(1);
+        handleAddToBucketClick(adapter.getShotFromPosition(shotsRecyclerView.getCurrentItem()));
     }
 
     @OnClick(R.id.fab_comment_menu)
@@ -191,7 +191,7 @@ public class ShotsFragment
     }
 
 
-    private void handleAddToBucketClick(int i) {
+    private void handleAddToBucketClick(Shot shot) {
         Toast.makeText(getContext(), "Bucket", Toast.LENGTH_SHORT).show();
     }
 }

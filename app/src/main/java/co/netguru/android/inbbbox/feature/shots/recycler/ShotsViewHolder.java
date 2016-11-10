@@ -80,7 +80,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
 
     @Override
     public void onRightSwipe() {
-        shotSwipeListener.onAddShotToBucketSwipe(shot);
+        shotSwipeListener.onCommentShotSwipe(shot);
     }
 
     @Override

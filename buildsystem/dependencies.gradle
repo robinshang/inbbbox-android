@@ -82,7 +82,7 @@ ext {
             retrolambda     : "net.orfjackal.retrolambda:retrolambda:2.3.0",
             errorprone      : "com.google.errorprone:error_prone_core:2.0.9",
             autoValue       : "com.google.auto.value:auto-value:1.2",
-            autoParcel      : "com.ryanharter.auto.value:auto-value-parcel:0.2.2",
+            autoParcel      : "com.ryanharter.auto.value:auto-value-parcel:0.2.5",
             autoGson        : "com.ryanharter.auto.value:auto-value-gson:0.4.3",
             autoBundle      : "com.github.yatatsu:autobundle-processor:$autoBundleVersion",
             icepick         : "frankiesardo:icepick-processor:3.2.0", // apt (provided)

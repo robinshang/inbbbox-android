@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.model.ui;
 
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
@@ -9,7 +10,7 @@ import com.google.gson.TypeAdapter;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 
 @AutoValue
-public abstract class Shot {
+public abstract class Shot implements Parcelable {
 
     public abstract long id();
 
