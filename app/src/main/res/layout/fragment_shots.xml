@@ -1,9 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--<android.support.design.widget.CoordinatorLayout-->
+<!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:fab="http://schemas.android.com/apk/res-auto"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent">-->
+
+<!--<FrameLayout-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent">-->
+
+<!--<android.support.v4.widget.SwipeRefreshLayout-->
+<!--android:id="@+id/swipe_refresh_layout"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent">-->
+
+<!--<co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView-->
+<!--android:id="@+id/shots_recycler_view"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"/>-->
+<!--</android.support.v4.widget.SwipeRefreshLayout>-->
+
+<!--<View-->
+<!--android:id="@+id/container_fog_view"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--android:visibility="gone"-->
+<!--android:alpha="0.1"-->
+<!--android:clickable="false"-->
+<!--android:background="@color/whiteFog"/>-->
+<!--</FrameLayout>-->
+
+<!--<co.netguru.android.inbbbox.view.FogFloatingActionMenu-->
+<!--android:id="@+id/fab_menu"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_gravity="end|bottom"-->
+<!--android:layout_marginBottom="@dimen/activity_vertical_margin"-->
+<!--android:layout_marginRight="@dimen/activity_horizontal_margin"-->
+<!--fab:menu_animationDelayPerItem="10"-->
+<!--fab:menu_backgroundColor="@android:color/transparent"-->
+<!--fab:menu_colorNormal="@color/white"-->
+<!--fab:menu_colorPressed="@color/lightGray"-->
+<!--fab:menu_colorRipple="@color/accent"-->
+<!--fab:menu_fab_size="normal"-->
+<!--fab:menu_icon="@drawable/ic_fab_open"-->
+<!--fab:menu_labels_colorNormal="@color/white"-->
+<!--fab:menu_labels_colorPressed="@color/lightGray"-->
+<!--fab:menu_labels_cornerRadius="@dimen/shots_label_radius"-->
+<!--fab:menu_labels_ellipsize="none"-->
+<!--fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"-->
+<!--fab:menu_labels_margin="0dp"-->
+<!--fab:menu_labels_maxLines="-1"-->
+<!--fab:menu_labels_paddingBottom="@dimen/fab_menu_label_bottom_top_padding"-->
+<!--fab:menu_labels_paddingLeft="@dimen/fab_menu_label_side_padding"-->
+<!--fab:menu_labels_paddingRight="@dimen/fab_menu_label_side_padding"-->
+<!--fab:menu_labels_paddingTop="@dimen/fab_menu_label_bottom_top_padding"-->
+<!--fab:menu_labels_position="left"-->
+<!--fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"-->
+<!--fab:menu_labels_showShadow="true"-->
+<!--fab:menu_labels_singleLine="true"-->
+<!--fab:menu_labels_style="@style/FabMenuLabel"-->
+<!--fab:menu_labels_textColor="@color/black"-->
+<!--fab:menu_openDirection="up"-->
+<!--fab:menu_shadowColor="@color/lightShadow"-->
+<!--fab:menu_shadowRadius="0.5dp"-->
+<!--fab:menu_shadowXOffset="0dp"-->
+<!--fab:menu_shadowYOffset="0.5dp"-->
+<!--fab:menu_showShadow="true">-->
+
+<!--<com.github.clans.fab.FloatingActionButton-->
+<!--android:id="@+id/fab_comment_menu"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:src="@drawable/ic_fab_comment"-->
+<!--fab:fab_colorNormal="@color/white"-->
+<!--fab:fab_colorPressed="@color/accent"-->
+<!--fab:fab_label="@string/comment"-->
+<!--fab:fab_size="mini"/>-->
+
+<!--<com.github.clans.fab.FloatingActionButton-->
+<!--android:id="@+id/fab_bucket_menu"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:src="@drawable/ic_fab_bucket"-->
+<!--fab:fab_colorNormal="@color/white"-->
+<!--fab:fab_colorPressed="@color/accent"-->
+<!--fab:fab_label="@string/add_to_bucket"-->
+<!--fab:fab_size="mini"/>-->
+
+<!--<com.github.clans.fab.FloatingActionButton-->
+<!--android:id="@+id/fab_follow_menu"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:src="@drawable/ic_fab_follow"-->
+<!--fab:fab_colorNormal="@color/white"-->
+<!--fab:fab_colorPressed="@color/accent"-->
+<!--fab:fab_label="@string/follow"-->
+<!--fab:fab_size="mini"/>-->
+
+<!--<com.github.clans.fab.FloatingActionButton-->
+<!--android:id="@+id/fab_like_menu"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:src="@drawable/ic_fab_like"-->
+<!--fab:fab_colorPressed="@color/accent"-->
+<!--fab:fab_colorNormal="@color/white"-->
+<!--fab:fab_label="@string/like"-->
+<!--fab:fab_size="mini"/>-->
+
+<!--</co.netguru.android.inbbbox.view.FogFloatingActionMenu>-->
+<!--</android.support.design.widget.CoordinatorLayout>-->
+
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -17,17 +132,18 @@
             <co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView
                 android:id="@+id/shots_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
         </android.support.v4.widget.SwipeRefreshLayout>
 
         <View
             android:id="@+id/container_fog_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:alpha="0.1"
+            android:background="@color/whiteFog"
             android:clickable="false"
-            android:background="@color/whiteFog"/>
+            android:visibility="gone"/>
     </FrameLayout>
 
     <co.netguru.android.inbbbox.view.FogFloatingActionMenu
@@ -103,10 +219,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_like"
-            fab:fab_colorPressed="@color/accent"
             fab:fab_colorNormal="@color/white"
+            fab:fab_colorPressed="@color/accent"
             fab:fab_label="@string/like"
             fab:fab_size="mini"/>
 
     </co.netguru.android.inbbbox.view.FogFloatingActionMenu>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@android:color/holo_orange_light"
+        android:clipToPadding="true"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:text="test"
+            android:textSize="16sp"/>
+
+    </android.support.v4.widget.NestedScrollView>
+
 </android.support.design.widget.CoordinatorLayout>
