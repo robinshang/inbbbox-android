@@ -1,8 +1,8 @@
 package co.netguru.android.inbbbox.view;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.webkit.WebView;
@@ -56,13 +56,13 @@ public class WebviewDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
         try {
-            callback = (OnRedirectUrlCallbackListener) context;
+            callback = (OnRedirectUrlCallbackListener) activity;
         } catch (ClassCastException e) {
             Timber.e(e.getMessage());
-            throw new ClassCastException(context.toString()
+            throw new ClassCastException(activity.toString()
                     + " must implement OnRedirectUrlCallbackListener");
         }
     }

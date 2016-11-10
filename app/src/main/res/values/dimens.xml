@@ -29,19 +29,17 @@
 
     <dimen name="right_swipe_action_panel_width">85dp</dimen>
     <dimen name="left_swipe_action_panel_width">160dp</dimen>
-    <dimen name="swipe_action_icon_width">48dp</dimen>
+    <dimen name="swipe_action_icon_width">40dp</dimen>
 
     <dimen name="fragment_like_recycler_view_padding_top">16dp</dimen>
     <dimen name="fragment_like_empty_view_logo_size">140dp</dimen>
     <dimen name="fragment_like_empty_view_text_margin_top">48dp</dimen>
     <dimen name="swipe_action_plus_size">12dp</dimen>
 
-    <dimen name="shot_corner_radius">30px</dimen>
-    <dimen name="shot_corner_radius_dp">30dp</dimen>
     <dimen name="fab_menu_label_side_padding">6dp</dimen>
     <dimen name="fab_menu_label_bottom_top_padding">2dp</dimen>
     <dimen name="fab_label_font_size">12sp</dimen>
     <dimen name="shots_label_radius">24dp</dimen>
 
-    <dimen name="like_corner_radius">6dp</dimen>
+    <dimen name="shot_corner_radius">8dp</dimen>
 </resources>

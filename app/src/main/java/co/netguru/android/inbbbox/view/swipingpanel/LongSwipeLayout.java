@@ -96,14 +96,6 @@ public class LongSwipeLayout extends SwipeLayout {
             isLongSwipeTriggered = false;
         }
 
-        if (isNormalSwipeScope) {
-//            event.setLocation(offsetX, event.getY());
-        } else if (wasChecked) {
-
-//            float offset = event.getRawX() - LONG_SWIPE_TRIGGERING_THRESHOLD;
-//            event.setLocation(offset, event.getY());
-        }
-
         itemSwipeListener.onLeftSwipeActivate(isNormalSwipeTriggered);
         itemSwipeListener.onLeftLongSwipeActivate(isLongSwipeTriggered);
         itemSwipeListener.onRightSwipeActivate(isRightSwipeTriggered);
