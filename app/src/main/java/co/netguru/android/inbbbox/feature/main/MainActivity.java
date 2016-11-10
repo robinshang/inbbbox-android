@@ -68,7 +68,7 @@ public class MainActivity
     @BindView(R.id.activity_main_drawer_layout)
     DrawerLayout drawerLayout;
 
-    @BindView(R.id.bottom_sheet)
+    @BindView(R.id.fragment_container)
     View bottomSheetView;
 
     @BindDrawable(R.drawable.toolbar_center_background)
