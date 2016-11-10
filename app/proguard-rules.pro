@@ -128,6 +128,3 @@
 -keepclassmembers class * implements android.os.Parcelable {
     static ** CREATOR;
 }
-
-# RoundImageView
--dontwarn com.makeramen.**
