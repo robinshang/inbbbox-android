@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.di.component.FollowersFragmentComponent;
 import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
 import co.netguru.android.inbbbox.feature.followers.adapter.FollowersAdapter;
+import co.netguru.android.inbbbox.utils.TextFormatter;
 
 public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowersContract.View, FollowersContract.Presenter>
         implements FollowersContract.View {
@@ -64,15 +64,8 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
     public void onAttach(Context context) {
         super.onAttach(context);
         component = App.getAppComponent(getContext())
-                .plus(new FollowersFragmentModule(getContext()));
+                .plus(new FollowersFragmentModule());
         component.inject(this);
-    }
-
-    @Override
-    protected void changeGridMode(boolean isGridMode) {
-        adapter.setGridMode(isGridMode);
-        recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
-        recyclerView.setAdapter(adapter);
     }
 
     @Nullable
@@ -85,9 +78,17 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
         emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
+        emptyViewText.setText(TextFormatter.addDrawableToTextAtFirstSpace(emptyString, emptyTextDrawable), TextView.BufferType.SPANNABLE);
         getPresenter().getFollowedUsersFromServer();
-        getPresenter().addIconToText(emptyString, emptyTextDrawable);
+    }
+
+    @Override
+    protected void changeGridMode(boolean isGridMode) {
+        adapter.setGridMode(isGridMode);
+        recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
     }
 
     @NonNull
@@ -109,10 +110,5 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
     @Override
     public void showEmptyLikesInfo() {
         emptyView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void setEmptyViewText(SpannableStringBuilder spannableStringBuilder) {
-        emptyViewText.setText(spannableStringBuilder, TextView.BufferType.SPANNABLE);
     }
 }

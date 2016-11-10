@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.feature.likes;
 
-import android.graphics.drawable.Drawable;
-
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import java.util.List;
@@ -11,7 +9,6 @@ import javax.inject.Inject;
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.controler.LikedShotsController;
 import co.netguru.android.inbbbox.model.ui.LikedShot;
-import co.netguru.android.inbbbox.utils.TextFormatter;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -25,16 +22,14 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     private static final int PAGE_COUNT = 30;
 
     private final LikedShotsController likedShotsController;
-    private final TextFormatter textFormatter;
     private final CompositeSubscription subscriptions;
 
     private boolean hasMore = true;
     private int pageNumber = 1;
 
     @Inject
-    LikesPresenter(LikedShotsController likedShotsController, TextFormatter textFormatter) {
+    LikesPresenter(LikedShotsController likedShotsController) {
         this.likedShotsController = likedShotsController;
-        this.textFormatter = textFormatter;
         subscriptions = new CompositeSubscription();
     }
 
@@ -65,11 +60,6 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
                             throwable -> Timber.e(throwable, "Error while getting more likes from server"));
             subscriptions.add(subscription);
         }
-    }
-
-    @Override
-    public void addIconToText(String text, Drawable icon) {
-        getView().setEmptyViewText(textFormatter.addDrawableToTextAtFirstSpace(text, icon));
     }
 
     private void onGetLikeShotListNext(List<LikedShot> likedShotList) {

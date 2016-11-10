@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 @AutoValue
 public abstract class FollowerEntity {
 
-    public abstract int id();
+    public abstract long id();
 
     @SerializedName("created_at")
     public abstract String createdAt();
@@ -27,7 +27,7 @@ public abstract class FollowerEntity {
     @AutoValue.Builder
     public abstract static class Builder {
 
-        public abstract Builder id(int id);
+        public abstract Builder id(long id);
 
         public abstract Builder createdAt(String createdAt);
 

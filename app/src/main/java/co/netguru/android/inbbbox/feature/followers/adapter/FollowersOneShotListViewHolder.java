@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.Follower;
 
-
 public class FollowersOneShotListViewHolder extends BaseFollowersViewHolder {
 
     FollowersOneShotListViewHolder(ViewGroup parent) {

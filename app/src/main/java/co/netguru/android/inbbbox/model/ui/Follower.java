@@ -14,7 +14,7 @@ import co.netguru.android.inbbbox.model.api.FollowerEntity;
 @AutoValue
 public abstract class Follower {
 
-    public abstract int id();
+    public abstract long id();
 
     public abstract String name();
 
@@ -33,13 +33,14 @@ public abstract class Follower {
         return new AutoValue_Follower.Builder();
     }
 
-    public static Follower create(FollowerEntity followerEntity) {
+    public static Follower create(FollowerEntity followerEntity, List<Shot> shotList) {
         return Follower.builder()
                 .id(followerEntity.user().id())
                 .name(followerEntity.user().name())
                 .username(followerEntity.user().username())
                 .avatarUrl(followerEntity.user().avatarUrl())
                 .shotsCount(followerEntity.user().shotsCount())
+                .shotList(shotList)
                 .build();
     }
 
@@ -50,7 +51,7 @@ public abstract class Follower {
     @AutoValue.Builder
     public abstract static class Builder {
 
-        public abstract Builder id(int id);
+        public abstract Builder id(long id);
 
         public abstract Builder name(String name);
 

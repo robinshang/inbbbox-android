@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.feature.followers;
 
-import android.graphics.drawable.Drawable;
-
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import java.util.List;
@@ -12,7 +10,6 @@ import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.controler.FollowersController;
 import co.netguru.android.inbbbox.controler.FollowersShotController;
 import co.netguru.android.inbbbox.model.ui.Follower;
-import co.netguru.android.inbbbox.utils.TextFormatter;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -25,15 +22,12 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
 
     private final FollowersController followersController;
     private final FollowersShotController followersShotController;
-    private final TextFormatter textFormatter;
     private final CompositeSubscription subscriptions;
 
     @Inject
-    FollowersPresenter(FollowersController followersController, FollowersShotController followersShotController,
-                       TextFormatter textFormatter) {
+    FollowersPresenter(FollowersController followersController, FollowersShotController followersShotController) {
         this.followersController = followersController;
         this.followersShotController = followersShotController;
-        this.textFormatter = textFormatter;
         subscriptions = new CompositeSubscription();
     }
 
@@ -45,6 +39,7 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
 
     @Override
     public void getFollowedUsersFromServer() {
+        // TODO: 10.11.2016 Add paging, it will cause error when there will be more than 60 users
         final Subscription subscription = followersController.getFollowedUsers()
                 .flatMap(followersShotController::getFollowedUserWithShots)
                 .toList()
@@ -54,17 +49,12 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
         subscriptions.add(subscription);
     }
 
-    @Override
-    public void addIconToText(String text, Drawable icon) {
-        getView().setEmptyViewText(textFormatter.addDrawableToTextAtFirstSpace(text, icon));
-    }
-
     private void onGetShotsNext(List<Follower> followersList) {
         if (followersList.isEmpty()) {
             getView().showEmptyLikesInfo();
-            return;
+        } else {
+            getView().hideEmptyLikesInfo();
+            getView().showFollowedUsers(followersList);
         }
-        getView().hideEmptyLikesInfo();
-        getView().showFollowedUsers(followersList);
     }
 }

@@ -1,11 +1,10 @@
 package co.netguru.android.inbbbox.controler;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.api.ShotsApi;
+import co.netguru.android.inbbbox.model.api.FollowerEntity;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Observable;
@@ -20,22 +19,11 @@ public class FollowersShotController {
         this.shotsApi = shotsApi;
     }
 
-    public Observable<Follower> getFollowedUserWithShots(Follower follower) {
-       return shotsApi.getFollowedUserShots(follower.id())
+    public Observable<Follower> getFollowedUserWithShots(FollowerEntity follower) {
+       return shotsApi.getFollowedUserShots(follower.user().id())
               .flatMap(Observable::from)
               .map(Shot::create)
               .toList()
-              .map(shotList -> createFollowerWithShots(shotList, follower));
-    }
-
-    private Follower createFollowerWithShots(List<Shot> shotList, Follower follower) {
-        return Follower.builder()
-                .id(follower.id())
-                .shotsCount(follower.shotsCount())
-                .avatarUrl(follower.avatarUrl())
-                .username(follower.username())
-                .name(follower.name())
-                .shotList(shotList)
-                .build();
+              .map(shotList -> Follower.create(follower, shotList));
     }
 }

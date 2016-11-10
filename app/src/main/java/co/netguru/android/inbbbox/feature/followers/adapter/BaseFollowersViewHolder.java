@@ -5,7 +5,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -65,7 +64,6 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
         Glide.with(itemView.getContext())
                 .load(photoUrl)
                 .placeholder(R.drawable.logo_ball)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .animate(android.R.anim.fade_in)
                 .into(userPhoto);
     }

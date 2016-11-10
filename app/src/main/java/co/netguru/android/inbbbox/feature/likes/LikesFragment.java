@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +28,7 @@ import co.netguru.android.inbbbox.model.ui.LikedShot;
 import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
+import co.netguru.android.inbbbox.utils.TextFormatter;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<LikesViewContract.View, LikesViewContract.Presenter>
@@ -82,7 +82,7 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
         emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
-        getPresenter().addIconToText(emptyString, emptyTextDrawable);
+        emptyViewText.setText(TextFormatter.addDrawableToTextAtFirstSpace(emptyString, emptyTextDrawable), TextView.BufferType.SPANNABLE);
         getPresenter().getLikesFromServer();
     }
 
@@ -116,11 +116,6 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
     @Override
     public void showEmptyLikesInfo() {
         emptyView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void setEmptyViewText(SpannableStringBuilder spannableStringBuilder) {
-        emptyViewText.setText(spannableStringBuilder, TextView.BufferType.SPANNABLE);
     }
 
     public void refreshFragmentData() {

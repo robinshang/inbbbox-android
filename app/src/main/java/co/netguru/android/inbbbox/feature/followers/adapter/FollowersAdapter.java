@@ -13,34 +13,49 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 
 public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHolder> {
 
-    private static final int TYPE_EMPTY = 0;
-    private static final int TYPE_ONE_SHOT = 1;
-    private static final int TYPE_TWO_SHOT = 2;
-    private static final int TYPE_THREE_SHOT = 3;
-    private static final int TYPE_FOUR_SHOT = 4;
+    private static final int TYPE_EMPTY_LIST = 0;
+    private static final int TYPE_EMPTY_GRID = 1;
+    private static final int TYPE_ONE_SHOT_LIST = 2;
+    private static final int TYPE_ONE_SHOT_GRID = 3;
+    private static final int TYPE_TWO_SHOT_LIST = 4;
+    private static final int TYPE_TWO_SHOT_GRID = 5;
+    private static final int TYPE_THREE_SHOT_LIST = 6;
+    private static final int TYPE_THREE_SHOT_GRID = 7;
+    private static final int TYPE_FOUR_SHOT_LIST = 8;
+    private static final int TYPE_FOUR_SHOT_GRID = 9;
 
     private final List<Follower> followersList;
 
     private boolean isGridMode;
 
     @Inject
-    public FollowersAdapter() {
+    FollowersAdapter() {
         followersList = new ArrayList<>();
     }
 
     @Override
     public BaseFollowersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case TYPE_EMPTY:
+            case TYPE_EMPTY_GRID:
+                return new FollowersEmptyShotGridViewHolder(parent);
+            case TYPE_EMPTY_LIST:
                 return new FollowersEmptyShotListViewHolder(parent);
-            case TYPE_ONE_SHOT:
-                return isGridMode ? new FollowersOneShotGridViewHolder(parent) : new FollowersOneShotListViewHolder(parent);
-            case TYPE_TWO_SHOT:
-                return isGridMode ? new FollowersTwoShotGridViewHolder(parent) : new FollowersTwoShotListViewHolder(parent);
-            case TYPE_THREE_SHOT:
-                return isGridMode ? new FollowersThreeShotGridViewHolder(parent) : new FollowersThreeShotListViewHolder(parent);
-            case TYPE_FOUR_SHOT:
-                return isGridMode ? new FollowersFourShotGridViewHolder(parent) : new FollowersFourShotListViewHolder(parent);
+            case TYPE_ONE_SHOT_GRID:
+                return new FollowersOneShotGridViewHolder(parent);
+            case TYPE_ONE_SHOT_LIST:
+                return new FollowersOneShotListViewHolder(parent);
+            case TYPE_TWO_SHOT_GRID:
+                return new FollowersTwoShotGridViewHolder(parent);
+            case TYPE_TWO_SHOT_LIST:
+                return new FollowersTwoShotListViewHolder(parent);
+            case TYPE_THREE_SHOT_GRID:
+                return new FollowersThreeShotGridViewHolder(parent);
+            case TYPE_THREE_SHOT_LIST:
+                return new FollowersThreeShotListViewHolder(parent);
+            case TYPE_FOUR_SHOT_GRID:
+                return new FollowersFourShotGridViewHolder(parent);
+            case TYPE_FOUR_SHOT_LIST:
+                return new FollowersFourShotListViewHolder(parent);
             default:
                 throw new IllegalArgumentException("Cannot create view holder for type : " + viewType);
         }
@@ -71,17 +86,17 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
     public int getItemViewType(int position) {
         final List<Shot> shotList = followersList.get(position).shotList();
         if (shotList == null || shotList.isEmpty()) {
-            return TYPE_EMPTY;
+            return isGridMode ? TYPE_EMPTY_GRID : TYPE_EMPTY_LIST;
         }
         switch (shotList.size()) {
             case 1:
-                return TYPE_ONE_SHOT;
+                return isGridMode ? TYPE_ONE_SHOT_GRID : TYPE_ONE_SHOT_LIST;
             case 2:
-                return TYPE_TWO_SHOT;
+                return isGridMode ? TYPE_TWO_SHOT_GRID : TYPE_TWO_SHOT_LIST;
             case 3:
-                return TYPE_THREE_SHOT;
+                return isGridMode ? TYPE_THREE_SHOT_GRID : TYPE_THREE_SHOT_LIST;
             default:
-                return TYPE_FOUR_SHOT;
+                return isGridMode ? TYPE_FOUR_SHOT_GRID : TYPE_FOUR_SHOT_LIST;
         }
     }
 }

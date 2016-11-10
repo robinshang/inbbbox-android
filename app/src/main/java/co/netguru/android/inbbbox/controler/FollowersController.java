@@ -4,7 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.api.FollowersApi;
-import co.netguru.android.inbbbox.model.ui.Follower;
+import co.netguru.android.inbbbox.model.api.FollowerEntity;
 import rx.Observable;
 
 @Singleton
@@ -17,9 +17,8 @@ public class FollowersController {
         this.followersApi = followersApi;
     }
 
-    public Observable<Follower> getFollowedUsers() {
+    public Observable<FollowerEntity> getFollowedUsers() {
         return followersApi.getFollowedUsers()
-                .flatMap(Observable::from)
-                .map(Follower::create);
+                .flatMap(Observable::from);
     }
 }

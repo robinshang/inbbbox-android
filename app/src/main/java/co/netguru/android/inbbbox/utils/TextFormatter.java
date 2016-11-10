@@ -5,18 +5,13 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-@Singleton
 public final class TextFormatter {
 
-    @Inject
-    public TextFormatter() {
-
+    private TextFormatter() {
+        throw new AssertionError();
     }
 
-    public SpannableStringBuilder addDrawableToTextAtFirstSpace(String text, Drawable drawable) {
+    public static SpannableStringBuilder addDrawableToTextAtFirstSpace(String text, Drawable drawable) {
         final int index = text.indexOf(' ');
         final ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
         final SpannableStringBuilder builder = new SpannableStringBuilder();

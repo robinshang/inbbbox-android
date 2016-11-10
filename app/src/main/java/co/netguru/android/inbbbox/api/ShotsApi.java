@@ -21,5 +21,5 @@ public interface ShotsApi {
     Observable<List<ShotEntity>> getFollowingShots();
 
     @GET("users/{user}/shots")
-    Observable<List<ShotEntity>> getFollowedUserShots(@Path("user") int userId);
+    Observable<List<ShotEntity>> getFollowedUserShots(@Path("user") long userId);
 }

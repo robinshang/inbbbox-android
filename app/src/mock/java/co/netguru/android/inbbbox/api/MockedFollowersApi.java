@@ -1,15 +1,14 @@
 package co.netguru.android.inbbbox.api;
 
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
 
-import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.model.api.FollowerEntity;
 import rx.Observable;
 
 public class MockedFollowersApi implements FollowersApi {
 
-    private List<FollowerEntity> followers = new LinkedList<>();
+    private final List<FollowerEntity> followers = Collections.emptyList();
 
     @Override
     public Observable<List<FollowerEntity>> getFollowedUsers() {

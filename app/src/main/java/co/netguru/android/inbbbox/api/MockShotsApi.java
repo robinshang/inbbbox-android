@@ -30,7 +30,7 @@ public class MockShotsApi implements ShotsApi {
     }
 
     @Override
-    public Observable<List<ShotEntity>> getFollowedUserShots(@Path("user") int userId) {
+    public Observable<List<ShotEntity>> getFollowedUserShots(@Path("user") long userId) {
         return Observable.just(getFollowingMockedData());
     }
 
