@@ -65,7 +65,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     public void handleOauthUrl(String url) {
         dialogFragment = WebviewDialogFragment.newInstance(url);
-        dialogFragment.show(getFragmentManager(), WebviewDialogFragment.TAG);
+        dialogFragment.show(getSupportFragmentManager(), WebviewDialogFragment.TAG);
     }
 
     @Override

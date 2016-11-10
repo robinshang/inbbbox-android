@@ -7,9 +7,8 @@ import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.model.ui.LikedShot;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
-
+import co.netguru.android.inbbbox.model.ui.LikedShot;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
 public class LikesListViewHolder extends BaseViewHolder<LikedShot> {
@@ -23,7 +22,7 @@ public class LikesListViewHolder extends BaseViewHolder<LikedShot> {
 
     @Override
     public void bind(LikedShot item) {
-        final float radius = itemView.getResources().getDimension(R.dimen.like_corner_radius);
+        final float radius = itemView.getResources().getDimension(R.dimen.shot_corner_radius);
         imageView.setRadius(radius);
         Glide.with(itemView.getContext())
                 .load(item.getImageUrl())

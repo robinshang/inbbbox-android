@@ -13,12 +13,13 @@
         android:adjustViewBounds="true"
         android:src="@drawable/shot_item_swipe_bottom_background"/>
 
-    <co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                                  android:id="@+id/long_swipe_layout"
-                                                                  android:layout_width="match_parent"
-                                                                  android:layout_height="wrap_content"
-                                                                  android:layout_centerInParent="true"
-                                                                  android:layout_gravity="center">
+    <co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/long_swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center">
         <!-- Bottom View Start-->
         <LinearLayout
             android:id="@+id/bottom_right_wrapper"
@@ -52,14 +53,13 @@
                 <ImageView
                     android:id="@+id/iv_like_action"
                     style="@style/LongSwipeActionIcons"
-                    android:src="@drawable/selector_like_swipe"
-                    android:layout_width="wrap_content"/>
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/selector_like_swipe"/>
 
                 <ImageView
                     android:layout_width="@dimen/swipe_action_plus_size"
                     android:layout_height="@dimen/swipe_action_plus_size"
                     android:layout_gravity="center"
-                    android:layout_margin="5dp"
                     android:src="@drawable/ic_plus"/>
 
                 <ImageView
@@ -75,7 +75,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            android:padding="@dimen/shot_background_padding"/>
         <!-- Surface View End -->
     </co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout>
 </RelativeLayout>

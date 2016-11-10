@@ -75,7 +75,7 @@ ext {
             greenDaoGenerator       : "org.greenrobot:greendao-generator:$greenDaoVersion",
             circleImageView         : "de.hdodenhof:circleimageview:2.1.0",
             swipeLayout             : "com.daimajia.swipelayout:library:1.2.0@aar",
-            fabMenu                 : "com.github.clans:fab:1.6.4"
+            fabMenu                 : "com.github.clans:fab:1.6.4",
     ]
 
     proc = [

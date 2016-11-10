@@ -10,8 +10,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.ThumbnailUtil;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 import co.netguru.android.inbbbox.view.swipingpanel.ItemSwipeListener;

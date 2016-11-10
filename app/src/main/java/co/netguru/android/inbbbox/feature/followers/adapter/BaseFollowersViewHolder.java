@@ -34,7 +34,7 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
 
     @Override
     public void bind(Follower item) {
-        final float radius = itemView.getResources().getDimension(R.dimen.like_corner_radius);
+        final float radius = itemView.getResources().getDimension(R.dimen.shot_corner_radius);
         fourImagesView.setRadius(radius);
         userName.setText(item.name());
         shotsCount.setText(getShotCountString(item.shotsCount()));
