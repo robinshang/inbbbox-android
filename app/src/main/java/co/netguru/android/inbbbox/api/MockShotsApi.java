@@ -7,6 +7,8 @@ import java.util.Random;
 import co.netguru.android.inbbbox.model.api.Image;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.Constants;
+
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -24,6 +26,11 @@ public class MockShotsApi implements ShotsApi {
 
     @Override
     public Observable<List<ShotEntity>> getFollowingShots() {
+        return Observable.just(getFollowingMockedData());
+    }
+
+    @Override
+    public Observable<List<ShotEntity>> getFollowedUserShots(@Path("user") long userId) {
         return Observable.just(getFollowingMockedData());
     }
 
