@@ -17,8 +17,8 @@ public class FollowersController {
         this.followersApi = followersApi;
     }
 
-    public Observable<FollowerEntity> getFollowedUsers() {
-        return followersApi.getFollowedUsers()
+    public Observable<FollowerEntity> getFollowedUsers(int pageNumber, int pageCount) {
+        return followersApi.getFollowedUsers(pageNumber, pageCount)
                 .flatMap(Observable::from);
     }
 }

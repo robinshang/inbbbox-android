@@ -13,6 +13,8 @@ interface FollowersContract {
 
         void showFollowedUsers(List<Follower> followerList);
 
+        void showMoreFollowedUsers(List<Follower> followerList);
+
         void hideEmptyLikesInfo();
 
         void showEmptyLikesInfo();
@@ -21,5 +23,7 @@ interface FollowersContract {
     interface Presenter extends MvpPresenter<View> {
 
         void getFollowedUsersFromServer();
+
+        void getMoreFollowedUsersFromServer();
     }
 }
