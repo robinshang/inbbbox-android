@@ -45,95 +45,19 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#232323"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <!--TODO HERE WILL BE RECYCLER LOCATED-->
-        <ScrollView android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-            <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="match_parent"
-                          android:orientation="vertical"
-                          app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <include layout="@layout/shot_info_user_info_layout"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <include layout="@layout/shot_info_user_info_layout"/>
 
-            </LinearLayout>
-        </ScrollView>
+            <View style="@style/Divider"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/shot_details_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

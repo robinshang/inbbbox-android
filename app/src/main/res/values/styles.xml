@@ -115,4 +115,10 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/actionButtonLabelColor</item>
     </style>
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/lightGray</item>
+    </style>
 </resources>

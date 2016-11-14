@@ -37,8 +37,8 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.MainActivityComponent;
 import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsFragmentCallback;
-import co.netguru.android.inbbbox.feature.details.ShotDetialsFragmentDialog;
 import co.netguru.android.inbbbox.feature.likes.LikesFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
@@ -55,7 +55,7 @@ public class MainActivity
         ShotsFragment.ShotLikeStatusListener,
         ShotDetailsFragmentCallback {
 
-    private static final String TAG = ShotDetialsFragmentDialog.class.getSimpleName();
+    private static final String TAG = ShotDetailsFragment.class.getSimpleName();
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -135,7 +135,7 @@ public class MainActivity
         switch (item.getItemId()) {
             case R.id.action_settings:
 //                drawerLayout.openDrawer(GravityCompat.START);
-//                ShotDetialsFragmentDialog.newInstnace(1).show(getSupportFragmentManager(), TAG);
+//                ShotDetailsFragment.newInstance(1).show(getSupportFragmentManager(), TAG);
 
                 showFragmentDetails();
                 return true;
@@ -147,14 +147,14 @@ public class MainActivity
     private void showFragmentDetails() {
 //        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG);
 //        if (fragment == null) {
-        Fragment fragment = ShotDetialsFragmentDialog.newInstnace(2);
+        Fragment fragment = ShotDetailsFragment.newInstance(2);
 //        }
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment, TAG)
                 .commit();
         getBottomSheetBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
-//        ShotDetialsFragmentDialog.newInstnace(12).show(getSupportFragmentManager(), "TEST");
+//        ShotDetailsFragment.newInstance(12).show(getSupportFragmentManager(), "TEST");
     }
 
     @Override
