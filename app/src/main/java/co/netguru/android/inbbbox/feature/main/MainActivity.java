@@ -104,7 +104,12 @@ public class MainActivity
         initializePager();
         initializeDrawer();
         initializeToolbar();
+        initializeBottomSheet();
         getPresenter().prepareUserData();
+    }
+
+    private void initializeBottomSheet() {
+        // TODO: 14.11.2016 use or remove
     }
 
     private void initComponent() {
@@ -140,11 +145,16 @@ public class MainActivity
     }
 
     private void showFragmentDetails() {
+//        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG);
+//        if (fragment == null) {
+        Fragment fragment = ShotDetialsFragmentDialog.newInstnace(2);
+//        }
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, ShotDetialsFragmentDialog.newInstnace(2), "TEST")
+                .replace(R.id.fragment_container, fragment, TAG)
                 .commit();
         getBottomSheetBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
+//        ShotDetialsFragmentDialog.newInstnace(12).show(getSupportFragmentManager(), "TEST");
     }
 
     @Override
