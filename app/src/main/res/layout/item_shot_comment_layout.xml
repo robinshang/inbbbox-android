@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/comment_avatar_imageView"
+        android:layout_width="@dimen/comment_user_avatar_size"
+        android:layout_height="@dimen/comment_user_avatar_size"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="@dimen/details_user_avatar_margin"
+        android:src="@drawable/ic_ball"/>
+
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_toRightOf="@+id/comment_avatar_imageView"
+                  android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/comment_author_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:lines="1"
+            android:text="John Doe"/>
+
+        <TextView
+            android:id="@+id/comment_text_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Font14.DarkGray"
+            android:text="Great design, good job!"/>
+
+        <TextView
+            android:id="@+id/comment_date_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            style="@style/Font12.Gray"
+            android:text="About hour ago"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

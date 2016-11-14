@@ -34,11 +34,19 @@
         <item name="android:textColor">@color/lightGray</item>
     </style>
 
+    <style name="Font12.DarkGray" parent="Font12">
+        <item name="android:textColor">@color/textGrey</item>
+    </style>
+
     <style name="Font14">
         <item name="android:textSize">14sp</item>
     </style>
 
     <style name="Font14.Gray" parent="Font14">
+        <item name="android:textColor">@color/lightGray</item>
+    </style>
+
+    <style name="Font14.DarkGray" parent="Font14">
         <item name="android:textColor">@color/textGrey</item>
     </style>
 
@@ -124,5 +132,12 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:background">@color/dividerColor</item>
+    </style>
+
+    <style name="ShotDetailsSectionContainer">
+        <item name="android:paddingBottom">@dimen/shot_details_top_padding</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingTop">@dimen/shot_details_top_padding</item>
     </style>
 </resources>

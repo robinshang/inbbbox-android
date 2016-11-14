@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              style="@style/ShotDetailsSectionContainer"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/shotDetailsBackgroundLightGray"
-              android:orientation="vertical"
-              android:paddingBottom="@dimen/shot_details_top_padding"
-              android:paddingLeft="@dimen/activity_horizontal_margin"
-              android:paddingRight="@dimen/activity_horizontal_margin"
-              android:paddingTop="@dimen/shot_details_top_padding">
+              android:orientation="vertical">
 
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/details_user_imageView"
             android:layout_width="@dimen/details_user_avatar_size"
             android:layout_height="@dimen/details_user_avatar_size"
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="@dimen/details_user_avatar_margin"
             android:layout_marginRight="@dimen/details_user_avatar_margin"
-            android:adjustViewBounds="true"
-            android:src="@drawable/ic_ball"/>
+            app:civ_border_color="@color/white"
+            app:civ_border_width="@dimen/drawer_header_photo_border"
+            app:civ_fill_color="@color/lightGray"/>
 
         <LinearLayout
             android:id="@+id/details_info_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/details_user_imageView"
+            android:layout_toEndOf="@id/details_user_imageView"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/details_title_textView"
                 style="@style/Font16"
@@ -35,10 +35,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:lines="1"
-                android:text="Weather Calendar Application"/>
+                android:text="Weather Calendar Application"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/details_author_textView"
+                style="@style/Font12.DarkGray"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -48,6 +50,7 @@
 
             <TextView
                 android:id="@+id/details_info_textView"
+                style="@style/Font12.DarkGray"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"

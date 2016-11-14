@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -13,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -23,6 +27,8 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotDetailsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
+import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.ShotDetails;
 import timber.log.Timber;
 
 public class ShotDetailsFragment extends BottomSheetDialogFragment {
@@ -66,8 +72,42 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         behavior = callback.getBottomSheetBehavior();
         ButterKnife.bind(this, view);
+        initRecycler();
 
+        // TODO: 14.11.2016 FOR TESTS
+        List<Comment> comments = new ArrayList<>();
+        comments.add(new Comment());
+        comments.add(new Comment());
+        comments.add(new Comment());
+        comments.add(new Comment());
+        comments.add(new Comment());
+        ShotDetails details = ShotDetails
+                .builder()
+                .id(1)
+                .comments(comments)
+                .userAvatarUrl("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306")
+                .authorUrl("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306")
+                .authorName("demo author")
+                .appName("demo app")
+                .bucketCount(123)
+                .likesCount(321)
+                .companyName("Netguru")
+                .companyProfileUrl("http://google.com")
+                .date("25 dev 2016")
+                .build();
+//               builder().c
+//
+        showItems(details);
         showMainImage("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306");
+    }
+
+    private void initRecycler() {
+        shotRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        shotRecyclerView.setAdapter(adapter);
+    }
+
+    public void showItems(ShotDetails details) {
+        adapter.setDetails(details);
     }
 
     public void showMainImage(String imageUrl) {

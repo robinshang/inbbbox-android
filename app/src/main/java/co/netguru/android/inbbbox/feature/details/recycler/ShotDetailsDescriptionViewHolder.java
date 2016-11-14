@@ -2,9 +2,9 @@ package co.netguru.android.inbbbox.feature.details.recycler;
 
 import android.view.View;
 
-public class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
+public class ShotDetailsDescriptionViewHolder extends ShotDetailsViewHolder {
 
-    public ShotDetailsCommentViewHolder(View view) {
+    public ShotDetailsDescriptionViewHolder(View view) {
         super(view);
     }
 
