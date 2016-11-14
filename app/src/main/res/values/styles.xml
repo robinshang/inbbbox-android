@@ -38,6 +38,10 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="Font14.Gray" parent="Font14">
+        <item name="android:textColor">@color/textGrey</item>
+    </style>
+
     <style name="Font16">
         <item name="android:textSize">16sp</item>
     </style>
@@ -119,6 +123,6 @@
     <style name="Divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/lightGray</item>
+        <item name="android:background">@color/dividerColor</item>
     </style>
 </resources>
