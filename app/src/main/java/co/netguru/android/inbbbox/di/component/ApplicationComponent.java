@@ -9,6 +9,7 @@ import co.netguru.android.inbbbox.di.module.ApiModule;
 import co.netguru.android.inbbbox.di.module.ApplicationModule;
 import co.netguru.android.inbbbox.di.module.ConfigurationModule;
 
+import co.netguru.android.inbbbox.di.module.FollowerDetailsFragmentModule;
 import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.di.module.LocalRepositoryModule;
@@ -36,6 +37,8 @@ public interface ApplicationComponent extends BaseComponent {
     LikesFragmentComponent plus(LikesFragmentModule module);
 
     FollowersFragmentComponent plus(FollowersFragmentModule module);
+
+    FollowerDetailsFragmentComponent plus(FollowerDetailsFragmentModule module);
 
     BucketsFragmentComponent inject();
 
