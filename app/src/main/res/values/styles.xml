@@ -38,6 +38,10 @@
         <item name="android:textColor">@color/textGrey</item>
     </style>
 
+    <style name="Font12.Primary" parent="Font12">
+        <item name="android:textColor">@color/primary</item>
+    </style>
+
     <style name="Font14">
         <item name="android:textSize">14sp</item>
     </style>
@@ -135,7 +139,6 @@
     </style>
 
     <style name="ShotDetailsSectionContainer">
-        <item name="android:paddingBottom">@dimen/shot_details_top_padding</item>
         <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
         <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
         <item name="android:paddingTop">@dimen/shot_details_top_padding</item>

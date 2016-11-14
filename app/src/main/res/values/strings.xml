@@ -43,6 +43,8 @@
     <string name="follow">FOLLOW</string>
     <string name="add_to_bucket">ADD TO BUCKET</string>
     <string name="comment">Comment</string>
-    <string name="details_author_pattern">by <![CDATA[<font color=#F0377E>${user}</font>]]> for <![CDATA[<font color=#F0377E>${company}</font>]]></string>
-    <string name="details_shot_info_pattern">in ${app} on ${date}</string>
+    <string name="by_label">"by "</string>
+    <string name="for_label">" for "</string>
+    <string name="in_label">"in "</string>
+    <string name="info_pattern">in ${where} on ${when}</string>
 </resources>

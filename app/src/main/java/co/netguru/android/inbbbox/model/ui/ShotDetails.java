@@ -33,11 +33,16 @@ public abstract class ShotDetails {
 
     public abstract String description();
 
+    public abstract String title();
+
     @AutoValue.Builder
     public abstract static class Builder {
-        public abstract ShotDetails.Builder comments(List<Comment> comments);
 
         public abstract ShotDetails.Builder id(Integer id);
+
+        public abstract ShotDetails.Builder title(String title);
+
+        public abstract ShotDetails.Builder comments(List<Comment> comments);
 
         public abstract ShotDetails.Builder userAvatarUrl(String userAvatarUrl);
 

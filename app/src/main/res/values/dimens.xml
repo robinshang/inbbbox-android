@@ -57,4 +57,6 @@
     <dimen name="details_info_action_icon_size">32dp</dimen>
     <dimen name="shot_details_actions_margin">10dp</dimen>
     <dimen name="comment_user_avatar_size">32dp</dimen>
+    <dimen name="details_description_line_margin">4dp</dimen>
+    <dimen name="details_action_buttons_margin_top">10dp</dimen>
 </resources>

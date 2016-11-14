@@ -14,10 +14,13 @@ import co.netguru.android.inbbbox.R;
 
 public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
 
+    private static final String APP_NAME_KEY = "${where}";
+    private static final String DATE_KEY = "${when}";
+
     @BindView(R.id.details_user_imageView)
     ImageView userAvatarImageView;
 
-    @BindView(R.id.details_author_textView)
+    @BindView(R.id.details_title_textView)
     TextView shotTitleTextView;
 
     @BindView(R.id.details_info_textView)
@@ -29,10 +32,13 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     @BindView(R.id.details_buckets_count_textView)
     TextView bucketCountTextView;
 
-    @BindString(R.string.details_author_pattern)
-    String authorPattern;
+    @BindView(R.id.details_author_textView)
+    TextView authorTextView;
 
-    @BindString(R.string.details_shot_info_pattern)
+    @BindView(R.id.details_company_textView)
+    TextView companyTextView;
+
+    @BindString(R.string.info_pattern)
     String infoPattern;
 
     @OnClick(R.id.details_likes_imageView)
@@ -51,9 +57,9 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
 
     @Override
     protected void handleBinding() {
+        shotTitleTextView.setText(item.title());
         showImage(item.userAvatarUrl());
-        showAuthorInfo(item.authorName(), item.authorUrl());
-        showCompanyInfo(item.companyName(), item.companyProfileUrl());
+        showAuthorInfo(item.authorName(), item.companyName());
         showInfo(item.appName(), item.date());
         showCounters(item.likesCount(), item.bucketCount());
     }
@@ -64,15 +70,15 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     }
 
     private void showInfo(String appName, String date) {
-        // TODO: 14.11.2016  
+        infoPattern = infoPattern.replace(APP_NAME_KEY, appName);
+        infoPattern = infoPattern.replace(DATE_KEY, date);
+        shotDateInfoTextView.setText(infoPattern);
     }
 
-    private void showCompanyInfo(String company, String url) {
-        // TODO: 14.11.2016  
-    }
 
-    private void showAuthorInfo(String author, String url) {
-        // TODO: 14.11.2016
+    private void showAuthorInfo(String author, String company) {
+        authorTextView.setText(author);
+        companyTextView.setText(company);
     }
 
     private void showImage(String url) {

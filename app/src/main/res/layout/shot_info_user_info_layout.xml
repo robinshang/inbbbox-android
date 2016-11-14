@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              style="@style/ShotDetailsSectionContainer"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@color/shotDetailsBackgroundLightGray"
               android:orientation="vertical">
-<!--TODO remove all placeholder texts-->
+    <!--TODO remove all placeholder texts-->
     <RelativeLayout android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    style="@style/ShotDetailsSectionContainer">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/details_user_imageView"
@@ -38,29 +38,59 @@
                 android:text="Weather Calendar Application"
                 android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/details_author_textView"
-                style="@style/Font12.DarkGray"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:lines="1"
-                android:text="@string/details_author_pattern"
-                android:textStyle="bold"/>
+            <LinearLayout android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_marginBottom="@dimen/details_description_line_margin"
+                          android:orientation="horizontal">
+                <TextView
+                    style="@style/Font12.DarkGray"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="@string/by_label"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/details_author_textView"
+                    style="@style/Font12.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="User"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    style="@style/Font12.DarkGray"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="@string/for_label"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/details_company_textView"
+                    style="@style/Font12.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="Netguru"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/details_info_textView"
                 style="@style/Font12.DarkGray"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:text="@string/details_shot_info_pattern"/>
+                android:text="@string/info_pattern"/>
         </LinearLayout>
     </RelativeLayout>
 
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:layout_gravity="center"
+                  android:layout_marginTop="@dimen/details_action_buttons_margin_top"
                   android:gravity="center"
                   android:orientation="horizontal">
 
@@ -99,4 +129,5 @@
                 android:background="@drawable/selector_shot_details_action"/>
         </LinearLayout>
     </LinearLayout>
+    <View style="@style/Divider"/>
 </LinearLayout>

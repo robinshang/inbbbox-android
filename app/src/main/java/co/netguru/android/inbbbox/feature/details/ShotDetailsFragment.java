@@ -78,6 +78,7 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
         ShotDetails details = ShotDetails
                 .builder()
                 .id(1)
+                .title("Awsome Title homie")
                 .comments(comments)
                 .userAvatarUrl("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306")
                 .authorUrl("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306")
@@ -85,7 +86,7 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
                 .appName("demo app")
                 .bucketCount(123)
                 .likesCount(321)
-                .companyName("Netguru")
+                .companyName("Netguru dmeos")
                 .companyProfileUrl("http://google.com")
                 .date("25 dev 2016")
                 .description("\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"")
