@@ -51,6 +51,16 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
         // TODO: 14.11.2016 handle bucket click
     }
 
+    @OnClick(R.id.details_company_textView)
+    void onCompanyyClick() {
+        // TODO: 14.11.2016 pass url to company profile
+    }
+
+    @OnClick(R.id.details_author_textView)
+    void onAuthrClick() {
+        // TODO: 14.11.2016 open author profile
+    }
+
     ShotDetailsUserInfoViewHolder(View view) {
         super(view);
     }
