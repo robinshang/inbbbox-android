@@ -38,6 +38,10 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="Font16">
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="Font14.RobotoSmallCaps" parent="Font14">
         <item name="android:fontFamily">sans-serif-smallcaps</item>
     </style>
@@ -104,4 +108,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="DetailsActionButtonLabels">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/actionButtonLabelColor</item>
+    </style>
 </resources>

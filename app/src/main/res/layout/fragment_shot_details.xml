@@ -55,11 +55,7 @@
                           android:orientation="vertical"
                           app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="50dp"
-                    android:text="item"/>
+                <include layout="@layout/shot_info_user_info_layout"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
