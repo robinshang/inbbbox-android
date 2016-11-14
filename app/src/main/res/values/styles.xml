@@ -142,5 +142,7 @@
         <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
         <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
         <item name="android:paddingTop">@dimen/shot_details_top_padding</item>
+        <item name="android:paddingBottom">@dimen/activity_horizontal_margin</item>
     </style>
+
 </resources>
