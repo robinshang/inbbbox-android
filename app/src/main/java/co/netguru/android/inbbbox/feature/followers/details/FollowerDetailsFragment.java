@@ -13,19 +13,24 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.FollowerDetailsFragmentComponent;
 import co.netguru.android.inbbbox.di.module.FollowerDetailsFragmentModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
+import co.netguru.android.inbbbox.model.ui.Follower;
 
 public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowerDetailsContract.View,
         FollowerDetailsContract.Presenter> implements FollowerDetailsContract.View {
 
     public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
 
+    private static final String FOLLOWER_KEY = "follower_key";
+
     private FollowerDetailsFragmentComponent component;
 
-    public static FollowerDetailsFragment newInstance() {
+    private Follower follower;
 
-        Bundle args = new Bundle();
+    public static FollowerDetailsFragment newInstance(Follower follower) {
+        final Bundle args = new Bundle();
+        args.putParcelable(FOLLOWER_KEY, follower);
 
-        FollowerDetailsFragment fragment = new FollowerDetailsFragment();
+        final FollowerDetailsFragment fragment = new FollowerDetailsFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -36,6 +41,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         component = App.getAppComponent(getContext())
                 .plus(new FollowerDetailsFragmentModule());
         component.inject(this);
+        follower = getArguments().getParcelable(FOLLOWER_KEY);
     }
 
     @Nullable
