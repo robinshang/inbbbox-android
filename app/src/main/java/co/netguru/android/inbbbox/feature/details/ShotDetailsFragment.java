@@ -1,9 +1,7 @@
 package co.netguru.android.inbbbox.feature.details;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,12 +27,9 @@ import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.ShotDetails;
-import timber.log.Timber;
 
 public class ShotDetailsFragment extends BottomSheetDialogFragment {
 
-    private ShotDetailsFragmentCallback callback;
-    private BottomSheetBehavior behavior;
     private ShotDetailsComponent component;
 
     @BindView(R.id.shot_details_toolbar)
@@ -70,7 +65,6 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        behavior = callback.getBottomSheetBehavior();
         ButterKnife.bind(this, view);
         initRecycler();
 
@@ -94,8 +88,8 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
                 .companyName("Netguru")
                 .companyProfileUrl("http://google.com")
                 .date("25 dev 2016")
+                .description("\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"")
                 .build();
-//               builder().c
 //
         showItems(details);
         showMainImage("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306");
@@ -114,17 +108,5 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
         Glide.with(getContext())
                 .load(imageUrl)
                 .into(parallaxImageView);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            callback = (ShotDetailsFragmentCallback) context;
-        } catch (ClassCastException e) {
-            Timber.e(e.getMessage());
-            throw new ClassCastException(context.toString()
-                    + " must implement ShotDetailsFragmentCallback");
-        }
     }
 }

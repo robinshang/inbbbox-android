@@ -3,10 +3,10 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               style="@style/ShotDetailsSectionContainer"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:background="@color/shotDetailsBackgroundLightGray"
               android:orientation="vertical">
-
+<!--TODO remove all placeholder texts-->
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -77,8 +77,7 @@
 
             <TextView
                 android:id="@+id/details_likes_count_textView"
-                style="@style/DetailsActionButtonLabels"
-                android:text="712"/>
+                style="@style/DetailsActionButtonLabels"/>
         </LinearLayout>
 
         <LinearLayout android:layout_width="wrap_content"
@@ -89,6 +88,7 @@
                 android:id="@+id/details_bucket_imageView"
                 android:layout_width="@dimen/details_info_action_icon_size"
                 android:layout_height="@dimen/details_info_action_icon_size"
+                android:background="@drawable/selector_shot_details_action"
                 android:src="@drawable/ic_bucket_details"/>
 
             <TextView
@@ -96,8 +96,7 @@
                 style="@style/DetailsActionButtonLabels"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selector_shot_details_action"
-                android:text="82"/>
+                android:background="@drawable/selector_shot_details_action"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

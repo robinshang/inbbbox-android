@@ -31,6 +31,8 @@ public abstract class ShotDetails {
 
     public abstract Integer bucketCount();
 
+    public abstract String description();
+
     @AutoValue.Builder
     public abstract static class Builder {
         public abstract ShotDetails.Builder comments(List<Comment> comments);
@@ -54,6 +56,8 @@ public abstract class ShotDetails {
         public abstract ShotDetails.Builder likesCount(Integer likeCount);
 
         public abstract ShotDetails.Builder bucketCount(Integer bucketCount);
+
+        public abstract ShotDetails.Builder description(String description);
 
         public abstract ShotDetails build();
     }

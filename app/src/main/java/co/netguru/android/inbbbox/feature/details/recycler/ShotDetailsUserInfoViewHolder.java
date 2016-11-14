@@ -23,6 +23,12 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     @BindView(R.id.details_info_textView)
     TextView shotDateInfoTextView;
 
+    @BindView(R.id.details_likes_count_textView)
+    TextView likesCountTextView;
+
+    @BindView(R.id.details_buckets_count_textView)
+    TextView bucketCountTextView;
+
     @BindString(R.string.details_author_pattern)
     String authorPattern;
 
@@ -53,7 +59,8 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     }
 
     private void showCounters(Integer likeCount, Integer bucketCount) {
-// TODO: 14.11.2016
+        likesCountTextView.setText(likeCount.toString());
+        bucketCountTextView.setText(bucketCount.toString());
     }
 
     private void showInfo(String appName, String date) {

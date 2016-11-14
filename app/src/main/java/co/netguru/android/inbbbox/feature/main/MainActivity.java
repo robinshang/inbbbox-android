@@ -38,7 +38,6 @@ import co.netguru.android.inbbbox.di.component.MainActivityComponent;
 import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
-import co.netguru.android.inbbbox.feature.details.ShotDetailsFragmentCallback;
 import co.netguru.android.inbbbox.feature.likes.LikesFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
@@ -52,8 +51,7 @@ public class MainActivity
         extends BaseMvpActivity<MainViewContract.View,
         MainViewContract.Presenter>
         implements MainViewContract.View,
-        ShotsFragment.ShotLikeStatusListener,
-        ShotDetailsFragmentCallback {
+        ShotsFragment.ShotLikeStatusListener {
 
     private static final String TAG = ShotDetailsFragment.class.getSimpleName();
 
@@ -368,7 +366,6 @@ public class MainActivity
         }
     }
 
-    @Override
     public BottomSheetBehavior getBottomSheetBehavior() {
         return BottomSheetBehavior.from(bottomSheetView);
     }
