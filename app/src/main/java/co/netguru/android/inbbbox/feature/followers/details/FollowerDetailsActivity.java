@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseActivity;
@@ -21,6 +22,9 @@ public class FollowerDetailsActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindColor(R.color.white)
+    int colorWhite;
 
     public static void startActivity(Context context, Follower follower) {
         final Intent intent = new Intent(context, FollowerDetailsActivity.class);
@@ -57,7 +61,7 @@ public class FollowerDetailsActivity extends BaseActivity {
     }
 
     private void initializeToolbar() {
-        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.setTitleTextColor(colorWhite);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
