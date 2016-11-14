@@ -4,10 +4,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
@@ -15,19 +19,27 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.FollowerDetailsFragmentComponent;
 import co.netguru.android.inbbbox.di.module.FollowerDetailsFragmentModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.followers.details.adapter.FollowerDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Follower;
 
 public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowerDetailsContract.View,
         FollowerDetailsContract.Presenter> implements FollowerDetailsContract.View {
 
+    public static final int GRID_VIEW_COLUMN_COUNT = 2;
     public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
     private static final String FOLLOWER_KEY = "follower_key";
 
     @BindView(R.id.fragment_follower_details_recycler_view)
     RecyclerView recyclerView;
 
+    @Inject
+    FollowerDetailsAdapter adapter;
+    @Inject
+    GridLayoutManager gridLayoutManager;
+    @Inject
+    LinearLayoutManager linearLayoutManager;
+
     private FollowerDetailsFragmentComponent component;
-    private Follower follower;
 
     public static FollowerDetailsFragment newInstance(Follower follower) {
         final Bundle args = new Bundle();
@@ -44,7 +56,6 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         component = App.getAppComponent(getContext())
                 .plus(new FollowerDetailsFragmentModule());
         component.inject(this);
-        follower = getArguments().getParcelable(FOLLOWER_KEY);
     }
 
     @Nullable
@@ -54,13 +65,35 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initRecyclerView();
+        adapter.setAdapterData(getArguments().getParcelable(FOLLOWER_KEY));
+    }
+
+    @Override
     protected void changeGridMode(boolean isGridMode) {
-        // TODO: 14.11.2016 Fill this method
+        adapter.setGridMode(isGridMode);
+        recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
     }
 
     @NonNull
     @Override
     public FollowerDetailsContract.Presenter createPresenter() {
         return component.getPresenter();
+    }
+
+    private void initRecyclerView() {
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (position == 0) {
+                    return GRID_VIEW_COLUMN_COUNT;
+                }
+                return 1;
+            }
+        });
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
     }
 }

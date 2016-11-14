@@ -11,7 +11,6 @@ import javax.inject.Inject;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
-
 public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_HEADER = 0;
@@ -23,7 +22,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private boolean isGridMode;
 
     @Inject
-    public FollowerDetailsAdapter() {
+    FollowerDetailsAdapter() {
         shotList = new ArrayList<>();
     }
 
@@ -48,10 +47,10 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((FollowerDetailsHeaderViewHolder) holder).bind(follower);
                 break;
             case TYPE_GRID:
-                ((FollowerDetailsGridViewHolder) holder).bind(shotList.get(position));
+                ((FollowerDetailsGridViewHolder) holder).bind(shotList.get(position - 1));
                 break;
             case TYPE_LIST:
-                ((FollowerDetailsListViewHolder) holder).bind(shotList.get(position));
+                ((FollowerDetailsListViewHolder) holder).bind(shotList.get(position - 1));
         }
     }
 
@@ -68,7 +67,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        return shotList.size() + 1;
+        return follower != null ? shotList.size() + 1 : shotList.size();
     }
 
     public void setGridMode(boolean isGridMode) {
