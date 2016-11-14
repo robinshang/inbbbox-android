@@ -28,8 +28,11 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
     @BindView(R.id.follower_item_shots_count)
     TextView shotsCount;
 
+    private OnFollowerViewHolderClickListener onFollowerViewHolderClickListener = OnFollowerViewHolderClickListener.NULL;
+
     BaseFollowersViewHolder(View view) {
         super(view);
+        view.setOnClickListener(itemView -> onFollowerViewHolderClickListener.onClick(getAdapterPosition()));
     }
 
     @Override
@@ -66,5 +69,17 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
                 .placeholder(R.drawable.logo_ball)
                 .animate(android.R.anim.fade_in)
                 .into(userPhoto);
+    }
+
+    void setOnFollowerViewHolderClickListener(OnFollowerViewHolderClickListener onFollowerViewHolderClickListener) {
+        this.onFollowerViewHolderClickListener = onFollowerViewHolderClickListener == null
+                ? OnFollowerViewHolderClickListener.NULL: onFollowerViewHolderClickListener;
+    }
+
+    public interface OnFollowerViewHolderClickListener {
+
+        OnFollowerViewHolderClickListener NULL = position -> { };
+
+        void onClick(int position);
     }
 }

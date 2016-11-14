@@ -17,7 +17,7 @@ import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListType
 public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowerDetailsContract.View,
         FollowerDetailsContract.Presenter> implements FollowerDetailsContract.View {
 
-    public static final String TAG = "FollowerDetailsFragmentTag";
+    public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
 
     private FollowerDetailsFragmentComponent component;
 

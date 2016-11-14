@@ -7,12 +7,14 @@ import android.os.PersistableBundle;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseActivity;
+import co.netguru.android.inbbbox.model.ui.Follower;
 
 
 public class FollowerDetailsActivity extends BaseActivity {
 
-    public static void startActivity(Context context) {
+    public static void startActivity(Context context, Follower follower) {
         final Intent intent = new Intent(context, FollowerDetailsActivity.class);
+        intent.putExtra("test", follower);
         context.startActivity(intent);
     }
 

@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
-public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHolder> {
+public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHolder> implements BaseFollowersViewHolder.OnFollowerViewHolderClickListener{
 
     private static final int TYPE_EMPTY_LIST = 0;
     private static final int TYPE_EMPTY_GRID = 1;
@@ -26,6 +26,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
 
     private final List<Follower> followersList;
 
+    private OnFollowerItemClickListener onFollowerItemClickListener = OnFollowerItemClickListener.NULL;
     private boolean isGridMode;
 
     @Inject
@@ -35,30 +36,43 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
 
     @Override
     public BaseFollowersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        BaseFollowersViewHolder viewHolder;
         switch (viewType) {
             case TYPE_EMPTY_GRID:
-                return new FollowersEmptyShotGridViewHolder(parent);
+                viewHolder = new FollowersEmptyShotGridViewHolder(parent);
+                break;
             case TYPE_EMPTY_LIST:
-                return new FollowersEmptyShotListViewHolder(parent);
+                viewHolder = new FollowersEmptyShotListViewHolder(parent);
+                break;
             case TYPE_ONE_SHOT_GRID:
-                return new FollowersOneShotGridViewHolder(parent);
+                viewHolder = new FollowersOneShotGridViewHolder(parent);
+                break;
             case TYPE_ONE_SHOT_LIST:
-                return new FollowersOneShotListViewHolder(parent);
+                viewHolder = new FollowersOneShotListViewHolder(parent);
+                break;
             case TYPE_TWO_SHOT_GRID:
-                return new FollowersTwoShotGridViewHolder(parent);
+                viewHolder = new FollowersTwoShotGridViewHolder(parent);
+                break;
             case TYPE_TWO_SHOT_LIST:
-                return new FollowersTwoShotListViewHolder(parent);
+                viewHolder = new FollowersTwoShotListViewHolder(parent);
+                break;
             case TYPE_THREE_SHOT_GRID:
-                return new FollowersThreeShotGridViewHolder(parent);
+                viewHolder = new FollowersThreeShotGridViewHolder(parent);
+                break;
             case TYPE_THREE_SHOT_LIST:
-                return new FollowersThreeShotListViewHolder(parent);
+                viewHolder = new FollowersThreeShotListViewHolder(parent);
+                break;
             case TYPE_FOUR_SHOT_GRID:
-                return new FollowersFourShotGridViewHolder(parent);
+                viewHolder = new FollowersFourShotGridViewHolder(parent);
+                break;
             case TYPE_FOUR_SHOT_LIST:
-                return new FollowersFourShotListViewHolder(parent);
+                viewHolder = new FollowersFourShotListViewHolder(parent);
+                break;
             default:
                 throw new IllegalArgumentException("Cannot create view holder for type : " + viewType);
         }
+        viewHolder.setOnFollowerViewHolderClickListener(this);
+        return viewHolder;
     }
 
     @Override
@@ -88,6 +102,11 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
         notifyDataSetChanged();
     }
 
+    public void setOnFollowerItemClickListener(OnFollowerItemClickListener onFollowerItemClickListener) {
+        this.onFollowerItemClickListener = onFollowerItemClickListener == null
+                ? OnFollowerItemClickListener.NULL : onFollowerItemClickListener;
+    }
+
     @Override
     public int getItemViewType(int position) {
         final List<Shot> shotList = followersList.get(position).shotList();
@@ -104,5 +123,17 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
             default:
                 return isGridMode ? TYPE_FOUR_SHOT_GRID : TYPE_FOUR_SHOT_LIST;
         }
+    }
+
+    @Override
+    public void onClick(int position) {
+        onFollowerItemClickListener.onClick(followersList.get(position));
+    }
+
+    public interface OnFollowerItemClickListener {
+
+        OnFollowerItemClickListener NULL = item -> { };
+
+        void onClick(Follower follower);
     }
 }

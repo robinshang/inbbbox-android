@@ -25,6 +25,7 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.di.component.FollowersFragmentComponent;
 import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
@@ -33,7 +34,7 @@ import co.netguru.android.inbbbox.utils.TextFormatter;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowersContract.View, FollowersContract.Presenter>
-        implements FollowersContract.View {
+        implements FollowersContract.View, FollowersAdapter.OnFollowerItemClickListener {
 
     public static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final int FOLLOWERS_TO_LOAD_MORE = 5;
@@ -126,6 +127,7 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
     }
 
     private void initRecyclerView() {
+        adapter.setOnFollowerItemClickListener(this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new LoadMoreScrollListener(FOLLOWERS_TO_LOAD_MORE) {
@@ -134,5 +136,10 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
                 presenter.getMoreFollowedUsersFromServer();
             }
         });
+    }
+
+    @Override
+    public void onClick(Follower follower) {
+        FollowerDetailsActivity.startActivity(getContext(), follower);
     }
 }
