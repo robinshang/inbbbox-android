@@ -10,19 +10,24 @@ import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
 
 public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHolder> {
 
-    public static final int STATIC_ITEMS_COUNT = 2;
+    static final int STATIC_ITEMS_COUNT = 2;
 
     private final LocalTimeFormatter localTimeFormatter;
+    private DetailsViewActionCallback actionCallback;
     private ShotDetails details;
 
     @Inject
-    ShotDetailsAdapter(LocalTimeFormatter localTimeFormatter) {
+    public ShotDetailsAdapter(LocalTimeFormatter localTimeFormatter,
+                              DetailsViewActionCallback actionCallback) {
         this.localTimeFormatter = localTimeFormatter;
+        this.actionCallback = actionCallback;
     }
 
     @Override
     public ShotDetailsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return ShotDetailsViewFactory.getViewHolder(viewType, parent, localTimeFormatter);
+        ShotDetailsViewHolder viewHolder = ShotDetailsViewFactory.getViewHolder(viewType, parent, localTimeFormatter);
+        viewHolder.setActionCallbackListener(actionCallback);
+        return viewHolder;
     }
 
     @Override

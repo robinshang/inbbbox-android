@@ -38,9 +38,9 @@
                     android:layout_height="@dimen/parralax_image_view_hight"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center_horizontal|top"
-                    android:src="@drawable/shape_rounded_top_corners"
                     android:fitsSystemWindows="true"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/shape_rounded_top_corners"/>
 
                 <ImageView
                     android:id="@+id/details_close_imageView"
@@ -63,6 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
+        android:overScrollMode="never"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

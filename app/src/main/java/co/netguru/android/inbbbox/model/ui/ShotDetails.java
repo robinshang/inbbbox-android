@@ -38,6 +38,8 @@ public abstract class ShotDetails {
     @Nullable
     public abstract List<Comment> comments();
 
+    public abstract Integer authorId();
+
     @AutoValue.Builder
     public abstract static class Builder {
 
@@ -66,6 +68,8 @@ public abstract class ShotDetails {
         public abstract ShotDetails.Builder bucketCount(Integer bucketCount);
 
         public abstract ShotDetails.Builder description(String description);
+
+        public abstract ShotDetails.Builder authorId(Integer description);
 
         public abstract ShotDetails build();
     }

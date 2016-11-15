@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -27,6 +28,7 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotDetailsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
+import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.ShotDetails;
@@ -54,6 +56,32 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
     @Inject
     ShotDetailsAdapter adapter;
 
+    private DetailsViewActionCallback actionsCallback = new DetailsViewActionCallback() {
+        @Override
+        public void onCompanySelected(String companyProfileUrl) {
+            // TODO: 15.11.2016
+            Toast.makeText(getContext(), "company", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onUserSelected(int userId) {
+            // TODO: 15.11.2016
+            Toast.makeText(getContext(), "user", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onShotLikeAction(int shotId, boolean isLiked) {
+            // TODO: 15.11.2016
+            Toast.makeText(getContext(), "like", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onShotBucket(int shotId, boolean isLikedBucket) {
+            // TODO: 15.11.2016
+            Toast.makeText(getContext(), "bucket", Toast.LENGTH_SHORT).show();
+        }
+    };
+
     public static ShotDetailsFragment newInstance(int shotId) {
         return new ShotDetailsFragment();
     }
@@ -68,7 +96,7 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
     }
 
     private void initComponent() {
-        component = App.getAppComponent(getContext()).plus(new ShotsDetailsModule());
+        component = App.getAppComponent(getContext()).plus(new ShotsDetailsModule(actionsCallback));
         component.inject(this);
     }
 
@@ -182,6 +210,7 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
                 .companyName("Netguru dmeos")
                 .companyProfileUrl("http://google.com")
                 .date("25 dev 2016")
+                .authorId(99)
                 .description("\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"")
                 .build();
 //

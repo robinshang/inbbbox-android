@@ -8,6 +8,7 @@ import co.netguru.android.inbbbox.model.ui.ShotDetails;
 public abstract class ShotDetailsViewHolder extends BaseViewHolder<ShotDetails> {
 
     protected ShotDetails item;
+    protected DetailsViewActionCallback actionCallbackListener;
 
     ShotDetailsViewHolder(View view) {
         super(view);
@@ -21,4 +22,8 @@ public abstract class ShotDetailsViewHolder extends BaseViewHolder<ShotDetails> 
     }
 
     protected abstract void handleBinding();
+
+    public void setActionCallbackListener(DetailsViewActionCallback actionCallbackListener) {
+        this.actionCallbackListener = actionCallbackListener;
+    }
 }

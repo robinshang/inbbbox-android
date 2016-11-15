@@ -47,24 +47,25 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
 
     @OnClick(R.id.details_likes_imageView)
     void onLikeShotClick() {
-        // TODO: 14.11.2016 handle like click
+        // TODO: 14.11.2016  state handilng
+        actionCallbackListener.onShotLikeAction(item.id(), true);
     }
 
     @OnClick(R.id.details_bucket_imageView)
     void onBucketClick() {
-        // TODO: 14.11.2016 handle bucket click
+        // TODO: 15.11.2016 state handilng
+        actionCallbackListener.onShotBucket(item.id(), true);
     }
 
     @OnClick(R.id.details_company_textView)
-    void onCompanyyClick() {
-        // TODO: 14.11.2016 pass url to company profile
+    void onCompanyClick() {
+        actionCallbackListener.onCompanySelected(item.companyProfileUrl());
     }
 
     @OnClick(R.id.details_author_textView)
-    void onAuthrClick() {
-        // TODO: 14.11.2016 open author profile
+    void onAuthorClick() {
+        actionCallbackListener.onUserSelected(item.authorId());
     }
-
 
     @Override
     protected void handleBinding() {
