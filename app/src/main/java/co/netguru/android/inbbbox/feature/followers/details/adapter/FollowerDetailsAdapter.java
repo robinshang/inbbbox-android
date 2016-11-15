@@ -64,10 +64,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         if (position == HEADER_POSITION) {
             return TYPE_HEADER;
         }
-        if (isGridMode) {
-            return TYPE_GRID;
-        }
-        return TYPE_LIST;
+        return isGridMode ? TYPE_GRID : TYPE_LIST;
     }
 
     @Override
