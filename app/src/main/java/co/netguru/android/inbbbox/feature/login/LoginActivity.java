@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.netguru.android.commons.di.WithComponent;
@@ -17,15 +19,17 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.LoginComponent;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
-import co.netguru.android.inbbbox.view.OnRedirectUrlCallbackListener;
-import co.netguru.android.inbbbox.view.WebviewDialogFragment;
+import co.netguru.android.inbbbox.view.WebViewOauthListener;
+import co.netguru.android.inbbbox.view.WebViewOauthDialogFragment;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
         implements LoginContract.View, WithComponent<LoginComponent>,
-        OnRedirectUrlCallbackListener {
+        WebViewOauthListener {
 
-    private WebviewDialogFragment dialogFragment;
     private LoginComponent component;
+
+    @BindView(R.id.btn_login)
+    Button loginButton;
 
     @OnClick(R.id.btn_login)
     void onLoginClick() {
@@ -63,9 +67,9 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     }
 
     @Override
-    public void handleOauthUrl(String url) {
-        dialogFragment = WebviewDialogFragment.newInstance(url);
-        dialogFragment.show(getSupportFragmentManager(), WebviewDialogFragment.TAG);
+    public void handleOauthUrlAndUuid(String url, String stateKey) {
+        WebViewOauthDialogFragment.newInstance(url, stateKey)
+                .show(getSupportFragmentManager(), WebViewOauthDialogFragment.TAG);
     }
 
     @Override
@@ -79,18 +83,38 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     }
 
     @Override
+    public void showWrongKeyError() {
+        Toast.makeText(this, R.string.wrong_oauth_state_key, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void disableLoginButton() {
+        loginButton.setEnabled(false);
+    }
+
+    @Override
+    public void enableLoginButton() {
+        loginButton.setEnabled(true);
+    }
+
+    @Override
     public void showNextScreen() {
         MainActivity.startActivity(this);
         finish();
     }
 
     @Override
-    public void closeLoginDialog() {
-        dialogFragment.dismiss();
+    public void redirectUrlCallbackLoaded(Uri uri) {
+        getPresenter().handleOauthLoginResponse(uri);
     }
 
     @Override
-    public void redirectUrlCallbackLoaded(String url) {
-        getPresenter().handleOauthLoginResponse(Uri.parse(url));
+    public void stateKeyNotMatching() {
+        getPresenter().handleKeysNotMatching();
+    }
+
+    @Override
+    public void webViewClose() {
+        getPresenter().handleWebViewClose();
     }
 }

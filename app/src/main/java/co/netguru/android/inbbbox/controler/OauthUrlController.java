@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.controler;
 
 import android.content.res.Resources;
+import android.support.v4.util.Pair;
 
 import java.util.UUID;
 
@@ -18,24 +19,20 @@ public class OauthUrlController {
 
     private Resources resources;
 
-    private String stateString;
-
     @Inject
     public OauthUrlController(Resources resources) {
 
         this.resources = resources;
     }
 
-    public Observable<String> getOauthAuthorizeUrlString() {
-        initStateString();
-        return Observable.just(getAuthorizeUrl());
+    public Observable<Pair<String, UUID>> getOauthAuthorizeUrlAndUuidPair() {
+        return Observable.fromCallable(() -> {
+            UUID uuid = UUID.randomUUID();
+            return Pair.create(getAuthorizeUrl(uuid.toString()), uuid);
+        });
     }
 
-    private void initStateString() {
-        stateString = UUID.randomUUID().toString();
-    }
-
-    private String getAuthorizeUrl() {
+    private String getAuthorizeUrl(String stateString) {
         return OAUTH.BASE_URL + OAUTH.OAUTH_AUTHORIZE_ENDPOINT +
                 "?" +
                 OAUTH.CLIENT_ID_KEY +

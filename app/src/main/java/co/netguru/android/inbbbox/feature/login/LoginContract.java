@@ -5,23 +5,33 @@ import android.net.Uri;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
+import java.util.UUID;
+
 public interface LoginContract {
     interface View extends MvpView{
 
-        void handleOauthUrl(String urlString);
+        void handleOauthUrlAndUuid(String urlString, String stateKey);
 
         void showApiError(String oauthErrorMessage);
 
         void showNextScreen();
 
-        void closeLoginDialog();
-
         void showInvalidOauthUrlError();
+
+        void showWrongKeyError();
+
+        void disableLoginButton();
+
+        void enableLoginButton();
     }
 
     interface Presenter extends MvpPresenter<View>{
         void showLoginView();
 
         void handleOauthLoginResponse(Uri uri);
+
+        void handleKeysNotMatching();
+
+        void handleWebViewClose();
     }
 }

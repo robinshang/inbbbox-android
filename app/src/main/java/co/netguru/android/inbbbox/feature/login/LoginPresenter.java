@@ -7,11 +7,11 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
+import co.netguru.android.inbbbox.Constants;
+import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.OauthUrlController;
 import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.UserController;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
-import co.netguru.android.inbbbox.Constants;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -52,11 +52,12 @@ public final class LoginPresenter
 
     @Override
     public void showLoginView() {
+        getView().disableLoginButton();
         compositeSubscription.add(
-                oauthUrlController.getOauthAuthorizeUrlString()
+                oauthUrlController.getOauthAuthorizeUrlAndUuidPair()
                         .compose(androidIO())
                         .subscribe(
-                                getView()::handleOauthUrl,
+                                urlUUIDPair -> getView().handleOauthUrlAndUuid(urlUUIDPair.first, urlUUIDPair.second.toString()),
                                 this::handleError));
     }
 
@@ -64,12 +65,21 @@ public final class LoginPresenter
     public void handleOauthLoginResponse(Uri url) {
         if (url != null) {
             Timber.d(url.toString());
-            getView().closeLoginDialog();
             unpackParamsFromUri(url);
             selectAuthorizationAction();
         } else {
             Timber.d("url is null");
         }
+    }
+
+    @Override
+    public void handleKeysNotMatching() {
+        getView().showWrongKeyError();
+    }
+
+    @Override
+    public void handleWebViewClose() {
+        getView().enableLoginButton();
     }
 
     private void selectAuthorizationAction() {

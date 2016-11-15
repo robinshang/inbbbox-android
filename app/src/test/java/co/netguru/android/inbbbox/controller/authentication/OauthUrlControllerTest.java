@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.controller.authentication;
 
 import android.content.res.Resources;
+import android.support.v4.util.Pair;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,6 +12,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.UUID;
 
 import co.netguru.android.inbbbox.controler.OauthUrlController;
 import co.netguru.android.testcommons.RxSyncTestRule;
@@ -41,14 +44,16 @@ public class OauthUrlControllerTest {
     @Test
     public void whenUrlRequested_thenGenerateUrlFromConstants() {
         String expected = generateExpectedUrl();
-        TestSubscriber<String> testSubscriber = new TestSubscriber<>();
+        TestSubscriber<Pair<String, UUID>> testSubscriber = new TestSubscriber<>();
 
-        urlProvider.getOauthAuthorizeUrlString().subscribe(testSubscriber);
+        urlProvider.getOauthAuthorizeUrlAndUuidPair().subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        String urlString = testSubscriber.getOnNextEvents().get(0);
+        String urlString = testSubscriber.getOnNextEvents().get(0).first;
+        UUID uuid = testSubscriber.getOnNextEvents().get(0).second;
 
-        Assert.assertEquals(urlString.startsWith(expected), true);
+        Assert.assertTrue(urlString.startsWith(expected));
+        Assert.assertTrue(urlString.endsWith(uuid.toString()));
     }
 
     private String generateExpectedUrl() {
