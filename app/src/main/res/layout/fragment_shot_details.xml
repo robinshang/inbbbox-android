@@ -22,15 +22,13 @@
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <ImageView
+            <co.netguru.android.inbbbox.view.RoundedCornersImageView
                 android:id="@+id/parallax_image_view"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="@dimen/parralax_image_view_hight"
                 android:layout_gravity="center_horizontal|top"
-                android:background="@color/primary"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"/>
-
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/shot_details_toolbar"

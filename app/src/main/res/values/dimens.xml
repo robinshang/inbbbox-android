@@ -59,4 +59,6 @@
     <dimen name="comment_user_avatar_size">32dp</dimen>
     <dimen name="details_description_line_margin">4dp</dimen>
     <dimen name="details_action_buttons_margin_top">10dp</dimen>
+    <dimen name="comment_divider_padding_top">5dp</dimen>
+    <dimen name="parralax_image_view_hight">250dp</dimen>
 </resources>

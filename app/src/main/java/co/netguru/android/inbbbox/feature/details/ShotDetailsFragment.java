@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
@@ -29,6 +28,7 @@ import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.ShotDetails;
+import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
 public class ShotDetailsFragment extends BottomSheetDialogFragment {
 
@@ -41,7 +41,7 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
     RecyclerView shotRecyclerView;
 
     @BindView(R.id.parallax_image_view)
-    ImageView parallaxImageView;
+    RoundedCornersImageView parallaxImageView;
 
     @Inject
     ShotDetailsAdapter adapter;
@@ -111,7 +111,7 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
         Comment hour = Comment.builder()
                 .author("hour")
                 .authorAvatarUrl("https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/matthew.png")
-                .date(LocalDateTime.now().plusMinutes(60-15))
+                .date(LocalDateTime.now().plusMinutes(60 - 15))
                 .text("Example comment so lorem ipsum here will be nice. Something new here will be nice")
                 .build();
 
@@ -125,7 +125,7 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
         Comment hour3 = Comment.builder()
                 .author("hour3")
                 .authorAvatarUrl("https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/matthew.png")
-                .date(LocalDateTime.now().plusMinutes(60+15))
+                .date(LocalDateTime.now().plusMinutes(60 + 15))
                 .text("Example comment so lorem ipsum here will be nice. Something new here will be nice")
                 .build();
 
@@ -192,6 +192,8 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
     }
 
     public void showMainImage(String imageUrl) {
+        parallaxImageView.setRadius(getResources().getDimension(R.dimen.shot_corner_radius));
+        parallaxImageView.disableRadiusForBottomEdge(true);
         Glide.with(getContext())
                 .load(imageUrl)
                 .into(parallaxImageView);
