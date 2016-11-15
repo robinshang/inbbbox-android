@@ -38,7 +38,7 @@
                     android:layout_height="@dimen/parralax_image_view_hight"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center_horizontal|top"
-                    android:background="@drawable/shape_rounded_top_corners"
+                    android:src="@drawable/shape_rounded_top_corners"
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"/>
 

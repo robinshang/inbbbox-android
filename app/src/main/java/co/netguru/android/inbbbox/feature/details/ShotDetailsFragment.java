@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.threeten.bp.LocalDateTime;
 
@@ -29,6 +30,7 @@ import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.ShotDetails;
+import co.netguru.android.inbbbox.utils.ThumbnailUtil;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
 public class ShotDetailsFragment extends BottomSheetDialogFragment {
@@ -184,7 +186,8 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
                 .build();
 //
         showItems(details);
-        showMainImage("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306");
+        showMainImage("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306",
+                "https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306");
     }
 
     private void initRecycler() {
@@ -196,11 +199,15 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
         adapter.setDetails(details);
     }
 
-    public void showMainImage(String imageUrl) {
+    public void showMainImage(String imageUrl, String thumbnailUrl) {
         parallaxImageView.setRadius(getResources().getDimension(R.dimen.shot_corner_radius));
         parallaxImageView.disableRadiusForBottomEdge(true);
         Glide.with(getContext())
                 .load(imageUrl)
+                .placeholder(R.drawable.shape_rounded_top_corners)
+                .thumbnail(ThumbnailUtil.getThumbnailRequest(getContext(), thumbnailUrl))
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .animate(android.R.anim.fade_in)
                 .into(parallaxImageView);
     }
 }
