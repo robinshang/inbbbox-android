@@ -52,8 +52,11 @@ public class FollowerDetailsActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             case R.id.action_follow:
-                // TODO: 14.11.2016 Add action on action follow clicked
+                // TODO: 14.11.2016 Add on action follow clicked
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

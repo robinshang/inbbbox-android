@@ -32,8 +32,7 @@
         <activity android:name=".feature.main.MainActivity" />
 
         <activity android:name=".feature.followers.details.FollowerDetailsActivity"
-            android:launchMode="singleTop"
-            android:parentActivityName=".feature.main.MainActivity"/>
+            android:launchMode="singleTop" />
 
         <meta-data
             android:name="net.hockeyapp.android.appIdentifier"
