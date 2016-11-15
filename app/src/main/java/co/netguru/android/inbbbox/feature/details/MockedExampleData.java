@@ -105,7 +105,7 @@ class MockedExampleData {
         comments.add(fewH);
         comments.add(yesterday);
         comments.add(date);
-        ShotDetails details = ShotDetails
+        return ShotDetails
                 .builder()
                 .id(1)
                 .title("Awsome Title homie")
@@ -120,9 +120,10 @@ class MockedExampleData {
                 .companyProfileUrl("http://google.com")
                 .date("25 dev 2016")
                 .authorId(99)
+                .isLiked(false)
+                .isBucketed(false)
                 .description("\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"")
                 .build();
-        return details;
     }
 
     public static String getExampleImageUrl() {

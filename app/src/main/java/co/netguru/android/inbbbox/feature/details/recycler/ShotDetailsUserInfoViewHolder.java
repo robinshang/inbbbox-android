@@ -41,20 +41,30 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     @BindString(R.string.info_pattern)
     String infoPattern;
 
+    @BindView(R.id.details_likes_imageView)
+    View likeImageView;
+
+    @BindView(R.id.details_bucket_imageView)
+    View bucketImageView;
+
     ShotDetailsUserInfoViewHolder(View view) {
         super(view);
     }
 
     @OnClick(R.id.details_likes_imageView)
     void onLikeShotClick() {
-        // TODO: 14.11.2016  state handilng
-        actionCallbackListener.onShotLikeAction(item.id(), true);
+        // TODO: 15.11.2016 move state handling to Presenter in Task IA-146
+        boolean updatedState = !item.isLiked();
+        actionCallbackListener.onShotLikeAction(item.id(), updatedState);
+        handleActionButtonState(updatedState, item.isBucketed());
     }
 
     @OnClick(R.id.details_bucket_imageView)
     void onBucketClick() {
-        // TODO: 15.11.2016 state handilng
-        actionCallbackListener.onShotBucket(item.id(), true);
+        // TODO: 15.11.2016 move state handling to Presenter in Task IA-146
+        boolean updatedState = !item.isBucketed();
+        actionCallbackListener.onShotBucket(item.id(), updatedState);
+        handleActionButtonState(item.isLiked(), updatedState);
     }
 
     @OnClick(R.id.details_company_textView)
@@ -74,6 +84,12 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
         showAuthorInfo(item.authorName(), item.companyName());
         showInfo(item.appName(), item.date());
         showCounters(item.likesCount(), item.bucketCount());
+        handleActionButtonState(item.isLiked(), item.isBucketed());
+    }
+
+    private void handleActionButtonState(boolean liked, boolean bucketed) {
+        likeImageView.setActivated(liked);
+        bucketImageView.setActivated(bucketed);
     }
 
     private void showCounters(Integer likeCount, Integer bucketCount) {

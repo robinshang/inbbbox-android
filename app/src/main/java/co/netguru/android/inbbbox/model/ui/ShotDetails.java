@@ -40,6 +40,10 @@ public abstract class ShotDetails {
 
     public abstract Integer authorId();
 
+    public abstract boolean isBucketed();
+
+    public abstract boolean isLiked();
+
     @AutoValue.Builder
     public abstract static class Builder {
 
@@ -70,6 +74,10 @@ public abstract class ShotDetails {
         public abstract ShotDetails.Builder description(String description);
 
         public abstract ShotDetails.Builder authorId(Integer description);
+
+        public abstract ShotDetails.Builder isLiked(boolean state);
+
+        public abstract ShotDetails.Builder isBucketed(boolean state);
 
         public abstract ShotDetails build();
     }
