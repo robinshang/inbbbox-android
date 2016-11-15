@@ -28,6 +28,7 @@
                 android:layout_height="@dimen/parralax_image_view_hight"
                 android:layout_gravity="center_horizontal|top"
                 android:fitsSystemWindows="true"
+                android:background="@drawable/shape_rounded_top_corners"
                 android:scaleType="centerCrop"/>
 
             <android.support.v7.widget.Toolbar
