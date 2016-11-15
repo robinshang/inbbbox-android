@@ -34,7 +34,7 @@ public interface AddToBucketContract {
 
         void showBuckets(List<Bucket> buckets);
 
-        void passResultAndCloseFragment(Bucket bucket);
+        void passResultAndCloseFragment(Bucket bucket, Shot shot);
     }
 
     interface Presenter extends MvpPresenter<View> {

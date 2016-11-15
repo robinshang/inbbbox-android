@@ -115,10 +115,12 @@ public class AddToBucketPresenterTest {
 
     @Test
     public void whenBucketSelected_thenPassResult() {
+        //given
+        presenter.handleShot(Statics.LIKED_SHOT);
         //when
         presenter.handleBucketClick(Statics.BUCKET);
         //then
-        verify(viewMock).passResultAndCloseFragment(Statics.BUCKET);
+        verify(viewMock).passResultAndCloseFragment(Statics.BUCKET, Statics.LIKED_SHOT);
     }
 
 }

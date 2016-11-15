@@ -18,6 +18,8 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
     private final BucketsController bucketsController;
     private final CompositeSubscription subscriptions;
 
+    private Shot shot;
+
     @Inject
     AddToBucketPresenter(BucketsController bucketsController) {
         this.bucketsController = bucketsController;
@@ -32,6 +34,7 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
 
     @Override
     public void handleShot(Shot shot) {
+        this.shot = shot;
         getView().setShotTitle(shot.title());
         getView().showShotPreview(shot.normalImageUrl());
         getView().showAuthorAvatar(shot.authorAvatarUrl());
@@ -64,7 +67,7 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
 
     @Override
     public void handleBucketClick(Bucket bucket) {
-        getView().passResultAndCloseFragment(bucket);
+        getView().passResultAndCloseFragment(bucket, shot);
     }
 
 }

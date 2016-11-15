@@ -64,8 +64,6 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     private final BucketsAdapter bucketsAdapter = new BucketsAdapter(this);
 
-    private Shot shot;
-
     public static AddToBucketDialogFragment newInstance(@NonNull Fragment targetFragment, @NonNull Shot shot) {
         Bundle args = new Bundle();
         args.putParcelable(SHOT_ARG_KEY, shot);
@@ -78,12 +76,6 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.shot = getArguments().getParcelable(SHOT_ARG_KEY);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -94,7 +86,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bucketsRecyclerView.setAdapter(bucketsAdapter);
-        getPresenter().handleShot(shot);
+        getPresenter().handleShot(getArguments().getParcelable(SHOT_ARG_KEY));
         getPresenter().loadAvailableBuckets();
     }
 
@@ -183,7 +175,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     }
 
     @Override
-    public void passResultAndCloseFragment(Bucket bucket) {
+    public void passResultAndCloseFragment(Bucket bucket, Shot shot) {
         Fragment targetFragment = getTargetFragment();
         try {
             BucketSelectListener listener = (BucketSelectListener) targetFragment;
