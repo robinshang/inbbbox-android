@@ -19,8 +19,8 @@ public class FollowersShotController {
         this.shotsApi = shotsApi;
     }
 
-    public Observable<Follower> getFollowedUserWithShots(FollowerEntity follower) {
-       return shotsApi.getFollowedUserShots(follower.user().id())
+    public Observable<Follower> getFollowedUserWithShots(FollowerEntity follower, int pageNumber, int pageCount) {
+       return shotsApi.getFollowedUserShots(follower.user().id(), pageNumber, pageCount)
               .flatMap(Observable::from)
               .map(Shot::create)
               .toList()
