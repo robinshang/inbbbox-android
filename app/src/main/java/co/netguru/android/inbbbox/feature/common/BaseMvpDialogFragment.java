@@ -58,11 +58,59 @@ public abstract class BaseMvpDialogFragment<V extends MvpView, P extends MvpPres
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mvpDelegate.onAttach(activity);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mvpDelegate.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mvpDelegate.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
 
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mvpDelegate.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mvpDelegate.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mvpDelegate.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mvpDelegate.onPause();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mvpDelegate.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mvpDelegate.onStop();
     }
 
     @Override
@@ -73,62 +121,14 @@ public abstract class BaseMvpDialogFragment<V extends MvpView, P extends MvpPres
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mvpDelegate.onCreate(savedInstanceState);
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         mvpDelegate.onDestroy();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        mvpDelegate.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mvpDelegate.onResume();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mvpDelegate.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mvpDelegate.onStop();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mvpDelegate.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mvpDelegate.onAttach(activity);
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
         mvpDelegate.onDetach();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mvpDelegate.onSaveInstanceState(outState);
     }
 }
