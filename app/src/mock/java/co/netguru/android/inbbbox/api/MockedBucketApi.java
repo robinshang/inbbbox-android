@@ -9,7 +9,9 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.model.api.BucketShot;
 import co.netguru.android.inbbbox.model.api.Image;
+import retrofit2.http.Field;
 import retrofit2.http.Path;
+import rx.Completable;
 import rx.Single;
 
 public class MockedBucketApi implements BucketApi {
@@ -30,5 +32,10 @@ public class MockedBucketApi implements BucketApi {
     @Override
     public Single<List<BucketShot>> getBucketShots(@Path("id") long id) {
         return Single.fromCallable(() -> new ArrayList<>(mockedBucketShots));
+    }
+
+    @Override
+    public Completable addShotToBucket(@Path("id") long bucketId, @Field("shot_id") long shotId) {
+        return Completable.complete();
     }
 }
