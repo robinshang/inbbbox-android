@@ -31,6 +31,7 @@ import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
 public class ShotDetailsFragment extends BottomSheetDialogFragment {
 
+    private static final String ARG_SHOT_ID = "arg:shot_id";
     private ShotDetailsComponent component;
 
     @BindView(R.id.shot_details_toolbar)
@@ -77,7 +78,11 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
     };
 
     public static ShotDetailsFragment newInstance(int shotId) {
-        return new ShotDetailsFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_SHOT_ID, shotId);
+        ShotDetailsFragment fragment = new ShotDetailsFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Nullable
