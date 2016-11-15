@@ -189,6 +189,7 @@ public class ShotsFragment
         Toast.makeText(getContext(), "todo", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
     public void onBucketForShotSelect(Bucket bucket, Shot shot) {
         getPresenter().addShotToBucket(bucket, shot);
     }

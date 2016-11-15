@@ -4,7 +4,6 @@ import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 import co.netguru.android.inbbbox.feature.shots.ShotsPresenter;
-import co.netguru.android.inbbbox.feature.shots.recycler.ShotSwipeListener;
 import dagger.Subcomponent;
 
 @FragmentScope

@@ -10,11 +10,10 @@ import android.view.View;
 
 import com.github.clans.fab.FloatingActionMenu;
 
-import java.util.List;
-
 /**
  * Behavior which makes clans fab move up when snackbar is shown
  */
+@SuppressWarnings("unused")
 public class FloatingActionMenuBehavior extends CoordinatorLayout.Behavior {
 
     private float mTranslationY;
@@ -56,11 +55,8 @@ public class FloatingActionMenuBehavior extends CoordinatorLayout.Behavior {
 
     private float getTranslationY(CoordinatorLayout parent, View child) {
         float minOffset = 0.0F;
-        List dependencies = parent.getDependencies(child);
-        int i = 0;
 
-        for (int z = dependencies.size(); i < z; ++i) {
-            View view = (View) dependencies.get(i);
+        for (View view : parent.getDependencies(child)) {
             if (view instanceof Snackbar.SnackbarLayout && parent.doViewsOverlap(child, view)) {
                 minOffset = Math.min(minOffset, ViewCompat.getTranslationY(view) - (float) view.getHeight());
             }
