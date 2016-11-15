@@ -88,6 +88,7 @@ public class MainActivity
     private Switch debutsSwitch;
     private Switch shotDetailsSwitch;
     private MainActivityPagerAdapter pagerAdapter;
+    private BottomSheetBehavior bottomSheetBehavior;
 
     public static void startActivity(Context context) {
         final Intent intent = new Intent(context, MainActivity.class);
@@ -107,7 +108,15 @@ public class MainActivity
     }
 
     private void initializeBottomSheet() {
-        // TODO: 14.11.2016 use or remove
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
+    }
+
+    private boolean isBottomSheetOpen() {
+        boolean isOpen = false;
+        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            isOpen = true;
+        }
+        return isOpen;
     }
 
     private void initComponent() {
@@ -159,6 +168,10 @@ public class MainActivity
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
+            return;
+        }
+        if (isBottomSheetOpen()) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             return;
         }
         super.onBackPressed();
@@ -367,6 +380,7 @@ public class MainActivity
     }
 
     public BottomSheetBehavior getBottomSheetBehavior() {
-        return BottomSheetBehavior.from(bottomSheetView);
+        return bottomSheetBehavior;
     }
+
 }
