@@ -132,7 +132,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
 
     public interface OnFollowerItemClickListener {
 
-        OnFollowerItemClickListener NULL = item -> { };
+        OnFollowerItemClickListener NULL = item -> {/* Do nothing */};
 
         void onClick(Follower follower);
     }

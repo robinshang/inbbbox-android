@@ -73,12 +73,12 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
 
     void setOnFollowerViewHolderClickListener(OnFollowerViewHolderClickListener onFollowerViewHolderClickListener) {
         this.onFollowerViewHolderClickListener = onFollowerViewHolderClickListener == null
-                ? OnFollowerViewHolderClickListener.NULL: onFollowerViewHolderClickListener;
+                ? OnFollowerViewHolderClickListener.NULL : onFollowerViewHolderClickListener;
     }
 
     public interface OnFollowerViewHolderClickListener {
 
-        OnFollowerViewHolderClickListener NULL = position -> { };
+        OnFollowerViewHolderClickListener NULL = position -> {/* Do nothing */};
 
         void onClick(int position);
     }
