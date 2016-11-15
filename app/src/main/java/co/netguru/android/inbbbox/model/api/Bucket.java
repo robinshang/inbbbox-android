@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.model.api;
 
+import android.support.annotation.Nullable;
+
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -16,6 +18,7 @@ public abstract class Bucket {
     @SerializedName("name")
     public abstract String name();
 
+    @Nullable
     @SerializedName("description")
     public abstract String description();
 
@@ -24,9 +27,6 @@ public abstract class Bucket {
 
     @SerializedName("created_at")
     public abstract LocalDateTime createdAt();
-
-    @SerializedName("updated_at")
-    public abstract LocalDateTime updatedAt();
 
     public static TypeAdapter<Bucket> typeAdapter(Gson gson) {
         return new AutoValue_Bucket.GsonTypeAdapter(gson);
@@ -47,8 +47,6 @@ public abstract class Bucket {
         public abstract Builder shotsCount(int shotsCount);
 
         public abstract Builder createdAt(LocalDateTime createdAt);
-
-        public abstract Builder updatedAt(LocalDateTime updatedAt);
 
         public abstract Bucket build();
     }

@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.api;
 
+import org.threeten.bp.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -43,6 +45,7 @@ public class MockShotsApi implements ShotsApi {
             entity.setId(i);
             entity.setTitle(label + i);
             entity.setImage(image);
+            entity.setCreatedAt(LocalDateTime.now());
             result.add(entity);
         }
         return result;

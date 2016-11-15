@@ -94,6 +94,7 @@ public abstract class User {
     @SerializedName("shots_url")
     public abstract String shotsUrl();
 
+    @Nullable
     @SerializedName("teams_url")
     public abstract String teamsUrl();
 

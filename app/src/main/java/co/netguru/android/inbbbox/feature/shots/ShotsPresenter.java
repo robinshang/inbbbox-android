@@ -6,10 +6,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import co.netguru.android.inbbbox.controler.BucketsController;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.ShotsController;
+import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -22,15 +25,17 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private final ShotsController shotsController;
     private final ErrorMessageController errorMessageController;
     private final LikeShotController likeShotController;
+    private final BucketsController bucketsController;
     private final CompositeSubscription subscriptions;
 
     @Inject
     ShotsPresenter(ShotsController shotsController, ErrorMessageController errorMessageController,
-                   LikeShotController likeShotController) {
+                   LikeShotController likeShotController, BucketsController bucketsController) {
 
         this.shotsController = shotsController;
         this.errorMessageController = errorMessageController;
         this.likeShotController = likeShotController;
+        this.bucketsController = bucketsController;
         subscriptions = new CompositeSubscription();
     }
 
@@ -90,6 +95,9 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                 .hdpiImageUrl(shot.hdpiImageUrl())
                 .normalImageUrl(shot.normalImageUrl())
                 .thumbnailUrl(shot.thumbnailUrl())
+                .creationDate(shot.creationDate())
+                .authorAvatarUrl(shot.authorAvatarUrl())
+                .authorName(shot.authorName())
                 .isLiked(true)
                 .build();
     }
@@ -101,6 +109,21 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     @Override
     public void handleAddShotToBucket(Shot shot) {
-        getView().showBucketChoosing(shot.id());
+        getView().closeFabMenu();
+        getView().showBucketChoosing(shot);
+    }
+
+    @Override
+    public void addShotToBucket(Bucket bucket, Shot shot) {
+        subscriptions.add(
+                bucketsController.addShotToBucket(bucket.id(), shot.id())
+                        .compose(RxTransformerUtils.applyCompletableIoSchedulers())
+                        .subscribe(
+                                getView()::showBucketAddSuccess,
+                                throwable -> {
+                                    Timber.d(throwable, "Error while adding shot to bucket");
+                                    getView().showError(throwable.getMessage());
+                                })
+        );
     }
 }

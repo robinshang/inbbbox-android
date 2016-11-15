@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- Default screen margins, per the Material Design guidelines. -->
+    <dimen name="margin_big">24dp</dimen>
+    <dimen name="margin_default">16dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+
 
     <dimen name='activity_login_logo_margin_top'>81dp</dimen>
     <dimen name='activity_login_logo_text_margin_top'>18dp</dimen>
@@ -52,4 +54,8 @@
     <dimen name="shots_label_radius">24dp</dimen>
 
     <dimen name="like_corner_radius">6dp</dimen>
+
+    <dimen name="fragment_add_to_bucket_close_button_width_height">32dp</dimen>
+    <dimen name="fragment_add_to_bucket_top_shadow_width_height">40dp</dimen>
+    <dimen name="fragment_add_to_bucket_avatar_height_width">40dp</dimen>
 </resources>

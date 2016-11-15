@@ -491,7 +491,7 @@ public class Team {
     }
 
     /**
-     * @return The createdAt
+     * @return The creationDate
      */
     public String getCreatedAt() {
         return createdAt;

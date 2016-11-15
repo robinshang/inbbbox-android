@@ -7,7 +7,7 @@
         </shape>
     </item>
 
-    <item android:left="@dimen/activity_horizontal_margin">
+    <item android:left="@dimen/margin_default">
         <bitmap android:src="@drawable/logo_appbar" android:gravity="start"/>
     </item>
 </layer-list>

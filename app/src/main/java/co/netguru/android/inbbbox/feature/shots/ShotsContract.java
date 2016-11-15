@@ -5,6 +5,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
 interface ShotsContract {
@@ -21,7 +22,9 @@ interface ShotsContract {
 
         void closeFabMenu();
 
-        void showBucketChoosing(long id);
+        void showBucketChoosing(Shot shot);
+
+        void showBucketAddSuccess();
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -30,5 +33,7 @@ interface ShotsContract {
         void loadData();
 
         void handleAddShotToBucket(Shot shot);
+
+        void addShotToBucket(Bucket bucket, Shot shot);
     }
 }
