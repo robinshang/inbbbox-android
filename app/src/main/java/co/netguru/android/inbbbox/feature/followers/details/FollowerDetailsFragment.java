@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -23,6 +25,8 @@ import co.netguru.android.inbbbox.di.module.FollowerDetailsFragmentModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.followers.details.adapter.FollowerDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Follower;
+import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowerDetailsContract.View,
         FollowerDetailsContract.Presenter> implements FollowerDetailsContract.View {
@@ -30,6 +34,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     public static final int GRID_VIEW_COLUMN_COUNT = 2;
     public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
     private static final String FOLLOWER_KEY = "follower_key";
+    private static final int SHOTS_TO_LOAD_MORE = 10;
 
     @BindView(R.id.fragment_follower_details_recycler_view)
     RecyclerView recyclerView;
@@ -85,6 +90,20 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         return component.getPresenter();
     }
 
+    @Override
+    public void showFollowerData(Follower follower) {
+        adapter.setAdapterData(follower);
+        final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(follower.name());
+        }
+    }
+
+    @Override
+    public void showMoreUserShots(List<Shot> shotList) {
+        adapter.addMoreUserShots(shotList);
+    }
+
     private void initRecyclerView() {
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -97,14 +116,11 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         });
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    public void showFollowerData(Follower follower) {
-        adapter.setAdapterData(follower);
-        final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(follower.name());
-        }
+        recyclerView.addOnScrollListener(new LoadMoreScrollListener(SHOTS_TO_LOAD_MORE) {
+            @Override
+            public void requestMoreData() {
+                getPresenter().getMoreUserShotsFromServer();
+            }
+        });
     }
 }
