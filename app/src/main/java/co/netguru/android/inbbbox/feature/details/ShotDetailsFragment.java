@@ -13,6 +13,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import org.threeten.bp.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,11 +72,36 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
 
         // TODO: 14.11.2016 FOR TESTS
         List<Comment> comments = new ArrayList<>();
-        comments.add(new Comment());
-        comments.add(new Comment());
-        comments.add(new Comment());
-        comments.add(new Comment());
-        comments.add(new Comment());
+
+        Comment exampleComment1 = Comment.builder()
+                .author("Author authorski")
+                .authorAvatarUrl("http://findicons.com/files/icons/1072/face_avatars/300/i03.png")
+                .date(LocalDateTime.now())
+                .text("Example comments")
+                .build();
+
+        Comment exampleComment2 = Comment.builder()
+                .author("Gonzo")
+                .authorAvatarUrl("http://findicons.com/files/icons/1072/face_avatars/300/i03.png")
+                .date(LocalDateTime.now().plusSeconds(2))
+                .text("Example comment so lorem ipsum here will be nice")
+                .build();
+
+        Comment exampleComment3 = Comment.builder()
+                .author("Pigeon orSomething")
+                .authorAvatarUrl("https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/matthew.png")
+                .date(LocalDateTime.now().plusMinutes(30))
+                .text("Example comment so lorem ipsum here will be nice. Something new here will be nice")
+                .build();
+
+        comments.add(exampleComment1);
+        comments.add(exampleComment2);
+        comments.add(exampleComment1);
+        comments.add(exampleComment2);
+        comments.add(exampleComment1);
+        comments.add(exampleComment1);
+        comments.add(exampleComment1);
+        comments.add(exampleComment3);
         ShotDetails details = ShotDetails
                 .builder()
                 .id(1)

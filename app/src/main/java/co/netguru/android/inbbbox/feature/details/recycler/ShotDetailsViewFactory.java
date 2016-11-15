@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
 
 public class ShotDetailsViewFactory {
 
@@ -17,7 +18,9 @@ public class ShotDetailsViewFactory {
     }
 
 
-    public static ShotDetailsViewHolder getViewHolder(int viewType, ViewGroup parent) {
+    public static ShotDetailsViewHolder getViewHolder(int viewType,
+                                                      ViewGroup parent,
+                                                      LocalTimeFormatter localTimeFormatter) {
         View view;
         ShotDetailsViewHolder viewHolder;
         switch (viewType) {
@@ -37,7 +40,7 @@ public class ShotDetailsViewFactory {
                 view = LayoutInflater
                         .from(parent.getContext())
                         .inflate(R.layout.item_shot_comment_layout, parent, false);
-                viewHolder = new ShotDetailsCommentViewHolder(view);
+                viewHolder = new ShotDetailsCommentViewHolder(view, localTimeFormatter);
                 break;
         }
         return viewHolder;

@@ -6,12 +6,12 @@ import android.widget.TextView;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 
-public class ShotDetailsDescriptionViewHolder extends ShotDetailsViewHolder {
+class ShotDetailsDescriptionViewHolder extends ShotDetailsViewHolder {
 
     @BindView(R.id.shot_details_description_textView)
     TextView descriptionTextView;
 
-    public ShotDetailsDescriptionViewHolder(View view) {
+    ShotDetailsDescriptionViewHolder(View view) {
         super(view);
     }
 

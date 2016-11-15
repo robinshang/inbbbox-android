@@ -12,7 +12,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 
-public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
+class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
 
     private static final String APP_NAME_KEY = "${where}";
     private static final String DATE_KEY = "${when}";
@@ -41,6 +41,10 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     @BindString(R.string.info_pattern)
     String infoPattern;
 
+    ShotDetailsUserInfoViewHolder(View view) {
+        super(view);
+    }
+
     @OnClick(R.id.details_likes_imageView)
     void onLikeShotClick() {
         // TODO: 14.11.2016 handle like click
@@ -61,9 +65,6 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
         // TODO: 14.11.2016 open author profile
     }
 
-    ShotDetailsUserInfoViewHolder(View view) {
-        super(view);
-    }
 
     @Override
     protected void handleBinding() {

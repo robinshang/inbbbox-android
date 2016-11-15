@@ -47,4 +47,11 @@
     <string name="for_label">" for "</string>
     <string name="in_label">"in "</string>
     <string name="info_pattern">in ${where} on ${when}</string>
+    <string name="about_minute_ago">About minute ago</string>
+    <string name="about_sec_ago">About second ago</string>
+    <string name="about_hour_ago">About hour ago</string>
+    <string name="yesterday">yesterday</string>
+    <string name="few_sec_ago">Few seconds ago</string>
+    <string name="few_minutes_ago">Few minutes ago</string>
+    <string name="few_hours_ago">Few hours ago</string>
 </resources>
