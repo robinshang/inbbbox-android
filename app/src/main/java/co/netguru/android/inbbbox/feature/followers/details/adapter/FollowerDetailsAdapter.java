@@ -51,6 +51,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 break;
             case TYPE_LIST:
                 ((FollowerDetailsListViewHolder) holder).bind(shotList.get(position - 1));
+                break;
             default:
                 throw new IllegalArgumentException("There is no item type for holder on this position : " + position);
         }
