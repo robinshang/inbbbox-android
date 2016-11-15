@@ -28,24 +28,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lines="1"
-            android:text="John Doe"
             android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/comment_text_textView"
             style="@style/Font14.DarkGray"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Great design, good job!"/>
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/comment_date_textView"
             style="@style/Font12.Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:lines="1"
-            android:text="About hour ago"/>
+            android:lines="1"/>
 
+        <View style="@style/Divider" android:alpha="0.5"/>
     </LinearLayout>
 
 </RelativeLayout>

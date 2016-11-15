@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <!--TODO remove all placeholder texts-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -42,7 +41,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:lines="1"
-                    android:text="Weather Calendar Application"
                     android:textStyle="bold"/>
 
                 <LinearLayout android:layout_width="wrap_content"
@@ -63,7 +61,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lines="1"
-                        android:text="User"
                         android:textStyle="bold"/>
 
                     <TextView
@@ -80,7 +77,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lines="1"
-                        android:text="Netguru"
                         android:textStyle="bold"/>
 
                 </LinearLayout>
@@ -109,8 +105,7 @@
                     android:id="@+id/details_likes_imageView"
                     android:layout_width="@dimen/details_info_action_icon_size"
                     android:layout_height="@dimen/details_info_action_icon_size"
-                    android:background="@drawable/selector_shot_details_action"
-                    android:src="@drawable/ic_like_details"/>
+                    android:src="@drawable/selector_shot_details_like_action"/>
 
                 <TextView
                     android:id="@+id/details_likes_count_textView"
@@ -125,17 +120,17 @@
                     android:id="@+id/details_bucket_imageView"
                     android:layout_width="@dimen/details_info_action_icon_size"
                     android:layout_height="@dimen/details_info_action_icon_size"
-                    android:background="@drawable/selector_shot_details_action"
-                    android:src="@drawable/ic_bucket_details"/>
+                    android:src="@drawable/selector_shot_details_bucket_action"/>
 
                 <TextView
                     android:id="@+id/details_buckets_count_textView"
                     style="@style/DetailsActionButtonLabels"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/selector_shot_details_action"/>
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
     <View style="@style/Divider"/>
+
 </LinearLayout>

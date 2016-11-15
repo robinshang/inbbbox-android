@@ -165,7 +165,7 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
                 .builder()
                 .id(1)
                 .title("Awsome Title homie")
-                .comments(null)
+                .comments(comments)
                 .userAvatarUrl("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306")
                 .authorUrl("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306")
                 .authorName("demo author")
