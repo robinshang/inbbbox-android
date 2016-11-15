@@ -5,10 +5,8 @@ import android.net.Uri;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
-import java.util.UUID;
-
 public interface LoginContract {
-    interface View extends MvpView{
+    interface View extends MvpView {
 
         void handleOauthUrlAndUuid(String urlString, String stateKey);
 
@@ -25,7 +23,7 @@ public interface LoginContract {
         void enableLoginButton();
     }
 
-    interface Presenter extends MvpPresenter<View>{
+    interface Presenter extends MvpPresenter<View> {
         void showLoginView();
 
         void handleOauthLoginResponse(Uri uri);

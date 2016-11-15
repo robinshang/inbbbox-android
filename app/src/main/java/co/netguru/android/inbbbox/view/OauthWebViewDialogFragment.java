@@ -1,34 +1,35 @@
 package co.netguru.android.inbbbox.view;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import co.netguru.android.inbbbox.Constants;
-import co.netguru.android.inbbbox.R;
 import timber.log.Timber;
 
-public class WebViewOauthDialogFragment extends DialogFragment {
+public class OauthWebViewDialogFragment extends DialogFragment {
 
-    public static final String TAG = WebViewOauthDialogFragment.class.getSimpleName();
+    public static final String TAG = OauthWebViewDialogFragment.class.getSimpleName();
     private static final String ARG_URL = "arg_url";
     private static final String ARG_STATE_KEY = "arg_state__key";
 
-    private WebViewOauthListener callback;
-    private String stateKey;
+    private OauthWebViewListener callback;
     private FocusableWebView webView;
 
-    public static WebViewOauthDialogFragment newInstance(String url, String stateKey) {
+    public static OauthWebViewDialogFragment newInstance(String url, String stateKey) {
         Bundle args = new Bundle();
         args.putString(ARG_URL, url);
         args.putString(ARG_STATE_KEY, stateKey);
-        WebViewOauthDialogFragment dialogFragment = new WebViewOauthDialogFragment();
+        OauthWebViewDialogFragment dialogFragment = new OauthWebViewDialogFragment();
         dialogFragment.setArguments(args);
         return dialogFragment;
     }
@@ -37,13 +38,12 @@ public class WebViewOauthDialogFragment extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            callback = (WebViewOauthListener) context;
+            callback = (OauthWebViewListener) context;
         } catch (ClassCastException e) {
             Timber.e(e.getMessage());
             throw new ClassCastException(context.toString()
-                    + " must implement WebViewOauthListener");
+                    + " must implement OauthWebViewListener");
         }
-        this.stateKey = getArguments().getString(ARG_STATE_KEY);
     }
 
     @NonNull
@@ -73,18 +73,31 @@ public class WebViewOauthDialogFragment extends DialogFragment {
     @NonNull
     private WebViewClient getWebViewClient() {
         return new WebViewClient() {
-
+            @SuppressWarnings("deprecation")
             @Override
-            public void onPageFinished(WebView view, String url) {
-                if (url.startsWith(getString(R.string.redirectUriScheme))) {
-                    Uri uri = Uri.parse(url);
-                    if (uri.getQueryParameter(Constants.OAUTH.STATE_KEY).equals(stateKey)) {
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                final Uri uri = Uri.parse(url);
+                return handleUri(uri);
+            }
+
+            @TargetApi(Build.VERSION_CODES.N)
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                final Uri uri = request.getUrl();
+                return handleUri(uri);
+            }
+
+            private boolean handleUri(final Uri uri) {
+                if (uri.toString().startsWith(Constants.OAUTH.REDIRECT_URI_STRING)) {
+                    if (uri.getQueryParameter(Constants.OAUTH.STATE_KEY).equals(getArguments().getString(ARG_STATE_KEY))) {
                         callback.redirectUrlCallbackLoaded(uri);
                     } else {
                         callback.stateKeyNotMatching();
                     }
                     dismiss();
+                    return true;
                 }
+                return false;
             }
         };
     }

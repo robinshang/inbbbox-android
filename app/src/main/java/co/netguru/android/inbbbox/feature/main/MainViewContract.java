@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.feature.main;
 
 import android.app.TimePickerDialog;
-import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;

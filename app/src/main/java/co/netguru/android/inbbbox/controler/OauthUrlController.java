@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.controler;
 
-import android.content.res.Resources;
 import android.support.v4.util.Pair;
 
 import java.util.UUID;
@@ -9,7 +8,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.BuildConfig;
-import co.netguru.android.inbbbox.R;
 import rx.Observable;
 
 import static co.netguru.android.inbbbox.Constants.OAUTH;
@@ -17,12 +15,8 @@ import static co.netguru.android.inbbbox.Constants.OAUTH;
 @Singleton
 public class OauthUrlController {
 
-    private Resources resources;
-
     @Inject
-    public OauthUrlController(Resources resources) {
-
-        this.resources = resources;
+    public OauthUrlController() {
     }
 
     public Observable<Pair<String, UUID>> getOauthAuthorizeUrlAndUuidPair() {
@@ -41,14 +35,11 @@ public class OauthUrlController {
                 "&" +
                 OAUTH.SCOPE_KEY +
                 "=" +
-                getStringValue(R.string.dribbbleScope) +
+                OAUTH.INBBBOX_SCOPE +
                 "&" +
                 OAUTH.STATE_KEY +
                 "=" +
                 stateString;
     }
 
-    private String getStringValue(Integer resId) {
-        return resources.getString(resId);
-    }
 }

@@ -2,7 +2,7 @@ package co.netguru.android.inbbbox.view;
 
 import android.net.Uri;
 
-public interface WebViewOauthListener {
+public interface OauthWebViewListener {
 
     void redirectUrlCallbackLoaded(Uri uri);
 

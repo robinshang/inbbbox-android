@@ -6,10 +6,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.controler.ShotsController;
-import co.netguru.android.inbbbox.controler.LikeShotController;
-import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.LikeShotController;
+import co.netguru.android.inbbbox.controler.ShotsController;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;

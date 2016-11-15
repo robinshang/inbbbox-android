@@ -19,12 +19,12 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.LoginComponent;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
-import co.netguru.android.inbbbox.view.WebViewOauthListener;
-import co.netguru.android.inbbbox.view.WebViewOauthDialogFragment;
+import co.netguru.android.inbbbox.view.OauthWebViewDialogFragment;
+import co.netguru.android.inbbbox.view.OauthWebViewListener;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
         implements LoginContract.View, WithComponent<LoginComponent>,
-        WebViewOauthListener {
+        OauthWebViewListener {
 
     private LoginComponent component;
 
@@ -68,8 +68,8 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @Override
     public void handleOauthUrlAndUuid(String url, String stateKey) {
-        WebViewOauthDialogFragment.newInstance(url, stateKey)
-                .show(getSupportFragmentManager(), WebViewOauthDialogFragment.TAG);
+        OauthWebViewDialogFragment.newInstance(url, stateKey)
+                .show(getSupportFragmentManager(), OauthWebViewDialogFragment.TAG);
     }
 
     @Override

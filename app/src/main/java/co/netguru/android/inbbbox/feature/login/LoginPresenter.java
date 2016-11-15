@@ -28,9 +28,6 @@ public final class LoginPresenter
     private final UserController userController;
     private final CompositeSubscription compositeSubscription;
 
-    private String code;
-    private String oauthErrorMessage;
-
     @Inject
     LoginPresenter(OauthUrlController oauthUrlController,
                    TokenController apiTokenController,
@@ -65,8 +62,7 @@ public final class LoginPresenter
     public void handleOauthLoginResponse(Uri url) {
         if (url != null) {
             Timber.d(url.toString());
-            unpackParamsFromUri(url);
-            selectAuthorizationAction();
+            selectAuthorizationAction(url);
         } else {
             Timber.d("url is null");
         }
@@ -82,9 +78,11 @@ public final class LoginPresenter
         getView().enableLoginButton();
     }
 
-    private void selectAuthorizationAction() {
+    private void selectAuthorizationAction(Uri uri) {
+        String code = uri.getQueryParameter(Constants.OAUTH.CODE_KEY);
+        String oauthErrorMessage = uri.getQueryParameter(Constants.OAUTH.ERROR_KEY);
         if (code != null && !code.isEmpty()) {
-            requestNewToken();
+            requestTokenAndLoadUserData(code);
         } else if (oauthErrorMessage != null && !oauthErrorMessage.isEmpty()) {
             getView().showApiError(oauthErrorMessage);
         } else {
@@ -92,18 +90,10 @@ public final class LoginPresenter
         }
     }
 
-    private void requestNewToken() {
+    private void requestTokenAndLoadUserData(String code) {
         compositeSubscription.add(
                 apiTokenController.requestNewToken(code)
-                        .compose(androidIO())
-                        .subscribe(token -> getUser(),
-                                this::handleError
-                        ));
-    }
-
-    private void getUser() {
-        compositeSubscription.add(
-                userController.requestUser()
+                        .flatMap(token -> userController.requestUser())
                         .compose(androidIO())
                         .subscribe(user -> getView().showNextScreen(),
                                 this::handleError));
@@ -112,11 +102,6 @@ public final class LoginPresenter
     private void handleError(Throwable throwable) {
         Timber.e(throwable, "Error while getting user");
         getView().showApiError(errorHandler.getError(throwable));
-    }
-
-    private void unpackParamsFromUri(Uri uri) {
-        code = uri.getQueryParameter(Constants.OAUTH.CODE_KEY);
-        oauthErrorMessage = uri.getQueryParameter(Constants.OAUTH.ERROR_KEY);
     }
 
 }
