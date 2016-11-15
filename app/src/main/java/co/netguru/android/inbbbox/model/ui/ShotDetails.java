@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.model.ui;
 
+import android.support.annotation.Nullable;
+
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -9,9 +11,9 @@ import java.util.List;
 
 @AutoValue
 public abstract class ShotDetails {
-    public abstract List<Comment> comments();
-
     public abstract Integer id();
+
+    public abstract String title();
 
     public abstract String userAvatarUrl();
 
@@ -33,7 +35,8 @@ public abstract class ShotDetails {
 
     public abstract String description();
 
-    public abstract String title();
+    @Nullable
+    public abstract List<Comment> comments();
 
     @AutoValue.Builder
     public abstract static class Builder {

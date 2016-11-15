@@ -73,40 +73,99 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
         // TODO: 14.11.2016 FOR TESTS
         List<Comment> comments = new ArrayList<>();
 
-        Comment exampleComment1 = Comment.builder()
-                .author("Author authorski")
+        Comment sec = Comment.builder()
+                .author("sec")
                 .authorAvatarUrl("http://findicons.com/files/icons/1072/face_avatars/300/i03.png")
                 .date(LocalDateTime.now())
                 .text("Example comments")
                 .build();
 
-        Comment exampleComment2 = Comment.builder()
-                .author("Gonzo")
+        Comment fewSec = Comment.builder()
+                .author("fewSec")
                 .authorAvatarUrl("http://findicons.com/files/icons/1072/face_avatars/300/i03.png")
-                .date(LocalDateTime.now().plusSeconds(2))
+                .date(LocalDateTime.now().plusSeconds(20))
+                .text("Example comments")
+                .build();
+
+        Comment min = Comment.builder()
+                .author("min")
+                .authorAvatarUrl("http://findicons.com/files/icons/1072/face_avatars/300/i03.png")
+                .date(LocalDateTime.now().plusSeconds(45))
                 .text("Example comment so lorem ipsum here will be nice")
                 .build();
 
-        Comment exampleComment3 = Comment.builder()
-                .author("Pigeon orSomething")
+        Comment min2 = Comment.builder()
+                .author("min2")
+                .authorAvatarUrl("http://findicons.com/files/icons/1072/face_avatars/300/i03.png")
+                .date(LocalDateTime.now().plusSeconds(65))
+                .text("Example comment so lorem ipsum here will be nice")
+                .build();
+
+        Comment fewMin = Comment.builder()
+                .author("fewMin")
                 .authorAvatarUrl("https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/matthew.png")
-                .date(LocalDateTime.now().plusMinutes(30))
+                .date(LocalDateTime.now().plusMinutes(3))
                 .text("Example comment so lorem ipsum here will be nice. Something new here will be nice")
                 .build();
 
-        comments.add(exampleComment1);
-        comments.add(exampleComment2);
-        comments.add(exampleComment1);
-        comments.add(exampleComment2);
-        comments.add(exampleComment1);
-        comments.add(exampleComment1);
-        comments.add(exampleComment1);
-        comments.add(exampleComment3);
+        Comment hour = Comment.builder()
+                .author("hour")
+                .authorAvatarUrl("https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/matthew.png")
+                .date(LocalDateTime.now().plusMinutes(60-15))
+                .text("Example comment so lorem ipsum here will be nice. Something new here will be nice")
+                .build();
+
+        Comment hour2 = Comment.builder()
+                .author("hour2")
+                .authorAvatarUrl("https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/matthew.png")
+                .date(LocalDateTime.now().plusMinutes(60))
+                .text("Example comment so lorem ipsum here will be nice. Something new here will be nice")
+                .build();
+
+        Comment hour3 = Comment.builder()
+                .author("hour3")
+                .authorAvatarUrl("https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/matthew.png")
+                .date(LocalDateTime.now().plusMinutes(60+15))
+                .text("Example comment so lorem ipsum here will be nice. Something new here will be nice")
+                .build();
+
+        Comment fewH = Comment.builder()
+                .author("fewH =")
+                .authorAvatarUrl("https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/matthew.png")
+                .date(LocalDateTime.now().plusHours(12))
+                .text("Example comment so lorem ipsum here will be nice. Something new here will be nice")
+                .build();
+
+        Comment yesterday = Comment.builder()
+                .author("yesterday")
+                .authorAvatarUrl("https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/matthew.png")
+                .date(LocalDateTime.now().plusHours(25))
+                .text("Example comment so lorem ipsum here will be nice. Something new here will be nice")
+                .build();
+
+        Comment date = Comment.builder()
+                .author("date")
+                .authorAvatarUrl("https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/matthew.png")
+                .date(LocalDateTime.now().plusHours(48))
+                .text("Example comment so lorem ipsum here will be nice. Something new here will be nice")
+                .build();
+
+        comments.add(sec);
+        comments.add(fewSec);
+        comments.add(min);
+        comments.add(min2);
+        comments.add(fewMin);
+        comments.add(hour);
+        comments.add(hour2);
+        comments.add(hour3);
+        comments.add(fewH);
+        comments.add(yesterday);
+        comments.add(date);
         ShotDetails details = ShotDetails
                 .builder()
                 .id(1)
                 .title("Awsome Title homie")
-                .comments(comments)
+                .comments(null)
                 .userAvatarUrl("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306")
                 .authorUrl("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306")
                 .authorName("demo author")

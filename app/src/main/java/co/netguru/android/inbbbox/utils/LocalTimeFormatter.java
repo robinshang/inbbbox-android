@@ -19,11 +19,14 @@ public final class LocalTimeFormatter {
 
     private static final String DATE_PATTER = "yyyy-MM-dd";
     private static final String TIME_PATTER = "h:mm a";
-    private static final long SECONDS_IN_MIN = 60;
+    private static final long MINUTE_IN_SEC = 60;
     private static final long SEC = 1;
-    private static final long SECONDS_IN_HOUR = 60 * 60;
-    private static final long SECONDS_IN_DAY = 60 * 60 * 24;
+    private static final long HOUR_IN_SEC = 3600;
+    private static final long DAY_IN_SEC = 86400;
+    private static final long HALF_DAY_IN_SEC = DAY_IN_SEC / 2;
     private static final long HALF_OF_MIN = 30;
+    private static final long HALF_MINUTE_IN_SEC = 30;
+    private static final long HALF_HOUR_IN_SEC = HOUR_IN_SEC / 2;
     private final DateTimeFormatter dateTimeFormatter;
 
     @Inject
@@ -58,43 +61,43 @@ public final class LocalTimeFormatter {
     public String getTimeLabel(Context context, LocalDateTime dateTime) {
         String label;
         LocalDateTime now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toLocalDateTime();
-
         Duration duration = Duration.between(now, dateTime);
 
-        if (duration.getSeconds() < LocalTimeFormatter.SEC) {
+        if (duration.getSeconds() <= LocalTimeFormatter.SEC) {
 
             label = context.getString(R.string.about_sec_ago);
 
-        } else if (duration.getSeconds() > LocalTimeFormatter.SEC
-                && duration.getSeconds() < LocalTimeFormatter.HALF_OF_MIN) {
+        } else if (duration.getSeconds() >= SEC
+                && duration.getSeconds() < HALF_OF_MIN) {
 
             label = context.getString(R.string.few_sec_ago);
 
-        } else if (duration.getSeconds() < LocalTimeFormatter.SECONDS_IN_MIN) {
+        } else if (duration.getSeconds() > HALF_OF_MIN &&
+                duration.getSeconds() <= MINUTE_IN_SEC + HALF_MINUTE_IN_SEC) {
 
             label = context.getString(R.string.about_minute_ago);
 
-        } else if (duration.getSeconds() > LocalTimeFormatter.SECONDS_IN_MIN
-                && duration.getSeconds() < LocalTimeFormatter.SECONDS_IN_HOUR) {
+        } else if (duration.getSeconds() > MINUTE_IN_SEC + HALF_MINUTE_IN_SEC
+                && duration.getSeconds() <= HALF_HOUR_IN_SEC) {
 
             label = context.getString(R.string.few_minutes_ago);
 
-        } else if (duration.getSeconds() < LocalTimeFormatter.SECONDS_IN_HOUR) {
+        } else if (duration.getSeconds() > HALF_HOUR_IN_SEC
+                && duration.getSeconds() <= HOUR_IN_SEC + HALF_HOUR_IN_SEC) {
 
             label = context.getString(R.string.about_hour_ago);
 
-        } else if (duration.getSeconds() > LocalTimeFormatter.SECONDS_IN_HOUR &&
-                duration.getSeconds() < LocalTimeFormatter.SECONDS_IN_DAY) {
+        } else if (duration.getSeconds() > HOUR_IN_SEC + HALF_HOUR_IN_SEC
+                && duration.getSeconds() <= DAY_IN_SEC) {
 
             label = context.getString(R.string.few_hours_ago);
 
-        } else if (duration.getSeconds() > LocalTimeFormatter.SECONDS_IN_DAY &&
-                duration.getSeconds() < LocalTimeFormatter.SECONDS_IN_DAY * 2) {
+        } else if (duration.getSeconds() >= DAY_IN_SEC &&
+                duration.getSeconds() < DAY_IN_SEC + HALF_DAY_IN_SEC) {
 
             label = context.getString(R.string.yesterday);
 
         } else {
-
             DateTimeFormatter formatter = DateTimeFormatter
                     .ofPattern(DATE_PATTER + " " + TIME_PATTER)
                     .withZone(ZoneId.systemDefault());
