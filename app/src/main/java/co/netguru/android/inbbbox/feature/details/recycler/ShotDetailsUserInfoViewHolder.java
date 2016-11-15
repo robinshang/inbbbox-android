@@ -16,6 +16,8 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
 
     private static final String APP_NAME_KEY = "${where}";
     private static final String DATE_KEY = "${when}";
+    private boolean isLiked;
+    private boolean isBucketed;
 
     @BindView(R.id.details_user_imageView)
     ImageView userAvatarImageView;
@@ -53,18 +55,16 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
 
     @OnClick(R.id.details_likes_imageView)
     void onLikeShotClick() {
-        // TODO: 15.11.2016 move state handling to Presenter in Task IA-146
-        boolean updatedState = !item.isLiked();
-        actionCallbackListener.onShotLikeAction(item.id(), updatedState);
-        handleActionButtonState(updatedState, item.isBucketed());
+        isLiked = !isLiked;
+        actionCallbackListener.onShotLikeAction(item.id(), isLiked);
+        updateActionsState();
     }
 
     @OnClick(R.id.details_bucket_imageView)
     void onBucketClick() {
-        // TODO: 15.11.2016 move state handling to Presenter in Task IA-146
-        boolean updatedState = !item.isBucketed();
-        actionCallbackListener.onShotBucket(item.id(), updatedState);
-        handleActionButtonState(item.isLiked(), updatedState);
+        isBucketed = !isBucketed;
+        actionCallbackListener.onShotBucket(item.id(), isBucketed);
+        updateActionsState();
     }
 
     @OnClick(R.id.details_company_textView)
@@ -84,12 +84,15 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
         showAuthorInfo(item.authorName(), item.companyName());
         showInfo(item.appName(), item.date());
         showCounters(item.likesCount(), item.bucketCount());
-        handleActionButtonState(item.isLiked(), item.isBucketed());
+
+        isLiked = item.isLiked();
+        isBucketed = item.isBucketed();
+        updateActionsState();
     }
 
-    private void handleActionButtonState(boolean liked, boolean bucketed) {
-        likeImageView.setActivated(liked);
-        bucketImageView.setActivated(bucketed);
+    private void updateActionsState() {
+        likeImageView.setActivated(isLiked);
+        bucketImageView.setActivated(isBucketed);
     }
 
     private void showCounters(Integer likeCount, Integer bucketCount) {
