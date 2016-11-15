@@ -30,10 +30,11 @@ import co.netguru.android.inbbbox.view.FogFloatingActionMenu;
 
 public class ShotsFragment
         extends BaseMvpFragment<ShotsContract.View, ShotsContract.Presenter>
-        implements ShotsContract.View, ShotsAdapter.OnItemLeftSwipeListener {
+        implements ShotsContract.View,
+        ShotsAdapter.OnItemActionListener {
 
     private ShotsComponent component;
-    private ShotLikeStatusListener shotLikeStatusListener;
+    private ShotStatusListener shotStatusListener;
 
     @Inject
     ShotsAdapter adapter;
@@ -81,10 +82,10 @@ public class ShotsFragment
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            shotLikeStatusListener = (ShotLikeStatusListener) context;
+            shotStatusListener = (ShotStatusListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement ShotLikeStatusListener");
+                    + " must implement ShotStatusListener");
         }
     }
 
@@ -131,7 +132,7 @@ public class ShotsFragment
     }
 
     private void initRecycler() {
-        adapter.setOnLeftSwipeListener(this);
+        adapter.setActionListener(this);
         shotsRecyclerView.setAdapter(adapter);
         shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shotsRecyclerView.setHasFixedSize(true);
@@ -150,7 +151,7 @@ public class ShotsFragment
     @Override
     public void changeShotLikeStatus(Shot shot) {
         adapter.changeShotLikeStatus(shot);
-        shotLikeStatusListener.shotLikeStatusChanged();
+        shotStatusListener.shotLikeStatusChanged();
     }
 
     @Override
@@ -161,13 +162,24 @@ public class ShotsFragment
     }
 
     @Override
+    public void showShotDetails(Integer id) {
+        shotStatusListener.showShotDetails(id);
+    }
+
+    @Override
     public void onItemLeftSwipe(int itemPosition) {
         getPresenter().likeShot(itemPosition);
     }
 
-    @FunctionalInterface
-    public interface ShotLikeStatusListener {
+    @Override
+    public void onItemClicked(int itemPosition) {
+        getPresenter().showShotDetails(itemPosition);
+    }
+
+    public interface ShotStatusListener {
         void shotLikeStatusChanged();
+
+        void showShotDetails(int id);
     }
 
     @Override

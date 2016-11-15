@@ -51,7 +51,7 @@ public class MainActivity
         extends BaseMvpActivity<MainViewContract.View,
         MainViewContract.Presenter>
         implements MainViewContract.View,
-        ShotsFragment.ShotLikeStatusListener {
+        ShotsFragment.ShotStatusListener {
 
     private static final String TAG = ShotDetailsFragment.class.getSimpleName();
 
@@ -141,20 +141,19 @@ public class MainActivity
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-//                drawerLayout.openDrawer(GravityCompat.START);
-//                ShotDetailsFragment.newInstance(1).show(getSupportFragmentManager(), TAG);
-
-                showFragmentDetails();
+                drawerLayout.openDrawer(GravityCompat.START);
+                ShotDetailsFragment.newInstance(1).show(getSupportFragmentManager(), TAG);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void showFragmentDetails() {
+    private void showFragmentDetails(int shotId) {
+        // TODO: 15.11.2016 refactor
 //        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG);
 //        if (fragment == null) {
-        Fragment fragment = ShotDetailsFragment.newInstance(2);
+        Fragment fragment = ShotDetailsFragment.newInstance(shotId);
 //        }
         getSupportFragmentManager()
                 .beginTransaction()
@@ -377,6 +376,11 @@ public class MainActivity
                 break;
             }
         }
+    }
+
+    @Override
+    public void showShotDetails(int id) {
+        showFragmentDetails(id);
     }
 
     public BottomSheetBehavior getBottomSheetBehavior() {

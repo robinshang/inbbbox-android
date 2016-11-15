@@ -12,11 +12,10 @@ import javax.inject.Inject;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
-public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder>
-        implements ShotsViewHolder.OnShotLeftSwipeListener {
+public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
     private List<Shot> items;
-    private OnItemLeftSwipeListener onItemLeftSwipeListener = OnItemLeftSwipeListener.NULL;
+    private OnItemActionListener onItemActionListener = OnItemActionListener.NULL;
 
     @Inject
     public ShotsAdapter() {
@@ -27,8 +26,9 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder>
     public ShotsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_shot_layout, parent, false);
-        return new ShotsViewHolder(itemView, this);
+        return new ShotsViewHolder(itemView, onItemActionListener);
     }
+
 
     @Override
     public void onBindViewHolder(ShotsViewHolder holder, int position) {
@@ -45,14 +45,9 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder>
         notifyDataSetChanged();
     }
 
-    @Override
-    public void onLeftSwipe(int position) {
-        onItemLeftSwipeListener.onItemLeftSwipe(position);
-    }
-
-    public void setOnLeftSwipeListener(OnItemLeftSwipeListener onItemLeftSwipeListener) {
-        this.onItemLeftSwipeListener = onItemLeftSwipeListener == null
-                ? OnItemLeftSwipeListener.NULL : onItemLeftSwipeListener;
+    public void setActionListener(OnItemActionListener onItemLeftSwipeListener) {
+        this.onItemActionListener = onItemLeftSwipeListener == null
+                ? OnItemActionListener.NULL : onItemLeftSwipeListener;
     }
 
     public void changeShotLikeStatus(Shot shot) {
@@ -70,11 +65,21 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder>
         throw new IllegalArgumentException("There is no shot with id :" + id);
     }
 
-    @FunctionalInterface
-    public interface OnItemLeftSwipeListener {
-        OnItemLeftSwipeListener NULL = shot -> {
+    public interface OnItemActionListener {
+        OnItemActionListener NULL = new OnItemActionListener() {
+            @Override
+            public void onItemLeftSwipe(int itemPosition) {
+
+            }
+
+            @Override
+            public void onItemClicked(int itemPosition) {
+
+            }
         };
 
         void onItemLeftSwipe(int itemPosition);
+
+        void onItemClicked(int itemPosition);
     }
 }

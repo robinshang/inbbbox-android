@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -38,13 +39,18 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     @BindView(R.id.iv_comment)
     ImageView commentImageView;
 
-    private OnShotLeftSwipeListener onLeftSwipeListener = OnShotLeftSwipeListener.NULL;
+    private ShotsAdapter.OnItemActionListener onShotActionListener = ShotsAdapter.OnItemActionListener.NULL;
     private Shot shot;
 
-    ShotsViewHolder(View itemView, OnShotLeftSwipeListener onLeftSwipeListener) {
+    ShotsViewHolder(View itemView, ShotsAdapter.OnItemActionListener onLeftSwipeListener) {
         super(itemView);
-        this.onLeftSwipeListener = onLeftSwipeListener == null
-                ? OnShotLeftSwipeListener.NULL : onLeftSwipeListener;
+        this.onShotActionListener = onLeftSwipeListener == null
+                ? ShotsAdapter.OnItemActionListener.NULL : onLeftSwipeListener;
+    }
+
+    @OnClick(R.id.iv_shot_image)
+    void onShotClick(){
+        onShotActionListener.onItemClicked(getAdapterPosition());
     }
 
     @Override
@@ -72,7 +78,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
 
     @Override
     public void onLeftSwipe() {
-        onLeftSwipeListener.onLeftSwipe(getAdapterPosition());
+        onShotActionListener.onItemLeftSwipe(getAdapterPosition());
         // TODO: 03.11.2016 remove toasts or change to propare info after all action implemented
         Toast.makeText(longSwipeLayout.getContext(), "Left swipie", Toast.LENGTH_SHORT).show();
     }
@@ -105,16 +111,5 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     public void onRightSwipeActivate(boolean isActive) {
         commentImageView.setActivated(isActive);
     }
-
-    @FunctionalInterface
-    interface OnShotLeftSwipeListener {
-
-        OnShotLeftSwipeListener NULL = position -> {
-        };
-
-        void onLeftSwipe(int position);
-    }
-
-
 }
 
