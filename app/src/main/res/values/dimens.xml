@@ -61,4 +61,6 @@
     <dimen name="details_action_buttons_margin_top">10dp</dimen>
     <dimen name="comment_divider_padding_top">5dp</dimen>
     <dimen name="parralax_image_view_hight">250dp</dimen>
+    <dimen name="close_button_size">24dp</dimen>
+    <dimen name="close_button_margin">16dp</dimen>
 </resources>

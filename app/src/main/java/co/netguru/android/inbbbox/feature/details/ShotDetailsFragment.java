@@ -21,6 +21,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotDetailsComponent;
@@ -42,6 +43,11 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
 
     @BindView(R.id.parallax_image_view)
     RoundedCornersImageView parallaxImageView;
+
+    @OnClick(R.id.details_close_imageView)
+    void onCloseClick() {
+        getActivity().onBackPressed();
+    }
 
     @Inject
     ShotDetailsAdapter adapter;
@@ -72,7 +78,6 @@ public class ShotDetailsFragment extends BottomSheetDialogFragment {
 
         // TODO: 14.11.2016 FOR TESTS
         List<Comment> comments = new ArrayList<>();
-
         Comment sec = Comment.builder()
                 .author("sec")
                 .authorAvatarUrl("http://findicons.com/files/icons/1072/face_avatars/300/i03.png")
