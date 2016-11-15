@@ -8,8 +8,8 @@ import co.netguru.android.inbbbox.model.ui.Follower;
 
 public class FollowersThreeShotListViewHolder extends BaseFollowersViewHolder {
 
-    FollowersThreeShotListViewHolder(ViewGroup parent) {
-        super(LayoutInflater.from(parent.getContext()).inflate(R.layout.follower_item_list_view, parent, false));
+    FollowersThreeShotListViewHolder(ViewGroup parent, OnFollowerClickListener onFollowerClickListener) {
+        super(LayoutInflater.from(parent.getContext()).inflate(R.layout.follower_item_list_view, parent, false), onFollowerClickListener);
     }
 
     @Override

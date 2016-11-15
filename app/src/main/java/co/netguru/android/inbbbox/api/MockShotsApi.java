@@ -30,8 +30,8 @@ public class MockShotsApi implements ShotsApi {
     }
 
     @Override
-    public Observable<List<ShotEntity>> getFollowedUserShots(@Path("user") long userId, @Query("page") int pageNumber,
-                                                             @Query("per_page") int pageCount) {
+    public Observable<List<ShotEntity>> getUserShots(@Path("user") long userId, @Query("page") int pageNumber,
+                                                     @Query("per_page") int pageCount) {
         return Observable.just(getFollowingMockedData());
     }
 
