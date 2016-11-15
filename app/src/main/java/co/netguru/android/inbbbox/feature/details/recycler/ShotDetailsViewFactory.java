@@ -27,13 +27,13 @@ public class ShotDetailsViewFactory {
             case USER_INFO_VIEW_TYPE:
                 view = LayoutInflater
                         .from(parent.getContext())
-                        .inflate(R.layout.shot_info_user_info_layout, parent, false);
+                        .inflate(R.layout.item_shot_info_user_info_layout, parent, false);
                 viewHolder = new ShotDetailsUserInfoViewHolder(view);
                 break;
             case DESCRIPTION_VIEW_TYPE:
                 view = LayoutInflater
                         .from(parent.getContext())
-                        .inflate(R.layout.shot_info_description_layout, parent, false);
+                        .inflate(R.layout.item_shot_info_description_layout, parent, false);
                 viewHolder = new ShotDetailsDescriptionViewHolder(view);
                 break;
             default:
