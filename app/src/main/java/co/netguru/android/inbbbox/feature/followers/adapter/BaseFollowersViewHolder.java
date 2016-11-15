@@ -1,11 +1,13 @@
 package co.netguru.android.inbbbox.feature.followers.adapter;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import butterknife.BindDimen;
 import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
@@ -18,6 +20,8 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
 
     @BindString(R.string.follower_item_shot)
     String shotCountString;
+    @BindDimen(R.dimen.shot_corner_radius)
+    float radius;
 
     @BindView(R.id.four_image_view)
     RoundedCornersFourImagesView fourImagesView;
@@ -28,16 +32,16 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
     @BindView(R.id.follower_item_shots_count)
     TextView shotsCount;
 
-    private OnFollowerViewHolderClickListener onFollowerViewHolderClickListener = OnFollowerViewHolderClickListener.NULL;
+    private Follower currentFollower;
 
-    BaseFollowersViewHolder(View view) {
+    BaseFollowersViewHolder(View view, @NonNull OnFollowerClickListener onFollowerClickListener) {
         super(view);
-        view.setOnClickListener(itemView -> onFollowerViewHolderClickListener.onClick(getAdapterPosition()));
+        view.setOnClickListener(v -> onFollowerClickListener.onClick(currentFollower));
     }
 
     @Override
     public void bind(Follower item) {
-        final float radius = itemView.getResources().getDimension(R.dimen.shot_corner_radius);
+        this.currentFollower = item;
         fourImagesView.setRadius(radius);
         userName.setText(item.name());
         shotsCount.setText(getShotCountString(item.shotsCount()));
@@ -71,15 +75,7 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
                 .into(userPhoto);
     }
 
-    void setOnFollowerViewHolderClickListener(OnFollowerViewHolderClickListener onFollowerViewHolderClickListener) {
-        this.onFollowerViewHolderClickListener = onFollowerViewHolderClickListener == null
-                ? OnFollowerViewHolderClickListener.NULL : onFollowerViewHolderClickListener;
-    }
-
-    public interface OnFollowerViewHolderClickListener {
-
-        OnFollowerViewHolderClickListener NULL = position -> {/* Do nothing */};
-
-        void onClick(int position);
+    public interface OnFollowerClickListener {
+        void onClick(Follower follower);
     }
 }

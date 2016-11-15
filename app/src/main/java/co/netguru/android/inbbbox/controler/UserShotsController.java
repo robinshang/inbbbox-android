@@ -19,7 +19,7 @@ public class UserShotsController {
         this.shotsApi = shotsApi;
     }
 
-    public Observable<List<Shot>> getUserShots(long id, int pageNumber, int pageCount) {
+    public Observable<List<Shot>> getUserShotsList(long id, int pageNumber, int pageCount) {
         return shotsApi.getUserShots(id, pageNumber, pageCount)
                 .flatMap(Observable::from)
                 .map(Shot::create)

@@ -37,7 +37,7 @@ public class FollowerDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follower_details);
         initializeToolbar();
-        if (savedInstanceState == null && getIntent().hasExtra(FOLLOWER_KEY)) {
+        if (savedInstanceState == null) {
             replaceFragment(R.id.follower_details_fragment_container,
                     FollowerDetailsFragment.newInstance(getIntent().getParcelableExtra(FOLLOWER_KEY)), FollowerDetailsFragment.TAG).commit();
         }

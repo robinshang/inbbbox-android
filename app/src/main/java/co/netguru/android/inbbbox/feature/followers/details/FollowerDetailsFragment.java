@@ -35,6 +35,8 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
     private static final String FOLLOWER_KEY = "follower_key";
     private static final int SHOTS_TO_LOAD_MORE = 10;
+    private static final int RECYCLER_VIEW_HEADER_POSITION = 0;
+    private static final int RECYCLER_VIEW_ITEM_SPAN_SIZE = 1;
 
     @BindView(R.id.fragment_follower_details_recycler_view)
     RecyclerView recyclerView;
@@ -108,10 +110,10 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if (position == 0) {
+                if (position == RECYCLER_VIEW_HEADER_POSITION) {
                     return GRID_VIEW_COLUMN_COUNT;
                 }
-                return 1;
+                return RECYCLER_VIEW_ITEM_SPAN_SIZE;
             }
         });
         recyclerView.setHasFixedSize(true);

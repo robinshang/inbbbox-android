@@ -54,7 +54,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     public void getMoreUserShotsFromServer() {
         if (hasMore) {
             pageNumber++;
-            final Subscription subscription = userShotsController.getUserShots(follower.id(),
+            final Subscription subscription = userShotsController.getUserShotsList(follower.id(),
                     pageNumber, SHOT_PAGE_COUNT)
                     .compose(androidIO())
                     .subscribe(this::onGetUserShotsNext,

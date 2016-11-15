@@ -17,6 +17,8 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final int TYPE_GRID = 1;
     private static final int TYPE_LIST = 2;
 
+    private static final int HEADER_POSITION = 0;
+
     private final List<Shot> shotList;
     private Follower follower;
     private boolean isGridMode;
@@ -47,10 +49,10 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((FollowerDetailsHeaderViewHolder) holder).bind(follower);
                 break;
             case TYPE_GRID:
-                ((FollowerDetailsGridViewHolder) holder).bind(shotList.get(position - 1));
+                ((FollowerDetailsGridViewHolder) holder).bind(shotList.get(getShotListPosition(position)));
                 break;
             case TYPE_LIST:
-                ((FollowerDetailsListViewHolder) holder).bind(shotList.get(position - 1));
+                ((FollowerDetailsListViewHolder) holder).bind(shotList.get(getShotListPosition(position)));
                 break;
             default:
                 throw new IllegalArgumentException("There is no item type for holder on this position : " + position);
@@ -59,7 +61,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
+        if (position == HEADER_POSITION) {
             return TYPE_HEADER;
         }
         if (isGridMode) {
@@ -89,5 +91,9 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         final int currentSize = this.shotList.size() + 1;
         this.shotList.addAll(shotList);
         notifyItemRangeChanged(currentSize - 1, shotList.size());
+    }
+
+    private int getShotListPosition(int position) {
+        return follower != null ? position - 1 : position;
     }
 }

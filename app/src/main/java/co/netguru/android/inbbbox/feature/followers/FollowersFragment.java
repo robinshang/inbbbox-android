@@ -25,6 +25,7 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.followers.adapter.BaseFollowersViewHolder;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.di.component.FollowersFragmentComponent;
@@ -34,7 +35,7 @@ import co.netguru.android.inbbbox.utils.TextFormatter;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowersContract.View, FollowersContract.Presenter>
-        implements FollowersContract.View, FollowersAdapter.OnFollowerItemClickListener {
+        implements FollowersContract.View, BaseFollowersViewHolder.OnFollowerClickListener {
 
     public static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final int FOLLOWERS_TO_LOAD_MORE = 5;
@@ -53,11 +54,11 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
     TextView emptyViewText;
 
     @Inject
-    FollowersAdapter adapter;
-    @Inject
     GridLayoutManager gridLayoutManager;
     @Inject
     LinearLayoutManager linearLayoutManager;
+
+    private final FollowersAdapter adapter = new FollowersAdapter(this);
 
     private FollowersFragmentComponent component;
 
@@ -127,7 +128,6 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
     }
 
     private void initRecyclerView() {
-        adapter.setOnFollowerItemClickListener(this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new LoadMoreScrollListener(FOLLOWERS_TO_LOAD_MORE) {
