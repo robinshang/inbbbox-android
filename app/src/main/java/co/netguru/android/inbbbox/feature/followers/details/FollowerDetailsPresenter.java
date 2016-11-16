@@ -71,7 +71,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     public void unFollowUser() {
         final Subscription subscription = followersController.unFollowUser(follower.id())
                 .compose(applyCompletableIoSchedulers())
-                .subscribe(() -> getView().showFollowersList(), throwable -> {
+                .subscribe(getView()::showFollowersList, throwable -> {
                     Timber.e(throwable, "Error while unFollow user");
                     getView().showError(throwable.getMessage());
                 });

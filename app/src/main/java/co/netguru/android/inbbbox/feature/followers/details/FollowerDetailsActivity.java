@@ -16,8 +16,6 @@ import co.netguru.android.inbbbox.feature.common.BaseActivity;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.model.ui.Follower;
 
-import static co.netguru.android.inbbbox.Constants.Request.*;
-
 public class FollowerDetailsActivity extends BaseActivity
         implements FollowerDetailsFragment.OnUnFollowClickListener {
 
@@ -75,7 +73,7 @@ public class FollowerDetailsActivity extends BaseActivity
     @Override
     public void onUnFollowClick() {
         final Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(REQUEST_CODE, REQUEST_REFRESH_FOLLOWER_LIST);
+        intent.putExtra(MainActivity.REQUEST_CODE, MainActivity.REQUEST_REFRESH_FOLLOWER_LIST);
         finish();
         startActivity(intent);
     }

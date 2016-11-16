@@ -47,7 +47,6 @@ import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static butterknife.ButterKnife.findById;
-import static co.netguru.android.inbbbox.Constants.Request.*;
 
 public class MainActivity
         extends BaseMvpActivity<MainViewContract.View,
@@ -56,6 +55,8 @@ public class MainActivity
         ShotsFragment.ShotLikeStatusListener {
 
     private static final int REQUEST_DEFAULT = 0;
+    public static final String REQUEST_CODE = "requestCode";
+    public static final int REQUEST_REFRESH_FOLLOWER_LIST = 101;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -160,7 +161,7 @@ public class MainActivity
                 refreshFollowersFragment();
                 break;
             default:
-                    // no-op
+                throw new IllegalStateException("Intent should contains REQUEST_CODE");
         }
     }
 

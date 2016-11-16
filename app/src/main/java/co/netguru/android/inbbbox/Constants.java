@@ -49,14 +49,4 @@ public final class Constants {
         }
 
     }
-
-    public static class Request {
-
-        public static final String REQUEST_CODE = "requestCode";
-        public static final int REQUEST_REFRESH_FOLLOWER_LIST = 101;
-
-        private Request() {
-            throw new AssertionError();
-        }
-    }
 }
