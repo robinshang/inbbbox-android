@@ -55,5 +55,5 @@
 
     <dimen name="shot_corner_radius">8dp</dimen>
 
-    <dimen name="shot_background_padding">-0.5dp</dimen>
+    <dimen name="shot_background_padding">-1dp</dimen>
 </resources>
