@@ -149,17 +149,12 @@ public class MainActivity
     }
 
     private void showFragmentDetails(int shotId) {
-        // TODO: 15.11.2016 refactor
-//        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG);
-//        if (fragment == null) {
         Fragment fragment = ShotDetailsFragment.newInstance(shotId);
-//        }
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment, TAG)
                 .commit();
         getBottomSheetBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
-//        ShotDetailsFragment.newInstance(12).show(getSupportFragmentManager(), "TEST");
     }
 
     @Override
