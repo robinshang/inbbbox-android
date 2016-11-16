@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/follower_detail_header_item_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/accent"
+    android:layout_marginBottom="@dimen/follower_detail_header_item_margin_bottom">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/follower_detail_user_photo"
+        android:layout_width="@dimen/follower_detail_header_item_photo_size"
+        android:layout_height="@dimen/follower_detail_header_item_photo_size"
+        android:layout_gravity="center"
+        app:civ_border_color="@color/white"
+        app:civ_fill_color="@color/lightGray"
+        app:civ_border_width="@dimen/follower_detail_header_item_photo_border" />
+</FrameLayout>
