@@ -2,7 +2,6 @@ package co.netguru.android.inbbbox.feature.login;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.Button;
@@ -18,9 +17,9 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.LoginComponent;
 import co.netguru.android.inbbbox.di.module.LoginModule;
+import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewDialogFragment;
+import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewListener;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
-import co.netguru.android.inbbbox.view.OauthWebViewDialogFragment;
-import co.netguru.android.inbbbox.view.OauthWebViewListener;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
         implements LoginContract.View, WithComponent<LoginComponent>,
@@ -67,7 +66,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     }
 
     @Override
-    public void handleOauthUrlAndUuid(String url, String stateKey) {
+    public void openAuthWebViewFragment(String url, String stateKey) {
         OauthWebViewDialogFragment.newInstance(url, stateKey)
                 .show(getSupportFragmentManager(), OauthWebViewDialogFragment.TAG);
     }
@@ -104,17 +103,27 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     }
 
     @Override
-    public void redirectUrlCallbackLoaded(Uri uri) {
-        getPresenter().handleOauthLoginResponse(uri);
-    }
-
-    @Override
-    public void stateKeyNotMatching() {
+    public void onOauthStateKeyNotMatching() {
         getPresenter().handleKeysNotMatching();
     }
 
     @Override
-    public void webViewClose() {
+    public void onOauthCodeReceive(@NonNull String receivedCode) {
+        getPresenter().handleOauthCodeReceived(receivedCode);
+    }
+
+    @Override
+    public void onOauthUnknownError() {
+        getPresenter().handleUnknownOauthError();
+    }
+
+    @Override
+    public void onOauthKnownError(@NonNull String oauthErrorMessage) {
+        getPresenter().handleKnownOauthError(oauthErrorMessage);
+    }
+
+    @Override
+    public void onOauthFragmentClose() {
         getPresenter().handleWebViewClose();
     }
 }

@@ -1,13 +1,12 @@
 package co.netguru.android.inbbbox.feature.login;
 
-import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.OauthUrlController;
 import co.netguru.android.inbbbox.controler.TokenController;
@@ -38,7 +37,6 @@ public final class LoginPresenter
         this.errorHandler = apiErrorParser;
         this.userController = userController;
         compositeSubscription = new CompositeSubscription();
-
     }
 
     @Override
@@ -54,18 +52,8 @@ public final class LoginPresenter
                 oauthUrlController.getOauthAuthorizeUrlAndUuidPair()
                         .compose(androidIO())
                         .subscribe(
-                                urlUUIDPair -> getView().handleOauthUrlAndUuid(urlUUIDPair.first, urlUUIDPair.second.toString()),
+                                urlUUIDPair -> getView().openAuthWebViewFragment(urlUUIDPair.first, urlUUIDPair.second.toString()),
                                 this::handleError));
-    }
-
-    @Override
-    public void handleOauthLoginResponse(Uri url) {
-        if (url != null) {
-            Timber.d(url.toString());
-            selectAuthorizationAction(url);
-        } else {
-            Timber.d("url is null");
-        }
     }
 
     @Override
@@ -78,16 +66,19 @@ public final class LoginPresenter
         getView().enableLoginButton();
     }
 
-    private void selectAuthorizationAction(Uri uri) {
-        String code = uri.getQueryParameter(Constants.OAUTH.CODE_KEY);
-        String oauthErrorMessage = uri.getQueryParameter(Constants.OAUTH.ERROR_KEY);
-        if (code != null && !code.isEmpty()) {
-            requestTokenAndLoadUserData(code);
-        } else if (oauthErrorMessage != null && !oauthErrorMessage.isEmpty()) {
-            getView().showApiError(oauthErrorMessage);
-        } else {
-            getView().showInvalidOauthUrlError();
-        }
+    @Override
+    public void handleOauthCodeReceived(@NonNull String receivedCode) {
+        requestTokenAndLoadUserData(receivedCode);
+    }
+
+    @Override
+    public void handleUnknownOauthError() {
+        getView().showInvalidOauthUrlError();
+    }
+
+    @Override
+    public void handleKnownOauthError(@NonNull String oauthErrorMessage) {
+        getView().showApiError(oauthErrorMessage);
     }
 
     private void requestTokenAndLoadUserData(String code) {

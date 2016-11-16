@@ -27,6 +27,8 @@ public interface ApplicationComponent extends BaseComponent {
 
     LoginComponent plus(LoginModule module);
 
+    OauthWebViewDialogFragmentComponent plusOauthWebViewDialogFragmentComponent();
+
     MainActivityComponent plusMainActivityComponent();
 
     SplashScreenComponent plusSplashScreenComponent();

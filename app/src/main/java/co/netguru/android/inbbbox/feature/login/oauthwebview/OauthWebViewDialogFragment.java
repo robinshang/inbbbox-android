@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.view;
+package co.netguru.android.inbbbox.feature.login.oauthwebview;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -16,14 +16,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-import co.netguru.android.inbbbox.BuildConfig;
-import co.netguru.android.inbbbox.Constants;
+import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.feature.common.BaseMvpDialogFragment;
 import timber.log.Timber;
 
-public class OauthWebViewDialogFragment extends DialogFragment {
+public class OauthWebViewDialogFragment extends BaseMvpDialogFragment<OauthWebViewDialogFragmentContract.View, OauthWebViewDialogFragmentContract.Presenter>
+        implements OauthWebViewDialogFragmentContract.View {
 
     public static final String TAG = OauthWebViewDialogFragment.class.getSimpleName();
 
@@ -34,7 +33,6 @@ public class OauthWebViewDialogFragment extends DialogFragment {
     WebView webView;
 
     private OauthWebViewListener callback;
-    private Unbinder unbinder;
 
     public static OauthWebViewDialogFragment newInstance(String url, String stateKey) {
         Bundle args = new Bundle();
@@ -61,19 +59,60 @@ public class OauthWebViewDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dialog_oauth_web_view, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        webView.setWebViewClient(getWebViewClient());
-        webView.loadUrl(getArguments().getString(ARG_URL));
-        webView.getSettings().setUseWideViewPort(true);
-        return view;
+        return inflater.inflate(R.layout.fragment_dialog_oauth_web_view, container, false);
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-        callback.webViewClose();
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        webView.setWebViewClient(getWebViewClient());
+        webView.getSettings().setUseWideViewPort(true);
+
+        String url = getArguments().getString(ARG_URL);
+        String stateKey = getArguments().getString(ARG_STATE_KEY);
+        getPresenter().handleData(url, stateKey);
+    }
+
+    @NonNull
+    @Override
+    public OauthWebViewDialogFragmentContract.Presenter createPresenter() {
+        return App.getAppComponent(getContext()).plusOauthWebViewDialogFragmentComponent()
+                .getOauthWebViewDialogFragmentPresenter();
+    }
+
+    @Override
+    public void loadUrl(String url) {
+        webView.loadUrl(url);
+    }
+
+    @Override
+    public void finishWithError(String oauthErrorMessage) {
+        callback.onOauthKnownError(oauthErrorMessage);
+        dismiss();
+    }
+
+    @Override
+    public void finishWithCodeReturn(String receivedCode) {
+        callback.onOauthCodeReceive(receivedCode);
+        dismiss();
+    }
+
+    @Override
+    public void finishWithStateKeyNotMatchingError() {
+        callback.onOauthStateKeyNotMatching();
+        dismiss();
+    }
+
+    @Override
+    public void finishWithUnknownError() {
+        callback.onOauthUnknownError();
+        dismiss();
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        callback.onOauthFragmentClose();
     }
 
     @NonNull
@@ -94,16 +133,7 @@ public class OauthWebViewDialogFragment extends DialogFragment {
             }
 
             private boolean handleUri(final Uri uri) {
-                if (uri.toString().startsWith(BuildConfig.DRIBBBLE_OAUTH_REDIRECT)) {
-                    if (uri.getQueryParameter(Constants.OAUTH.STATE_KEY).equals(getArguments().getString(ARG_STATE_KEY))) {
-                        callback.redirectUrlCallbackLoaded(uri);
-                    } else {
-                        callback.stateKeyNotMatching();
-                    }
-                    dismiss();
-                    return true;
-                }
-                return false;
+                return getPresenter().shouldOverrideUrlLoading(uri);
             }
         };
     }
