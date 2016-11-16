@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
@@ -33,8 +34,8 @@ import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.di.component.MainActivityComponent;
+import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.likes.LikesFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
@@ -90,8 +91,8 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializePager();
-        initializeDrawer();
         initializeToolbar();
+        initializeDrawer();
         getPresenter().prepareUserData();
     }
 
@@ -189,6 +190,8 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDefaultDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -213,7 +216,19 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
             return true;
         });
 
+        ActionBarDrawerToggle mDrawerToggle = getDrawerToggle();
+        drawerLayout.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerToggle.syncState();
+
         initializeDrawerReminder();
+    }
+
+    private ActionBarDrawerToggle getDrawerToggle() {
+        return new ActionBarDrawerToggle(this,
+                drawerLayout,
+                R.string.drawer_open,
+                R.string.drawer_close);
     }
 
     private void initializeDrawerReminder() {
