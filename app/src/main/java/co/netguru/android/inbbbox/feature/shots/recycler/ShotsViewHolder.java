@@ -1,12 +1,11 @@
 package co.netguru.android.inbbbox.feature.shots.recycler;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -39,25 +38,25 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     @BindView(R.id.iv_comment)
     ImageView commentImageView;
 
-    private ShotsAdapter.OnItemActionListener onShotActionListener = ShotsAdapter.OnItemActionListener.NULL;
+    private final ShotSwipeListener shotSwipeListener;
+
     private Shot shot;
 
-    ShotsViewHolder(View itemView, ShotsAdapter.OnItemActionListener onLeftSwipeListener) {
+    ShotsViewHolder(View itemView, @NonNull ShotSwipeListener shotSwipeListener) {
         super(itemView);
-        this.onShotActionListener = onLeftSwipeListener == null
-                ? ShotsAdapter.OnItemActionListener.NULL : onLeftSwipeListener;
+        this.shotSwipeListener = shotSwipeListener;
+        longSwipeLayout.setItemSwipeListener(this);
     }
 
     @OnClick(R.id.iv_shot_image)
     void onShotClick(){
-        onShotActionListener.onItemClicked(getAdapterPosition());
+        shotSwipeListener.onShotSelected(shot);
     }
 
     @Override
     public void bind(Shot shot) {
         this.shot = shot;
         setupImage(shot);
-        longSwipeLayout.setItemSwipeListener(this);
     }
 
     private void setupImage(Shot shot) {
@@ -69,7 +68,6 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
                 .load(shot.normalImageUrl())
                 .placeholder(R.drawable.shot_placeholder)
                 .thumbnail(ThumbnailUtil.getThumbnailRequest(context, shot.thumbnailUrl()))
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .animate(android.R.anim.fade_in)
                 .into(shotImageView);
 
@@ -78,21 +76,17 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
 
     @Override
     public void onLeftSwipe() {
-        onShotActionListener.onItemLeftSwipe(getAdapterPosition());
-        // TODO: 03.11.2016 remove toasts or change to propare info after all action implemented
-        Toast.makeText(longSwipeLayout.getContext(), "Left swipie", Toast.LENGTH_SHORT).show();
+        shotSwipeListener.onShotLikeSwipe(shot);
     }
 
     @Override
     public void onLeftLongSwipe() {
-        // TODO: 03.11.2016 remove toasts or change to propare info after all action implemented
-        Toast.makeText(longSwipeLayout.getContext(), "Left LONG swipie", Toast.LENGTH_SHORT).show();
+        shotSwipeListener.onAddShotToBucketSwipe(shot);
     }
 
     @Override
     public void onRightSwipe() {
-        // TODO: 03.11.2016 remove toasts or change to propare info after all action implemented
-        Toast.makeText(longSwipeLayout.getContext(), "Right swipie", Toast.LENGTH_SHORT).show();
+        shotSwipeListener.onCommentShotSwipe(shot);
     }
 
     @Override
@@ -112,4 +106,3 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
         commentImageView.setActivated(isActive);
     }
 }
-

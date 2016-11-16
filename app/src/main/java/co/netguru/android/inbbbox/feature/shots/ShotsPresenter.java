@@ -23,7 +23,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private final ErrorMessageController errorMessageController;
     private final LikeShotController likeShotController;
     private final CompositeSubscription subscriptions;
-    private List<Shot> shotItems;
 
     @Inject
     ShotsPresenter(ShotsController shotsController, ErrorMessageController errorMessageController,
@@ -51,8 +50,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     private void showRetrievedItems(List<Shot> shotsList) {
         Timber.d("Shots received!");
-        shotItems = shotsList;
-        getView().showItems(shotItems);
+        getView().showItems(shotsList);
         getView().hideLoadingIndicator();
     }
 
@@ -62,7 +60,9 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         getView().showError(errorMessageController.getError(exception));
     }
 
-    private void likeShot(Shot shot) {
+    @Override
+    public void likeShot(Shot shot) {
+        getView().closeFabMenu();
         if (!shot.isLiked()) {
             final Subscription subscription = likeShotController.likeShot(shot.id())
                     .compose(androidIO())
@@ -95,19 +95,12 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     }
 
     @Override
-    public void likeShot(int shotPosition) {
-        likeShot(shotItems.get(shotPosition));
-        getView().closeFabMenu();
-    }
-
-    @Override
     public void loadData() {
         getShotsData();
     }
 
     @Override
-    public void showShotDetails(int itemPosition) {
-        Shot selectedShot = shotItems.get(itemPosition);
-        getView().showShotDetails(selectedShot.id());
+    public void showShotDetails(Shot shot) {
+        getView().showShotDetails(shot.id());
     }
 }

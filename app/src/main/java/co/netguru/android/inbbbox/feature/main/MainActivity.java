@@ -51,7 +51,7 @@ public class MainActivity
         extends BaseMvpActivity<MainViewContract.View,
         MainViewContract.Presenter>
         implements MainViewContract.View,
-        ShotsFragment.ShotStatusListener {
+        ShotsFragment.ShotLikeStatusListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
