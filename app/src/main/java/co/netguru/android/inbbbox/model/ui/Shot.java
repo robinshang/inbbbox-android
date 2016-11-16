@@ -8,7 +8,7 @@ import com.google.auto.value.AutoValue;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 
 @AutoValue
-public abstract class Shot implements Parcelable {
+public abstract class Shot implements Parcelable, ShotImage {
 
     public abstract Integer id();
 
@@ -29,6 +29,8 @@ public abstract class Shot implements Parcelable {
 
     public abstract boolean isLiked();
 
+    public abstract boolean isGif();
+
     @AutoValue.Builder
     public abstract static class Builder {
         public abstract Shot.Builder id(Integer id);
@@ -44,6 +46,8 @@ public abstract class Shot implements Parcelable {
         public abstract Shot.Builder thumbnailUrl(String thumbnailUrl);
 
         public abstract Shot.Builder isLiked(boolean isLiked);
+
+        public abstract Shot.Builder isGif(boolean isGif);
 
         public abstract Shot build();
     }
@@ -61,6 +65,7 @@ public abstract class Shot implements Parcelable {
                 .normalImageUrl(shotEntity.getImage().normalUrl())
                 .thumbnailUrl(shotEntity.getImage().teaserUrl())
                 .isLiked(false)
+                .isGif(shotEntity.getAnimated())
                 .build();
     }
 }

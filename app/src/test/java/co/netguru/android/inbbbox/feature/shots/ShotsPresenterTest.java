@@ -16,7 +16,6 @@ import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.LikedShotsController;
 import co.netguru.android.inbbbox.controler.ShotsController;
-import co.netguru.android.inbbbox.model.ui.LikedShot;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
@@ -62,10 +61,10 @@ public class ShotsPresenterTest {
                 .id(exampleId)
                 .title("test")
                 .isLiked(false)
+                .isGif(false)
                 .build();
         shotsList.add(exampleShot);
 
-        LikedShot likedShot = new LikedShot(99, "test");
         when(shotsControllerMock.getShots()).thenReturn(Observable.just(shotsList));
     }
 
@@ -114,6 +113,7 @@ public class ShotsPresenterTest {
                 .id(exampleId)
                 .title("test")
                 .isLiked(true)
+                .isGif(false)
                 .build();
 
         presenter.likeShot(0);
