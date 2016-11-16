@@ -32,6 +32,9 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     @BindView(R.id.iv_bucket_action)
     ImageView bucketImageView;
 
+    @BindView(R.id.gif_label_textView)
+    View gifLabelView;
+
     @BindView(R.id.iv_comment)
     ImageView commentImageView;
 
@@ -57,7 +60,13 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
         backgroundImageView.setRadius(radius);
         shotImageView.setRadius(radius);
 
-        ShotLoadingManager.loadShotImageView(context, shotImageView, shot);
+        ShotLoadingManager.loadListShot(context, shotImageView, shot);
+
+        if (shot.isGif()) {
+            gifLabelView.setVisibility(View.VISIBLE);
+        } else {
+            gifLabelView.setVisibility(View.GONE);
+        }
 
         likeIconImageView.setActivated(shot.isLiked());
     }

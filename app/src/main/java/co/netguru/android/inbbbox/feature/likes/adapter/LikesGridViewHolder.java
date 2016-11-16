@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.feature.likes.adapter;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.BindView;
@@ -15,6 +16,9 @@ public class LikesGridViewHolder extends BaseViewHolder<LikedShot> {
     @BindView(R.id.like_item_image_view)
     RoundedCornersImageView imageView;
 
+    @BindView(R.id.gif_label_textView)
+    View gifLabelView;
+
     LikesGridViewHolder(ViewGroup parent) {
         super(LayoutInflater.from(parent.getContext()).inflate(R.layout.like_item_list_view, parent, false));
     }
@@ -22,7 +26,12 @@ public class LikesGridViewHolder extends BaseViewHolder<LikedShot> {
     @Override
     public void bind(LikedShot item) {
         final float radius = itemView.getResources().getDimension(R.dimen.shot_corner_radius);
+        if (item.isGif()) {
+            gifLabelView.setVisibility(View.VISIBLE);
+        } else {
+            gifLabelView.setVisibility(View.GONE);
+        }
         imageView.setRadius(radius);
-        ShotLoadingManager.loadShotImageView(itemView.getContext(), imageView, item);
+        ShotLoadingManager.loadListShot(itemView.getContext(), imageView, item);
     }
 }

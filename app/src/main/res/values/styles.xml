@@ -104,4 +104,24 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="GifLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">@string/gif</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:background">@drawable/shape_gif_label_background</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingRight">6dp</item>
+        <item name="android:top">8dp</item>
+        <item name="android:bottom">8dp</item>
+        <item name="android:alpha">0.7</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_margin">@dimen/activity_vertical_margin</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <string name="gif">gif</string>
 </resources>

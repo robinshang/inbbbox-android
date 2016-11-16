@@ -16,44 +16,41 @@ public class ShotLoadingManager {
         throw new AssertionError();
     }
 
-    static DrawableTypeRequest<String> getThumbnailRequest(Context context, String url) {
-        return Glide.with(context)
-                .load(url);
-
-    }
-
-    public static void loadShotImageView(Context context, ImageView target, ShotImage shot) {
-        target.setImageResource(R.drawable.shot_placeholder);
-
-        DrawableTypeRequest<String> typeRequest = getDrawableTypeRequest(context,
-                getImageUrl(shot),
-                shot.isGif());
-
-        typeRequest
-                .thumbnail(ShotLoadingManager.getThumbnailRequest(context, shot.thumbnailUrl()));
-        executeRequest(typeRequest, target);
-    }
-
-    private static DrawableTypeRequest<String> getDrawableTypeRequest(Context context, String url, boolean isGif) {
-        DrawableTypeRequest<String> typeRequest = Glide.with(context)
-                .load(url);
-        if (isGif) {
-            typeRequest.asGif();
-        } else {
-            typeRequest.asBitmap();
-        }
-        return typeRequest;
-    }
-
-    public static String getImageUrl(ShotImage shot) {
+    private static String getImageUrl(ShotImage shot) {
         return (shot.hdpiImageUrl() != null && !shot.hdpiImageUrl().isEmpty())
                 ? shot.hdpiImageUrl() : shot.normalImageUrl();
     }
 
+    private static DrawableTypeRequest<String> getThumbnailRequest(Context context, String url) {
+        return Glide.with(context)
+                .load(url);
+    }
 
-    private static void executeRequest(DrawableTypeRequest<String> typeRequest, ImageView target) {
-        typeRequest.diskCacheStrategy(DiskCacheStrategy.RESULT)
+    public static void loadListShot(Context context, ImageView target, ShotImage shot) {
+        target.setImageResource(R.drawable.shot_placeholder);
+
+        Glide.with(context)
+                .load(shot.normalImageUrl())
+                .thumbnail(ShotLoadingManager.getThumbnailRequest(context, shot.thumbnailUrl()))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .animate(android.R.anim.fade_in)
                 .into(target);
     }
+
+    public static void loadMainViewShot(Context context, ImageView target, ShotImage shot) {
+        target.setImageResource(R.drawable.shot_placeholder);
+
+        DrawableTypeRequest<String> typeRequest = Glide.with(context)
+                .load(getImageUrl(shot));
+
+        if (shot.isGif()) {
+            typeRequest.asGif();
+        }
+        typeRequest
+                .thumbnail(ShotLoadingManager.getThumbnailRequest(context, shot.thumbnailUrl()))
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .animate(android.R.anim.fade_in)
+                .into(target);
+    }
+
 }
