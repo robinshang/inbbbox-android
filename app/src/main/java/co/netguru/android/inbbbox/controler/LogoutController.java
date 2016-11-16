@@ -25,6 +25,7 @@ public class LogoutController {
     }
 
     public Completable performLogout() {
+        // TODO: 16.11.2016 need to clear webview cache
         return Completable.merge(tokenPrefsRepository.clear(),
                 userPrefsRepository.clear(),
                 settingsPrefsRepository.clear());
