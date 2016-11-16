@@ -112,6 +112,22 @@
         <item name="android:windowMinWidthMajor">95%</item>
         <item name="android:windowMinWidthMinor">95%</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
+
+    <style name="GifLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">@string/gif</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/shape_gif_label_background</item>
+        <item name="android:paddingLeft">@dimen/gif_label_side_padding</item>
+        <item name="android:paddingRight">@dimen/gif_label_side_padding</item>
+        <item name="android:top">@dimen/gif_label_top_bottom_padding</item>
+        <item name="android:bottom">@dimen/gif_label_top_bottom_padding</item>
+        <item name="android:alpha">0.7</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_margin">@dimen/activity_vertical_margin</item>
+        <item name="android:visibility">gone</item>
     </style>
 
 </resources>

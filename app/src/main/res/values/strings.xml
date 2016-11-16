@@ -45,4 +45,5 @@
     <string name="follow">FOLLOW</string>
     <string name="add_to_bucket">ADD TO BUCKET</string>
     <string name="comment">Comment</string>
+    <string name="gif">gif</string>
 </resources>
