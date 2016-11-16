@@ -198,7 +198,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
             return true;
         });
 
-        ActionBarDrawerToggle mDrawerToggle = getDrawerToggle();
+        ActionBarDrawerToggle mDrawerToggle = createDrawerToggle();
         drawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerToggle.syncState();
@@ -206,7 +206,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         initializeDrawerReminder();
     }
 
-    private ActionBarDrawerToggle getDrawerToggle() {
+    private ActionBarDrawerToggle createDrawerToggle() {
         return new ActionBarDrawerToggle(this,
                 drawerLayout,
                 R.string.drawer_open,
