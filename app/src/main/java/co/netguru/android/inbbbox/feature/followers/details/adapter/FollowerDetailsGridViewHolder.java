@@ -3,13 +3,12 @@ package co.netguru.android.inbbbox.feature.followers.details.adapter;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-
 import butterknife.BindDimen;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.utils.ShotLoadingManager;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
 public class FollowerDetailsGridViewHolder extends BaseViewHolder<Shot> {
@@ -27,10 +26,6 @@ public class FollowerDetailsGridViewHolder extends BaseViewHolder<Shot> {
     @Override
     public void bind(Shot item) {
         imageView.setRadius(radius);
-        Glide.with(itemView.getContext())
-                .load(item.normalImageUrl())
-                .placeholder(R.drawable.shot_placeholder)
-                .animate(android.R.anim.fade_in)
-                .into(imageView);
+        ShotLoadingManager.loadShotImageView(itemView.getContext(), imageView, item);
     }
 }

@@ -6,12 +6,12 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.api.ShotsApi;
 import co.netguru.android.inbbbox.model.api.FilteredShotsParams;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.localrepository.StreamSourceSettings;
 import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
 import rx.Observable;
 
@@ -115,7 +115,7 @@ public class ShotsController {
         }
 
         if (streamSourceSettings.isDebut() && !wasHandled) {
-            builder.list(Constants.API.LIST_PARAM_DEBUTS_PARAM);
+            builder.list("animated");
         }
         return builder.build();
     }

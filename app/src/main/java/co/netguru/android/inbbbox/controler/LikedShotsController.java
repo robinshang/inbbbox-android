@@ -20,6 +20,11 @@ public class LikedShotsController {
     public Observable<LikedShot> getLikedShots(int pageNumber, int pageCount) {
         return likesApi.getLikedShots(pageNumber, pageCount)
                 .flatMap(Observable::from)
-                .map(LikedShot::new);
+                .map(likedShotEntity -> {
+                    LikedShot likedShot = new LikedShot(likedShotEntity);
+                    likedShot.setHiDpiUrl(likedShotEntity.shot().getImage().hiDpiUrl());
+                    likedShot.setThumbnailUrl(likedShotEntity.shot().getImage().teaserUrl());
+                    return likedShot;
+                });
     }
 }

@@ -3,12 +3,11 @@ package co.netguru.android.inbbbox.feature.likes.adapter;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 import co.netguru.android.inbbbox.model.ui.LikedShot;
+import co.netguru.android.inbbbox.utils.ShotLoadingManager;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
 public class LikesGridViewHolder extends BaseViewHolder<LikedShot> {
@@ -24,10 +23,6 @@ public class LikesGridViewHolder extends BaseViewHolder<LikedShot> {
     public void bind(LikedShot item) {
         final float radius = itemView.getResources().getDimension(R.dimen.shot_corner_radius);
         imageView.setRadius(radius);
-        Glide.with(itemView.getContext())
-                .load(item.getImageUrl())
-                .placeholder(R.drawable.shot_placeholder)
-                .animate(android.R.anim.fade_in)
-                .into(imageView);
+        ShotLoadingManager.loadShotImageView(itemView.getContext(), imageView, item);
     }
 }

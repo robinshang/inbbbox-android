@@ -5,14 +5,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.utils.ThumbnailUtil;
+import co.netguru.android.inbbbox.utils.ShotLoadingManager;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 import co.netguru.android.inbbbox.view.swipingpanel.ItemSwipeListener;
 import co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout;
@@ -59,13 +56,8 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
         final Context context = itemView.getContext();
         backgroundImageView.setRadius(radius);
         shotImageView.setRadius(radius);
-        Glide.with(context)
-                .load(shot.normalImageUrl())
-                .placeholder(R.drawable.shot_placeholder)
-                .thumbnail(ThumbnailUtil.getThumbnailRequest(context, shot.thumbnailUrl()))
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                .animate(android.R.anim.fade_in)
-                .into(shotImageView);
+
+        ShotLoadingManager.loadShotImageView(context, shotImageView, shot);
 
         likeIconImageView.setActivated(shot.isLiked());
     }
