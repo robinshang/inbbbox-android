@@ -90,6 +90,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                 .hdpiImageUrl(shot.hdpiImageUrl())
                 .normalImageUrl(shot.normalImageUrl())
                 .thumbnailUrl(shot.thumbnailUrl())
+                .isGif(shot.isGif())
                 .isLiked(true)
                 .build();
     }

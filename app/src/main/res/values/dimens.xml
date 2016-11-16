@@ -55,6 +55,9 @@
 
     <dimen name="shot_corner_radius">8dp</dimen>
 
+    <dimen name="shot_background_padding">-1dp</dimen>
+    <dimen name="gif_label_top_bottom_padding">8dp</dimen>
+    <dimen name="gif_label_side_padding">6dp</dimen>
     <dimen name="shot_background_padding">-0.5dp</dimen>
     <dimen name="shot_details_top_padding">32dp</dimen>
     <dimen name="details_user_avatar_size">48dp</dimen>

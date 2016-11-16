@@ -70,13 +70,25 @@
 
         </LinearLayout>
 
-        <co.netguru.android.inbbbox.view.RoundedCornersImageView
-            android:id="@+id/iv_shot_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true"
-            android:padding="@dimen/shot_background_padding"/>
+        <RelativeLayout android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+            <co.netguru.android.inbbbox.view.RoundedCornersImageView
+                android:id="@+id/iv_shot_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:padding="@dimen/shot_background_padding"/>
+
+            <TextView
+                android:id="@+id/gif_label_textView"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:visibility="gone"
+                style="@style/GifLabel"/>
+
+        </RelativeLayout>
         <!-- Surface View End -->
     </co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout>
 </RelativeLayout>
