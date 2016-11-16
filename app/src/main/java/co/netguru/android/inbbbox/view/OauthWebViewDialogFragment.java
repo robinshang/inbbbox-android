@@ -1,35 +1,47 @@
 package co.netguru.android.inbbbox.view;
 
 import android.annotation.TargetApi;
-import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import co.netguru.android.inbbbox.BuildConfig;
 import co.netguru.android.inbbbox.Constants;
+import co.netguru.android.inbbbox.R;
 import timber.log.Timber;
 
 public class OauthWebViewDialogFragment extends DialogFragment {
 
     public static final String TAG = OauthWebViewDialogFragment.class.getSimpleName();
+
     private static final String ARG_URL = "arg_url";
-    private static final String ARG_STATE_KEY = "arg_state__key";
+    private static final String ARG_STATE_KEY = "arg_state_key";
+
+    @BindView(R.id.web_view)
+    WebView webView;
 
     private OauthWebViewListener callback;
-    private FocusableWebView webView;
+    private Unbinder unbinder;
 
     public static OauthWebViewDialogFragment newInstance(String url, String stateKey) {
         Bundle args = new Bundle();
         args.putString(ARG_URL, url);
         args.putString(ARG_STATE_KEY, stateKey);
         OauthWebViewDialogFragment dialogFragment = new OauthWebViewDialogFragment();
+        dialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BigDialog);
         dialogFragment.setArguments(args);
         return dialogFragment;
     }
@@ -46,27 +58,21 @@ public class OauthWebViewDialogFragment extends DialogFragment {
         }
     }
 
-    @NonNull
+    @Nullable
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-        webView = new FocusableWebView(getActivity());
-
-        dialogBuilder.setView(webView);
-
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_dialog_oauth_web_view, container, false);
+        unbinder = ButterKnife.bind(this, view);
         webView.setWebViewClient(getWebViewClient());
         webView.loadUrl(getArguments().getString(ARG_URL));
         webView.getSettings().setUseWideViewPort(true);
-
-        return dialogBuilder.create();
+        return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (webView != null) {
-            webView.destroy();
-        }
+        unbinder.unbind();
         callback.webViewClose();
     }
 
@@ -88,7 +94,7 @@ public class OauthWebViewDialogFragment extends DialogFragment {
             }
 
             private boolean handleUri(final Uri uri) {
-                if (uri.toString().startsWith(Constants.OAUTH.REDIRECT_URI_STRING)) {
+                if (uri.toString().startsWith(BuildConfig.DRIBBBLE_OAUTH_REDIRECT)) {
                     if (uri.getQueryParameter(Constants.OAUTH.STATE_KEY).equals(getArguments().getString(ARG_STATE_KEY))) {
                         callback.redirectUrlCallbackLoaded(uri);
                     } else {

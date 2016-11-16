@@ -20,7 +20,6 @@ public final class Constants {
         public static final String CODE_KEY = "code";
         public static final String ERROR_KEY = "error";
         public static final String INBBBOX_SCOPE = "public+write+comment";
-        public static final String REDIRECT_URI_STRING = "inbbbox";
 
         private OAUTH() {
             throw new AssertionError();
