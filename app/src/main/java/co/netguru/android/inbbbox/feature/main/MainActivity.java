@@ -46,12 +46,15 @@ import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static butterknife.ButterKnife.findById;
+import static co.netguru.android.inbbbox.Constants.Request.*;
 
 public class MainActivity
         extends BaseMvpActivity<MainViewContract.View,
         MainViewContract.Presenter>
         implements MainViewContract.View,
         ShotsFragment.ShotLikeStatusListener {
+
+    private static final int REQUEST_DEFAULT = 0;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -145,6 +148,18 @@ public class MainActivity
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        switch (intent.getIntExtra(REQUEST_CODE, REQUEST_DEFAULT)) {
+            case REQUEST_REFRESH_FOLLOWER_LIST:
+                break;
+            default:
+                    // no-op
+        }
     }
 
     private void initializePager() {
