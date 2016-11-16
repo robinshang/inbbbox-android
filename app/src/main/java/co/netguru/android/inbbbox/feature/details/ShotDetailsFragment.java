@@ -2,7 +2,7 @@ package co.netguru.android.inbbbox.feature.details;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -29,7 +29,7 @@ import co.netguru.android.inbbbox.model.ui.ShotDetails;
 import co.netguru.android.inbbbox.utils.ThumbnailUtil;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
-public class ShotDetailsFragment extends BottomSheetDialogFragment {
+public class ShotDetailsFragment extends Fragment {
 
     private static final String ARG_SHOT_ID = "arg:shot_id";
     private ShotDetailsComponent component;

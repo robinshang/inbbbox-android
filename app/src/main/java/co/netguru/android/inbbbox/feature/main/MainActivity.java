@@ -142,7 +142,6 @@ public class MainActivity
         switch (item.getItemId()) {
             case R.id.action_settings:
                 drawerLayout.openDrawer(GravityCompat.START);
-                ShotDetailsFragment.newInstance(1).show(getSupportFragmentManager(), TAG);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
