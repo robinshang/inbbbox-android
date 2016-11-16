@@ -5,7 +5,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.ShotImage;
@@ -32,7 +31,6 @@ public class ShotLoadingManager {
         Glide.with(context)
                 .load(shot.normalImageUrl())
                 .thumbnail(ShotLoadingManager.getThumbnailRequest(context, shot.thumbnailUrl()))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .animate(android.R.anim.fade_in)
                 .into(target);
     }
@@ -48,7 +46,6 @@ public class ShotLoadingManager {
         }
         typeRequest
                 .thumbnail(ShotLoadingManager.getThumbnailRequest(context, shot.thumbnailUrl()))
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .animate(android.R.anim.fade_in)
                 .into(target);
     }
