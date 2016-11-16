@@ -17,7 +17,7 @@ import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.model.ui.Follower;
 
 public class FollowerDetailsActivity extends BaseActivity
-        implements FollowerDetailsFragment.OnUnFollowClickListener {
+        implements FollowerDetailsFragment.OnUnFollowCompletedListener {
 
     private static final String FOLLOWER_KEY = "follower_key";
 
@@ -71,10 +71,8 @@ public class FollowerDetailsActivity extends BaseActivity
     }
 
     @Override
-    public void onUnFollowClick() {
-        final Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.REQUEST_CODE, MainActivity.REQUEST_REFRESH_FOLLOWER_LIST);
+    public void unFollowCompleted() {
         finish();
-        startActivity(intent);
+        MainActivity.startActivityWithRequest(this, MainActivity.REQUEST_REFRESH_FOLLOWER_LIST);
     }
 }

@@ -50,7 +50,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     @Inject
     LinearLayoutManager linearLayoutManager;
 
-    private OnUnFollowClickListener onUnFollowClickListener;
+    private OnUnFollowCompletedListener onUnFollowCompletedListener;
     private FollowerDetailsFragmentComponent component;
 
     public static FollowerDetailsFragment newInstance(Follower follower) {
@@ -66,10 +66,10 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            onUnFollowClickListener = (OnUnFollowClickListener) context;
+            onUnFollowCompletedListener = (OnUnFollowCompletedListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnUnFollowClickListener");
+                    + " must implement OnUnFollowCompletedListener");
         }
         component = App.getAppComponent(getContext())
                 .plus(new FollowerDetailsFragmentModule());
@@ -128,7 +128,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
 
     @Override
     public void showFollowersList() {
-        onUnFollowClickListener.onUnFollowClick();
+        onUnFollowCompletedListener.unFollowCompleted();
     }
 
     @Override
@@ -157,8 +157,8 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     }
 
     @FunctionalInterface
-    public interface OnUnFollowClickListener {
+    public interface OnUnFollowCompletedListener {
 
-        void onUnFollowClick();
+        void unFollowCompleted();
     }
 }

@@ -54,9 +54,9 @@ public class MainActivity
         implements MainViewContract.View,
         ShotsFragment.ShotLikeStatusListener {
 
-    private static final int REQUEST_DEFAULT = 0;
-    public static final String REQUEST_CODE = "requestCode";
     public static final int REQUEST_REFRESH_FOLLOWER_LIST = 101;
+    private static final int REQUEST_DEFAULT = 0;
+    private static final String REQUEST_CODE = "requestCode";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -95,6 +95,12 @@ public class MainActivity
 
     public static void startActivity(Context context) {
         final Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void startActivityWithRequest(Context context, int requestCode) {
+        final Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(REQUEST_CODE, requestCode);
         context.startActivity(intent);
     }
 
