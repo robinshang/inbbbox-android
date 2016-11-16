@@ -112,6 +112,7 @@
         <item name="android:windowMinWidthMajor">95%</item>
         <item name="android:windowMinWidthMinor">95%</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
 
     <style name="GifLabel">
         <item name="android:layout_width">wrap_content</item>
