@@ -12,10 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import javax.inject.Inject;
 
+import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,6 +31,7 @@ import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
 public class ShotDetailsFragment extends Fragment {
 
+    public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_SHOT_ID = "arg:shot_id";
     private ShotDetailsComponent component;
 
@@ -42,6 +43,9 @@ public class ShotDetailsFragment extends Fragment {
 
     @BindView(R.id.parallax_image_view)
     RoundedCornersImageView parallaxImageView;
+
+    @BindDimen(R.dimen.shot_corner_radius)
+    int radius;
 
     @Inject
     ShotDetailsAdapter adapter;
@@ -116,18 +120,20 @@ public class ShotDetailsFragment extends Fragment {
         shotRecyclerView.setAdapter(adapter);
     }
 
+    // TODO: 16.11.2016 it will be public when MVP will be implemented in task IA-146
     public void showItems(ShotDetails details) {
         adapter.setDetails(details);
     }
 
+    // TODO: 16.11.2016 it will be public when MVP will be implemented in task IA-146
     public void showMainImage(String imageUrl, String thumbnailUrl) {
-        parallaxImageView.setRadius(getResources().getDimension(R.dimen.shot_corner_radius));
+        parallaxImageView.setRadius(radius);
         parallaxImageView.disableRadiusForBottomEdge(true);
+        // TODO: 16.11.2016 enable gif displaying in IA-146
         Glide.with(getContext())
                 .load(imageUrl)
                 .placeholder(R.drawable.shape_rounded_top_corners)
                 .thumbnail(ThumbnailUtil.getThumbnailRequest(getContext(), thumbnailUrl))
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .animate(android.R.anim.fade_in)
                 .into(parallaxImageView);
     }

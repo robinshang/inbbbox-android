@@ -14,11 +14,6 @@ import co.netguru.android.inbbbox.R;
 
 class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
 
-    private static final String APP_NAME_KEY = "${where}";
-    private static final String DATE_KEY = "${when}";
-    private boolean isLiked;
-    private boolean isBucketed;
-
     @BindView(R.id.details_user_imageView)
     ImageView userAvatarImageView;
 
@@ -49,8 +44,13 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     @BindView(R.id.details_bucket_imageView)
     View bucketImageView;
 
-    ShotDetailsUserInfoViewHolder(View view) {
-        super(view);
+    private static final String APP_NAME_KEY = "${where}";
+    private static final String DATE_KEY = "${when}";
+    private boolean isLiked;
+    private boolean isBucketed;
+
+    ShotDetailsUserInfoViewHolder(View view, DetailsViewActionCallback actionCallback) {
+        super(view, actionCallback);
     }
 
     @OnClick(R.id.details_likes_imageView)
@@ -106,7 +106,6 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
         shotDateInfoTextView.setText(infoPattern);
     }
 
-
     private void showAuthorInfo(String author, String company) {
         authorTextView.setText(author);
         companyTextView.setText(company);
@@ -118,7 +117,6 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
                 .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.ic_ball)
-                .fitCenter()
                 .into(userAvatarImageView);
 
     }

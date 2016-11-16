@@ -125,17 +125,16 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="DetailsActionButtonLabels">
+    <style name="DetailsActionButtonLabels" parent="Font12">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/actionButtonLabelColor</item>
     </style>
 
     <style name="Divider">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_height">@dimen/divider_height</item>
         <item name="android:background">@color/dividerColor</item>
     </style>
 
@@ -145,15 +144,4 @@
         <item name="android:paddingTop">@dimen/shot_details_top_padding</item>
         <item name="android:paddingBottom">@dimen/activity_horizontal_margin</item>
     </style>
-
-    <style name="Toolbar" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">#ff0000</item>
-        <item name="android:colorBackground">#00ff00</item>
-        <item name="titleTextAppearance">@style/Toolbar.TitleText</item>
-    </style>
-
-    <style name="Toolbar.TitleText">
-        <item name="android:textColor">@android:color/white</item>
-    </style>
-
 </resources>

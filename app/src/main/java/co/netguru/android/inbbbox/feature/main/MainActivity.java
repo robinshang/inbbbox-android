@@ -53,8 +53,6 @@ public class MainActivity
         implements MainViewContract.View,
         ShotsFragment.ShotStatusListener {
 
-    private static final String TAG = ShotDetailsFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.main_tab_layout)
@@ -112,11 +110,7 @@ public class MainActivity
     }
 
     private boolean isBottomSheetOpen() {
-        boolean isOpen = false;
-        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            isOpen = true;
-        }
-        return isOpen;
+        return bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED;
     }
 
     private void initComponent() {
@@ -152,7 +146,7 @@ public class MainActivity
         Fragment fragment = ShotDetailsFragment.newInstance(shotId);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, fragment, TAG)
+                .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
                 .commit();
         getBottomSheetBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
     }
@@ -377,7 +371,7 @@ public class MainActivity
         showFragmentDetails(id);
     }
 
-    public BottomSheetBehavior getBottomSheetBehavior() {
+    private BottomSheetBehavior getBottomSheetBehavior() {
         return bottomSheetBehavior;
     }
 

@@ -162,7 +162,7 @@ public class ShotsFragment
     }
 
     @Override
-    public void showShotDetails(Integer id) {
+    public void showShotDetails(int id) {
         shotStatusListener.showShotDetails(id);
     }
 

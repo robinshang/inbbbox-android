@@ -5,7 +5,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
@@ -13,8 +12,6 @@ import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
 
 class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
-
-    private final LocalTimeFormatter localTimeFormatter;
 
     @BindView(R.id.comment_author_textView)
     TextView authorTextView;
@@ -28,8 +25,12 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
     @BindView(R.id.comment_avatar_imageView)
     ImageView authorAvatarImageView;
 
-    ShotDetailsCommentViewHolder(View view, LocalTimeFormatter localTimeFormatter) {
-        super(view);
+    private final LocalTimeFormatter localTimeFormatter;
+
+    ShotDetailsCommentViewHolder(View view,
+                                 LocalTimeFormatter localTimeFormatter,
+                                 DetailsViewActionCallback actionCallback) {
+        super(view, actionCallback);
         this.localTimeFormatter = localTimeFormatter;
     }
 
@@ -50,7 +51,6 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
         Glide.with(itemView.getContext())
                 .load(authorAvatarUrl)
                 .fitCenter()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(authorAvatarImageView);
 
     }

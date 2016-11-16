@@ -13,7 +13,7 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     static final int STATIC_ITEMS_COUNT = 2;
 
     private final LocalTimeFormatter localTimeFormatter;
-    private DetailsViewActionCallback actionCallback;
+    private final DetailsViewActionCallback actionCallback;
     private ShotDetails details;
 
     @Inject
@@ -25,9 +25,8 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
 
     @Override
     public ShotDetailsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ShotDetailsViewHolder viewHolder = ShotDetailsViewFactory.getViewHolder(viewType, parent, localTimeFormatter);
-        viewHolder.setActionCallbackListener(actionCallback);
-        return viewHolder;
+        return  ShotDetailsViewFactory
+                .getViewHolder(viewType, parent, localTimeFormatter, actionCallback);
     }
 
     @Override

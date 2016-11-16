@@ -19,7 +19,8 @@ public class ShotDetailsViewFactory {
 
     static ShotDetailsViewHolder getViewHolder(int viewType,
                                                ViewGroup parent,
-                                               LocalTimeFormatter localTimeFormatter) {
+                                               LocalTimeFormatter localTimeFormatter,
+                                               DetailsViewActionCallback actionCallback) {
         View view;
         ShotDetailsViewHolder viewHolder;
         switch (viewType) {
@@ -27,19 +28,19 @@ public class ShotDetailsViewFactory {
                 view = LayoutInflater
                         .from(parent.getContext())
                         .inflate(R.layout.item_shot_info_user_info_layout, parent, false);
-                viewHolder = new ShotDetailsUserInfoViewHolder(view);
+                viewHolder = new ShotDetailsUserInfoViewHolder(view, actionCallback);
                 break;
             case DESCRIPTION_VIEW_TYPE:
                 view = LayoutInflater
                         .from(parent.getContext())
                         .inflate(R.layout.item_shot_info_description_layout, parent, false);
-                viewHolder = new ShotDetailsDescriptionViewHolder(view);
+                viewHolder = new ShotDetailsDescriptionViewHolder(view,actionCallback);
                 break;
             default:
                 view = LayoutInflater
                         .from(parent.getContext())
                         .inflate(R.layout.item_shot_comment_layout, parent, false);
-                viewHolder = new ShotDetailsCommentViewHolder(view, localTimeFormatter);
+                viewHolder = new ShotDetailsCommentViewHolder(view, localTimeFormatter, actionCallback);
                 break;
         }
         return viewHolder;

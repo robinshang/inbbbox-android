@@ -11,8 +11,8 @@ class ShotDetailsDescriptionViewHolder extends ShotDetailsViewHolder {
     @BindView(R.id.shot_details_description_textView)
     TextView descriptionTextView;
 
-    ShotDetailsDescriptionViewHolder(View view) {
-        super(view);
+    ShotDetailsDescriptionViewHolder(View view, DetailsViewActionCallback actionCallback) {
+        super(view, actionCallback);
     }
 
     @Override

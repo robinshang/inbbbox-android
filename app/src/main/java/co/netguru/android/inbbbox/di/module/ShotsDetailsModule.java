@@ -10,7 +10,7 @@ import dagger.Provides;
 @FragmentScope
 @Module
 public class ShotsDetailsModule {
-    private DetailsViewActionCallback callback;
+    private final DetailsViewActionCallback callback;
 
     public ShotsDetailsModule(DetailsViewActionCallback callback) {
 

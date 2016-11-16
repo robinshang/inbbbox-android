@@ -93,41 +93,31 @@
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:layout_gravity="center"
-                      android:layout_marginTop="@dimen/details_action_buttons_margin_top"
                       android:gravity="center"
+                      android:layout_marginTop="@dimen/details_action_buttons_margin_top"
                       android:orientation="horizontal">
 
-            <LinearLayout android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_margin="@dimen/shot_details_actions_margin"
-                          android:orientation="horizontal">
-                <ImageView
-                    android:id="@+id/details_likes_imageView"
-                    android:layout_width="@dimen/details_info_action_icon_size"
-                    android:layout_height="@dimen/details_info_action_icon_size"
-                    android:src="@drawable/selector_shot_details_like_action"/>
+            <ImageView
+                android:id="@+id/details_likes_imageView"
+                android:layout_width="@dimen/details_info_action_icon_size"
+                android:layout_height="@dimen/details_info_action_icon_size"
+                android:src="@drawable/selector_shot_details_like_action"/>
 
-                <TextView
-                    android:id="@+id/details_likes_count_textView"
-                    style="@style/DetailsActionButtonLabels"/>
-            </LinearLayout>
+            <TextView
+                android:id="@+id/details_likes_count_textView"
+                style="@style/DetailsActionButtonLabels"/>
 
-            <LinearLayout android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_margin="@dimen/shot_details_actions_margin"
-                          android:orientation="horizontal">
-                <ImageView
-                    android:id="@+id/details_bucket_imageView"
-                    android:layout_width="@dimen/details_info_action_icon_size"
-                    android:layout_height="@dimen/details_info_action_icon_size"
-                    android:src="@drawable/selector_shot_details_bucket_action"/>
+            <ImageView
+                android:id="@+id/details_bucket_imageView"
+                android:layout_width="@dimen/details_info_action_icon_size"
+                android:layout_height="@dimen/details_info_action_icon_size"
+                android:src="@drawable/selector_shot_details_bucket_action"/>
 
-                <TextView
-                    android:id="@+id/details_buckets_count_textView"
-                    style="@style/DetailsActionButtonLabels"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
+            <TextView
+                android:id="@+id/details_buckets_count_textView"
+                style="@style/DetailsActionButtonLabels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </LinearLayout>
 

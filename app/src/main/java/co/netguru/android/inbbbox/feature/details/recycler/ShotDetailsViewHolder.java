@@ -10,8 +10,9 @@ public abstract class ShotDetailsViewHolder extends BaseViewHolder<ShotDetails> 
     protected ShotDetails item;
     protected DetailsViewActionCallback actionCallbackListener;
 
-    ShotDetailsViewHolder(View view) {
+    ShotDetailsViewHolder(View view, DetailsViewActionCallback actionCallbackListener) {
         super(view);
+        this.actionCallbackListener = actionCallbackListener;
     }
 
     @Override
@@ -23,7 +24,4 @@ public abstract class ShotDetailsViewHolder extends BaseViewHolder<ShotDetails> 
 
     protected abstract void handleBinding();
 
-    public void setActionCallbackListener(DetailsViewActionCallback actionCallbackListener) {
-        this.actionCallbackListener = actionCallbackListener;
-    }
 }
