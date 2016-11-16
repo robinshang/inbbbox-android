@@ -69,12 +69,12 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
         OnItemActionListener NULL = new OnItemActionListener() {
             @Override
             public void onItemLeftSwipe(int itemPosition) {
-
+                //no-op
             }
 
             @Override
             public void onItemClicked(int itemPosition) {
-
+                //no-op
             }
         };
 

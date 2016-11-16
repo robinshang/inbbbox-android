@@ -11,16 +11,15 @@ public class ShotDetailsViewFactory {
 
     private static final int USER_INFO_VIEW_TYPE = 0;
     private static final int DESCRIPTION_VIEW_TYPE = 1;
-    private static final int COMMENT_VIEW_TYPE = 2;
 
     private ShotDetailsViewFactory() {
         throw new AssertionError();
     }
 
 
-    public static ShotDetailsViewHolder getViewHolder(int viewType,
-                                                      ViewGroup parent,
-                                                      LocalTimeFormatter localTimeFormatter) {
+    static ShotDetailsViewHolder getViewHolder(int viewType,
+                                               ViewGroup parent,
+                                               LocalTimeFormatter localTimeFormatter) {
         View view;
         ShotDetailsViewHolder viewHolder;
         switch (viewType) {

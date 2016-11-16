@@ -7,8 +7,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import org.threeten.bp.LocalDateTime;
-
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.Comment;
@@ -30,8 +28,6 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
     @BindView(R.id.comment_avatar_imageView)
     ImageView authorAvatarImageView;
 
-    private Comment currentComment;
-
     ShotDetailsCommentViewHolder(View view, LocalTimeFormatter localTimeFormatter) {
         super(view);
         this.localTimeFormatter = localTimeFormatter;
@@ -39,14 +35,15 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
 
     @Override
     protected void handleBinding() {
-        this.currentComment = item.comments()
+        Comment currentComment = item.comments()
                 .get(getAdapterPosition() - ShotDetailsAdapter.STATIC_ITEMS_COUNT);
 
         authorTextView.setText(currentComment.author());
         commentTextTextView.setText(currentComment.text());
 
-        showDate(currentComment.date());
         showAvatar(currentComment.authorAvatarUrl());
+        dateTextView.setText(localTimeFormatter
+                .getTimeLabel(itemView.getContext(), currentComment.date()));
     }
 
     private void showAvatar(String authorAvatarUrl) {
@@ -56,9 +53,5 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(authorAvatarImageView);
 
-    }
-
-    private void showDate(LocalDateTime date) {
-        dateTextView.setText(localTimeFormatter.getTimeLabel(itemView.getContext(), date));
     }
 }

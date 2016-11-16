@@ -43,11 +43,6 @@ public class ShotDetailsFragment extends Fragment {
     @BindView(R.id.parallax_image_view)
     RoundedCornersImageView parallaxImageView;
 
-    @OnClick(R.id.details_close_imageView)
-    void onCloseClick() {
-        getActivity().onBackPressed();
-    }
-
     @Inject
     ShotDetailsAdapter adapter;
 
@@ -76,6 +71,11 @@ public class ShotDetailsFragment extends Fragment {
             Toast.makeText(getContext(), "bucket: " + isLikedBucket, Toast.LENGTH_SHORT).show();
         }
     };
+
+    @OnClick(R.id.details_close_imageView)
+    void onCloseClick() {
+        getActivity().onBackPressed();
+    }
 
     public static ShotDetailsFragment newInstance(int shotId) {
         Bundle args = new Bundle();
