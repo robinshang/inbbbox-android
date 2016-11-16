@@ -54,25 +54,25 @@ public class ShotDetailsFragment extends Fragment {
     private DetailsViewActionCallback actionsCallback = new DetailsViewActionCallback() {
         @Override
         public void onCompanySelected(String companyProfileUrl) {
-            // TODO: 15.11.2016
+            // TODO: 15.11.2016 not in scope of this task
             Toast.makeText(getContext(), "company: " + companyProfileUrl, Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onUserSelected(int userId) {
-            // TODO: 15.11.2016
+            // TODO: 15.11.2016 not in scope of this task
             Toast.makeText(getContext(), "userId " + userId, Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onShotLikeAction(int shotId, boolean isLiked) {
-            // TODO: 15.11.2016
+            // TODO: 15.11.2016 not in scope of this task
             Toast.makeText(getContext(), "like: " + isLiked, Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onShotBucket(int shotId, boolean isLikedBucket) {
-            // TODO: 15.11.2016
+            // TODO: 15.11.2016 not in scope of this task
             Toast.makeText(getContext(), "bucket: " + isLikedBucket, Toast.LENGTH_SHORT).show();
         }
     };
