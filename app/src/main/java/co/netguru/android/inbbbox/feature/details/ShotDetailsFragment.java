@@ -26,7 +26,6 @@ import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.ShotDetails;
-import co.netguru.android.inbbbox.utils.ThumbnailUtil;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
 public class ShotDetailsFragment extends Fragment {
@@ -133,7 +132,6 @@ public class ShotDetailsFragment extends Fragment {
         Glide.with(getContext())
                 .load(imageUrl)
                 .placeholder(R.drawable.shape_rounded_top_corners)
-                .thumbnail(ThumbnailUtil.getThumbnailRequest(getContext(), thumbnailUrl))
                 .animate(android.R.anim.fade_in)
                 .into(parallaxImageView);
     }
