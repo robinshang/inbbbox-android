@@ -38,6 +38,7 @@ import co.netguru.android.inbbbox.di.component.MainActivityComponent;
 import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
+import co.netguru.android.inbbbox.feature.followers.FollowersFragment;
 import co.netguru.android.inbbbox.feature.likes.LikesFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
@@ -156,6 +157,7 @@ public class MainActivity
 
         switch (intent.getIntExtra(REQUEST_CODE, REQUEST_DEFAULT)) {
             case REQUEST_REFRESH_FOLLOWER_LIST:
+                refreshFollowersFragment();
                 break;
             default:
                     // no-op
@@ -387,4 +389,13 @@ public class MainActivity
         return bottomSheetBehavior;
     }
 
+    private void refreshFollowersFragment() {
+        final List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (final Fragment fragment : fragments) {
+            if (fragment instanceof FollowersFragment) {
+                ((FollowersFragment) fragment).refreshFragmentData();
+                break;
+            }
+        }
+    }
 }
