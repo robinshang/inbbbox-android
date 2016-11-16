@@ -7,6 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
+import co.netguru.android.inbbbox.controler.FollowersController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -15,6 +16,7 @@ import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
+import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletableIoSchedulers;
 
 @FragmentScope
 public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<FollowerDetailsContract.View>
@@ -23,6 +25,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     private static final int SHOT_PAGE_COUNT = 30;
 
     private final UserShotsController userShotsController;
+    private final FollowersController followersController;
     private final CompositeSubscription subscriptions;
 
     private Follower follower;
@@ -30,8 +33,9 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     private int pageNumber = 1;
 
     @Inject
-    FollowerDetailsPresenter(UserShotsController userShotsController) {
+    FollowerDetailsPresenter(UserShotsController userShotsController, FollowersController followersController) {
         this.userShotsController = userShotsController;
+        this.followersController = followersController;
         subscriptions = new CompositeSubscription();
     }
 
@@ -61,6 +65,17 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
                             throwable -> Timber.e(throwable, "Error while getting more user shots"));
             subscriptions.add(subscription);
         }
+    }
+
+    @Override
+    public void unFollowUser() {
+        final Subscription subscription = followersController.unFollowUser(follower.id())
+                .compose(applyCompletableIoSchedulers())
+                .subscribe(() -> getView().showFollowersList(), throwable -> {
+                    Timber.e(throwable, "Error while unFollow user");
+                    getView().showError(throwable.getMessage());
+                });
+        subscriptions.add(subscription);
     }
 
     private void onGetUserShotsNext(List<Shot> shotList) {

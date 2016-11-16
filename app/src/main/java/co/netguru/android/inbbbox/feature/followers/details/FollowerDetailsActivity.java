@@ -16,7 +16,8 @@ import co.netguru.android.inbbbox.feature.common.BaseActivity;
 import co.netguru.android.inbbbox.model.ui.Follower;
 
 
-public class FollowerDetailsActivity extends BaseActivity {
+public class FollowerDetailsActivity extends BaseActivity
+        implements FollowerDetailsFragment.OnUnFollowClickListener {
 
     private static final String FOLLOWER_KEY = "follower_key";
 
@@ -55,9 +56,6 @@ public class FollowerDetailsActivity extends BaseActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            case R.id.action_follow:
-                // TODO: 14.11.2016 Add on action follow clicked
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -70,5 +68,10 @@ public class FollowerDetailsActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @Override
+    public void onUnFollowClick() {
+        // TODO: 16.11.2016 Send intent to main activity
     }
 }
