@@ -31,6 +31,8 @@
         </activity>
         <activity android:name=".feature.main.MainActivity" />
 
+        <activity android:name=".feature.followers.details.FollowerDetailsActivity" />
+
         <meta-data
             android:name="net.hockeyapp.android.appIdentifier"
             android:value="${HOCKEYAPP_APP_ID}"/>

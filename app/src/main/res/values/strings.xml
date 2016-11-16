@@ -19,6 +19,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_list_view">List view</string>
     <string name="action_grid_view">Grid view</string>
+    <string name='action_follow'>Follow</string>
 
     <string name="drawer_group_notification">Notifications</string>
     <string name="drawer_enable_reminder">Enable daily reminder</string>
