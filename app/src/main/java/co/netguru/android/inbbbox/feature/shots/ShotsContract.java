@@ -20,11 +20,15 @@ interface ShotsContract {
         void changeShotLikeStatus(Shot shot);
 
         void closeFabMenu();
+
+        void showShotDetails(int shotId);
     }
 
     interface Presenter extends MvpPresenter<View> {
-        void likeShot(int shotPosition);
+        void likeShot(Shot shot);
 
         void loadData();
+
+        void showShotDetails(Shot shot);
     }
 }

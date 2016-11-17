@@ -1,11 +1,14 @@
 package co.netguru.android.inbbbox.feature.shots.recycler;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -38,20 +41,25 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     @BindView(R.id.iv_comment)
     ImageView commentImageView;
 
-    private OnShotLeftSwipeListener onLeftSwipeListener = OnShotLeftSwipeListener.NULL;
+    private final ShotSwipeListener shotSwipeListener;
+
     private Shot shot;
 
-    ShotsViewHolder(View itemView, OnShotLeftSwipeListener onLeftSwipeListener) {
+    ShotsViewHolder(View itemView, @NonNull ShotSwipeListener shotSwipeListener) {
         super(itemView);
-        this.onLeftSwipeListener = onLeftSwipeListener == null
-                ? OnShotLeftSwipeListener.NULL : onLeftSwipeListener;
+        this.shotSwipeListener = shotSwipeListener;
+        longSwipeLayout.setItemSwipeListener(this);
+    }
+
+    @OnClick(R.id.iv_shot_image)
+    void onShotClick(){
+        shotSwipeListener.onShotSelected(shot);
     }
 
     @Override
     public void bind(Shot shot) {
         this.shot = shot;
         setupImage(shot);
-        longSwipeLayout.setItemSwipeListener(this);
     }
 
     private void setupImage(Shot shot) {
@@ -73,21 +81,17 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
 
     @Override
     public void onLeftSwipe() {
-        onLeftSwipeListener.onLeftSwipe(getAdapterPosition());
-        // TODO: 03.11.2016 remove toasts or change to propare info after all action implemented
-        Toast.makeText(longSwipeLayout.getContext(), "Left swipie", Toast.LENGTH_SHORT).show();
+        shotSwipeListener.onShotLikeSwipe(shot);
     }
 
     @Override
     public void onLeftLongSwipe() {
-        // TODO: 03.11.2016 remove toasts or change to propare info after all action implemented
-        Toast.makeText(longSwipeLayout.getContext(), "Left LONG swipie", Toast.LENGTH_SHORT).show();
+        shotSwipeListener.onAddShotToBucketSwipe(shot);
     }
 
     @Override
     public void onRightSwipe() {
-        // TODO: 03.11.2016 remove toasts or change to propare info after all action implemented
-        Toast.makeText(longSwipeLayout.getContext(), "Right swipie", Toast.LENGTH_SHORT).show();
+        shotSwipeListener.onCommentShotSwipe(shot);
     }
 
     @Override
@@ -106,16 +110,4 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     public void onRightSwipeActivate(boolean isActive) {
         commentImageView.setActivated(isActive);
     }
-
-    @FunctionalInterface
-    interface OnShotLeftSwipeListener {
-
-        OnShotLeftSwipeListener NULL = position -> {
-        };
-
-        void onLeftSwipe(int position);
-    }
-
-
 }
-
