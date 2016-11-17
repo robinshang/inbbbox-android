@@ -16,8 +16,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -220,6 +220,8 @@ public class MainActivity
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDefaultDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -244,7 +246,19 @@ public class MainActivity
             return true;
         });
 
+        ActionBarDrawerToggle mDrawerToggle = createDrawerToggle();
+        drawerLayout.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerToggle.syncState();
+
         initializeDrawerReminder();
+    }
+
+    private ActionBarDrawerToggle createDrawerToggle() {
+        return new ActionBarDrawerToggle(this,
+                drawerLayout,
+                R.string.drawer_open,
+                R.string.drawer_close);
     }
 
     private void initializeDrawerReminder() {

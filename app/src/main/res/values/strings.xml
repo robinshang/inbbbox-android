@@ -45,6 +45,8 @@
     <string name="add_to_bucket">ADD TO BUCKET</string>
     <string name="comment">Comment</string>
     <string name="gif">gif</string>
+    <string name="drawer_open">Open drawer</string>
+    <string name="drawer_close">Close drawer</string>
     <string name="by_label">"by "</string>
     <string name="for_label">" for "</string>
     <string name="in_label">"in "</string>
