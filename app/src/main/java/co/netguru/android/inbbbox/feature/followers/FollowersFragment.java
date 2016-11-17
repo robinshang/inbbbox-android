@@ -23,14 +23,13 @@ import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-
-import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
-import co.netguru.android.inbbbox.feature.followers.adapter.BaseFollowersViewHolder;
-import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
-import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.di.component.FollowersFragmentComponent;
 import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
+import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.followers.adapter.BaseFollowersViewHolder;
 import co.netguru.android.inbbbox.feature.followers.adapter.FollowersAdapter;
+import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
+import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.utils.TextFormatter;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 

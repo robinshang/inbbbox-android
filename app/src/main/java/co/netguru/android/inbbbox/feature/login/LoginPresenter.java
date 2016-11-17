@@ -1,17 +1,16 @@
 package co.netguru.android.inbbbox.feature.login;
 
-import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
+import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.OauthUrlController;
 import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.UserController;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
-import co.netguru.android.inbbbox.Constants;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -28,9 +27,6 @@ public final class LoginPresenter
     private final UserController userController;
     private final CompositeSubscription compositeSubscription;
 
-    private String code;
-    private String oauthErrorMessage;
-
     @Inject
     LoginPresenter(OauthUrlController oauthUrlController,
                    TokenController apiTokenController,
@@ -41,7 +37,6 @@ public final class LoginPresenter
         this.errorHandler = apiErrorParser;
         this.userController = userController;
         compositeSubscription = new CompositeSubscription();
-
     }
 
     @Override
@@ -52,48 +47,44 @@ public final class LoginPresenter
 
     @Override
     public void showLoginView() {
+        getView().disableLoginButton();
         compositeSubscription.add(
-                oauthUrlController.getOauthAuthorizeUrlString()
+                oauthUrlController.getOauthAuthorizeUrlAndUuidPair()
                         .compose(androidIO())
                         .subscribe(
-                                getView()::handleOauthUrl,
+                                urlUUIDPair -> getView().openAuthWebViewFragment(urlUUIDPair.first, urlUUIDPair.second.toString()),
                                 this::handleError));
     }
 
     @Override
-    public void handleOauthLoginResponse(Uri url) {
-        if (url != null) {
-            Timber.d(url.toString());
-            getView().closeLoginDialog();
-            unpackParamsFromUri(url);
-            selectAuthorizationAction();
-        } else {
-            Timber.d("url is null");
-        }
+    public void handleKeysNotMatching() {
+        getView().showWrongKeyError();
     }
 
-    private void selectAuthorizationAction() {
-        if (code != null && !code.isEmpty()) {
-            requestNewToken();
-        } else if (oauthErrorMessage != null && !oauthErrorMessage.isEmpty()) {
-            getView().showApiError(oauthErrorMessage);
-        } else {
-            getView().showInvalidOauthUrlError();
-        }
+    @Override
+    public void handleWebViewClose() {
+        getView().enableLoginButton();
     }
 
-    private void requestNewToken() {
+    @Override
+    public void handleOauthCodeReceived(@NonNull String receivedCode) {
+        requestTokenAndLoadUserData(receivedCode);
+    }
+
+    @Override
+    public void handleUnknownOauthError() {
+        getView().showInvalidOauthUrlError();
+    }
+
+    @Override
+    public void handleKnownOauthError(@NonNull String oauthErrorMessage) {
+        getView().showApiError(oauthErrorMessage);
+    }
+
+    private void requestTokenAndLoadUserData(String code) {
         compositeSubscription.add(
                 apiTokenController.requestNewToken(code)
-                        .compose(androidIO())
-                        .subscribe(token -> getUser(),
-                                this::handleError
-                        ));
-    }
-
-    private void getUser() {
-        compositeSubscription.add(
-                userController.requestUser()
+                        .flatMap(token -> userController.requestUser())
                         .compose(androidIO())
                         .subscribe(user -> getView().showNextScreen(),
                                 this::handleError));
@@ -102,11 +93,6 @@ public final class LoginPresenter
     private void handleError(Throwable throwable) {
         Timber.e(throwable, "Error while getting user");
         getView().showApiError(errorHandler.getError(throwable));
-    }
-
-    private void unpackParamsFromUri(Uri uri) {
-        code = uri.getQueryParameter(Constants.OAUTH.CODE_KEY);
-        oauthErrorMessage = uri.getQueryParameter(Constants.OAUTH.ERROR_KEY);
     }
 
 }

@@ -19,6 +19,7 @@ public final class Constants {
         public static final String CLIENT_SECRET_KEY = "client_secret";
         public static final String CODE_KEY = "code";
         public static final String ERROR_KEY = "error";
+        public static final String INBBBOX_SCOPE = "public+write+comment";
 
         private OAUTH() {
             throw new AssertionError();

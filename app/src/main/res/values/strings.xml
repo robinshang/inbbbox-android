@@ -9,6 +9,7 @@
     <string name="undefined_api_error">Unknown server error</string>
     <string name="invalid_user_error">Invalid user</string>
     <string name="invalid_outh_url">Invalid oauth url</string>
+    <string name="wrong_oauth_state_key">Something went wrong while logging in, try again</string>
 
     <string name="tab_shots_title">Shots</string>
     <string name="tab_likes_title">Likes</string>
