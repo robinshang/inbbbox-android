@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import rx.Completable;
 import rx.Observable;
 
 public interface LikesApi {
@@ -17,5 +18,5 @@ public interface LikesApi {
     Observable<List<LikedShotEntity>> getLikedShots(@Query("page") int pageNumber, @Query("per_page") int pageCount);
 
     @POST("shots/{id}/like")
-    Observable<Response<ResponseBody>> likeShot(@Path("id") long id);
+    Completable likeShot(@Path("id") long id);
 }
