@@ -6,7 +6,7 @@ public interface DetailsViewActionCallback {
 
     void onUserSelected(int userId);
 
-    void onShotLikeAction(int shotId, boolean isLiked);
+    void onShotLikeAction(long shotId, boolean isLiked);
 
-    void onShotBucket(int shotId, boolean isLikedBucket);
+    void onShotBucket(long shotId, boolean isLikedBucket);
 }

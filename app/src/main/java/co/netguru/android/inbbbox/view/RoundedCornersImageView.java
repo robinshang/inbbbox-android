@@ -50,5 +50,4 @@ public class RoundedCornersImageView extends ImageView {
     public void disableRadiusForBottomEdge(boolean disable) {
         this.isBottomEdgeRoundingDisbled = disable;
     }
-
 }

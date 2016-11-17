@@ -170,7 +170,7 @@ public class ShotsFragment
 
     @Override
     public void onAddShotToBucketSwipe(Shot shot) {
-
+        // TODO: 17.11.2016 not in range of this task
     }
 
     @Override
@@ -194,5 +194,4 @@ public class ShotsFragment
     public void hideLoadingIndicator() {
         swipeRefreshLayout.setRefreshing(false);
     }
-
 }

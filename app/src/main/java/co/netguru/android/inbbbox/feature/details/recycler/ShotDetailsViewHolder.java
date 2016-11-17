@@ -5,10 +5,10 @@ import android.view.View;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 import co.netguru.android.inbbbox.model.ui.ShotDetails;
 
-public abstract class ShotDetailsViewHolder extends BaseViewHolder<ShotDetails> {
+abstract class ShotDetailsViewHolder extends BaseViewHolder<ShotDetails> {
 
+    protected final DetailsViewActionCallback actionCallbackListener;
     protected ShotDetails item;
-    protected DetailsViewActionCallback actionCallbackListener;
 
     ShotDetailsViewHolder(View view, DetailsViewActionCallback actionCallbackListener) {
         super(view);
@@ -23,5 +23,4 @@ public abstract class ShotDetailsViewHolder extends BaseViewHolder<ShotDetails> 
     }
 
     protected abstract void handleBinding();
-
 }

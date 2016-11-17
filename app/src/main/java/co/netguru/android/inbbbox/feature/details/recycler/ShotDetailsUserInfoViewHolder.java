@@ -5,7 +5,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -115,9 +114,7 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
         Glide.with(itemView.getContext())
                 .load(url)
                 .fitCenter()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.ic_ball)
                 .into(userAvatarImageView);
-
     }
 }

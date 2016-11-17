@@ -11,7 +11,7 @@ import java.util.List;
 
 @AutoValue
 public abstract class ShotDetails {
-    public abstract Integer id();
+    public abstract long id();
 
     public abstract String title();
 
@@ -47,7 +47,7 @@ public abstract class ShotDetails {
     @AutoValue.Builder
     public abstract static class Builder {
 
-        public abstract ShotDetails.Builder id(Integer id);
+        public abstract ShotDetails.Builder id(long id);
 
         public abstract ShotDetails.Builder title(String title);
 
