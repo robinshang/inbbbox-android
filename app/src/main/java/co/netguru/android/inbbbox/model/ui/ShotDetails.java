@@ -8,6 +8,8 @@ import com.google.gson.TypeAdapter;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.model.api.ShotEntity;
+
 
 @AutoValue
 public abstract class ShotDetails {
@@ -43,6 +45,28 @@ public abstract class ShotDetails {
     public abstract boolean isBucketed();
 
     public abstract boolean isLiked();
+
+    public static ShotDetails createDetails(ShotEntity shotEntity, List<Comment> comments) {
+        return ShotDetails.builder()
+                .id(shotEntity.getId())
+                .authorId(shotEntity.getUser().id())
+                .authorName(shotEntity.getUser().name())
+                .title(shotEntity.getTitle())
+                .description(shotEntity.getDescription())
+                // TODO: 17.11.2016
+                .appName("???")
+                .comments(comments)
+                .companyName(shotEntity.getTeam().getName())
+                .userAvatarUrl(shotEntity.getTeam().getAvatarUrl())
+                .bucketCount(shotEntity.getBucketsCount())
+                .likesCount(shotEntity.getLikesCount())
+                // TODO: 17.11.2016
+                .isBucketed(false)
+                .isLiked(false)
+                .companyProfileUrl(shotEntity.getTeam().getTeamShotsUrl())
+                .authorUrl(shotEntity.getUser().htmlUrl())
+                .build();
+    }
 
     @AutoValue.Builder
     public abstract static class Builder {

@@ -7,12 +7,16 @@ import co.netguru.android.inbbbox.api.BucketApi;
 import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.api.LikesApi;
 import co.netguru.android.inbbbox.api.MockAuthorizeApi;
+import co.netguru.android.inbbbox.api.MockCommentsApi;
+import co.netguru.android.inbbbox.api.MockShotDetailsApi;
 import co.netguru.android.inbbbox.api.MockShotsApi;
 import co.netguru.android.inbbbox.api.MockedBucketApi;
 import co.netguru.android.inbbbox.api.MockedFollowersApi;
 
 import co.netguru.android.inbbbox.api.MockedLikesApi;
 import co.netguru.android.inbbbox.api.MockedUserApi;
+import co.netguru.android.inbbbox.api.ShotCommentsApi;
+import co.netguru.android.inbbbox.api.ShotDetailsApi;
 import co.netguru.android.inbbbox.api.ShotsApi;
 import co.netguru.android.inbbbox.api.UserApi;
 
@@ -47,8 +51,19 @@ public class ApiModule {
     FollowersApi provideFollowersApi() {
         return new MockedFollowersApi();
     }
+
     @Provides
     BucketApi provideBucketApi() {
         return new MockedBucketApi();
+    }
+
+    @Provides
+    ShotDetailsApi provideShotDetailsApi() {
+        return new MockShotDetailsApi();
+    }
+
+    @Provides
+    ShotCommentsApi provideShotCommentsApi() {
+        return new MockCommentsApi();
     }
 }

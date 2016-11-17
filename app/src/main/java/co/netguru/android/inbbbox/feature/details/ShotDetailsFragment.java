@@ -82,9 +82,9 @@ public class ShotDetailsFragment
         getActivity().onBackPressed();
     }
 
-    public static ShotDetailsFragment newInstance(int shotId) {
+    public static ShotDetailsFragment newInstance(long shotId) {
         Bundle args = new Bundle();
-        args.putInt(ARG_SHOT_ID, shotId);
+        args.putLong(ARG_SHOT_ID, shotId);
         ShotDetailsFragment fragment = new ShotDetailsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -100,7 +100,9 @@ public class ShotDetailsFragment
     }
 
     private void initComponent() {
-        component = App.getAppComponent(getContext()).plus(new ShotsDetailsModule(actionsCallback));
+        long shotId = getArguments().getLong(ARG_SHOT_ID);
+        component = App.getAppComponent(getContext())
+                .plus(new ShotsDetailsModule(shotId, actionsCallback));
         component.inject(this);
     }
 
