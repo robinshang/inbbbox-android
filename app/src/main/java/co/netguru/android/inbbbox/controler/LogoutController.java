@@ -7,27 +7,33 @@ import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
 import rx.Completable;
 
+import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletableIoSchedulers;
+
 public class LogoutController {
 
 
     private TokenPrefsRepository tokenPrefsRepository;
     private UserPrefsRepository userPrefsRepository;
     private SettingsPrefsRepository settingsPrefsRepository;
+    private CacheController cacheController;
 
     @Inject
     public LogoutController(TokenPrefsRepository tokenPrefsRepository,
                             UserPrefsRepository userPrefsRepository,
-                            SettingsPrefsRepository settingsPrefsRepository) {
+                            SettingsPrefsRepository settingsPrefsRepository,
+                            CacheController cacheController) {
 
         this.tokenPrefsRepository = tokenPrefsRepository;
         this.userPrefsRepository = userPrefsRepository;
         this.settingsPrefsRepository = settingsPrefsRepository;
+        this.cacheController = cacheController;
     }
 
     public Completable performLogout() {
-        // TODO: 16.11.2016 need to clear webview cache
         return Completable.merge(tokenPrefsRepository.clear(),
                 userPrefsRepository.clear(),
-                settingsPrefsRepository.clear());
+                settingsPrefsRepository.clear(),
+                cacheController.clearCache())
+                .compose(applyCompletableIoSchedulers());
     }
 }
