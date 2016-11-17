@@ -18,6 +18,8 @@ interface FollowersContract {
         void hideEmptyLikesInfo();
 
         void showEmptyLikesInfo();
+
+        void showFollowersLoadingInfo();
     }
 
     interface Presenter extends MvpPresenter<View> {
