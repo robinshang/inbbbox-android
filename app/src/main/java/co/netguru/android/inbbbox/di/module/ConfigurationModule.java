@@ -10,6 +10,8 @@ import javax.inject.Singleton;
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.api.DateTimeConverter;
 import co.netguru.android.inbbbox.api.RequestInterceptor;
+import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.LogoutController;
 import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import dagger.Module;
 import dagger.Provides;
@@ -32,8 +34,12 @@ public class ConfigurationModule {
     }
 
     @Provides
-    RequestInterceptor providesRequestInterceptor(TokenPrefsRepository tokenPrefsRepository) {
-        return new RequestInterceptor(tokenPrefsRepository);
+    RequestInterceptor providesRequestInterceptor(TokenPrefsRepository tokenPrefsRepository,
+                                                  LogoutController logoutController,
+                                                  ErrorMessageController messageController) {
+        return new RequestInterceptor(logoutController,
+                messageController,
+                tokenPrefsRepository);
     }
 
     @Provides

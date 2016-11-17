@@ -14,11 +14,17 @@ interface FollowerDetailsContract {
         void showFollowerData(Follower follower);
 
         void showMoreUserShots(List<Shot> shotList);
+
+        void showFollowersList();
+
+        void showError(String message);
     }
 
     interface Presenter extends MvpPresenter<View> {
         void followerDataReceived(Follower follower);
 
         void getMoreUserShotsFromServer();
+
+        void unFollowUser();
     }
 }
