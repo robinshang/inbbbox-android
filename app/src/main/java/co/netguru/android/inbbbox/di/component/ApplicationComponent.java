@@ -14,6 +14,7 @@ import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.di.module.LocalRepositoryModule;
 import co.netguru.android.inbbbox.di.module.LoginModule;
+import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
 import dagger.Component;
 
@@ -39,6 +40,8 @@ public interface ApplicationComponent extends BaseComponent {
     FollowersFragmentComponent plus(FollowersFragmentModule module);
 
     FollowerDetailsFragmentComponent plus(FollowerDetailsFragmentModule module);
+
+    ShotDetailsComponent plus(ShotsDetailsModule module);
 
     BucketsFragmentComponent inject();
 
