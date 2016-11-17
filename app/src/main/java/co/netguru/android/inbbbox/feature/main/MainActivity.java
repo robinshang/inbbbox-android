@@ -258,7 +258,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
 
     @Override
     public void showLoginActivity() {
-        LoginActivity.startActivity(this, message);
+        LoginActivity.startActivity(this);
         finish();
     }
 

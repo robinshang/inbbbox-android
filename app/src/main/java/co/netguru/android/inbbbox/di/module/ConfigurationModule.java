@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.di.module;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -7,10 +9,12 @@ import org.threeten.bp.LocalDateTime;
 
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.api.RequestInterceptor;
-import co.netguru.android.inbbbox.api.DateTimeConverter;
-import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import co.netguru.android.inbbbox.Constants;
+import co.netguru.android.inbbbox.api.DateTimeConverter;
+import co.netguru.android.inbbbox.api.RequestInterceptor;
+import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.LogoutController;
+import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
@@ -32,8 +36,14 @@ public class ConfigurationModule {
     }
 
     @Provides
-    RequestInterceptor providesRequestInterceptor(TokenPrefsRepository tokenPrefsRepository) {
-        return new RequestInterceptor(tokenPrefsRepository);
+    RequestInterceptor providesRequestInterceptor(Context context,
+                                                  TokenPrefsRepository tokenPrefsRepository,
+                                                  LogoutController logoutController,
+                                                  ErrorMessageController messageController) {
+        return new RequestInterceptor(context,
+                logoutController,
+                messageController,
+                tokenPrefsRepository);
     }
 
     @Provides

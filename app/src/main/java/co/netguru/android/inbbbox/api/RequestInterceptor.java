@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.api;
 
 import android.content.Context;
+import android.content.Intent;
 
 import java.io.IOException;
 
@@ -27,6 +28,7 @@ public class RequestInterceptor implements Interceptor {
     private final LogoutController logoutController;
     private ErrorMessageController messageController;
     private final TokenPrefsRepository tokenPrefsRepository;
+    private int requestCont = 0;
 
     @Inject
     public RequestInterceptor(Context context,
@@ -49,20 +51,28 @@ public class RequestInterceptor implements Interceptor {
 
     private Response handleResponseErrors(Response response) {
         Response result = response;
-        if (!response.isSuccessful() && response.code() == UNAUTHORIZED) {
-            performLogout(messageController.getMessage(response.code()));
+//        if (!response.isSuccessful() && response.code() == UNAUTHORIZED) {
+        requestCont++;
+        if (requestCont == 5) {
+            performLogout(messageController.getMessage(401));
         }
         return result;
     }
 
     private void performLogout(String message) {
         logoutController.performLogout()
-                .doOnCompleted(() -> showLoginScreen(message));
+                .doOnCompleted(() -> showLoginScreen(message))
+                .subscribe();
     }
 
     private void showLoginScreen(String message) {
         Timber.d(message);
-        LoginActivity.startActivity(context, message);
+        // TODO: 17.11.2016 handle restart 
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
+//        Runtime.getRuntime().exit(0);
     }
 
     private Request getRequestWithToken(Request original, Token token) {

@@ -6,7 +6,7 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
 public interface LoginContract {
-    interface View extends MvpView{
+    interface View extends MvpView {
 
         void handleOauthUrl(String urlString);
 
@@ -17,9 +17,13 @@ public interface LoginContract {
         void closeLoginDialog();
 
         void showInvalidOauthUrlError();
+
+        String getInitialMessage();
+
+        void showInitialMessage(String initialMessage);
     }
 
-    interface Presenter extends MvpPresenter<View>{
+    interface Presenter extends MvpPresenter<View> {
         void showLoginView();
 
         void handleOauthLoginResponse(Uri uri);

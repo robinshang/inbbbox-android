@@ -7,11 +7,11 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
+import co.netguru.android.inbbbox.Constants;
+import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.OauthUrlController;
 import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.UserController;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
-import co.netguru.android.inbbbox.Constants;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -42,6 +42,15 @@ public final class LoginPresenter
         this.userController = userController;
         compositeSubscription = new CompositeSubscription();
 
+    }
+
+    @Override
+    public void attachView(LoginContract.View view) {
+        super.attachView(view);
+        String initialMessage = getView().getInitialMessage();
+        if (initialMessage != null && !initialMessage.isEmpty()) {
+            getView().showInitialMessage(initialMessage);
+        }
     }
 
     @Override

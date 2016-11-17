@@ -36,7 +36,14 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     public static void startActivity(Context context, String message) {
         final Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra(ARG_MESSAGE, message);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+
+    public static void startActivity(Context context) {
+        startActivity(context, "");
     }
 
     @Override
@@ -78,6 +85,16 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     public void showInvalidOauthUrlError() {
         Toast.makeText(this, R.string.invalid_outh_url, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public String getInitialMessage() {
+        return getIntent().getStringExtra(ARG_MESSAGE);
+    }
+
+    @Override
+    public void showInitialMessage(String initialMessage) {
+        Toast.makeText(this, initialMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
