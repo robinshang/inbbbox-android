@@ -21,7 +21,8 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseMvpDialogFragment;
 import timber.log.Timber;
 
-public class OauthWebViewDialogFragment extends BaseMvpDialogFragment<OauthWebViewDialogFragmentContract.View, OauthWebViewDialogFragmentContract.Presenter>
+public class OauthWebViewDialogFragment
+        extends BaseMvpDialogFragment<OauthWebViewDialogFragmentContract.View, OauthWebViewDialogFragmentContract.Presenter>
         implements OauthWebViewDialogFragmentContract.View {
 
     public static final String TAG = OauthWebViewDialogFragment.class.getSimpleName();
@@ -58,7 +59,8 @@ public class OauthWebViewDialogFragment extends BaseMvpDialogFragment<OauthWebVi
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_dialog_oauth_web_view, container, false);
     }
 

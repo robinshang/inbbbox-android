@@ -49,14 +49,18 @@ public class OauthWebViewDialogFragmentPresenter extends MvpNullObjectBasePresen
     private void handleRedirectUriWithoutError(Uri uri) {
         String receivedStateKey = uri.getQueryParameter(Constants.OAUTH.STATE_KEY);
         if (stateKey.equals(receivedStateKey)) {
-            String receivedCode = uri.getQueryParameter(Constants.OAUTH.CODE_KEY);
-            if (!StringUtils.isBlank(receivedCode)) {
-                getView().finishWithCodeReturn(receivedCode);
-            } else {
-                getView().finishWithUnknownError();
-            }
+            handleUriWithProperStateKey(uri);
         } else {
             getView().finishWithStateKeyNotMatchingError();
+        }
+    }
+
+    private void handleUriWithProperStateKey(Uri uri) {
+        String receivedCode = uri.getQueryParameter(Constants.OAUTH.CODE_KEY);
+        if (!StringUtils.isBlank(receivedCode)) {
+            getView().finishWithCodeReturn(receivedCode);
+        } else {
+            getView().finishWithUnknownError();
         }
     }
 }

@@ -30,7 +30,6 @@ public class OauthWebViewDialogFragmentPresenterTest {
     @Mock
     OauthWebViewDialogFragmentContract.View viewMock;
 
-
     @Mock
     private Uri uriMock;
 
