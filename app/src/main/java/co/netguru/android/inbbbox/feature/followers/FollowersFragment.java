@@ -134,6 +134,10 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
         recyclerView.setVisibility(View.GONE);
     }
 
+    public void refreshFragmentData() {
+        getPresenter().getFollowedUsersFromServer();
+    }
+
     private void initEmptyView() {
         emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
         emptyViewText.setText(TextFormatter
