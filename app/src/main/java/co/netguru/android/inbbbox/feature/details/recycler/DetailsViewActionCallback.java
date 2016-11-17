@@ -4,7 +4,7 @@ public interface DetailsViewActionCallback {
 
     void onCompanySelected(String companyProfileUrl);
 
-    void onUserSelected(int userId);
+    void onUserSelected(long userId);
 
     void onShotLikeAction(long shotId, boolean isLiked);
 

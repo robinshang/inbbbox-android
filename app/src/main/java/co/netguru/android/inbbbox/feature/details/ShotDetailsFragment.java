@@ -57,19 +57,19 @@ public class ShotDetailsFragment extends Fragment {
         }
 
         @Override
-        public void onUserSelected(int userId) {
+        public void onUserSelected(long userId) {
             // TODO: 15.11.2016 not in scope of this task
             Toast.makeText(getContext(), "userId " + userId, Toast.LENGTH_SHORT).show();
         }
 
         @Override
-        public void onShotLikeAction(int shotId, boolean isLiked) {
+        public void onShotLikeAction(long shotId, boolean isLiked) {
             // TODO: 15.11.2016 not in scope of this task
             Toast.makeText(getContext(), "like: " + isLiked, Toast.LENGTH_SHORT).show();
         }
 
         @Override
-        public void onShotBucket(int shotId, boolean isLikedBucket) {
+        public void onShotBucket(long shotId, boolean isLikedBucket) {
             // TODO: 15.11.2016 not in scope of this task
             Toast.makeText(getContext(), "bucket: " + isLikedBucket, Toast.LENGTH_SHORT).show();
         }

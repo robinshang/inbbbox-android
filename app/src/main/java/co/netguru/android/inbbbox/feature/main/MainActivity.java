@@ -99,8 +99,8 @@ public class MainActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializePager();
-        initializeDrawer();
         initializeToolbar();
+        initializeDrawer();
         initializeBottomSheet();
         getPresenter().prepareUserData();
     }
@@ -123,23 +123,6 @@ public class MainActivity
     @Override
     public MainViewContract.Presenter createPresenter() {
         return component.getMainActivityPresenter();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                drawerLayout.openDrawer(GravityCompat.START);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     private void showFragmentDetails(int shotId) {
@@ -246,10 +229,10 @@ public class MainActivity
             return true;
         });
 
-        ActionBarDrawerToggle mDrawerToggle = createDrawerToggle();
-        drawerLayout.addDrawerListener(mDrawerToggle);
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerToggle.syncState();
+        ActionBarDrawerToggle actionBarDrawerToggle = createDrawerToggle();
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+        actionBarDrawerToggle.syncState();
 
         initializeDrawerReminder();
     }
