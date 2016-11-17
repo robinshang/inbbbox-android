@@ -56,7 +56,7 @@ public class MainActivity
 
     public static final int REQUEST_REFRESH_FOLLOWER_LIST = 101;
     private static final int REQUEST_DEFAULT = 0;
-    private static final String REQUEST_CODE = "requestCode";
+    private static final String REQUEST_EXTRA = "requestExtra";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -100,7 +100,7 @@ public class MainActivity
 
     public static void startActivityWithRequest(Context context, int requestCode) {
         final Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(REQUEST_CODE, requestCode);
+        intent.putExtra(REQUEST_EXTRA, requestCode);
         context.startActivity(intent);
     }
 
@@ -162,12 +162,12 @@ public class MainActivity
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        switch (intent.getIntExtra(REQUEST_CODE, REQUEST_DEFAULT)) {
+        switch (intent.getIntExtra(REQUEST_EXTRA, REQUEST_DEFAULT)) {
             case REQUEST_REFRESH_FOLLOWER_LIST:
                 refreshFollowersFragment();
                 break;
             default:
-                throw new IllegalStateException("Intent should contains REQUEST_CODE");
+                throw new IllegalStateException("Intent should contains REQUEST_EXTRA");
         }
     }
 
