@@ -1,17 +1,16 @@
 package co.netguru.android.inbbbox.model.ui;
 
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
-import com.google.gson.Gson;
-import com.google.gson.TypeAdapter;
 
 import java.util.List;
 
 import co.netguru.android.inbbbox.model.api.FollowerEntity;
 
 @AutoValue
-public abstract class Follower {
+public abstract class Follower implements Parcelable {
 
     public abstract long id();
 
@@ -39,10 +38,6 @@ public abstract class Follower {
                 .shotsCount(followerEntity.user().shotsCount())
                 .shotList(shotList)
                 .build();
-    }
-
-    public static TypeAdapter<Follower> typeAdapter(Gson gson) {
-        return new AutoValue_Follower.GsonTypeAdapter(gson);
     }
 
     @AutoValue.Builder

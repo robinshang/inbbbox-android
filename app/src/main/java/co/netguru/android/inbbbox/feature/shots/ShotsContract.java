@@ -25,6 +25,8 @@ interface ShotsContract {
         void showBucketChoosing(Shot shot);
 
         void showBucketAddSuccess();
+
+        void showShotDetails(long shotId);
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -35,5 +37,7 @@ interface ShotsContract {
         void handleAddShotToBucket(Shot shot);
 
         void addShotToBucket(Bucket bucket, Shot shot);
+
+        void showShotDetails(Shot shot);
     }
 }

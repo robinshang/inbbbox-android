@@ -17,7 +17,7 @@ public final class Statics {
 
     public static final Bucket BUCKET = Bucket.builder().createdAt(LocalDateTime.now()).description("").id(1).name("some bucket").shotsCount(2).build();
 
-    public static final Shot NOT_LIKED_SHOT = Shot.builder().id(1).isLiked(false).creationDate(LocalDateTime.now()).build();
-    public static final Shot LIKED_SHOT = Shot.builder().id(1).isLiked(true).creationDate(LocalDateTime.now()).build();
+    public static final Shot NOT_LIKED_SHOT = Shot.builder().id(1).isLiked(false).creationDate(LocalDateTime.now()).isGif(true).build();
+    public static final Shot LIKED_SHOT = Shot.builder().id(1).isLiked(true).creationDate(LocalDateTime.now()).isGif(true).build();
 
 }

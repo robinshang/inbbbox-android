@@ -50,6 +50,7 @@ public class AddToBucketPresenterTest {
         //given
         Shot shotWithTeam = Shot.builder().id(1).title("title").normalImageUrl("url").authorAvatarUrl("avatarurl")
                 .authorName("name").team(Shot.Team.create(1, "some team")).isLiked(true).creationDate(LocalDateTime.now())
+                .isGif(false)
                 .build();
         //when
         presenter.handleShot(shotWithTeam);
@@ -66,7 +67,7 @@ public class AddToBucketPresenterTest {
     public void whenShotWithoutTeamIsHandled_thenSetupView() {
         //given
         Shot shotWithoutTeam = Shot.builder().id(1).title("title").normalImageUrl("url").authorAvatarUrl("avatarurl")
-                .authorName("name").isLiked(true).creationDate(LocalDateTime.now())
+                .authorName("name").isLiked(true).creationDate(LocalDateTime.now()).isGif(true)
                 .build();
         //when
         presenter.handleShot(shotWithoutTeam);

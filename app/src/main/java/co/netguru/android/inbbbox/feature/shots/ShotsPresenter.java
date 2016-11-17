@@ -98,6 +98,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                 .creationDate(shot.creationDate())
                 .authorAvatarUrl(shot.authorAvatarUrl())
                 .authorName(shot.authorName())
+                .isGif(shot.isGif())
                 .isLiked(true)
                 .build();
     }
@@ -125,5 +126,10 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                                     getView().showError(throwable.getMessage());
                                 })
         );
+    }
+
+    @Override
+    public void showShotDetails(Shot shot) {
+        getView().showShotDetails(shot.id());
     }
 }

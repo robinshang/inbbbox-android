@@ -21,6 +21,6 @@ public interface ShotsApi {
     Observable<List<ShotEntity>> getFollowingShots();
 
     @GET("users/{user}/shots")
-    Observable<List<ShotEntity>> getFollowedUserShots(@Path("user") long userId,
-                                                      @Query("page") int pageNumber, @Query("per_page") int pageCount);
+    Observable<List<ShotEntity>> getUserShots(@Path("user") long userId,
+                                              @Query("page") int pageNumber, @Query("per_page") int pageCount);
 }

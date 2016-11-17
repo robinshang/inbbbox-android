@@ -174,6 +174,11 @@ public class ShotsFragment
     }
 
     @Override
+    public void showShotDetails(long shotId) {
+        shotLikeStatusListener.showShotDetails(shotId);
+    }
+
+    @Override
     public void onShotLikeSwipe(Shot shot) {
         getPresenter().likeShot(shot);
     }
@@ -194,9 +199,15 @@ public class ShotsFragment
         getPresenter().addShotToBucket(bucket, shot);
     }
 
-    @FunctionalInterface
+    @Override
+    public void onShotSelected(Shot shot) {
+        getPresenter().showShotDetails(shot);
+    }
+
     public interface ShotLikeStatusListener {
         void shotLikeStatusChanged();
+
+        void showShotDetails(long id);
     }
 
     @Override

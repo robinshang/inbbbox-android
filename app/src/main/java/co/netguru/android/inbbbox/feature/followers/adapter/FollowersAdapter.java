@@ -6,8 +6,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
@@ -24,12 +22,13 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
     private static final int TYPE_FOUR_SHOT_LIST = 8;
     private static final int TYPE_FOUR_SHOT_GRID = 9;
 
+    private final BaseFollowersViewHolder.OnFollowerClickListener onFollowerClickListener;
     private final List<Follower> followersList;
 
     private boolean isGridMode;
 
-    @Inject
-    FollowersAdapter() {
+    public FollowersAdapter(BaseFollowersViewHolder.OnFollowerClickListener onFollowerClickListener) {
+        this.onFollowerClickListener = onFollowerClickListener;
         followersList = new ArrayList<>();
     }
 
@@ -37,25 +36,25 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
     public BaseFollowersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case TYPE_EMPTY_GRID:
-                return new FollowersEmptyShotGridViewHolder(parent);
+                return new FollowersEmptyShotGridViewHolder(parent, onFollowerClickListener);
             case TYPE_EMPTY_LIST:
-                return new FollowersEmptyShotListViewHolder(parent);
+                return new FollowersEmptyShotListViewHolder(parent, onFollowerClickListener);
             case TYPE_ONE_SHOT_GRID:
-                return new FollowersOneShotGridViewHolder(parent);
+                return new FollowersOneShotGridViewHolder(parent, onFollowerClickListener);
             case TYPE_ONE_SHOT_LIST:
-                return new FollowersOneShotListViewHolder(parent);
+                return new FollowersOneShotListViewHolder(parent, onFollowerClickListener);
             case TYPE_TWO_SHOT_GRID:
-                return new FollowersTwoShotGridViewHolder(parent);
+                return new FollowersTwoShotGridViewHolder(parent, onFollowerClickListener);
             case TYPE_TWO_SHOT_LIST:
-                return new FollowersTwoShotListViewHolder(parent);
+                return new FollowersTwoShotListViewHolder(parent, onFollowerClickListener);
             case TYPE_THREE_SHOT_GRID:
-                return new FollowersThreeShotGridViewHolder(parent);
+                return new FollowersThreeShotGridViewHolder(parent, onFollowerClickListener);
             case TYPE_THREE_SHOT_LIST:
-                return new FollowersThreeShotListViewHolder(parent);
+                return new FollowersThreeShotListViewHolder(parent, onFollowerClickListener);
             case TYPE_FOUR_SHOT_GRID:
-                return new FollowersFourShotGridViewHolder(parent);
+                return new FollowersFourShotGridViewHolder(parent, onFollowerClickListener);
             case TYPE_FOUR_SHOT_LIST:
-                return new FollowersFourShotListViewHolder(parent);
+                return new FollowersFourShotListViewHolder(parent, onFollowerClickListener);
             default:
                 throw new IllegalArgumentException("Cannot create view holder for type : " + viewType);
         }

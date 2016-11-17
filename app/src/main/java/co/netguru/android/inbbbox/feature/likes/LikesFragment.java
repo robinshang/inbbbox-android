@@ -21,13 +21,13 @@ import javax.inject.Inject;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
-import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.App;
-import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
-import co.netguru.android.inbbbox.model.ui.LikedShot;
+import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
+import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
+import co.netguru.android.inbbbox.model.ui.LikedShot;
 import co.netguru.android.inbbbox.utils.TextFormatter;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 

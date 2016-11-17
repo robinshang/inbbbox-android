@@ -45,6 +45,11 @@
     <dimen name="follower_list_user_name_padding_start">6dp</dimen>
     <dimen name="follower_grid_text_padding_top">8dp</dimen>
 
+    <dimen name="follower_detail_header_item_height">100dp</dimen>
+    <dimen name="follower_detail_header_item_margin_bottom">36dp</dimen>
+    <dimen name="follower_detail_header_item_photo_size">72dp</dimen>
+    <dimen name="follower_detail_header_item_photo_border">5dp</dimen>
+
     <dimen name="fab_menu_label_side_padding">6dp</dimen>
     <dimen name="fab_menu_label_bottom_top_padding">2dp</dimen>
     <dimen name="fab_label_font_size">12sp</dimen>
@@ -56,5 +61,20 @@
 
     <dimen name="like_corner_radius">6dp</dimen>
     <dimen name="shot_corner_radius">8dp</dimen>
-    <dimen name="shot_background_padding">-0.5dp</dimen>
+    <dimen name="shot_background_padding">-1dp</dimen>
+    <dimen name="gif_label_top_bottom_padding">8dp</dimen>
+    <dimen name="gif_label_side_padding">6dp</dimen>
+    <dimen name="shot_details_top_padding">32dp</dimen>
+    <dimen name="details_user_avatar_size">48dp</dimen>
+    <dimen name="details_user_avatar_margin">16dp</dimen>
+    <dimen name="details_info_action_icon_size">32dp</dimen>
+    <dimen name="shot_details_actions_margin">10dp</dimen>
+    <dimen name="comment_user_avatar_size">32dp</dimen>
+    <dimen name="details_description_line_margin">4dp</dimen>
+    <dimen name="details_action_buttons_margin_top">10dp</dimen>
+    <dimen name="comment_divider_padding_top">5dp</dimen>
+    <dimen name="parralax_image_view_hight">250dp</dimen>
+    <dimen name="close_button_size">24dp</dimen>
+    <dimen name="close_button_margin">16dp</dimen>
+    <dimen name="divider_height">1dp</dimen>
 </resources>

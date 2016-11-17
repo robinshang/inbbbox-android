@@ -4,7 +4,6 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
-import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
 import org.threeten.bp.LocalDateTime;
@@ -12,7 +11,7 @@ import org.threeten.bp.LocalDateTime;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 
 @AutoValue
-public abstract class Shot implements Parcelable {
+public abstract class Shot implements Parcelable, ShotImage {
 
     public abstract long id();
 
@@ -44,6 +43,8 @@ public abstract class Shot implements Parcelable {
 
     public abstract boolean isLiked();
 
+    public abstract boolean isGif();
+
     @AutoValue.Builder
     public abstract static class Builder {
         public abstract Shot.Builder id(long id);
@@ -68,6 +69,8 @@ public abstract class Shot implements Parcelable {
 
         public abstract Shot.Builder team(Team team);
 
+        public abstract Shot.Builder isGif(boolean isGif);
+
         public abstract Shot build();
     }
 
@@ -85,16 +88,13 @@ public abstract class Shot implements Parcelable {
                 .normalImageUrl(shotEntity.getImage().normalUrl())
                 .thumbnailUrl(shotEntity.getImage().teaserUrl())
                 .isLiked(false)
-                .team(shotEntity.getTeam() == null ? null : Team.create(shotEntity.getTeam().getId(), shotEntity.getTeam().getName()));
+                .team(shotEntity.getTeam() == null ? null : Team.create(shotEntity.getTeam().getId(), shotEntity.getTeam().getName()))
+                .isGif(shotEntity.getAnimated());
         if (shotEntity.getUser() != null) {
             builder.authorAvatarUrl(shotEntity.getUser().avatarUrl())
                     .authorName(shotEntity.getUser().name());
         }
         return builder.build();
-    }
-
-    public static TypeAdapter<Shot> typeAdapter(Gson gson) {
-        return new AutoValue_Shot.GsonTypeAdapter(gson);
     }
 
     @AutoValue

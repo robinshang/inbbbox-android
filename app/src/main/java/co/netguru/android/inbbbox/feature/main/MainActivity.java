@@ -9,14 +9,15 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -33,9 +34,10 @@ import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.di.component.MainActivityComponent;
+import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.likes.LikesFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
@@ -45,8 +47,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static butterknife.ButterKnife.findById;
 
-public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainViewContract.Presenter>
-        implements MainViewContract.View, ShotsFragment.ShotLikeStatusListener {
+public class MainActivity
+        extends BaseMvpActivity<MainViewContract.View,
+        MainViewContract.Presenter>
+        implements MainViewContract.View,
+        ShotsFragment.ShotLikeStatusListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -58,6 +63,9 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     NavigationView navigationView;
     @BindView(R.id.activity_main_drawer_layout)
     DrawerLayout drawerLayout;
+
+    @BindView(R.id.fragment_container)
+    View bottomSheetView;
 
     @BindDrawable(R.drawable.toolbar_center_background)
     Drawable toolbarCenterBackground;
@@ -78,6 +86,7 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
     private Switch debutsSwitch;
     private Switch shotDetailsSwitch;
     private MainActivityPagerAdapter pagerAdapter;
+    private BottomSheetBehavior bottomSheetBehavior;
 
     public static void startActivity(Context context) {
         final Intent intent = new Intent(context, MainActivity.class);
@@ -90,9 +99,18 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializePager();
-        initializeDrawer();
         initializeToolbar();
+        initializeDrawer();
+        initializeBottomSheet();
         getPresenter().prepareUserData();
+    }
+
+    private void initializeBottomSheet() {
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
+    }
+
+    private boolean isBottomSheetOpen() {
+        return bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED;
     }
 
     private void initComponent() {
@@ -107,27 +125,23 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         return component.getMainActivityPresenter();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                drawerLayout.openDrawer(GravityCompat.START);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    private void showFragmentDetails(long shotId) {
+        Fragment fragment = ShotDetailsFragment.newInstance(shotId);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
+                .commit();
+        getBottomSheetBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
+            return;
+        }
+        if (isBottomSheetOpen()) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             return;
         }
         super.onBackPressed();
@@ -189,6 +203,8 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDefaultDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -213,7 +229,19 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
             return true;
         });
 
+        ActionBarDrawerToggle actionBarDrawerToggle = createDrawerToggle();
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+        actionBarDrawerToggle.syncState();
+
         initializeDrawerReminder();
+    }
+
+    private ActionBarDrawerToggle createDrawerToggle() {
+        return new ActionBarDrawerToggle(this,
+                drawerLayout,
+                R.string.drawer_open,
+                R.string.drawer_close);
     }
 
     private void initializeDrawerReminder() {
@@ -334,4 +362,14 @@ public class MainActivity extends BaseMvpActivity<MainViewContract.View, MainVie
             }
         }
     }
+
+    @Override
+    public void showShotDetails(long id) {
+        showFragmentDetails(id);
+    }
+
+    private BottomSheetBehavior getBottomSheetBehavior() {
+        return bottomSheetBehavior;
+    }
+
 }

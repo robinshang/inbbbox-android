@@ -26,6 +26,7 @@ import rx.Observable;
 import static co.netguru.android.inbbbox.Statics.BUCKET;
 import static co.netguru.android.inbbbox.Statics.LIKED_SHOT;
 import static co.netguru.android.inbbbox.Statics.NOT_LIKED_SHOT;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
@@ -73,6 +74,7 @@ public class ShotsPresenterTest {
                 .title("test")
                 .isLiked(false)
                 .creationDate(LocalDateTime.now())
+                .isGif(false)
                 .build();
         shotsList.add(exampleShot);
 
@@ -124,19 +126,24 @@ public class ShotsPresenterTest {
                 .id(NOT_LIKED_SHOT.id())
                 .isLiked(true)
                 .creationDate(NOT_LIKED_SHOT.creationDate())
+                .isGif(false)
                 .build();
 
         presenter.likeShot(NOT_LIKED_SHOT);
 
-        verify(viewMock, times(1)).changeShotLikeStatus(expectedShot);
+        presenter.likeShot(expectedShot);
+
+        verify(viewMock, times(1)).changeShotLikeStatus(any(Shot.class));
     }
 
     @Test
     public void whenShotLikedAndLikeActionCalled_thenDoNotCallLikeShotMethod() {
         when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Observable.empty());
+
         presenter.loadData();
 
         presenter.likeShot(LIKED_SHOT);
+
 
         verify(likeShotControllerMock, never()).likeShot(LIKED_SHOT.id());
     }
@@ -171,11 +178,12 @@ public class ShotsPresenterTest {
         Exception exampleException = new Exception(message);
         when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Observable.error(exampleException));
         when(errorMessageControllerMock.getError(exampleException)).thenCallRealMethod();
+
         presenter.loadData();
 
         presenter.likeShot(NOT_LIKED_SHOT);
 
-        verify(viewMock, times(1)).showError(message);
+        verify(viewMock).showError(message);
     }
 
     @Test

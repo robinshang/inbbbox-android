@@ -8,10 +8,12 @@ import co.netguru.android.inbbbox.controler.notification.NotificationAlarmReceiv
 import co.netguru.android.inbbbox.di.module.ApiModule;
 import co.netguru.android.inbbbox.di.module.ApplicationModule;
 import co.netguru.android.inbbbox.di.module.ConfigurationModule;
+import co.netguru.android.inbbbox.di.module.FollowerDetailsFragmentModule;
 import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.di.module.LocalRepositoryModule;
 import co.netguru.android.inbbbox.di.module.LoginModule;
+import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
 import dagger.Component;
 
@@ -26,6 +28,8 @@ public interface ApplicationComponent extends BaseComponent {
 
     LoginComponent plus(LoginModule module);
 
+    OauthWebViewDialogFragmentComponent plusOauthWebViewDialogFragmentComponent();
+
     MainActivityComponent plusMainActivityComponent();
 
     SplashScreenComponent plusSplashScreenComponent();
@@ -35,6 +39,10 @@ public interface ApplicationComponent extends BaseComponent {
     LikesFragmentComponent plus(LikesFragmentModule module);
 
     FollowersFragmentComponent plus(FollowersFragmentModule module);
+
+    FollowerDetailsFragmentComponent plus(FollowerDetailsFragmentModule module);
+
+    ShotDetailsComponent plus(ShotsDetailsModule module);
 
     BucketsFragmentComponent inject();
 

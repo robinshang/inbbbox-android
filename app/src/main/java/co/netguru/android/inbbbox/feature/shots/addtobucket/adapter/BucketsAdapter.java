@@ -14,6 +14,7 @@ public class BucketsAdapter extends RecyclerView.Adapter<BucketViewHolder> {
     private final BucketViewHolder.BucketClickListener bucketClickListener;
     private List<Bucket> buckets = Collections.emptyList();
 
+
     public BucketsAdapter(BucketViewHolder.BucketClickListener bucketClickListener) {
         this.bucketClickListener = bucketClickListener;
     }

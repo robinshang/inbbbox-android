@@ -8,10 +8,11 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.utils.ThumbnailUtil;
+import co.netguru.android.inbbbox.utils.ShotLoadingManager;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 import co.netguru.android.inbbbox.view.swipingpanel.ItemSwipeListener;
 import co.netguru.android.inbbbox.view.swipingpanel.LongSwipeLayout;
@@ -34,6 +35,9 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     @BindView(R.id.iv_bucket_action)
     ImageView bucketImageView;
 
+    @BindView(R.id.gif_label_textView)
+    View gifLabelView;
+
     @BindView(R.id.iv_comment)
     ImageView commentImageView;
 
@@ -47,6 +51,11 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
         longSwipeLayout.setItemSwipeListener(this);
     }
 
+    @OnClick(R.id.iv_shot_image)
+    void onShotClick(){
+        shotSwipeListener.onShotSelected(shot);
+    }
+
     @Override
     public void bind(Shot shot) {
         this.shot = shot;
@@ -58,12 +67,14 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
         final Context context = itemView.getContext();
         backgroundImageView.setRadius(radius);
         shotImageView.setRadius(radius);
-        Glide.with(context)
-                .load(shot.normalImageUrl())
-                .placeholder(R.drawable.shot_placeholder)
-                .thumbnail(ThumbnailUtil.getThumbnailRequest(context, shot.thumbnailUrl()))
-                .animate(android.R.anim.fade_in)
-                .into(shotImageView);
+
+        ShotLoadingManager.loadListShot(context, shotImageView, shot);
+
+        if (shot.isGif()) {
+            gifLabelView.setVisibility(View.VISIBLE);
+        } else {
+            gifLabelView.setVisibility(View.GONE);
+        }
 
         likeIconImageView.setActivated(shot.isLiked());
     }

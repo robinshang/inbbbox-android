@@ -22,6 +22,8 @@ public class ShotEntity {
     private LocalDateTime updatedAt;
     @SerializedName("projects_count")
     private int projectsCount;
+    @SerializedName("animated")
+    private Boolean animated;
     @SerializedName("user")
     private User user;
     @Nullable
@@ -66,6 +68,14 @@ public class ShotEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Boolean getAnimated() {
+        return animated;
+    }
+
+    public void setAnimated(Boolean animated) {
+        this.animated = animated;
     }
 
     public Team getTeam() {

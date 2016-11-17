@@ -9,4 +9,6 @@ public interface ShotSwipeListener {
     void onAddShotToBucketSwipe(Shot shot);
 
     void onCommentShotSwipe(Shot shot);
+
+    void onShotSelected(Shot shot);
 }

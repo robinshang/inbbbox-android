@@ -7,10 +7,10 @@ import org.threeten.bp.LocalDateTime;
 
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.api.RequestInterceptor;
-import co.netguru.android.inbbbox.api.DateTimeConverter;
-import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import co.netguru.android.inbbbox.Constants;
+import co.netguru.android.inbbbox.api.DateTimeConverter;
+import co.netguru.android.inbbbox.api.RequestInterceptor;
+import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
