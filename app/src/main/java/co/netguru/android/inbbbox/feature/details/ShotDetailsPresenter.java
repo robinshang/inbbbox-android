@@ -45,14 +45,16 @@ public class ShotDetailsPresenter
                         .subscribe(this::handleShotDetails, this::handleApiError)
         );
 //        TODO: 15.11.2016 MOCKED DATA - remove in task IA-146
-        getView().showItems(MockedExampleData.getMocketShotDetailsData());
-        getView().showMainImage(MockedExampleData.getExampleImageUrl(), MockedExampleData.getExampleImageUrl());
+//        getView().showDetails(MockedExampleData.getMocketShotDetailsData());
+//        getView().showMainImage(MockedExampleData.getExampleImageUrl(), MockedExampleData.getExampleImageUrl());
         // TODO: 15.11.2016 MOCKED DATA - remove in task IA-146
     }
 
     private void handleShotDetails(ShotDetails shotDetails) {
         Timber.d("Shot details received: " + shotDetails);
-        // TODO: 17.11.2016  
+        getView().showMainImage(shotDetails);
+        getView().showDetails(shotDetails);
+        getView().initView();
     }
 
     private void handleApiError(Throwable throwable) {

@@ -25,7 +25,7 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
 
     @Override
     public ShotDetailsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return  ShotDetailsViewFactory
+        return ShotDetailsViewFactory
                 .getViewHolder(viewType, parent, localTimeFormatter, actionCallback);
     }
 
@@ -41,10 +41,13 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
 
     @Override
     public int getItemCount() {
-        return (details.comments() != null ? details.comments().size() : 0) + STATIC_ITEMS_COUNT;
+        return ((details != null && details.comments() != null)
+                ? details.comments().size() : 0)
+                + STATIC_ITEMS_COUNT;
     }
 
     public void setDetails(ShotDetails details) {
         this.details = details;
+        notifyDataSetChanged();
     }
 }

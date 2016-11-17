@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
 import javax.inject.Inject;
 
 import butterknife.BindDimen;
@@ -26,6 +24,8 @@ import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.ShotDetails;
+import co.netguru.android.inbbbox.model.ui.ShotImage;
+import co.netguru.android.inbbbox.utils.ShotLoadingManager;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
 public class ShotDetailsFragment
@@ -115,30 +115,23 @@ public class ShotDetailsFragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        initRecycler();
 
         getPresenter().downloadData();
     }
 
-    private void initRecycler() {
+    public void initView() {
         shotRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shotRecyclerView.setAdapter(adapter);
     }
 
     // TODO: 16.11.2016 it will be public when MVP will be implemented in task IA-146
-    public void showItems(ShotDetails details) {
+    public void showDetails(ShotDetails details) {
         adapter.setDetails(details);
     }
 
-    // TODO: 16.11.2016 it will be public when MVP will be implemented in task IA-146
-    public void showMainImage(String imageUrl, String thumbnailUrl) {
+    public void showMainImage(ShotImage shotImage) {
         parallaxImageView.setRadius(radius);
         parallaxImageView.disableRadiusForBottomEdge(true);
-        // TODO: 16.11.2016 enable gif displaying in IA-146
-        Glide.with(getContext())
-                .load(imageUrl)
-                .placeholder(R.drawable.shape_rounded_top_corners)
-                .animate(android.R.anim.fade_in)
-                .into(parallaxImageView);
+        ShotLoadingManager.loadMainViewShot(getContext(), parallaxImageView, shotImage);
     }
 }

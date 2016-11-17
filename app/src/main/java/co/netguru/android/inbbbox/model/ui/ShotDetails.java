@@ -14,7 +14,7 @@ import co.netguru.android.inbbbox.model.api.ShotEntity;
 
 
 @AutoValue
-public abstract class ShotDetails {
+public abstract class ShotDetails implements ShotImage {
     public abstract long id();
 
     public abstract String title();
@@ -38,6 +38,14 @@ public abstract class ShotDetails {
     public abstract Integer bucketCount();
 
     public abstract String description();
+
+    public abstract boolean isGif();
+
+    public abstract String hdpiImageUrl();
+
+    public abstract String normalImageUrl();
+
+    public abstract String thumbnailUrl();
 
     @Nullable
     public abstract List<Comment> comments();
@@ -68,6 +76,10 @@ public abstract class ShotDetails {
                 .companyProfileUrl(shotEntity.getTeam().getTeamShotsUrl())
                 .authorUrl(shotEntity.getUser().htmlUrl())
                 .date(shotEntity.getCreatedAt())
+                .isGif(shotEntity.getAnimated())
+                .hdpiImageUrl(shotEntity.getImage().hiDpiUrl())
+                .normalImageUrl(shotEntity.getImage().normalUrl())
+                .thumbnailUrl(shotEntity.getImage().teaserUrl())
                 .build();
     }
 
@@ -105,6 +117,14 @@ public abstract class ShotDetails {
         public abstract ShotDetails.Builder isLiked(boolean state);
 
         public abstract ShotDetails.Builder isBucketed(boolean state);
+
+        public abstract ShotDetails.Builder isGif(boolean state);
+
+        public abstract ShotDetails.Builder hdpiImageUrl(String url);
+
+        public abstract ShotDetails.Builder normalImageUrl(String url);
+
+        public abstract ShotDetails.Builder thumbnailUrl(String url);
 
         public abstract ShotDetails build();
     }
