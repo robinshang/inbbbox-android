@@ -2,7 +2,6 @@ package co.netguru.android.inbbbox.feature.details;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -23,12 +22,15 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotDetailsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
+import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.ShotDetails;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
-public class ShotDetailsFragment extends Fragment {
+public class ShotDetailsFragment
+        extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
+        implements ShotDetailsContract.View {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_SHOT_ID = "arg:shot_id";
@@ -103,15 +105,17 @@ public class ShotDetailsFragment extends Fragment {
     }
 
     @Override
+    public ShotDetailsContract.Presenter createPresenter() {
+        return component.getPresenter();
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         initRecycler();
 
-        // TODO: 15.11.2016 MOCKED DATA - remove in task IA-146
-        showItems(MockedExampleData.getMocketShotDetailsData());
-        showMainImage(MockedExampleData.getExampleImageUrl(), MockedExampleData.getExampleImageUrl());
-        // TODO: 15.11.2016 MOCKED DATA - remove in task IA-146
+        getPresenter().downloadData();
     }
 
     private void initRecycler() {
