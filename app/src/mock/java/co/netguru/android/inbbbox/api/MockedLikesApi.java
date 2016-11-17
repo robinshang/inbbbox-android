@@ -24,6 +24,11 @@ public class MockedLikesApi implements LikesApi {
     }
 
     @Override
+    public Completable isShotLiked(@Path("id") long id) {
+        return Completable.complete();
+    }
+
+    @Override
     public Completable likeShot(@Path("id") long id) {
         return Completable.complete();
     }
