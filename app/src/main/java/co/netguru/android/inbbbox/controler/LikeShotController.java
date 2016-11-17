@@ -17,6 +17,10 @@ public class LikeShotController {
         this.likesApi = likesApi;
     }
 
+    public Completable isShotLiked(long id) {
+        return likesApi.isShotLiked(id);
+    }
+
     public Completable likeShot(long id) {
         return likesApi.likeShot(id);
     }

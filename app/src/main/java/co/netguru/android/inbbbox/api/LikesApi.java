@@ -16,6 +16,9 @@ public interface LikesApi {
     @GET("user/likes")
     Observable<List<LikedShotEntity>> getLikedShots(@Query("page") int pageNumber, @Query("per_page") int pageCount);
 
+    @GET("shots/{id}/like")
+    Completable isShotLiked(@Path("id") long id);
+
     @POST("shots/{id}/like")
     Completable likeShot(@Path("id") long id);
 
