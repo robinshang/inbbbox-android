@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.model.api.FollowerEntity;
+import rx.Completable;
 import rx.Observable;
 
 @Singleton
@@ -20,5 +21,9 @@ public class FollowersController {
     public Observable<FollowerEntity> getFollowedUsers(int pageNumber, int pageCount) {
         return followersApi.getFollowedUsers(pageNumber, pageCount)
                 .flatMap(Observable::from);
+    }
+
+    public Completable unFollowUser(long id) {
+        return followersApi.unFollowUser(id);
     }
 }
