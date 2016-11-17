@@ -50,7 +50,7 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
 
     @Override
     public void showLoginScreen() {
-        LoginActivity.startActivity(this);
+        LoginActivity.startActivity(this, message);
         finish();
     }
 

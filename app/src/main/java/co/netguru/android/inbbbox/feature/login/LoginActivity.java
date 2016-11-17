@@ -24,6 +24,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         implements LoginContract.View, WithComponent<LoginComponent>,
         OnRedirectUrlCallbackListener {
 
+    private static final String ARG_MESSAGE = "arg:message";
     private WebviewDialogFragment dialogFragment;
     private LoginComponent component;
 
@@ -32,8 +33,9 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         getPresenter().showLoginView();
     }
 
-    public static void startActivity(Context context) {
+    public static void startActivity(Context context, String message) {
         final Intent intent = new Intent(context, LoginActivity.class);
+        intent.putExtra(ARG_MESSAGE, message);
         context.startActivity(intent);
     }
 
