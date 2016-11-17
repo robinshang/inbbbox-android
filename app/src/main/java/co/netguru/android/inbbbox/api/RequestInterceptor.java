@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.api;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import javax.inject.Inject;
 
@@ -20,10 +21,9 @@ public class RequestInterceptor implements Interceptor {
     private static final String HEADER_ACCEPT = "Accept";
     private static final String HEADER_TYPE_JSON = "application/json";
     private static final String HEADER_AUTHORIZATION = "AUTHORIZATION";
-    private static final int UNAUTHORIZED = 401;
 
     private final LogoutController logoutController;
-    private ErrorMessageController messageController;
+    private final ErrorMessageController messageController;
     private final TokenPrefsRepository tokenPrefsRepository;
 
     @Inject
@@ -44,16 +44,16 @@ public class RequestInterceptor implements Interceptor {
     }
 
     private Response handleResponseErrors(Response response) {
-        if (!response.isSuccessful() && response.code() == UNAUTHORIZED) {
-            performLogout(messageController.getMessage(401));
+        if (!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+            performLogout(messageController.getMessage(response.code()));
         }
         return response;
     }
 
     private void performLogout(String message) {
         logoutController.performLogout()
-                .doOnCompleted(() -> sendCriticalLogoutEvent(message))
-                .subscribe();
+                .subscribe(() -> sendCriticalLogoutEvent(message),
+                        throwable -> Timber.e(throwable, "critical logout error"));
     }
 
     private void sendCriticalLogoutEvent(String message) {

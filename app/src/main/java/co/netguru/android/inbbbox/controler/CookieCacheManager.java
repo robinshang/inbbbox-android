@@ -13,7 +13,7 @@ import timber.log.Timber;
 
 public class CookieCacheManager {
 
-    private Context context;
+    private final Context context;
 
     @Inject
     CookieCacheManager(Context context) {
@@ -25,7 +25,7 @@ public class CookieCacheManager {
         return Completable.fromCallable(() -> {
             Timber.d("Cookies cache clearing");
             clearCacheFolder();
-            return false;
+            return null;
         });
     }
 

@@ -9,11 +9,10 @@ import rx.Completable;
 
 public class LogoutController {
 
-
-    private TokenPrefsRepository tokenPrefsRepository;
-    private UserPrefsRepository userPrefsRepository;
-    private SettingsPrefsRepository settingsPrefsRepository;
-    private CookieCacheManager cacheController;
+    private final TokenPrefsRepository tokenPrefsRepository;
+    private final UserPrefsRepository userPrefsRepository;
+    private final SettingsPrefsRepository settingsPrefsRepository;
+    private final CookieCacheManager cacheController;
 
     @Inject
     public LogoutController(TokenPrefsRepository tokenPrefsRepository,

@@ -35,7 +35,7 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
     @Override
     protected void onResume() {
         super.onResume();
-        criticalLogoutSubscription =RxBus.getInstance()
+        criticalLogoutSubscription = RxBus.getInstance()
                 .register(CriticalLogoutEvent.class, this::handleUnauthorisedEvent);
     }
 

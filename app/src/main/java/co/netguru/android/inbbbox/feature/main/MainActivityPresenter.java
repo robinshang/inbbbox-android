@@ -80,9 +80,11 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     @Override
     public void performLogout() {
         notificationScheduler.cancelNotification();
-        logoutController.performLogout()
-                .doOnCompleted(getView()::showLoginActivity)
-                .subscribe();
+        subscriptions.add(
+                logoutController.performLogout()
+                        .subscribe(getView()::showLoginActivity,
+                                throwable -> Timber.e(throwable, "critical logout error"))
+        );
     }
 
     @Override

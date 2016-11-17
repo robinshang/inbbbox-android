@@ -12,7 +12,7 @@ import co.netguru.android.inbbbox.R;
 @Singleton
 public class ErrorMessageController {
 
-    private Resources resources;
+    private final Resources resources;
 
     @Inject
     public ErrorMessageController(Resources resources) {
@@ -27,11 +27,9 @@ public class ErrorMessageController {
         String label;
         if (code == HttpURLConnection.HTTP_UNAUTHORIZED) {
             label = resources.getString(R.string.authorization_error);
-
         } else {
             label = resources.getString(R.string.undefined_api_error);
         }
-
         return label;
     }
 }
