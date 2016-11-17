@@ -1,17 +1,15 @@
 package co.netguru.android.inbbbox.api;
 
-import android.content.Context;
-import android.content.Intent;
-
 import java.io.IOException;
 
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.LogoutController;
-import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import co.netguru.android.inbbbox.model.api.Token;
+import co.netguru.android.inbbbox.model.events.CriticalLogoutEvent;
+import co.netguru.android.inbbbox.utils.RxBus;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -24,18 +22,14 @@ public class RequestInterceptor implements Interceptor {
     private static final String HEADER_AUTHORIZATION = "AUTHORIZATION";
     private static final int UNAUTHORIZED = 401;
 
-    private final Context context;
     private final LogoutController logoutController;
     private ErrorMessageController messageController;
     private final TokenPrefsRepository tokenPrefsRepository;
-    private int requestCont = 0;
 
     @Inject
-    public RequestInterceptor(Context context,
-                              LogoutController logoutController,
+    public RequestInterceptor(LogoutController logoutController,
                               ErrorMessageController messageController,
                               TokenPrefsRepository tokenPrefsRepository) {
-        this.context = context;
         this.logoutController = logoutController;
         this.messageController = messageController;
         this.tokenPrefsRepository = tokenPrefsRepository;
@@ -50,29 +44,21 @@ public class RequestInterceptor implements Interceptor {
     }
 
     private Response handleResponseErrors(Response response) {
-        Response result = response;
-//        if (!response.isSuccessful() && response.code() == UNAUTHORIZED) {
-        requestCont++;
-        if (requestCont == 5) {
+        if (!response.isSuccessful() && response.code() == UNAUTHORIZED) {
             performLogout(messageController.getMessage(401));
         }
-        return result;
+        return response;
     }
 
     private void performLogout(String message) {
         logoutController.performLogout()
-                .doOnCompleted(() -> showLoginScreen(message))
+                .doOnCompleted(() -> sendCriticalLogoutEvent(message))
                 .subscribe();
     }
 
-    private void showLoginScreen(String message) {
+    private void sendCriticalLogoutEvent(String message) {
         Timber.d(message);
-        // TODO: 17.11.2016 handle restart 
-        Intent intent = new Intent(context, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(intent);
-//        Runtime.getRuntime().exit(0);
+        RxBus.getInstance().publishEvent(new CriticalLogoutEvent(message));
     }
 
     private Request getRequestWithToken(Request original, Token token) {

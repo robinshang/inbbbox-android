@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.di.module;
 
-import android.content.Context;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -36,12 +34,10 @@ public class ConfigurationModule {
     }
 
     @Provides
-    RequestInterceptor providesRequestInterceptor(Context context,
-                                                  TokenPrefsRepository tokenPrefsRepository,
+    RequestInterceptor providesRequestInterceptor(TokenPrefsRepository tokenPrefsRepository,
                                                   LogoutController logoutController,
                                                   ErrorMessageController messageController) {
-        return new RequestInterceptor(context,
-                logoutController,
+        return new RequestInterceptor(logoutController,
                 messageController,
                 tokenPrefsRepository);
     }
