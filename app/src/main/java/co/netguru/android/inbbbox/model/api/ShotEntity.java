@@ -2,6 +2,8 @@ package co.netguru.android.inbbbox.model.api;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.threeten.bp.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class ShotEntity {
     @SerializedName("buckets_count")
     private Integer bucketsCount;
     @SerializedName("created_at")
-    private String createdAt;
+    private LocalDateTime createdAt;
     @SerializedName("updated_at")
     private String updatedAt;
     @SerializedName("html_url")
@@ -153,11 +155,11 @@ public class ShotEntity {
         this.bucketsCount = bucketsCount;
     }
 
-    public String getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 

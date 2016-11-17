@@ -6,6 +6,8 @@ import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
+import org.threeten.bp.LocalDateTime;
+
 import java.util.List;
 
 import co.netguru.android.inbbbox.model.api.ShotEntity;
@@ -29,7 +31,7 @@ public abstract class ShotDetails {
 
     public abstract String appName();
 
-    public abstract String date();
+    public abstract LocalDateTime date();
 
     public abstract Integer likesCount();
 
@@ -65,6 +67,7 @@ public abstract class ShotDetails {
                 .isLiked(false)
                 .companyProfileUrl(shotEntity.getTeam().getTeamShotsUrl())
                 .authorUrl(shotEntity.getUser().htmlUrl())
+                .date(shotEntity.getCreatedAt())
                 .build();
     }
 
@@ -89,7 +92,7 @@ public abstract class ShotDetails {
 
         public abstract ShotDetails.Builder appName(String appName);
 
-        public abstract ShotDetails.Builder date(String date);
+        public abstract ShotDetails.Builder date(LocalDateTime date);
 
         public abstract ShotDetails.Builder likesCount(Integer likeCount);
 

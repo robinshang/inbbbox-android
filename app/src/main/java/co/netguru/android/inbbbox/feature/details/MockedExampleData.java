@@ -118,7 +118,7 @@ class MockedExampleData {
                 .likesCount(321)
                 .companyName("Netguru dmeos")
                 .companyProfileUrl("http://google.com")
-                .date("25 dev 2016")
+                .date(LocalDateTime.now())
                 .authorId(99)
                 .isLiked(false)
                 .isBucketed(false)

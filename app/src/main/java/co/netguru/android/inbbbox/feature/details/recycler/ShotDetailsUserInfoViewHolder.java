@@ -81,7 +81,8 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
         shotTitleTextView.setText(item.title());
         showImage(item.userAvatarUrl());
         showAuthorInfo(item.authorName(), item.companyName());
-        showInfo(item.appName(), item.date());
+        // TODO: 17.11.2016 date formatting
+        showInfo(item.appName(), "1999-99-99");
         showCounters(item.likesCount(), item.bucketCount());
 
         isLiked = item.isLiked();
