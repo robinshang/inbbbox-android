@@ -71,4 +71,5 @@
     <dimen name="close_button_size">24dp</dimen>
     <dimen name="close_button_margin">16dp</dimen>
     <dimen name="divider_height">1dp</dimen>
+    <dimen name="toolbar_logo_left_margin">52dp</dimen>
 </resources>
