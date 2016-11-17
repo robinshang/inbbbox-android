@@ -18,8 +18,10 @@ import co.netguru.android.inbbbox.controler.LikedShotsController;
 import co.netguru.android.inbbbox.controler.ShotsController;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
+import rx.Completable;
 import rx.Observable;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -97,36 +99,49 @@ public class ShotsPresenterTest {
 
     @Test
     public void whenShotNotLikedAndLikeActionCalled_thenCallLikeShotMethod() {
-        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Observable.empty());
+        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.complete());
         presenter.loadData();
+        Shot expectedShot = Shot.builder()
+                .id(exampleId)
+                .title("test")
+                .isLiked(false)
+                .isGif(false)
+                .build();
 
-        presenter.likeShot(0);
+        presenter.likeShot(expectedShot);
 
         verify(likeShotControllerMock, times(1)).likeShot(exampleId);
     }
 
     @Test
     public void whenShotLiked_thenChangeShotStatus() {
-        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Observable.empty());
+        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.complete());
         presenter.loadData();
         Shot expectedShot = Shot.builder()
                 .id(exampleId)
                 .title("test")
-                .isLiked(true)
+                .isLiked(false)
                 .isGif(false)
                 .build();
 
-        presenter.likeShot(0);
+        presenter.likeShot(expectedShot);
 
-        verify(viewMock, times(1)).changeShotLikeStatus(expectedShot);
+        verify(viewMock, times(1)).changeShotLikeStatus(any(Shot.class));
     }
 
     @Test
     public void whenShotLikedAndLikeActionCalled_thenCallLikeShotMethod() {
-        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Observable.empty());
+        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.complete());
+        Shot expectedShot = Shot.builder()
+                .id(exampleId)
+                .title("test")
+                .isLiked(false)
+                .isGif(false)
+                .build();
         presenter.loadData();
 
-        presenter.likeShot(0);
+
+        presenter.likeShot(expectedShot);
 
         verify(likeShotControllerMock, times(1)).likeShot(exampleId);
     }
@@ -159,12 +174,18 @@ public class ShotsPresenterTest {
     public void whenShotLikeingFailed_thenShowApiError() {
         String message = "test";
         Exception exampleException = new Exception(message);
-        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Observable.error(exampleException));
+        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.error(exampleException));
         when(errorMessageControllerMock.getError(exampleException)).thenCallRealMethod();
+        Shot expectedShot = Shot.builder()
+                .id(exampleId)
+                .title("test")
+                .isLiked(false)
+                .isGif(false)
+                .build();
         presenter.loadData();
 
-        presenter.likeShot(0);
+        presenter.likeShot(expectedShot);
 
-        verify(viewMock, times(1)).showError(message);
+        verify(viewMock).showError(message);
     }
 }

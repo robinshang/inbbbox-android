@@ -12,6 +12,7 @@ import co.netguru.android.inbbbox.api.DateTimeConverter;
 import co.netguru.android.inbbbox.api.RequestInterceptor;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.LogoutController;
+import co.netguru.android.inbbbox.api.RequestInterceptor;
 import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import dagger.Module;
 import dagger.Provides;
