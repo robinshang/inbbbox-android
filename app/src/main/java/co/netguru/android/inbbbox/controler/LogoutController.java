@@ -7,21 +7,19 @@ import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
 import rx.Completable;
 
-import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletableIoSchedulers;
-
 public class LogoutController {
 
 
     private TokenPrefsRepository tokenPrefsRepository;
     private UserPrefsRepository userPrefsRepository;
     private SettingsPrefsRepository settingsPrefsRepository;
-    private CacheController cacheController;
+    private CookieCacheManager cacheController;
 
     @Inject
     public LogoutController(TokenPrefsRepository tokenPrefsRepository,
                             UserPrefsRepository userPrefsRepository,
                             SettingsPrefsRepository settingsPrefsRepository,
-                            CacheController cacheController) {
+                            CookieCacheManager cacheController) {
 
         this.tokenPrefsRepository = tokenPrefsRepository;
         this.userPrefsRepository = userPrefsRepository;
@@ -30,10 +28,10 @@ public class LogoutController {
     }
 
     public Completable performLogout() {
-        return Completable.merge(tokenPrefsRepository.clear(),
+        return Completable.merge(
+                cacheController.clearCache(),
+                tokenPrefsRepository.clear(),
                 userPrefsRepository.clear(),
-                settingsPrefsRepository.clear(),
-                cacheController.clearCache())
-                .compose(applyCompletableIoSchedulers());
+                settingsPrefsRepository.clear());
     }
 }
