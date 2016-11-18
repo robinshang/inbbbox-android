@@ -8,17 +8,14 @@ import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.api.LikesApi;
 import co.netguru.android.inbbbox.api.MockAuthorizeApi;
 import co.netguru.android.inbbbox.api.MockCommentsApi;
-import co.netguru.android.inbbbox.api.MockShotDetailsApi;
 import co.netguru.android.inbbbox.api.MockShotsApi;
 import co.netguru.android.inbbbox.api.MockedBucketApi;
 import co.netguru.android.inbbbox.api.MockedFollowersApi;
-
 import co.netguru.android.inbbbox.api.MockedLikesApi;
 import co.netguru.android.inbbbox.api.MockedUserApi;
 import co.netguru.android.inbbbox.api.ShotCommentsApi;
 import co.netguru.android.inbbbox.api.ShotsApi;
 import co.netguru.android.inbbbox.api.UserApi;
-
 import dagger.Module;
 import dagger.Provides;
 
@@ -56,7 +53,6 @@ public class ApiModule {
         return new MockedBucketApi();
     }
 
-    @Providess
     @Provides
     ShotCommentsApi provideShotCommentsApi() {
         return new MockCommentsApi();

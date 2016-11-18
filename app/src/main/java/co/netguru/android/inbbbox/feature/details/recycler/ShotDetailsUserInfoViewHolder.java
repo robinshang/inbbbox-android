@@ -69,7 +69,7 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
 
     @OnClick(R.id.details_company_textView)
     void onCompanyClick() {
-        actionCallbackListener.onCompanySelected(item.companyProfileUrl());
+        actionCallbackListener.onCompanySelected(item.teamProfileUrl());
     }
 
     @OnClick(R.id.details_author_textView)
@@ -81,7 +81,7 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     protected void handleBinding() {
         shotTitleTextView.setText(item.title());
         showImage(item.userAvatarUrl());
-        showAuthorInfo(item.authorName(), item.companyName());
+        showAuthorInfo(item.authorName(), item.teamName());
         showInfo(item.projectUrl(), LocalTimeFormatter.getShotDetailsDate(item.date()));
         showCounters(item.likesCount(), item.bucketCount());
 

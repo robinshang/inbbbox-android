@@ -24,10 +24,10 @@ public abstract class Shot implements Parcelable, ShotImage {
     public abstract String authorUrl();
 
     @Nullable
-    public abstract String companyName();
+    public abstract String teamName();
 
     @Nullable
-    public abstract String companyProfileUrl();
+    public abstract String teamProfileUrl();
 
     @Nullable
     public abstract String projectUrl();
@@ -117,7 +117,7 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .title(shotEntity.getTitle())
                 .description(shotEntity.getDescription())
                 // TODO: 17.11.2016
-                .projectUrl(shotEntity.getHtmlUrl())
+                .projectUrl(shotEntity.getProjectsUrl())
                 .teamName(shotEntity.getTeam() != null ? shotEntity.getTeam().getName() : null)
                 .teamProfileUrl(shotEntity.getTeam() != null ? shotEntity.getTeam().getTeamShotsUrl() : null)
                 .userAvatarUrl(shotEntity.getUser().avatarUrl())
