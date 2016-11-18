@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +107,13 @@ public class ShotsPresenterTest {
                 .title("test")
                 .isLiked(false)
                 .isGif(false)
+                .userAvatarUrl("")
+                .authorName("")
+                .authorId(123)
+                .date(LocalDateTime.now())
+                .likesCount(123)
+                .bucketCount(123)
+                .isBucketed(false)
                 .build();
 
         presenter.likeShot(expectedShot);

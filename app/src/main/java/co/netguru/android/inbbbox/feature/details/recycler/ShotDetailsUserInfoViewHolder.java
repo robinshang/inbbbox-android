@@ -74,14 +74,14 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
 
     @OnClick(R.id.details_author_textView)
     void onAuthorClick() {
-        actionCallbackListener.onUserSelected(item.authorId());
+        actionCallbackListener.onUserSelected(item.author().id());
     }
 
     @Override
     protected void handleBinding() {
         shotTitleTextView.setText(item.title());
-        showImage(item.userAvatarUrl());
-        showAuthorInfo(item.authorName(), item.teamName());
+        showImage(item.author().avatarUrl());
+        showAuthorInfo(item.author().name(), item.teamName());
         showInfo(item.projectUrl(), LocalTimeFormatter.getShotDetailsDate(item.date()));
         showCounters(item.likesCount(), item.bucketCount());
 

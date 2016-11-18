@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.model.api.User;
+import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.inbbbox.utils.StringUtils;
 import rx.Completable;
 import rx.Single;
@@ -29,7 +29,7 @@ public class UserPrefsRepository {
         this.gson = gson;
     }
 
-    public Completable saveUser(@NonNull User user) {
+    public Completable saveUser(@NonNull UserEntity user) {
         return Completable.fromCallable(() -> {
             sharedPreferences.edit()
                     .putString(USER_KEY, gson.toJson(user))
@@ -39,15 +39,15 @@ public class UserPrefsRepository {
     }
 
     /**
-     * Return Single<User> in case user is not found finish with UserNotFoundException in onError.
+     * Return Single<UserEntity> in case user is not found finish with UserNotFoundException in onError.
      */
-    public Single<User> getUser() {
+    public Single<UserEntity> getUser() {
         return Single.fromCallable(() -> {
             String userJson = sharedPreferences.getString(USER_KEY, null);
             if (StringUtils.isBlank(userJson)) {
-                throw new UserNotFoundException("User was not found in shared preferences");
+                throw new UserNotFoundException("UserEntity was not found in shared preferences");
             } else {
-                return gson.fromJson(userJson, User.class);
+                return gson.fromJson(userJson, UserEntity.class);
             }
         });
     }

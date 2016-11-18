@@ -3,9 +3,7 @@ package co.netguru.android.inbbbox.model.api;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import co.netguru.android.inbbbox.model.api.Links;
-
-public class Team {
+public class TeamEntity {
 
     @SerializedName("id")
     @Expose

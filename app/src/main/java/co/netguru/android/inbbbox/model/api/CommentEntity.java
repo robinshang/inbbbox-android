@@ -19,7 +19,7 @@ public class CommentEntity {
     @SerializedName("updated_at")
     private LocalDateTime updatedAt;
     @SerializedName("user")
-    private User user;
+    private UserEntity user;
 
     public long getId() {
         return id;
@@ -69,11 +69,11 @@ public class CommentEntity {
         this.updatedAt = updatedAt;
     }
 
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 }

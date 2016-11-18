@@ -56,9 +56,9 @@ public class ShotEntity {
     @SerializedName("tags")
     private List<String> tags = new ArrayList<>();
     @SerializedName("user")
-    private User user;
+    private UserEntity user;
     @SerializedName("team")
-    private Team team;
+    private TeamEntity team;
 
     public Integer getId() {
         return id;
@@ -243,19 +243,19 @@ public class ShotEntity {
         this.tags = tags;
     }
 
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 
-    public Team getTeam() {
+    public TeamEntity getTeam() {
         return team;
     }
 
-    public void setTeam(Team team) {
+    public void setTeam(TeamEntity team) {
         this.team = team;
     }
 

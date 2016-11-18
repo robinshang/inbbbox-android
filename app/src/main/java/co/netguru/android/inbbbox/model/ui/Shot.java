@@ -17,12 +17,6 @@ public abstract class Shot implements Parcelable, ShotImage {
     @Nullable
     public abstract String title();
 
-    public abstract String userAvatarUrl();
-
-    public abstract String authorName();
-
-    public abstract String authorUrl();
-
     @Nullable
     public abstract String teamName();
 
@@ -52,11 +46,12 @@ public abstract class Shot implements Parcelable, ShotImage {
     @Nullable
     public abstract String normalImageUrl();
 
+    @Nullable
+    public abstract User author();
+
     @Override
     @Nullable
     public abstract String thumbnailUrl();
-
-    public abstract Integer authorId();
 
     public abstract boolean isBucketed();
 
@@ -67,12 +62,6 @@ public abstract class Shot implements Parcelable, ShotImage {
         public abstract Shot.Builder id(long id);
 
         public abstract Shot.Builder title(String title);
-
-        public abstract Shot.Builder userAvatarUrl(String userAvatarUrl);
-
-        public abstract Shot.Builder authorName(String authorName);
-
-        public abstract Shot.Builder authorUrl(String authorUrl);
 
         public abstract Shot.Builder teamName(String companyName);
 
@@ -88,8 +77,6 @@ public abstract class Shot implements Parcelable, ShotImage {
 
         public abstract Shot.Builder description(String description);
 
-        public abstract Shot.Builder authorId(Integer description);
-
         public abstract Shot.Builder isLiked(boolean state);
 
         public abstract Shot.Builder isBucketed(boolean state);
@@ -102,6 +89,8 @@ public abstract class Shot implements Parcelable, ShotImage {
 
         public abstract Shot.Builder thumbnailUrl(String url);
 
+        public abstract Shot.Builder author(User user);
+
         public abstract Shot build();
     }
 
@@ -112,21 +101,17 @@ public abstract class Shot implements Parcelable, ShotImage {
     public static Shot create(ShotEntity shotEntity) {
         return Shot.builder()
                 .id(shotEntity.getId())
-                .authorId(shotEntity.getUser().id())
-                .authorName(shotEntity.getUser().name())
+                .author(User.create(shotEntity.getUser()))
                 .title(shotEntity.getTitle())
                 .description(shotEntity.getDescription())
-                // TODO: 17.11.2016
                 .projectUrl(shotEntity.getProjectsUrl())
                 .teamName(shotEntity.getTeam() != null ? shotEntity.getTeam().getName() : null)
                 .teamProfileUrl(shotEntity.getTeam() != null ? shotEntity.getTeam().getTeamShotsUrl() : null)
-                .userAvatarUrl(shotEntity.getUser().avatarUrl())
                 .bucketCount(shotEntity.getBucketsCount())
                 .likesCount(shotEntity.getLikesCount())
                 // TODO: 17.11.2016
                 .isBucketed(false)
                 .isLiked(false)
-                .authorUrl(shotEntity.getUser().htmlUrl())
                 .date(shotEntity.getCreatedAt())
                 .isGif(shotEntity.getAnimated())
                 .hdpiImageUrl(shotEntity.getImage().hiDpiUrl())
