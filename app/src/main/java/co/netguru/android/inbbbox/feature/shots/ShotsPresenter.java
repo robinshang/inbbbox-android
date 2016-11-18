@@ -112,7 +112,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     @Override
     public void showShotDetails(Shot shot) {
-        // TODO: 18.11.2016 pass shot model
-//        getView().showShotDetails(shot.id());
+        getView().showShotDetails(shot);
     }
 }

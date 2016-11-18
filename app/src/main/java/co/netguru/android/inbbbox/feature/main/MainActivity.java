@@ -43,6 +43,7 @@ import co.netguru.android.inbbbox.feature.likes.LikesFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -136,8 +137,8 @@ public class MainActivity
         return component.getMainActivityPresenter();
     }
 
-    private void showFragmentDetails(int shotId) {
-        Fragment fragment = ShotDetailsFragment.newInstance(shotId);
+    private void showFragmentDetails(Shot shot) {
+        Fragment fragment = ShotDetailsFragment.newInstance(shot);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
@@ -388,8 +389,8 @@ public class MainActivity
     }
 
     @Override
-    public void showShotDetails(int id) {
-        showFragmentDetails(id);
+    public void showShotDetails(Shot shot) {
+        showFragmentDetails(shot);
     }
 
     private BottomSheetBehavior getBottomSheetBehavior() {

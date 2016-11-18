@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindDimen;
@@ -23,7 +25,8 @@ import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
-import co.netguru.android.inbbbox.model.ui.ShotDetails;
+import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotImage;
 import co.netguru.android.inbbbox.utils.ShotLoadingManager;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
@@ -33,7 +36,7 @@ public class ShotDetailsFragment
         implements ShotDetailsContract.View {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
-    private static final String ARG_SHOT_ID = "arg:shot_id";
+    private static final String ARG_SHOT = "arg:shot";
     private ShotDetailsComponent component;
 
     @BindView(R.id.shot_details_toolbar)
@@ -82,9 +85,9 @@ public class ShotDetailsFragment
         getActivity().onBackPressed();
     }
 
-    public static ShotDetailsFragment newInstance(long shotId) {
+    public static ShotDetailsFragment newInstance(Shot shot) {
         Bundle args = new Bundle();
-        args.putLong(ARG_SHOT_ID, shotId);
+        args.putParcelable(ARG_SHOT, shot);
         ShotDetailsFragment fragment = new ShotDetailsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -100,9 +103,9 @@ public class ShotDetailsFragment
     }
 
     private void initComponent() {
-        long shotId = getArguments().getLong(ARG_SHOT_ID);
+        Shot shot = getArguments().getParcelable(ARG_SHOT);
         component = App.getAppComponent(getContext())
-                .plus(new ShotsDetailsModule(shotId, actionsCallback));
+                .plus(new ShotsDetailsModule(shot, actionsCallback));
         component.inject(this);
     }
 
@@ -125,8 +128,12 @@ public class ShotDetailsFragment
     }
 
     // TODO: 16.11.2016 it will be public when MVP will be implemented in task IA-146
-    public void showDetails(ShotDetails details) {
+    public void showDetails(Shot details) {
         adapter.setDetails(details);
+    }
+
+    public void showComments(List<Comment> commentList) {
+        adapter.setComments(commentList);
     }
 
     public void showMainImage(ShotImage shotImage) {

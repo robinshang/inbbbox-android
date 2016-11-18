@@ -2,11 +2,14 @@ package co.netguru.android.inbbbox.feature.details;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
-import co.netguru.android.inbbbox.model.ui.ShotDetails;
+import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -16,16 +19,16 @@ public class ShotDetailsPresenter
         extends MvpNullObjectBasePresenter<ShotDetailsContract.View>
         implements ShotDetailsContract.Presenter {
 
-    private final long shotId;
+    private Shot shot;
     private final ShotDetailsController shotDetailsController;
     private final ErrorMessageController messageController;
     private final CompositeSubscription subscriptions;
 
     @Inject
-    public ShotDetailsPresenter(long shotId,
+    public ShotDetailsPresenter(Shot shot,
                                 ShotDetailsController shotDetailsController,
                                 ErrorMessageController messageController) {
-        this.shotId = shotId;
+        this.shot = shot;
         this.shotDetailsController = shotDetailsController;
         this.messageController = messageController;
         this.subscriptions = new CompositeSubscription();
@@ -39,18 +42,19 @@ public class ShotDetailsPresenter
 
     @Override
     public void downloadData() {
+        showShotDetails(shot);
         subscriptions.add(
-                shotDetailsController.getShotDetails(shotId)
+                shotDetailsController.getShotComments(shot.id())
                         .compose(androidIO())
-                        .subscribe(this::handleShotDetails, this::handleApiError)
+                        .subscribe(this::showComments, this::handleApiError)
         );
-//        TODO: 15.11.2016 MOCKED DATA - remove in task IA-146
-//        getView().showDetails(MockedExampleData.getMocketShotDetailsData());
-//        getView().showMainImage(MockedExampleData.getExampleImageUrl(), MockedExampleData.getExampleImageUrl());
-        // TODO: 15.11.2016 MOCKED DATA - remove in task IA-146
     }
 
-    private void handleShotDetails(ShotDetails shotDetails) {
+    private void showComments(List<Comment> comments) {
+        getView().showComments(comments);
+    }
+
+    private void showShotDetails(Shot shotDetails) {
         Timber.d("Shot details received: " + shotDetails);
         getView().showMainImage(shotDetails);
         getView().showDetails(shotDetails);

@@ -21,7 +21,7 @@ interface ShotsContract {
 
         void closeFabMenu();
 
-        void showShotDetails(int shotId);
+        void showShotDetails(Shot shot);
     }
 
     interface Presenter extends MvpPresenter<View> {

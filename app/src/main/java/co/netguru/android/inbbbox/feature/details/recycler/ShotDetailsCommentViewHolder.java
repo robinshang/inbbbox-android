@@ -36,7 +36,7 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
 
     @Override
     protected void handleBinding() {
-        Comment currentComment = item.comments()
+        Comment currentComment = commentList
                 .get(getAdapterPosition() - ShotDetailsAdapter.STATIC_ITEMS_COUNT);
 
         authorTextView.setText(currentComment.author());

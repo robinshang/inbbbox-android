@@ -159,8 +159,8 @@ public class ShotsFragment
     }
 
     @Override
-    public void showShotDetails(int shotId) {
-        shotLikeStatusListener.showShotDetails(shotId);
+    public void showShotDetails(Shot shot) {
+        shotLikeStatusListener.showShotDetails(shot);
     }
 
     @Override
@@ -187,7 +187,7 @@ public class ShotsFragment
     public interface ShotLikeStatusListener {
         void shotLikeStatusChanged();
 
-        void showShotDetails(int id);
+        void showShotDetails(Shot shot);
     }
 
     @Override
