@@ -29,7 +29,8 @@ public abstract class Shot implements Parcelable, ShotImage {
     @Nullable
     public abstract String companyProfileUrl();
 
-    public abstract String appName();
+    @Nullable
+    public abstract String projectUrl();
 
     public abstract LocalDateTime date();
 
@@ -73,11 +74,11 @@ public abstract class Shot implements Parcelable, ShotImage {
 
         public abstract Shot.Builder authorUrl(String authorUrl);
 
-        public abstract Shot.Builder companyName(String companyName);
+        public abstract Shot.Builder teamName(String companyName);
 
-        public abstract Shot.Builder companyProfileUrl(String companyProfileUrl);
+        public abstract Shot.Builder teamProfileUrl(String companyProfileUrl);
 
-        public abstract Shot.Builder appName(String appName);
+        public abstract Shot.Builder projectUrl(String url);
 
         public abstract Shot.Builder date(LocalDateTime date);
 
@@ -116,9 +117,9 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .title(shotEntity.getTitle())
                 .description(shotEntity.getDescription())
                 // TODO: 17.11.2016
-                .appName("???")
-                .companyName(shotEntity.getTeam() != null ? shotEntity.getTeam().getName() : null)
-                .companyProfileUrl(shotEntity.getTeam() != null ? shotEntity.getTeam().getTeamShotsUrl() : null)
+                .projectUrl(shotEntity.getHtmlUrl())
+                .teamName(shotEntity.getTeam() != null ? shotEntity.getTeam().getName() : null)
+                .teamProfileUrl(shotEntity.getTeam() != null ? shotEntity.getTeam().getTeamShotsUrl() : null)
                 .userAvatarUrl(shotEntity.getUser().avatarUrl())
                 .bucketCount(shotEntity.getBucketsCount())
                 .likesCount(shotEntity.getLikesCount())

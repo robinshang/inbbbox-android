@@ -10,6 +10,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
 
 class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
 
@@ -81,8 +82,7 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
         shotTitleTextView.setText(item.title());
         showImage(item.userAvatarUrl());
         showAuthorInfo(item.authorName(), item.companyName());
-        // TODO: 17.11.2016 date formatting
-        showInfo(item.appName(), "1999-99-99");
+        showInfo(item.projectUrl(), LocalTimeFormatter.getShotDetailsDate(item.date()));
         showCounters(item.likesCount(), item.bucketCount());
 
         isLiked = item.isLiked();

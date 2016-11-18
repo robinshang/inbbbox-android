@@ -27,6 +27,7 @@ public final class LocalTimeFormatter {
     private static final long HALF_OF_MIN = 30;
     private static final long HALF_MINUTE_IN_SEC = 30;
     private static final long HALF_HOUR_IN_SEC = HOUR_IN_SEC / 2;
+    private static final java.lang.String SHOT_DETAILS_FORMAT = "MMM dd, yyyy";
     private final DateTimeFormatter dateTimeFormatter;
 
     @Inject
@@ -104,5 +105,12 @@ public final class LocalTimeFormatter {
             label = dateTime.format(formatter);
         }
         return label;
+    }
+
+    public static String getShotDetailsDate(LocalDateTime date) {
+        DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern(SHOT_DETAILS_FORMAT)
+                .withZone(ZoneId.systemDefault());
+        return date.format(formatter);
     }
 }
