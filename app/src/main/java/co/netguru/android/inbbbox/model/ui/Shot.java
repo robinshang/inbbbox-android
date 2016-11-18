@@ -18,12 +18,6 @@ public abstract class Shot implements Parcelable, ShotImage {
     public abstract String title();
 
     @Nullable
-    public abstract String teamName();
-
-    @Nullable
-    public abstract String teamProfileUrl();
-
-    @Nullable
     public abstract String projectUrl();
 
     public abstract LocalDateTime date();
@@ -49,6 +43,9 @@ public abstract class Shot implements Parcelable, ShotImage {
     @Nullable
     public abstract User author();
 
+    @Nullable
+    public abstract Team team();
+
     @Override
     @Nullable
     public abstract String thumbnailUrl();
@@ -63,9 +60,7 @@ public abstract class Shot implements Parcelable, ShotImage {
 
         public abstract Shot.Builder title(String title);
 
-        public abstract Shot.Builder teamName(String companyName);
-
-        public abstract Shot.Builder teamProfileUrl(String companyProfileUrl);
+        public abstract Shot.Builder team(Team team);
 
         public abstract Shot.Builder projectUrl(String url);
 
@@ -105,8 +100,7 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .title(shotEntity.getTitle())
                 .description(shotEntity.getDescription())
                 .projectUrl(shotEntity.getProjectsUrl())
-                .teamName(shotEntity.getTeam() != null ? shotEntity.getTeam().getName() : null)
-                .teamProfileUrl(shotEntity.getTeam() != null ? shotEntity.getTeam().getTeamShotsUrl() : null)
+                .team(shotEntity.getTeam() != null ? Team.create(shotEntity.getTeam()) : null)
                 .bucketCount(shotEntity.getBucketsCount())
                 .likesCount(shotEntity.getLikesCount())
                 // TODO: 17.11.2016

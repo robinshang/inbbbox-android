@@ -10,6 +10,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.model.ui.Team;
 import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
 
 class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
@@ -33,7 +34,7 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     TextView authorTextView;
 
     @BindView(R.id.details_company_textView)
-    TextView companyTextView;
+    TextView teamTextView;
 
     @BindString(R.string.info_pattern)
     String infoPattern;
@@ -69,25 +70,34 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
 
     @OnClick(R.id.details_company_textView)
     void onCompanyClick() {
-        actionCallbackListener.onCompanySelected(item.teamProfileUrl());
+        actionCallbackListener.onTeamSelected(item.team());
     }
 
     @OnClick(R.id.details_author_textView)
     void onAuthorClick() {
-        actionCallbackListener.onUserSelected(item.author().id());
+        actionCallbackListener.onUserSelected(item.author());
     }
 
     @Override
     protected void handleBinding() {
         shotTitleTextView.setText(item.title());
         showImage(item.author().avatarUrl());
-        showAuthorInfo(item.author().name(), item.teamName());
+        showAuthorInfo(item.author().name());
+        showTeamInfo(item.team());
         showInfo(item.projectUrl(), LocalTimeFormatter.getShotDetailsDate(item.date()));
         showCounters(item.likesCount(), item.bucketCount());
 
         isLiked = item.isLiked();
         isBucketed = item.isBucketed();
         updateActionsState();
+    }
+
+    private void showTeamInfo(Team team) {
+        if(team != null){
+            teamTextView.setText(team.name());
+        }else{
+            // TODO: 18.11.2016 hide team label
+        }
     }
 
     private void updateActionsState() {
@@ -106,9 +116,8 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
         shotDateInfoTextView.setText(infoPattern);
     }
 
-    private void showAuthorInfo(String author, String company) {
+    private void showAuthorInfo(String author) {
         authorTextView.setText(author);
-        companyTextView.setText(company);
     }
 
     private void showImage(String url) {

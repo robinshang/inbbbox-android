@@ -107,9 +107,6 @@ public class ShotsPresenterTest {
                 .title("test")
                 .isLiked(false)
                 .isGif(false)
-                .userAvatarUrl("")
-                .authorName("")
-                .authorId(123)
                 .date(LocalDateTime.now())
                 .likesCount(123)
                 .bucketCount(123)
@@ -135,14 +132,14 @@ public class ShotsPresenterTest {
         presenter.likeShot(expectedShot);
 
         verify(viewMock, times(1)).changeShotLikeStatus(any(Shot.class));
-    }
-
-    @Test
     public void whenShotLikedAndLikeActionCalled_thenCallLikeShotMethod() {
         when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.complete());
         Shot expectedShot = Shot.builder()
                 .id(exampleId)
                 .title("test")
+    }
+
+    @Test
                 .isLiked(false)
                 .isGif(false)
                 .build();

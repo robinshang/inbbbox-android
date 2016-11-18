@@ -28,6 +28,8 @@ import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotImage;
+import co.netguru.android.inbbbox.model.ui.Team;
+import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.inbbbox.utils.ShotLoadingManager;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
@@ -56,15 +58,15 @@ public class ShotDetailsFragment
 
     private DetailsViewActionCallback actionsCallback = new DetailsViewActionCallback() {
         @Override
-        public void onCompanySelected(String companyProfileUrl) {
+        public void onTeamSelected(Team team) {
             // TODO: 15.11.2016 not in scope of this task
-            Toast.makeText(getContext(), "company: " + companyProfileUrl, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "team clicked: " + team.name(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
-        public void onUserSelected(long userId) {
+        public void onUserSelected(User user) {
             // TODO: 15.11.2016 not in scope of this task
-            Toast.makeText(getContext(), "userId " + userId, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "user clicked " + user.name(), Toast.LENGTH_SHORT).show();
         }
 
         @Override

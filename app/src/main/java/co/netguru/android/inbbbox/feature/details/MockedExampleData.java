@@ -112,8 +112,6 @@ class MockedExampleData {
                 .projectUrl("demo app")
                 .bucketCount(123)
                 .likesCount(321)
-                .teamName("Netguru dmeos")
-                .teamProfileUrl("http://google.com")
                 .date(LocalDateTime.now())
                 .isLiked(false)
                 .isBucketed(false)

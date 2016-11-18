@@ -1,10 +1,13 @@
 package co.netguru.android.inbbbox.feature.details.recycler;
 
+import co.netguru.android.inbbbox.model.ui.Team;
+import co.netguru.android.inbbbox.model.ui.User;
+
 public interface DetailsViewActionCallback {
 
-    void onCompanySelected(String companyProfileUrl);
+    void onTeamSelected(Team team);
 
-    void onUserSelected(long userId);
+    void onUserSelected(User user);
 
     void onShotLikeAction(long shotId, boolean isLiked);
 
