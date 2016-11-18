@@ -56,6 +56,25 @@ public abstract class Shot implements Parcelable, ShotImage {
     @Nullable
     public abstract Boolean isLiked();
 
+    public static Builder update(Shot shot) {
+        return Shot.builder()
+                .id(shot.id())
+                .title(shot.title())
+                .author(shot.author())
+                .team(shot.team())
+                .projectUrl(shot.projectUrl())
+                .date(shot.date())
+                .likesCount(shot.likesCount())
+                .bucketCount(shot.bucketCount())
+                .description(shot.description())
+                .isGif(shot.isGif())
+                .hdpiImageUrl(shot.hdpiImageUrl())
+                .normalImageUrl(shot.normalImageUrl())
+                .thumbnailUrl(shot.thumbnailUrl())
+                .isLiked(shot.isLiked())
+                .isBucketed(shot.isBucketed());
+    }
+
     @AutoValue.Builder
     public abstract static class Builder {
         public abstract Shot.Builder id(long id);
@@ -106,10 +125,11 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .likesCount(shotEntity.getLikesCount())
                 .date(shotEntity.getCreatedAt())
                 .isGif(shotEntity.getAnimated())
+                .isLiked(false)
+                .isBucketed(false)
                 .hdpiImageUrl(shotEntity.getImage().hiDpiUrl())
                 .normalImageUrl(shotEntity.getImage().normalUrl())
                 .thumbnailUrl(shotEntity.getImage().teaserUrl())
                 .build();
     }
-
 }

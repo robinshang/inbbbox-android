@@ -2,14 +2,12 @@ package co.netguru.android.inbbbox.feature.details;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
-import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -46,12 +44,22 @@ public class ShotDetailsPresenter
         subscriptions.add(
                 shotDetailsController.getShotComments(shot.id())
                         .compose(androidIO())
-                        .subscribe(this::showComments, this::handleApiError)
+                        .subscribe(this::handleDetailsStates, this::handleApiError)
         );
     }
 
-    private void showComments(List<Comment> comments) {
-        getView().showComments(comments);
+    private void handleDetailsStates(ShotDetailsState state) {
+        getView().showComments(state.getCommentList());
+        updateShotDetails(state.isLiked(), state.isBucketed());
+        showShotDetails(shot);
+    }
+
+    private void updateShotDetails(boolean liked, boolean bucketed) {
+        shot = Shot.update(shot)
+                .isLiked(liked)
+                .isBucketed(bucketed)
+                .build();
+
     }
 
     private void showShotDetails(Shot shotDetails) {
