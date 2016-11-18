@@ -40,7 +40,7 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
                 .get(getAdapterPosition() - ShotDetailsAdapter.STATIC_ITEMS_COUNT);
 
         authorTextView.setText(currentComment.author());
-        commentTextTextView.setText(currentComment.text());
+        commentTextTextView.setText(displayHtml(currentComment.text()));
 
         showAvatar(currentComment.authorAvatarUrl());
         dateTextView.setText(localTimeFormatter

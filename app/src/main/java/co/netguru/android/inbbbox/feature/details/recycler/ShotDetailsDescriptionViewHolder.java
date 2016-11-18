@@ -17,6 +17,6 @@ class ShotDetailsDescriptionViewHolder extends ShotDetailsViewHolder {
 
     @Override
     protected void handleBinding() {
-        descriptionTextView.setText(item.description());
+        descriptionTextView.setText(displayHtml(item.description()));
     }
 }
