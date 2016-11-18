@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.details.recycler;
 
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,5 +19,6 @@ class ShotDetailsDescriptionViewHolder extends ShotDetailsViewHolder {
     @Override
     protected void handleBinding() {
         descriptionTextView.setText(displayHtml(item.description()));
+        descriptionTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

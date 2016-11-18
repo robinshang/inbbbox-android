@@ -23,9 +23,6 @@
     <dimen name="drawer_header_photo_margin_top">52dp</dimen>
     <dimen name="drawer_arrow_size">24dp</dimen> 
     <dimen name="drawer_arrow_margin_end">6dp</dimen>
-    <dimen name="shot_image_height">600dp</dimen>
-    <dimen name="shot_image_width">800dp</dimen>
-    <dimen name="shot_item_internal_padding">24dp</dimen>
 
     <dimen name="right_swipe_action_panel_width">85dp</dimen>
     <dimen name="left_swipe_action_panel_width">160dp</dimen>
@@ -51,25 +48,36 @@
     <dimen name="fab_menu_label_side_padding">6dp</dimen>
     <dimen name="fab_menu_label_bottom_top_padding">2dp</dimen>
     <dimen name="fab_label_font_size">12sp</dimen>
-    <dimen name="shots_label_radius">24dp</dimen>
 
-    <dimen name="shot_corner_radius">8dp</dimen>
-
-    <dimen name="shot_background_padding">-1dp</dimen>
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="toolbar_logo_left_margin">52dp</dimen>
     <dimen name="gif_label_top_bottom_padding">8dp</dimen>
     <dimen name="gif_label_side_padding">6dp</dimen>
-    <dimen name="shot_details_top_padding">32dp</dimen>
+
+    <dimen name="shots_label_radius">24dp</dimen>
+    <dimen name="shot_corner_radius">8dp</dimen>
+    <dimen name="shot_image_height">600dp</dimen>
+    <dimen name="shot_image_width">800dp</dimen>
+    <dimen name="shot_item_internal_padding">24dp</dimen>
+
+    <dimen name="shot_background_padding">-1dp</dimen>
+
+    <dimen name="details_shot_top_padding">32dp</dimen>
     <dimen name="details_user_avatar_size">48dp</dimen>
     <dimen name="details_user_avatar_margin">16dp</dimen>
     <dimen name="details_info_action_icon_size">32dp</dimen>
-    <dimen name="shot_details_actions_margin">10dp</dimen>
-    <dimen name="comment_user_avatar_size">32dp</dimen>
+    <dimen name="details_shot_details_actions_margin">10dp</dimen>
+    <dimen name="details_comment_user_avatar_size">32dp</dimen>
     <dimen name="details_description_line_margin">4dp</dimen>
     <dimen name="details_action_buttons_margin_top">10dp</dimen>
-    <dimen name="comment_divider_padding_top">5dp</dimen>
-    <dimen name="parralax_image_view_hight">250dp</dimen>
-    <dimen name="close_button_size">24dp</dimen>
-    <dimen name="close_button_margin">16dp</dimen>
-    <dimen name="divider_height">1dp</dimen>
-    <dimen name="toolbar_logo_left_margin">52dp</dimen>
+    <dimen name="details_comment_divider_padding_top">12dp</dimen>
+    <dimen name="details_parralax_image_view_height">250dp</dimen>
+    <dimen name="details_close_button_size">24dp</dimen>
+    <dimen name="details_close_button_margin">16dp</dimen>
+    <dimen name="details_action_label_right_margin">8dp</dimen>
+    <dimen name="details_action_label_left_margin">4dp</dimen>
+    <dimen name="details_comment_top_padding">4dp</dimen>
+    <dimen name="details_comment_divider_padding_bottom">16dp</dimen>
+    <dimen name="details_description_divider_padding_bottom">24dp</dimen>
+    <dimen name="details_comment_data_top_padding">2dp</dimen>
 </resources>

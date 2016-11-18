@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.details.recycler;
 
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +14,8 @@ import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
 
 class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
 
+    private static final String PARAGRAPH_TAG_START = "<p>";
+    private static final String PARAGRAPH_TAG_END = "</p>";
     @BindView(R.id.comment_author_textView)
     TextView authorTextView;
 
@@ -40,11 +43,19 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
                 .get(getAdapterPosition() - ShotDetailsAdapter.STATIC_ITEMS_COUNT);
 
         authorTextView.setText(currentComment.author());
-        commentTextTextView.setText(displayHtml(currentComment.text()));
+        setCommentText(currentComment.text());
 
         showAvatar(currentComment.authorAvatarUrl());
         dateTextView.setText(localTimeFormatter
                 .getTimeLabel(itemView.getContext(), currentComment.date()));
+    }
+
+    private void setCommentText(String text) {
+
+        commentTextTextView.setText(displayHtml(text
+                .replace(PARAGRAPH_TAG_START, "")
+                .replace(PARAGRAPH_TAG_END, "")));
+        commentTextTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void showAvatar(String authorAvatarUrl) {
