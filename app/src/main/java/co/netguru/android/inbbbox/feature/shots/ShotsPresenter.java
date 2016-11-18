@@ -86,12 +86,22 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         return Shot.builder()
                 .id(shot.id())
                 .title(shot.title())
+                .authorId(shot.authorId())
+                .authorName(shot.authorName())
+                .authorUrl(shot.authorUrl())
+                .companyName(shot.companyName())
+                .companyProfileUrl(shot.companyProfileUrl())
+                .appName(shot.appName())
+                .date(shot.date())
+                .likesCount(shot.likesCount())
+                .bucketCount(shot.bucketCount())
                 .description(shot.description())
+                .isGif(shot.isGif())
                 .hdpiImageUrl(shot.hdpiImageUrl())
                 .normalImageUrl(shot.normalImageUrl())
                 .thumbnailUrl(shot.thumbnailUrl())
-                .isGif(shot.isGif())
                 .isLiked(true)
+                .isBucketed(shot.isBucketed())
                 .build();
     }
 
@@ -102,6 +112,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     @Override
     public void showShotDetails(Shot shot) {
-        getView().showShotDetails(shot.id());
+        // TODO: 18.11.2016 pass shot model
+//        getView().showShotDetails(shot.id());
     }
 }
