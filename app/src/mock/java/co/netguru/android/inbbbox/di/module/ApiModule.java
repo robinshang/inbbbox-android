@@ -16,7 +16,6 @@ import co.netguru.android.inbbbox.api.MockedFollowersApi;
 import co.netguru.android.inbbbox.api.MockedLikesApi;
 import co.netguru.android.inbbbox.api.MockedUserApi;
 import co.netguru.android.inbbbox.api.ShotCommentsApi;
-import co.netguru.android.inbbbox.api.ShotDetailsApi;
 import co.netguru.android.inbbbox.api.ShotsApi;
 import co.netguru.android.inbbbox.api.UserApi;
 
@@ -57,11 +56,7 @@ public class ApiModule {
         return new MockedBucketApi();
     }
 
-    @Provides
-    ShotDetailsApi provideShotDetailsApi() {
-        return new MockShotDetailsApi();
-    }
-
+    @Providess
     @Provides
     ShotCommentsApi provideShotCommentsApi() {
         return new MockCommentsApi();

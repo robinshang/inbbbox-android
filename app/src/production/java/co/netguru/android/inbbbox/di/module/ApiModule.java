@@ -10,7 +10,6 @@ import co.netguru.android.inbbbox.api.BucketApi;
 import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.api.LikesApi;
 import co.netguru.android.inbbbox.api.ShotCommentsApi;
-import co.netguru.android.inbbbox.api.ShotDetailsApi;
 import co.netguru.android.inbbbox.api.ShotsApi;
 import co.netguru.android.inbbbox.api.UserApi;
 import dagger.Module;
@@ -63,12 +62,6 @@ public class ApiModule {
     @Provides
     BucketApi providesBucketApi(Retrofit retrofit) {
         return retrofit.create(BucketApi.class);
-    }
-
-    @Singleton
-    @Provides
-    ShotDetailsApi provideShotDetailsApi(Retrofit retrofit) {
-        return retrofit.create(ShotDetailsApi.class);
     }
 
     @Singleton

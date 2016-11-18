@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.netguru.android.inbbbox.model.ui.Comment;
-import co.netguru.android.inbbbox.model.ui.ShotDetails;
+import co.netguru.android.inbbbox.model.ui.Shot;
 
 class MockedExampleData {
 
@@ -15,7 +15,7 @@ class MockedExampleData {
         throw new AssertionError();
     }
 
-    public static ShotDetails getMocketShotDetailsData() {
+    public static Shot getMocketShotDetailsData() {
         List<Comment> comments = new ArrayList<>();
         Comment sec = Comment.builder()
                 .author("sec")
@@ -105,11 +105,10 @@ class MockedExampleData {
         comments.add(fewH);
         comments.add(yesterday);
         comments.add(date);
-        return ShotDetails
+        return Shot
                 .builder()
                 .id(1)
                 .title("Awsome Title homie")
-                .comments(comments)
                 .userAvatarUrl("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306")
                 .authorUrl("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306")
                 .authorName("demo author")
