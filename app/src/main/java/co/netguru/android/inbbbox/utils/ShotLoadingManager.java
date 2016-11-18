@@ -39,14 +39,13 @@ public class ShotLoadingManager {
         target.setImageResource(R.drawable.shot_placeholder);
 
         DrawableTypeRequest<String> typeRequest = Glide.with(context)
-                .load(getImageUrl(shot));
+                .load(shot.hdpiImageUrl());
 
         if (shot.isGif()) {
             typeRequest.asGif();
         }
         typeRequest
                 .thumbnail(ShotLoadingManager.getThumbnailRequest(context, shot.thumbnailUrl()))
-                .animate(android.R.anim.fade_in)
                 .into(target);
     }
 
