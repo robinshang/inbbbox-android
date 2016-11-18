@@ -132,14 +132,13 @@ public class ShotsPresenterTest {
         presenter.likeShot(expectedShot);
 
         verify(viewMock, times(1)).changeShotLikeStatus(any(Shot.class));
+    }
+
     public void whenShotLikedAndLikeActionCalled_thenCallLikeShotMethod() {
         when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.complete());
         Shot expectedShot = Shot.builder()
                 .id(exampleId)
                 .title("test")
-    }
-
-    @Test
                 .isLiked(false)
                 .isGif(false)
                 .build();

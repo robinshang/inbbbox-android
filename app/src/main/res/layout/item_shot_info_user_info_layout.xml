@@ -48,6 +48,7 @@
                               android:layout_marginBottom="@dimen/details_description_line_margin"
                               android:orientation="horizontal">
                     <TextView
+                        android:id="@+id/by_label_TextView"
                         style="@style/Font12.DarkGray"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -64,6 +65,7 @@
                         android:textStyle="bold"/>
 
                     <TextView
+                        android:id="@+id/for_label_textView"
                         style="@style/Font12.DarkGray"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -72,7 +74,7 @@
                         android:textStyle="bold"/>
 
                     <TextView
-                        android:id="@+id/details_company_textView"
+                        android:id="@+id/details_team_textView"
                         style="@style/Font12.Primary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -86,7 +88,7 @@
                     style="@style/Font12.DarkGray"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/info_pattern"/>
+                    android:text="@string/info_when_pattern"/>
             </LinearLayout>
         </RelativeLayout>
 

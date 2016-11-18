@@ -33,11 +33,17 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     @BindView(R.id.details_author_textView)
     TextView authorTextView;
 
-    @BindView(R.id.details_company_textView)
+    @BindView(R.id.details_team_textView)
     TextView teamTextView;
 
-    @BindString(R.string.info_pattern)
-    String infoPattern;
+    @BindView(R.id.for_label_textView)
+    TextView forLabel;
+
+    @BindString(R.string.info_when_pattern)
+    String infoWhenPattern;
+
+    @BindString(R.string.info_where_pattern)
+    String infoWherePattern;
 
     @BindView(R.id.details_likes_imageView)
     View likeImageView;
@@ -68,7 +74,7 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
         updateActionsState();
     }
 
-    @OnClick(R.id.details_company_textView)
+    @OnClick(R.id.details_team_textView)
     void onCompanyClick() {
         actionCallbackListener.onTeamSelected(item.team());
     }
@@ -93,10 +99,13 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     }
 
     private void showTeamInfo(Team team) {
-        if(team != null){
+        if (team != null) {
             teamTextView.setText(team.name());
-        }else{
-            // TODO: 18.11.2016 hide team label
+            teamTextView.setVisibility(View.VISIBLE);
+            forLabel.setVisibility(View.VISIBLE);
+        } else {
+            teamTextView.setVisibility(View.GONE);
+            forLabel.setVisibility(View.GONE);
         }
     }
 
@@ -110,10 +119,14 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
         bucketCountTextView.setText(bucketCount.toString());
     }
 
-    private void showInfo(String appName, String date) {
-        infoPattern = infoPattern.replace(APP_NAME_KEY, appName);
-        infoPattern = infoPattern.replace(DATE_KEY, date);
-        shotDateInfoTextView.setText(infoPattern);
+    private void showInfo(String projectName, String date) {
+        String info = "";
+        if (projectName != null && !projectName.isEmpty()) {
+            infoWherePattern = infoWherePattern.replace(APP_NAME_KEY, projectName);
+            info += infoWherePattern;
+        }
+        info += infoWhenPattern.replace(DATE_KEY, date);
+        shotDateInfoTextView.setText(info);
     }
 
     private void showAuthorInfo(String author) {
