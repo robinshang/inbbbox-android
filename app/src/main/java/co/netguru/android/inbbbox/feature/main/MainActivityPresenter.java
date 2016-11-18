@@ -17,7 +17,7 @@ import co.netguru.android.inbbbox.model.api.User;
 import co.netguru.android.inbbbox.model.localrepository.NotificationSettings;
 import co.netguru.android.inbbbox.model.localrepository.Settings;
 import co.netguru.android.inbbbox.model.localrepository.StreamSourceSettings;
-import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
+import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -27,7 +27,6 @@ import timber.log.Timber;
 public final class MainActivityPresenter extends MvpNullObjectBasePresenter<MainViewContract.View>
         implements Presenter {
 
-    private final LocalTimeFormatter localTimeFormatter;
     private final UserPrefsRepository userPrefsRepository;
     private final NotificationScheduler notificationScheduler;
     private final NotificationController notificationController;
@@ -38,10 +37,9 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private User user;
 
     @Inject
-    MainActivityPresenter(LocalTimeFormatter localTimeFormatter, UserPrefsRepository userPrefsRepository,
+    MainActivityPresenter(UserPrefsRepository userPrefsRepository,
                           NotificationScheduler notificationScheduler, NotificationController notificationController,
                           SettingsController settingsController) {
-        this.localTimeFormatter = localTimeFormatter;
         this.userPrefsRepository = userPrefsRepository;
         this.notificationScheduler = notificationScheduler;
         this.notificationController = notificationController;
@@ -169,7 +167,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                 .andThen(notificationController.scheduleNotification())
                 .compose(RxTransformerUtils.applySingleIoSchedulers())
                 .subscribe(notificationSettings ->
-                                getView().showNotificationTime(localTimeFormatter.getFormattedTime(hour, minute)),
+                                getView().showNotificationTime(DateTimeFormatUtil.getFormattedTime(hour, minute)),
                         this::onScheduleNotificationError);
 
         subscriptions.add(subscription);
@@ -200,7 +198,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     private void setNotificationSettings(NotificationSettings notificationSettings) {
         getView().changeNotificationStatus(notificationSettings.isEnabled());
-        getView().showNotificationTime(localTimeFormatter.getFormattedTime(notificationSettings.getHour(),
+        getView().showNotificationTime(DateTimeFormatUtil.getFormattedTime(notificationSettings.getHour(),
                 notificationSettings.getMinute()));
     }
 

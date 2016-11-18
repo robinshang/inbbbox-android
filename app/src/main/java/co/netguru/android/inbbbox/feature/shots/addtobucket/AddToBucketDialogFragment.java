@@ -6,11 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +22,8 @@ import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
 
+import butterknife.BindColor;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.App;
@@ -34,7 +33,9 @@ import co.netguru.android.inbbbox.feature.shots.addtobucket.adapter.BucketViewHo
 import co.netguru.android.inbbbox.feature.shots.addtobucket.adapter.BucketsAdapter;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.utils.DateFormatUtil;
+import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
+import co.netguru.android.inbbbox.utils.TextFormatter;
+import co.netguru.android.inbbbox.view.DividerItemDecorator;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucketContract.View, AddToBucketContract.Presenter>
@@ -62,6 +63,16 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     @BindView(R.id.no_buckets_text)
     TextView noBucketsText;
 
+    @BindColor(R.color.pink)
+    int pinkColor;
+
+    @BindString(R.string.fragment_add_to_bucket_shot_created_on)
+    String shotCreatedOnString;
+    @BindString(R.string.fragment_add_to_bucket_shot_created_by)
+    String shotCreatedByString;
+    @BindString(R.string.fragment_add_to_bucket_shot_created_for)
+    String shotCreatedForString;
+
     private final BucketsAdapter bucketsAdapter = new BucketsAdapter(this);
 
     public static AddToBucketDialogFragment newInstance(@NonNull Fragment targetFragment, @NonNull Shot shot) {
@@ -71,7 +82,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
         AddToBucketDialogFragment fragment = new AddToBucketDialogFragment();
         fragment.setArguments(args);
         fragment.setTargetFragment(targetFragment, FRAGMENT_REQUEST_CODE);
-        fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.BigDialog);
+        fragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BigDialog);
 
         return fragment;
     }
@@ -86,6 +97,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bucketsRecyclerView.setAdapter(bucketsAdapter);
+        bucketsRecyclerView.addItemDecoration(new DividerItemDecorator(getContext(), DividerItemDecorator.Orientation.VERTICAL_LIST));
         getPresenter().handleShot(getArguments().getParcelable(SHOT_ARG_KEY));
         getPresenter().loadAvailableBuckets();
     }
@@ -127,19 +139,22 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @Override
     public void showShotAuthor(String authorName) {
-        authorTextView.setText(getSpannableAuthorStringBuilder(authorName), TextView.BufferType.SPANNABLE);
+        authorTextView.setText(getFormattedAuthor(authorName), TextView.BufferType.SPANNABLE);
+    }
+
+    private SpannableStringBuilder getFormattedAuthor(String authorName) {
+        return TextFormatter.changeColourOfConcatedWord(shotCreatedByString, authorName, pinkColor);
     }
 
     @Override
     public void showShotAuthorAndTeam(String authorName, String teamName) {
-        SpannableStringBuilder spannableStringBuilder = getSpannableAuthorStringBuilder(authorName);
-        spannableStringBuilder
-                .append(' ').append(getString(R.string.fragment_add_to_bucket_shot_created_for))
-                .append(' ').append(teamName)
-                .setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.pink)),
-                        spannableStringBuilder.length() - teamName.length(), spannableStringBuilder.length(),
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        authorTextView.setText(spannableStringBuilder, TextView.BufferType.SPANNABLE);
+        SpannableStringBuilder spannableStringAuthorBuilder = getFormattedAuthor(authorName);
+        SpannableStringBuilder spannableStringTeamBuilder = TextFormatter.changeColourOfConcatedWord(
+                shotCreatedForString,
+                teamName,
+                pinkColor);
+        SpannableStringBuilder result = spannableStringAuthorBuilder.append(' ').append(spannableStringTeamBuilder);
+        authorTextView.setText(result, TextView.BufferType.SPANNABLE);
     }
 
     @Override
@@ -188,19 +203,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     }
 
     private String getFormattedDate(LocalDateTime creationDate) {
-        return String.format(getString(R.string.fragment_add_to_bucket_shot_created_on), DateFormatUtil.getMonthShortDayAndYearFormatedDate(creationDate));
-    }
-
-    @NonNull
-    private SpannableStringBuilder getSpannableAuthorStringBuilder(String authorName) {
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(getString(R.string.fragment_add_to_bucket_shot_created_by));
-        spannableStringBuilder
-                .append(' ')
-                .append(authorName)
-                .setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.pink)),
-                        spannableStringBuilder.length() - authorName.length(), spannableStringBuilder.length(),
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return spannableStringBuilder;
+        return String.format(shotCreatedOnString, DateTimeFormatUtil.getMonthShortDayAndYearFormattedDate(creationDate));
     }
 
     @FunctionalInterface

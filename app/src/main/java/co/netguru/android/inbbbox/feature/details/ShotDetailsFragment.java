@@ -80,9 +80,9 @@ public class ShotDetailsFragment extends Fragment {
         getActivity().onBackPressed();
     }
 
-    public static ShotDetailsFragment newInstance(int shotId) {
+    public static ShotDetailsFragment newInstance(long shotId) {
         Bundle args = new Bundle();
-        args.putInt(ARG_SHOT_ID, shotId);
+        args.putLong(ARG_SHOT_ID, shotId);
         ShotDetailsFragment fragment = new ShotDetailsFragment();
         fragment.setArguments(args);
         return fragment;
