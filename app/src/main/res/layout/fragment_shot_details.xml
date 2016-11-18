@@ -25,7 +25,7 @@
             <co.netguru.android.inbbbox.view.RoundedCornersImageView
                 android:id="@+id/parallax_image_view"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/details_parralax_image_view_height"
+                android:layout_height="@dimen/details_parallax_image_view_height"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center_horizontal|top"
                 android:fitsSystemWindows="true"

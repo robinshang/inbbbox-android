@@ -71,7 +71,7 @@
     <dimen name="details_description_line_margin">4dp</dimen>
     <dimen name="details_action_buttons_margin_top">10dp</dimen>
     <dimen name="details_comment_divider_padding_top">12dp</dimen>
-    <dimen name="details_parralax_image_view_height">250dp</dimen>
+    <dimen name="details_parallax_image_view_height">250dp</dimen>
     <dimen name="details_close_button_size">24dp</dimen>
     <dimen name="details_close_button_margin">16dp</dimen>
     <dimen name="details_action_label_right_margin">8dp</dimen>
