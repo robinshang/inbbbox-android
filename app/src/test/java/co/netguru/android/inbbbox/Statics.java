@@ -2,9 +2,13 @@ package co.netguru.android.inbbbox;
 
 import org.threeten.bp.LocalDateTime;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.Links;
 import co.netguru.android.inbbbox.model.api.UserEntity;
+import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.Team;
 import co.netguru.android.inbbbox.model.ui.User;
@@ -86,4 +90,22 @@ public final class Statics {
             .normalImageUrl("")
             .thumbnailUrl("")
             .build();
+
+    public static final List<Comment> COMMENTS = generateComments();
+    private static final int COMMENTS_COUNT = 15;
+
+    private static List<Comment> generateComments() {
+        List<Comment> comments = new ArrayList<>();
+        for (int i = 0; i < COMMENTS_COUNT; i++) {
+            Comment comment = Comment.builder()
+                    .id(i)
+                    .author("Author: " + i)
+                    .authorAvatarUrl("")
+                    .date(LocalDateTime.now())
+                    .text("text: " + i)
+                    .build();
+            comments.add(comment);
+        }
+        return comments;
+    }
 }

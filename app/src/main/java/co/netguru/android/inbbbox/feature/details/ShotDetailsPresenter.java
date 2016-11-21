@@ -77,7 +77,6 @@ public class ShotDetailsPresenter
                 .isLiked(liked)
                 .isBucketed(bucketed)
                 .build();
-
     }
 
     private void showShotDetails(Shot shotDetails) {
