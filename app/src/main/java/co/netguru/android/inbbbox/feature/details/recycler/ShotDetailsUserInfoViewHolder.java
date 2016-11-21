@@ -11,7 +11,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.Team;
-import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
+import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 
 class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
 
@@ -90,7 +90,7 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
         showImage(item.author().avatarUrl());
         showAuthorInfo(item.author().name());
         showTeamInfo(item.team());
-        showInfo(item.projectUrl(), LocalTimeFormatter.getShotDetailsDate(item.date()));
+        showInfo(item.projectUrl(), DateTimeFormatUtil.getShotDetailsDate(item.date()));
         showCounters(item.likesCount(), item.bucketCount());
 
         isLiked = item.isLiked();

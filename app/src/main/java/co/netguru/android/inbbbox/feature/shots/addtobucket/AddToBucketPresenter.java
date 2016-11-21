@@ -37,11 +37,11 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
         this.shot = shot;
         getView().setShotTitle(shot.title());
         getView().showShotPreview(shot.normalImageUrl());
-        getView().showAuthorAvatar(shot.authorAvatarUrl());
+        getView().showAuthorAvatar(shot.author().avatarUrl());
         if (shot.team() != null) {
-            getView().showShotAuthorAndTeam(shot.authorName(), shot.team().name());
+            getView().showShotAuthorAndTeam(shot.author().name(), shot.team().name());
         } else {
-            getView().showShotAuthor(shot.authorName());
+            getView().showShotAuthor(shot.author().name());
         }
         getView().showShotCreationDate(shot.creationDate());
     }

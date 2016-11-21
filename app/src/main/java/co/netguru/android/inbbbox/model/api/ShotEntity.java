@@ -1,14 +1,11 @@
 package co.netguru.android.inbbbox.model.api;
 
-import android.support.annotation.Nullable;
-
 import com.google.gson.annotations.SerializedName;
 
 import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.threeten.bp.LocalDateTime;
 
 public class ShotEntity {
 
@@ -52,6 +49,8 @@ public class ShotEntity {
     private String likesUrl;
     @SerializedName("projects_url")
     private String projectsUrl;
+    @SerializedName("projects_count")
+    private int projectsCount;
     @SerializedName("rebounds_url")
     private String reboundsUrl;
     @SerializedName("animated")
@@ -167,12 +166,8 @@ public class ShotEntity {
         this.createdAt = createdAt;
     }
 
-    public String getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public String getHtmlUrl() {
@@ -269,18 +264,6 @@ public class ShotEntity {
 
     public void setProjectsCount(int projectsCount) {
         this.projectsCount = projectsCount;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
     }
 
     public void setUpdatedAt(LocalDateTime updatedAt) {

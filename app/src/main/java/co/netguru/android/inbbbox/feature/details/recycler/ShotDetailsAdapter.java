@@ -10,7 +10,6 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
 
 public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHolder> {
 
@@ -21,9 +20,7 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     private List<Comment> comments;
 
     @Inject
-    public ShotDetailsAdapter(LocalTimeFormatter localTimeFormatter,
-                              DetailsViewActionCallback actionCallback) {
-        this.localTimeFormatter = localTimeFormatter;
+    public ShotDetailsAdapter(DetailsViewActionCallback actionCallback) {
         this.actionCallback = actionCallback;
         comments = Collections.EMPTY_LIST;
     }
@@ -31,7 +28,7 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     @Override
     public ShotDetailsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return ShotDetailsViewFactory
-                .getViewHolder(viewType, parent, localTimeFormatter, actionCallback);
+                .getViewHolder(viewType, parent, actionCallback);
     }
 
     @Override

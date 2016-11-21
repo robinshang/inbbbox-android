@@ -16,8 +16,7 @@ public class LikesFragmentModule {
 
     private LikeClickListener likeClickListener;
 
-    public LikesFragmentModule(Context context, LikeClickListener likeClickListener) {
-        // TODO: 21.11.2016 remove context
+    public LikesFragmentModule(LikeClickListener likeClickListener) {
         this.likeClickListener = likeClickListener;
     }
 

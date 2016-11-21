@@ -176,7 +176,7 @@ public class ShotsFragment
 
     public void showShotDetails(Shot shot) {
         shotLikeStatusListener.showShotDetails(shot);
-
+    }
 
     @Override
     public void onShotLikeSwipe(Shot shot) {

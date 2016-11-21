@@ -9,7 +9,6 @@ import co.netguru.android.inbbbox.feature.details.ShotDetailsPresenter;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
 import dagger.Module;
 import dagger.Provides;
 
@@ -26,8 +25,8 @@ public class ShotsDetailsModule {
     }
 
     @Provides
-    ShotDetailsAdapter provideAdapter(LocalTimeFormatter formatter) {
-        return new ShotDetailsAdapter(formatter, callback);
+    ShotDetailsAdapter provideAdapter() {
+        return new ShotDetailsAdapter(callback);
     }
 
     @Provides
