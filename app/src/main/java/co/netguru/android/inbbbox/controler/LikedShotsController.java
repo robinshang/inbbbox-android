@@ -4,7 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.api.LikesApi;
-import co.netguru.android.inbbbox.model.ui.LikedShot;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Observable;
 
 @Singleton
@@ -17,9 +17,9 @@ public class LikedShotsController {
         this.likesApi = likesApi;
     }
 
-    public Observable<LikedShot> getLikedShots(int pageNumber, int pageCount) {
+    public Observable<Shot> getLikedShots(int pageNumber, int pageCount) {
         return likesApi.getLikedShots(pageNumber, pageCount)
                 .flatMap(Observable::from)
-                .map(LikedShot::new);
+                .map(likedShotEntity -> Shot.create(likedShotEntity.shot()));
     }
 }

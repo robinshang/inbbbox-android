@@ -5,15 +5,15 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.model.ui.LikedShot;
+import co.netguru.android.inbbbox.model.ui.Shot;
 
 interface LikesViewContract {
 
     interface View extends MvpView {
 
-        void showLikes(List<LikedShot> likedShotList);
+        void showLikes(List<Shot> likedShotList);
 
-        void showMoreLikes(List<LikedShot> likedShotList);
+        void showMoreLikes(List<Shot> likedShotList);
 
         void hideEmptyLikesInfo();
 

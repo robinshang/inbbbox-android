@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.controler.LikedShotsController;
-import co.netguru.android.inbbbox.model.ui.LikedShot;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -62,7 +62,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
         }
     }
 
-    private void onGetLikeShotListNext(List<LikedShot> likedShotList) {
+    private void onGetLikeShotListNext(List<Shot> likedShotList) {
         hasMore = likedShotList.size() == PAGE_COUNT;
         if (likedShotList.isEmpty()) {
             getView().showEmptyLikesInfo();
@@ -72,7 +72,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
         }
     }
 
-    private void onGetMoreLikeShotListNext(List<LikedShot> likedShotList) {
+    private void onGetMoreLikeShotListNext(List<Shot> likedShotList) {
         hasMore = likedShotList.size() == PAGE_COUNT;
         getView().showMoreLikes(likedShotList);
     }

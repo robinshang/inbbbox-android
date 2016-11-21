@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -26,8 +27,9 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.likes.adapter.LikeClickListener;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
-import co.netguru.android.inbbbox.model.ui.LikedShot;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.TextFormatter;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
@@ -67,7 +69,7 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
     public void onAttach(Context context) {
         super.onAttach(context);
         component = App.getAppComponent(getContext())
-                .plus(new LikesFragmentModule(context));
+                .plus(new LikesFragmentModule(context, createLikeClickListener()));
         component.inject(this);
     }
 
@@ -99,12 +101,12 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
     }
 
     @Override
-    public void showLikes(List<LikedShot> likedShotList) {
+    public void showLikes(List<Shot> likedShotList) {
         likesAdapter.setLikeList(likedShotList);
     }
 
     @Override
-    public void showMoreLikes(List<LikedShot> likedShotList) {
+    public void showMoreLikes(List<Shot> likedShotList) {
         likesAdapter.addMoreLikes(likedShotList);
     }
 
@@ -137,5 +139,9 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
                 presenter.getMoreLikesFromServer();
             }
         });
+    }
+
+    private LikeClickListener createLikeClickListener() {
+        return shot -> Toast.makeText(getContext(), shot.title(), Toast.LENGTH_SHORT).show();
     }
 }

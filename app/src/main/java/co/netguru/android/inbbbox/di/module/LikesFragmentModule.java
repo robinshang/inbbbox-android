@@ -6,6 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.feature.likes.LikesFragment;
+import co.netguru.android.inbbbox.feature.likes.adapter.LikeClickListener;
+import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
 import dagger.Module;
 import dagger.Provides;
 
@@ -13,9 +15,11 @@ import dagger.Provides;
 public class LikesFragmentModule {
 
     private final Context context;
+    private LikeClickListener likeClickListener;
 
-    public LikesFragmentModule(Context context) {
+    public LikesFragmentModule(Context context, LikeClickListener likeClickListener) {
         this.context = context;
+        this.likeClickListener = likeClickListener;
     }
 
     @Provides
@@ -28,5 +32,11 @@ public class LikesFragmentModule {
     @FragmentScope
     GridLayoutManager provideGridLayoutManager() {
         return new GridLayoutManager(context, LikesFragment.GRID_VIEW_COLUMN_COUNT);
+    }
+
+    @Provides
+    @FragmentScope
+    LikesAdapter provideLikeAdapter() {
+        return new LikesAdapter(likeClickListener);
     }
 }
