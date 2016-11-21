@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.netguru.android.inbbbox.model.api.Bucket;
+import co.netguru.android.inbbbox.model.api.CommentEntity;
 import co.netguru.android.inbbbox.model.api.Links;
 import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.inbbbox.model.ui.Comment;
@@ -94,7 +95,7 @@ public final class Statics {
     public static final List<Comment> COMMENTS = generateComments();
     private static final int COMMENTS_COUNT = 15;
 
-    private static List<Comment> generateComments() {
+    public static List<Comment> generateComments() {
         List<Comment> comments = new ArrayList<>();
         for (int i = 0; i < COMMENTS_COUNT; i++) {
             Comment comment = Comment.builder()
@@ -104,6 +105,15 @@ public final class Statics {
                     .date(LocalDateTime.now())
                     .text("text: " + i)
                     .build();
+            comments.add(comment);
+        }
+        return comments;
+    }
+
+    public static List<CommentEntity> generateCommentsEntity() {
+        List<CommentEntity> comments = new ArrayList<>();
+        for (int i = 0; i < COMMENTS_COUNT; i++) {
+            CommentEntity comment = new CommentEntity();
             comments.add(comment);
         }
         return comments;
