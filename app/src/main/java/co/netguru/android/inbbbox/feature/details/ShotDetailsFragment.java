@@ -70,9 +70,8 @@ public class ShotDetailsFragment
         }
 
         @Override
-        public void onShotLikeAction(long shotId, boolean isLiked) {
-            // TODO: 15.11.2016 not in scope of this task
-            Toast.makeText(getContext(), "like: " + isLiked, Toast.LENGTH_SHORT).show();
+        public void onShotLikeAction(boolean newLikeState) {
+            getPresenter().handleShotLike(newLikeState);
         }
 
         @Override

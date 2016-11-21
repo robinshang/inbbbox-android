@@ -48,5 +48,4 @@ public class ShotLoadingManager {
                 .crossFade()
                 .into(imageViewTarget);
     }
-
 }

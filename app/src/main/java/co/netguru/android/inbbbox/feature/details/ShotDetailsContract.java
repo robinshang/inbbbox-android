@@ -25,5 +25,7 @@ public interface ShotDetailsContract {
     interface Presenter extends MvpPresenter<View> {
 
         void downloadData();
+
+void handleShotLike(boolean newLikeState);
     }
 }

@@ -63,7 +63,7 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     @OnClick(R.id.details_likes_imageView)
     void onLikeShotClick() {
         isLiked = !isLiked;
-        actionCallbackListener.onShotLikeAction(item.id(), isLiked);
+        actionCallbackListener.onShotLikeAction( isLiked);
         updateActionsState();
     }
 

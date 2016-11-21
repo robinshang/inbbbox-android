@@ -9,7 +9,7 @@ public interface DetailsViewActionCallback {
 
     void onUserSelected(User user);
 
-    void onShotLikeAction(long shotId, boolean isLiked);
+    void onShotLikeAction( boolean isLiked);
 
     void onShotBucket(long shotId, boolean isLikedBucket);
 }

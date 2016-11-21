@@ -49,6 +49,23 @@ public class ShotDetailsPresenter
         );
     }
 
+    @Override
+    public void handleShotLike(boolean newLikeState) {
+        subscriptions.add(
+                shotDetailsController
+                        .performLikeAction(shot.id(), newLikeState)
+                        .subscribe(() -> updateLikeState(newLikeState),
+                                this::handleApiError)
+        );
+    }
+
+    private void updateLikeState(boolean newLikeState) {
+        shot = Shot.update(shot)
+                .isLiked(newLikeState)
+                .build();
+        showShotDetails(shot);
+    }
+
     private void handleDetailsStates(ShotDetailsState state) {
         getView().showComments(state.getCommentList());
         updateShotDetails(state.isLiked(), state.isBucketed());

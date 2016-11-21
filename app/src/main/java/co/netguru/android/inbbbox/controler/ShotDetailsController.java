@@ -5,30 +5,37 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.api.LikesApi;
 import co.netguru.android.inbbbox.api.ShotCommentsApi;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
+import rx.Completable;
 import rx.Observable;
-import rx.functions.Func1;
 
 import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
 
 public class ShotDetailsController {
 
     private final ShotCommentsApi shotCommentsApi;
-    private LikesApi likesApi;
+    private LikeShotController likeShotController;
 
     @Inject
-    public ShotDetailsController(ShotCommentsApi shotCommentsApi, LikesApi likesApi) {
+    public ShotDetailsController(ShotCommentsApi shotCommentsApi,
+                                 LikeShotController likeShotController) {
         this.shotCommentsApi = shotCommentsApi;
-        this.likesApi = likesApi;
+        this.likeShotController = likeShotController;
     }
 
     public Observable<ShotDetailsState> getShotComments(Long shotId) {
         return Observable.zip(getCommentList(shotId.toString()),
                 getLikeState(shotId),
-                (comments, isLiked) -> new ShotDetailsState(isLiked, false, comments));
+                getBucketState(shotId),
+                (comments, isLiked, isBucketed) -> new ShotDetailsState(isLiked, isBucketed, comments));
+    }
+
+    private Observable<Boolean> getBucketState(Long shotId) {
+        // TODO: 21.11.2016 not in scope of this task
+        // - return observable with boolean state if this shout belongs to some bucket of this user
+        return Observable.just(Boolean.FALSE);
     }
 
     private Observable<List<Comment>> getCommentList(String shotId) {
@@ -37,17 +44,22 @@ public class ShotDetailsController {
                 .map(Comment::create)
                 .distinct()
                 .toList()
-                .onErrorResumeNext(new Func1<Throwable, Observable<? extends List<Comment>>>() {
-                    @Override
-                    public Observable<? extends List<Comment>> call(Throwable throwable) {
-                        return Observable.just(Collections.emptyList());
-                    }
-                });
+                .onErrorResumeNext(throwable -> Observable.just(Collections.emptyList()));
     }
 
     private Observable<Boolean> getLikeState(Long shotId) {
-        return likesApi.isShotLiked(shotId)
+        return likeShotController.isShotLiked(shotId)
                 .andThen(Observable.just(Boolean.TRUE))
                 .onErrorResumeNext(Observable.just(Boolean.FALSE));
+    }
+
+    public Completable performLikeAction(long shotId, boolean newLikeState) {
+        Completable completable;
+        if (newLikeState) {
+            completable = likeShotController.likeShot(shotId);
+        } else {
+            completable = likeShotController.unLikeShot(shotId);
+        }
+        return completable;
     }
 }
