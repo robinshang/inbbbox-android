@@ -45,7 +45,7 @@ public class ShotLoadingManager {
                 .load(imageUrl)
                 .placeholder(R.drawable.shot_placeholder)
                 .thumbnail(ShotLoadingManager.getThumbnailRequest(context, shot.thumbnailUrl()))
-                .crossFade()
+                .animate(android.R.anim.fade_in)
                 .into(imageViewTarget);
     }
 }
