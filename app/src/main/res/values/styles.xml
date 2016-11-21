@@ -130,8 +130,8 @@
         <item name="colorAccent">@color/accent</item>
         <item name="android:textColorPrimary">@color/black</item>
         <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
-        <item name="android:windowMinWidthMajor">95%</item>
-        <item name="android:windowMinWidthMinor">95%</item>
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
@@ -148,7 +148,7 @@
         <item name="android:bottom">@dimen/gif_label_top_bottom_padding</item>
         <item name="android:alpha">0.7</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:layout_margin">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_margin">@dimen/margin_default</item>
         <item name="android:visibility">gone</item>
     </style>
 
@@ -166,10 +166,10 @@
     </style>
 
     <style name="ShotDetailsSectionContainer">
-        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
-        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
-        <item name="android:paddingTop">@dimen/details_shot_top_padding</item>
-        <item name="android:paddingBottom">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingLeft">@dimen/margin_default</item>
+        <item name="android:paddingRight">@dimen/margin_default</item>
+        <item name="android:paddingTop">@dimen/shot_details_top_padding</item>
+        <item name="android:paddingBottom">@dimen/margin_default</item>
     </style>
 
     <style name="ShotCommentSectionContainer" parent="ShotDetailsSectionContainer">

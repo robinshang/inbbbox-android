@@ -12,7 +12,7 @@ import org.threeten.bp.LocalTime;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
+import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 import timber.log.Timber;
 
 @Singleton
@@ -22,18 +22,16 @@ public final class NotificationScheduler {
 
     private final AlarmManager alarmManager;
     private final Context appContext;
-    private final LocalTimeFormatter localTimeFormatter;
 
     @Inject
-    public NotificationScheduler(AlarmManager alarmManager, Context appContext, LocalTimeFormatter localTimeFormatter) {
+    public NotificationScheduler(AlarmManager alarmManager, Context appContext) {
         this.alarmManager = alarmManager;
         this.appContext = appContext;
-        this.localTimeFormatter = localTimeFormatter;
     }
 
     public void scheduleRepeatingNotification(int hour, int minute) {
         Timber.d("Scheduling repeating notification at : %s", LocalTime.of(hour, minute));
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, localTimeFormatter.getSecondsFromTime(hour, minute),
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, DateTimeFormatUtil.getSecondsFromTime(hour, minute),
                 AlarmManager.INTERVAL_DAY,
                 createBroadcastPendingIntent());
     }
@@ -41,7 +39,7 @@ public final class NotificationScheduler {
     @TargetApi(Build.VERSION_CODES.M)
     public void scheduleNotificationWhileIdle(int hour, int minute) {
         Timber.d("Scheduling idle notification at : %s", LocalTime.of(hour, minute));
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, localTimeFormatter.getSecondsFromTime(hour, minute),
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, DateTimeFormatUtil.getSecondsFromTime(hour, minute),
                 createBroadcastPendingIntent());
     }
 

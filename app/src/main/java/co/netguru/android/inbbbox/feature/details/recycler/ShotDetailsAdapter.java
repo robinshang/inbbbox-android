@@ -16,7 +16,6 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
 
     static final int STATIC_ITEMS_COUNT = 2;
 
-    private final LocalTimeFormatter localTimeFormatter;
     private final DetailsViewActionCallback actionCallback;
     private Shot details;
     private List<Comment> comments;

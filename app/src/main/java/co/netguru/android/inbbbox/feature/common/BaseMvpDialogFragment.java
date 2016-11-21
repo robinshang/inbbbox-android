@@ -54,7 +54,6 @@ public abstract class BaseMvpDialogFragment<V extends MvpView, P extends MvpPres
         Activity activity = getActivity();
         boolean changingConfig = activity != null && activity.isChangingConfigurations();
         return getRetainInstance() && changingConfig;
-
     }
 
     @Override
@@ -74,7 +73,6 @@ public abstract class BaseMvpDialogFragment<V extends MvpView, P extends MvpPres
         super.onViewCreated(view, savedInstanceState);
         mvpDelegate.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
-
     }
 
     @Override

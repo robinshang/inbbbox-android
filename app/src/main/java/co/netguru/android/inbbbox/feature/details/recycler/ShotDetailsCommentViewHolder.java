@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.Comment;
-import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
+import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 
 class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
 
@@ -28,13 +28,8 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
     @BindView(R.id.comment_avatar_imageView)
     ImageView authorAvatarImageView;
 
-    private final LocalTimeFormatter localTimeFormatter;
-
-    ShotDetailsCommentViewHolder(View view,
-                                 LocalTimeFormatter localTimeFormatter,
-                                 DetailsViewActionCallback actionCallback) {
+    ShotDetailsCommentViewHolder(View view, DetailsViewActionCallback actionCallback) {
         super(view, actionCallback);
-        this.localTimeFormatter = localTimeFormatter;
     }
 
     @Override
@@ -46,7 +41,7 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
         setCommentText(currentComment.text());
 
         showAvatar(currentComment.authorAvatarUrl());
-        dateTextView.setText(localTimeFormatter
+        dateTextView.setText(DateTimeFormatUtil
                 .getTimeLabel(itemView.getContext(), currentComment.date()));
     }
 

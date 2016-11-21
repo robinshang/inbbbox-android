@@ -9,16 +9,14 @@ import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.format.DateTimeFormatter;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import co.netguru.android.inbbbox.R;
 
-@Singleton
-public final class LocalTimeFormatter {
+public final class DateTimeFormatUtil {
 
-    private static final String DATE_PATTER = "yyyy-MM-dd";
-    private static final String TIME_PATTER = "h:mm a";
+    private static final String DATE_PATTERN = "yyyy-MM-dd";
+    private static final String TWELVE_HOUR_CLOCK_PATTERN = "h:mm a";
+    private static final String MONTH_SHORT_DAY_AND_YEAR_FORMAT = "MMM dd, yyyy";
+
     private static final long MINUTE_IN_SEC = 60;
     private static final long SEC = 1;
     private static final long HOUR_IN_SEC = 3600;
@@ -28,43 +26,44 @@ public final class LocalTimeFormatter {
     private static final long HALF_MINUTE_IN_SEC = 30;
     private static final long HALF_HOUR_IN_SEC = HOUR_IN_SEC / 2;
     private static final java.lang.String SHOT_DETAILS_FORMAT = "MMM dd, yyyy";
-    private final DateTimeFormatter dateTimeFormatter;
 
-    @Inject
-    LocalTimeFormatter() {
-        dateTimeFormatter = DateTimeFormatter.ofPattern(TIME_PATTER).withZone(ZoneId.systemDefault());
+    private static final DateTimeFormatter TWELVE_HOUR_CLOCK_FORMATTER = DateTimeFormatter.ofPattern(TWELVE_HOUR_CLOCK_PATTERN)
+            .withZone(ZoneId.systemDefault());
+
+    private DateTimeFormatUtil() {
+        throw new AssertionError();
     }
 
-    public String getFormattedTime(int hour, int minute) {
-        return LocalTime.of(hour, minute).format(dateTimeFormatter);
+    public static String getFormattedTime(int hour, int minute) {
+        return LocalTime.of(hour, minute).format(TWELVE_HOUR_CLOCK_FORMATTER);
     }
 
-    public String getCurrentDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTER).withZone(ZoneId.systemDefault());
+    public static String getCurrentDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN).withZone(ZoneId.systemDefault());
         return LocalDate.now().format(formatter);
     }
 
-    public long getSecondsFromTime(int hour, int minute) {
+    public static long getSecondsFromTime(int hour, int minute) {
         return LocalDateTime.of(getDate(hour, minute), getLocalTime(hour, minute)).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
-    private LocalDate getDate(int hour, int minute) {
+    private static LocalDate getDate(int hour, int minute) {
         if (LocalTime.of(hour, minute).isAfter(LocalTime.now())) {
             return LocalDate.now();
         }
         return LocalDate.now().plusDays(1);
     }
 
-    private LocalTime getLocalTime(int hour, int minute) {
+    private static LocalTime getLocalTime(int hour, int minute) {
         return LocalTime.of(hour, minute, 0);
     }
 
-    public String getTimeLabel(Context context, LocalDateTime dateTime) {
+    public static String getTimeLabel(Context context, LocalDateTime dateTime) {
         String label;
         LocalDateTime now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toLocalDateTime();
         Duration duration = Duration.between(now, dateTime);
 
-        if (duration.getSeconds() <= LocalTimeFormatter.SEC) {
+        if (duration.getSeconds() <= DateTimeFormatUtil.SEC) {
 
             label = context.getString(R.string.about_sec_ago);
 
@@ -100,11 +99,15 @@ public final class LocalTimeFormatter {
 
         } else {
             DateTimeFormatter formatter = DateTimeFormatter
-                    .ofPattern(DATE_PATTER + " " + TIME_PATTER)
+                    .ofPattern(DATE_PATTERN + " " + TWELVE_HOUR_CLOCK_PATTERN)
                     .withZone(ZoneId.systemDefault());
             label = dateTime.format(formatter);
         }
         return label;
+    }
+
+    public static String getMonthShortDayAndYearFormattedDate(LocalDateTime localDateTime) {
+        return localDateTime.format(DateTimeFormatter.ofPattern(MONTH_SHORT_DAY_AND_YEAR_FORMAT));
     }
 
     public static String getShotDetailsDate(LocalDateTime date) {

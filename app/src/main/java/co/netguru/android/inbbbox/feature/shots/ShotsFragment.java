@@ -23,15 +23,18 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
+import co.netguru.android.inbbbox.feature.shots.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotSwipeListener;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
+import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView;
 import co.netguru.android.inbbbox.view.FogFloatingActionMenu;
 
 public class ShotsFragment
         extends BaseMvpFragment<ShotsContract.View, ShotsContract.Presenter>
-        implements ShotsContract.View, ShotSwipeListener {
+        implements ShotsContract.View, ShotSwipeListener,
+        AddToBucketDialogFragment.BucketSelectListener {
 
     @Inject
     ShotsAdapter adapter;
@@ -58,6 +61,8 @@ public class ShotsFragment
 
     @OnClick(R.id.fab_bucket_menu)
     void onBucketClick() {
+        getPresenter().handleAddShotToBucket(
+                adapter.getShotFromPosition(shotsRecyclerView.getCurrentItem()));
     }
 
     @OnClick(R.id.fab_comment_menu)
@@ -159,9 +164,19 @@ public class ShotsFragment
     }
 
     @Override
+    public void showBucketChoosing(Shot shot) {
+        AddToBucketDialogFragment.newInstance(this, shot)
+                .show(getActivity().getSupportFragmentManager(), AddToBucketDialogFragment.TAG);
+    }
+
+    @Override
+    public void showBucketAddSuccess() {
+        showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
+    }
+
     public void showShotDetails(Shot shot) {
         shotLikeStatusListener.showShotDetails(shot);
-    }
+
 
     @Override
     public void onShotLikeSwipe(Shot shot) {
@@ -170,13 +185,18 @@ public class ShotsFragment
 
     @Override
     public void onAddShotToBucketSwipe(Shot shot) {
-        // TODO: 17.11.2016 not in range of this task
+        getPresenter().handleAddShotToBucket(shot);
     }
 
     @Override
     public void onCommentShotSwipe(Shot shot) {
         //// TODO: 09.11.2016 Implement comment shot callback
         Toast.makeText(getContext(), "todo", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBucketForShotSelect(Bucket bucket, Shot shot) {
+        getPresenter().addShotToBucket(bucket, shot);
     }
 
     @Override
@@ -194,4 +214,5 @@ public class ShotsFragment
     public void hideLoadingIndicator() {
         swipeRefreshLayout.setRefreshing(false);
     }
+
 }

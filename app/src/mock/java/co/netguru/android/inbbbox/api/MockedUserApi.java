@@ -30,13 +30,13 @@ public class MockedUserApi implements UserApi {
                         .description("")
                         .id(1)
                         .name("name1")
-                        .shotsCount(10).updatedAt(LocalDateTime.now())
+                        .shotsCount(10)
                         .build(),
                 Bucket.builder().createdAt(LocalDateTime.now())
                         .description("")
                         .id(2)
                         .name("name2")
-                        .shotsCount(10).updatedAt(LocalDateTime.now())
+                        .shotsCount(10)
                         .build()
         );
     }

@@ -1,16 +1,19 @@
 package co.netguru.android.inbbbox.model.api;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.threeten.bp.LocalDateTime;
 
 public class ShotEntity {
 
     @SerializedName("id")
-    private Integer id;
+    private long id;
     @SerializedName("title")
     private String title;
     @SerializedName("description")
@@ -36,7 +39,7 @@ public class ShotEntity {
     @SerializedName("created_at")
     private LocalDateTime createdAt;
     @SerializedName("updated_at")
-    private String updatedAt;
+    private LocalDateTime updatedAt;
     @SerializedName("html_url")
     private String htmlUrl;
     @SerializedName("attachments_url")
@@ -60,7 +63,7 @@ public class ShotEntity {
     @SerializedName("team")
     private TeamEntity team;
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
@@ -75,6 +78,7 @@ public class ShotEntity {
     public void setTitle(String title) {
         this.title = title;
     }
+
     public String getDescription() {
         return description;
     }
@@ -259,4 +263,27 @@ public class ShotEntity {
         this.team = team;
     }
 
+    public int getProjectsCount() {
+        return projectsCount;
+    }
+
+    public void setProjectsCount(int projectsCount) {
+        this.projectsCount = projectsCount;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

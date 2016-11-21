@@ -14,23 +14,22 @@ import dagger.Provides;
 @Module
 public class LikesFragmentModule {
 
-    private final Context context;
     private LikeClickListener likeClickListener;
 
     public LikesFragmentModule(Context context, LikeClickListener likeClickListener) {
-        this.context = context;
+        // TODO: 21.11.2016 remove context
         this.likeClickListener = likeClickListener;
     }
 
     @Provides
     @FragmentScope
-    LinearLayoutManager provideLinearLayoutManager() {
+    LinearLayoutManager provideLinearLayoutManager(Context context) {
         return new LinearLayoutManager(context);
     }
 
     @Provides
     @FragmentScope
-    GridLayoutManager provideGridLayoutManager() {
+    GridLayoutManager provideGridLayoutManager(Context context) {
         return new GridLayoutManager(context, LikesFragment.GRID_VIEW_COLUMN_COUNT);
     }
 

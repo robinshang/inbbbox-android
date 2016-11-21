@@ -4,6 +4,7 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
+import com.google.gson.TypeAdapter;
 
 import org.threeten.bp.LocalDateTime;
 
@@ -12,10 +13,12 @@ import co.netguru.android.inbbbox.model.api.ShotEntity;
 @AutoValue
 public abstract class Shot implements Parcelable, ShotImage {
 
-    public abstract long id();
+    public abstract Integer id();
 
     @Nullable
     public abstract String title();
+
+    public abstract LocalDateTime creationDate();
 
     @Nullable
     public abstract String projectUrl();
@@ -91,6 +94,8 @@ public abstract class Shot implements Parcelable, ShotImage {
 
         public abstract Shot.Builder bucketCount(Integer bucketCount);
 
+        public abstract Shot.Builder creationDate(LocalDateTime localDateTime);
+
         public abstract Shot.Builder description(String description);
 
         public abstract Shot.Builder isLiked(Boolean state);
@@ -119,6 +124,7 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .id(shotEntity.getId())
                 .author(shotEntity.getUser() != null ? User.create(shotEntity.getUser()) : null)
                 .title(shotEntity.getTitle())
+                .creationDate(shotEntity.getCreatedAt())
                 .description(shotEntity.getDescription())
                 .team(shotEntity.getTeam() != null ? Team.create(shotEntity.getTeam()) : null)
                 .bucketCount(shotEntity.getBucketsCount())

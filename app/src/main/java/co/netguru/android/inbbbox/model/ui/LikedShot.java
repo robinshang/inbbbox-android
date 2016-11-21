@@ -4,7 +4,7 @@ import co.netguru.android.inbbbox.model.api.LikedShotEntity;
 
 public class LikedShot implements ShotImage {
 
-    private final int id;
+    private final long id;
     private final String imageUrl;
     private final boolean isGif;
     private final String thumbnailUrl;
@@ -18,7 +18,7 @@ public class LikedShot implements ShotImage {
         this.hiDpiUrl = likedShotEntity.shot().getImage().hiDpiUrl();
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
