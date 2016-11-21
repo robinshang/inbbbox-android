@@ -9,7 +9,6 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.Links;
-import co.netguru.android.inbbbox.model.api.User;
 import rx.Observable;
 import rx.Single;
 
