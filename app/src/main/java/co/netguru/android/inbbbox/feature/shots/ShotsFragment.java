@@ -174,6 +174,7 @@ public class ShotsFragment
         showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
     }
 
+    @Override
     public void showShotDetails(Shot shot) {
         shotLikeStatusListener.showShotDetails(shot);
     }
