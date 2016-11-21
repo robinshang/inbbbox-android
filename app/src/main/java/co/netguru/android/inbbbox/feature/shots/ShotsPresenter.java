@@ -18,6 +18,7 @@ import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
+import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletableIoSchedulers;
 
 public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.View>
         implements ShotsContract.Presenter {
@@ -70,9 +71,8 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         getView().closeFabMenu();
         if (!shot.isLiked()) {
             final Subscription subscription = likeShotController.likeShot(shot.id())
-                    .compose(androidIO())
-                    .subscribe(aVoid -> {
-                    }, this::onShotLikeError, () -> onShotLikeCompleted(shot));
+                    .compose(applyCompletableIoSchedulers())
+                    .subscribe(() -> onShotLikeCompleted(shot), this::onShotLikeError);
             subscriptions.add(subscription);
         }
     }

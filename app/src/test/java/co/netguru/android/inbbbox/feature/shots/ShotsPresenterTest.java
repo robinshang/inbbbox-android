@@ -110,7 +110,7 @@ public class ShotsPresenterTest {
 
     @Test
     public void whenShotNotLikedAndLikeActionCalled_thenCallLikeShotMethod() {
-        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Observable.empty());
+        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.complete());
         presenter.loadData();
 
         presenter.likeShot(NOT_LIKED_SHOT);
@@ -120,7 +120,7 @@ public class ShotsPresenterTest {
 
     @Test
     public void whenShotLiked_thenChangeShotStatus() {
-        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Observable.empty());
+        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.complete());
         presenter.loadData();
         Shot expectedShot = Shot.builder()
                 .id(NOT_LIKED_SHOT.id())
@@ -138,12 +138,11 @@ public class ShotsPresenterTest {
 
     @Test
     public void whenShotLikedAndLikeActionCalled_thenDoNotCallLikeShotMethod() {
-        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Observable.empty());
+        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.complete());
 
         presenter.loadData();
 
         presenter.likeShot(LIKED_SHOT);
-
 
         verify(likeShotControllerMock, never()).likeShot(LIKED_SHOT.id());
     }
@@ -176,7 +175,7 @@ public class ShotsPresenterTest {
     public void whenShotLikeingFailed_thenShowApiError() {
         String message = "test";
         Exception exampleException = new Exception(message);
-        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Observable.error(exampleException));
+        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.error(exampleException));
         when(errorMessageControllerMock.getError(exampleException)).thenCallRealMethod();
 
         presenter.loadData();

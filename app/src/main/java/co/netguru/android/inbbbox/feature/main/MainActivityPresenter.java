@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.controler.LogoutController;
 import co.netguru.android.inbbbox.controler.SettingsController;
 import co.netguru.android.inbbbox.controler.notification.NotificationController;
 import co.netguru.android.inbbbox.controler.notification.NotificationScheduler;
@@ -31,6 +32,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private final NotificationScheduler notificationScheduler;
     private final NotificationController notificationController;
     private final SettingsController settingsController;
+    private final LogoutController logoutController;
     private final CompositeSubscription subscriptions;
 
     @Nullable
@@ -38,12 +40,15 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     @Inject
     MainActivityPresenter(UserPrefsRepository userPrefsRepository,
-                          NotificationScheduler notificationScheduler, NotificationController notificationController,
-                          SettingsController settingsController) {
+                          NotificationScheduler notificationScheduler,
+                          NotificationController notificationController,
+                          SettingsController settingsController,
+                          LogoutController logoutController) {
         this.userPrefsRepository = userPrefsRepository;
         this.notificationScheduler = notificationScheduler;
         this.notificationController = notificationController;
         this.settingsController = settingsController;
+        this.logoutController = logoutController;
         this.subscriptions = new CompositeSubscription();
     }
 
@@ -70,9 +75,12 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     @Override
     public void performLogout() {
-        // TODO: 18.10.2016 Clear user shared preferences
-        getView().showLoginActivity();
         notificationScheduler.cancelNotification();
+        subscriptions.add(
+                logoutController.performLogout()
+                        .subscribe(getView()::showLoginActivity,
+                                throwable -> Timber.e(throwable, "critical logout error"))
+        );
     }
 
     @Override

@@ -38,6 +38,7 @@ import co.netguru.android.inbbbox.di.component.MainActivityComponent;
 import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
+import co.netguru.android.inbbbox.feature.followers.FollowersFragment;
 import co.netguru.android.inbbbox.feature.likes.LikesFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
@@ -52,6 +53,10 @@ public class MainActivity
         MainViewContract.Presenter>
         implements MainViewContract.View,
         ShotsFragment.ShotLikeStatusListener {
+
+    public static final int REQUEST_REFRESH_FOLLOWER_LIST = 101;
+    private static final int REQUEST_DEFAULT = 0;
+    private static final String REQUEST_EXTRA = "requestExtra";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -90,6 +95,12 @@ public class MainActivity
 
     public static void startActivity(Context context) {
         final Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void startActivityWithRequest(Context context, int requestCode) {
+        final Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(REQUEST_EXTRA, requestCode);
         context.startActivity(intent);
     }
 
@@ -145,6 +156,19 @@ public class MainActivity
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        switch (intent.getIntExtra(REQUEST_EXTRA, REQUEST_DEFAULT)) {
+            case REQUEST_REFRESH_FOLLOWER_LIST:
+                refreshFollowersFragment();
+                break;
+            default:
+                throw new IllegalStateException("Intent should contains REQUEST_EXTRA");
+        }
     }
 
     private void initializePager() {
@@ -233,7 +257,7 @@ public class MainActivity
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         actionBarDrawerToggle.syncState();
-
+        toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
         initializeDrawerReminder();
     }
 
@@ -372,4 +396,13 @@ public class MainActivity
         return bottomSheetBehavior;
     }
 
+    private void refreshFollowersFragment() {
+        final List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (final Fragment fragment : fragments) {
+            if (fragment instanceof FollowersFragment) {
+                ((FollowersFragment) fragment).refreshFragmentData();
+                break;
+            }
+        }
+    }
 }

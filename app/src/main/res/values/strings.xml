@@ -58,6 +58,7 @@
     <string name="gif">gif</string>
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
+    <string name="authorization_error">Authorization error</string>
     <string name="by_label">"by "</string>
     <string name="for_label">" for "</string>
     <string name="in_label">"in "</string>

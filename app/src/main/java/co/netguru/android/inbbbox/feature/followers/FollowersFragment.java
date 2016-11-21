@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -51,6 +52,8 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
     ScrollView emptyView;
     @BindView(R.id.fragment_followers_empty_text)
     TextView emptyViewText;
+    @BindView(R.id.follower_progress_bar)
+    ProgressBar progressBar;
 
     @Inject
     GridLayoutManager gridLayoutManager;
@@ -112,12 +115,27 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
 
     @Override
     public void hideEmptyLikesInfo() {
+        progressBar.setVisibility(View.GONE);
         emptyView.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showEmptyLikesInfo() {
+        progressBar.setVisibility(View.GONE);
         emptyView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showFollowersLoadingInfo() {
+        progressBar.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    public void refreshFragmentData() {
+        getPresenter().getFollowedUsersFromServer();
     }
 
     private void initEmptyView() {

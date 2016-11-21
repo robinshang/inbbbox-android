@@ -46,7 +46,9 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
 
     @Override
     public void getFollowedUsersFromServer() {
+        getView().showFollowersLoadingInfo();
         final Subscription subscription = followersController.getFollowedUsers(pageNumber, FOLLOWERS_PAGE_COUNT)
+                .doOnSubscribe(() -> pageNumber = 1)
                 .flatMap(follower -> followersShotController.getFollowedUserWithShots(follower,
                         FOLLOWERS_SHOT_PAGE_NUMBER, FOLLOWERS_SHOT_PAGE_COUNT))
                 .toList()

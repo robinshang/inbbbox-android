@@ -79,4 +79,5 @@
 
     <dimen name="add_to_bucket_fragment_recycler_min_height">600dp</dimen>
 
+    <dimen name="toolbar_logo_left_margin">52dp</dimen>
 </resources>

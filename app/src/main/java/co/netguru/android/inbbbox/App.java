@@ -10,7 +10,6 @@ import co.netguru.android.inbbbox.di.component.ApplicationComponent;
 import co.netguru.android.inbbbox.di.component.DaggerApplicationComponent;
 import co.netguru.android.inbbbox.di.module.ApplicationModule;
 
-
 public class App extends Application {
 
     private ApplicationComponent appComponent;

@@ -7,7 +7,7 @@
         </shape>
     </item>
 
-    <item android:left="@dimen/margin_default">
+    <item android:left="@dimen/toolbar_logo_left_margin">
         <bitmap android:src="@drawable/logo_appbar" android:gravity="start"/>
     </item>
 </layer-list>
