@@ -18,11 +18,15 @@ interface LikesViewContract {
         void hideEmptyLikesInfo();
 
         void showEmptyLikesInfo();
+
+        void openShowDetailsScreen(Shot shot);
     }
 
     interface Presenter extends MvpPresenter<View> {
         void getLikesFromServer();
 
         void getMoreLikesFromServer();
+
+        void showShotDetails(Shot shot);
     }
 }

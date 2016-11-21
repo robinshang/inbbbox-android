@@ -33,9 +33,6 @@ public class ShotsFragment
         extends BaseMvpFragment<ShotsContract.View, ShotsContract.Presenter>
         implements ShotsContract.View, ShotSwipeListener {
 
-    private ShotsComponent component;
-    private ShotLikeStatusListener shotLikeStatusListener;
-
     @Inject
     ShotsAdapter adapter;
 
@@ -50,6 +47,9 @@ public class ShotsFragment
 
     @BindView(R.id.container_fog_view)
     View fogContainerView;
+
+    private ShotsComponent component;
+    private ShotActionListener shotLikeStatusListener;
 
     @OnClick(R.id.fab_like_menu)
     void onLikeFabClick() {
@@ -80,10 +80,10 @@ public class ShotsFragment
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            shotLikeStatusListener = (ShotLikeStatusListener) context;
+            shotLikeStatusListener = (ShotActionListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement ShotLikeStatusListener");
+                    + " must implement ShotActionListener");
         }
     }
 
@@ -184,7 +184,7 @@ public class ShotsFragment
         getPresenter().showShotDetails(shot);
     }
 
-    public interface ShotLikeStatusListener {
+    public interface ShotActionListener {
         void shotLikeStatusChanged();
 
         void showShotDetails(Shot shot);

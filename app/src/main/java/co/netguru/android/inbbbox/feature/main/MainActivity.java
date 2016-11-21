@@ -53,7 +53,7 @@ public class MainActivity
         extends BaseMvpActivity<MainViewContract.View,
         MainViewContract.Presenter>
         implements MainViewContract.View,
-        ShotsFragment.ShotLikeStatusListener {
+        ShotsFragment.ShotActionListener {
 
     public static final int REQUEST_REFRESH_FOLLOWER_LIST = 101;
     private static final int REQUEST_DEFAULT = 0;

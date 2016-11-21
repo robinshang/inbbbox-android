@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -29,11 +28,13 @@ import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikeClickListener;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
+import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.TextFormatter;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
-public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<LikesViewContract.View, LikesViewContract.Presenter>
+public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<LikesViewContract.View,
+        LikesViewContract.Presenter>
         implements LikesViewContract.View {
 
     public static final int GRID_VIEW_COLUMN_COUNT = 2;
@@ -60,17 +61,29 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
     LinearLayoutManager linearLayoutManager;
 
     private LikesFragmentComponent component;
+    private ShotsFragment.ShotActionListener shotActionListener;
 
     public static LikesFragment newInstance() {
         return new LikesFragment();
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        component = App.getAppComponent(getContext())
+                .plus(new LikesFragmentModule(getContext(), createLikeClickListener()));
+        component.inject(this);
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        component = App.getAppComponent(getContext())
-                .plus(new LikesFragmentModule(context, createLikeClickListener()));
-        component.inject(this);
+        try {
+            shotActionListener = (ShotsFragment.ShotActionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement ShotActionListener");
+        }
     }
 
     @Nullable
@@ -120,6 +133,11 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
         emptyView.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void openShowDetailsScreen(Shot shot) {
+        shotActionListener.showShotDetails(shot);
+    }
+
     public void refreshFragmentData() {
         getPresenter().getLikesFromServer();
     }
@@ -142,6 +160,6 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
     }
 
     private LikeClickListener createLikeClickListener() {
-        return shot -> Toast.makeText(getContext(), shot.title(), Toast.LENGTH_SHORT).show();
+        return shot -> getPresenter().showShotDetails(shot);
     }
 }
