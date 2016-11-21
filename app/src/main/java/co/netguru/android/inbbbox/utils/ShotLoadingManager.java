@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.ShotImage;
+import timber.log.Timber;
 
 public class ShotLoadingManager {
 
@@ -36,12 +37,13 @@ public class ShotLoadingManager {
     }
 
     public static void loadMainViewShot(Context context, ImageView target, ShotImage shot) {
-        target.setImageResource(R.drawable.shot_placeholder);
-
+//        target.setImageResource(R.drawable.shot_placeholder);
+// TODO: 18.11.2016  check gifs 
         DrawableTypeRequest<String> typeRequest = Glide.with(context)
                 .load(shot.hdpiImageUrl());
 
         if (shot.isGif()) {
+            Timber.d("Animated gif!");
             typeRequest.asGif();
         }
         typeRequest

@@ -115,7 +115,7 @@ public class ShotsController {
         }
 
         if (streamSourceSettings.isDebut() && !wasHandled) {
-            builder.list(Constants.API.LIST_PARAM_DEBUTS_PARAM);
+            builder.list("animated");
         }
         return builder.build();
     }
