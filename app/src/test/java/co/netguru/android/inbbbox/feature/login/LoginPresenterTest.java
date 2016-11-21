@@ -70,7 +70,7 @@ public class LoginPresenterTest {
         when(tokenControllerMock.requestNewToken(CODE))
                 .thenReturn(Observable.just(expectedToken));
         when(userControllerMock.requestUser()).
-                thenReturn(Observable.just(Statics.USER));
+                thenReturn(Observable.just(Statics.USER_ENTITY));
     }
 
     @Test

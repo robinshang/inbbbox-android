@@ -22,8 +22,6 @@ public abstract class Shot implements Parcelable, ShotImage {
     @Nullable
     public abstract String projectUrl();
 
-    public abstract LocalDateTime date();
-
     public abstract Integer likesCount();
 
     public abstract Integer bucketCount();
@@ -65,7 +63,6 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .author(shot.author())
                 .team(shot.team())
                 .projectUrl(shot.projectUrl())
-                .date(shot.date())
                 .likesCount(shot.likesCount())
                 .bucketCount(shot.bucketCount())
                 .description(shot.description())
@@ -87,8 +84,6 @@ public abstract class Shot implements Parcelable, ShotImage {
         public abstract Shot.Builder team(Team team);
 
         public abstract Shot.Builder projectUrl(String url);
-
-        public abstract Shot.Builder date(LocalDateTime date);
 
         public abstract Shot.Builder likesCount(Integer likeCount);
 
@@ -126,13 +121,11 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .title(shotEntity.getTitle())
                 .creationDate(shotEntity.getCreatedAt())
                 .description(shotEntity.getDescription())
-                .team(shotEntity.getTeam() != null ? Team.create(shotEntity.getTeam()) : null)
                 .bucketCount(shotEntity.getBucketsCount())
                 .likesCount(shotEntity.getLikesCount())
-                .date(shotEntity.getCreatedAt())
+                .team(shotEntity.getTeam() != null ? Team.create(shotEntity.getTeam()) : null)
                 .isGif(shotEntity.getAnimated())
                 .isLiked(false)
-                .creationDate(shotEntity.getCreatedAt())
                 .isBucketed(false)
                 .hdpiImageUrl(shotEntity.getImage().hiDpiUrl())
                 .normalImageUrl(shotEntity.getImage().normalUrl())

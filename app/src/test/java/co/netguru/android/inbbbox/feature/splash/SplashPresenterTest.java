@@ -43,7 +43,7 @@ public class SplashPresenterTest {
     @Test
     public void whenViewAttached_thenCheckTokenValidity() {
         when(tokenControllerMock.isTokenValid()).thenReturn(Observable.just(true));
-        when(userControllerMock.requestUser()).thenReturn(Observable.just(Statics.USER));
+        when(userControllerMock.requestUser()).thenReturn(Observable.just(Statics.USER_ENTITY));
 
         splashPresenter.attachView(splashViewMock);
 
@@ -53,7 +53,7 @@ public class SplashPresenterTest {
     @Test
     public void whenViewAttachedAndTokenIsInvalid_thenGetUserInstance() {
         when(tokenControllerMock.isTokenValid()).thenReturn(Observable.just(true));
-        when(userControllerMock.requestUser()).thenReturn(Observable.just(Statics.USER));
+        when(userControllerMock.requestUser()).thenReturn(Observable.just(Statics.USER_ENTITY));
 
         splashPresenter.attachView(splashViewMock);
 
@@ -63,7 +63,7 @@ public class SplashPresenterTest {
     @Test
     public void whenViewAttachedAndUserInstanceIsSaved_thenShowMainView() {
         when(tokenControllerMock.isTokenValid()).thenReturn(Observable.just(true));
-        when(userControllerMock.requestUser()).thenReturn(Observable.just(Statics.USER));
+        when(userControllerMock.requestUser()).thenReturn(Observable.just(Statics.USER_ENTITY));
 
         splashPresenter.attachView(splashViewMock);
 

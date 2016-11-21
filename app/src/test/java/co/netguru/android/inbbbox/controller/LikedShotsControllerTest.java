@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ import co.netguru.android.inbbbox.controler.LikedShotsController;
 import co.netguru.android.inbbbox.model.api.Image;
 import co.netguru.android.inbbbox.model.api.LikedShotEntity;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
-import co.netguru.android.inbbbox.model.ui.LikedShot;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.observers.TestSubscriber;
@@ -57,12 +58,13 @@ public class LikedShotsControllerTest {
         expectedItems = new ArrayList<>();
         expectedItems.add(entity);
         when(shotEntityMock.getImage()).thenReturn(imageMock);
+        when(shotEntityMock.getCreatedAt()).thenReturn(LocalDateTime.now());
         when(likesApiMock.getLikedShots(PAGE_NUMBER, PAGE_COUNT)).thenReturn(Observable.just(expectedItems));
     }
 
     @Test
     public void whenGetLikedShot_thenObservableReturnsListOfLikedShots() {
-        TestSubscriber<LikedShot> testSubscriber = new TestSubscriber<>();
+        TestSubscriber<Shot> testSubscriber = new TestSubscriber<>();
 
         likedShotsController.getLikedShots(PAGE_NUMBER, PAGE_COUNT).subscribe(testSubscriber);
 

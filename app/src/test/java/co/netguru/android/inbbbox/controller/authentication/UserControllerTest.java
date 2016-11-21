@@ -40,15 +40,15 @@ public class UserControllerTest {
 
     @Test
     public void whenSubscribeToGetUser_thenSaveUserInStorage() {
-        when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.just(Statics.USER));
+        when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.just(Statics.USER_ENTITY));
         when(userPrefsRepository.saveUser(any())).thenReturn(Completable.complete());
         TestSubscriber<UserEntity> testSubscriber = new TestSubscriber<>();
 
         userController.requestUser().subscribe(testSubscriber);
 
-        verify(userPrefsRepository, times(1)).saveUser(Statics.USER);
+        verify(userPrefsRepository, times(1)).saveUser(Statics.USER_ENTITY);
 
-        testSubscriber.assertValue(Statics.USER);
+        testSubscriber.assertValue(Statics.USER_ENTITY);
         testSubscriber.assertCompleted();
         testSubscriber.assertNoErrors();
     }

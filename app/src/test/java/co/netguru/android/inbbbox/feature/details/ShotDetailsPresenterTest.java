@@ -18,7 +18,7 @@ import co.netguru.android.testcommons.RxSyncTestRule;
 public class ShotDetailsPresenterTest {
 
     @Rule
-    TestRule rule = new RxSyncTestRule();
+    public TestRule rule = new RxSyncTestRule();
 
     @Mock
     Shot shotMock;
@@ -33,7 +33,7 @@ public class ShotDetailsPresenterTest {
     ShotDetailsPresenter shotDetailsPresenter;
 
     @Test
-    void initialTest() {
+    public void initialTest() {
         Assert.assertEquals(true, true);
     }
 

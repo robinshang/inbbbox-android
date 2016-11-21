@@ -94,7 +94,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                 .author(shot.author())
                 .team(shot.team())
                 .projectUrl(shot.projectUrl())
-                .date(shot.date())
+                .creationDate(shot.creationDate())
                 .likesCount(shot.likesCount())
                 .bucketCount(shot.bucketCount())
                 .description(shot.description())
