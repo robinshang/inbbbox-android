@@ -12,7 +12,7 @@ import co.netguru.android.inbbbox.model.api.FilteredShotsParams;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.localrepository.StreamSourceSettings;
 import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
+import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 import rx.Observable;
 
 import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
@@ -22,15 +22,12 @@ public class ShotsController {
 
     private final ShotsApi shotsApi;
     private final SettingsController settingsController;
-    private final LocalTimeFormatter dateFormatter;
 
     @Inject
     ShotsController(ShotsApi shotsApi,
-                    SettingsController settingsController,
-                    LocalTimeFormatter dateFormatter) {
+                    SettingsController settingsController) {
         this.shotsApi = shotsApi;
         this.settingsController = settingsController;
-        this.dateFormatter = dateFormatter;
     }
 
     public Observable<List<Shot>> getShots() {
@@ -103,13 +100,13 @@ public class ShotsController {
         boolean wasHandled = false;
 
         if (streamSourceSettings.isNewToday()) {
-            builder.date(dateFormatter.getCurrentDate())
+            builder.date(DateTimeFormatUtil.getCurrentDate())
                     .sort(Constants.API.LIST_PARAM_SORT_RECENT_PARAM);
             wasHandled = true;
         }
 
         if (streamSourceSettings.isPopularToday() && !wasHandled) {
-            builder.date(dateFormatter.getCurrentDate())
+            builder.date(DateTimeFormatUtil.getCurrentDate())
                     .sort(Constants.API.LIST_PARAM_SORT_VIEWS_PARAM);
             wasHandled = true;
         }

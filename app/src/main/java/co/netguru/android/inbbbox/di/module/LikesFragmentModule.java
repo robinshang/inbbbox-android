@@ -12,21 +12,15 @@ import dagger.Provides;
 @Module
 public class LikesFragmentModule {
 
-    private final Context context;
-
-    public LikesFragmentModule(Context context) {
-        this.context = context;
-    }
-
     @Provides
     @FragmentScope
-    LinearLayoutManager provideLinearLayoutManager() {
+    LinearLayoutManager provideLinearLayoutManager(Context context) {
         return new LinearLayoutManager(context);
     }
 
     @Provides
     @FragmentScope
-    GridLayoutManager provideGridLayoutManager() {
+    GridLayoutManager provideGridLayoutManager(Context context) {
         return new GridLayoutManager(context, LikesFragment.GRID_VIEW_COLUMN_COUNT);
     }
 }

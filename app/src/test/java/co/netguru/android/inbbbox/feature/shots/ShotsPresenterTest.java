@@ -8,10 +8,12 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import co.netguru.android.inbbbox.controler.BucketsController;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.LikedShotsController;
@@ -21,8 +23,14 @@ import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Observable;
 
+import static co.netguru.android.inbbbox.Statics.BUCKET;
+import static co.netguru.android.inbbbox.Statics.LIKED_SHOT;
+import static co.netguru.android.inbbbox.Statics.NOT_LIKED_SHOT;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -46,13 +54,15 @@ public class ShotsPresenterTest {
     LikeShotController likeShotControllerMock;
 
     @Mock
+    BucketsController bucketsControllerMock;
+
+    @Mock
     ShotsContract.View viewMock;
 
     @InjectMocks
     ShotsPresenter presenter;
 
-    private List<Shot> shotsList = new ArrayList<>();
-    private int exampleId = 99;
+    private final List<Shot> shotsList = new ArrayList<>();
 
     @Before
     public void setUp() {
@@ -63,6 +73,7 @@ public class ShotsPresenterTest {
                 .id(exampleId)
                 .title("test")
                 .isLiked(false)
+                .creationDate(LocalDateTime.now())
                 .isGif(false)
                 .build();
         shotsList.add(exampleShot);
@@ -101,16 +112,10 @@ public class ShotsPresenterTest {
     public void whenShotNotLikedAndLikeActionCalled_thenCallLikeShotMethod() {
         when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.complete());
         presenter.loadData();
-        Shot expectedShot = Shot.builder()
-                .id(exampleId)
-                .title("test")
-                .isLiked(false)
-                .isGif(false)
-                .build();
 
-        presenter.likeShot(expectedShot);
+        presenter.likeShot(NOT_LIKED_SHOT);
 
-        verify(likeShotControllerMock, times(1)).likeShot(exampleId);
+        verify(likeShotControllerMock, times(1)).likeShot(NOT_LIKED_SHOT.id());
     }
 
     @Test
@@ -118,11 +123,13 @@ public class ShotsPresenterTest {
         when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.complete());
         presenter.loadData();
         Shot expectedShot = Shot.builder()
-                .id(exampleId)
-                .title("test")
-                .isLiked(false)
+                .id(NOT_LIKED_SHOT.id())
+                .isLiked(true)
+                .creationDate(NOT_LIKED_SHOT.creationDate())
                 .isGif(false)
                 .build();
+
+        presenter.likeShot(NOT_LIKED_SHOT);
 
         presenter.likeShot(expectedShot);
 
@@ -130,20 +137,14 @@ public class ShotsPresenterTest {
     }
 
     @Test
-    public void whenShotLikedAndLikeActionCalled_thenCallLikeShotMethod() {
+    public void whenShotLikedAndLikeActionCalled_thenDoNotCallLikeShotMethod() {
         when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.complete());
-        Shot expectedShot = Shot.builder()
-                .id(exampleId)
-                .title("test")
-                .isLiked(false)
-                .isGif(false)
-                .build();
+
         presenter.loadData();
 
+        presenter.likeShot(LIKED_SHOT);
 
-        presenter.likeShot(expectedShot);
-
-        verify(likeShotControllerMock, times(1)).likeShot(exampleId);
+        verify(likeShotControllerMock, never()).likeShot(LIKED_SHOT.id());
     }
 
     //ERRORS
@@ -176,16 +177,41 @@ public class ShotsPresenterTest {
         Exception exampleException = new Exception(message);
         when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.error(exampleException));
         when(errorMessageControllerMock.getError(exampleException)).thenCallRealMethod();
-        Shot expectedShot = Shot.builder()
-                .id(exampleId)
-                .title("test")
-                .isLiked(false)
-                .isGif(false)
-                .build();
+
         presenter.loadData();
 
-        presenter.likeShot(expectedShot);
+        presenter.likeShot(NOT_LIKED_SHOT);
 
         verify(viewMock).showError(message);
+    }
+
+    @Test
+    public void whenShotChosenToBeAddedToBucket_thenShowBucketChooser() {
+        //when
+        presenter.handleAddShotToBucket(LIKED_SHOT);
+        //then
+        verify(viewMock, times(1)).showBucketChoosing(LIKED_SHOT);
+    }
+
+    @Test
+    public void whenBucketForShotChosen_thenAddToBucket() {
+        //given
+        when(bucketsControllerMock.addShotToBucket(BUCKET.id(), LIKED_SHOT.id()))
+                .thenReturn(Completable.complete());
+        //when
+        presenter.addShotToBucket(BUCKET, LIKED_SHOT);
+        //then
+        verify(viewMock, only()).showBucketAddSuccess();
+    }
+
+    @Test
+    public void whenBucketForShotChosenAndErrorOccurs_thenShowApiError() {
+        //given
+        when(bucketsControllerMock.addShotToBucket(BUCKET.id(), LIKED_SHOT.id()))
+                .thenReturn(Completable.error(new Throwable()));
+        //when
+        presenter.addShotToBucket(BUCKET, LIKED_SHOT);
+        //then
+        verify(viewMock, only()).showError(anyString());
     }
 }

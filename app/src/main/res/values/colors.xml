@@ -5,6 +5,7 @@
     <color name="primaryDark">#d43170</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="transparentWhite">#00000000</color>
     <color name="black">#000000</color>
     <color name="shadowBlack">#04000000</color>
     <color name="lightGray">#BDBDBD</color>
@@ -13,6 +14,8 @@
     <color name="gray">#DEDEDE</color>
     <color name="palePink">#F9D4E2</color>
     <color name="pink">#F0377E</color>
+
+    <color name="materialDivider">#1f000000</color>
     <color name="shotDetailsBackgroundLightGray">#F6F8F8</color>
     <color name="actionButtonLabelColor">#A4B4BC</color>
 

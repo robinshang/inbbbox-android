@@ -46,5 +46,7 @@ public interface ApplicationComponent extends BaseComponent {
 
     BucketsFragmentComponent inject();
 
+    AddToBucketComponent plusAddToBucketComponent();
+
     void inject(NotificationAlarmReceiver receiver);
 }

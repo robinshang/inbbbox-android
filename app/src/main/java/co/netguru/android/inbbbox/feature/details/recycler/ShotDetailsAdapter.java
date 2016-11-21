@@ -6,27 +6,23 @@ import android.view.ViewGroup;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.model.ui.ShotDetails;
-import co.netguru.android.inbbbox.utils.LocalTimeFormatter;
 
 public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHolder> {
 
     static final int STATIC_ITEMS_COUNT = 2;
 
-    private final LocalTimeFormatter localTimeFormatter;
     private final DetailsViewActionCallback actionCallback;
     private ShotDetails details;
 
     @Inject
-    public ShotDetailsAdapter(LocalTimeFormatter localTimeFormatter,
-                              DetailsViewActionCallback actionCallback) {
-        this.localTimeFormatter = localTimeFormatter;
+    public ShotDetailsAdapter(DetailsViewActionCallback actionCallback) {
         this.actionCallback = actionCallback;
     }
 
     @Override
     public ShotDetailsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return  ShotDetailsViewFactory
-                .getViewHolder(viewType, parent, localTimeFormatter, actionCallback);
+        return ShotDetailsViewFactory
+                .getViewHolder(viewType, parent, actionCallback);
     }
 
     @Override

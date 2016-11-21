@@ -136,7 +136,7 @@ public class MainActivity
         return component.getMainActivityPresenter();
     }
 
-    private void showFragmentDetails(int shotId) {
+    private void showFragmentDetails(long shotId) {
         Fragment fragment = ShotDetailsFragment.newInstance(shotId);
         getSupportFragmentManager()
                 .beginTransaction()
@@ -388,7 +388,7 @@ public class MainActivity
     }
 
     @Override
-    public void showShotDetails(int id) {
+    public void showShotDetails(long id) {
         showFragmentDetails(id);
     }
 

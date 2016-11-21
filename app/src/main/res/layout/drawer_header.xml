@@ -10,7 +10,7 @@
         android:id="@+id/drawer_user_photo"
         android:layout_width="@dimen/drawer_header_photo_size"
         android:layout_height="@dimen/drawer_header_photo_size"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/margin_default"
         android:layout_marginTop="@dimen/drawer_header_photo_margin_top"
         app:civ_border_color="@color/white"
         app:civ_fill_color="@color/lightGray"
@@ -25,7 +25,7 @@
             android:id="@+id/drawer_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/margin_default"
             android:layout_gravity="center_vertical" />
 
         <ToggleButton

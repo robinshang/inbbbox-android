@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -24,10 +25,10 @@
             android:id="@+id/container_fog_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:alpha="0.1"
+            android:background="@color/whiteFog"
             android:clickable="false"
-            android:background="@color/whiteFog"/>
+            android:visibility="gone"/>
     </FrameLayout>
 
     <co.netguru.android.inbbbox.view.FogFloatingActionMenu
@@ -35,8 +36,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:layout_marginRight="@dimen/margin_default"
+        app:layout_behavior="co.netguru.android.inbbbox.view.behavior.FloatingActionMenuBehavior"
         fab:menu_animationDelayPerItem="10"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_colorNormal="@color/white"
@@ -66,7 +68,8 @@
         fab:menu_shadowRadius="0.5dp"
         fab:menu_shadowXOffset="0dp"
         fab:menu_shadowYOffset="0.5dp"
-        fab:menu_showShadow="true">
+        fab:menu_showShadow="true"
+        >
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_comment_menu"
@@ -103,8 +106,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_like"
-            fab:fab_colorPressed="@color/accent"
             fab:fab_colorNormal="@color/white"
+            fab:fab_colorPressed="@color/accent"
             fab:fab_label="@string/like"
             fab:fab_size="mini"/>
 
