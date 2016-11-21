@@ -40,6 +40,7 @@ public class ShotDetailsPresenter
 
     @Override
     public void downloadData() {
+        getView().showMainImage(shot);
         showShotDetails(shot);
         subscriptions.add(
                 shotDetailsController.getShotComments(shot.id())
@@ -64,7 +65,6 @@ public class ShotDetailsPresenter
 
     private void showShotDetails(Shot shotDetails) {
         Timber.d("Shot details received: " + shotDetails);
-        getView().showMainImage(shotDetails);
         getView().showDetails(shotDetails);
         getView().initView();
     }

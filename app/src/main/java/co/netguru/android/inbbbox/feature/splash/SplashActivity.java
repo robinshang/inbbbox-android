@@ -28,7 +28,7 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
     }
 
     private void initCrashManager() {
-        CrashManager.register(this, BuildConfig.HOCKEY_APP_ID, new CrashManagerListener() {
+        CrashManager.register(getApplicationContext(), BuildConfig.HOCKEY_APP_ID, new CrashManagerListener() {
             @Override
             public boolean shouldAutoUploadCrashes() {
                 return true;
