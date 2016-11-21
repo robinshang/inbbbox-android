@@ -167,7 +167,7 @@ public class ShotsPresenterTest {
         String message = "test";
         Throwable exampleException = new Exception(message);
         when(shotsControllerMock.getShots()).thenReturn(Observable.error(exampleException));
-        when(errorMessageControllerMock.getError(exampleException)).thenCallRealMethod();
+        when(errorMessageControllerMock.getErrorMessageLabel(exampleException)).thenCallRealMethod();
 
         presenter.loadData();
 
@@ -179,7 +179,7 @@ public class ShotsPresenterTest {
         String message = "test";
         Exception exampleException = new Exception(message);
         when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.error(exampleException));
-        when(errorMessageControllerMock.getError(exampleException)).thenCallRealMethod();
+        when(errorMessageControllerMock.getErrorMessageLabel(exampleException)).thenCallRealMethod();
         Shot expectedShot = Shot.builder()
                 .id(exampleId)
                 .title("test")

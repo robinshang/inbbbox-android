@@ -114,7 +114,7 @@ public class LoginPresenterTest {
 
         verify(viewMock, never()).showNextScreen();
         verify(viewMock).showApiError(anyString());
-        verify(errorMessageController, times(1)).getError(testThrowable);
+        verify(errorMessageController, times(1)).getErrorMessageLabel(testThrowable);
     }
 
 }

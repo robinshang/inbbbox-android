@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.feature.details;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -110,6 +111,7 @@ public class ShotDetailsFragment
         component.inject(this);
     }
 
+    @NonNull
     @Override
     public ShotDetailsContract.Presenter createPresenter() {
         return component.getPresenter();
@@ -123,20 +125,28 @@ public class ShotDetailsFragment
         getPresenter().downloadData();
     }
 
+    @Override
     public void initView() {
         shotRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shotRecyclerView.setAdapter(adapter);
     }
 
-    // TODO: 16.11.2016 it will be public when MVP will be implemented in task IA-146
+    @Override
+    public void showErrorMessage(String errorMessageLabel) {
+        Toast.makeText(getContext(), errorMessageLabel, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void showDetails(Shot details) {
         adapter.setDetails(details);
     }
 
+    @Override
     public void showComments(List<Comment> commentList) {
         adapter.setComments(commentList);
     }
 
+    @Override
     public void showMainImage(ShotImage shotImage) {
         parallaxImageView.setRadius(radius);
         parallaxImageView.disableRadiusForBottomEdge(true);

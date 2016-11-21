@@ -20,6 +20,8 @@ public interface ShotDetailsContract {
         void showMainImage(ShotImage shotImage);
 
         void initView();
+
+        void showErrorMessage(String errorMessageLabel);
     }
 
     interface Presenter extends MvpPresenter<View> {

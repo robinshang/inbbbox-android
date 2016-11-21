@@ -96,7 +96,7 @@ public class SplashPresenterTest {
         Throwable exampleThrowable = new Throwable(test);
         when(tokenControllerMock.isTokenValid()).thenReturn(Observable.just(true));
         when(userControllerMock.requestUser()).thenReturn(Observable.error(exampleThrowable));
-        when(errorMessageControllerMock.getError(exampleThrowable)).thenReturn(test);
+        when(errorMessageControllerMock.getErrorMessageLabel(exampleThrowable)).thenReturn(test);
 
         splashPresenter.attachView(splashViewMock);
 

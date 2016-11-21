@@ -19,7 +19,7 @@ public class ShotDetailsPresenter
 
     private Shot shot;
     private final ShotDetailsController shotDetailsController;
-    private final ErrorMessageController messageController;
+    private final ErrorMessageController errorMessageController;
     private final CompositeSubscription subscriptions;
 
     @Inject
@@ -28,7 +28,7 @@ public class ShotDetailsPresenter
                                 ErrorMessageController messageController) {
         this.shot = shot;
         this.shotDetailsController = shotDetailsController;
-        this.messageController = messageController;
+        this.errorMessageController = messageController;
         this.subscriptions = new CompositeSubscription();
     }
 
@@ -81,14 +81,14 @@ public class ShotDetailsPresenter
     }
 
     private void showShotDetails(Shot shotDetails) {
-        Timber.d("Shot details received: " + shotDetails);
+        Timber.d("Shot details received: %s", shotDetails);
         getView().showDetails(shotDetails);
         getView().initView();
     }
 
     private void handleApiError(Throwable throwable) {
         Timber.e(throwable, "details download failed! ");
-        // TODO: 17.11.2016 handle error
+       getView().showErrorMessage(errorMessageController.getErrorMessageLabel(throwable));
     }
 
 }

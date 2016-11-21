@@ -58,7 +58,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private void handleException(Throwable exception) {
         Timber.e(exception, "Shots item receiving exception ");
         getView().hideLoadingIndicator();
-        getView().showError(errorMessageController.getError(exception));
+        getView().showError(errorMessageController.getErrorMessageLabel(exception));
     }
 
     @Override
@@ -79,7 +79,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     private void onShotLikeError(Throwable throwable) {
         Timber.e(throwable, "Error while sending shot like");
-        getView().showError(errorMessageController.getError(throwable));
+        getView().showError(errorMessageController.getErrorMessageLabel(throwable));
     }
 
     private Shot changeShotLikeStatus(Shot shot) {
