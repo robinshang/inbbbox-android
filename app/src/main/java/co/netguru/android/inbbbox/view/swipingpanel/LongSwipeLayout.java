@@ -103,10 +103,10 @@ public class LongSwipeLayout extends SwipeLayout {
             isLongSwipeTriggered = false;
         }
 
-        if(-getSurfaceView().getLeft() > swipingLimit / 3){
+        if (-getSurfaceView().getLeft() > swipingLimit / 3) {
             isNormalSwipeTriggered = false;
             isNormalSwipeScope = false;
-            wasChecked=false;
+            wasChecked = false;
         }
 
         itemSwipeListener.onLeftSwipeActivate(isNormalSwipeTriggered);
@@ -146,7 +146,8 @@ public class LongSwipeLayout extends SwipeLayout {
             rightSwipeSelected();
         } else if (isNormalSwipeTriggered) {
             normalSwipeElementSelected();
-        } else if (isLongSwipeTriggered) {
+        }
+        if (isLongSwipeTriggered) {
             longSwipeElementSelected();
         }
     }
