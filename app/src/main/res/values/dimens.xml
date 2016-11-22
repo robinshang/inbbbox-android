@@ -25,15 +25,18 @@
     <dimen name="drawer_header_photo_margin_top">52dp</dimen>
     <dimen name="drawer_arrow_size">24dp</dimen> 
     <dimen name="drawer_arrow_margin_end">6dp</dimen>
-
-    <dimen name="right_swipe_action_panel_width">85dp</dimen>
-    <dimen name="left_swipe_action_panel_width">160dp</dimen>
-    <dimen name="swipe_action_icon_width">40dp</dimen>
+    <dimen name="shot_image_height">600dp</dimen>
+    <dimen name="shot_image_width">800dp</dimen>
+    <dimen name="shot_item_internal_padding">24dp</dimen>
+    <dimen name="shot_swipe_action_plus_size">10dp</dimen>
+    <dimen name="shot_right_swipe_action_panel_width">85dp</dimen>
+    <dimen name="shot_left_swipe_action_panel_width">140dp</dimen>
+    <dimen name="shot_swipe_action_icon_width">32dp</dimen>
+    <dimen name="shot_long_swipe_action_side_margin">10dp</dimen>
 
     <dimen name="fragment_like_recycler_view_padding_top">16dp</dimen>
     <dimen name="fragment_like_empty_view_logo_size">140dp</dimen>
     <dimen name="fragment_like_empty_view_text_margin_top">48dp</dimen>
-    <dimen name="swipe_action_plus_size">12dp</dimen>
 
     <dimen name="follower_list_shot_height">250dp</dimen>
     <dimen name="follower_grid_shot_height">130dp</dimen>
@@ -64,9 +67,6 @@
     <dimen name="fragment_add_to_bucket_avatar_height_width">40dp</dimen>
 
     <dimen name="shot_corner_radius">8dp</dimen>
-    <dimen name="shot_image_height">600dp</dimen>
-    <dimen name="shot_image_width">800dp</dimen>
-    <dimen name="shot_item_internal_padding">24dp</dimen>
     <dimen name="shot_details_top_padding">32dp</dimen>
 
     <dimen name="shot_background_padding">-1dp</dimen>
