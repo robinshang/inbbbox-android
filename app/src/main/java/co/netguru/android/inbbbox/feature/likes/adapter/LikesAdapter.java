@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.view.ShotClickListener;
 
 @FragmentScope
 public class LikesAdapter extends RecyclerView.Adapter<BaseViewHolder<Shot>> {

@@ -11,6 +11,7 @@ import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.ShotLoadingManager;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
+import co.netguru.android.inbbbox.view.ShotClickListener;
 
 class LikesGridViewHolder extends BaseViewHolder<Shot> {
 

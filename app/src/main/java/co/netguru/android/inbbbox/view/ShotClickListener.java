@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.likes.adapter;
+package co.netguru.android.inbbbox.view;
 
 import co.netguru.android.inbbbox.model.ui.Shot;
 
