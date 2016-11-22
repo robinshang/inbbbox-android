@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.view.swipingpanel;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.DragEvent;
 import android.view.MotionEvent;
 
 import com.daimajia.swipe.SwipeLayout;
@@ -47,9 +48,14 @@ public class LongSwipeLayout extends SwipeLayout {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             initSwipeActionHandling();
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            Timber.d("Action UP");
             checkItemSelection();
+            close(true);
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
             handleSwipingActions(event);
+
+        } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
+            Timber.d("Action Cancel");
         }
         return super.onTouchEvent(event);
     }
@@ -97,6 +103,12 @@ public class LongSwipeLayout extends SwipeLayout {
             isLongSwipeTriggered = false;
         }
 
+        if(-getSurfaceView().getLeft() > swipingLimit / 3){
+            isNormalSwipeTriggered = false;
+            isNormalSwipeScope = false;
+            wasChecked=false;
+        }
+
         itemSwipeListener.onLeftSwipeActivate(isNormalSwipeTriggered);
         itemSwipeListener.onLeftLongSwipeActivate(isLongSwipeTriggered);
         itemSwipeListener.onRightSwipeActivate(isRightSwipeTriggered);
@@ -104,6 +116,12 @@ public class LongSwipeLayout extends SwipeLayout {
 
     private int getLimitForLeftSwipe() {
         return getPaddingLeft() - getDragDistance();
+    }
+
+    @Override
+    protected void dispatchSwipeEvent(int surfaceLeft, int surfaceTop, boolean open) {
+        Timber.d("open: " + open);
+        super.dispatchSwipeEvent(surfaceLeft, surfaceTop, open);
     }
 
     private void initSwipeActionHandling() {
@@ -126,7 +144,7 @@ public class LongSwipeLayout extends SwipeLayout {
     private void checkItemSelection() {
         if (isRightSwipeTriggered) {
             rightSwipeSelected();
-        } else if (isNormalSwipeScope) {
+        } else if (isNormalSwipeTriggered) {
             normalSwipeElementSelected();
         } else if (isLongSwipeTriggered) {
             longSwipeElementSelected();
