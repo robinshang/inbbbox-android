@@ -22,7 +22,7 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     @Inject
     public ShotDetailsAdapter(DetailsViewActionCallback actionCallback) {
         this.actionCallback = actionCallback;
-        comments = Collections.EMPTY_LIST;
+        comments = Collections.emptyList();
     }
 
     @Override

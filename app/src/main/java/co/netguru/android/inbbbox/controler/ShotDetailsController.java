@@ -16,7 +16,7 @@ import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
 public class ShotDetailsController {
 
     private final ShotCommentsApi shotCommentsApi;
-    private LikeShotController likeShotController;
+    private final LikeShotController likeShotController;
 
     @Inject
     public ShotDetailsController(ShotCommentsApi shotCommentsApi,
@@ -29,7 +29,8 @@ public class ShotDetailsController {
         return Observable.zip(getCommentList(shotId.toString()),
                 getLikeState(shotId),
                 getBucketState(shotId),
-                (comments, isLiked, isBucketed) -> new ShotDetailsState(isLiked, isBucketed, comments));
+                (comments, isLiked, isBucketed) -> ShotDetailsState
+                        .create(isLiked, isBucketed, comments));
     }
 
     private Observable<Boolean> getBucketState(Long shotId) {
@@ -54,12 +55,7 @@ public class ShotDetailsController {
     }
 
     public Completable performLikeAction(long shotId, boolean newLikeState) {
-        Completable completable;
-        if (newLikeState) {
-            completable = likeShotController.likeShot(shotId);
-        } else {
-            completable = likeShotController.unLikeShot(shotId);
-        }
-        return completable;
+        return newLikeState ? likeShotController.likeShot(shotId) :
+                likeShotController.unLikeShot(shotId);
     }
 }

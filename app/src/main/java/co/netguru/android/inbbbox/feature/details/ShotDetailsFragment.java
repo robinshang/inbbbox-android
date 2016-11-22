@@ -105,9 +105,8 @@ public class ShotDetailsFragment
     }
 
     private void initComponent() {
-        Shot shot = getArguments().getParcelable(ARG_SHOT);
         component = App.getAppComponent(getContext())
-                .plus(new ShotsDetailsModule(shot, actionsCallback));
+                .plus(new ShotsDetailsModule(actionsCallback));
         component.inject(this);
     }
 
@@ -134,6 +133,11 @@ public class ShotDetailsFragment
     @Override
     public void showErrorMessage(String errorMessageLabel) {
         Toast.makeText(getContext(), errorMessageLabel, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public Shot getShotInitialData() {
+        return getArguments().getParcelable(ARG_SHOT);
     }
 
     @Override

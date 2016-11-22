@@ -17,16 +17,14 @@ public class ShotDetailsPresenter
         extends MvpNullObjectBasePresenter<ShotDetailsContract.View>
         implements ShotDetailsContract.Presenter {
 
-    private Shot shot;
     private final ShotDetailsController shotDetailsController;
     private final ErrorMessageController errorMessageController;
     private final CompositeSubscription subscriptions;
+    private Shot shot;
 
     @Inject
-    public ShotDetailsPresenter(Shot shot,
-                                ShotDetailsController shotDetailsController,
+    public ShotDetailsPresenter(ShotDetailsController shotDetailsController,
                                 ErrorMessageController messageController) {
-        this.shot = shot;
         this.shotDetailsController = shotDetailsController;
         this.errorMessageController = messageController;
         this.subscriptions = new CompositeSubscription();
@@ -40,6 +38,7 @@ public class ShotDetailsPresenter
 
     @Override
     public void downloadData() {
+        this.shot = getView().getShotInitialData();
         getView().showMainImage(shot);
         showShotDetails(shot);
         subscriptions.add(
@@ -67,7 +66,7 @@ public class ShotDetailsPresenter
     }
 
     private void handleDetailsStates(ShotDetailsState state) {
-        getView().showComments(state.getCommentList());
+        getView().showComments(state.comments());
         updateShotDetails(state.isLiked(), state.isBucketed());
         showShotDetails(shot);
     }
@@ -87,7 +86,7 @@ public class ShotDetailsPresenter
 
     private void handleApiError(Throwable throwable) {
         Timber.e(throwable, "details download failed! ");
-       getView().showErrorMessage(errorMessageController.getErrorMessageLabel(throwable));
+        getView().showErrorMessage(errorMessageController.getErrorMessageLabel(throwable));
     }
 
 }

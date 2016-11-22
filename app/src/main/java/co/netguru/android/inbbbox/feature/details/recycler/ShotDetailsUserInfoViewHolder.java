@@ -63,7 +63,7 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     @OnClick(R.id.details_likes_imageView)
     void onLikeShotClick() {
         isLiked = !isLiked;
-        actionCallbackListener.onShotLikeAction( isLiked);
+        actionCallbackListener.onShotLikeAction(isLiked);
         updateActionsState();
     }
 
@@ -130,7 +130,11 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     }
 
     private void showAuthorInfo(String author) {
-        authorTextView.setText(author);
+        if (author != null && !author.isEmpty()) {
+            authorTextView.setText(author);
+        } else {
+            authorTextView.setVisibility(View.GONE);
+        }
     }
 
     private void showImage(String url) {

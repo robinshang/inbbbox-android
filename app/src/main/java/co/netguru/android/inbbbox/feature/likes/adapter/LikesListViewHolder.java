@@ -14,12 +14,13 @@ import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
 public class LikesListViewHolder extends BaseViewHolder<Shot> {
 
-    private final LikeClickListener likeClickListener;
     @BindView(R.id.like_item_image_view)
     RoundedCornersImageView imageView;
 
     @BindView(R.id.gif_label_textView)
     View gifLabelView;
+
+    private final LikeClickListener likeClickListener;
     private Shot item;
 
     LikesListViewHolder(ViewGroup parent, LikeClickListener likeClickListener) {

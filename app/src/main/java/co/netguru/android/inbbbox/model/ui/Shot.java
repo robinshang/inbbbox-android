@@ -50,11 +50,9 @@ public abstract class Shot implements Parcelable, ShotImage {
     @Nullable
     public abstract String thumbnailUrl();
 
-    @Nullable
-    public abstract Boolean isBucketed();
+    public abstract boolean isBucketed();
 
-    @Nullable
-    public abstract Boolean isLiked();
+    public abstract boolean isLiked();
 
     public static Builder update(Shot shot) {
         return Shot.builder()
@@ -93,9 +91,9 @@ public abstract class Shot implements Parcelable, ShotImage {
 
         public abstract Shot.Builder description(String description);
 
-        public abstract Shot.Builder isLiked(Boolean state);
+        public abstract Shot.Builder isLiked(boolean state);
 
-        public abstract Shot.Builder isBucketed(Boolean state);
+        public abstract Shot.Builder isBucketed(boolean state);
 
         public abstract Shot.Builder isGif(boolean state);
 

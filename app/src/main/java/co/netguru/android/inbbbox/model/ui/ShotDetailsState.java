@@ -1,30 +1,41 @@
 package co.netguru.android.inbbbox.model.ui;
 
+import com.google.auto.value.AutoValue;
+
 import java.util.List;
 
-public class ShotDetailsState {
+@AutoValue
+public abstract class ShotDetailsState {
 
-    private final boolean isLiked;
+    public abstract boolean isLiked();
 
-    private final boolean isBucketed;
+    public abstract boolean isBucketed();
 
-    private final List<Comment> commentList;
+    public abstract List<Comment> comments();
 
-    public ShotDetailsState(boolean isLiked, boolean isBucketed, List<Comment> commentList) {
-        this.isLiked = isLiked;
-        this.isBucketed = isBucketed;
-        this.commentList = commentList;
+    public static ShotDetailsState.Builder builder(){
+        return new AutoValue_ShotDetailsState.Builder();
     }
 
-    public List<Comment> getCommentList() {
-        return commentList;
+    @AutoValue.Builder
+    public abstract static class Builder {
+        public abstract ShotDetailsState.Builder isLiked(boolean isLiked);
+
+        public abstract ShotDetailsState.Builder isBucketed(boolean isLiked);
+
+        public abstract ShotDetailsState.Builder comments(List<Comment> comments);
+
+        public abstract ShotDetailsState build();
     }
 
-    public boolean isLiked() {
-        return isLiked;
-    }
+    public static ShotDetailsState create(boolean isLiked,
+                                          boolean isBucketed,
+                                          List<Comment> comments){
+        return ShotDetailsState.builder()
+                .isLiked(isLiked)
+                .isBucketed(isBucketed)
+                .comments(comments)
+                .build();
 
-    public boolean isBucketed() {
-        return isBucketed;
     }
 }

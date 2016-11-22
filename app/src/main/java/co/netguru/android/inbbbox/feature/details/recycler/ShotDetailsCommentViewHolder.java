@@ -12,6 +12,8 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 
+import static co.netguru.android.inbbbox.utils.StringUtils.getParsedHtmlTextSpanned;
+
 class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
 
     private static final String PARAGRAPH_TAG_START = "<p>";
@@ -47,7 +49,7 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
 
     private void setCommentText(String text) {
 
-        commentTextTextView.setText(displayHtml(text
+        commentTextTextView.setText(getParsedHtmlTextSpanned(text
                 .replace(PARAGRAPH_TAG_START, "")
                 .replace(PARAGRAPH_TAG_END, "")));
         commentTextTextView.setMovementMethod(LinkMovementMethod.getInstance());

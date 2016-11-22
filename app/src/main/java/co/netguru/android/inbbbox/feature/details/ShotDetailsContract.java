@@ -22,12 +22,14 @@ public interface ShotDetailsContract {
         void initView();
 
         void showErrorMessage(String errorMessageLabel);
+
+        Shot getShotInitialData();
     }
 
     interface Presenter extends MvpPresenter<View> {
 
         void downloadData();
 
-void handleShotLike(boolean newLikeState);
+        void handleShotLike(boolean newLikeState);
     }
 }

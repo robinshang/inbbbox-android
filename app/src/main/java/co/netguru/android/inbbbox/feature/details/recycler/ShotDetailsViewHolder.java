@@ -33,24 +33,4 @@ abstract class ShotDetailsViewHolder extends RecyclerView.ViewHolder {
     }
 
     protected abstract void handleBinding();
-
-    protected Spanned displayHtml(String html) {
-        Spanned result;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            result = getHtmlNewApi(html);
-        } else {
-            result = getHtmlOldApi(html);
-        }
-        return result;
-    }
-
-    @SuppressWarnings("deprecation")
-    private Spanned getHtmlOldApi(String html) {
-        return Html.fromHtml(html);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private Spanned getHtmlNewApi(String html) {
-        return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
-    }
 }

@@ -18,7 +18,7 @@ public abstract class Team implements Parcelable {
     }
 
     @AutoValue.Builder
-    public static abstract class Builder {
+    public abstract static class Builder {
         public abstract Team.Builder id(long id);
 
         public abstract Team.Builder name(String name);

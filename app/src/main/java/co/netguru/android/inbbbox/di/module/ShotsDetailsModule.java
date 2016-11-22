@@ -15,12 +15,9 @@ import dagger.Provides;
 @FragmentScope
 @Module
 public class ShotsDetailsModule {
-    private Shot shot;
     private final DetailsViewActionCallback callback;
 
-    public ShotsDetailsModule(Shot shot, DetailsViewActionCallback callback) {
-        this.shot = shot;
-
+    public ShotsDetailsModule(DetailsViewActionCallback callback) {
         this.callback = callback;
     }
 
@@ -38,7 +35,7 @@ public class ShotsDetailsModule {
     @Provides
     ShotDetailsPresenter provideShotDetailsPresenter(ShotDetailsController shotDetailsController,
                                                      ErrorMessageController messageController) {
-        return new ShotDetailsPresenter(shot, shotDetailsController, messageController);
+        return new ShotDetailsPresenter(shotDetailsController, messageController);
     }
 }
 

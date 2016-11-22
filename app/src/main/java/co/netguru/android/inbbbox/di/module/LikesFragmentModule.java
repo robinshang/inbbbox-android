@@ -14,7 +14,7 @@ import dagger.Provides;
 @Module
 public class LikesFragmentModule {
 
-    private LikeClickListener likeClickListener;
+    private final LikeClickListener likeClickListener;
 
     public LikesFragmentModule(LikeClickListener likeClickListener) {
         this.likeClickListener = likeClickListener;

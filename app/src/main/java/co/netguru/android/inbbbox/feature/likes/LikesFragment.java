@@ -71,7 +71,7 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         component = App.getAppComponent(getContext())
-                .plus(new LikesFragmentModule(createLikeClickListener()));
+                .plus(new LikesFragmentModule(shot -> getPresenter().showShotDetails(shot)));
         component.inject(this);
     }
 
@@ -157,9 +157,5 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
                 presenter.getMoreLikesFromServer();
             }
         });
-    }
-
-    private LikeClickListener createLikeClickListener() {
-        return shot -> getPresenter().showShotDetails(shot);
     }
 }

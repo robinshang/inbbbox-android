@@ -12,14 +12,15 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.ShotLoadingManager;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
-public class LikesGridViewHolder extends BaseViewHolder<Shot> {
+class LikesGridViewHolder extends BaseViewHolder<Shot> {
 
-    private final LikeClickListener likeClickListener;
     @BindView(R.id.like_item_image_view)
     RoundedCornersImageView imageView;
 
     @BindView(R.id.gif_label_textView)
     View gifLabelView;
+
+    private final LikeClickListener likeClickListener;
     private Shot item;
 
     LikesGridViewHolder(ViewGroup parent, LikeClickListener likeClickListener) {
