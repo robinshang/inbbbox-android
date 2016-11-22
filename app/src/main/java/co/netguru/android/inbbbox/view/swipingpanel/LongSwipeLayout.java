@@ -1,9 +1,7 @@
 package co.netguru.android.inbbbox.view.swipingpanel;
 
 import android.content.Context;
-import android.os.Handler;
 import android.util.AttributeSet;
-import android.view.DragEvent;
 import android.view.MotionEvent;
 
 import com.daimajia.swipe.SwipeLayout;
@@ -16,8 +14,6 @@ public class LongSwipeLayout extends SwipeLayout {
     private static final float LONG_SWIPE_TRIGGERING_THRESHOLD = 400;
     private static final int LONG_SWIPE_ACTIVATION_TOLERANCE = 80;
     private static final int RIGHT_SWIPE_ACTIVATION_TOLERANCE = 80;
-
-    private final Handler closeHandler = new Handler();
 
     private float offsetX;
     private boolean wasChecked = false;
@@ -174,7 +170,7 @@ public class LongSwipeLayout extends SwipeLayout {
     }
 
     private void delayClose() {
-        closeHandler.postDelayed(() -> close(true, true), AUTO_CLOSE_DELAY);
+        postDelayed(() -> close(true, true), AUTO_CLOSE_DELAY);
     }
 
     public void setItemSwipeListener(ItemSwipeListener itemSwipeListener) {
