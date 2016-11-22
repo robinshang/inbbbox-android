@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             app:contentScrim="@android:color/transparent"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             <co.netguru.android.inbbbox.view.RoundedCornersImageView
@@ -36,7 +36,7 @@
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="none">
+                app:layout_collapseMode="pin">
 
                 <ImageView
                     android:id="@+id/details_close_imageView"
@@ -44,6 +44,7 @@
                     android:layout_height="@dimen/details_close_button_size"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
+                    android:minHeight="?attr/actionBarSize"
                     android:layout_gravity="right|top"
                     android:layout_margin="@dimen/details_close_button_margin"
                     android:alpha="0.7"
