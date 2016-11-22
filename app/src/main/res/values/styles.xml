@@ -100,8 +100,8 @@
     </style>
 
     <style name="SwipeActionIcons">
-        <item name="android:layout_width">@dimen/swipe_action_icon_width</item>
-        <item name="android:layout_height">@dimen/swipe_action_icon_width</item>
+        <item name="android:layout_width">@dimen/shot_swipe_action_icon_width</item>
+        <item name="android:layout_height">@dimen/shot_swipe_action_icon_width</item>
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:layout_marginRight">5dp</item>
         <item name="android:layout_gravity">center</item>
@@ -109,8 +109,8 @@
 
     <style name="LongSwipeActionIcons" parent="SwipeActionIcons">
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_marginLeft">15dp</item>
-        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:layout_marginLeft">@dimen/shot_long_swipe_action_side_margin</item>
+        <item name="android:layout_marginRight">@dimen/shot_long_swipe_action_side_margin</item>
     </style>
 
     <style name="FabMenuLabel">
