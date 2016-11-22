@@ -25,6 +25,10 @@ public abstract class Bucket {
     @SerializedName("shots_count")
     public abstract int shotsCount();
 
+    @Nullable
+    @SerializedName("user")
+    public abstract UserEntity user();
+
     @SerializedName("created_at")
     public abstract LocalDateTime createdAt();
 
@@ -47,6 +51,8 @@ public abstract class Bucket {
         public abstract Builder shotsCount(int shotsCount);
 
         public abstract Builder createdAt(LocalDateTime createdAt);
+
+        public abstract Builder user(UserEntity userEntity);
 
         public abstract Bucket build();
     }

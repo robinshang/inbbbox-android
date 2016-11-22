@@ -7,9 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import rx.Observable;
 
-@FunctionalInterface
 public interface ShotCommentsApi {
 
-    @GET("shots/{shotId}/comments")
-    Observable<List<CommentEntity>> getComments(@Path("shotId") String shotId);
+
 }
