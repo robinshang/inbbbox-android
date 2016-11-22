@@ -68,6 +68,11 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     }
 
     @Override
+    public void onUnFollowClick() {
+        getView().showUnFollowDialog(follower.name());
+    }
+
+    @Override
     public void unFollowUser() {
         final Subscription subscription = followersController.unFollowUser(follower.id())
                 .compose(applyCompletableIoSchedulers())
