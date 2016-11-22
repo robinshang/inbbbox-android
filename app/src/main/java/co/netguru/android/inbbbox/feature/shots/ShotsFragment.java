@@ -33,10 +33,8 @@ import co.netguru.android.inbbbox.view.FogFloatingActionMenu;
 
 public class ShotsFragment
         extends BaseMvpFragment<ShotsContract.View, ShotsContract.Presenter>
-        implements ShotsContract.View, ShotSwipeListener, AddToBucketDialogFragment.BucketSelectListener {
-
-    private ShotsComponent component;
-    private ShotLikeStatusListener shotLikeStatusListener;
+        implements ShotsContract.View, ShotSwipeListener,
+        AddToBucketDialogFragment.BucketSelectListener {
 
     @Inject
     ShotsAdapter adapter;
@@ -52,6 +50,9 @@ public class ShotsFragment
 
     @BindView(R.id.container_fog_view)
     View fogContainerView;
+
+    private ShotsComponent component;
+    private ShotActionListener shotLikeStatusListener;
 
     @OnClick(R.id.fab_like_menu)
     void onLikeFabClick() {
@@ -84,10 +85,10 @@ public class ShotsFragment
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            shotLikeStatusListener = (ShotLikeStatusListener) context;
+            shotLikeStatusListener = (ShotActionListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement ShotLikeStatusListener");
+                    + " must implement ShotActionListener");
         }
     }
 
@@ -174,8 +175,8 @@ public class ShotsFragment
     }
 
     @Override
-    public void showShotDetails(long shotId) {
-        shotLikeStatusListener.showShotDetails(shotId);
+    public void showShotDetails(Shot shot) {
+        shotLikeStatusListener.showShotDetails(shot);
     }
 
     @Override
@@ -204,10 +205,10 @@ public class ShotsFragment
         getPresenter().showShotDetails(shot);
     }
 
-    public interface ShotLikeStatusListener {
+    public interface ShotActionListener {
         void shotLikeStatusChanged();
 
-        void showShotDetails(long id);
+        void showShotDetails(Shot shot);
     }
 
     @Override

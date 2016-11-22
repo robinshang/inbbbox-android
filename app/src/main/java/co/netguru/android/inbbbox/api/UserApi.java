@@ -3,7 +3,7 @@ package co.netguru.android.inbbbox.api;
 import java.util.List;
 
 import co.netguru.android.inbbbox.model.api.Bucket;
-import co.netguru.android.inbbbox.model.api.User;
+import co.netguru.android.inbbbox.model.api.UserEntity;
 import retrofit2.http.GET;
 import rx.Observable;
 import rx.Single;
@@ -11,7 +11,7 @@ import rx.Single;
 public interface UserApi {
 
     @GET("user")
-    Observable<User> getAuthenticatedUser();
+    Observable<UserEntity> getAuthenticatedUser();
 
     @GET("user/buckets")
     Single<List<Bucket>> getUserBucketsList();

@@ -45,7 +45,7 @@ public class ErrorMessageControllerTest {
         String expectedText = "test";
         Throwable throwable = new Throwable(expectedText);
 
-        String result = parser.getError(throwable);
+        String result = parser.getErrorMessageLabel(throwable);
         Assert.assertEquals(expectedText, result);
     }
 }

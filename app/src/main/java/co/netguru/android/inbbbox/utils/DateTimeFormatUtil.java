@@ -25,6 +25,7 @@ public final class DateTimeFormatUtil {
     private static final long HALF_OF_MIN = 30;
     private static final long HALF_MINUTE_IN_SEC = 30;
     private static final long HALF_HOUR_IN_SEC = HOUR_IN_SEC / 2;
+    private static final String SHOT_DETAILS_FORMAT = "MMM dd, yyyy";
 
     private static final DateTimeFormatter TWELVE_HOUR_CLOCK_FORMATTER = DateTimeFormatter.ofPattern(TWELVE_HOUR_CLOCK_PATTERN)
             .withZone(ZoneId.systemDefault());
@@ -107,5 +108,12 @@ public final class DateTimeFormatUtil {
 
     public static String getMonthShortDayAndYearFormattedDate(LocalDateTime localDateTime) {
         return localDateTime.format(DateTimeFormatter.ofPattern(MONTH_SHORT_DAY_AND_YEAR_FORMAT));
+    }
+
+    public static String getShotDetailsDate(LocalDateTime date) {
+        DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern(SHOT_DETAILS_FORMAT)
+                .withZone(ZoneId.systemDefault());
+        return date.format(formatter);
     }
 }

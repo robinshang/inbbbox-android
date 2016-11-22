@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.threeten.bp.LocalDateTime;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +16,7 @@ import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controler.BucketsController;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Single;
 
@@ -48,35 +48,35 @@ public class AddToBucketPresenterTest {
     @Test
     public void whenShotWithTeamIsHandled_thenSetupView() {
         //given
-        Shot shotWithTeam = Shot.builder().id(1).title("title").normalImageUrl("url").authorAvatarUrl("avatarurl")
-                .authorName("name").team(Shot.Team.create(1, "some team")).isLiked(true).creationDate(LocalDateTime.now())
-                .isGif(false)
+        Shot shotWithTeam = Shot.update(Statics.LIKED_SHOT)
+                .author(User.create(Statics.USER_ENTITY))
+                .team(Statics.TEAM)
                 .build();
         //when
         presenter.handleShot(shotWithTeam);
         //then
         verify(viewMock).setShotTitle(shotWithTeam.title());
         verify(viewMock).showShotPreview(shotWithTeam.normalImageUrl());
-        verify(viewMock).showAuthorAvatar(shotWithTeam.authorAvatarUrl());
-        verify(viewMock).showShotAuthorAndTeam(shotWithTeam.authorName(), shotWithTeam.team().name());
-        verify(viewMock, never()).showShotAuthor(shotWithTeam.authorName());
+        verify(viewMock).showAuthorAvatar(shotWithTeam.author().avatarUrl());
+        verify(viewMock).showShotAuthorAndTeam(shotWithTeam.author().name(), shotWithTeam.team().name());
+        verify(viewMock, never()).showShotAuthor(shotWithTeam.author().name());
         verify(viewMock).showShotCreationDate(shotWithTeam.creationDate());
     }
 
     @Test
     public void whenShotWithoutTeamIsHandled_thenSetupView() {
         //given
-        Shot shotWithoutTeam = Shot.builder().id(1).title("title").normalImageUrl("url").authorAvatarUrl("avatarurl")
-                .authorName("name").isLiked(true).creationDate(LocalDateTime.now()).isGif(true)
+        Shot shotWithoutTeam = Shot.update(Statics.LIKED_SHOT)
+                .author(User.create(Statics.USER_ENTITY))
+                .team(null)
                 .build();
-        //when
         presenter.handleShot(shotWithoutTeam);
         //then
         verify(viewMock).setShotTitle(shotWithoutTeam.title());
         verify(viewMock).showShotPreview(shotWithoutTeam.normalImageUrl());
-        verify(viewMock).showAuthorAvatar(shotWithoutTeam.authorAvatarUrl());
+        verify(viewMock).showAuthorAvatar(shotWithoutTeam.author().avatarUrl());
         verify(viewMock, never()).showShotAuthorAndTeam(any(), any());
-        verify(viewMock).showShotAuthor(shotWithoutTeam.authorName());
+        verify(viewMock).showShotAuthor(shotWithoutTeam.author().name());
         verify(viewMock).showShotCreationDate(shotWithoutTeam.creationDate());
     }
 

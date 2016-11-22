@@ -5,9 +5,11 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.ShotImage;
+import timber.log.Timber;
 
 public class ShotLoadingManager {
 
@@ -36,18 +38,14 @@ public class ShotLoadingManager {
     }
 
     public static void loadMainViewShot(Context context, ImageView target, ShotImage shot) {
-        target.setImageResource(R.drawable.shot_placeholder);
-
-        DrawableTypeRequest<String> typeRequest = Glide.with(context)
-                .load(getImageUrl(shot));
-
-        if (shot.isGif()) {
-            typeRequest.asGif();
-        }
-        typeRequest
+        String imageUrl = getImageUrl(shot);
+        Timber.d("shot image url: %s", imageUrl);
+        GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(target);
+        Glide.with(context)
+                .load(imageUrl)
+                .placeholder(R.drawable.shot_placeholder)
                 .thumbnail(ShotLoadingManager.getThumbnailRequest(context, shot.thumbnailUrl()))
                 .animate(android.R.anim.fade_in)
-                .into(target);
+                .into(imageViewTarget);
     }
-
 }

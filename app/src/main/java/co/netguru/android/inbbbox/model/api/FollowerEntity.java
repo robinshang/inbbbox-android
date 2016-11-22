@@ -14,7 +14,7 @@ public abstract class FollowerEntity {
     public abstract String createdAt();
 
     @SerializedName("followee")
-    public abstract User user();
+    public abstract UserEntity user();
 
     public static TypeAdapter<FollowerEntity> typeAdapter(Gson gson) {
         return new AutoValue_FollowerEntity.GsonTypeAdapter(gson);
@@ -31,7 +31,7 @@ public abstract class FollowerEntity {
 
         public abstract Builder createdAt(String createdAt);
 
-        public abstract Builder user(User user);
+        public abstract Builder user(UserEntity user);
 
         public abstract FollowerEntity build();
     }

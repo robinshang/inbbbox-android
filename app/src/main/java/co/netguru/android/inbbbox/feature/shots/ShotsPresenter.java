@@ -63,7 +63,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private void handleException(Throwable exception) {
         Timber.e(exception, "Shots item receiving exception ");
         getView().hideLoadingIndicator();
-        getView().showError(errorMessageController.getError(exception));
+        getView().showError(errorMessageController.getErrorMessageLabel(exception));
     }
 
     @Override
@@ -84,22 +84,29 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     private void onShotLikeError(Throwable throwable) {
         Timber.e(throwable, "Error while sending shot like");
-        getView().showError(errorMessageController.getError(throwable));
+        getView().showError(errorMessageController.getErrorMessageLabel(throwable));
     }
 
     private Shot changeShotLikeStatus(Shot shot) {
         return Shot.builder()
                 .id(shot.id())
                 .title(shot.title())
+                .author(shot.author())
+                .team(shot.team())
+                .projectUrl(shot.projectUrl())
+                .creationDate(shot.creationDate())
+                .likesCount(shot.likesCount())
+                .bucketCount(shot.bucketCount())
                 .description(shot.description())
+                .isGif(shot.isGif())
                 .hdpiImageUrl(shot.hdpiImageUrl())
                 .normalImageUrl(shot.normalImageUrl())
                 .thumbnailUrl(shot.thumbnailUrl())
                 .creationDate(shot.creationDate())
-                .authorAvatarUrl(shot.authorAvatarUrl())
-                .authorName(shot.authorName())
+                .author(shot.author())
                 .isGif(shot.isGif())
                 .isLiked(true)
+                .isBucketed(shot.isBucketed())
                 .build();
     }
 
@@ -130,6 +137,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     @Override
     public void showShotDetails(Shot shot) {
-        getView().showShotDetails(shot.id());
+        getView().showShotDetails(shot);
     }
 }

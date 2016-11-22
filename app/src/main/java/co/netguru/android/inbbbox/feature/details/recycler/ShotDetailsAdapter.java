@@ -3,20 +3,26 @@ package co.netguru.android.inbbbox.feature.details.recycler;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.model.ui.ShotDetails;
+import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.Shot;
 
 public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHolder> {
 
     static final int STATIC_ITEMS_COUNT = 2;
 
     private final DetailsViewActionCallback actionCallback;
-    private ShotDetails details;
+    private Shot details;
+    private List<Comment> comments;
 
     @Inject
     public ShotDetailsAdapter(DetailsViewActionCallback actionCallback) {
         this.actionCallback = actionCallback;
+        comments = Collections.emptyList();
     }
 
     @Override
@@ -27,7 +33,7 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
 
     @Override
     public void onBindViewHolder(ShotDetailsViewHolder holder, int position) {
-        holder.bind(details);
+        holder.bind(details, comments);
     }
 
     @Override
@@ -37,10 +43,17 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
 
     @Override
     public int getItemCount() {
-        return (details.comments() != null ? details.comments().size() : 0) + STATIC_ITEMS_COUNT;
+        // TODO: 18.11.2016 handle empty descrption
+        return (details != null ? comments.size() : 0) + STATIC_ITEMS_COUNT;
     }
 
-    public void setDetails(ShotDetails details) {
+    public void setDetails(Shot details) {
         this.details = details;
+        notifyDataSetChanged();
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+        notifyDataSetChanged();
     }
 }

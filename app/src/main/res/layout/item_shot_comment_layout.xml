@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                style="@style/ShotDetailsSectionContainer"
+                style="@style/ShotCommentSectionContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/comment_avatar_imageView"
-        android:layout_width="@dimen/comment_user_avatar_size"
-        android:layout_height="@dimen/comment_user_avatar_size"
+        android:layout_width="@dimen/details_comment_user_avatar_size"
+        android:layout_height="@dimen/details_comment_user_avatar_size"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="@dimen/details_user_avatar_margin"
         android:src="@drawable/ic_ball"
@@ -41,11 +41,13 @@
             style="@style/Font12.Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_comment_data_top_padding"
             android:lines="1"/>
 
         <View style="@style/Divider"
-              android:alpha="0.5"
-              android:layout_marginTop="@dimen/comment_divider_padding_top"/>
+              android:layout_marginBottom="@dimen/details_comment_divider_padding_bottom"
+              android:layout_marginTop="@dimen/details_comment_divider_padding_top"
+              android:alpha="0.5"/>
     </LinearLayout>
 
 </RelativeLayout>

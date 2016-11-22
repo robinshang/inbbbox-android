@@ -1,5 +1,10 @@
 package co.netguru.android.inbbbox.utils;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.text.Html;
+import android.text.Spanned;
+
 public class StringUtils {
 
     private StringUtils() {
@@ -17,6 +22,26 @@ public class StringUtils {
             }
         }
         return true;
+    }
+
+    public static Spanned getParsedHtmlTextSpanned(String html) {
+        Spanned result;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            result = getHtmlNewApi(html);
+        } else {
+            result = getHtmlOldApi(html);
+        }
+        return result;
+    }
+
+    @SuppressWarnings("deprecation")
+    private static Spanned getHtmlOldApi(String html) {
+        return Html.fromHtml(html);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private static Spanned getHtmlNewApi(String html) {
+        return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
     }
 
 }

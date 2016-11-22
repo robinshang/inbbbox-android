@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.netguru.android.inbbbox.model.ui.Comment;
-import co.netguru.android.inbbbox.model.ui.ShotDetails;
+import co.netguru.android.inbbbox.model.ui.Shot;
 
 class MockedExampleData {
 
@@ -15,7 +15,7 @@ class MockedExampleData {
         throw new AssertionError();
     }
 
-    public static ShotDetails getMocketShotDetailsData() {
+    public static Shot getMocketShotDetailsData() {
         List<Comment> comments = new ArrayList<>();
         Comment sec = Comment.builder()
                 .author("sec")
@@ -88,7 +88,7 @@ class MockedExampleData {
                 .build();
 
         Comment date = Comment.builder()
-                .author("date")
+                .author("creationDate")
                 .authorAvatarUrl("https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/matthew.png")
                 .date(LocalDateTime.now().plusHours(48))
                 .text("Example comment so lorem ipsum here will be nice. Something new here will be nice")
@@ -105,21 +105,14 @@ class MockedExampleData {
         comments.add(fewH);
         comments.add(yesterday);
         comments.add(date);
-        return ShotDetails
+        return Shot
                 .builder()
                 .id(1)
                 .title("Awsome Title homie")
-                .comments(comments)
-                .userAvatarUrl("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306")
-                .authorUrl("https://d13yacurqjgara.cloudfront.net/users/653174/avatars/normal/4765adea2b386b03231d10f37d786f8e.jpg?1475482306")
-                .authorName("demo author")
-                .appName("demo app")
+                .projectUrl("demo app")
                 .bucketCount(123)
                 .likesCount(321)
-                .companyName("Netguru dmeos")
-                .companyProfileUrl("http://google.com")
-                .date("25 dev 2016")
-                .authorId(99)
+                .creationDate(LocalDateTime.now())
                 .isLiked(false)
                 .isBucketed(false)
                 .description("\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"")

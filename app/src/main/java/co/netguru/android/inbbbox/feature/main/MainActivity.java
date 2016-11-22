@@ -43,6 +43,7 @@ import co.netguru.android.inbbbox.feature.likes.LikesFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -52,7 +53,7 @@ public class MainActivity
         extends BaseMvpActivity<MainViewContract.View,
         MainViewContract.Presenter>
         implements MainViewContract.View,
-        ShotsFragment.ShotLikeStatusListener {
+        ShotsFragment.ShotActionListener {
 
     public static final int REQUEST_REFRESH_FOLLOWER_LIST = 101;
     private static final int REQUEST_DEFAULT = 0;
@@ -136,8 +137,8 @@ public class MainActivity
         return component.getMainActivityPresenter();
     }
 
-    private void showFragmentDetails(long shotId) {
-        Fragment fragment = ShotDetailsFragment.newInstance(shotId);
+    private void showFragmentDetails(Shot shot) {
+        Fragment fragment = ShotDetailsFragment.newInstance(shot);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
@@ -388,8 +389,8 @@ public class MainActivity
     }
 
     @Override
-    public void showShotDetails(long id) {
-        showFragmentDetails(id);
+    public void showShotDetails(Shot shot) {
+        showFragmentDetails(shot);
     }
 
     private BottomSheetBehavior getBottomSheetBehavior() {
