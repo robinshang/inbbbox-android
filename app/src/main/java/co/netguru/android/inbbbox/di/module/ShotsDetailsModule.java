@@ -8,7 +8,6 @@ import co.netguru.android.inbbbox.controler.ShotDetailsController;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsPresenter;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
-import co.netguru.android.inbbbox.model.ui.Shot;
 import dagger.Module;
 import dagger.Provides;
 

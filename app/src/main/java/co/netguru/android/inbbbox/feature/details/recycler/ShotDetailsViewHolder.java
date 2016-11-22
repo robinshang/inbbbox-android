@@ -1,10 +1,6 @@
 package co.netguru.android.inbbbox.feature.details.recycler;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.View;
 
 import java.util.List;
