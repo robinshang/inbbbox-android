@@ -13,7 +13,7 @@ import timber.log.Timber;
 public class LongSwipeLayout extends SwipeLayout {
 
     private static final long AUTO_CLOSE_DELAY = 300;
-    private static final float LONG_SWIPE_TRIGGERING_THRESHOLD = 300;
+    private static final float LONG_SWIPE_TRIGGERING_THRESHOLD = 400;
     private static final int LONG_SWIPE_ACTIVATION_TOLERANCE = 80;
     private static final int RIGHT_SWIPE_ACTIVATION_TOLERANCE = 80;
 
