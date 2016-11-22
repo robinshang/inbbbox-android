@@ -29,5 +29,6 @@ public interface ShotsApi {
     @GET("shots/{shotId}/comments")
     Observable<List<CommentEntity>> getShotComments(@Path("shotId") String shotId);
 
-    Observable<List<Bucket>> getBucketLiked(Long shotId);
+    @GET("shots/{shotId}/buckets")
+    Observable<List<Bucket>> getBucketLiked(@Path("shotId") String shotId);
 }

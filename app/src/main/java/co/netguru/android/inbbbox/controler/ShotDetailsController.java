@@ -52,8 +52,8 @@ public class ShotDetailsController {
                 .map(User::id);
     }
 
-    private Observable<List<Long>> getCurrentBuckets(long shotId) {
-        return shotsApi.getBucketLiked(shotId)
+    private Observable<List<Long>> getCurrentBuckets(Long shotId) {
+        return shotsApi.getBucketLiked(shotId.toString())
                 .compose(fromListObservable())
                 .map(bucket -> bucket.user() != null ? bucket.user().id() : (long) Constants.UNDEFINED)
                 .toList();
