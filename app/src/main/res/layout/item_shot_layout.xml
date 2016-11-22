@@ -23,7 +23,7 @@
         <!-- Bottom View Start-->
         <LinearLayout
             android:id="@+id/bottom_right_wrapper"
-            android:layout_width="@dimen/right_swipe_action_panel_width"
+            android:layout_width="@dimen/shot_right_swipe_action_panel_width"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="horizontal"
@@ -38,7 +38,7 @@
 
         <LinearLayout
             android:id="@+id/_left_wrapper"
-            android:layout_width="@dimen/left_swipe_action_panel_width"
+            android:layout_width="@dimen/shot_left_swipe_action_panel_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:gravity="center"
@@ -57,8 +57,8 @@
                     android:src="@drawable/selector_like_swipe"/>
 
                 <ImageView
-                    android:layout_width="@dimen/swipe_action_plus_size"
-                    android:layout_height="@dimen/swipe_action_plus_size"
+                    android:layout_width="@dimen/shot_swipe_action_plus_size"
+                    android:layout_height="@dimen/shot_swipe_action_plus_size"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_plus"/>
 
@@ -79,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
+                android:src="@drawable/shot_placeholder"
                 android:padding="@dimen/shot_background_padding"/>
 
             <TextView
