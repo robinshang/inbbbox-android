@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.feature.likes.LikesFragment;
-import co.netguru.android.inbbbox.feature.likes.adapter.LikeClickListener;
+import co.netguru.android.inbbbox.feature.likes.adapter.ShotClickListener;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
 import dagger.Module;
 import dagger.Provides;
@@ -14,9 +14,9 @@ import dagger.Provides;
 @Module
 public class LikesFragmentModule {
 
-    private final LikeClickListener likeClickListener;
+    private final ShotClickListener likeClickListener;
 
-    public LikesFragmentModule(LikeClickListener likeClickListener) {
+    public LikesFragmentModule(ShotClickListener likeClickListener) {
         this.likeClickListener = likeClickListener;
     }
 

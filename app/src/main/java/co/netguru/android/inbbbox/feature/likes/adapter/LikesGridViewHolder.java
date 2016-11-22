@@ -20,10 +20,10 @@ class LikesGridViewHolder extends BaseViewHolder<Shot> {
     @BindView(R.id.gif_label_textView)
     View gifLabelView;
 
-    private final LikeClickListener likeClickListener;
+    private final ShotClickListener likeClickListener;
     private Shot item;
 
-    LikesGridViewHolder(ViewGroup parent, LikeClickListener likeClickListener) {
+    LikesGridViewHolder(ViewGroup parent, ShotClickListener likeClickListener) {
         super(LayoutInflater.from(parent.getContext()).inflate(R.layout.like_item_list_view, parent, false));
         this.likeClickListener = likeClickListener;
     }

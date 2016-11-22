@@ -18,12 +18,12 @@ public class LikesAdapter extends RecyclerView.Adapter<BaseViewHolder<Shot>> {
     private static final int TYPE_GRID = 0;
     private static final int TYPE_LIST = 1;
 
-    private final LikeClickListener likeClickListener;
+    private final ShotClickListener likeClickListener;
     private final List<Shot> likeList;
     private boolean isGridMode;
 
     @Inject
-    public LikesAdapter(LikeClickListener likeClickListener) {
+    public LikesAdapter(ShotClickListener likeClickListener) {
         this.likeClickListener = likeClickListener;
         likeList = new ArrayList<>();
     }
