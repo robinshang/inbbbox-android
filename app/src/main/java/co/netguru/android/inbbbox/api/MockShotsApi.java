@@ -45,7 +45,7 @@ public class MockShotsApi implements ShotsApi {
     }
 
     @Override
-    public Observable<List<Bucket>> getBucketLiked(String shotId) {
+    public Observable<List<Bucket>> getBucketsList(String shotId) {
         return Observable.just(Collections.emptyList());
     }
 

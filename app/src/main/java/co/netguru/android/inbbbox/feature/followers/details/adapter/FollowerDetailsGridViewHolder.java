@@ -37,7 +37,7 @@ public class FollowerDetailsGridViewHolder extends BaseViewHolder<Shot> {
 
     @OnClick(R.id.follower_details_item_image_view)
     void onShotImageClick() {
-        shotClickListener.onLikeShotClick(item);
+        shotClickListener.onShotClick(item);
     }
 
     @Override

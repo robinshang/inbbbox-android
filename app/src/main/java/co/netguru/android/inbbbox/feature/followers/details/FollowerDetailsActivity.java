@@ -22,7 +22,7 @@ import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
 public class FollowerDetailsActivity extends BaseActivity
-        implements FollowerDetailsFragment.OnUnFollowCompletedListener {
+        implements FollowerDetailsFragment.OnFollowedShotActionListener {
 
     private static final String FOLLOWER_KEY = "follower_key";
 

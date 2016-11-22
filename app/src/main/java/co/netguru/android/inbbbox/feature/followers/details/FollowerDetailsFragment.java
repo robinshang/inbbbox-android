@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -51,7 +50,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     @Inject
     LinearLayoutManager linearLayoutManager;
 
-    private OnUnFollowCompletedListener onUnFollowCompletedListener;
+    private OnFollowedShotActionListener onUnFollowCompletedListener;
     private FollowerDetailsFragmentComponent component;
 
     public static FollowerDetailsFragment newInstance(Follower follower) {
@@ -67,10 +66,10 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            onUnFollowCompletedListener = (OnUnFollowCompletedListener) context;
+            onUnFollowCompletedListener = (OnFollowedShotActionListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnUnFollowCompletedListener");
+                    + " must implement OnFollowedShotActionListener");
         }
         component = App.getAppComponent(getContext())
                 .plus(new FollowerDetailsFragmentModule(shot -> getPresenter().showShotDetails(shot)));
@@ -162,7 +161,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         });
     }
 
-    public interface OnUnFollowCompletedListener {
+    public interface OnFollowedShotActionListener {
         void showShotDetails(Shot shot);
 
         void unFollowCompleted();

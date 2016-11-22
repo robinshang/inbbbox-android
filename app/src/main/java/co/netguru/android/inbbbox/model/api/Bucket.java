@@ -9,9 +9,6 @@ import com.google.gson.annotations.SerializedName;
 
 import org.threeten.bp.LocalDateTime;
 
-import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
-
 @AutoValue
 public abstract class Bucket {
 

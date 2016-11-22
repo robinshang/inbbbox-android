@@ -9,7 +9,6 @@ import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.inbbbox.model.ui.User;
 import rx.Observable;
 import rx.Single;
-import rx.functions.Func1;
 
 @Singleton
 public class UserController {

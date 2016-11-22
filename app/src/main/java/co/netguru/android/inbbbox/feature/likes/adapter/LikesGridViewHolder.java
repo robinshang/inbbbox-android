@@ -31,7 +31,7 @@ class LikesGridViewHolder extends BaseViewHolder<Shot> {
 
     @OnClick(R.id.like_item_image_view)
     void onItemClick() {
-        likeClickListener.onLikeShotClick(item);
+        likeClickListener.onShotClick(item);
     }
 
     @Override

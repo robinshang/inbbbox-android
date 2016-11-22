@@ -224,14 +224,14 @@ public class ShotDetailsControllerTest {
                 .user(userEntityMock)
                 .build();
         buckets.add(currentUserBucket);
-        when(shotApiMock.getBucketLiked(EXAMPLE_SHOT_ID.toString()))
+        when(shotApiMock.getBucketsList(EXAMPLE_SHOT_ID.toString()))
                 .thenReturn(Observable.just(buckets));
     }
 
     private void mockNotInBucketShotState() {
         List<Bucket> buckets = Collections.emptyList();
 
-        when(shotApiMock.getBucketLiked(EXAMPLE_SHOT_ID.toString()))
+        when(shotApiMock.getBucketsList(EXAMPLE_SHOT_ID.toString()))
                 .thenReturn(Observable.just(buckets));
     }
 }

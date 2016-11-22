@@ -12,15 +12,14 @@ import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
 import co.netguru.android.inbbbox.model.ui.User;
 import rx.Completable;
 import rx.Observable;
-import rx.functions.Func2;
 
 import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
 
 public class ShotDetailsController {
 
     private final LikeShotController likeShotController;
-    private UserController userController;
-    private ShotsApi shotsApi;
+    private final UserController userController;
+    private final ShotsApi shotsApi;
 
     @Inject
     public ShotDetailsController(LikeShotController likeShotController,
@@ -53,7 +52,7 @@ public class ShotDetailsController {
     }
 
     private Observable<List<Long>> getCurrentBuckets(Long shotId) {
-        return shotsApi.getBucketLiked(shotId.toString())
+        return shotsApi.getBucketsList(shotId.toString())
                 .compose(fromListObservable())
                 .map(bucket -> bucket.user() != null ? bucket.user().id() : (long) Constants.UNDEFINED)
                 .toList();

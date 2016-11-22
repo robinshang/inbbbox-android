@@ -21,9 +21,9 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final int HEADER_POSITION = 0;
 
     private final List<Shot> shotList;
+    private final ShotClickListener shotClickListener;
     private Follower follower;
     private boolean isGridMode;
-    private ShotClickListener shotClickListener;
 
     @Inject
     public FollowerDetailsAdapter(ShotClickListener shotClickListener) {
