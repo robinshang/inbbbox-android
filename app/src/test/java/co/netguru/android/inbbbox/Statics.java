@@ -51,7 +51,13 @@ public final class Statics {
             .username("")
             .build();
 
-    public static final Bucket BUCKET = Bucket.builder().createdAt(LocalDateTime.now()).description("").id(1).name("some bucket").shotsCount(2).build();
+    public static final Bucket BUCKET = Bucket.builder()
+            .createdAt(LocalDateTime.now())
+            .description("")
+            .id(1)
+            .name("some bucket")
+            .shotsCount(2)
+            .build();
 
     public static final Team TEAM = Team.builder()
             .id(1)

@@ -9,6 +9,9 @@ import com.google.gson.annotations.SerializedName;
 
 import org.threeten.bp.LocalDateTime;
 
+import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
+
 @AutoValue
 public abstract class Bucket {
 
@@ -38,6 +41,16 @@ public abstract class Bucket {
 
     public static Builder builder() {
         return new AutoValue_Bucket.Builder();
+    }
+
+    public static Bucket.Builder update(Bucket bucket) {
+        return Bucket.builder()
+                .createdAt(bucket.createdAt())
+                .description(bucket.description())
+                .id(bucket.id())
+                .shotsCount(bucket.shotsCount())
+                .name(bucket.name())
+                .user(bucket.user());
     }
 
     @AutoValue.Builder
