@@ -1,24 +1,30 @@
 package co.netguru.android.inbbbox.feature.details.recycler;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
-import co.netguru.android.inbbbox.model.ui.ShotDetails;
+import java.util.List;
 
-abstract class ShotDetailsViewHolder extends BaseViewHolder<ShotDetails> {
+import butterknife.ButterKnife;
+import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.Shot;
+
+abstract class ShotDetailsViewHolder extends RecyclerView.ViewHolder {
 
     protected final DetailsViewActionCallback actionCallbackListener;
-    protected ShotDetails item;
+    protected Shot item;
+    protected List<Comment> commentList;
 
     ShotDetailsViewHolder(View view, DetailsViewActionCallback actionCallbackListener) {
         super(view);
         this.actionCallbackListener = actionCallbackListener;
+        ButterKnife.bind(this, view);
     }
 
-    @Override
-    public void bind(ShotDetails item) {
+    public void bind(Shot item, List<Comment> comments) {
 
         this.item = item;
+        this.commentList = comments;
         handleBinding();
     }
 

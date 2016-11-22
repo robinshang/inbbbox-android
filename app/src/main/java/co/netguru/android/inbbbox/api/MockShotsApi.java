@@ -47,6 +47,9 @@ public class MockShotsApi implements ShotsApi {
             entity.setImage(image);
             entity.setCreatedAt(LocalDateTime.now());
             entity.setAnimated(false);
+            entity.setLikesCount(2);
+            entity.setBucketsCount(3);
+            entity.setCreatedAt(LocalDateTime.now());
             result.add(entity);
         }
         return result;

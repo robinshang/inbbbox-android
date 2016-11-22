@@ -12,7 +12,7 @@ import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.api.UserApi;
 import co.netguru.android.inbbbox.controler.UserController;
 import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
-import co.netguru.android.inbbbox.model.api.User;
+import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Observable;
@@ -40,15 +40,15 @@ public class UserControllerTest {
 
     @Test
     public void whenSubscribeToGetUser_thenSaveUserInStorage() {
-        when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.just(Statics.USER));
+        when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.just(Statics.USER_ENTITY));
         when(userPrefsRepository.saveUser(any())).thenReturn(Completable.complete());
-        TestSubscriber<User> testSubscriber = new TestSubscriber<>();
+        TestSubscriber<UserEntity> testSubscriber = new TestSubscriber<>();
 
         userController.requestUser().subscribe(testSubscriber);
 
-        verify(userPrefsRepository, times(1)).saveUser(Statics.USER);
+        verify(userPrefsRepository, times(1)).saveUser(Statics.USER_ENTITY);
 
-        testSubscriber.assertValue(Statics.USER);
+        testSubscriber.assertValue(Statics.USER_ENTITY);
         testSubscriber.assertCompleted();
         testSubscriber.assertNoErrors();
     }
@@ -58,7 +58,7 @@ public class UserControllerTest {
     public void whenSubscribeToGetUserAndDownloadFailed_thenGetExceptionFromUser() {
         Throwable expectedThrowable = new Throwable("exception");
         when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.error(expectedThrowable));
-        TestSubscriber<User> testSubscriber = new TestSubscriber<>();
+        TestSubscriber<UserEntity> testSubscriber = new TestSubscriber<>();
 
         userController.requestUser().subscribe(testSubscriber);
 

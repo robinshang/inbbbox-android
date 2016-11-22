@@ -15,7 +15,7 @@ public abstract class FilteredShotsParams{
     @Nullable
     public abstract String timeFrame();
 
-    //date format YYYY-MM-DD
+    //creationDate format YYYY-MM-DD
     @Nullable
     public abstract String date();
 

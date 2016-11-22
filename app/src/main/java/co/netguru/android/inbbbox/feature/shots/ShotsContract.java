@@ -22,11 +22,12 @@ interface ShotsContract {
 
         void closeFabMenu();
 
+        void showShotDetails(Shot shot);
+
         void showBucketChoosing(Shot shot);
 
         void showBucketAddSuccess();
 
-        void showShotDetails(long shotId);
     }
 
     interface Presenter extends MvpPresenter<View> {

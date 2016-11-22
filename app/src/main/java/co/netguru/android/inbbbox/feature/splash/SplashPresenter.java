@@ -59,7 +59,7 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
 
     private void handleError(Throwable throwable) {
         Timber.e(throwable.getMessage());
-        getView().showError(errorParser.getError(throwable));
+        getView().showError(errorParser.getErrorMessageLabel(throwable));
         getView().showLoginScreen();
     }
 }

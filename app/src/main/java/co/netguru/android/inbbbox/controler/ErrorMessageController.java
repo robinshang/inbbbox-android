@@ -19,7 +19,7 @@ public class ErrorMessageController {
         this.resources = resources;
     }
 
-    public String getError(Throwable throwable) {
+    public String getErrorMessageLabel(Throwable throwable) {
         return throwable.getMessage();
     }
 

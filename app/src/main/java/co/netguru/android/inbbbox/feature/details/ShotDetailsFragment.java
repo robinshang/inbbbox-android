@@ -1,8 +1,8 @@
 package co.netguru.android.inbbbox.feature.details;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -23,15 +23,23 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotDetailsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
+import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
-import co.netguru.android.inbbbox.model.ui.ShotDetails;
+import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.model.ui.ShotImage;
+import co.netguru.android.inbbbox.model.ui.Team;
+import co.netguru.android.inbbbox.model.ui.User;
+import co.netguru.android.inbbbox.utils.ShotLoadingManager;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
-public class ShotDetailsFragment extends Fragment {
+public class ShotDetailsFragment
+        extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
+        implements ShotDetailsContract.View {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
-    private static final String ARG_SHOT_ID = "arg:shot_id";
+    private static final String ARG_SHOT = "arg:shot";
     private ShotDetailsComponent component;
 
     @BindView(R.id.shot_details_toolbar)
@@ -51,21 +59,20 @@ public class ShotDetailsFragment extends Fragment {
 
     private DetailsViewActionCallback actionsCallback = new DetailsViewActionCallback() {
         @Override
-        public void onCompanySelected(String companyProfileUrl) {
+        public void onTeamSelected(Team team) {
             // TODO: 15.11.2016 not in scope of this task
-            Toast.makeText(getContext(), "company: " + companyProfileUrl, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "team clicked: " + team.name(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
-        public void onUserSelected(long userId) {
+        public void onUserSelected(User user) {
             // TODO: 15.11.2016 not in scope of this task
-            Toast.makeText(getContext(), "userId " + userId, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "user clicked " + user.name(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
-        public void onShotLikeAction(long shotId, boolean isLiked) {
-            // TODO: 15.11.2016 not in scope of this task
-            Toast.makeText(getContext(), "like: " + isLiked, Toast.LENGTH_SHORT).show();
+        public void onShotLikeAction(boolean newLikeState) {
+            getPresenter().handleShotLike(newLikeState);
         }
 
         @Override
@@ -80,9 +87,9 @@ public class ShotDetailsFragment extends Fragment {
         getActivity().onBackPressed();
     }
 
-    public static ShotDetailsFragment newInstance(long shotId) {
+    public static ShotDetailsFragment newInstance(Shot shot) {
         Bundle args = new Bundle();
-        args.putLong(ARG_SHOT_ID, shotId);
+        args.putParcelable(ARG_SHOT, shot);
         ShotDetailsFragment fragment = new ShotDetailsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -98,41 +105,55 @@ public class ShotDetailsFragment extends Fragment {
     }
 
     private void initComponent() {
-        component = App.getAppComponent(getContext()).plus(new ShotsDetailsModule(actionsCallback));
+        component = App.getAppComponent(getContext())
+                .plus(new ShotsDetailsModule(actionsCallback));
         component.inject(this);
+    }
+
+    @NonNull
+    @Override
+    public ShotDetailsContract.Presenter createPresenter() {
+        return component.getPresenter();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        initRecycler();
-
-        // TODO: 15.11.2016 MOCKED DATA - remove in task IA-146
-        showItems(MockedExampleData.getMocketShotDetailsData());
-        showMainImage(MockedExampleData.getExampleImageUrl(), MockedExampleData.getExampleImageUrl());
-        // TODO: 15.11.2016 MOCKED DATA - remove in task IA-146
+        getPresenter().retrieveInitialData();
+        getPresenter().downloadData();
     }
 
-    private void initRecycler() {
+    @Override
+    public void initView() {
         shotRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shotRecyclerView.setAdapter(adapter);
     }
 
-    // TODO: 16.11.2016 it will be public when MVP will be implemented in task IA-146
-    public void showItems(ShotDetails details) {
+    @Override
+    public void showErrorMessage(String errorMessageLabel) {
+        Toast.makeText(getContext(), errorMessageLabel, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public Shot getShotInitialData() {
+        return getArguments().getParcelable(ARG_SHOT);
+    }
+
+    @Override
+    public void showDetails(Shot details) {
         adapter.setDetails(details);
     }
 
-    // TODO: 16.11.2016 it will be public when MVP will be implemented in task IA-146
-    public void showMainImage(String imageUrl, String thumbnailUrl) {
+    @Override
+    public void showComments(List<Comment> commentList) {
+        adapter.setComments(commentList);
+    }
+
+    @Override
+    public void showMainImage(ShotImage shotImage) {
         parallaxImageView.setRadius(radius);
         parallaxImageView.disableRadiusForBottomEdge(true);
-        // TODO: 16.11.2016 enable gif displaying in IA-146
-        Glide.with(getContext())
-                .load(imageUrl)
-                .placeholder(R.drawable.shape_rounded_top_corners)
-                .animate(android.R.anim.fade_in)
-                .into(parallaxImageView);
+        ShotLoadingManager.loadMainViewShot(getContext(), parallaxImageView, shotImage);
     }
 }
