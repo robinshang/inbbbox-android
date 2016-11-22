@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +40,6 @@ public class ShotDetailsFragment
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_SHOT = "arg:shot";
     private ShotDetailsComponent component;
-
-    @BindView(R.id.shot_details_toolbar)
-    Toolbar toolbar;
 
     @BindView(R.id.shot_details_recyclerView)
     RecyclerView shotRecyclerView;

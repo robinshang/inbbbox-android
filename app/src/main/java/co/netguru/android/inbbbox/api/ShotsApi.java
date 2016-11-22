@@ -2,6 +2,8 @@ package co.netguru.android.inbbbox.api;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.model.api.Bucket;
+import co.netguru.android.inbbbox.model.api.CommentEntity;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.Constants.API;
 import retrofit2.http.GET;
@@ -23,4 +25,10 @@ public interface ShotsApi {
     @GET("users/{user}/shots")
     Observable<List<ShotEntity>> getUserShots(@Path("user") long userId,
                                               @Query("page") int pageNumber, @Query("per_page") int pageCount);
+
+    @GET("shots/{shotId}/comments")
+    Observable<List<CommentEntity>> getShotComments(@Path("shotId") String shotId);
+
+    @GET("shots/{shotId}/buckets")
+    Observable<List<Bucket>> getBucketsList(@Path("shotId") String shotId);
 }

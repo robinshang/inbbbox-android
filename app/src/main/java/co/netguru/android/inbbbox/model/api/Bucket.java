@@ -25,6 +25,10 @@ public abstract class Bucket {
     @SerializedName("shots_count")
     public abstract int shotsCount();
 
+    @Nullable
+    @SerializedName("user")
+    public abstract UserEntity user();
+
     @SerializedName("created_at")
     public abstract LocalDateTime createdAt();
 
@@ -34,6 +38,16 @@ public abstract class Bucket {
 
     public static Builder builder() {
         return new AutoValue_Bucket.Builder();
+    }
+
+    public static Bucket.Builder update(Bucket bucket) {
+        return Bucket.builder()
+                .createdAt(bucket.createdAt())
+                .description(bucket.description())
+                .id(bucket.id())
+                .shotsCount(bucket.shotsCount())
+                .name(bucket.name())
+                .user(bucket.user());
     }
 
     @AutoValue.Builder
@@ -47,6 +61,8 @@ public abstract class Bucket {
         public abstract Builder shotsCount(int shotsCount);
 
         public abstract Builder createdAt(LocalDateTime createdAt);
+
+        public abstract Builder user(UserEntity userEntity);
 
         public abstract Bucket build();
     }

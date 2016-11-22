@@ -78,6 +78,11 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         subscriptions.add(subscription);
     }
 
+    @Override
+    public void showShotDetails(Shot shot) {
+        getView().openShotDetailsScreen(shot);
+    }
+
     private void onGetUserShotsNext(List<Shot> shotList) {
         hasMore = shotList.size() == SHOT_PAGE_COUNT;
         getView().showMoreUserShots(shotList);

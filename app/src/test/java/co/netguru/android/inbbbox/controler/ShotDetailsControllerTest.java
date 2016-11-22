@@ -10,15 +10,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.api.ShotCommentsApi;
+import co.netguru.android.inbbbox.api.ShotsApi;
+import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.CommentEntity;
+import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
+import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.observers.TestSubscriber;
 
 import static org.mockito.Mockito.times;
@@ -32,7 +38,7 @@ public class ShotDetailsControllerTest {
     public TestRule rule = new RxSyncTestRule();
 
     @Mock
-    ShotCommentsApi shotCommentsApiMock;
+    ShotsApi shotApiMock;
 
     @Mock
     LikeShotController likeShotControllerMock;
@@ -40,21 +46,35 @@ public class ShotDetailsControllerTest {
     @Mock
     ShotDetailsState state;
 
+    @Mock
+    UserController userControllerMock;
+
+    @Mock
+    User userMock;
+
+    @Mock
+    UserEntity userEntityMock;
+
     @InjectMocks
     ShotDetailsController controller;
 
     private List<CommentEntity> comments = Statics.generateCommentsEntity();
     private Long EXAMPLE_SHOT_ID = 1L;
+    private Long EXAMPLE_USER_ID = 99L;
 
     @Before
     public void setUp() {
-        when(shotCommentsApiMock.getComments(EXAMPLE_SHOT_ID.toString()))
+        when(shotApiMock.getShotComments(EXAMPLE_SHOT_ID.toString()))
                 .thenReturn(Observable.just(comments));
+        when(userControllerMock.getUserFromCache()).thenReturn(Single.just(userMock));
+        when(userMock.id()).thenReturn(EXAMPLE_USER_ID);
+        when(userEntityMock.id()).thenReturn(EXAMPLE_USER_ID);
     }
 
     @Test
     public void whenShotSubscribed_thenReturnComments() {
         mockLikedShotState();
+        mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
         controller.getShotComments(EXAMPLE_SHOT_ID).subscribe(testSubscriber);
@@ -65,6 +85,7 @@ public class ShotDetailsControllerTest {
     @Test
     public void whenShotSubscribedAndWasLiked_thenReturnShotLikeStateTrue() {
         mockLikedShotState();
+        mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
         controller.getShotComments(EXAMPLE_SHOT_ID).subscribe(testSubscriber);
@@ -77,6 +98,7 @@ public class ShotDetailsControllerTest {
     @Test
     public void whenShotSubscribedAndWasNotLiked_thenReturnShotLikeStateFalse() {
         mockNotLikedShotState();
+        mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
         controller.getShotComments(EXAMPLE_SHOT_ID).subscribe(testSubscriber);
@@ -87,19 +109,47 @@ public class ShotDetailsControllerTest {
     }
 
     @Test
-    public void whenGetShotSubscribed_thenRunCommentsDownloadRequest() {
+    public void whenShotSubscribedAndWasInBucket_thenReturnShotBucketStateTrue() {
         mockNotLikedShotState();
+        mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
         controller.getShotComments(EXAMPLE_SHOT_ID).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(shotCommentsApiMock, times(1)).getComments(EXAMPLE_SHOT_ID.toString());
+        ShotDetailsState shotDetailsState = testSubscriber.getOnNextEvents().get(0);
+        Assert.assertEquals(true, shotDetailsState.isBucketed());
+    }
+
+    @Test
+    public void whenShotSubscribedAndWasNotInBucket_thenReturnShotBucketStateFalse() {
+        mockNotLikedShotState();
+        mockNotInBucketShotState();
+        TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
+
+        controller.getShotComments(EXAMPLE_SHOT_ID).subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        ShotDetailsState shotDetailsState = testSubscriber.getOnNextEvents().get(0);
+        Assert.assertEquals(false, shotDetailsState.isBucketed());
+    }
+
+    @Test
+    public void whenGetShotSubscribed_thenRunCommentsDownloadRequest() {
+        mockNotLikedShotState();
+        mockInBucketShotState();
+        TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
+
+        controller.getShotComments(EXAMPLE_SHOT_ID).subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        verify(shotApiMock, times(1)).getShotComments(EXAMPLE_SHOT_ID.toString());
     }
 
     @Test
     public void whenGetShotSubscribed_thenRunCommentsDownloadLikeStateRequest() {
         mockNotLikedShotState();
+        mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
         controller.getShotComments(EXAMPLE_SHOT_ID).subscribe(testSubscriber);
@@ -166,5 +216,22 @@ public class ShotDetailsControllerTest {
     private void mockNotLikedShotState() {
         when(likeShotControllerMock.isShotLiked(EXAMPLE_SHOT_ID))
                 .thenReturn(Completable.error(new Throwable()));
+    }
+
+    private void mockInBucketShotState() {
+        List<Bucket> buckets =new ArrayList<>();
+        Bucket currentUserBucket = Bucket.update(Statics.BUCKET)
+                .user(userEntityMock)
+                .build();
+        buckets.add(currentUserBucket);
+        when(shotApiMock.getBucketsList(EXAMPLE_SHOT_ID.toString()))
+                .thenReturn(Observable.just(buckets));
+    }
+
+    private void mockNotInBucketShotState() {
+        List<Bucket> buckets = Collections.emptyList();
+
+        when(shotApiMock.getBucketsList(EXAMPLE_SHOT_ID.toString()))
+                .thenReturn(Observable.just(buckets));
     }
 }

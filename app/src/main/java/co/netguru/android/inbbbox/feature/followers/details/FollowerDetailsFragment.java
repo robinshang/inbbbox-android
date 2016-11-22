@@ -50,7 +50,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     @Inject
     LinearLayoutManager linearLayoutManager;
 
-    private OnUnFollowCompletedListener onUnFollowCompletedListener;
+    private OnFollowedShotActionListener onUnFollowCompletedListener;
     private FollowerDetailsFragmentComponent component;
 
     public static FollowerDetailsFragment newInstance(Follower follower) {
@@ -66,13 +66,13 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            onUnFollowCompletedListener = (OnUnFollowCompletedListener) context;
+            onUnFollowCompletedListener = (OnFollowedShotActionListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnUnFollowCompletedListener");
+                    + " must implement OnFollowedShotActionListener");
         }
         component = App.getAppComponent(getContext())
-                .plus(new FollowerDetailsFragmentModule());
+                .plus(new FollowerDetailsFragmentModule(shot -> getPresenter().showShotDetails(shot)));
         component.inject(this);
     }
 
@@ -136,6 +136,11 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         Snackbar.make(recyclerView, message, Snackbar.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void openShotDetailsScreen(Shot shot) {
+        onUnFollowCompletedListener.showShotDetails(shot);
+    }
+
     private void initRecyclerView() {
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -156,8 +161,8 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         });
     }
 
-    @FunctionalInterface
-    public interface OnUnFollowCompletedListener {
+    public interface OnFollowedShotActionListener {
+        void showShotDetails(Shot shot);
 
         void unFollowCompleted();
     }

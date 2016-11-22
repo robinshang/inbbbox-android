@@ -13,7 +13,7 @@ import org.threeten.bp.LocalDateTime;
 public abstract class UserEntity {
 
     @SerializedName("id")
-    public abstract int id();
+    public abstract long id();
 
     @SerializedName("name")
     public abstract String name();
@@ -114,7 +114,7 @@ public abstract class UserEntity {
 
     @AutoValue.Builder
     public abstract static class Builder {
-        public abstract Builder id(int id);
+        public abstract Builder id(long id);
 
         public abstract Builder name(String name);
 
