@@ -7,7 +7,6 @@ import co.netguru.android.inbbbox.api.BucketApi;
 import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.api.LikesApi;
 import co.netguru.android.inbbbox.api.MockAuthorizeApi;
-import co.netguru.android.inbbbox.api.MockCommentsApi;
 import co.netguru.android.inbbbox.api.MockShotsApi;
 import co.netguru.android.inbbbox.api.MockedBucketApi;
 import co.netguru.android.inbbbox.api.MockedFollowersApi;
