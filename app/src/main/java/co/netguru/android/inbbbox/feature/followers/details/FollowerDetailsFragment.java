@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
                     + " must implement OnUnFollowCompletedListener");
         }
         component = App.getAppComponent(getContext())
-                .plus(new FollowerDetailsFragmentModule());
+                .plus(new FollowerDetailsFragmentModule(shot -> getPresenter().showShotDetails(shot)));
         component.inject(this);
     }
 
@@ -136,6 +137,11 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         Snackbar.make(recyclerView, message, Snackbar.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void openShotDetailsScreen(Shot shot) {
+        onUnFollowCompletedListener.showShotDetails(shot);
+    }
+
     private void initRecyclerView() {
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -156,8 +162,8 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         });
     }
 
-    @FunctionalInterface
     public interface OnUnFollowCompletedListener {
+        void showShotDetails(Shot shot);
 
         void unFollowCompleted();
     }

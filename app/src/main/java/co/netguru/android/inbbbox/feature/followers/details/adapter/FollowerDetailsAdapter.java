@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.view.ShotClickListener;
 
 public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -22,9 +23,11 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private final List<Shot> shotList;
     private Follower follower;
     private boolean isGridMode;
+    private ShotClickListener shotClickListener;
 
     @Inject
-    FollowerDetailsAdapter() {
+    public FollowerDetailsAdapter(ShotClickListener shotClickListener) {
+        this.shotClickListener = shotClickListener;
         shotList = new ArrayList<>();
     }
 
@@ -34,9 +37,9 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             case TYPE_HEADER:
                 return new FollowerDetailsHeaderViewHolder(parent);
             case TYPE_GRID:
-                return new FollowerDetailsGridViewHolder(parent);
+                return new FollowerDetailsGridViewHolder(parent, shotClickListener);
             case TYPE_LIST:
-                return new FollowerDetailsListViewHolder(parent);
+                return new FollowerDetailsListViewHolder(parent, shotClickListener);
             default:
                 throw new IllegalArgumentException("Cannot create view holder for type : " + viewType);
         }
