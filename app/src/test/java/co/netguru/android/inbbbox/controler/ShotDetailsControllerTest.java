@@ -13,7 +13,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.api.ShotCommentsApi;
 import co.netguru.android.inbbbox.model.api.CommentEntity;
 import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
 import co.netguru.android.testcommons.RxSyncTestRule;

@@ -33,8 +33,8 @@ public class UserController {
     }
 
     public Single<User> getUserFromCache() {
-        return userPrefsRepository.
-                getUser()
+        return userPrefsRepository
+                .getUser()
                 .map(User::create);
     }
 }
