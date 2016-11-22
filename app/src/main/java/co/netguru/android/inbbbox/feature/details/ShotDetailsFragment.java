@@ -42,9 +42,6 @@ public class ShotDetailsFragment
     private static final String ARG_SHOT = "arg:shot";
     private ShotDetailsComponent component;
 
-    @BindView(R.id.shot_details_toolbar)
-    Toolbar toolbar;
-
     @BindView(R.id.shot_details_recyclerView)
     RecyclerView shotRecyclerView;
 

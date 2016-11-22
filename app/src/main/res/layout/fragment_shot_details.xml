@@ -19,7 +19,9 @@
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             app:contentScrim="@color/primary"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+            app:expandedTitleMarginBottom="48dp"
+            app:expandedTitleMarginTop="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             <co.netguru.android.inbbbox.view.RoundedCornersImageView
@@ -30,27 +32,20 @@
                 android:layout_gravity="center_horizontal|top"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/shape_rounded_top_corners"/>
+                android:src="@drawable/shape_rounded_top_corners"
+                app:layout_collapseMode="parallax"/>
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/shot_details_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="parallax"
-                app:titleTextAppearance="?attr/titleTextAppearance">
-
-                <ImageView
-                    android:id="@+id/details_close_imageView"
-                    android:layout_width="@dimen/details_close_button_size"
-                    android:layout_height="@dimen/details_close_button_size"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_margin="@dimen/details_close_button_margin"
-                    android:alpha="0.7"
-                    android:clickable="true"
-                    android:layout_gravity="right|top"
-                    android:src="@drawable/selector_details_close"/>
-            </android.support.v7.widget.Toolbar>
+            <ImageView
+                android:id="@+id/details_close_imageView"
+                android:layout_width="@dimen/details_close_button_size"
+                android:layout_height="@dimen/details_close_button_size"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="right|top"
+                android:layout_margin="@dimen/details_close_button_margin"
+                android:alpha="0.7"
+                android:clickable="true"
+                android:src="@drawable/selector_details_close"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
