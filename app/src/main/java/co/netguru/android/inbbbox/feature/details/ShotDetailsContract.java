@@ -31,5 +31,7 @@ public interface ShotDetailsContract {
         void downloadData();
 
         void handleShotLike(boolean newLikeState);
+
+        void retrieveInitialData();
     }
 }

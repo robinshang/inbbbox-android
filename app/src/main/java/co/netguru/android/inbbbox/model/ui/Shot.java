@@ -122,7 +122,7 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .bucketCount(shotEntity.getBucketsCount())
                 .likesCount(shotEntity.getLikesCount())
                 .team(shotEntity.getTeam() != null ? Team.create(shotEntity.getTeam()) : null)
-                .isGif(shotEntity.getAnimated())
+                .isGif(shotEntity.getAnimated() != null ? shotEntity.getAnimated() : false)
                 .isLiked(false)
                 .isBucketed(false)
                 .hdpiImageUrl(shotEntity.getImage().hiDpiUrl())

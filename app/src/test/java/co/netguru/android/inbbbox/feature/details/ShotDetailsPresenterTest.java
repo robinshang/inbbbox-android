@@ -60,6 +60,8 @@ public class ShotDetailsPresenterTest {
         when(shotMock.id()).thenReturn(EXAMPLE_ID);
         when(shotMock.author()).thenReturn(User.create(Statics.USER_ENTITY));
         when(shotMock.creationDate()).thenReturn(LocalDateTime.now());
+        when(viewMock.getShotInitialData()).thenReturn(shotMock);
+        shotDetailsPresenter.retrieveInitialData();
     }
 
     @Test
@@ -84,7 +86,7 @@ public class ShotDetailsPresenterTest {
     @Test
     public void whenShotDetailsDownload_thenLoadDetailsAndUpdateItAfterStateAreDownloaded() {
         boolean expectedLikeState = true;
-        ShotDetailsState resultState = new ShotDetailsState(expectedLikeState, false, Statics.COMMENTS);
+        ShotDetailsState resultState = ShotDetailsState.create(expectedLikeState, false, Statics.COMMENTS);
         when(shotDetailsControllerMock.getShotComments(EXAMPLE_ID)).thenReturn(Observable.just(resultState));
         when(shotMock.isLiked()).thenReturn(expectedLikeState);
         ArgumentCaptor<Shot> argumentCaptor = ArgumentCaptor.forClass(Shot.class);
@@ -100,7 +102,7 @@ public class ShotDetailsPresenterTest {
     @Test
     public void whenShotDetailsDownload_thenShowShotNotLiked() {
         boolean expectedLikeState = false;
-        ShotDetailsState resultState = new ShotDetailsState(expectedLikeState, false, Statics.COMMENTS);
+        ShotDetailsState resultState = ShotDetailsState.create(expectedLikeState, false, Statics.COMMENTS);
         when(shotDetailsControllerMock.getShotComments(EXAMPLE_ID)).thenReturn(Observable.just(resultState));
         ArgumentCaptor<Shot> argumentCaptor = ArgumentCaptor.forClass(Shot.class);
 
@@ -167,7 +169,7 @@ public class ShotDetailsPresenterTest {
 
     @Test
     public void whenShotLikingFailed_thenShowError() {
-       String expectedMessage = "test";
+        String expectedMessage = "test";
         Throwable throwable = new Throwable(expectedMessage);
         when(errorMessageControllerMock.getErrorMessageLabel(throwable)).thenCallRealMethod();
         when(shotDetailsControllerMock.performLikeAction(anyLong(), anyBoolean()))

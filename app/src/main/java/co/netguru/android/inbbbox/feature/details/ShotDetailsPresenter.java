@@ -38,7 +38,6 @@ public class ShotDetailsPresenter
 
     @Override
     public void downloadData() {
-        this.shot = getView().getShotInitialData();
         getView().showMainImage(shot);
         showShotDetails(shot);
         subscriptions.add(
@@ -56,6 +55,11 @@ public class ShotDetailsPresenter
                         .subscribe(() -> updateLikeState(newLikeState),
                                 this::handleApiError)
         );
+    }
+
+    @Override
+    public void retrieveInitialData() {
+        this.shot = getView().getShotInitialData();
     }
 
     private void updateLikeState(boolean newLikeState) {

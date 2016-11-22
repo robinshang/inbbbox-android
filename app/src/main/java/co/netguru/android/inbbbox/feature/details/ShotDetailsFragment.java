@@ -120,7 +120,7 @@ public class ShotDetailsFragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
+        getPresenter().retrieveInitialData();
         getPresenter().downloadData();
     }
 
