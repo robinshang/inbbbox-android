@@ -18,6 +18,8 @@ interface ShotsContract {
 
         void showError(String error);
 
+        void showLoadingIndicator();
+
         void hideLoadingIndicator();
 
         void changeShotLikeStatus(Shot shot);

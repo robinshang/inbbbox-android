@@ -10,7 +10,6 @@ import co.netguru.android.inbbbox.controler.BucketsController;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.ShotsController;
-import co.netguru.android.inbbbox.controler.ShotsPagingController;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
@@ -24,20 +23,22 @@ import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletab
 public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.View>
         implements ShotsContract.Presenter {
 
+    private static final int SHOTS_PER_PAGE = 15;
+
     private final ShotsController shotsController;
-    private final ShotsPagingController shotsPagingController;
     private final ErrorMessageController errorMessageController;
     private final LikeShotController likeShotController;
     private final BucketsController bucketsController;
     private final CompositeSubscription subscriptions;
 
+    private int pageNumber = 1;
+    private boolean hasMore = true;
+
     @Inject
-    ShotsPresenter(ShotsController shotsController, ShotsPagingController shotsPagingController,
-                   ErrorMessageController errorMessageController, LikeShotController likeShotController,
+    ShotsPresenter(ShotsController shotsController, ErrorMessageController errorMessageController, LikeShotController likeShotController,
                    BucketsController bucketsController) {
 
         this.shotsController = shotsController;
-        this.shotsPagingController = shotsPagingController;
         this.errorMessageController = errorMessageController;
         this.likeShotController = likeShotController;
         this.bucketsController = bucketsController;
@@ -96,9 +97,9 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     @Override
     public void getShotsFromServer() {
-        shotsPagingController.setFirstShotsPage();
-        final Subscription subscription = shotsController.getShots(shotsPagingController.getShotsPage(),
-                ShotsPagingController.SHOTS_PER_PAGE)
+        pageNumber = 1;
+        getView().showLoadingIndicator();
+        final Subscription subscription = shotsController.getShots(pageNumber, SHOTS_PER_PAGE)
                 .compose(androidIO())
                 .subscribe(this::showRetrievedItems,
                         this::handleException);
@@ -107,10 +108,9 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     @Override
     public void getMoreShotsFromServer() {
-        if (shotsPagingController.hasMore()) {
-            shotsPagingController.setNextShotsPage();
-            final Subscription subscription = shotsController.getShots(shotsPagingController.getShotsPage(),
-                    ShotsPagingController.SHOTS_PER_PAGE)
+        if (hasMore) {
+            pageNumber++;
+            final Subscription subscription = shotsController.getShots(pageNumber, SHOTS_PER_PAGE)
                     .compose(androidIO())
                     .subscribe(this::showMoreRetrievedItems,
                             this::handleException);
@@ -145,9 +145,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     private void showRetrievedItems(List<Shot> shotsList) {
         Timber.d("Shots received!");
-        if (shotsList.size() < ShotsPagingController.SHOTS_PER_PAGE) {
-            shotsPagingController.changeHasMoreToFalse();
-        }
+        hasMore = shotsList.size() >= SHOTS_PER_PAGE;
         getView().showItems(shotsList);
         getView().hideLoadingIndicator();
     }
@@ -160,9 +158,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     private void showMoreRetrievedItems(List<Shot> shotList) {
         Timber.d("More shots received!");
-        if (shotList.size() < ShotsPagingController.SHOTS_PER_PAGE) {
-            shotsPagingController.changeHasMoreToFalse();
-        }
+        hasMore = shotList.size() >= SHOTS_PER_PAGE;
         getView().showMoreItems(shotList);
         getView().hideLoadingIndicator();
     }

@@ -18,7 +18,6 @@ import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.LikedShotsController;
 import co.netguru.android.inbbbox.controler.ShotsController;
-import co.netguru.android.inbbbox.controler.ShotsPagingController;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
@@ -49,9 +48,6 @@ public class ShotsPresenterTest {
     ShotsController shotsControllerMock;
 
     @Mock
-    ShotsPagingController shotsPagingController;
-
-    @Mock
     ErrorMessageController errorMessageControllerMock;
 
     @Mock
@@ -79,8 +75,6 @@ public class ShotsPresenterTest {
         shotsList.add(exampleShot);
 
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.just(shotsList));
-        when(shotsPagingController.getShotsPage()).thenReturn(1);
-        when(shotsPagingController.hasMore()).thenReturn(true);
     }
 
     @Test

@@ -128,6 +128,10 @@ public class ShotsFragment
         getPresenter().getShotsFromServer();
     }
 
+    public void refreshFragmentData() {
+        getPresenter().getShotsFromServer();
+    }
+
     private void initFabMenu() {
         fabMenu.addFogView(fogContainerView);
     }
@@ -226,8 +230,12 @@ public class ShotsFragment
     }
 
     @Override
+    public void showLoadingIndicator() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
     public void hideLoadingIndicator() {
         swipeRefreshLayout.setRefreshing(false);
     }
-
 }

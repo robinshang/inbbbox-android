@@ -394,6 +394,17 @@ public class MainActivity
         showFragmentDetails(shot);
     }
 
+    @Override
+    public void refreshShotsView() {
+        final List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (final Fragment fragment : fragments) {
+            if (fragment instanceof ShotsFragment) {
+                ((ShotsFragment) fragment).refreshFragmentData();
+                break;
+            }
+        }
+    }
+
     private BottomSheetBehavior getBottomSheetBehavior() {
         return bottomSheetBehavior;
     }
