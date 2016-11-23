@@ -16,8 +16,8 @@ public class FollowersTwoShotGridViewHolder extends BaseFollowersViewHolder {
     @Override
     public void bind(Follower item) {
         super.bind(item);
-        final Shot shot1 = item.shotList().get(0);
-        final Shot shot2 = item.shotList().get(1);
+        final Shot shot1 = item.shotList().get(FIRST_SHOT);
+        final Shot shot2 = item.shotList().get(SECOND_SHOT);
         loadShotImages(shot1, shot2, shot2, shot1);
     }
 }

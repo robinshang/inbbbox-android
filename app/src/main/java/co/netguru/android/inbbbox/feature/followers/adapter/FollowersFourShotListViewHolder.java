@@ -15,9 +15,9 @@ public class FollowersFourShotListViewHolder extends BaseFollowersViewHolder {
     @Override
     public void bind(Follower item) {
         super.bind(item);
-        loadShotImages(item.shotList().get(0),
-                item.shotList().get(1),
-                item.shotList().get(2),
-                item.shotList().get(3));
+        loadShotImages(item.shotList().get(FIRST_SHOT),
+                item.shotList().get(SECOND_SHOT),
+                item.shotList().get(THIRD_SHOT),
+                item.shotList().get(FOURTH_SHOT));
     }
 }

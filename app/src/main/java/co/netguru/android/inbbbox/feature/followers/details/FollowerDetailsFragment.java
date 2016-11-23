@@ -149,6 +149,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         onUnFollowCompletedListener.showShotDetails(shot);
     }
 
+    @Override
     public void showUnFollowDialog(String username) {
         final View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_unfollow_user, null);
         final TextView textView = findById(view, R.id.dialog_unfollow_text);

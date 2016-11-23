@@ -16,7 +16,7 @@ public class FollowersOneShotGridViewHolder extends BaseFollowersViewHolder {
     @Override
     public void bind(Follower item) {
         super.bind(item);
-        final Shot shot = item.shotList().get(0);
+        final Shot shot = item.shotList().get(FIRST_SHOT);
         loadShotImages(shot, shot, shot, shot);
     }
 }

@@ -20,6 +20,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
 
+    protected static final int FIRST_SHOT = 0;
+    protected static final int SECOND_SHOT = 1;
+    protected static final int THIRD_SHOT = 2;
+    protected static final int FOURTH_SHOT = 3;
+
     @BindString(R.string.follower_item_shot)
     String shotCountString;
     @BindDimen(R.dimen.shot_corner_radius)
@@ -50,11 +55,11 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
         loadUserPhoto(item.avatarUrl());
     }
 
-    protected void loadShotImages(Shot shot1, Shot shot2, Shot shot3, Shot shot4) {
-        loadImageInto(fourImagesView.getTopLeftImageView(), shot1);
-        loadImageInto(fourImagesView.getTopRightImageView(), shot2);
-        loadImageInto(fourImagesView.getBottomLeftImageView(), shot3);
-        loadImageInto(fourImagesView.getBottomRightImageView(), shot4);
+    protected void loadShotImages(Shot leftTopShot, Shot rightTopShot, Shot leftBottomShot, Shot rightBottomShot) {
+        loadImageInto(fourImagesView.getTopLeftImageView(), leftTopShot);
+        loadImageInto(fourImagesView.getTopRightImageView(), rightTopShot);
+        loadImageInto(fourImagesView.getBottomLeftImageView(), leftBottomShot);
+        loadImageInto(fourImagesView.getBottomRightImageView(), rightBottomShot);
     }
 
     private void loadImageInto(ImageView imageView, Shot shot) {

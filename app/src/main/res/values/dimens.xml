@@ -91,4 +91,6 @@
     <dimen name="details_comment_data_top_padding">2dp</dimen>
 
     <dimen name="unfollow_user_dialog_text_margin">28dp</dimen>
+
+    <fraction name="four_images_view_percentage">50%</fraction>
 </resources>
