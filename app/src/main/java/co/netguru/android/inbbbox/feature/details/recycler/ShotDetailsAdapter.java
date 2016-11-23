@@ -14,8 +14,8 @@ import timber.log.Timber;
 
 public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHolder> {
 
-    public static final int STATIC_ITEMS_COUNT = 2;
-    private static final int INPUT_SHOW_INDEX_THRESHOLD = ShotDetailsAdapter.STATIC_ITEMS_COUNT + 1;
+    static final int STATIC_ITEMS_COUNT = 2;
+    private static final int LOAD_MORE_ITEM = 1;
 
     private final DetailsViewActionCallback actionCallback;
     private Shot details;
@@ -40,13 +40,13 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
 
     @Override
     public int getItemViewType(int position) {
-        return position;
+        return position == getItemCount() - 1 ? ShotDetailsViewFactory.LOAD_MORE_ITEM_TYPE : position;
     }
 
     @Override
     public int getItemCount() {
         // TODO: 18.11.2016 handle empty descrption
-        return (details != null ? comments.size() : 0) + STATIC_ITEMS_COUNT;
+        return (details != null ? comments.size() + LOAD_MORE_ITEM : 0) + STATIC_ITEMS_COUNT;
     }
 
     public void setDetails(Shot details) {

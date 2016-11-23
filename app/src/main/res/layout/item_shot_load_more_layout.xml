@@ -2,21 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginBottom="@dimen/details_comment_divider_padding_bottom"
+              android:paddingBottom="@dimen/details_comment_footer_padding_bottom"
+              android:background="@color/lightGray"
               android:orientation="vertical">
 
-    <FrameLayout
-        style="@style/ShotDetailsSectionContainer"
+    <TextView
+        android:id="@+id/shot_details_load_more_textView"
+        style="@style/LoadMoreText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/shot_details_description_textView"
-            style="@style/LoadMoreText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/load_more_label"/>
-    </FrameLayout>
-
-    <View style="@style/Divider"/>
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/margin_default"
+        android:paddingLeft="@dimen/margin_default"
+        android:paddingTop="@dimen/margin_default"
+        android:paddingBottom="@dimen/margin_default"
+        android:background="@drawable/selector_load_more"
+        android:text="@string/load_more_label"/>
 
 </LinearLayout>
