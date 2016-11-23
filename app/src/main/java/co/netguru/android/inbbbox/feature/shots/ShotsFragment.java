@@ -148,7 +148,7 @@ public class ShotsFragment
         shotsRecyclerView.addOnScrollListener(new LoadMoreScrollListener(SHOTS_TO_LOAD_MORE) {
             @Override
             public void requestMoreData() {
-                presenter.getMoreShotsFromServer();
+                getPresenter().getMoreShotsFromServer();
             }
         });
     }
