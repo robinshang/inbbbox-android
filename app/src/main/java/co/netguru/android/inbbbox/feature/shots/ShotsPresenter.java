@@ -24,6 +24,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         implements ShotsContract.Presenter {
 
     private static final int SHOTS_PER_PAGE = 15;
+    private static final int FIRST_PAGE = 1;
 
     private final ShotsController shotsController;
     private final ErrorMessageController errorMessageController;
@@ -31,7 +32,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private final BucketsController bucketsController;
     private final CompositeSubscription subscriptions;
 
-    private int pageNumber = 1;
+    private int pageNumber = FIRST_PAGE;
     private boolean hasMore = true;
 
     @Inject
@@ -97,24 +98,16 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     @Override
     public void getShotsFromServer() {
-        pageNumber = 1;
+        pageNumber = FIRST_PAGE;
         getView().showLoadingIndicator();
-        final Subscription subscription = shotsController.getShots(pageNumber, SHOTS_PER_PAGE)
-                .compose(androidIO())
-                .subscribe(this::showRetrievedItems,
-                        this::handleException);
-        subscriptions.add(subscription);
+        getShots();
     }
 
     @Override
     public void getMoreShotsFromServer() {
         if (hasMore) {
             pageNumber++;
-            final Subscription subscription = shotsController.getShots(pageNumber, SHOTS_PER_PAGE)
-                    .compose(androidIO())
-                    .subscribe(this::showMoreRetrievedItems,
-                            this::handleException);
-            subscriptions.add(subscription);
+            getShots();
         }
     }
 
@@ -143,23 +136,29 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         getView().showShotDetails(shot);
     }
 
+    private void getShots() {
+        final Subscription subscription = shotsController.getShots(pageNumber, SHOTS_PER_PAGE)
+                .compose(androidIO())
+                .subscribe(this::showRetrievedItems,
+                        this::handleException);
+        subscriptions.add(subscription);
+    }
+
     private void showRetrievedItems(List<Shot> shotsList) {
         Timber.d("Shots received!");
         hasMore = shotsList.size() >= SHOTS_PER_PAGE;
-        getView().showItems(shotsList);
         getView().hideLoadingIndicator();
+
+        if (pageNumber == FIRST_PAGE) {
+            getView().showItems(shotsList);
+        } else {
+            getView().showMoreItems(shotsList);
+        }
     }
 
     private void handleException(Throwable exception) {
         Timber.e(exception, "Shots item receiving exception ");
         getView().hideLoadingIndicator();
         getView().showError(errorMessageController.getErrorMessageLabel(exception));
-    }
-
-    private void showMoreRetrievedItems(List<Shot> shotList) {
-        Timber.d("More shots received!");
-        hasMore = shotList.size() >= SHOTS_PER_PAGE;
-        getView().showMoreItems(shotList);
-        getView().hideLoadingIndicator();
     }
 }
