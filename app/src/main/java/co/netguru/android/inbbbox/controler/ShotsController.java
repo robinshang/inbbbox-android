@@ -1,6 +1,6 @@
 package co.netguru.android.inbbbox.controler;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -8,7 +8,6 @@ import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.api.ShotsApi;
-import co.netguru.android.inbbbox.model.api.FilteredShotsParams;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.localrepository.StreamSourceSettings;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -30,90 +29,45 @@ public class ShotsController {
         this.settingsController = settingsController;
     }
 
-    public Observable<List<Shot>> getShots() {
+    public Observable<List<Shot>> getShots(int pageNumber, int pageCount) {
         return settingsController.getStreamSourceSettings()
-                .flatMapObservable(this::getShotsObservable);
+                .flatMapObservable(settings -> getShotsObservable(settings, pageNumber, pageCount));
     }
 
-    private Observable<List<Shot>> getShotsObservable(StreamSourceSettings streamSourceSettings) {
-        return selectRequest(streamSourceSettings)
+    private Observable<List<Shot>> getShotsObservable(StreamSourceSettings streamSourceSettings, int pageNumber, int pageCount) {
+        return selectRequest(streamSourceSettings, pageNumber, pageCount)
                 .compose(fromListObservable())
                 .map(Shot::create)
                 .distinct()
                 .toList();
     }
 
-    private Observable<List<ShotEntity>> selectRequest(StreamSourceSettings sourceSettings) {
-        List<Observable<List<ShotEntity>>> observablesToExecute = new ArrayList<>();
+    private Observable<List<ShotEntity>> selectRequest(StreamSourceSettings sourceSettings, int pageNumber, int pageCount) {
+        final List<Observable<List<ShotEntity>>> observablesToExecute = new LinkedList<>();
         if (sourceSettings.isFollowing()) {
-            observablesToExecute.add(getFollowingShotsData());
+            observablesToExecute.add(shotsApi.getFollowingShots(pageNumber, pageCount));
         }
-
-        for (int i = 0; i < getRequestCount(sourceSettings); i++) {
-            observablesToExecute.add(getFilteredShots(sourceSettings));
+        if (sourceSettings.isNewToday()) {
+            observablesToExecute.add(shotsApi.getShotsByDateSort(DateTimeFormatUtil.getCurrentDate(),
+                    Constants.API.LIST_PARAM_SORT_RECENT_PARAM, pageNumber, pageCount));
+        }
+        if (sourceSettings.isPopularToday()) {
+            observablesToExecute.add(shotsApi.getShotsByDateSort(DateTimeFormatUtil.getCurrentDate(),
+                    Constants.API.LIST_PARAM_SORT_VIEWS_PARAM, pageNumber, pageCount));
+        }
+        if (sourceSettings.isDebut()) {
+            observablesToExecute.add(shotsApi.getShotsByList(Constants.API.LIST_PARAM_DEBUTS_PARAM, pageNumber, pageCount));
         }
 
         return Observable.zip(observablesToExecute, this::mergeResults);
     }
 
     private List<ShotEntity> mergeResults(Object[] args) {
-        List<ShotEntity> results = new ArrayList<>();
+        List<ShotEntity> results = new LinkedList<>();
 
         for (Object arg : args) {
             results.addAll((List<ShotEntity>) arg);
         }
         return results;
-    }
-
-    private Observable<List<ShotEntity>> getFilteredShots(StreamSourceSettings sourceSettings) {
-        FilteredShotsParams params = getShotsParams(sourceSettings);
-        return shotsApi.getFilteredShots(params.list(),
-                params.timeFrame(),
-                params.date(),
-                params.sort());
-    }
-
-
-    private Observable<List<ShotEntity>> getFollowingShotsData() {
-        return shotsApi.getFollowingShots();
-    }
-
-    private int getRequestCount(StreamSourceSettings sourceSettings) {
-        int count = 0;
-        if (sourceSettings.isPopularToday()) {
-            count++;
-        }
-
-        if (sourceSettings.isDebut()) {
-            count++;
-        }
-
-        if (sourceSettings.isNewToday()) {
-            count++;
-        }
-        return count;
-    }
-
-    public FilteredShotsParams getShotsParams(StreamSourceSettings streamSourceSettings) {
-        FilteredShotsParams.Builder builder = FilteredShotsParams.newBuilder();
-
-        boolean wasHandled = false;
-
-        if (streamSourceSettings.isNewToday()) {
-            builder.date(DateTimeFormatUtil.getCurrentDate())
-                    .sort(Constants.API.LIST_PARAM_SORT_RECENT_PARAM);
-            wasHandled = true;
-        }
-
-        if (streamSourceSettings.isPopularToday() && !wasHandled) {
-            builder.date(DateTimeFormatUtil.getCurrentDate())
-                    .sort(Constants.API.LIST_PARAM_SORT_VIEWS_PARAM);
-            wasHandled = true;
-        }
-
-        if (streamSourceSettings.isDebut() && !wasHandled) {
-            builder.list(Constants.API.LIST_PARAM_DEBUTS_PARAM);
-        }
-        return builder.build();
     }
 }

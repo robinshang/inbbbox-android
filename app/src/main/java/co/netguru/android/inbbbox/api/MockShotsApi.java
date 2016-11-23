@@ -21,15 +21,22 @@ public class MockShotsApi implements ShotsApi {
     public static final int ITEM_COUNT = new Random().nextInt(1000);
 
     @Override
-    public Observable<List<ShotEntity>> getFilteredShots(@Query(Constants.API.SHOTS_KEY_LIST) String list,
-                                                         @Query(Constants.API.SHOTS_KEY_TIME_FRAME) String timeFrame,
-                                                         @Query(Constants.API.SHOTS_KEY_DATE) String date,
-                                                         @Query(Constants.API.SHOTS_KEY_SORT) String sort) {
+    public Observable<List<ShotEntity>> getShotsByList(@Query(Constants.API.SHOTS_KEY_LIST) String list,
+                                                       @Query("page") int pageNumber,
+                                                       @Query("per_page") int pageCount) {
         return Observable.just(getFilteredMockedData());
     }
 
     @Override
-    public Observable<List<ShotEntity>> getFollowingShots() {
+    public Observable<List<ShotEntity>> getShotsByDateSort(@Query(Constants.API.SHOTS_KEY_DATE) String date,
+                                                           @Query(Constants.API.SHOTS_KEY_SORT) String sort,
+                                                           @Query("page") int pageNumber, @Query("per_page") int pageCount) {
+        return Observable.just(getFilteredMockedData());
+    }
+
+    @Override
+    public Observable<List<ShotEntity>> getFollowingShots(@Query("page") int pageNumber,
+                                                          @Query("per_page") int pageCount) {
         return Observable.just(getFollowingMockedData());
     }
 

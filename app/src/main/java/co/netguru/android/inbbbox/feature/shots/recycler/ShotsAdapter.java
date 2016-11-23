@@ -1,12 +1,12 @@
 package co.netguru.android.inbbbox.feature.shots.recycler;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,11 +17,12 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
     private final ShotSwipeListener shotSwipeListener;
-    private List<Shot> items;
+    private final List<Shot> items;
 
     @Inject
     public ShotsAdapter(@NonNull ShotSwipeListener shotSwipeListener) {
         this.shotSwipeListener = shotSwipeListener;
+        items = new ArrayList<>();
     }
 
     @Override
@@ -38,12 +39,19 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
     @Override
     public int getItemCount() {
-        return items != null ? items.size() : 0;
+        return items.size();
     }
 
     public void setItems(List<Shot> items) {
-        this.items = items;
+        this.items.clear();
+        this.items.addAll(items);
         notifyDataSetChanged();
+    }
+
+    public void addMoreItems(List<Shot> items) {
+        final int currentSize = this.items.size();
+        this.items.addAll(items);
+        notifyItemRangeChanged(currentSize - 1, items.size());
     }
 
     public void changeShotLikeStatus(Shot shot) {
@@ -52,9 +60,8 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
         notifyItemChanged(position);
     }
 
-    @Nullable
     public Shot getShotFromPosition(int shotPosition) {
-        return items == null ? null : items.get(shotPosition);
+        return items.get(shotPosition);
     }
 
     private int findShotPosition(long id) {

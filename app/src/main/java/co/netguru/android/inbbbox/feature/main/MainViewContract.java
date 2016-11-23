@@ -37,6 +37,8 @@ interface MainViewContract {
         void changeCustomizationStatus(boolean isDetails);
 
         void showMessage(@StringRes int message);
+
+        void refreshShotsView();
     }
 
     interface Presenter extends MvpPresenter<View> {

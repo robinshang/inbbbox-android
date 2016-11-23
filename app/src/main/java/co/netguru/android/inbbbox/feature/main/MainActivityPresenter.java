@@ -152,7 +152,10 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                                           @Nullable Boolean isPopular, @Nullable Boolean isDebuts) {
         final Subscription subscription = settingsController.changeStreamSourceSettings(isFollowing, isNew, isPopular, isDebuts)
                 .compose(RxTransformerUtils.applyCompletableIoSchedulers())
-                .subscribe(() -> Timber.d("Stream source settings changed"),
+                .subscribe(() -> {
+                            Timber.d("Stream source settings changed");
+                            getView().refreshShotsView();
+                        },
                         throwable -> Timber.e(throwable, "Error while changing stream source settings"));
         subscriptions.add(subscription);
     }
