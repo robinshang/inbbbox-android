@@ -192,4 +192,8 @@
         <item name="colorControlActivated">@color/lightGray</item>
     </style>
 
+    <style name="LoadMoreText" parent="Font16">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

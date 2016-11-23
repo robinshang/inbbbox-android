@@ -180,8 +180,6 @@ public class ShotDetailsFragment
         int lastVisibleIndex = linearLayoutManager.findLastVisibleItemPosition();
         if (isInputPanelShowingEnabled && adapter.isInputVisibilityPermitted(lastVisibleIndex)) {
             showInputIfHidden();
-        } else {
-//            hideInputIfVisible();
         }
     }
 
