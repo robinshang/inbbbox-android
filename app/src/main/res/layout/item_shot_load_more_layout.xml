@@ -15,7 +15,6 @@
         android:paddingLeft="@dimen/margin_default"
         android:paddingTop="@dimen/margin_default"
         android:paddingBottom="@dimen/margin_default"
-        android:background="@drawable/selector_load_more"
-        android:text="@string/load_more_label"/>
+        android:background="@drawable/selector_load_more"/>
 
 </LinearLayout>

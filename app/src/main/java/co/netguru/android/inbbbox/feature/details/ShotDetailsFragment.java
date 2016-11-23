@@ -79,11 +79,6 @@ public class ShotDetailsFragment
     ShotDetailsAdapter adapter;
 
     private DetailsViewActionCallback actionsCallback = new DetailsViewActionCallback() {
-        @Override
-        public void onCommentInputShowThreshold(int itemIndex) {
-            Timber.d("onCommentInputShowThreshold: " + itemIndex);
-            showInputIfHidden();
-        }
 
         @Override
         public void onTeamSelected(Team team) {
@@ -109,10 +104,10 @@ public class ShotDetailsFragment
         }
 
         @Override
-        public void onCommentInputHideThreshold(int position) {
-            Timber.d("onCommenthide: " + position);
-            hideInputIfVisible();
+        public void onLoadMoreCommentsSelected() {
+            Toast.makeText(getContext(), "LOAD MORE!!", Toast.LENGTH_SHORT).show();
         }
+
     };
 
     @OnClick(R.id.details_close_imageView)

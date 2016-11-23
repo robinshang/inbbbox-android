@@ -5,15 +5,14 @@ import co.netguru.android.inbbbox.model.ui.User;
 
 public interface DetailsViewActionCallback {
 
-    void onCommentInputShowThreshold(int itemIndex);
-
     void onTeamSelected(Team team);
 
     void onUserSelected(User user);
 
-    void onShotLikeAction( boolean isLiked);
+    void onShotLikeAction(boolean isLiked);
 
     void onShotBucket(long shotId, boolean isLikedBucket);
 
-    void onCommentInputHideThreshold(int position);
+
+    void onLoadMoreCommentsSelected();
 }
