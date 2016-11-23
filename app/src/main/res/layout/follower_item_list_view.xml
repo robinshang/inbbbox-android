@@ -12,8 +12,7 @@
         android:id="@+id/four_image_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/follower_list_shot_height"
-        android:layout_gravity="center"
-        android:background="@drawable/shot_placeholder"/>
+        android:layout_gravity="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"

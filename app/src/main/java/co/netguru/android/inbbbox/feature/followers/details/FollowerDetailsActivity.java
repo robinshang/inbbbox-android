@@ -83,8 +83,8 @@ public class FollowerDetailsActivity extends BaseActivity
 
     @Override
     public void unFollowCompleted() {
-        finish();
         MainActivity.startActivityWithRequest(this, MainActivity.REQUEST_REFRESH_FOLLOWER_LIST);
+        finish();
     }
 
     private void initializeBottomSheet() {

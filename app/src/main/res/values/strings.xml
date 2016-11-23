@@ -20,6 +20,8 @@
     <string name="action_list_view">List view</string>
     <string name="action_grid_view">Grid view</string>
     <string name='action_follow'>Follow</string>
+    <string name="action_unfollow">Unfollow</string>
+    <string name="action_cancel">Cancel</string>
 
     <string name="drawer_group_notification">Notifications</string>
     <string name="drawer_enable_reminder">Enable daily reminder</string>
@@ -54,6 +56,8 @@
     <string name="fragment_add_to_bucket_shot_created_on">on %s</string>
     <string name="fragment_add_to_bucket_there_are_no_buckets_add_one_first">There are no buckets, add one first.</string>
     <string name="fragment_add_to_bucket_title">Add to bucket</string>
+
+    <string name="fragment_follower_details_dialog_text">Unfollow %s ?</string>
 
     <string name="gif">gif</string>
     <string name="drawer_open">Open drawer</string>

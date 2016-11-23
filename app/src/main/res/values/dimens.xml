@@ -95,4 +95,8 @@
     <dimen name="details_comment_recycler_bottom_padding">72dp</dimen>
     <dimen name="details_comment_shadow_height">1dp</dimen>
     <dimen name="details_comment_input_margin">8dp</dimen>
+
+    <dimen name="unfollow_user_dialog_text_margin">28dp</dimen>
+
+    <fraction name="four_images_view_percentage">50%</fraction>
 </resources>
