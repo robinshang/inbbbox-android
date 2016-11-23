@@ -38,7 +38,7 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
         implements FollowersContract.View, BaseFollowersViewHolder.OnFollowerClickListener {
 
     public static final int GRID_VIEW_COLUMN_COUNT = 2;
-    private static final int FOLLOWERS_TO_LOAD_MORE = 5;
+    private static final int FOLLOWERS_TO_LOAD_MORE = 8;
 
     @BindDrawable(R.drawable.ic_following_emptystate)
     Drawable emptyTextDrawable;
