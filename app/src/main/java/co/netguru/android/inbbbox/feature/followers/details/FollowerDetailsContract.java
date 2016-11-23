@@ -20,12 +20,16 @@ interface FollowerDetailsContract {
         void showError(String message);
 
         void openShotDetailsScreen(Shot shot);
+
+        void showUnFollowDialog(String username);
     }
 
     interface Presenter extends MvpPresenter<View> {
         void followerDataReceived(Follower follower);
 
         void getMoreUserShotsFromServer();
+
+        void onUnFollowClick();
 
         void unFollowUser();
 

@@ -89,4 +89,8 @@
     <dimen name="details_comment_divider_padding_bottom">16dp</dimen>
     <dimen name="details_description_divider_padding_bottom">24dp</dimen>
     <dimen name="details_comment_data_top_padding">2dp</dimen>
+
+    <dimen name="unfollow_user_dialog_text_margin">28dp</dimen>
+
+    <fraction name="four_images_view_percentage">50%</fraction>
 </resources>

@@ -21,4 +21,6 @@
 
     <color name="textGrey">#6D6D72</color>
     <color name="dividerColor">#DFE0E2</color>
+
+    <color name="semiBlack">#8C000000</color>
 </resources>
