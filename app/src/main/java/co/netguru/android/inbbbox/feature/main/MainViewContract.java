@@ -43,7 +43,7 @@ interface MainViewContract {
 
     interface Presenter extends MvpPresenter<View> {
 
-        void toggleButtonClicked(boolean isChecked);
+        void toggleButtonChanged(boolean isChecked);
 
         void performLogout();
 
