@@ -18,6 +18,7 @@ import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.LikedShotsController;
 import co.netguru.android.inbbbox.controler.ShotsController;
+import co.netguru.android.inbbbox.controler.ShotsPagingController;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
@@ -38,11 +39,17 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ShotsPresenterTest {
 
+    private static final int SHOT_PAGE_COUNT = 15;
+    private static final int SHOT_PAGE = 1;
+
     @Rule
     public TestRule rule = new RxSyncTestRule();
 
     @Mock
     ShotsController shotsControllerMock;
+
+    @Mock
+    ShotsPagingController shotsPagingController;
 
     @Mock
     ErrorMessageController errorMessageControllerMock;
@@ -68,11 +75,12 @@ public class ShotsPresenterTest {
     public void setUp() {
         presenter.attachView(viewMock);
 
-        int exampleId = 99;
         Shot exampleShot = Statics.LIKED_SHOT;
         shotsList.add(exampleShot);
 
-        when(shotsControllerMock.getShots()).thenReturn(Observable.just(shotsList));
+        when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.just(shotsList));
+        when(shotsPagingController.getShotsPage()).thenReturn(1);
+        when(shotsPagingController.hasMore()).thenReturn(true);
     }
 
     @Test
@@ -80,12 +88,12 @@ public class ShotsPresenterTest {
 
         presenter.getShotsFromServer();
 
-        verify(shotsControllerMock, times(1)).getShots();
+        verify(shotsControllerMock, times(1)).getShots(SHOT_PAGE, SHOT_PAGE_COUNT);
     }
 
     @Test
     public void whenDataLoadedCorrectly_thenHideLoadingIndicator() {
-        when(shotsControllerMock.getShots()).thenReturn(Observable.just(new ArrayList<>()));
+        when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.just(new ArrayList<>()));
 
         presenter.getShotsFromServer();
 
@@ -95,7 +103,7 @@ public class ShotsPresenterTest {
     @Test
     public void whenDataLoadedCorrectly_thenShowDownloadedItems() {
         List<Shot> expectedShots = new ArrayList<>();
-        when(shotsControllerMock.getShots()).thenReturn(Observable.just(expectedShots));
+        when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.just(expectedShots));
 
         presenter.getShotsFromServer();
 
@@ -146,7 +154,7 @@ public class ShotsPresenterTest {
     public void whenDataLoadingFailed_thenHideLoadingIndicator() {
         String message = "test";
         Exception exampleException = new Exception(message);
-        when(shotsControllerMock.getShots()).thenReturn(Observable.error(exampleException));
+        when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.error(exampleException));
 
         presenter.getShotsFromServer();
 
@@ -157,7 +165,7 @@ public class ShotsPresenterTest {
     public void whenDataLoadingFailed_thenShowErrorMessage() {
         String message = "test";
         Throwable exampleException = new Exception(message);
-        when(shotsControllerMock.getShots()).thenReturn(Observable.error(exampleException));
+        when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.error(exampleException));
         when(errorMessageControllerMock.getErrorMessageLabel(exampleException)).thenCallRealMethod();
 
         presenter.getShotsFromServer();
