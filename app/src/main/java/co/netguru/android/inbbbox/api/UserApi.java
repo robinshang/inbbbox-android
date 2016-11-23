@@ -5,6 +5,7 @@ import java.util.List;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.User;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
 import rx.Single;
 
@@ -14,5 +15,5 @@ public interface UserApi {
     Observable<User> getAuthenticatedUser();
 
     @GET("user/buckets")
-    Single<List<Bucket>> getUserBucketsList();
+    Single<List<Bucket>> getUserBucketsList(@Query("page") int pageNumber, @Query("per_page") int pageCount);
 }
