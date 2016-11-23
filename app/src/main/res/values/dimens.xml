@@ -92,7 +92,7 @@
     <dimen name="details_comment_send_button_size">40dp</dimen>
     <dimen name="details_comment_input_right_margin">16dp</dimen>
     <dimen name="details_comment_input_pannel_height">64dp</dimen>
-    <dimen name="details_comment_recycler_bottom_padding">72dp</dimen>
+    <dimen name="details_comment_recycler_bottom_padding">16dp</dimen>
     <dimen name="details_comment_shadow_height">1dp</dimen>
     <dimen name="details_comment_input_margin">8dp</dimen>
 

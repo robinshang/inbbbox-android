@@ -10,10 +10,12 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.Shot;
+import timber.log.Timber;
 
 public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHolder> {
 
-    static final int STATIC_ITEMS_COUNT = 2;
+    public static final int STATIC_ITEMS_COUNT = 2;
+    private static final int INPUT_SHOW_INDEX_THRESHOLD = ShotDetailsAdapter.STATIC_ITEMS_COUNT + 1;
 
     private final DetailsViewActionCallback actionCallback;
     private Shot details;
@@ -55,5 +57,9 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     public void setComments(List<Comment> comments) {
         this.comments = comments;
         notifyDataSetChanged();
+    }
+
+    public boolean isInputVisibilityPermitted(int lastVisibleIndex) {
+        return lastVisibleIndex == getItemCount() - 1;
     }
 }

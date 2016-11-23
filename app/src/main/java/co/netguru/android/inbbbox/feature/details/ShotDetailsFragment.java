@@ -3,13 +3,14 @@ package co.netguru.android.inbbbox.feature.details;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import java.util.List;
@@ -35,6 +36,9 @@ import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.inbbbox.utils.ShotLoadingManager;
 import co.netguru.android.inbbbox.utils.ViewAnimator;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
+import timber.log.Timber;
+
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 public class ShotDetailsFragment
         extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
@@ -42,7 +46,6 @@ public class ShotDetailsFragment
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_SHOT = "arg:shot";
-    private ShotDetailsComponent component;
 
     @BindView(R.id.shot_details_recyclerView)
     RecyclerView shotRecyclerView;
@@ -53,13 +56,35 @@ public class ShotDetailsFragment
     @BindView(R.id.comment_input_panel)
     View shotCommentInputPanel;
 
+    @BindView(R.id.comment_textInputLayout)
+    TextInputLayout commentTextInputLayout;
+
+    @BindView(R.id.appBarLayout)
+    AppBarLayout appBarLayout;
+
     @BindDimen(R.dimen.shot_corner_radius)
     int radius;
+
+    private ShotDetailsComponent component;
+    private LinearLayoutManager linearLayoutManager;
+    private boolean isInputPanelShowingEnabled;
+
+    @OnClick(R.id.comment_send_ImageView)
+    void onSendCommentClick() {
+        getPresenter().sendComment();
+        Toast.makeText(getContext(), getCommentText(), Toast.LENGTH_SHORT).show();
+    }
 
     @Inject
     ShotDetailsAdapter adapter;
 
     private DetailsViewActionCallback actionsCallback = new DetailsViewActionCallback() {
+        @Override
+        public void onCommentInputShowThreshold(int itemIndex) {
+            Timber.d("onCommentInputShowThreshold: " + itemIndex);
+            showInputIfHidden();
+        }
+
         @Override
         public void onTeamSelected(Team team) {
             // TODO: 15.11.2016 not in scope of this task
@@ -81,6 +106,12 @@ public class ShotDetailsFragment
         public void onShotBucket(long shotId, boolean isLikedBucket) {
             // TODO: 15.11.2016 not in scope of this task
             Toast.makeText(getContext(), "bucket: " + isLikedBucket, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCommentInputHideThreshold(int position) {
+            Timber.d("onCommenthide: " + position);
+            hideInputIfVisible();
         }
     };
 
@@ -128,8 +159,30 @@ public class ShotDetailsFragment
 
     @Override
     public void initView() {
-        shotRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        shotRecyclerView.setLayoutManager(linearLayoutManager);
+        shotRecyclerView.addOnScrollListener(createScrollListener());
         shotRecyclerView.setAdapter(adapter);
+        appBarLayout.addOnOffsetChangedListener((layout, offset) -> verifyInputVisibility());
+    }
+
+    private RecyclerView.OnScrollListener createScrollListener() {
+        return new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                verifyInputVisibility();
+            }
+        };
+    }
+
+    private void verifyInputVisibility() {
+        int lastVisibleIndex = linearLayoutManager.findLastVisibleItemPosition();
+        if (isInputPanelShowingEnabled && adapter.isInputVisibilityPermitted(lastVisibleIndex)) {
+            showInputIfHidden();
+        } else {
+//            hideInputIfVisible();
+        }
     }
 
     @Override
@@ -143,12 +196,24 @@ public class ShotDetailsFragment
     }
 
     @Override
+    public String getCommentText() {
+        return commentTextInputLayout.getEditText().getText().toString();
+    }
+
+    @Override
+    public void setInputShowingEnabled(boolean isInputPanelShowingEnabled) {
+
+        this.isInputPanelShowingEnabled = isInputPanelShowingEnabled;
+    }
+
+    @Override
     public void showDetails(Shot details) {
         adapter.setDetails(details);
     }
 
     @Override
     public void showComments(List<Comment> commentList) {
+        verifyInputVisibility();
         adapter.setComments(commentList);
     }
 
@@ -157,5 +222,17 @@ public class ShotDetailsFragment
         parallaxImageView.setRadius(radius);
         parallaxImageView.disableRadiusForBottomEdge(true);
         ShotLoadingManager.loadMainViewShot(getContext(), parallaxImageView, shotImage);
+    }
+
+    private void hideInputIfVisible() {
+        if (shotCommentInputPanel.getVisibility() == View.VISIBLE) {
+            ViewAnimator.startSlideOutAnimation(shotCommentInputPanel);
+        }
+    }
+
+    private void showInputIfHidden() {
+        if (shotCommentInputPanel.getVisibility() == View.GONE) {
+            ViewAnimator.startSlideInAnimation(shotCommentInputPanel);
+        }
     }
 }
