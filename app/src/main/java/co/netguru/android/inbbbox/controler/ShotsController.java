@@ -1,6 +1,6 @@
 package co.netguru.android.inbbbox.controler;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -8,7 +8,6 @@ import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.api.ShotsApi;
-import co.netguru.android.inbbbox.model.api.FilteredShotsParams;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.localrepository.StreamSourceSettings;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -44,76 +43,31 @@ public class ShotsController {
     }
 
     private Observable<List<ShotEntity>> selectRequest(StreamSourceSettings sourceSettings) {
-        List<Observable<List<ShotEntity>>> observablesToExecute = new ArrayList<>();
+        final List<Observable<List<ShotEntity>>> observablesToExecute = new LinkedList<>();
         if (sourceSettings.isFollowing()) {
-            observablesToExecute.add(getFollowingShotsData());
+            observablesToExecute.add(shotsApi.getFollowingShots());
         }
-
-        for (int i = 0; i < getRequestCount(sourceSettings); i++) {
-            observablesToExecute.add(getFilteredShots(sourceSettings));
+        if (sourceSettings.isNewToday()) {
+            observablesToExecute.add(shotsApi.getShotsByDateSort(DateTimeFormatUtil.getCurrentDate(),
+                    Constants.API.LIST_PARAM_SORT_RECENT_PARAM));
+        }
+        if (sourceSettings.isPopularToday()) {
+            observablesToExecute.add(shotsApi.getShotsByDateSort(DateTimeFormatUtil.getCurrentDate(),
+                    Constants.API.LIST_PARAM_SORT_VIEWS_PARAM));
+        }
+        if (sourceSettings.isDebut()) {
+            observablesToExecute.add(shotsApi.getShotsByList(Constants.API.LIST_PARAM_DEBUTS_PARAM));
         }
 
         return Observable.zip(observablesToExecute, this::mergeResults);
     }
 
     private List<ShotEntity> mergeResults(Object[] args) {
-        List<ShotEntity> results = new ArrayList<>();
+        List<ShotEntity> results = new LinkedList<>();
 
         for (Object arg : args) {
             results.addAll((List<ShotEntity>) arg);
         }
         return results;
-    }
-
-    private Observable<List<ShotEntity>> getFilteredShots(StreamSourceSettings sourceSettings) {
-        FilteredShotsParams params = getShotsParams(sourceSettings);
-        return shotsApi.getFilteredShots(params.list(),
-                params.timeFrame(),
-                params.date(),
-                params.sort());
-    }
-
-
-    private Observable<List<ShotEntity>> getFollowingShotsData() {
-        return shotsApi.getFollowingShots();
-    }
-
-    private int getRequestCount(StreamSourceSettings sourceSettings) {
-        int count = 0;
-        if (sourceSettings.isPopularToday()) {
-            count++;
-        }
-
-        if (sourceSettings.isDebut()) {
-            count++;
-        }
-
-        if (sourceSettings.isNewToday()) {
-            count++;
-        }
-        return count;
-    }
-
-    public FilteredShotsParams getShotsParams(StreamSourceSettings streamSourceSettings) {
-        FilteredShotsParams.Builder builder = FilteredShotsParams.newBuilder();
-
-        boolean wasHandled = false;
-
-        if (streamSourceSettings.isNewToday()) {
-            builder.date(DateTimeFormatUtil.getCurrentDate())
-                    .sort(Constants.API.LIST_PARAM_SORT_RECENT_PARAM);
-            wasHandled = true;
-        }
-
-        if (streamSourceSettings.isPopularToday() && !wasHandled) {
-            builder.date(DateTimeFormatUtil.getCurrentDate())
-                    .sort(Constants.API.LIST_PARAM_SORT_VIEWS_PARAM);
-            wasHandled = true;
-        }
-
-        if (streamSourceSettings.isDebut() && !wasHandled) {
-            builder.list(Constants.API.LIST_PARAM_DEBUTS_PARAM);
-        }
-        return builder.build();
     }
 }
