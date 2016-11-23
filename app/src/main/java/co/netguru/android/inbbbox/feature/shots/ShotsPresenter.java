@@ -23,15 +23,21 @@ import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletab
 public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.View>
         implements ShotsContract.Presenter {
 
+    private static final int SHOTS_PER_PAGE = 15;
+    private static final int FIRST_PAGE = 1;
+
     private final ShotsController shotsController;
     private final ErrorMessageController errorMessageController;
     private final LikeShotController likeShotController;
     private final BucketsController bucketsController;
     private final CompositeSubscription subscriptions;
 
+    private int pageNumber = FIRST_PAGE;
+    private boolean hasMore = true;
+
     @Inject
-    ShotsPresenter(ShotsController shotsController, ErrorMessageController errorMessageController,
-                   LikeShotController likeShotController, BucketsController bucketsController) {
+    ShotsPresenter(ShotsController shotsController, ErrorMessageController errorMessageController, LikeShotController likeShotController,
+                   BucketsController bucketsController) {
 
         this.shotsController = shotsController;
         this.errorMessageController = errorMessageController;
@@ -44,26 +50,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
         subscriptions.clear();
-    }
-
-    private void getShotsData() {
-        final Subscription subscription = shotsController.getShots()
-                .compose(androidIO())
-                .subscribe(this::showRetrievedItems,
-                        this::handleException);
-        subscriptions.add(subscription);
-    }
-
-    private void showRetrievedItems(List<Shot> shotsList) {
-        Timber.d("Shots received!");
-        getView().showItems(shotsList);
-        getView().hideLoadingIndicator();
-    }
-
-    private void handleException(Throwable exception) {
-        Timber.e(exception, "Shots item receiving exception ");
-        getView().hideLoadingIndicator();
-        getView().showError(errorMessageController.getErrorMessageLabel(exception));
     }
 
     @Override
@@ -111,8 +97,18 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     }
 
     @Override
-    public void loadData() {
-        getShotsData();
+    public void getShotsFromServer() {
+        pageNumber = FIRST_PAGE;
+        getView().showLoadingIndicator();
+        getShots();
+    }
+
+    @Override
+    public void getMoreShotsFromServer() {
+        if (hasMore) {
+            pageNumber++;
+            getShots();
+        }
     }
 
     @Override
@@ -138,5 +134,31 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     @Override
     public void showShotDetails(Shot shot) {
         getView().showShotDetails(shot);
+    }
+
+    private void getShots() {
+        final Subscription subscription = shotsController.getShots(pageNumber, SHOTS_PER_PAGE)
+                .compose(androidIO())
+                .subscribe(this::showRetrievedItems,
+                        this::handleException);
+        subscriptions.add(subscription);
+    }
+
+    private void showRetrievedItems(List<Shot> shotsList) {
+        Timber.d("Shots received!");
+        hasMore = shotsList.size() >= SHOTS_PER_PAGE;
+        getView().hideLoadingIndicator();
+
+        if (pageNumber == FIRST_PAGE) {
+            getView().showItems(shotsList);
+        } else {
+            getView().showMoreItems(shotsList);
+        }
+    }
+
+    private void handleException(Throwable exception) {
+        Timber.e(exception, "Shots item receiving exception ");
+        getView().hideLoadingIndicator();
+        getView().showError(errorMessageController.getErrorMessageLabel(exception));
     }
 }
