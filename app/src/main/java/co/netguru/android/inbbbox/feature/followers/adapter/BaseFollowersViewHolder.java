@@ -59,11 +59,6 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
 
     private void loadImageInto(ImageView imageView, Shot shot) {
         ShotLoadingManager.loadListShot(itemView.getContext(), imageView, shot);
-//        Glide.with(itemView.getContext())
-//                .load(url)
-//                .placeholder(R.drawable.shot_placeholder)
-//                .animate(android.R.anim.fade_in)
-//                .into(imageView);
     }
 
     private String getShotCountString(int shotCount) {
