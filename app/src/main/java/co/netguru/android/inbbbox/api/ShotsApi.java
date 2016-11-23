@@ -14,14 +14,16 @@ import rx.Observable;
 public interface ShotsApi {
 
     @GET("shots")
-    Observable<List<ShotEntity>> getShotsByList(@Query(API.SHOTS_KEY_LIST) String list);
+    Observable<List<ShotEntity>> getShotsByList(@Query(API.SHOTS_KEY_LIST) String list,
+                                                @Query("page") int pageNumber, @Query("per_page") int pageCount);
 
     @GET("shots")
     Observable<List<ShotEntity>> getShotsByDateSort(@Query(API.SHOTS_KEY_DATE) String date,
-                                                    @Query(API.SHOTS_KEY_SORT) String sort);
+                                                    @Query(API.SHOTS_KEY_SORT) String sort,
+                                                    @Query("page") int pageNumber, @Query("per_page") int pageCount);
 
     @GET("user/following/shots")
-    Observable<List<ShotEntity>> getFollowingShots();
+    Observable<List<ShotEntity>> getFollowingShots(@Query("page") int pageNumber, @Query("per_page") int pageCount);
 
     @GET("users/{user}/shots")
     Observable<List<ShotEntity>> getUserShots(@Path("user") long userId,

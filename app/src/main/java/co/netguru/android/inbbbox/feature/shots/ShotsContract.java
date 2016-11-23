@@ -14,6 +14,8 @@ interface ShotsContract {
 
         void showItems(List<Shot> items);
 
+        void showMoreItems(List<Shot> items);
+
         void showError(String error);
 
         void hideLoadingIndicator();
@@ -33,7 +35,9 @@ interface ShotsContract {
     interface Presenter extends MvpPresenter<View> {
         void likeShot(Shot shot);
 
-        void loadData();
+        void getShotsFromServer();
+
+        void getMoreShotsFromServer();
 
         void handleAddShotToBucket(Shot shot);
 

@@ -17,10 +17,12 @@ import rx.Single;
 public class SettingsController {
 
     private final SettingsPrefsRepository settingsPrefsRepository;
+    private final ShotsPagingController shotsPagingController;
 
     @Inject
-    public SettingsController(SettingsPrefsRepository settingsPrefsRepository) {
+    public SettingsController(SettingsPrefsRepository settingsPrefsRepository, ShotsPagingController shotsPagingController) {
         this.settingsPrefsRepository = settingsPrefsRepository;
+        this.shotsPagingController = shotsPagingController;
     }
 
     public Single<Settings> getSettings() {
@@ -63,6 +65,7 @@ public class SettingsController {
     public Completable changeStreamSourceSettings(@Nullable Boolean isFollowing, @Nullable Boolean isNew,
                                                   @Nullable Boolean isPopular, @Nullable Boolean isDebuts) {
         return settingsPrefsRepository.getStreamSourceSettings()
+                .doOnSuccess(settings -> shotsPagingController.setFirstShotsPage())
                 .map(streamSourceSettings -> getNewStreamSourceSettings(streamSourceSettings,
                         isFollowing, isNew, isPopular, isDebuts))
                 .flatMapCompletable(settingsPrefsRepository::saveStreamSourceSettingsToPrefs);

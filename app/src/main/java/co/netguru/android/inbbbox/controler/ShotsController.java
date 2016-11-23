@@ -29,34 +29,34 @@ public class ShotsController {
         this.settingsController = settingsController;
     }
 
-    public Observable<List<Shot>> getShots() {
+    public Observable<List<Shot>> getShots(int pageNumber, int pageCount) {
         return settingsController.getStreamSourceSettings()
-                .flatMapObservable(this::getShotsObservable);
+                .flatMapObservable(settings -> getShotsObservable(settings, pageNumber, pageCount));
     }
 
-    private Observable<List<Shot>> getShotsObservable(StreamSourceSettings streamSourceSettings) {
-        return selectRequest(streamSourceSettings)
+    private Observable<List<Shot>> getShotsObservable(StreamSourceSettings streamSourceSettings, int pageNumber, int pageCount) {
+        return selectRequest(streamSourceSettings, pageNumber, pageCount)
                 .compose(fromListObservable())
                 .map(Shot::create)
                 .distinct()
                 .toList();
     }
 
-    private Observable<List<ShotEntity>> selectRequest(StreamSourceSettings sourceSettings) {
+    private Observable<List<ShotEntity>> selectRequest(StreamSourceSettings sourceSettings, int pageNumber, int pageCount) {
         final List<Observable<List<ShotEntity>>> observablesToExecute = new LinkedList<>();
         if (sourceSettings.isFollowing()) {
-            observablesToExecute.add(shotsApi.getFollowingShots());
+            observablesToExecute.add(shotsApi.getFollowingShots(pageNumber, pageCount));
         }
         if (sourceSettings.isNewToday()) {
             observablesToExecute.add(shotsApi.getShotsByDateSort(DateTimeFormatUtil.getCurrentDate(),
-                    Constants.API.LIST_PARAM_SORT_RECENT_PARAM));
+                    Constants.API.LIST_PARAM_SORT_RECENT_PARAM, pageNumber, pageCount));
         }
         if (sourceSettings.isPopularToday()) {
             observablesToExecute.add(shotsApi.getShotsByDateSort(DateTimeFormatUtil.getCurrentDate(),
-                    Constants.API.LIST_PARAM_SORT_VIEWS_PARAM));
+                    Constants.API.LIST_PARAM_SORT_VIEWS_PARAM, pageNumber, pageCount));
         }
         if (sourceSettings.isDebut()) {
-            observablesToExecute.add(shotsApi.getShotsByList(Constants.API.LIST_PARAM_DEBUTS_PARAM));
+            observablesToExecute.add(shotsApi.getShotsByList(Constants.API.LIST_PARAM_DEBUTS_PARAM, pageNumber, pageCount));
         }
 
         return Observable.zip(observablesToExecute, this::mergeResults);

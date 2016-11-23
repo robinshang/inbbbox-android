@@ -10,6 +10,7 @@ import co.netguru.android.inbbbox.controler.BucketsController;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.ShotsController;
+import co.netguru.android.inbbbox.controler.ShotsPagingController;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
@@ -24,16 +25,19 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         implements ShotsContract.Presenter {
 
     private final ShotsController shotsController;
+    private final ShotsPagingController shotsPagingController;
     private final ErrorMessageController errorMessageController;
     private final LikeShotController likeShotController;
     private final BucketsController bucketsController;
     private final CompositeSubscription subscriptions;
 
     @Inject
-    ShotsPresenter(ShotsController shotsController, ErrorMessageController errorMessageController,
-                   LikeShotController likeShotController, BucketsController bucketsController) {
+    ShotsPresenter(ShotsController shotsController, ShotsPagingController shotsPagingController,
+                   ErrorMessageController errorMessageController, LikeShotController likeShotController,
+                   BucketsController bucketsController) {
 
         this.shotsController = shotsController;
+        this.shotsPagingController = shotsPagingController;
         this.errorMessageController = errorMessageController;
         this.likeShotController = likeShotController;
         this.bucketsController = bucketsController;
@@ -44,26 +48,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
         subscriptions.clear();
-    }
-
-    private void getShotsData() {
-        final Subscription subscription = shotsController.getShots()
-                .compose(androidIO())
-                .subscribe(this::showRetrievedItems,
-                        this::handleException);
-        subscriptions.add(subscription);
-    }
-
-    private void showRetrievedItems(List<Shot> shotsList) {
-        Timber.d("Shots received!");
-        getView().showItems(shotsList);
-        getView().hideLoadingIndicator();
-    }
-
-    private void handleException(Throwable exception) {
-        Timber.e(exception, "Shots item receiving exception ");
-        getView().hideLoadingIndicator();
-        getView().showError(errorMessageController.getErrorMessageLabel(exception));
     }
 
     @Override
@@ -111,8 +95,27 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     }
 
     @Override
-    public void loadData() {
-        getShotsData();
+    public void getShotsFromServer() {
+        shotsPagingController.setFirstShotsPage();
+        final Subscription subscription = shotsController.getShots(shotsPagingController.getShotsPage(),
+                ShotsPagingController.SHOTS_PER_PAGE)
+                .compose(androidIO())
+                .subscribe(this::showRetrievedItems,
+                        this::handleException);
+        subscriptions.add(subscription);
+    }
+
+    @Override
+    public void getMoreShotsFromServer() {
+        if (shotsPagingController.hasMore()) {
+            shotsPagingController.setNextShotsPage();
+            final Subscription subscription = shotsController.getShots(shotsPagingController.getShotsPage(),
+                    ShotsPagingController.SHOTS_PER_PAGE)
+                    .compose(androidIO())
+                    .subscribe(this::showMoreRetrievedItems,
+                            this::handleException);
+            subscriptions.add(subscription);
+        }
     }
 
     @Override
@@ -138,5 +141,29 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     @Override
     public void showShotDetails(Shot shot) {
         getView().showShotDetails(shot);
+    }
+
+    private void showRetrievedItems(List<Shot> shotsList) {
+        Timber.d("Shots received!");
+        if (shotsList.size() < ShotsPagingController.SHOTS_PER_PAGE) {
+            shotsPagingController.changeHasMoreToFalse();
+        }
+        getView().showItems(shotsList);
+        getView().hideLoadingIndicator();
+    }
+
+    private void handleException(Throwable exception) {
+        Timber.e(exception, "Shots item receiving exception ");
+        getView().hideLoadingIndicator();
+        getView().showError(errorMessageController.getErrorMessageLabel(exception));
+    }
+
+    private void showMoreRetrievedItems(List<Shot> shotList) {
+        Timber.d("More shots received!");
+        if (shotList.size() < ShotsPagingController.SHOTS_PER_PAGE) {
+            shotsPagingController.changeHasMoreToFalse();
+        }
+        getView().showMoreItems(shotList);
+        getView().hideLoadingIndicator();
     }
 }
