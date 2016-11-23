@@ -71,4 +71,5 @@
     <string name="few_sec_ago">Few seconds ago</string>
     <string name="few_minutes_ago">Few minutes ago</string>
     <string name="few_hours_ago">Few hours ago</string>
+    <string name="comment_input_hint">Type your comment</string>
 </resources>
