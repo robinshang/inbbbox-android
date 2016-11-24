@@ -5,8 +5,10 @@ import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.api.UserApi;
 import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
-import co.netguru.android.inbbbox.model.api.User;
+import co.netguru.android.inbbbox.model.api.UserEntity;
+import co.netguru.android.inbbbox.model.ui.User;
 import rx.Observable;
+import rx.Single;
 
 @Singleton
 public class UserController {
@@ -24,8 +26,14 @@ public class UserController {
      * Request user from api
      * Side effect user is saved to prefs
      */
-    public Observable<User> requestUser() {
+    public Observable<UserEntity> requestUser() {
         return userApi.getAuthenticatedUser()
                 .flatMap(user -> userPrefsRepository.saveUser(user).andThen(Observable.just(user)));
+    }
+
+    public Single<User> getUserFromCache() {
+        return userPrefsRepository
+                .getUser()
+                .map(User::create);
     }
 }

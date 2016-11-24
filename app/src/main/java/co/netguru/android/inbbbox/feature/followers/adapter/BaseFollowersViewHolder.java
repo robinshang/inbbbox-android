@@ -13,10 +13,17 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
 import co.netguru.android.inbbbox.model.ui.Follower;
+import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.utils.ShotLoadingManager;
 import co.netguru.android.inbbbox.view.RoundedCornersFourImagesView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
+
+    protected static final int FIRST_SHOT = 0;
+    protected static final int SECOND_SHOT = 1;
+    protected static final int THIRD_SHOT = 2;
+    protected static final int FOURTH_SHOT = 3;
 
     @BindString(R.string.follower_item_shot)
     String shotCountString;
@@ -48,19 +55,15 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
         loadUserPhoto(item.avatarUrl());
     }
 
-    protected void loadShotImages(String url1, String url2, String url3, String url4) {
-        loadImageInto(fourImagesView.getTopLeftImageView(), url1);
-        loadImageInto(fourImagesView.getTopRightImageView(), url2);
-        loadImageInto(fourImagesView.getBottomLeftImageView(), url3);
-        loadImageInto(fourImagesView.getBottomRightImageView(), url4);
+    protected void loadShotImages(Shot leftTopShot, Shot rightTopShot, Shot leftBottomShot, Shot rightBottomShot) {
+        loadImageInto(fourImagesView.getTopLeftImageView(), leftTopShot);
+        loadImageInto(fourImagesView.getTopRightImageView(), rightTopShot);
+        loadImageInto(fourImagesView.getBottomLeftImageView(), leftBottomShot);
+        loadImageInto(fourImagesView.getBottomRightImageView(), rightBottomShot);
     }
 
-    private void loadImageInto(ImageView imageView, String url) {
-        Glide.with(itemView.getContext())
-                .load(url)
-                .placeholder(R.drawable.shot_placeholder)
-                .animate(android.R.anim.fade_in)
-                .into(imageView);
+    private void loadImageInto(ImageView imageView, Shot shot) {
+        ShotLoadingManager.loadListShot(itemView.getContext(), imageView, shot);
     }
 
     private String getShotCountString(int shotCount) {

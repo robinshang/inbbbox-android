@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.view.swipingpanel;
 
 import android.content.Context;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -12,11 +11,9 @@ import timber.log.Timber;
 public class LongSwipeLayout extends SwipeLayout {
 
     private static final long AUTO_CLOSE_DELAY = 300;
-    private static final float LONG_SWIPE_TRIGGERING_THRESHOLD = 300;
+    private static final float LONG_SWIPE_TRIGGERING_THRESHOLD = 400;
     private static final int LONG_SWIPE_ACTIVATION_TOLERANCE = 80;
     private static final int RIGHT_SWIPE_ACTIVATION_TOLERANCE = 80;
-
-    private final Handler closeHandler = new Handler();
 
     private float offsetX;
     private boolean wasChecked = false;
@@ -47,9 +44,14 @@ public class LongSwipeLayout extends SwipeLayout {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             initSwipeActionHandling();
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            Timber.d("Action UP");
             checkItemSelection();
+            close(true);
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
             handleSwipingActions(event);
+
+        } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
+            Timber.d("Action Cancel");
         }
         return super.onTouchEvent(event);
     }
@@ -97,6 +99,12 @@ public class LongSwipeLayout extends SwipeLayout {
             isLongSwipeTriggered = false;
         }
 
+        if (-getSurfaceView().getLeft() > swipingLimit / 3) {
+            isNormalSwipeTriggered = false;
+            isNormalSwipeScope = false;
+            wasChecked = false;
+        }
+
         itemSwipeListener.onLeftSwipeActivate(isNormalSwipeTriggered);
         itemSwipeListener.onLeftLongSwipeActivate(isLongSwipeTriggered);
         itemSwipeListener.onRightSwipeActivate(isRightSwipeTriggered);
@@ -104,6 +112,12 @@ public class LongSwipeLayout extends SwipeLayout {
 
     private int getLimitForLeftSwipe() {
         return getPaddingLeft() - getDragDistance();
+    }
+
+    @Override
+    protected void dispatchSwipeEvent(int surfaceLeft, int surfaceTop, boolean open) {
+        Timber.d("open: " + open);
+        super.dispatchSwipeEvent(surfaceLeft, surfaceTop, open);
     }
 
     private void initSwipeActionHandling() {
@@ -126,9 +140,10 @@ public class LongSwipeLayout extends SwipeLayout {
     private void checkItemSelection() {
         if (isRightSwipeTriggered) {
             rightSwipeSelected();
-        } else if (isNormalSwipeScope) {
+        } else if (isNormalSwipeTriggered) {
             normalSwipeElementSelected();
-        } else if (isLongSwipeTriggered) {
+        }
+        if (isLongSwipeTriggered) {
             longSwipeElementSelected();
         }
     }
@@ -155,7 +170,7 @@ public class LongSwipeLayout extends SwipeLayout {
     }
 
     private void delayClose() {
-        closeHandler.postDelayed(() -> close(true, true), AUTO_CLOSE_DELAY);
+        postDelayed(() -> close(true, true), AUTO_CLOSE_DELAY);
     }
 
     public void setItemSwipeListener(ItemSwipeListener itemSwipeListener) {

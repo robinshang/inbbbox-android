@@ -40,6 +40,12 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         context.startActivity(intent);
     }
 
+    public static void startActivityClearTask(Context context) {
+        final Intent intent = new Intent(context, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         initComponent();

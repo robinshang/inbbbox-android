@@ -6,11 +6,20 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsFragment;
+import co.netguru.android.inbbbox.feature.followers.details.adapter.FollowerDetailsAdapter;
+import co.netguru.android.inbbbox.view.ShotClickListener;
 import dagger.Module;
 import dagger.Provides;
 
 @Module
 public class FollowerDetailsFragmentModule {
+
+    private final ShotClickListener shotClickListener;
+
+    public FollowerDetailsFragmentModule(ShotClickListener shotClickListener) {
+
+        this.shotClickListener = shotClickListener;
+    }
 
     @Provides
     @FragmentScope
@@ -23,4 +32,11 @@ public class FollowerDetailsFragmentModule {
     GridLayoutManager provideGridLayoutManager(Context context) {
         return new GridLayoutManager(context, FollowerDetailsFragment.GRID_VIEW_COLUMN_COUNT);
     }
+
+    @Provides
+    @FragmentScope
+    FollowerDetailsAdapter provideShotDetailsAdapter() {
+        return new FollowerDetailsAdapter(shotClickListener);
+    }
+
 }

@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.Follower;
+import co.netguru.android.inbbbox.model.ui.Shot;
 
 public class FollowersTwoShotListViewHolder extends BaseFollowersViewHolder {
 
@@ -15,8 +16,8 @@ public class FollowersTwoShotListViewHolder extends BaseFollowersViewHolder {
     @Override
     public void bind(Follower item) {
         super.bind(item);
-        final String url1 = item.shotList().get(0).normalImageUrl();
-        final String url2 = item.shotList().get(1).normalImageUrl();
-        loadShotImages(url1, url2, url2, url1);
+        final Shot shot1 = item.shotList().get(FIRST_SHOT);
+        final Shot shot2 = item.shotList().get(SECOND_SHOT);
+        loadShotImages(shot1, shot2, shot2, shot1);
     }
 }

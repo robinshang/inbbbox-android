@@ -15,7 +15,7 @@
         <activity
             android:name=".feature.login.LoginActivity"
             android:autoRemoveFromRecents="true"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:noHistory="true"
             android:stateNotNeeded="true"
             tools:ignore="UnusedAttribute" />

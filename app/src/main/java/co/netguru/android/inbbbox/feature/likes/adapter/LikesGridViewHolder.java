@@ -5,13 +5,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseViewHolder;
-import co.netguru.android.inbbbox.model.ui.LikedShot;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.ShotLoadingManager;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
+import co.netguru.android.inbbbox.view.ShotClickListener;
 
-public class LikesGridViewHolder extends BaseViewHolder<LikedShot> {
+class LikesGridViewHolder extends BaseViewHolder<Shot> {
 
     @BindView(R.id.like_item_image_view)
     RoundedCornersImageView imageView;
@@ -19,12 +21,22 @@ public class LikesGridViewHolder extends BaseViewHolder<LikedShot> {
     @BindView(R.id.gif_label_textView)
     View gifLabelView;
 
-    LikesGridViewHolder(ViewGroup parent) {
+    private final ShotClickListener likeClickListener;
+    private Shot item;
+
+    LikesGridViewHolder(ViewGroup parent, ShotClickListener likeClickListener) {
         super(LayoutInflater.from(parent.getContext()).inflate(R.layout.like_item_list_view, parent, false));
+        this.likeClickListener = likeClickListener;
+    }
+
+    @OnClick(R.id.like_item_image_view)
+    void onItemClick() {
+        likeClickListener.onShotClick(item);
     }
 
     @Override
-    public void bind(LikedShot item) {
+    public void bind(Shot item) {
+        this.item = item;
         final float radius = itemView.getResources().getDimension(R.dimen.shot_corner_radius);
         if (item.isGif()) {
             gifLabelView.setVisibility(View.VISIBLE);

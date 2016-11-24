@@ -43,6 +43,7 @@ import co.netguru.android.inbbbox.feature.likes.LikesFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -52,11 +53,12 @@ public class MainActivity
         extends BaseMvpActivity<MainViewContract.View,
         MainViewContract.Presenter>
         implements MainViewContract.View,
-        ShotsFragment.ShotLikeStatusListener {
+        ShotsFragment.ShotActionListener {
 
     public static final int REQUEST_REFRESH_FOLLOWER_LIST = 101;
     private static final int REQUEST_DEFAULT = 0;
     private static final String REQUEST_EXTRA = "requestExtra";
+    private static final String TOGGLE_BUTTON_STATE = "toggleButtonState";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -90,6 +92,7 @@ public class MainActivity
     private Switch popularSwitch;
     private Switch debutsSwitch;
     private Switch shotDetailsSwitch;
+    private ToggleButton drawerToggleButton;
     private MainActivityPagerAdapter pagerAdapter;
     private BottomSheetBehavior bottomSheetBehavior;
 
@@ -100,6 +103,7 @@ public class MainActivity
 
     public static void startActivityWithRequest(Context context, int requestCode) {
         final Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(REQUEST_EXTRA, requestCode);
         context.startActivity(intent);
     }
@@ -114,20 +118,19 @@ public class MainActivity
         initializeDrawer();
         initializeBottomSheet();
         getPresenter().prepareUserData();
+        navigationView.setSaveEnabled(false);
     }
 
-    private void initializeBottomSheet() {
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(TOGGLE_BUTTON_STATE, drawerToggleButton.isChecked());
     }
 
-    private boolean isBottomSheetOpen() {
-        return bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED;
-    }
-
-    private void initComponent() {
-        component = App.getAppComponent(this)
-                .plusMainActivityComponent();
-        component.inject(this);
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        restoreToggleButtonState(savedInstanceState);
     }
 
     @NonNull
@@ -136,8 +139,8 @@ public class MainActivity
         return component.getMainActivityPresenter();
     }
 
-    private void showFragmentDetails(long shotId) {
-        Fragment fragment = ShotDetailsFragment.newInstance(shotId);
+    private void showFragmentDetails(Shot shot) {
+        Fragment fragment = ShotDetailsFragment.newInstance(shot);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
@@ -169,6 +172,26 @@ public class MainActivity
             default:
                 throw new IllegalStateException("Intent should contains REQUEST_EXTRA");
         }
+    }
+
+    private void initComponent() {
+        component = App.getAppComponent(this)
+                .plusMainActivityComponent();
+        component.inject(this);
+    }
+
+    private void restoreToggleButtonState(Bundle savedInstanceState) {
+        final boolean toggleButtonState = savedInstanceState.getBoolean(TOGGLE_BUTTON_STATE, false);
+        drawerToggleButton.setChecked(toggleButtonState);
+        getPresenter().toggleButtonChanged(toggleButtonState);
+    }
+
+    private void initializeBottomSheet() {
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
+    }
+
+    private boolean isBottomSheetOpen() {
+        return bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED;
     }
 
     private void initializePager() {
@@ -235,14 +258,14 @@ public class MainActivity
     private void initializeDrawer() {
         changeMenuGroupsVisibility(true, false);
         final View header = navigationView.getHeaderView(0);
-        final ToggleButton drawerToggle = findById(header, R.id.drawer_header_toggle);
+        drawerToggleButton = findById(header, R.id.drawer_header_toggle);
         drawerUserName = findById(header, R.id.drawer_user_name);
         drawerUserPhoto = findById(header, R.id.drawer_user_photo);
         drawerReminderTime = findById(navigationView.getMenu()
                 .findItem(R.id.drawer_item_reminder).getActionView(), R.id.drawer_item_time);
 
-        drawerToggle.setOnCheckedChangeListener(
-                (buttonView, isChecked) -> getPresenter().toggleButtonClicked(isChecked));
+        drawerToggleButton.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> getPresenter().toggleButtonChanged(isChecked));
 
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -388,8 +411,19 @@ public class MainActivity
     }
 
     @Override
-    public void showShotDetails(long id) {
-        showFragmentDetails(id);
+    public void showShotDetails(Shot shot) {
+        showFragmentDetails(shot);
+    }
+
+    @Override
+    public void refreshShotsView() {
+        final List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (final Fragment fragment : fragments) {
+            if (fragment instanceof ShotsFragment) {
+                ((ShotsFragment) fragment).refreshFragmentData();
+                break;
+            }
+        }
     }
 
     private BottomSheetBehavior getBottomSheetBehavior() {

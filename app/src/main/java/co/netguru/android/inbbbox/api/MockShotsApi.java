@@ -3,10 +3,13 @@ package co.netguru.android.inbbbox.api;
 import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import co.netguru.android.inbbbox.Constants;
+import co.netguru.android.inbbbox.model.api.Bucket;
+import co.netguru.android.inbbbox.model.api.CommentEntity;
 import co.netguru.android.inbbbox.model.api.Image;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import retrofit2.http.Path;
@@ -18,15 +21,22 @@ public class MockShotsApi implements ShotsApi {
     public static final int ITEM_COUNT = new Random().nextInt(1000);
 
     @Override
-    public Observable<List<ShotEntity>> getFilteredShots(@Query(Constants.API.SHOTS_KEY_LIST) String list,
-                                                         @Query(Constants.API.SHOTS_KEY_TIME_FRAME) String timeFrame,
-                                                         @Query(Constants.API.SHOTS_KEY_DATE) String date,
-                                                         @Query(Constants.API.SHOTS_KEY_SORT) String sort) {
+    public Observable<List<ShotEntity>> getShotsByList(@Query(Constants.API.SHOTS_KEY_LIST) String list,
+                                                       @Query("page") int pageNumber,
+                                                       @Query("per_page") int pageCount) {
         return Observable.just(getFilteredMockedData());
     }
 
     @Override
-    public Observable<List<ShotEntity>> getFollowingShots() {
+    public Observable<List<ShotEntity>> getShotsByDateSort(@Query(Constants.API.SHOTS_KEY_DATE) String date,
+                                                           @Query(Constants.API.SHOTS_KEY_SORT) String sort,
+                                                           @Query("page") int pageNumber, @Query("per_page") int pageCount) {
+        return Observable.just(getFilteredMockedData());
+    }
+
+    @Override
+    public Observable<List<ShotEntity>> getFollowingShots(@Query("page") int pageNumber,
+                                                          @Query("per_page") int pageCount) {
         return Observable.just(getFollowingMockedData());
     }
 
@@ -34,6 +44,16 @@ public class MockShotsApi implements ShotsApi {
     public Observable<List<ShotEntity>> getUserShots(@Path("user") long userId, @Query("page") int pageNumber,
                                                      @Query("per_page") int pageCount) {
         return Observable.just(getFollowingMockedData());
+    }
+
+    @Override
+    public Observable<List<CommentEntity>> getShotComments(@Path("shotId") String shotId) {
+        return Observable.just(Collections.emptyList());
+    }
+
+    @Override
+    public Observable<List<Bucket>> getBucketsList(String shotId) {
+        return Observable.just(Collections.emptyList());
     }
 
     private static List<ShotEntity> getFollowingMock(int count, String label) {
@@ -47,6 +67,9 @@ public class MockShotsApi implements ShotsApi {
             entity.setImage(image);
             entity.setCreatedAt(LocalDateTime.now());
             entity.setAnimated(false);
+            entity.setLikesCount(2);
+            entity.setBucketsCount(3);
+            entity.setCreatedAt(LocalDateTime.now());
             result.add(entity);
         }
         return result;

@@ -6,8 +6,13 @@ import com.google.gson.TypeAdapter;
 
 import org.threeten.bp.LocalDateTime;
 
+import co.netguru.android.inbbbox.model.api.CommentEntity;
+
 @AutoValue
 public abstract class Comment {
+
+    public abstract long id();
+
     public abstract String author();
 
     public abstract String authorAvatarUrl();
@@ -16,8 +21,20 @@ public abstract class Comment {
 
     public abstract String text();
 
+    public static Comment create(CommentEntity commentEntity) {
+        return Comment.builder()
+                .id(commentEntity.getId())
+                .author(commentEntity.getUser().name())
+                .authorAvatarUrl(commentEntity.getUser().avatarUrl())
+                .text(commentEntity.getBody())
+                .date(commentEntity.getCreatedAt())
+                .build();
+    }
+
     @AutoValue.Builder
     public abstract static class Builder {
+        public abstract Comment.Builder id(long id);
+
         public abstract Comment.Builder author(String author);
 
         public abstract Comment.Builder authorAvatarUrl(String authorAvatarUrl);

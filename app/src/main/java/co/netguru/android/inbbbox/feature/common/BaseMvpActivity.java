@@ -57,7 +57,7 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
 
     private void handleUnauthorisedEvent(CriticalLogoutEvent object) {
         Toast.makeText(this, object.getReason(), Toast.LENGTH_SHORT).show();
-        LoginActivity.startActivity(this);
+        LoginActivity.startActivityClearTask(this);
         finish();
     }
 }

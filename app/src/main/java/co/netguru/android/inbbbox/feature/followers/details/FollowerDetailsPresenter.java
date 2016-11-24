@@ -68,6 +68,11 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     }
 
     @Override
+    public void onUnFollowClick() {
+        getView().showUnFollowDialog(follower.name());
+    }
+
+    @Override
     public void unFollowUser() {
         final Subscription subscription = followersController.unFollowUser(follower.id())
                 .compose(applyCompletableIoSchedulers())
@@ -76,6 +81,11 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
                     getView().showError(throwable.getMessage());
                 });
         subscriptions.add(subscription);
+    }
+
+    @Override
+    public void showShotDetails(Shot shot) {
+        getView().openShotDetailsScreen(shot);
     }
 
     private void onGetUserShotsNext(List<Shot> shotList) {

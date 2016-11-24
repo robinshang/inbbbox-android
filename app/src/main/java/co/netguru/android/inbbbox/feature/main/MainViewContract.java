@@ -37,11 +37,13 @@ interface MainViewContract {
         void changeCustomizationStatus(boolean isDetails);
 
         void showMessage(@StringRes int message);
+
+        void refreshShotsView();
     }
 
     interface Presenter extends MvpPresenter<View> {
 
-        void toggleButtonClicked(boolean isChecked);
+        void toggleButtonChanged(boolean isChecked);
 
         void performLogout();
 

@@ -14,7 +14,7 @@ import co.netguru.android.inbbbox.controler.notification.NotificationController;
 import co.netguru.android.inbbbox.controler.notification.NotificationScheduler;
 import co.netguru.android.inbbbox.feature.main.MainViewContract.Presenter;
 import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
-import co.netguru.android.inbbbox.model.api.User;
+import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.inbbbox.model.localrepository.NotificationSettings;
 import co.netguru.android.inbbbox.model.localrepository.Settings;
 import co.netguru.android.inbbbox.model.localrepository.StreamSourceSettings;
@@ -36,7 +36,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private final CompositeSubscription subscriptions;
 
     @Nullable
-    private User user;
+    private UserEntity user;
 
     @Inject
     MainActivityPresenter(UserPrefsRepository userPrefsRepository,
@@ -59,7 +59,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     }
 
     @Override
-    public void toggleButtonClicked(boolean isChecked) {
+    public void toggleButtonChanged(boolean isChecked) {
         if (isChecked) {
             getView().showLogoutMenu();
             if (user != null) {
@@ -152,7 +152,10 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                                           @Nullable Boolean isPopular, @Nullable Boolean isDebuts) {
         final Subscription subscription = settingsController.changeStreamSourceSettings(isFollowing, isNew, isPopular, isDebuts)
                 .compose(RxTransformerUtils.applyCompletableIoSchedulers())
-                .subscribe(() -> Timber.d("Stream source settings changed"),
+                .subscribe(() -> {
+                            Timber.d("Stream source settings changed");
+                            getView().refreshShotsView();
+                        },
                         throwable -> Timber.e(throwable, "Error while changing stream source settings"));
         subscriptions.add(subscription);
     }
@@ -225,7 +228,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         Timber.e(throwable, "Error while scheduling notification");
     }
 
-    private void handleUserData(User user) {
+    private void handleUserData(UserEntity user) {
         this.user = user;
         getView().showUserName(user.username());
         getView().showUserPhoto(user.avatarUrl());

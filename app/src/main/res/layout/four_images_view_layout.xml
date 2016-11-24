@@ -5,31 +5,31 @@
     <ImageView
         android:id="@+id/image1"
         android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        app:layout_widthPercent="50%"
-        app:layout_heightPercent="50%"/>
+        android:scaleType="centerCrop"
+        app:layout_widthPercent="@fraction/four_images_view_percentage"
+        app:layout_heightPercent="@fraction/four_images_view_percentage"/>
 
     <ImageView
         android:id="@+id/image2"
         android:adjustViewBounds="true"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:layout_toEndOf="@id/image1"
-        app:layout_heightPercent="50%"
-        app:layout_widthPercent="50%"/>
+        app:layout_heightPercent="@fraction/four_images_view_percentage"
+        app:layout_widthPercent="@fraction/four_images_view_percentage"/>
 
     <ImageView
         android:id="@+id/image3"
         android:adjustViewBounds="true"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:layout_below="@id/image1"
-        app:layout_heightPercent="50%"
-        app:layout_widthPercent="50%"/>
+        app:layout_heightPercent="@fraction/four_images_view_percentage"
+        app:layout_widthPercent="@fraction/four_images_view_percentage"/>
 
     <ImageView
         android:adjustViewBounds="true"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:layout_toEndOf="@id/image3"
         android:layout_below="@id/image2"
-        app:layout_heightPercent="50%"
-        app:layout_widthPercent="50%"/>
+        app:layout_heightPercent="@fraction/four_images_view_percentage"
+        app:layout_widthPercent="@fraction/four_images_view_percentage"/>
 </merge>

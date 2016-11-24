@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,11 +15,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
@@ -30,6 +33,8 @@ import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
+import static butterknife.ButterKnife.findById;
+
 public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowerDetailsContract.View,
         FollowerDetailsContract.Presenter> implements FollowerDetailsContract.View {
 
@@ -39,6 +44,9 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     private static final int SHOTS_TO_LOAD_MORE = 10;
     private static final int RECYCLER_VIEW_HEADER_POSITION = 0;
     private static final int RECYCLER_VIEW_ITEM_SPAN_SIZE = 1;
+
+    @BindString(R.string.fragment_follower_details_dialog_text)
+    String dialogText;
 
     @BindView(R.id.fragment_follower_details_recycler_view)
     RecyclerView recyclerView;
@@ -50,7 +58,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     @Inject
     LinearLayoutManager linearLayoutManager;
 
-    private OnUnFollowCompletedListener onUnFollowCompletedListener;
+    private OnFollowedShotActionListener onUnFollowCompletedListener;
     private FollowerDetailsFragmentComponent component;
 
     public static FollowerDetailsFragment newInstance(Follower follower) {
@@ -66,13 +74,13 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            onUnFollowCompletedListener = (OnUnFollowCompletedListener) context;
+            onUnFollowCompletedListener = (OnFollowedShotActionListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnUnFollowCompletedListener");
+                    + " must implement OnFollowedShotActionListener");
         }
         component = App.getAppComponent(getContext())
-                .plus(new FollowerDetailsFragmentModule());
+                .plus(new FollowerDetailsFragmentModule(shot -> getPresenter().showShotDetails(shot)));
         component.inject(this);
     }
 
@@ -93,7 +101,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_follow:
-                getPresenter().unFollowUser();
+                getPresenter().onUnFollowClick();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -136,6 +144,24 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         Snackbar.make(recyclerView, message, Snackbar.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void openShotDetailsScreen(Shot shot) {
+        onUnFollowCompletedListener.showShotDetails(shot);
+    }
+
+    @Override
+    public void showUnFollowDialog(String username) {
+        final View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_unfollow_user, null);
+        final TextView textView = findById(view, R.id.dialog_unfollow_text);
+        textView.setText(String.format(dialogText, username));
+        new AlertDialog.Builder(getContext(), R.style.AlertDialog)
+                .setView(view)
+                .setPositiveButton(R.string.action_unfollow, (dialog, which) -> getPresenter().unFollowUser())
+                .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.dismiss())
+                .create()
+                .show();
+    }
+
     private void initRecyclerView() {
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -156,8 +182,8 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         });
     }
 
-    @FunctionalInterface
-    public interface OnUnFollowCompletedListener {
+    public interface OnFollowedShotActionListener {
+        void showShotDetails(Shot shot);
 
         void unFollowCompleted();
     }

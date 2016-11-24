@@ -92,7 +92,7 @@ public final class LoginPresenter
 
     private void handleError(Throwable throwable) {
         Timber.e(throwable, "Error while getting user");
-        getView().showApiError(errorHandler.getError(throwable));
+        getView().showApiError(errorHandler.getErrorMessageLabel(throwable));
     }
 
 }

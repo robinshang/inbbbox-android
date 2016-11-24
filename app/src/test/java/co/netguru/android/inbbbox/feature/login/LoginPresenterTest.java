@@ -70,7 +70,7 @@ public class LoginPresenterTest {
         when(tokenControllerMock.requestNewToken(CODE))
                 .thenReturn(Observable.just(expectedToken));
         when(userControllerMock.requestUser()).
-                thenReturn(Observable.just(Statics.USER));
+                thenReturn(Observable.just(Statics.USER_ENTITY));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class LoginPresenterTest {
 
         verify(viewMock, never()).showNextScreen();
         verify(viewMock).showApiError(anyString());
-        verify(errorMessageController, times(1)).getError(testThrowable);
+        verify(errorMessageController, times(1)).getErrorMessageLabel(testThrowable);
     }
 
 }

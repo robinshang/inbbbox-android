@@ -10,10 +10,10 @@ import com.google.gson.annotations.SerializedName;
 import org.threeten.bp.LocalDateTime;
 
 @AutoValue
-public abstract class User {
+public abstract class UserEntity {
 
     @SerializedName("id")
-    public abstract int id();
+    public abstract long id();
 
     @SerializedName("name")
     public abstract String name();
@@ -105,16 +105,16 @@ public abstract class User {
     public abstract LocalDateTime updatedAt();
 
     public static Builder builder() {
-        return new $AutoValue_User.Builder();
+        return new AutoValue_UserEntity.Builder();
     }
 
-    public static TypeAdapter<User> typeAdapter(Gson gson) {
-        return new AutoValue_User.GsonTypeAdapter(gson);
+    public static TypeAdapter<UserEntity> typeAdapter(Gson gson) {
+        return new AutoValue_UserEntity.GsonTypeAdapter(gson);
     }
 
     @AutoValue.Builder
     public abstract static class Builder {
-        public abstract Builder id(int id);
+        public abstract Builder id(long id);
 
         public abstract Builder name(String name);
 
@@ -172,6 +172,6 @@ public abstract class User {
 
         public abstract Builder updatedAt(LocalDateTime updatedAt);
 
-        public abstract User build();
+        public abstract UserEntity build();
     }
 }
