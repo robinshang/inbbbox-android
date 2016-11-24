@@ -59,7 +59,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     }
 
     @Override
-    public void toggleButtonClicked(boolean isChecked) {
+    public void toggleButtonChanged(boolean isChecked) {
         if (isChecked) {
             getView().showLogoutMenu();
             if (user != null) {
