@@ -26,12 +26,17 @@ class ShotDetailsLoadMoreViewHolder extends ShotDetailsViewHolder {
 
     @OnClick(R.id.shot_details_load_more_textView)
     void onLoadMoreSelected() {
-      actionCallbackListener.onLoadMoreCommentsSelected();
+        actionCallbackListener.onLoadMoreCommentsSelected();
     }
 
     @Override
     protected void handleBinding() {
-        if (commentList != null && commentList.size() < item.commentsCount()) {
+        boolean isActive = commentList != null && commentList.size() < item.commentsCount();
+        loadMoreTextView
+                .setActivated(isActive);
+        loadMoreTextView.setClickable(isActive);
+
+        if (loadMoreTextView.isActivated()) {
             loadMoreTextView.setText(loadMoreLabel);
         } else {
             loadMoreTextView.setText("");
