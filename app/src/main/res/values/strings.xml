@@ -73,6 +73,7 @@
     <string name="few_sec_ago">Few seconds ago</string>
     <string name="few_minutes_ago">Few minutes ago</string>
     <string name="few_hours_ago">Few hours ago</string>
+    <string name="loading_more_buckets">Loading more buckets</string>
 
     <plurals name="fragment_buckets_shots_string">
         <item quantity="zero">No shots added</item>

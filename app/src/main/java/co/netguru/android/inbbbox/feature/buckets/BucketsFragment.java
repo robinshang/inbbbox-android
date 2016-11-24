@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.feature.buckets;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,7 +21,6 @@ import java.util.List;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.buckets.adapter.BaseBucketViewHolder;
@@ -33,7 +33,7 @@ import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<BucketsFragmentContract.View, BucketsFragmentContract.Presenter>
         implements BucketsFragmentContract.View, BaseBucketViewHolder.BucketClickListener {
 
-    @BindDrawable(R.drawable.ic_following_emptystate)
+    @BindDrawable(R.drawable.ic_buckets_empty_state)
     Drawable emptyTextDrawable;
 
     @BindString(R.string.fragment_buckets_empty_text_before_icon)
@@ -59,6 +59,7 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
     private final BucketsAdapter adapter = new BucketsAdapter(this);
     private final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
     private final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+    private Snackbar loadingMoreSnackbar;
 
     public static BucketsFragment newInstance() {
         return new BucketsFragment();
@@ -69,17 +70,15 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_buckets, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+        return inflater.inflate(R.layout.fragment_buckets, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initEmptyView();
         initRecyclerView();
         initRefreshLayout();
-        initEmptyView();
         getPresenter().loadBucketsWithShots(false);
     }
 
@@ -123,6 +122,21 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
         bucketsRecyclerView.setVisibility(View.GONE);
     }
 
+    @Override
+    public void showLoadingMoreBucketsView() {
+        if (loadingMoreSnackbar == null && getView() != null) {
+            loadingMoreSnackbar = Snackbar.make(getView(), R.string.loading_more_buckets, Snackbar.LENGTH_INDEFINITE);
+        }
+        loadingMoreSnackbar.show();
+    }
+
+    @Override
+    public void hideLoadingMoreBucketsView() {
+        if (loadingMoreSnackbar != null) {
+            loadingMoreSnackbar.dismiss();
+        }
+    }
+
     private void initRefreshLayout() {
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.accent));
         swipeRefreshLayout.setOnRefreshListener(() -> getPresenter().loadBucketsWithShots(true));
@@ -131,16 +145,18 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
     private void initRecyclerView() {
         bucketsRecyclerView.setHasFixedSize(true);
         bucketsRecyclerView.setAdapter(adapter);
-        bucketsRecyclerView.addOnScrollListener(new LoadMoreScrollListener(LAST_X_BUCKETS_VISIBLE_TO_LOAD_MORE) {
-            @Override
-            public void requestMoreData() {
-                presenter.loadMoreBucketsWithShots();
-            }
-        });
+        bucketsRecyclerView.addOnScrollListener(
+                new LoadMoreScrollListener(LAST_X_BUCKETS_VISIBLE_TO_LOAD_MORE) {
+                    @Override
+                    public void requestMoreData() {
+                        presenter.loadMoreBucketsWithShots();
+                    }
+                });
     }
 
     private void initEmptyView() {
+        emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
         emptyViewText.setText(TextFormatterUtil
-                .addDrawableBeetweenStrings(emptyStringBeforeIcon, emptyStringAfterIcon, emptyTextDrawable));
+                .addDrawableBetweenStrings(emptyStringBeforeIcon, emptyStringAfterIcon, emptyTextDrawable));
     }
 }

@@ -25,12 +25,13 @@ public final class TextFormatterUtil {
         return builder;
     }
 
-    public static SpannableStringBuilder addDrawableBeetweenStrings(String firstsString, String secondString,
-                                                                    Drawable drawable) {
+    public static SpannableStringBuilder addDrawableBetweenStrings(String firstsString, String secondString,
+                                                                   Drawable drawable) {
         final ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
         final SpannableStringBuilder builder = new SpannableStringBuilder(firstsString);
-        builder.setSpan(imageSpan, builder.length() - 1, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.append(secondString);
+        builder.append("  ")
+                .setSpan(imageSpan, builder.length() - 1, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(" ").append(secondString);
 
         return builder;
     }

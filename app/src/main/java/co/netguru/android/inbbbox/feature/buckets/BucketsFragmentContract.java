@@ -19,6 +19,10 @@ public interface BucketsFragmentContract {
         void addMoreBucketsWithShots(List<BucketWithShots> bucketWithShotsList);
 
         void showEmptyBucketView();
+
+        void showLoadingMoreBucketsView();
+
+        void hideLoadingMoreBucketsView();
     }
 
     interface Presenter extends MvpPresenter<BucketsFragmentContract.View> {
