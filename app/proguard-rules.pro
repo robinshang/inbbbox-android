@@ -50,6 +50,8 @@
 # retrofit
 -dontwarn retrofit2.**
 -keep class retrofit2.** { *; }
+-keepnames class rx.Single
+-keepnames class rx.Completable
 -keepattributes Signature
 -keepattributes Exceptions
 -keepattributes *Annotation*
