@@ -39,7 +39,12 @@
     <string name="fragment_followers_empty_text">Follow someone first!</string>
     <string name="fragment_buckets_empty_text_before_icon">Create some buckets</string>
     <string name="fragment_buckets_empty_text_after_icon">first!</string>
-
+    <string name="loading_more_buckets">Loading more buckets</string>
+    <plurals name="fragment_buckets_shots_string">
+        <item quantity="zero">No shots added</item>
+        <item quantity="one">%d shot</item>
+        <item quantity="other">%d shots</item>
+    </plurals>
 
     <string name="shots_fragment_add_shot_to_bucket_success">Shot successfully added to bucket</string>
 
@@ -78,11 +83,5 @@
     <string name="few_sec_ago">Few seconds ago</string>
     <string name="few_minutes_ago">Few minutes ago</string>
     <string name="few_hours_ago">Few hours ago</string>
-    <string name="loading_more_buckets">Loading more buckets</string>
 
-    <plurals name="fragment_buckets_shots_string">
-        <item quantity="zero">No shots added</item>
-        <item quantity="one">%d shot</item>
-        <item quantity="other">%d shots</item>
-    </plurals>
 </resources>

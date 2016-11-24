@@ -10,6 +10,7 @@ import java.util.List;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.Links;
 import co.netguru.android.inbbbox.model.api.UserEntity;
+import retrofit2.http.Query;
 import rx.Observable;
 import rx.Single;
 
@@ -47,7 +48,7 @@ public class MockedUserApi implements UserApi {
     }
 
     @Override
-    public Single<List<Bucket>> getUserBucketsList() {
+    public Single<List<Bucket>> getUserBucketsList(@Query("page") int pageNumber, @Query("per_page") int pageCount) {
         return Single.fromCallable(() -> new ArrayList<>(mockedUserBuckets));
     }
 }
