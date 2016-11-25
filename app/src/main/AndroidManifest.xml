@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="co.netguru.android.inbbbox">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="co.netguru.android.inbbbox">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".App"
@@ -18,27 +18,30 @@
             android:launchMode="singleTask"
             android:noHistory="true"
             android:stateNotNeeded="true"
-            tools:ignore="UnusedAttribute" />
+            tools:ignore="UnusedAttribute"/>
 
         <activity
             android:name=".feature.splash.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity android:name=".feature.main.MainActivity"
-            android:launchMode="singleTop"/>
+                  android:launchMode="singleTop"
+                  android:resizeableActivity="true"
+                  tools:ignore="UnusedAttribute"/>
 
-        <activity android:name=".feature.followers.details.FollowerDetailsActivity" />
+        <activity android:name=".feature.followers.details.FollowerDetailsActivity"/>
 
         <meta-data
             android:name="net.hockeyapp.android.appIdentifier"
             android:value="${HOCKEYAPP_APP_ID}"/>
 
-        <receiver android:name="co.netguru.android.inbbbox.controler.notification.NotificationAlarmReceiver" />
+        <receiver
+            android:name="co.netguru.android.inbbbox.controler.notification.NotificationAlarmReceiver"/>
     </application>
 
 </manifest>

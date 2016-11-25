@@ -217,12 +217,6 @@ public class ShotDetailsFragment
         ShotLoadingManager.loadMainViewShot(getContext(), parallaxImageView, shotImage);
     }
 
-    private void hideInputIfVisible() {
-        if (shotCommentInputPanel.getVisibility() == View.VISIBLE) {
-            ViewAnimator.startSlideOutAnimation(shotCommentInputPanel);
-        }
-    }
-
     private void showInputIfHidden() {
         if (shotCommentInputPanel.getVisibility() == View.GONE) {
             ViewAnimator.startSlideInAnimation(shotCommentInputPanel);
