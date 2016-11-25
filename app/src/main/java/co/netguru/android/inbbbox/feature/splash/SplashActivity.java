@@ -22,18 +22,8 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        initCrashManager();
         initComponent();
         super.onCreate(savedInstanceState);
-    }
-
-    private void initCrashManager() {
-        CrashManager.register(this, BuildConfig.HOCKEY_APP_ID, new CrashManagerListener() {
-            @Override
-            public boolean shouldAutoUploadCrashes() {
-                return true;
-            }
-        });
     }
 
     private void initComponent() {
