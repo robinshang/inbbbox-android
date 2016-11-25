@@ -7,9 +7,9 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 
-public final class TextFormatter {
+public final class TextFormatterUtil {
 
-    private TextFormatter() {
+    private TextFormatterUtil() {
         throw new AssertionError();
     }
 
@@ -25,8 +25,19 @@ public final class TextFormatter {
         return builder;
     }
 
-    public static SpannableStringBuilder changeColourOfConcatedWord(String base, String wordToConcat,
-                                                                    @ColorInt int color) {
+    public static SpannableStringBuilder addDrawableBetweenStrings(String firstsString, String secondString,
+                                                                   Drawable drawable) {
+        final ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
+        final SpannableStringBuilder builder = new SpannableStringBuilder(firstsString);
+        builder.append("  ")
+                .setSpan(imageSpan, builder.length() - 1, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(" ").append(secondString);
+
+        return builder;
+    }
+
+    public static SpannableStringBuilder changeColourOfConcatenatedWord(String base, String wordToConcat,
+                                                                        @ColorInt int color) {
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(base);
         spannableStringBuilder
                 .append(' ')
