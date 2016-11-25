@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.feature.buckets;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -25,6 +26,7 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.buckets.adapter.BaseBucketViewHolder;
 import co.netguru.android.inbbbox.feature.buckets.adapter.BucketsAdapter;
+import co.netguru.android.inbbbox.feature.buckets.details.BucketDetailsActivity;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
@@ -88,6 +90,7 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
         bucketsRecyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
     }
 
+    @NonNull
     @Override
     public BucketsFragmentContract.Presenter createPresenter() {
         return App.getAppComponent(getContext()).inject().getPresenter();
@@ -95,7 +98,7 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
 
     @Override
     public void onBucketClick(BucketWithShots bucketWithShots) {
-        //// TODO: 21.11.2016 not in scope of this task
+        BucketDetailsActivity.startActivity(getContext(),bucketWithShots,30);
     }
 
     @Override

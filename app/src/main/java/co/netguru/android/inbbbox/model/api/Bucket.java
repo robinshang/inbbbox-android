@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.model.api;
 
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
@@ -10,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
 import org.threeten.bp.LocalDateTime;
 
 @AutoValue
-public abstract class Bucket {
+public abstract class Bucket implements Parcelable{
 
     @SerializedName("id")
     public abstract long id();

@@ -61,16 +61,17 @@ public class MockShotsApi implements ShotsApi {
 
         for (int i = 0; i < count; i++) {
             Image image = Image.builder().build();
-            ShotEntity entity = new ShotEntity();
-            entity.setId(i);
-            entity.setTitle(label + i);
-            entity.setImage(image);
-            entity.setCreatedAt(LocalDateTime.now());
-            entity.setAnimated(false);
-            entity.setLikesCount(2);
-            entity.setBucketsCount(3);
-            entity.setCreatedAt(LocalDateTime.now());
-            result.add(entity);
+            result.add(
+                    ShotEntity.builder()
+                            .id(i)
+                            .title(label + i)
+                            .image(image)
+                            .createdAt(LocalDateTime.now())
+                            .animated(false)
+                            .likesCount(2)
+                            .bucketsCount(3)
+                            .createdAt(LocalDateTime.now())
+                            .build());
         }
         return result;
     }

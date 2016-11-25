@@ -1,29 +1,28 @@
 package co.netguru.android.inbbbox.model.api;
 
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
+
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
+@AutoValue
+public abstract class Links implements Parcelable {
 
-public class Links {
-
+    @Nullable
     @SerializedName("web")
-    private String web;
+    public abstract String web();
+
+    @Nullable
     @SerializedName("twitter")
-    private String twitter;
+    public abstract String twitter();
 
-    public String getWeb() {
-        return web;
+    public static Links create(String web, String twitter) {
+        return new AutoValue_Links(web, twitter);
     }
-
-    public void setWeb(String web) {
-        this.web = web;
+    public static TypeAdapter<Links> typeAdapter(Gson gson) {
+        return new AutoValue_Links.GsonTypeAdapter(gson);
     }
-
-    public String getTwitter() {
-        return twitter;
-    }
-
-    public void setTwitter(String twitter) {
-        this.twitter = twitter;
-    }
-
 }
