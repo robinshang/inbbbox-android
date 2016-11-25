@@ -77,4 +77,7 @@
     <string name="few_hours_ago">Few hours ago</string>
     <string name="comment_input_hint">Type your comment</string>
     <string name="load_more_label">Load more comments</string>
+    <string name="comments_edit_label">Edit</string>
+    <string name="comments_delete_label">Delete</string>
+    <string name="comments_cancel_label">Cancel</string>
 </resources>

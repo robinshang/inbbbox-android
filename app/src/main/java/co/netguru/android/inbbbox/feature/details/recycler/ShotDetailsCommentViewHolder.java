@@ -1,16 +1,22 @@
 package co.netguru.android.inbbbox.feature.details.recycler;
 
+import android.animation.LayoutTransition;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import butterknife.OnLongClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
+import co.netguru.android.inbbbox.utils.ViewAnimator;
 
 import static co.netguru.android.inbbbox.utils.StringUtils.getParsedHtmlTextSpanned;
 
@@ -30,8 +36,33 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
     @BindView(R.id.comment_avatar_imageView)
     ImageView authorAvatarImageView;
 
+    @BindView(R.id.comment_action_menu)
+    View actionMenu;
+
+    @BindView(R.id.comment_container)
+    ViewGroup commentContainerLayout;
+
     ShotDetailsCommentViewHolder(View view, DetailsViewActionCallback actionCallback) {
         super(view, actionCallback);
+        initTransition();
+    }
+
+    private void initTransition() {
+        final LayoutTransition transition = new LayoutTransition();
+        transition.setDuration(700);
+
+        commentContainerLayout.setLayoutTransition(transition);
+    }
+
+    @OnClick(R.id.comment_action_cancel)
+    void onCancelClick() {
+        ViewAnimator.startSlideInFromRightHideAnimation(actionMenu);
+    }
+
+    @OnLongClick(R.id.comment_text_textView)
+    boolean onCommentLongClick() {
+        ViewAnimator.startSlideInFromRightShowAnimation(actionMenu);
+        return true;
     }
 
     @Override

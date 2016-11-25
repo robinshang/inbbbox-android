@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,9 +35,6 @@ import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.inbbbox.utils.ShotLoadingManager;
 import co.netguru.android.inbbbox.utils.ViewAnimator;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
-import timber.log.Timber;
-
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 public class ShotDetailsFragment
         extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
@@ -219,7 +215,7 @@ public class ShotDetailsFragment
 
     private void showInputIfHidden() {
         if (shotCommentInputPanel.getVisibility() == View.GONE) {
-            ViewAnimator.startSlideInAnimation(shotCommentInputPanel);
+            ViewAnimator.startSlideInFromBottomShowAnimation(shotCommentInputPanel);
         }
     }
 }
