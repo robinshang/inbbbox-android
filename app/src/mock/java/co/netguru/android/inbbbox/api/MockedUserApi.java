@@ -51,4 +51,9 @@ public class MockedUserApi implements UserApi {
     public Single<List<Bucket>> getUserBucketsList(@Query("page") int pageNumber, @Query("per_page") int pageCount) {
         return Single.fromCallable(() -> new ArrayList<>(mockedUserBuckets));
     }
+
+    @Override
+    public Single<List<Bucket>> getUserBucketsList() {
+        return Single.fromCallable(() -> new ArrayList<>(mockedUserBuckets));
+    }
 }

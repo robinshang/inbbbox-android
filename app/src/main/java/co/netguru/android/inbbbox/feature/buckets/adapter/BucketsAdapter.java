@@ -62,7 +62,7 @@ public final class BucketsAdapter extends RecyclerView.Adapter<BaseBucketViewHol
     public void addNewBucketWithShots(Collection<BucketWithShots> bucketWithShotsList) {
         int oldSize = this.bucketWithShotsList.size();
         this.bucketWithShotsList.addAll(bucketWithShotsList);
-        notifyItemRangeInserted(oldSize, bucketWithShotsList.size()+1);
+        notifyItemRangeInserted(oldSize, bucketWithShotsList.size() + 1);
     }
 
     public void setGridMode(boolean isGridMode) {

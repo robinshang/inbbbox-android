@@ -23,10 +23,12 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
         implements BucketsFragmentContract.Presenter {
 
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
-    private final BucketsController bucketsController;
-    private int pageNumber = 1;
     private static final int BUCKETS_PAGE_COUNT = 10;
     private static final int BUCKET_SHOT_PAGE_COUNT = 30;
+
+    private final BucketsController bucketsController;
+
+    private int pageNumber = 1;
     private boolean apiHasMoreBuckets = true;
 
     @NonNull

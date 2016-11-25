@@ -16,6 +16,7 @@ import rx.Single;
 @Singleton
 public class BucketsController {
 
+    public static final int FIRST_PAGE_NUMBER = 1;
     private final UserApi userApi;
     private final BucketApi bucketApi;
 
@@ -26,7 +27,7 @@ public class BucketsController {
     }
 
     public Single<List<Bucket>> getCurrentUserBuckets() {
-        return userApi.getUserBucketsList(1, 30);
+        return userApi.getUserBucketsList();
     }
 
     public Single<List<Bucket>> getCurrentUserBuckets(int pageNumber, int pageCount) {
@@ -40,7 +41,7 @@ public class BucketsController {
     public Single<List<BucketWithShots>> getBucketWithShots(int pageNumber, int pageCount, int shotsCount) {
         return userApi.getUserBucketsList(pageNumber, pageCount)
                 .flatMapObservable(Observable::from)
-                .flatMap(bucket -> bucketApi.getBucketShots(bucket.id(), 1, shotsCount).toObservable(),
+                .flatMap(bucket -> bucketApi.getBucketShots(bucket.id(), FIRST_PAGE_NUMBER, shotsCount).toObservable(),
                         BucketWithShots::create)
                 .toList()
                 .toSingle();
