@@ -190,7 +190,8 @@ public class ShotDetailsFragment
 
     @Override
     public void showCommentEditorDialog(String text) {
-        updateCommentDialog = new AlertDialog.Builder(getContext(), R.style.AppTheme)
+        updateCommentDialog = new AlertDialog.Builder(getContext(), R.style.NoTitleDialog)
+                .setTitle(R.string.edit_comment_title)
                 .setPositiveButton(R.string.edit_comment_update, createDialogListener())
                 .setNegativeButton(R.string.edit_comment_cancel, createDialogListener())
                 .setView(R.layout.edit_comment_dialog_layout)
@@ -203,7 +204,7 @@ public class ShotDetailsFragment
 
     private DialogInterface.OnClickListener createDialogListener() {
         return (dialog, which) -> {
-            if (which == DialogInterface.BUTTON_NEUTRAL && updateCommentDialog != null) {
+            if (which == DialogInterface.BUTTON_POSITIVE && updateCommentDialog != null) {
                 String updatedComment = updateCommentEditText.getText().toString();
                 getPresenter().updateComment(updatedComment);
             }

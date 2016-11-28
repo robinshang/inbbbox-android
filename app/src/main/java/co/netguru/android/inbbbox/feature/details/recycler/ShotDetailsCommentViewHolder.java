@@ -47,11 +47,13 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
 
     @OnClick(R.id.comment_action_edit)
     void onEditCommentClick() {
+        actionMenu.setVisibility(View.GONE);
         actionCallbackListener.onCommentEditSelected(currentComment);
     }
 
     @OnClick(R.id.comment_action_delete)
     void onDeleteCommentClick() {
+        actionMenu.setVisibility(View.GONE);
         actionCallbackListener.onCommentDeleteSelected(currentComment);
     }
 
