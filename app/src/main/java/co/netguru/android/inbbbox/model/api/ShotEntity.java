@@ -35,11 +35,6 @@ public abstract class ShotEntity implements Parcelable{
     @SerializedName("created_at")
     public abstract LocalDateTime createdAt();
 
-    @SerializedName("buckets_url")
-    public abstract String bucketsUrl();
-
-    @SerializedName("likes_url")
-    public abstract String likesUrl();
 
     @SerializedName("animated")
     public abstract boolean animated();
@@ -75,10 +70,6 @@ public abstract class ShotEntity implements Parcelable{
         public abstract Builder bucketsCount(int bucketsCount);
 
         public abstract Builder createdAt(LocalDateTime createdAt);
-
-        public abstract Builder bucketsUrl(String bucketsUrl);
-
-        public abstract Builder likesUrl(String likesUrl);
 
         public abstract Builder animated(boolean animated);
 
