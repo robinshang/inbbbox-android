@@ -32,15 +32,16 @@ public class MockedBucketApi implements BucketApi {
         ArrayList<ShotEntity> shots = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             Image image = Image.builder().build();
-            ShotEntity entity = new ShotEntity();
-            entity.setId(i);
-            entity.setTitle("test");
-            entity.setImage(image);
-            entity.setCreatedAt(LocalDateTime.now());
-            entity.setAnimated(false);
-            entity.setLikesCount(2);
-            entity.setBucketsCount(3);
-            entity.setCreatedAt(LocalDateTime.now());
+            ShotEntity entity = ShotEntity.builder()
+                    .id(i)
+                    .title("test")
+                    .image(image)
+                    .createdAt(LocalDateTime.now())
+                    .animated(false)
+                    .likesCount(2)
+                    .bucketsCount(3)
+                    .createdAt(LocalDateTime.now())
+                    .build();
             mockedBucketShots.add(entity);
         }
         return shots;
