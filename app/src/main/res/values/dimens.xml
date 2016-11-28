@@ -87,7 +87,7 @@
     <dimen name="details_action_label_left_margin">4dp</dimen>
     <dimen name="details_comment_top_padding">4dp</dimen>
     <dimen name="details_comment_divider_padding_bottom">16dp</dimen>
-    <dimen name="details_comment_footer_padding_bottom">72dp</dimen>
+    <dimen name="details_comment_footer_padding_bottom">60dp</dimen>
     <dimen name="details_load_more_padding_bottom">48dp</dimen>
     <dimen name="details_description_divider_padding_bottom">24dp</dimen>
     <dimen name="details_comment_data_top_padding">2dp</dimen>

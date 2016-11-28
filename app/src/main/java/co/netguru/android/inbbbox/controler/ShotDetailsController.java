@@ -59,7 +59,9 @@ public class ShotDetailsController {
     private Observable<List<Long>> getCurrentBuckets(Long shotId) {
         return shotsApi.getBucketsList(shotId.toString())
                 .compose(fromListObservable())
-                .map(bucket -> bucket.user() != null ? bucket.user().id() : (long) Constants.UNDEFINED)
+                .map(bucket -> bucket.user() != null
+                        ? bucket.user().id()
+                        : (long) Constants.UNDEFINED)
                 .toList();
     }
 
