@@ -38,7 +38,7 @@ import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
 public class ShotDetailsFragment
         extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
-        implements ShotDetailsContract.View {
+        implements ShotDetailsContract.View, DetailsViewActionCallback {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_SHOT = "arg:shot";
@@ -61,6 +61,9 @@ public class ShotDetailsFragment
     @BindDimen(R.dimen.shot_corner_radius)
     int radius;
 
+    @Inject
+    ShotDetailsAdapter adapter;
+
     private ShotDetailsComponent component;
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
@@ -70,41 +73,6 @@ public class ShotDetailsFragment
         getPresenter().sendComment();
         Toast.makeText(getContext(), getCommentText(), Toast.LENGTH_SHORT).show();
     }
-
-    @Inject
-    ShotDetailsAdapter adapter;
-
-    private DetailsViewActionCallback actionsCallback = new DetailsViewActionCallback() {
-
-        @Override
-        public void onTeamSelected(Team team) {
-            // TODO: 15.11.2016 not in scope of this task
-            Toast.makeText(getContext(), "team clicked: " + team.name(), Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onUserSelected(User user) {
-            // TODO: 15.11.2016 not in scope of this task
-            Toast.makeText(getContext(), "user clicked " + user.name(), Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onShotLikeAction(boolean newLikeState) {
-            getPresenter().handleShotLike(newLikeState);
-        }
-
-        @Override
-        public void onShotBucket(long shotId, boolean isLikedBucket) {
-            // TODO: 15.11.2016 not in scope of this task
-            Toast.makeText(getContext(), "bucket: " + isLikedBucket, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onLoadMoreCommentsSelected() {
-            Toast.makeText(getContext(), "LOAD MORE!!", Toast.LENGTH_SHORT).show();
-        }
-
-    };
 
     @OnClick(R.id.details_close_imageView)
     void onCloseClick() {
@@ -130,7 +98,7 @@ public class ShotDetailsFragment
 
     private void initComponent() {
         component = App.getAppComponent(getContext())
-                .plus(new ShotsDetailsModule(actionsCallback));
+                .plus(new ShotsDetailsModule(this));
         component.inject(this);
     }
 
@@ -155,23 +123,6 @@ public class ShotDetailsFragment
         shotRecyclerView.addOnScrollListener(createScrollListener());
         shotRecyclerView.setAdapter(adapter);
         appBarLayout.addOnOffsetChangedListener((layout, offset) -> verifyInputVisibility());
-    }
-
-    private RecyclerView.OnScrollListener createScrollListener() {
-        return new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                verifyInputVisibility();
-            }
-        };
-    }
-
-    private void verifyInputVisibility() {
-        int lastVisibleIndex = linearLayoutManager.findLastVisibleItemPosition();
-        if (isInputPanelShowingEnabled && adapter.isInputVisibilityPermitted(lastVisibleIndex)) {
-            showInputIfHidden();
-        }
     }
 
     @Override
@@ -207,10 +158,67 @@ public class ShotDetailsFragment
     }
 
     @Override
+    public void onTeamSelected(Team team) {
+        // TODO: 15.11.2016 not in scope of this task
+        Toast.makeText(getContext(), "team clicked: " + team.name(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onUserSelected(User user) {
+        // TODO: 15.11.2016 not in scope of this task
+        Toast.makeText(getContext(), "user clicked " + user.name(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onShotLikeAction(boolean newLikeState) {
+        getPresenter().handleShotLike(newLikeState);
+    }
+
+    @Override
+    public void onShotBucket(long shotId, boolean isLikedBucket) {
+        // TODO: 15.11.2016 not in scope of this task
+        Toast.makeText(getContext(), "bucket: " + isLikedBucket, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLoadMoreCommentsSelected() {
+        Toast.makeText(getContext(), "LOAD MORE!!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCommentDelete(Comment currentComment) {
+        // TODO: 28.11.2016
+        Toast.makeText(getContext(), "onCommentDelete: " + currentComment.text(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCommentEdited(Comment currentComment, String newCommentText) {
+        // TODO: 28.11.2016
+        Toast.makeText(getContext(), "onCommentEdited: " + newCommentText, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void showMainImage(ShotImage shotImage) {
         parallaxImageView.setRadius(radius);
         parallaxImageView.disableRadiusForBottomEdge(true);
         ShotLoadingManager.loadMainViewShot(getContext(), parallaxImageView, shotImage);
+    }
+
+    private RecyclerView.OnScrollListener createScrollListener() {
+        return new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                verifyInputVisibility();
+            }
+        };
+    }
+
+    private void verifyInputVisibility() {
+        int lastVisibleIndex = linearLayoutManager.findLastVisibleItemPosition();
+        if (isInputPanelShowingEnabled && adapter.isInputVisibilityPermitted(lastVisibleIndex)) {
+            showInputIfHidden();
+        }
     }
 
     private void showInputIfHidden() {

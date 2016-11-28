@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
@@ -24,6 +25,8 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
 
     private static final String PARAGRAPH_TAG_START = "<p>";
     private static final String PARAGRAPH_TAG_END = "</p>";
+    private static final long LAYOUT_TRANSITION_DURATION = 300;
+
     @BindView(R.id.comment_author_textView)
     TextView authorTextView;
 
@@ -42,35 +45,43 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
     @BindView(R.id.comment_container)
     ViewGroup commentContainerLayout;
 
+    private Comment currentComment;
+
     ShotDetailsCommentViewHolder(View view, DetailsViewActionCallback actionCallback) {
         super(view, actionCallback);
-        initTransition();
     }
 
-    private void initTransition() {
-        final LayoutTransition transition = new LayoutTransition();
-        transition.setDuration(700);
+    @OnClick(R.id.comment_action_edit)
+    void onEditCommentClick() {
+        actionCallbackListener.onCommentEdited(currentComment, "updated text");
+    }
 
-        commentContainerLayout.setLayoutTransition(transition);
+    @OnClick(R.id.comment_action_delete)
+    void onDeleteCommentClick() {
+        actionCallbackListener.onCommentDelete(currentComment);
     }
 
     @OnClick(R.id.comment_action_cancel)
     void onCancelClick() {
-        ViewAnimator.startSlideInFromRightHideAnimation(actionMenu);
+        actionMenu.setVisibility(View.GONE);
     }
 
     @OnLongClick(R.id.comment_text_textView)
     boolean onCommentLongClick() {
-        ViewAnimator.startSlideInFromRightShowAnimation(actionMenu);
+        if (currentComment.isCurrentUserAuthor()) {
+            actionMenu.setVisibility(View.VISIBLE);
+        }
         return true;
     }
 
     @Override
     protected void handleBinding() {
-        Comment currentComment = commentList
+        actionMenu.setVisibility(View.GONE);
+        currentComment = commentList
                 .get(getAdapterPosition() - ShotDetailsAdapter.STATIC_ITEMS_COUNT);
 
         authorTextView.setText(currentComment.author());
+
         setCommentText(currentComment.text());
 
         showAvatar(currentComment.authorAvatarUrl());
@@ -79,7 +90,6 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
     }
 
     private void setCommentText(String text) {
-
         commentTextTextView.setText(getParsedHtmlTextSpanned(text
                 .replace(PARAGRAPH_TAG_START, "")
                 .replace(PARAGRAPH_TAG_END, "")));

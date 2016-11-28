@@ -7,7 +7,7 @@
               android:layout_marginTop="@dimen/details_comment_action_margin"
               android:layout_marginBottom="@dimen/details_comment_action_margin"
               android:gravity="center"
-              android:visibility="visible"
+              android:visibility="gone"
               android:orientation="horizontal">
 
     <LinearLayout
@@ -82,6 +82,5 @@
             android:textColor="@color/actionButtonLabelColor"/>
 
     </LinearLayout>
-
 
 </LinearLayout>

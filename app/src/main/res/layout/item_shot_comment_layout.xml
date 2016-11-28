@@ -34,7 +34,9 @@
         <FrameLayout
             android:id="@+id/comment_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true">
+
             <TextView
                 android:id="@+id/comment_text_textView"
                 style="@style/Font14.DarkGray"
@@ -44,6 +46,7 @@
             <include layout="@layout/comment_action_layout"/>
 
         </FrameLayout>
+
         <TextView
             android:id="@+id/comment_date_textView"
             style="@style/Font12.Gray"
