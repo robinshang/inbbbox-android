@@ -8,7 +8,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
 @AutoValue
-public abstract class TeamEntity implements Parcelable{
+public abstract class TeamEntity implements Parcelable {
 
     @SerializedName("id")
     public abstract long id();

@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
 import org.threeten.bp.LocalDateTime;
 
 @AutoValue
-public abstract class Bucket implements Parcelable{
+public abstract class Bucket implements Parcelable {
 
     @SerializedName("id")
     public abstract long id();
