@@ -98,7 +98,7 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
 
     @Override
     public void onBucketClick(BucketWithShots bucketWithShots) {
-        BucketDetailsActivity.startActivity(getContext(),bucketWithShots,30);
+        getPresenter().handleBucketWithShotsClick(bucketWithShots);
     }
 
     @Override
@@ -138,6 +138,11 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
         if (loadingMoreSnackbar != null) {
             loadingMoreSnackbar.dismiss();
         }
+    }
+
+    @Override
+    public void showDetailedBucketView(BucketWithShots bucketWithShots, int bucketShotsPerPageCount) {
+        BucketDetailsActivity.startActivity(getContext(), bucketWithShots, bucketShotsPerPageCount);
     }
 
     private void initRefreshLayout() {

@@ -8,24 +8,24 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import butterknife.BindColor;
 import butterknife.BindView;
+import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseActivity;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
-import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsFragment;
-import co.netguru.android.inbbbox.feature.main.MainActivity;
+import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
 public class BucketDetailsActivity extends BaseActivity
-        implements FollowerDetailsFragment.OnFollowedShotActionListener {
+        implements BucketDetailsContract.View, BucketDetailsFragment.OnShotInBucketClickListener {
 
-    private static final String BUCKET_WITH_SHOTS_KEY = "follower_key";
+    private static final String BUCKET_WITH_SHOTS_KEY = "bucket_with_shots_key";
+    private static final String SHOTS_PER_PAGE_KEY = "shots_per_page_key";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -41,25 +41,26 @@ public class BucketDetailsActivity extends BaseActivity
     public static void startActivity(Context context, BucketWithShots bucketWithShots, int perPage) {
         final Intent intent = new Intent(context, BucketDetailsActivity.class);
         intent.putExtra(BUCKET_WITH_SHOTS_KEY, bucketWithShots);
+        intent.putExtra(SHOTS_PER_PAGE_KEY, perPage);
         context.startActivity(intent);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_follower_details);
+        setContentView(R.layout.activity_bucket_details);
         initializeToolbar();
         initializeBottomSheet();
         if (savedInstanceState == null) {
-            replaceFragment(R.id.follower_details_fragment_container,
-                    FollowerDetailsFragment.newInstance(getIntent().getParcelableExtra(BUCKET_WITH_SHOTS_KEY)), FollowerDetailsFragment.TAG).commit();
+            BucketWithShots bucketWithShots = getIntent().getParcelableExtra(BUCKET_WITH_SHOTS_KEY);
+            int perPage = getIntent().getIntExtra(SHOTS_PER_PAGE_KEY, Constants.UNDEFINED);
+            if (bucketWithShots != null && perPage != Constants.UNDEFINED) {
+                replaceFragment(R.id.bucket_details_fragment_container,
+                        BucketDetailsFragment.newInstance(bucketWithShots, perPage), BucketDetailsFragment.TAG).commit();
+            } else {
+                throw new IllegalArgumentException("Error shots with buckets or per page count is empty");
+            }
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.follower_details_menu, menu);
-        return true;
     }
 
     @Override
@@ -87,18 +88,13 @@ public class BucketDetailsActivity extends BaseActivity
     }
 
     @Override
-    public void showShotDetails(Shot shot) {
-        Fragment fragment = ShotDetailsFragment.newInstance(shot);
+    public void onShotClick(ShotEntity shotEntity) {
+        Fragment fragment = ShotDetailsFragment.newInstance(Shot.create(shotEntity));
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
                 .commit();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-    }
-
-    @Override
-    public void unFollowCompleted() {
-
     }
 
     private boolean isBottomSheetOpen() {

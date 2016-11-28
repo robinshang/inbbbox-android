@@ -4,7 +4,7 @@ public class CriticalLogoutEvent {
 
     private final String reason;
 
-    public CriticalLogoutEvent( String reason) {
+    public CriticalLogoutEvent(String reason) {
 
         this.reason = reason;
     }

@@ -23,8 +23,8 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
         implements BucketsFragmentContract.Presenter {
 
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
-    private static final int BUCKETS_PAGE_COUNT = 10;
-    private static final int BUCKET_SHOT_PAGE_COUNT = 30;
+    private static final int BUCKETS_PER_PAGE_COUNT = 10;
+    private static final int BUCKET_SHOTS_PER_PAGE_COUNT = 30;
 
     private final BucketsController bucketsController;
 
@@ -54,14 +54,14 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     public void loadBucketsWithShots(boolean isUserRefresh) {
         if (refreshSubscription.isUnsubscribed()) {
             pageNumber = 1;
-            refreshSubscription = bucketsController.getBucketWithShots(pageNumber, BUCKETS_PAGE_COUNT, BUCKET_SHOT_PAGE_COUNT)
+            refreshSubscription = bucketsController.getBucketWithShots(pageNumber, BUCKETS_PER_PAGE_COUNT, BUCKET_SHOTS_PER_PAGE_COUNT)
                     .compose(RxTransformerUtils.applySingleIoSchedulers())
                     .doAfterTerminate(getView()::hideProgressBars)
                     .subscribe(bucketWithShotsList -> {
                                 if (bucketWithShotsList.isEmpty()) {
                                     getView().showEmptyBucketView();
                                 } else {
-                                    apiHasMoreBuckets = bucketWithShotsList.size() == BUCKETS_PAGE_COUNT;
+                                    apiHasMoreBuckets = bucketWithShotsList.size() == BUCKETS_PER_PAGE_COUNT;
                                     getView().showBucketsWithShots(bucketWithShotsList);
                                 }
                             },
@@ -73,7 +73,7 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     public void loadMoreBucketsWithShots() {
         if (apiHasMoreBuckets && refreshSubscription.isUnsubscribed() && loadNextBucketSubscription.isUnsubscribed()) {
             pageNumber++;
-            loadNextBucketSubscription = bucketsController.getBucketWithShots(pageNumber, BUCKETS_PAGE_COUNT, BUCKET_SHOT_PAGE_COUNT)
+            loadNextBucketSubscription = bucketsController.getBucketWithShots(pageNumber, BUCKETS_PER_PAGE_COUNT, BUCKET_SHOTS_PER_PAGE_COUNT)
                     .toObservable()
                     .publish(listObservable -> listObservable.timeout(SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
                             Observable.<List<BucketWithShots>>fromCallable(() -> {
@@ -89,9 +89,14 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
                         getView().hideLoadingMoreBucketsView();
                     })
                     .subscribe(bucketWithShotsList -> {
-                        apiHasMoreBuckets = bucketWithShotsList.size() == BUCKETS_PAGE_COUNT;
+                        apiHasMoreBuckets = bucketWithShotsList.size() == BUCKETS_PER_PAGE_COUNT;
                         getView().addMoreBucketsWithShots(bucketWithShotsList);
                     }, throwable -> Timber.d(throwable, "Error while loading more buckets"));
         }
+    }
+
+    @Override
+    public void handleBucketWithShotsClick(BucketWithShots bucketWithShots) {
+        getView().showDetailedBucketView(bucketWithShots, BUCKET_SHOTS_PER_PAGE_COUNT);
     }
 }

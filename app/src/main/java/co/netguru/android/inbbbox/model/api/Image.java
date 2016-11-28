@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.model.api;
 
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
@@ -9,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 
 
 @AutoValue
-public abstract class Image{
+public abstract class Image implements Parcelable {
 
     @Nullable
     @SerializedName("hidpi")
@@ -25,6 +26,7 @@ public abstract class Image{
 
     @AutoValue.Builder
     public abstract static class Builder {
+
         public abstract Builder hiDpiUrl(String hidpi);
 
         public abstract Builder normalUrl(String normal);

@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.model.api;
 
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
@@ -10,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
 import org.threeten.bp.LocalDateTime;
 
 @AutoValue
-public abstract class ShotEntity {
+public abstract class ShotEntity implements Parcelable{
 
     @SerializedName("id")
     public abstract long id();
@@ -26,10 +27,10 @@ public abstract class ShotEntity {
     public abstract Image image();
 
     @SerializedName("likes_count")
-    public abstract Integer likesCount();
+    public abstract int likesCount();
 
     @SerializedName("buckets_count")
-    public abstract Integer bucketsCount();
+    public abstract int bucketsCount();
 
     @SerializedName("created_at")
     public abstract LocalDateTime createdAt();
@@ -41,7 +42,7 @@ public abstract class ShotEntity {
     public abstract String likesUrl();
 
     @SerializedName("animated")
-    public abstract Boolean animated();
+    public abstract boolean animated();
 
     @Nullable
     @SerializedName("user")
@@ -69,9 +70,9 @@ public abstract class ShotEntity {
 
         public abstract Builder image(Image image);
 
-        public abstract Builder likesCount(Integer likesCount);
+        public abstract Builder likesCount(int likesCount);
 
-        public abstract Builder bucketsCount(Integer bucketsCount);
+        public abstract Builder bucketsCount(int bucketsCount);
 
         public abstract Builder createdAt(LocalDateTime createdAt);
 
@@ -79,7 +80,7 @@ public abstract class ShotEntity {
 
         public abstract Builder likesUrl(String likesUrl);
 
-        public abstract Builder animated(Boolean animated);
+        public abstract Builder animated(boolean animated);
 
         public abstract Builder user(UserEntity user);
 
