@@ -32,9 +32,11 @@ interface ShotsContract {
 
         void showBucketAddSuccess();
 
+        void showDetailsScreenInCommentMode(Shot selectedShot);
     }
 
     interface Presenter extends MvpPresenter<View> {
+
         void likeShot(Shot shot);
 
         void getShotsFromServer();
@@ -46,5 +48,7 @@ interface ShotsContract {
         void addShotToBucket(Bucket bucket, Shot shot);
 
         void showShotDetails(Shot shot);
+
+        void showCommentInput(Shot selectedShot);
     }
 }

@@ -55,7 +55,7 @@ public class ShotsFragment
     View fogContainerView;
 
     private ShotsComponent component;
-    private ShotActionListener shotLikeStatusListener;
+    private ShotActionListener shotActionListener;
 
     @OnClick(R.id.fab_like_menu)
     void onLikeFabClick() {
@@ -70,8 +70,8 @@ public class ShotsFragment
 
     @OnClick(R.id.fab_comment_menu)
     void onCommentClick() {
-        // TODO: 07.11.2016 replace this when feature will be implemented
-        Toast.makeText(getContext(), "Comment", Toast.LENGTH_SHORT).show();
+        getPresenter()
+                .showCommentInput(adapter.getShotFromPosition(shotsRecyclerView.getCurrentItem()));
     }
 
     @OnClick(R.id.fab_follow_menu)
@@ -88,7 +88,7 @@ public class ShotsFragment
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            shotLikeStatusListener = (ShotActionListener) context;
+            shotActionListener = (ShotActionListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement ShotActionListener");
@@ -171,7 +171,7 @@ public class ShotsFragment
     @Override
     public void changeShotLikeStatus(Shot shot) {
         adapter.changeShotLikeStatus(shot);
-        shotLikeStatusListener.shotLikeStatusChanged();
+        shotActionListener.shotLikeStatusChanged();
     }
 
     @Override
@@ -193,8 +193,13 @@ public class ShotsFragment
     }
 
     @Override
+    public void showDetailsScreenInCommentMode(Shot selectedShot) {
+        shotActionListener.showShotDetails(selectedShot, true);
+    }
+
+    @Override
     public void showShotDetails(Shot shot) {
-        shotLikeStatusListener.showShotDetails(shot);
+        shotActionListener.showShotDetails(shot, false);
     }
 
     @Override
@@ -209,8 +214,7 @@ public class ShotsFragment
 
     @Override
     public void onCommentShotSwipe(Shot shot) {
-        //// TODO: 09.11.2016 Implement comment shot callback
-        Toast.makeText(getContext(), "todo", Toast.LENGTH_SHORT).show();
+        getPresenter().showCommentInput(shot);
     }
 
     @Override
@@ -226,7 +230,7 @@ public class ShotsFragment
     public interface ShotActionListener {
         void shotLikeStatusChanged();
 
-        void showShotDetails(Shot shot);
+        void showShotDetails(Shot shot, boolean inCommentMode);
     }
 
     @Override

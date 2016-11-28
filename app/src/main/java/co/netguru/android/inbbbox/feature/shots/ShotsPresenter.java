@@ -119,6 +119,12 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         getView().showShotDetails(shot);
     }
 
+    @Override
+    public void showCommentInput(Shot selectedShot) {
+        getView().closeFabMenu();
+        getView().showDetailsScreenInCommentMode(selectedShot);
+    }
+
     private void getShots() {
         final Subscription subscription = shotsController.getShots(pageNumber, SHOTS_PER_PAGE)
                 .compose(androidIO())

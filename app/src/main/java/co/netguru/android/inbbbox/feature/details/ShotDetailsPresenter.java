@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.feature.details;
 
-import android.text.TextUtils;
-
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
@@ -23,6 +21,7 @@ public class ShotDetailsPresenter
     private final ShotDetailsController shotDetailsController;
     private final ErrorMessageController errorMessageController;
     private final CompositeSubscription subscriptions;
+    private boolean isCommentModeInit;
     private Shot shot;
 
     @Inject
@@ -65,6 +64,7 @@ public class ShotDetailsPresenter
     @Override
     public void retrieveInitialData() {
         this.shot = getView().getShotInitialData();
+        this.isCommentModeInit = getView().getCommentModeInitialState();
     }
 
     @Override
@@ -90,6 +90,14 @@ public class ShotDetailsPresenter
         getView().showComments(state.comments());
         updateShotDetails(state.isLiked(), state.isBucketed());
         showShotDetails(shot);
+        checkCommentMode();
+    }
+
+    private void checkCommentMode() {
+        if(isCommentModeInit){
+            getView().colapseAppBarWithAnimation();
+            getView().scrollToLastItem();
+        }
     }
 
     private void updateShotDetails(boolean liked, boolean bucketed) {

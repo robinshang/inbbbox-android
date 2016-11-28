@@ -139,8 +139,8 @@ public class MainActivity
         return component.getMainActivityPresenter();
     }
 
-    private void showFragmentDetails(Shot shot) {
-        Fragment fragment = ShotDetailsFragment.newInstance(shot);
+    private void showFragmentDetails(Shot shot, boolean isCommentModeEnabled) {
+        Fragment fragment = ShotDetailsFragment.newInstance(shot, isCommentModeEnabled);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
@@ -411,8 +411,8 @@ public class MainActivity
     }
 
     @Override
-    public void showShotDetails(Shot shot) {
-        showFragmentDetails(shot);
+    public void showShotDetails(Shot shot, boolean isCommentModeEnabled) {
+        showFragmentDetails(shot, isCommentModeEnabled);
     }
 
     @Override

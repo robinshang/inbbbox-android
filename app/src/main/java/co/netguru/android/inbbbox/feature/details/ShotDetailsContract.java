@@ -28,6 +28,12 @@ public interface ShotDetailsContract {
         String getCommentText();
 
         void setInputShowingEnabled(boolean b);
+
+        boolean getCommentModeInitialState();
+
+        void scrollToLastItem();
+
+        void colapseAppBarWithAnimation();
     }
 
     interface Presenter extends MvpPresenter<View> {

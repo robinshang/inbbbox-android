@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ public class ShotDetailsFragment
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_SHOT = "arg:shot";
+    private static final String ARG_IS_COMMENT_MODE_ENABLED = "arg:comment_mode_state";
 
     @BindView(R.id.shot_details_recyclerView)
     RecyclerView shotRecyclerView;
@@ -80,8 +82,13 @@ public class ShotDetailsFragment
     }
 
     public static ShotDetailsFragment newInstance(Shot shot) {
+        return newInstance(shot, false);
+    }
+
+    public static ShotDetailsFragment newInstance(Shot shot, boolean isCommentModeEnabled) {
         Bundle args = new Bundle();
         args.putParcelable(ARG_SHOT, shot);
+        args.putBoolean(ARG_IS_COMMENT_MODE_ENABLED, isCommentModeEnabled);
         ShotDetailsFragment fragment = new ShotDetailsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -144,6 +151,21 @@ public class ShotDetailsFragment
     public void setInputShowingEnabled(boolean isInputPanelShowingEnabled) {
 
         this.isInputPanelShowingEnabled = isInputPanelShowingEnabled;
+    }
+
+    @Override
+    public boolean getCommentModeInitialState() {
+        return getArguments().getBoolean(ARG_IS_COMMENT_MODE_ENABLED);
+    }
+
+    @Override
+    public void scrollToLastItem() {
+        shotRecyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+    }
+
+    @Override
+    public void colapseAppBarWithAnimation() {
+        appBarLayout.setExpanded(false, true);
     }
 
     @Override
