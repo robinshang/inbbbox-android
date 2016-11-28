@@ -7,7 +7,7 @@ import rx.Observable;
 
 public class MockAuthorizeApi implements AuthorizeApi {
 
-    private static final Token MOCKED_TOKEN = new Token("","","");
+    private static final Token MOCKED_TOKEN = new Token("", "", "");
 
     static {
         MOCKED_TOKEN.setAccessToken("token");

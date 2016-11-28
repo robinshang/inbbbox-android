@@ -23,6 +23,8 @@ public interface BucketsFragmentContract {
         void showLoadingMoreBucketsView();
 
         void hideLoadingMoreBucketsView();
+
+        void showDetailedBucketView(BucketWithShots bucketWithShots, int bucketShotsPerPageCount);
     }
 
     interface Presenter extends MvpPresenter<BucketsFragmentContract.View> {
@@ -30,5 +32,7 @@ public interface BucketsFragmentContract {
         void loadBucketsWithShots(boolean isUserRefresh);
 
         void loadMoreBucketsWithShots();
+
+        void handleBucketWithShotsClick(BucketWithShots bucketWithShots);
     }
 }

@@ -28,8 +28,8 @@ public abstract class Team implements Parcelable {
 
     public static Team create(TeamEntity entity) {
         return Team.builder()
-                .id(entity.getId())
-                .name(entity.getName())
+                .id(entity.id())
+                .name(entity.name())
                 .build();
     }
 }

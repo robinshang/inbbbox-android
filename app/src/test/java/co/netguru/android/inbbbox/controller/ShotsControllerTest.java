@@ -119,7 +119,7 @@ public class ShotsControllerTest {
         for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
             Assert.assertEquals(resultList.get(i)
                     .title()
-                    .equals(listOfExpected.get(i).getTitle()), true);
+                    .equals(listOfExpected.get(i).title()), true);
         }
     }
 
@@ -191,7 +191,7 @@ public class ShotsControllerTest {
         for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
             Assert.assertEquals(resultList.get(i)
                     .title()
-                    .equals(listOfExpected.get(i).getTitle()), true);
+                    .equals(listOfExpected.get(i).title()), true);
         }
     }
 
@@ -209,7 +209,7 @@ public class ShotsControllerTest {
         for (int i = 0; i < MockShotsApi.ITEM_COUNT; i++) {
             Assert.assertEquals(resultList.get(i)
                     .title()
-                    .equals(listOfExpected.get(i).getTitle()), true);
+                    .equals(listOfExpected.get(i).title()), true);
         }
     }
 
@@ -220,7 +220,7 @@ public class ShotsControllerTest {
         expectedItems.addAll(MockShotsApi.getFollowingMockedData());
         List<String> expetedTitltes = new ArrayList<>();
         for (ShotEntity entity : expectedItems) {
-            expetedTitltes.add(entity.getTitle());
+            expetedTitltes.add(entity.title());
         }
 
         setupStreamSourceStates(true, true, true, true);

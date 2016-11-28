@@ -23,7 +23,7 @@ public class MockedUserApi implements UserApi {
         MOCKED_USER = UserEntity.builder().avatarUrl("").bio("").bucketsCount(1).bucketsUrl("")
                 .bio("").canUploadShot(false).commentsReceivedCount(1).createdAt(LocalDateTime.now()).followersCount(1)
                 .followersUrl("").followingsCount(1).followingUrl("").htmlUrl("").id(1).likesCount(1).likesReceivedCount(1)
-                .likesUrl("").links(new Links()).location("").name("").pro(true).projectsCount(1).reboundsReceivedCount(1)
+                .likesUrl("").links(Links.create("", "")).location("").name("").pro(true).projectsCount(1).reboundsReceivedCount(1)
                 .shotsCount(1).shotsUrl("").teamsCount(1).teamsUrl("").username("").updatedAt(LocalDateTime.now()).type("").build();
 
         mockedUserBuckets = Arrays.asList(
