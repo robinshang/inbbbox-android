@@ -88,7 +88,7 @@ public class ShotDetailsFragment
 
     @OnClick(R.id.details_close_imageView)
     void onCloseClick() {
-        getActivity().onBackPressed();
+        getPresenter().closeScreen();
     }
 
     public static ShotDetailsFragment newInstance(Shot shot) {
@@ -190,7 +190,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showCommentEditorDialog(String text) {
-        updateCommentDialog = new AlertDialog.Builder(getContext())
+        updateCommentDialog = new AlertDialog.Builder(getContext(), R.style.AppTheme)
                 .setPositiveButton(R.string.edit_comment_update, createDialogListener())
                 .setNegativeButton(R.string.edit_comment_cancel, createDialogListener())
                 .setView(R.layout.edit_comment_dialog_layout)
@@ -274,6 +274,16 @@ public class ShotDetailsFragment
         if (shotCommentInputPanel.getVisibility() == View.GONE) {
             ViewAnimator.startSlideInFromBottomShowAnimation(shotCommentInputPanel);
         }
+    }
+
+    @Override
+    public void hideDetailsScreen() {
+        getActivity().onBackPressed();
+    }
+
+    @Override
+    public void hideKeyboard() {
+        InputUtils.hideKeyboard(getContext(), shotRecyclerView);
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {

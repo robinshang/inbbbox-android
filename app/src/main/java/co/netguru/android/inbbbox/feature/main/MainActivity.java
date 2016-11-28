@@ -47,6 +47,7 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.InputUtils;
 import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 import static butterknife.ButterKnife.findById;
 
@@ -199,7 +200,7 @@ public class MainActivity
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
+                //no-op
             }
         });
     }

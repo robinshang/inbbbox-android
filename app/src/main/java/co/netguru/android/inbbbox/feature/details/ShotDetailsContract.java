@@ -40,6 +40,10 @@ public interface ShotDetailsContract {
         void showKeyboard();
 
         void showInputIfHidden();
+
+        void hideDetailsScreen();
+
+        void hideKeyboard();
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -55,5 +59,7 @@ public interface ShotDetailsContract {
         void openCommentEditor(Comment currentComment);
 
         void updateComment(String updatedComment);
+
+        void closeScreen();
     }
 }

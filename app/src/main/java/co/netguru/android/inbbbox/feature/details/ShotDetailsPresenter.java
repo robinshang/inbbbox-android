@@ -101,6 +101,11 @@ public class ShotDetailsPresenter
         // TODO: 28.11.2016 no in scope of this task
     }
 
+    @Override
+    public void closeScreen() {
+        getView().hideDetailsScreen();
+    }
+
     private void sendCommentToApi(String comment) {
         // TODO: 23.11.2016 not in scope of this task
     }
