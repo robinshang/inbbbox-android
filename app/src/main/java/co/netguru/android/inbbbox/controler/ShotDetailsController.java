@@ -67,7 +67,6 @@ public class ShotDetailsController {
 
     private Observable<List<Comment>> getCommentListWithAuthorState(String shotId) {
         return getCurrentUserId().flatMap(currentUserId -> getCommentsList(shotId, currentUserId));
-
     }
 
     private Observable<List<Comment>> getCommentsList(String shotId, Long currentUserId) {
@@ -81,7 +80,8 @@ public class ShotDetailsController {
     }
 
     private boolean isCurrentUserAuthor(UserEntity user, Long currentUserId) {
-        return user != null && user.id() == currentUserId;
+        // TODO: 28.11.2016  
+        return true;
     }
 
     private Observable<Boolean> getLikeState(Long shotId) {

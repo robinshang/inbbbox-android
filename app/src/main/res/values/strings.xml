@@ -80,4 +80,8 @@
     <string name="comments_edit_label">Edit</string>
     <string name="comments_delete_label">Delete</string>
     <string name="comments_cancel_label">Cancel</string>
+    <string name="edit_comment_title">Edit comment</string>
+    <string name="edit_comment_update">Update comment</string>
+    <string name="edit_comment_cancel">Cancel</string>
+    <string name="comment_edit_hint">Edit comment</string>
 </resources>

@@ -16,7 +16,7 @@ public interface DetailsViewActionCallback {
 
     void onLoadMoreCommentsSelected();
 
-    void onCommentDelete(Comment currentComment);
+    void onCommentDeleteSelected(Comment currentComment);
 
-    void onCommentEdited(Comment currentComment, String newCommentText);
+    void onCommentEditSelected(Comment currentComment);
 }

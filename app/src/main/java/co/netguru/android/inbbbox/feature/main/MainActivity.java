@@ -44,6 +44,7 @@ import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.utils.InputUtils;
 import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -188,6 +189,19 @@ public class MainActivity
 
     private void initializeBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    InputUtils.hideKeyboard(MainActivity.this, bottomSheetView);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
     }
 
     private boolean isBottomSheetOpen() {

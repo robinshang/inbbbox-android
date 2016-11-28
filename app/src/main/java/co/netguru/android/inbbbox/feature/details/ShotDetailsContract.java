@@ -33,7 +33,13 @@ public interface ShotDetailsContract {
 
         void scrollToLastItem();
 
-        void colapseAppBarWithAnimation();
+        void collapseAppbarWithAnimation();
+
+        void showCommentEditorDialog(String text);
+
+        void showKeyboard();
+
+        void showInputIfHidden();
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -45,5 +51,9 @@ public interface ShotDetailsContract {
         void retrieveInitialData();
 
         void sendComment();
+
+        void openCommentEditor(Comment currentComment);
+
+        void updateComment(String updatedComment);
     }
 }

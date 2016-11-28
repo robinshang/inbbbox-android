@@ -1,10 +1,8 @@
 package co.netguru.android.inbbbox.feature.details.recycler;
 
-import android.animation.LayoutTransition;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,19 +11,15 @@ import com.bumptech.glide.Glide;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
-import co.netguru.android.inbbbox.utils.ViewAnimator;
 
+import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_END;
+import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_START;
 import static co.netguru.android.inbbbox.utils.StringUtils.getParsedHtmlTextSpanned;
 
 class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
-
-    private static final String PARAGRAPH_TAG_START = "<p>";
-    private static final String PARAGRAPH_TAG_END = "</p>";
-    private static final long LAYOUT_TRANSITION_DURATION = 300;
 
     @BindView(R.id.comment_author_textView)
     TextView authorTextView;
@@ -53,12 +47,12 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
 
     @OnClick(R.id.comment_action_edit)
     void onEditCommentClick() {
-        actionCallbackListener.onCommentEdited(currentComment, "updated text");
+        actionCallbackListener.onCommentEditSelected(currentComment);
     }
 
     @OnClick(R.id.comment_action_delete)
     void onDeleteCommentClick() {
-        actionCallbackListener.onCommentDelete(currentComment);
+        actionCallbackListener.onCommentDeleteSelected(currentComment);
     }
 
     @OnClick(R.id.comment_action_cancel)
