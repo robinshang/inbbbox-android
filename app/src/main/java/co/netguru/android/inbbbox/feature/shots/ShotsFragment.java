@@ -231,6 +231,8 @@ public class ShotsFragment
         void shotLikeStatusChanged();
 
         void showShotDetails(Shot shot, boolean inCommentMode);
+
+
     }
 
     @Override

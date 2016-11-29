@@ -89,7 +89,6 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
                 .getTimeLabel(itemView.getContext(), currentComment.date()));
     }
 
-
     private void setCommentText(String text) {
         commentTextTextView.setText(getParsedHtmlTextSpanned(text
                 .replace(PARAGRAPH_TAG_START, "")

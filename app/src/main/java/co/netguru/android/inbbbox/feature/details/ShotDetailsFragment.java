@@ -1,18 +1,15 @@
 package co.netguru.android.inbbbox.feature.details;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.List;
@@ -73,8 +70,6 @@ public class ShotDetailsFragment
     private ShotDetailsComponent component;
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
-    private AlertDialog updateCommentDialog;
-    private EditText updateCommentEditText;
 
     @OnClick(R.id.comment_send_ImageView)
     void onSendCommentClick() {
@@ -180,28 +175,10 @@ public class ShotDetailsFragment
 
     @Override
     public void showCommentEditorDialog(String text) {
-        updateCommentDialog = new AlertDialog.Builder(getContext(), R.style.NoTitleDialog)
-                .setTitle(R.string.edit_comment_title)
-                .setPositiveButton(R.string.edit_comment_update, createDialogListener())
-                .setNegativeButton(R.string.edit_comment_cancel, createDialogListener())
-                .setView(R.layout.edit_comment_dialog_layout)
-                .create();
-        updateCommentDialog.show();
-        updateCommentEditText = (EditText) updateCommentDialog
-                .findViewById(R.id.comment_edit_editText);
-        updateCommentEditText.setText(text);
+        EditCommentFragmentDialog
+                .newInstance(this, text)
+                .show(getFragmentManager(), EditCommentFragmentDialog.TAG);
     }
-
-    private DialogInterface.OnClickListener createDialogListener() {
-        return (dialog, which) -> {
-            if (which == DialogInterface.BUTTON_POSITIVE && updateCommentDialog != null) {
-                String updatedComment = updateCommentEditText.getText().toString();
-                getPresenter().updateComment(updatedComment);
-            }
-            dialog.dismiss();
-        };
-    }
-
 
     @Override
     public void showDetails(Shot details) {
@@ -251,6 +228,11 @@ public class ShotDetailsFragment
     @Override
     public void onCommentEditSelected(Comment currentComment) {
         getPresenter().openCommentEditor(currentComment);
+    }
+
+    @Override
+    public void onCommentUpdated(String comment) {
+        getPresenter().updateComment(comment);
     }
 
     @Override
