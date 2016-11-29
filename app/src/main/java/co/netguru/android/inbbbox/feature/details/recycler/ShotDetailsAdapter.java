@@ -52,7 +52,7 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     @Override
     public void onBindViewHolder(ShotDetailsViewHolder holder, int position) {
         Comment comment = null;
-        if (!comments.isEmpty() && position > STATIC_ITEMS_COUNT-1 && position < getItemCount()-1) {
+        if (!comments.isEmpty() && position > STATIC_ITEMS_COUNT - 1 && position < getItemCount() - 1) {
             comment = comments.get(position - ShotDetailsAdapter.STATIC_ITEMS_COUNT);
         }
         holder.bind(details, comment);
@@ -80,5 +80,10 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
 
     public boolean isInputVisibilityPermitted(int lastVisibleIndex) {
         return lastVisibleIndex == getItemCount() - 1;
+    }
+
+    public void addComment(Comment updatedComment) {
+        comments.add(getItemCount() - 1, updatedComment);
+        notifyItemInserted(getItemCount() - 1);
     }
 }

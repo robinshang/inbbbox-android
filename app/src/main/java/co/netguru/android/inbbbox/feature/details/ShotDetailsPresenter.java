@@ -14,7 +14,7 @@ import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
-import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletableIoSchedulers;
+import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applySingleIoSchedulers;
 import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_END;
 import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_START;
 
@@ -111,14 +111,15 @@ public class ShotDetailsPresenter
     private void sendCommentToApi(String comment) {
         subscriptions.add(
                 shotDetailsController.sendComment(shot.id(), comment)
-                        .compose(applyCompletableIoSchedulers())
-                        .subscribe(this::handleCommentSavingComplete,
+                        .compose(applySingleIoSchedulers())
+                        .subscribe(newComment -> handleCommentSavingComplete(newComment),
                                 this::handleApiError)
         );
     }
 
-    private void handleCommentSavingComplete() {
+    private void handleCommentSavingComplete(Comment updatedComment) {
         getView().hideSendingCommentIndicator();
+        getView().addNewComment(updatedComment);
     }
 
     private void updateLikeState(boolean newLikeState) {
@@ -156,6 +157,7 @@ public class ShotDetailsPresenter
     }
 
     private void handleApiError(Throwable throwable) {
+        getView().hideSendingCommentIndicator();
         Timber.e(throwable, "details download failed! ");
         getView().showErrorMessage(errorMessageController.getErrorMessageLabel(throwable));
     }

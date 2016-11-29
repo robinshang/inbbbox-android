@@ -1,18 +1,15 @@
 package co.netguru.android.inbbbox.feature.details;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -280,6 +277,11 @@ public class ShotDetailsFragment
     public void hideSendingCommentIndicator() {
         sendProgressBar.setVisibility(View.VISIBLE);
         sendButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void addNewComment(Comment updatedComment) {
+        adapter.addComment(updatedComment);
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {
