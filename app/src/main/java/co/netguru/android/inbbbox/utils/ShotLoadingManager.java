@@ -18,8 +18,8 @@ public class ShotLoadingManager {
     }
 
     private static String getImageUrl(ShotImage shot) {
-        return (shot.hdpiImageUrl() != null && !shot.hdpiImageUrl().isEmpty())
-                ? shot.hdpiImageUrl() : shot.normalImageUrl();
+        return (shot.hiDpiImageUrl() != null && !shot.hiDpiImageUrl().isEmpty())
+                ? shot.hiDpiImageUrl() : shot.normalImageUrl();
     }
 
     private static DrawableTypeRequest<String> getThumbnailRequest(Context context, String url) {

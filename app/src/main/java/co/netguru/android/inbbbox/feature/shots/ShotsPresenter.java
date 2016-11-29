@@ -85,7 +85,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                 .bucketCount(shot.bucketCount())
                 .description(shot.description())
                 .isGif(shot.isGif())
-                .hdpiImageUrl(shot.hdpiImageUrl())
+                .hiDpiImageUrl(shot.hiDpiImageUrl())
                 .normalImageUrl(shot.normalImageUrl())
                 .thumbnailUrl(shot.thumbnailUrl())
                 .creationDate(shot.creationDate())

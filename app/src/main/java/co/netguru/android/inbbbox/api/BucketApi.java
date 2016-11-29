@@ -16,7 +16,7 @@ import rx.Single;
 public interface BucketApi {
 
     @GET("buckets/{id}/shots")
-    Single<List<ShotEntity>> getBucketShots(@Path("id") long id, @Query("page") int pageNumber, @Query("per_page") int pageCount);
+    Single<List<ShotEntity>> getBucketShotsList(@Path("id") long id, @Query("page") int pageNumber, @Query("per_page") int pageCount);
 
     @FormUrlEncoded
     @PUT("buckets/{id}/shots")

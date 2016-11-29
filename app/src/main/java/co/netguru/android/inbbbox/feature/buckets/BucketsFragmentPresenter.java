@@ -54,8 +54,9 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     public void loadBucketsWithShots(boolean isUserRefresh) {
         if (refreshSubscription.isUnsubscribed()) {
             pageNumber = 1;
-            refreshSubscription = bucketsController.getBucketWithShots(pageNumber, BUCKETS_PER_PAGE_COUNT, BUCKET_SHOTS_PER_PAGE_COUNT)
+            refreshSubscription = bucketsController.getUserBucketsWithShots(pageNumber, BUCKETS_PER_PAGE_COUNT, BUCKET_SHOTS_PER_PAGE_COUNT)
                     .compose(RxTransformerUtils.applySingleIoSchedulers())
+                    .toObservable()
                     .doAfterTerminate(getView()::hideProgressBars)
                     .subscribe(bucketWithShotsList -> {
                                 if (bucketWithShotsList.isEmpty()) {
@@ -73,7 +74,7 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     public void loadMoreBucketsWithShots() {
         if (apiHasMoreBuckets && refreshSubscription.isUnsubscribed() && loadNextBucketSubscription.isUnsubscribed()) {
             pageNumber++;
-            loadNextBucketSubscription = bucketsController.getBucketWithShots(pageNumber, BUCKETS_PER_PAGE_COUNT, BUCKET_SHOTS_PER_PAGE_COUNT)
+            loadNextBucketSubscription = bucketsController.getUserBucketsWithShots(pageNumber, BUCKETS_PER_PAGE_COUNT, BUCKET_SHOTS_PER_PAGE_COUNT)
                     .toObservable()
                     .publish(listObservable -> listObservable.timeout(SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
                             Observable.<List<BucketWithShots>>fromCallable(() -> {

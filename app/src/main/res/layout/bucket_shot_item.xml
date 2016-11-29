@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_default">
+
+    <TextView
+        android:id="@+id/gif_label_textView"
+        style="@style/GifLabel"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:visibility="gone"/>
+
+    <co.netguru.android.inbbbox.view.RoundedCornersImageView
+        android:id="@+id/bucket_shot_item_image_view"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@color/black"
+        app:layout_aspectRatio="133%"
+        app:layout_widthPercent="100%"
+        app:radius="@dimen/shot_corner_radius"/>
+
+</android.support.percent.PercentRelativeLayout>

@@ -76,7 +76,7 @@ public final class Statics {
             .isGif(false)
             .isLiked(false)
             .isBucketed(false)
-            .hdpiImageUrl("")
+            .hiDpiImageUrl("")
             .normalImageUrl("")
             .thumbnailUrl("")
             .build();
@@ -93,7 +93,7 @@ public final class Statics {
             .isGif(false)
             .isLiked(true)
             .isBucketed(false)
-            .hdpiImageUrl("")
+            .hiDpiImageUrl("")
             .normalImageUrl("")
             .thumbnailUrl("")
             .build();

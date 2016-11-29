@@ -65,7 +65,7 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
         emptyView.setVisibility(View.GONE);
         fourImagesView.setVisibility(View.VISIBLE);
         if (shots.size() < 4) {
-            showOnlyOneImage(shots.get(0).image().normalUrl());
+            showOnlyOneImage(shots.get(0).image().normalImageUrl());
         } else {
             showFourFirstImages(shots);
         }
@@ -78,10 +78,10 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
 
     private void showFourFirstImages(List<ShotEntity> shots) {
         fourImagesView.showBottomImages(true);
-        loadImageInto(fourImagesView.getTopImageView(), shots.get(0).image().normalUrl());
-        loadImageInto(fourImagesView.getBottomFirstImage(), shots.get(1).image().normalUrl());
-        loadImageInto(fourImagesView.getBottomSecondImage(), shots.get(2).image().normalUrl());
-        loadImageInto(fourImagesView.getBottomThirdImage(), shots.get(3).image().normalUrl());
+        loadImageInto(fourImagesView.getTopImageView(), shots.get(0).image().normalImageUrl());
+        loadImageInto(fourImagesView.getBottomFirstImage(), shots.get(1).image().normalImageUrl());
+        loadImageInto(fourImagesView.getBottomSecondImage(), shots.get(2).image().normalImageUrl());
+        loadImageInto(fourImagesView.getBottomThirdImage(), shots.get(3).image().normalImageUrl());
     }
 
     @FunctionalInterface

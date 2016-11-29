@@ -34,8 +34,7 @@ public abstract class ShotEntity implements Parcelable {
 
     @SerializedName("created_at")
     public abstract LocalDateTime createdAt();
-
-
+    
     @SerializedName("animated")
     public abstract boolean animated();
 

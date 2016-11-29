@@ -3,12 +3,6 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
-    <!--Todo remove this text view-->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="todo"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/shots_from_bucket_recycler_view"

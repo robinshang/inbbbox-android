@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import co.netguru.android.inbbbox.api.BucketApi;
 import co.netguru.android.inbbbox.api.UserApi;
 import co.netguru.android.inbbbox.model.api.Bucket;
+import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import rx.Completable;
 import rx.Observable;
@@ -38,12 +39,16 @@ public class BucketsController {
         return bucketApi.addShotToBucket(bucketId, shotId);
     }
 
-    public Single<List<BucketWithShots>> getBucketWithShots(int pageNumber, int pageCount, int shotsCount) {
+    public Single<List<BucketWithShots>> getUserBucketsWithShots(int pageNumber, int pageCount, int shotsCount) {
         return userApi.getUserBucketsList(pageNumber, pageCount)
                 .flatMapObservable(Observable::from)
-                .flatMap(bucket -> bucketApi.getBucketShots(bucket.id(), FIRST_PAGE_NUMBER, shotsCount).toObservable(),
+                .flatMap(bucket -> bucketApi.getBucketShotsList(bucket.id(), FIRST_PAGE_NUMBER, shotsCount).toObservable(),
                         BucketWithShots::create)
                 .toList()
                 .toSingle();
+    }
+
+    public Single<List<ShotEntity>> getShotsListFromBucket(long bucketId, int pageNumber, int pageCount) {
+        return bucketApi.getBucketShotsList(bucketId, pageNumber, pageCount);
     }
 }
