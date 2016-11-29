@@ -1,6 +1,9 @@
 package co.netguru.android.inbbbox.feature.details.recycler;
 
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -10,6 +13,8 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.Team;
 import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 
@@ -55,9 +60,14 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     private static final String DATE_KEY = "${when}";
     private boolean isLiked;
     private boolean isBucketed;
+    @Nullable
+    private Shot item;
 
-    ShotDetailsUserInfoViewHolder(View view, DetailsViewActionCallback actionCallback) {
-        super(view, actionCallback);
+    ShotDetailsUserInfoViewHolder(ViewGroup parent, DetailsViewActionCallback actionCallback) {
+        super(LayoutInflater
+                        .from(parent.getContext())
+                        .inflate(R.layout.item_shot_info_user_info_layout, parent, false),
+                actionCallback);
     }
 
     @OnClick(R.id.details_likes_imageView)
@@ -85,7 +95,8 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     }
 
     @Override
-    protected void handleBinding() {
+    public void bind(@Nullable Shot item, @Nullable Comment comments) {
+        this.item = item;
         shotTitleTextView.setText(item.title());
         showImage(item.author().avatarUrl());
         showAuthorInfo(item.author().name());

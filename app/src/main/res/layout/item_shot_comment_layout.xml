@@ -4,6 +4,7 @@
                 style="@style/ShotCommentSectionContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:orientation="vertical">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -35,6 +36,7 @@
             android:id="@+id/comment_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:animateLayoutChanges="true">
 
             <TextView
