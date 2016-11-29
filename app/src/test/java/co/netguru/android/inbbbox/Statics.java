@@ -110,6 +110,7 @@ public final class Statics {
                     .authorAvatarUrl("")
                     .date(LocalDateTime.now())
                     .text("text: " + i)
+                    .isCurrentUserAuthor(false)
                     .build();
             comments.add(comment);
         }
