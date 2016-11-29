@@ -75,7 +75,7 @@ public class ShotDetailsController {
     }
 
     private boolean isCurrentUserAuthor(UserEntity user, Long currentUserId) {
-        return true;
+        return user != null && user.id() == currentUserId;
     }
 
     private Observable<Boolean> getLikeState(Long shotId) {
