@@ -272,7 +272,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showInputIfHidden() {
-        if (shotCommentInputPanel.getVisibility() == View.GONE) {
+        if (shotCommentInputPanel != null && shotCommentInputPanel.getVisibility() == View.GONE) {
             ViewAnimator.startSlideInFromBottomShowAnimation(shotCommentInputPanel);
         }
     }
