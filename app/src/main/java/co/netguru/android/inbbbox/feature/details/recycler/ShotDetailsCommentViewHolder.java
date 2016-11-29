@@ -1,6 +1,8 @@
 package co.netguru.android.inbbbox.feature.details.recycler;
 
+import android.support.annotation.Nullable;
 import android.text.method.LinkMovementMethod;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,6 +15,7 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 
 import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_END;
@@ -41,8 +44,10 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
 
     private Comment currentComment;
 
-    ShotDetailsCommentViewHolder(View view, DetailsViewActionCallback actionCallback) {
-        super(view, actionCallback);
+    ShotDetailsCommentViewHolder(ViewGroup parent, DetailsViewActionCallback actionCallback) {
+        super(LayoutInflater
+                .from(parent.getContext())
+                .inflate(R.layout.item_shot_comment_layout, parent, false), actionCallback);
     }
 
     @OnClick(R.id.comment_action_edit)
@@ -71,10 +76,9 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
     }
 
     @Override
-    protected void handleBinding() {
+    public void bind(@Nullable Shot item, @Nullable Comment comment) {
         actionMenu.setVisibility(View.GONE);
-        currentComment = commentList
-                .get(getAdapterPosition() - ShotDetailsAdapter.STATIC_ITEMS_COUNT);
+        currentComment = comment;
 
         authorTextView.setText(currentComment.author());
 
@@ -84,6 +88,7 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
         dateTextView.setText(DateTimeFormatUtil
                 .getTimeLabel(itemView.getContext(), currentComment.date()));
     }
+
 
     private void setCommentText(String text) {
         commentTextTextView.setText(getParsedHtmlTextSpanned(text
