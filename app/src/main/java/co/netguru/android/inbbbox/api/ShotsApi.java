@@ -6,9 +6,12 @@ import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.CommentEntity;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.Constants.API;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import rx.Completable;
 import rx.Observable;
 
 public interface ShotsApi {
@@ -34,4 +37,7 @@ public interface ShotsApi {
 
     @GET("shots/{shotId}/buckets")
     Observable<List<Bucket>> getBucketsList(@Path("shotId") String shotId);
+
+    @POST("shots/{shotId}/comments")
+    Completable createComment(@Path("shotId") String shotId, @Body String comment);
 }

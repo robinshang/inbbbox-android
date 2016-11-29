@@ -14,6 +14,7 @@ import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
+import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletableIoSchedulers;
 import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_END;
 import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_START;
 
@@ -108,7 +109,16 @@ public class ShotDetailsPresenter
     }
 
     private void sendCommentToApi(String comment) {
-        // TODO: 23.11.2016 not in scope of this task
+        subscriptions.add(
+                shotDetailsController.sendComment(shot.id(), comment)
+                        .compose(applyCompletableIoSchedulers())
+                        .subscribe(this::handleCommentSavingComplete,
+                                this::handleApiError)
+        );
+    }
+
+    private void handleCommentSavingComplete() {
+        getView().hideSendingCommentIndicator();
     }
 
     private void updateLikeState(boolean newLikeState) {

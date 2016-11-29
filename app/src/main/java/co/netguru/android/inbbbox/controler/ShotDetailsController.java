@@ -93,4 +93,8 @@ public class ShotDetailsController {
         return newLikeState ? likeShotController.likeShot(shotId) :
                 likeShotController.unLikeShot(shotId);
     }
+
+    public Completable sendComment(Long shotId, String commentText) {
+        return shotsApi.createComment(shotId.toString(), commentText);
+    }
 }
