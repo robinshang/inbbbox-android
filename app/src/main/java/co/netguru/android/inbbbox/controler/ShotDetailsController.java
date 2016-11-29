@@ -13,8 +13,6 @@ import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
 import co.netguru.android.inbbbox.model.ui.User;
 import rx.Completable;
 import rx.Observable;
-import rx.functions.Action1;
-import rx.functions.Func1;
 
 import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
 
