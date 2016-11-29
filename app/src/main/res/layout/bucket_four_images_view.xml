@@ -34,10 +34,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <ImageView
             android:id="@+id/bottom_first_image_view"
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
@@ -48,8 +46,8 @@
 
         <ImageView
             android:id="@+id/bottom_second_image_view"
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_toEndOf="@id/bottom_first_image_view"
             android:layout_toStartOf="@+id/bottom_third_image_view"
             android:scaleType="centerCrop"
             app:layout_widthPercent="34%"
@@ -57,12 +55,11 @@
 
         <ImageView
             android:id="@+id/bottom_third_image_view"
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:scaleType="centerCrop"
-            app:layout_widthPercent="34%"
+            app:layout_widthPercent="33%"
             tools:src="@drawable/logo_empty"/>
 
 

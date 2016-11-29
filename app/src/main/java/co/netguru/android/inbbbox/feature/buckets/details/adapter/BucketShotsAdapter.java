@@ -45,7 +45,7 @@ public class BucketShotsAdapter extends RecyclerView.Adapter<BucketShotViewHolde
         notifyDataSetChanged();
     }
 
-    public void addNewBucketWithShots(Collection<ShotEntity> shotsToAdd) {
+    public void addNewShots(Collection<ShotEntity> shotsToAdd) {
         int oldSize = this.shotEntityList.size();
         this.shotEntityList.addAll(shotsToAdd);
         notifyItemRangeInserted(oldSize, shotsToAdd.size() + 1);

@@ -29,7 +29,7 @@ public class ShotLoadingManager {
 
     public static void loadListShot(Context context, ImageView target, ShotImage shot) {
         target.setImageResource(R.drawable.shot_placeholder);
-
+        Glide.clear(target);
         Glide.with(context)
                 .load(shot.normalImageUrl())
                 .thumbnail(ShotLoadingManager.getThumbnailRequest(context, shot.thumbnailUrl()))

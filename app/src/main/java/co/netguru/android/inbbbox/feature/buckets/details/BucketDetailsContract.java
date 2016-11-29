@@ -15,7 +15,17 @@ public interface BucketDetailsContract {
 
         void setFragmentTitle(Bucket bucket);
 
-        void setShots(List<ShotEntity> shotEntities);
+        void showShots(List<ShotEntity> shotEntities);
+
+        void showLoadingMoreShotsView();
+
+        void hideLoadingMoreShotsView();
+
+        void addShots(List<ShotEntity> shotEntities);
+
+        void showEmptyView();
+
+        void hideProgressbar();
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -24,5 +34,6 @@ public interface BucketDetailsContract {
 
         void loadMoreShots();
 
+        void refreshShots();
     }
 }

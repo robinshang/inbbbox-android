@@ -45,6 +45,9 @@
         <item quantity="one">%d shot</item>
         <item quantity="other">%d shots</item>
     </plurals>
+    <string name="loading_more_shots">Loading more shots</string>
+    <string name="fragment_bucket_is_empty_text_before_icon">Add some shots to this bucket</string>
+    <string name="fragment_bucket_is_empty_text_after_icon">first!</string>
 
     <string name="shots_fragment_add_shot_to_bucket_success">Shot successfully added to bucket</string>
 

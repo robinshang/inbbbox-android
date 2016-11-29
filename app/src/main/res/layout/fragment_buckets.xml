@@ -24,22 +24,23 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/fragment_followers_empty_logo"
-                android:layout_width="@dimen/fragment_like_empty_view_logo_size"
-                android:layout_height="@dimen/fragment_like_empty_view_logo_size"
+                android:id="@+id/fragment_buckets_empty_logo"
+                android:layout_width="@dimen/fragment_bucket_empty_view_logo_size"
+                android:layout_height="@dimen/fragment_bucket_empty_view_logo_size"
                 android:layout_centerInParent="true"
                 android:contentDescription="@null"
                 android:src="@drawable/logo_empty"/>
 
             <TextView
-                android:id="@+id/fragment_followers_empty_text"
+                android:id="@+id/fragment_buckets_empty_text"
                 style="@style/Font25.RobotoLight.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/fragment_followers_empty_logo"
+                android:layout_below="@id/fragment_buckets_empty_logo"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/fragment_like_empty_view_text_margin_top"
+                android:layout_marginTop="@dimen/margin_very_big"
                 android:gravity="center"/>
+
         </RelativeLayout>
     </ScrollView>
 
