@@ -6,11 +6,7 @@ import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
-import net.hockeyapp.android.CrashManager;
-import net.hockeyapp.android.CrashManagerListener;
-
 import co.netguru.android.inbbbox.App;
-import co.netguru.android.inbbbox.BuildConfig;
 import co.netguru.android.inbbbox.di.component.SplashScreenComponent;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
@@ -22,18 +18,8 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        initCrashManager();
         initComponent();
         super.onCreate(savedInstanceState);
-    }
-
-    private void initCrashManager() {
-        CrashManager.register(this, BuildConfig.HOCKEY_APP_ID, new CrashManagerListener() {
-            @Override
-            public boolean shouldAutoUploadCrashes() {
-                return true;
-            }
-        });
     }
 
     private void initComponent() {

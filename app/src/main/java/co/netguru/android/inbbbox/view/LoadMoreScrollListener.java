@@ -7,7 +7,7 @@ public abstract class LoadMoreScrollListener extends RecyclerView.OnScrollListen
 
     private final int launchWhenLastXVisible;
 
-    private boolean scrolled;
+    private boolean scrolled = true;
 
     public LoadMoreScrollListener(int launchWhenLastXVisible) {
         this.launchWhenLastXVisible = launchWhenLastXVisible;

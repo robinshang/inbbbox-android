@@ -37,7 +37,7 @@ public final class Statics {
             .likesCount(1)
             .likesReceivedCount(1)
             .likesUrl("")
-            .links(new Links())
+            .links(Links.create("https://www.netguru.co/", "https://twitter.com/netguru"))
             .location("")
             .name("")
             .pro(true)

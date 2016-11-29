@@ -31,7 +31,7 @@ import co.netguru.android.inbbbox.feature.followers.adapter.BaseFollowersViewHol
 import co.netguru.android.inbbbox.feature.followers.adapter.FollowersAdapter;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
 import co.netguru.android.inbbbox.model.ui.Follower;
-import co.netguru.android.inbbbox.utils.TextFormatter;
+import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowersContract.View, FollowersContract.Presenter>
@@ -140,7 +140,7 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
 
     private void initEmptyView() {
         emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
-        emptyViewText.setText(TextFormatter
+        emptyViewText.setText(TextFormatterUtil
                 .addDrawableToTextAtFirstSpace(emptyString, emptyTextDrawable), TextView.BufferType.SPANNABLE);
     }
 

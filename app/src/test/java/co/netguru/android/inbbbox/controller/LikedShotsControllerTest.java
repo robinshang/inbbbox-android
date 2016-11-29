@@ -57,8 +57,8 @@ public class LikedShotsControllerTest {
                 .build();
         expectedItems = new ArrayList<>();
         expectedItems.add(entity);
-        when(shotEntityMock.getImage()).thenReturn(imageMock);
-        when(shotEntityMock.getCreatedAt()).thenReturn(LocalDateTime.now());
+        when(shotEntityMock.image()).thenReturn(imageMock);
+        when(shotEntityMock.createdAt()).thenReturn(LocalDateTime.now());
         when(likesApiMock.getLikedShots(PAGE_NUMBER, PAGE_COUNT)).thenReturn(Observable.just(expectedItems));
     }
 

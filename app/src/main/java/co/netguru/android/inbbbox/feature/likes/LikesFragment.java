@@ -29,7 +29,7 @@ import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListType
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.utils.TextFormatter;
+import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<LikesViewContract.View,
@@ -70,7 +70,7 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         component = App.getAppComponent(getContext())
-                .plus(new LikesFragmentModule(shot -> getPresenter().showShotDetails(shot)));
+                .plus(new LikesFragmentModule(shots -> getPresenter().showShotDetails(shots)));
         component.inject(this);
     }
 
@@ -143,7 +143,7 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
 
     private void initEmptyView() {
         emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
-        emptyViewText.setText(TextFormatter
+        emptyViewText.setText(TextFormatterUtil
                 .addDrawableToTextAtFirstSpace(emptyString, emptyTextDrawable), TextView.BufferType.SPANNABLE);
     }
 

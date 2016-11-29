@@ -34,7 +34,7 @@ import co.netguru.android.inbbbox.feature.shots.addtobucket.adapter.BucketsAdapt
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
-import co.netguru.android.inbbbox.utils.TextFormatter;
+import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.DividerItemDecorator;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -143,13 +143,13 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     }
 
     private SpannableStringBuilder getFormattedAuthor(String authorName) {
-        return TextFormatter.changeColourOfConcatedWord(shotCreatedByString, authorName, pinkColor);
+        return TextFormatterUtil.changeColourOfConcatenatedWord(shotCreatedByString, authorName, pinkColor);
     }
 
     @Override
     public void showShotAuthorAndTeam(String authorName, String teamName) {
         SpannableStringBuilder spannableStringAuthorBuilder = getFormattedAuthor(authorName);
-        SpannableStringBuilder spannableStringTeamBuilder = TextFormatter.changeColourOfConcatedWord(
+        SpannableStringBuilder spannableStringTeamBuilder = TextFormatterUtil.changeColourOfConcatenatedWord(
                 shotCreatedForString,
                 teamName,
                 pinkColor);

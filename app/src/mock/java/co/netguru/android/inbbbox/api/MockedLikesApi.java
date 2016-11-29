@@ -1,8 +1,11 @@
 package co.netguru.android.inbbbox.api;
 
+import org.threeten.bp.LocalDateTime;
+
 import java.util.LinkedList;
 import java.util.List;
 
+import co.netguru.android.inbbbox.model.api.Image;
 import co.netguru.android.inbbbox.model.api.LikedShotEntity;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import retrofit2.http.Path;
@@ -15,7 +18,20 @@ public class MockedLikesApi implements LikesApi {
     private static final List<LikedShotEntity> shots = new LinkedList<>();
 
     static {
-        shots.add(LikedShotEntity.builder().createdAt("").id(1).shot(new ShotEntity()).build());
+        shots.add(LikedShotEntity.builder()
+                .createdAt("")
+                .id(1)
+                .shot(ShotEntity.builder()
+                        .id(1)
+                        .title("test")
+                        .image(Image.builder().build())
+                        .createdAt(LocalDateTime.now())
+                        .animated(false)
+                        .likesCount(2)
+                        .bucketsCount(3)
+                        .createdAt(LocalDateTime.now())
+                        .build()
+                ).build());
     }
 
     @Override
