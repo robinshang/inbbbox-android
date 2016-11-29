@@ -1,21 +1,19 @@
 package co.netguru.android.inbbbox.feature.details;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.List;
@@ -24,7 +22,6 @@ import javax.inject.Inject;
 
 import butterknife.BindDimen;
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.App;
@@ -46,8 +43,10 @@ import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
 
 public class ShotDetailsFragment
-        extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
-        implements ShotDetailsContract.View, DetailsViewActionCallback {
+        extends BaseMvpFragment<ShotDetailsContract.View,
+        ShotDetailsContract.Presenter>
+        implements ShotDetailsContract.View,
+        DetailsViewActionCallback {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_SHOT = "arg:shot";
@@ -68,6 +67,12 @@ public class ShotDetailsFragment
     @BindView(R.id.appBarLayout)
     AppBarLayout appBarLayout;
 
+    @BindView(R.id.send_progressBar)
+    ProgressBar sendProgressBar;
+
+    @BindView(R.id.comment_send_imageView)
+    View sendButton;
+
     @BindDimen(R.dimen.shot_corner_radius)
     int radius;
 
@@ -80,10 +85,9 @@ public class ShotDetailsFragment
     private AlertDialog updateCommentDialog;
     private EditText updateCommentEditText;
 
-    @OnClick(R.id.comment_send_ImageView)
+    @OnClick(R.id.comment_send_imageView)
     void onSendCommentClick() {
         getPresenter().sendComment();
-        Toast.makeText(getContext(), getCommentText(), Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.details_close_imageView)
@@ -176,11 +180,6 @@ public class ShotDetailsFragment
     @Override
     public void collapseAppbarWithAnimation() {
         appBarLayout.setExpanded(false, true);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override
@@ -285,6 +284,18 @@ public class ShotDetailsFragment
     @Override
     public void hideKeyboard() {
         InputUtils.hideKeyboard(getContext(), shotRecyclerView);
+    }
+
+    @Override
+    public void showSendingCommentIndicator() {
+        sendProgressBar.setVisibility(View.VISIBLE);
+        sendButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideSendingCommentIndicator() {
+        sendProgressBar.setVisibility(View.VISIBLE);
+        sendButton.setVisibility(View.GONE);
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {

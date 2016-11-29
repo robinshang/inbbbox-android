@@ -83,6 +83,7 @@ public class ShotDetailsPresenter
     public void sendComment() {
         String comment = getView().getCommentText();
         if (!StringUtils.isBlank(comment)) {
+            getView().showSendingCommentIndicator();
             sendCommentToApi(comment);
         }
     }

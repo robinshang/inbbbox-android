@@ -44,6 +44,10 @@ public interface ShotDetailsContract {
         void hideDetailsScreen();
 
         void hideKeyboard();
+
+        void showSendingCommentIndicator();
+
+        void hideSendingCommentIndicator();
     }
 
     interface Presenter extends MvpPresenter<View> {
