@@ -52,7 +52,7 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     @Override
     public void onBindViewHolder(ShotDetailsViewHolder holder, int position) {
         Comment comment = null;
-        if (!comments.isEmpty() && position > STATIC_ITEMS_COUNT - 1) {
+        if (!comments.isEmpty() && position > STATIC_ITEMS_COUNT-1 && position < getItemCount()-1) {
             comment = comments.get(position - ShotDetailsAdapter.STATIC_ITEMS_COUNT);
         }
         holder.bind(details, comment);

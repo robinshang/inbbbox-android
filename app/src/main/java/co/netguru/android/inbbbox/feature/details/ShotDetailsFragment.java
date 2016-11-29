@@ -155,7 +155,6 @@ public class ShotDetailsFragment
 
     @Override
     public void setInputShowingEnabled(boolean isInputPanelShowingEnabled) {
-
         this.isInputPanelShowingEnabled = isInputPanelShowingEnabled;
     }
 
@@ -172,11 +171,6 @@ public class ShotDetailsFragment
     @Override
     public void collapseAppbarWithAnimation() {
         appBarLayout.setExpanded(false, true);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override

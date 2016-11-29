@@ -13,12 +13,12 @@ import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
 import co.netguru.android.inbbbox.model.ui.User;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
 
 public class ShotDetailsController {
 
-    private static final long REQUEST_COUNT = 2;
     private final LikeShotController likeShotController;
     private final UserController userController;
     private final ShotsApi shotsApi;
@@ -42,16 +42,14 @@ public class ShotDetailsController {
 
     private Observable<Boolean> getBucketState(long shotId) {
         return Observable.zip(getCurrentBuckets(shotId),
-                getCurrentUserId(),
+                getCurrentUserId().toObservable(),
                 List::contains)
                 .onErrorResumeNext(Observable.just(Boolean.FALSE));
     }
 
-    private Observable<Long> getCurrentUserId() {
+    private Single<Long> getCurrentUserId() {
         return userController.getUserFromCache()
-                .toObservable()
-                .map(User::id)
-                .repeat(REQUEST_COUNT);
+                .map(User::id);
     }
 
     private Observable<List<Long>> getCurrentBuckets(Long shotId) {
@@ -64,7 +62,7 @@ public class ShotDetailsController {
     }
 
     private Observable<List<Comment>> getCommentListWithAuthorState(String shotId) {
-        return getCurrentUserId().flatMap(currentUserId -> getCommentsList(shotId, currentUserId));
+        return getCurrentUserId().flatMapObservable(currentUserId -> getCommentsList(shotId, currentUserId));
     }
 
     private Observable<List<Comment>> getCommentsList(String shotId, Long currentUserId) {
@@ -72,7 +70,6 @@ public class ShotDetailsController {
                 .compose(fromListObservable())
                 .map(commentEntity -> Comment.create(commentEntity,
                         isCurrentUserAuthor(commentEntity.getUser(), currentUserId)))
-                .distinct()
                 .toList()
                 .onErrorResumeNext(throwable -> Observable.just(Collections.emptyList()));
     }
