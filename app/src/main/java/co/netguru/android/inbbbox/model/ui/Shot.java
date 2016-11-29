@@ -133,10 +133,10 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .hdpiImageUrl(shotEntity.image().hiDpiUrl())
                 .normalImageUrl(shotEntity.image().normalUrl())
                 .thumbnailUrl(shotEntity.image().teaserUrl())
-                .commentsCount(shotEntity.getCommentsCount())
-                .hdpiImageUrl(shotEntity.getImage().hiDpiUrl())
-                .normalImageUrl(shotEntity.getImage().normalUrl())
-                .thumbnailUrl(shotEntity.getImage().teaserUrl())
+                .commentsCount(shotEntity.commentsCount())
+                .hdpiImageUrl(shotEntity.image().hiDpiUrl())
+                .normalImageUrl(shotEntity.image().normalUrl())
+                .thumbnailUrl(shotEntity.image().teaserUrl())
                 .build();
     }
 }
