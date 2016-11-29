@@ -8,9 +8,9 @@ import co.netguru.android.inbbbox.R;
 
 public class ShotDetailsViewFactory {
 
-    static final int LOAD_MORE_ITEM_TYPE = -1;
-    private static final int USER_INFO_VIEW_TYPE = 0;
-    private static final int DESCRIPTION_VIEW_TYPE = 1;
+    static final int LOAD_MORE_ITEM_TYPE = -99;
+    static final int USER_INFO_VIEW_TYPE = 0;
+    static final int DESCRIPTION_VIEW_TYPE = 1;
 
     private ShotDetailsViewFactory() {
         throw new AssertionError();

@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginBottom="@dimen/details_comment_divider_padding_bottom"
+              android:paddingBottom="@dimen/details_comment_divider_padding_bottom"
+              android:background="@color/white"
               android:orientation="vertical">
 
     <FrameLayout

@@ -45,7 +45,6 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
 
     @Override
     public int getItemCount() {
-        // TODO: 18.11.2016 handle empty descrption
         return (details != null ? comments.size() + LOAD_MORE_ITEM : 0) + STATIC_ITEMS_COUNT;
     }
 

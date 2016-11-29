@@ -36,7 +36,7 @@ class ShotDetailsLoadMoreViewHolder extends ShotDetailsViewHolder {
 
     @Override
     protected void handleBinding() {
-        // TODO: 25.11.2016 handle loader initial state
+        // TODO: 25.11.2016 handle loader initial state - in logic task
         isLoadingActive = commentList != null && commentList.size() < item.commentsCount();
         loadMoreProgressBar.setVisibility(View.GONE);
         updateButtonState();

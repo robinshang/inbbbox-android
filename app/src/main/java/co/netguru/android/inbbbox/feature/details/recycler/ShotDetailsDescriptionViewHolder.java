@@ -24,7 +24,7 @@ class ShotDetailsDescriptionViewHolder extends ShotDetailsViewHolder {
             descriptionTextView.setText(getParsedHtmlTextSpanned(item.description()));
             descriptionTextView.setMovementMethod(LinkMovementMethod.getInstance());
         } else {
-            descriptionTextView.setVisibility(View.GONE);
+            descriptionTextView.setHint("No description");
         }
     }
 }
