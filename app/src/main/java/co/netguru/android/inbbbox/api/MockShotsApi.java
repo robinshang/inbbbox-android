@@ -15,8 +15,8 @@ import co.netguru.android.inbbbox.model.api.ShotEntity;
 import retrofit2.http.Body;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 public class MockShotsApi implements ShotsApi {
 
@@ -59,8 +59,8 @@ public class MockShotsApi implements ShotsApi {
     }
 
     @Override
-    public Completable createComment(@Path("shotId") String shotId, @Body String comment) {
-        return Completable.complete();
+    public Single<CommentEntity> createComment(@Path("shotId") String shotId, @Body String comment) {
+        return Single.just(new CommentEntity());
     }
 
     private static List<ShotEntity> getFollowingMock(int count, String label) {

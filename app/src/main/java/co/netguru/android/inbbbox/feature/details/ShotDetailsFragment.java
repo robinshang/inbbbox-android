@@ -275,13 +275,18 @@ public class ShotDetailsFragment
 
     @Override
     public void hideSendingCommentIndicator() {
-        sendProgressBar.setVisibility(View.VISIBLE);
-        sendButton.setVisibility(View.GONE);
+        sendProgressBar.setVisibility(View.GONE);
+        sendButton.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void addNewComment(Comment updatedComment) {
         adapter.addComment(updatedComment);
+    }
+
+    @Override
+    public void clearCommentInput() {
+        commentTextInputLayout.getEditText().setText("");
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {

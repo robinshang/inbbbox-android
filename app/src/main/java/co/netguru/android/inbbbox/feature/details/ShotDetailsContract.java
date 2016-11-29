@@ -50,6 +50,8 @@ public interface ShotDetailsContract {
         void hideSendingCommentIndicator();
 
         void addNewComment(Comment updatedComment);
+
+        void clearCommentInput();
     }
 
     interface Presenter extends MvpPresenter<View> {

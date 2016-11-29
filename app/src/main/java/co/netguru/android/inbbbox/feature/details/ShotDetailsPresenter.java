@@ -112,14 +112,21 @@ public class ShotDetailsPresenter
         subscriptions.add(
                 shotDetailsController.sendComment(shot.id(), comment)
                         .compose(applySingleIoSchedulers())
+                        .doAfterTerminate(this::handleSaveCommentTermination)
                         .subscribe(newComment -> handleCommentSavingComplete(newComment),
                                 this::handleApiError)
         );
     }
 
+    private void handleSaveCommentTermination() {
+        getView().hideSendingCommentIndicator();
+        getView().hideKeyboard();
+    }
+
     private void handleCommentSavingComplete(Comment updatedComment) {
         getView().hideSendingCommentIndicator();
         getView().addNewComment(updatedComment);
+        getView().clearCommentInput();
     }
 
     private void updateLikeState(boolean newLikeState) {
@@ -157,7 +164,6 @@ public class ShotDetailsPresenter
     }
 
     private void handleApiError(Throwable throwable) {
-        getView().hideSendingCommentIndicator();
         Timber.e(throwable, "details download failed! ");
         getView().showErrorMessage(errorMessageController.getErrorMessageLabel(throwable));
     }
