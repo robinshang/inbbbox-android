@@ -203,7 +203,7 @@ public class ShotDetailsPresenterTest {
     }
 
     @Test
-    public void whenSendCommentToApiSend_thenGetSandCommentFromUI() {
+    public void whenSendCommentToApiCalled_thenGetCommentsTextFromUI() {
 
         shotDetailsPresenter.sendComment();
 
@@ -237,7 +237,7 @@ public class ShotDetailsPresenterTest {
     }
 
     @Test
-    public void whenSendCommentToApiSend_thenGetSandCommentObservable() {
+    public void whenSendCommentToApiSend_thenGetSendCommentObservable() {
         String exampleComment = "test";
         when(viewMock.getCommentText()).thenReturn(exampleComment);
         when(shotDetailsControllerMock
@@ -250,7 +250,7 @@ public class ShotDetailsPresenterTest {
     }
 
     @Test
-    public void whenSendCommendIsSucess_thenHideKeyboardClearInputAndAddNewCommentToView() {
+    public void whenSendCommentIsSuccess_thenHideKeyboardClearInputAndAddNewCommentToView() {
         String exampleComment = "test";
         Comment expectedComment = mock(Comment.class);
         when(viewMock.getCommentText()).thenReturn(exampleComment);
@@ -280,7 +280,7 @@ public class ShotDetailsPresenterTest {
     }
 
     @Test
-    public void whenSendCommendIsFailed_thenHideSendingIndicatorOnActionEnd() {
+    public void whenSendCommendFailed_thenHideSendingIndicatorOnActionEnd() {
         String exampleComment = "test";
         when(viewMock.getCommentText()).thenReturn(exampleComment);
         when(shotDetailsControllerMock
@@ -304,7 +304,7 @@ public class ShotDetailsPresenterTest {
 
     //ERRORS
     @Test
-    public void whenSendCommendIsFailed_thenShowError() {
+    public void whenSendCommendFailed_thenShowError() {
         String exampleComment = "test";
         when(viewMock.getCommentText()).thenReturn(exampleComment);
         when(shotDetailsControllerMock

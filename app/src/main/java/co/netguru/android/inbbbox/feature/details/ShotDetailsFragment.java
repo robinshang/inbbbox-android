@@ -40,10 +40,8 @@ import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
 
 public class ShotDetailsFragment
-        extends BaseMvpFragment<ShotDetailsContract.View,
-        ShotDetailsContract.Presenter>
-        implements ShotDetailsContract.View,
-        DetailsViewActionCallback {
+        extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
+        implements ShotDetailsContract.View, DetailsViewActionCallback {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_SHOT = "arg:shot";

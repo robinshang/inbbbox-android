@@ -113,7 +113,7 @@ public class ShotDetailsPresenter
                 shotDetailsController.sendComment(shot.id(), comment)
                         .compose(applySingleIoSchedulers())
                         .doAfterTerminate(this::handleSaveCommentTermination)
-                        .subscribe(newComment -> handleCommentSavingComplete(newComment),
+                        .subscribe(this::handleCommentSavingComplete,
                                 this::handleApiError)
         );
     }
