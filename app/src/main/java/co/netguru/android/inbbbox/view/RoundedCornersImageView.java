@@ -12,8 +12,8 @@ import co.netguru.android.inbbbox.R;
 
 public class RoundedCornersImageView extends ImageView {
 
-    public final float DEFAULT_RADIUS = getContext().getResources().getDimension(R.dimen.shot_corner_radius);
-    private float radius = DEFAULT_RADIUS;
+    private final float defaultRadius = getContext().getResources().getDimension(R.dimen.shot_corner_radius);
+    private float radius = defaultRadius;
     private boolean isBottomEdgeRoundingDisabled = false;
 
     public RoundedCornersImageView(Context context) {
@@ -59,7 +59,7 @@ public class RoundedCornersImageView extends ImageView {
 
     private void handleAttrs(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RoundedCornersImageView);
-        radius = a.getDimension(R.styleable.AspectRatioImageView_aspectRatio, DEFAULT_RADIUS);
+        radius = a.getDimension(R.styleable.AspectRatioImageView_aspectRatio, defaultRadius);
         a.recycle();
     }
 }

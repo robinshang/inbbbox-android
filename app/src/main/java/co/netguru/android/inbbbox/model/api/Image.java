@@ -15,14 +15,17 @@ import co.netguru.android.inbbbox.model.ui.ShotImage;
 public abstract class Image implements ShotImage, Parcelable {
 
     @Nullable
+    @Override
     @SerializedName("hidpi")
     public abstract String hiDpiImageUrl();
 
     @Nullable
+    @Override
     @SerializedName("normal")
     public abstract String normalImageUrl();
 
     @Nullable
+    @Override
     @SerializedName("teaser")
     public abstract String thumbnailUrl();
 

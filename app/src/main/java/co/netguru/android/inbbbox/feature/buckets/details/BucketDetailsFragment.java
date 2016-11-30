@@ -30,7 +30,6 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.buckets.details.adapter.BucketShotViewHolder;
 import co.netguru.android.inbbbox.feature.buckets.details.adapter.BucketShotsAdapter;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
-import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
@@ -188,7 +187,9 @@ public class BucketDetailsFragment
     }
 
     private void initEmptyView() {
-        emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
+        int lineHeight = emptyViewText.getLineHeight();
+        //noinspection SuspiciousNameCombination
+        emptyTextDrawable.setBounds(0, 0, lineHeight, lineHeight);
         emptyViewText.setText(TextFormatterUtil
                 .addDrawableBetweenStrings(emptyStringBeforeIcon, emptyStringAfterIcon, emptyTextDrawable));
     }

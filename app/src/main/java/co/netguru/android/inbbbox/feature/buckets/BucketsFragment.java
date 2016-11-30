@@ -163,7 +163,9 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
     }
 
     private void initEmptyView() {
-        emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
+        int lineHeight = emptyViewText.getLineHeight();
+        //noinspection SuspiciousNameCombination
+        emptyTextDrawable.setBounds(0, 0, lineHeight, lineHeight);
         emptyViewText.setText(TextFormatterUtil
                 .addDrawableBetweenStrings(emptyStringBeforeIcon, emptyStringAfterIcon, emptyTextDrawable));
     }
