@@ -8,6 +8,8 @@ import co.netguru.android.inbbbox.model.api.CommentEntity;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -40,8 +42,9 @@ public interface ShotsApi {
     @GET("shots/{shotId}/buckets")
     Observable<List<Bucket>> getBucketsList(@Path("shotId") String shotId);
 
+    @FormUrlEncoded
     @POST("shots/{shotId}/comments")
-    Single<CommentEntity> createComment(@Path("shotId") String shotId, @Body String comment);
+    Single<CommentEntity> createComment(@Path("shotId") String shotId, @Field("body") String comment);
 
     @DELETE("/shots/{shotId}/comments/{commentId}")
     Completable deleteComment(@Path("shotId") String shotId, @Path("commentId") String commentId);

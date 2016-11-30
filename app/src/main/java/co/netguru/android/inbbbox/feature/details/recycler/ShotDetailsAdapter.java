@@ -87,8 +87,8 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     }
 
     public void addComment(Comment updatedComment) {
-        comments.add(getItemCount() - 1, updatedComment);
-        notifyItemInserted(getItemCount() - 1);
+        comments.add(0, updatedComment);
+        notifyItemInserted(STATIC_ITEMS_COUNT);
     }
 
     public void removeComment(Comment commentToRemove) {
