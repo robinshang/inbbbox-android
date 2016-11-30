@@ -6,7 +6,6 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 
