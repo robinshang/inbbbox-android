@@ -266,7 +266,7 @@ public class ShotDetailsPresenterTest {
     }
 
     @Test
-    public void whenSendCommendIsSuccess_thenHideSendingIndicatorOnActionEnd() {
+    public void whenSendCommentSuccess_thenHideSendingIndicatorOnActionEnd() {
         String exampleComment = "test";
         Comment expectedComment = mock(Comment.class);
         when(viewMock.getCommentText()).thenReturn(exampleComment);
