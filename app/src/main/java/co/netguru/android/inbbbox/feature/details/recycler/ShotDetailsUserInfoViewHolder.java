@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.details.recycler;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +14,11 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.Team;
 import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 
-class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
+class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot> {
 
     @BindView(R.id.details_user_imageView)
     ImageView userAvatarImageView;
@@ -95,7 +95,7 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder {
     }
 
     @Override
-    public void bind(@Nullable Shot item, @Nullable Comment comments) {
+    public void bind(@NonNull Shot item) {
         this.item = item;
         shotTitleTextView.setText(item.title());
         showImage(item.author().avatarUrl());

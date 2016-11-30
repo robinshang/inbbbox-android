@@ -1,6 +1,6 @@
 package co.netguru.android.inbbbox.feature.details.recycler;
 
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +15,13 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.Comment;
-import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 
 import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_END;
 import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_START;
 import static co.netguru.android.inbbbox.utils.StringUtils.getParsedHtmlTextSpanned;
 
-class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
+class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder<Comment> {
 
     @BindView(R.id.comment_author_textView)
     TextView authorTextView;
@@ -76,7 +75,7 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder {
     }
 
     @Override
-    public void bind(@Nullable Shot item, @Nullable Comment comment) {
+    public void bind(@NonNull Comment comment) {
         actionMenu.setVisibility(View.GONE);
         currentComment = comment;
 
