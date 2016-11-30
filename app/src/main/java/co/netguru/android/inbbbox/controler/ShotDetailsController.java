@@ -50,7 +50,6 @@ public class ShotDetailsController {
                 .flatMap(currentUserId -> createComment(shotId.toString(),
                         commentText,
                         currentUserId));
-
     }
 
     private Single<Comment> createComment(String shotId, String commentText, Long currentUserId) {
