@@ -31,6 +31,7 @@ import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListType
 import co.netguru.android.inbbbox.feature.followers.details.adapter.FollowerDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 import static butterknife.ButterKnife.findById;
@@ -41,6 +42,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     public static final int GRID_VIEW_COLUMN_COUNT = 2;
     public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
     private static final String FOLLOWER_KEY = "follower_key";
+    private static final String USER_KEY = "user_key";
     private static final int SHOTS_TO_LOAD_MORE = 10;
     private static final int RECYCLER_VIEW_HEADER_POSITION = 0;
     private static final int RECYCLER_VIEW_ITEM_SPAN_SIZE = 1;
@@ -61,9 +63,10 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     private OnFollowedShotActionListener onUnFollowCompletedListener;
     private FollowerDetailsFragmentComponent component;
 
-    public static FollowerDetailsFragment newInstance(Follower follower) {
+    public static FollowerDetailsFragment newInstance(@Nullable Follower follower, @Nullable User user) {
         final Bundle args = new Bundle();
         args.putParcelable(FOLLOWER_KEY, follower);
+        args.putParcelable(USER_KEY, user);
 
         final FollowerDetailsFragment fragment = new FollowerDetailsFragment();
         fragment.setArguments(args);
@@ -95,6 +98,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
         getPresenter().followerDataReceived(getArguments().getParcelable(FOLLOWER_KEY));
+        getPresenter().userDataReceived(getArguments().getParcelable(USER_KEY));
     }
 
     @Override
@@ -122,10 +126,19 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
 
     @Override
     public void showFollowerData(Follower follower) {
-        adapter.setAdapterData(follower);
+        adapter.setFollowerAdapterData(follower);
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(follower.name());
+        }
+    }
+
+    @Override
+    public void showUserData(User user, List<Shot> list) {
+        adapter.setUserAdapterData(user, list);
+        final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(user.name());
         }
     }
 
