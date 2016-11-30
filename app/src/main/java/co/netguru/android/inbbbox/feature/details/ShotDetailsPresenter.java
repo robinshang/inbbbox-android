@@ -90,7 +90,7 @@ public class ShotDetailsPresenter
     }
 
     @Override
-    public void openCommentEditor(Comment currentComment) {
+    public void onEditCommentClick(Comment currentComment) {
         commentInEditor = currentComment;
         getView().showCommentEditorDialog(
                 currentComment.text()

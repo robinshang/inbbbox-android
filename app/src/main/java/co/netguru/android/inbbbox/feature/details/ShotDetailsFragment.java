@@ -229,7 +229,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onCommentEditSelected(Comment currentComment) {
-        getPresenter().openCommentEditor(currentComment);
+        getPresenter().onEditCommentClick(currentComment);
     }
 
     @Override

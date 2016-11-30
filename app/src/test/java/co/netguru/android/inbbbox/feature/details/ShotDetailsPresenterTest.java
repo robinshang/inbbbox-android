@@ -16,16 +16,22 @@ import org.threeten.bp.LocalDateTime;
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
+import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
 import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -151,7 +157,165 @@ public class ShotDetailsPresenterTest {
         verify(viewMock, times(1)).initView();
     }
 
+    @Test
+    public void whenInputModeEnabled_thenShowKeyboardAndShowInputOnDataDownload() {
+        when(viewMock.getCommentModeInitialState()).thenReturn(true);
+        when(shotDetailsControllerMock.getShotComments(anyLong())).thenReturn(Observable.empty());
+
+        shotDetailsPresenter.retrieveInitialData();
+        shotDetailsPresenter.downloadData();
+
+        verify(viewMock, atLeastOnce()).showKeyboard();
+        verify(viewMock, atLeastOnce()).showInputIfHidden();
+    }
+
+    @Test
+    public void whenShotDetailsDownloadComplete_thenEnableInputShow() {
+        when(viewMock.getCommentModeInitialState()).thenReturn(true);
+        when(shotDetailsControllerMock.getShotComments(anyLong())).thenReturn(Observable.empty());
+
+        shotDetailsPresenter.retrieveInitialData();
+        shotDetailsPresenter.downloadData();
+
+        verify(viewMock, times(1)).setInputShowingEnabled(true);
+    }
+
+    @Test
+    public void whenInputModeEnabled_thenAutoScrollViewAllDetailsAreReady() {
+        when(viewMock.getCommentModeInitialState()).thenReturn(true);
+        when(shotDetailsControllerMock
+                .getShotComments(anyLong()))
+                .thenReturn(Observable.just(mock(ShotDetailsState.class)));
+
+        shotDetailsPresenter.retrieveInitialData();
+        shotDetailsPresenter.downloadData();
+
+        verify(viewMock, times(1)).collapseAppbarWithAnimation();
+        verify(viewMock, times(1)).scrollToLastItem();
+    }
+
+    @Test
+    public void whenCloseScreenIsCalled_thenHideDetailsScreen() {
+
+        shotDetailsPresenter.closeScreen();
+
+        verify(viewMock, times(1)).hideDetailsScreen();
+    }
+
+    @Test
+    public void whenSendCommentToApiSend_thenGetSandCommentFromUI() {
+
+        shotDetailsPresenter.sendComment();
+
+        verify(viewMock, times(1)).getCommentText();
+    }
+
+    @Test
+    public void whenSendCommentClickedAndCommentIsEmpty_thenDoNothing() {
+        String exampleComment = "";
+        when(viewMock.getCommentText()).thenReturn(exampleComment);
+        when(shotDetailsControllerMock
+                .sendComment(anyLong(), eq(exampleComment)))
+                .thenReturn(Single.just(mock(Comment.class)));
+
+        shotDetailsPresenter.sendComment();
+
+        verify(shotDetailsControllerMock, never()).sendComment(anyLong(), anyString());
+    }
+
+    @Test
+    public void whenSendCommentClickedAndCommentIsNotEmpty_thenShowSendCommentIndicator() {
+        String exampleComment = "test";
+        when(viewMock.getCommentText()).thenReturn(exampleComment);
+        when(shotDetailsControllerMock
+                .sendComment(anyLong(), eq(exampleComment)))
+                .thenReturn(Single.just(mock(Comment.class)));
+
+        shotDetailsPresenter.sendComment();
+
+        verify(viewMock, times(1)).showSendingCommentIndicator();
+    }
+
+    @Test
+    public void whenSendCommentToApiSend_thenGetSandCommentObservable() {
+        String exampleComment = "test";
+        when(viewMock.getCommentText()).thenReturn(exampleComment);
+        when(shotDetailsControllerMock
+                .sendComment(anyLong(), eq(exampleComment)))
+                .thenReturn(Single.just(mock(Comment.class)));
+
+        shotDetailsPresenter.sendComment();
+
+        verify(shotDetailsControllerMock, times(1)).sendComment(anyLong(), eq(exampleComment));
+    }
+
+    @Test
+    public void whenSendCommendIsSucess_thenHideKeyboardClearInputAndAddNewCommentToView() {
+        String exampleComment = "test";
+        Comment expectedComment = mock(Comment.class);
+        when(viewMock.getCommentText()).thenReturn(exampleComment);
+        when(shotDetailsControllerMock
+                .sendComment(anyLong(), eq(exampleComment)))
+                .thenReturn(Single.just(expectedComment));
+
+        shotDetailsPresenter.sendComment();
+
+        verify(viewMock, times(1)).hideKeyboard();
+        verify(viewMock, times(1)).clearCommentInput();
+        verify(viewMock, times(1)).addNewComment(expectedComment);
+    }
+
+    @Test
+    public void whenSendCommendIsSuccess_thenHideSendingIndicatorOnActionEnd() {
+        String exampleComment = "test";
+        Comment expectedComment = mock(Comment.class);
+        when(viewMock.getCommentText()).thenReturn(exampleComment);
+        when(shotDetailsControllerMock
+                .sendComment(anyLong(), eq(exampleComment)))
+                .thenReturn(Single.just(expectedComment));
+
+        shotDetailsPresenter.sendComment();
+
+        verify(viewMock, atLeastOnce()).hideSendingCommentIndicator();
+    }
+
+    @Test
+    public void whenSendCommendIsFailed_thenHideSendingIndicatorOnActionEnd() {
+        String exampleComment = "test";
+        when(viewMock.getCommentText()).thenReturn(exampleComment);
+        when(shotDetailsControllerMock
+                .sendComment(anyLong(), eq(exampleComment)))
+                .thenReturn(Single.error(new Throwable()));
+
+        shotDetailsPresenter.sendComment();
+
+        verify(viewMock, atLeastOnce()).hideSendingCommentIndicator();
+    }
+
+    @Test
+    public void whenEditCommentClick_thenShowCommentEditor() {
+        Comment exampleComment = Statics.COMMENTS.get(0);
+        String expectedText = exampleComment.text();
+
+        shotDetailsPresenter.onEditCommentClick(exampleComment);
+
+        verify(viewMock, times(1)).showCommentEditorDialog(expectedText);
+    }
+
     //ERRORS
+    @Test
+    public void whenSendCommendIsFailed_thenShowError() {
+        String exampleComment = "test";
+        when(viewMock.getCommentText()).thenReturn(exampleComment);
+        when(shotDetailsControllerMock
+                .sendComment(anyLong(), eq(exampleComment)))
+                .thenReturn(Single.error(new Throwable()));
+
+        shotDetailsPresenter.sendComment();
+
+        verify(viewMock, times(1)).showErrorMessage(anyString());
+    }
+
     @Test
     public void whenShotDetailsDownloadFail_thenShowPreLoadedDetailsAndShowError() {
         String expectedMessage = "test";
@@ -164,7 +328,7 @@ public class ShotDetailsPresenterTest {
 
         verify(viewMock, times(1)).showDetails(any(Shot.class));
         verify(viewMock, times(1)).initView();
-        verify(viewMock, times(1)).showErrorMessage(expectedMessage);
+        verify(viewMock, times(1)).showErrorMessage(anyString());
     }
 
     @Test
@@ -179,7 +343,7 @@ public class ShotDetailsPresenterTest {
 
         verify(viewMock, never()).showDetails(any(Shot.class));
         verify(viewMock, never()).initView();
-        verify(viewMock, times(1)).showErrorMessage(expectedMessage);
+        verify(viewMock, times(1)).showErrorMessage(anyString());
     }
 
     @After

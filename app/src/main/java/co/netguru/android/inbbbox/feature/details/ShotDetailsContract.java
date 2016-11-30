@@ -64,7 +64,7 @@ public interface ShotDetailsContract {
 
         void sendComment();
 
-        void openCommentEditor(Comment currentComment);
+        void onEditCommentClick(Comment currentComment);
 
         void updateComment(String updatedComment);
 
