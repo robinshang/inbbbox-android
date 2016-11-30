@@ -12,6 +12,7 @@ public class FollowerDetailsViewState extends BaseViewState<FollowerDetailsContr
     public void apply(FollowerDetailsContract.View view, boolean retained) {
         super.apply(view, retained);
         view.showFollowerData(follower);
+        view.setUserShots(getDataList());
     }
 
     public void setFollower(Follower follower) {

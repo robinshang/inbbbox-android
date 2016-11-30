@@ -30,7 +30,6 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.FollowerDetailsFragmentComponent;
 import co.netguru.android.inbbbox.di.module.FollowerDetailsFragmentModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithListTypeSelection;
-import co.netguru.android.inbbbox.feature.followers.FollowersViewState;
 import co.netguru.android.inbbbox.feature.followers.details.adapter.FollowerDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -41,7 +40,7 @@ import static butterknife.ButterKnife.findById;
 public class FollowerDetailsFragment extends BaseMvpFragmentWithListTypeSelection<FollowerDetailsContract.View,
         FollowerDetailsContract.Presenter> implements FollowerDetailsContract.View {
 
-    public static final int GRID_VIEW_COLUMN_COUNT = 2;
+    private static final int GRID_VIEW_COLUMN_COUNT = 2;
     public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
     private static final String FOLLOWER_KEY = "follower_key";
     private static final int SHOTS_TO_LOAD_MORE = 10;
@@ -56,12 +55,10 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithListTypeSelectio
 
     @Inject
     FollowerDetailsAdapter adapter;
-    @Inject
-    GridLayoutManager gridLayoutManager;
-    @Inject
-    LinearLayoutManager linearLayoutManager;
 
     private OnFollowedShotActionListener onUnFollowCompletedListener;
+    private GridLayoutManager gridLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
     private FollowerDetailsFragmentComponent component;
 
     public static FollowerDetailsFragment newInstance(Follower follower) {
@@ -125,12 +122,14 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithListTypeSelectio
     @NonNull
     @Override
     public ViewState createViewState() {
-        return new FollowersViewState();
+        return new FollowerDetailsViewState();
     }
 
     @Override
     public void onNewViewStateInstance() {
-        getPresenter().followerDataReceived(getArguments().getParcelable(FOLLOWER_KEY));
+        final Follower follower = getArguments().getParcelable(FOLLOWER_KEY);
+        getPresenter().followerDataReceived(follower);
+        ((FollowerDetailsViewState) viewState).setDataList(follower.shotList());
     }
 
     @Override
@@ -142,6 +141,11 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithListTypeSelectio
         if (actionBar != null) {
             actionBar.setTitle(follower.name());
         }
+    }
+
+    @Override
+    public void setUserShots(List<Shot> shotList) {
+        adapter.setUserShots(shotList);
     }
 
     @Override
@@ -179,6 +183,8 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithListTypeSelectio
     }
 
     private void initRecyclerView() {
+        gridLayoutManager = new GridLayoutManager(getContext(), GRID_VIEW_COLUMN_COUNT);
+        linearLayoutManager = new LinearLayoutManager(getContext());
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {

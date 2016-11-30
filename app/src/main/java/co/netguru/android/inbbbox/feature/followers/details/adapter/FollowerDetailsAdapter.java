@@ -87,6 +87,12 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         notifyDataSetChanged();
     }
 
+    public void setUserShots(List<Shot> shotList) {
+        this.shotList.clear();
+        this.shotList.addAll(shotList);
+        notifyDataSetChanged();
+    }
+
     public void addMoreUserShots(List<Shot> shotList) {
         final int currentSize = this.shotList.size() + 1;
         this.shotList.addAll(shotList);

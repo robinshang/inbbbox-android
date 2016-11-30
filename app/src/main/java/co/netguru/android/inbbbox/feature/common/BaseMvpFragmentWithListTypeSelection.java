@@ -40,7 +40,7 @@ public abstract class BaseMvpFragmentWithListTypeSelection<V extends MvpView, P 
         inflater.inflate(R.menu.fragment_menu, menu);
         listViewItem = menu.findItem(R.id.action_list_view);
         gridViewItem = menu.findItem(R.id.action_grid_view);
-        onOptionsItemSelected(listViewItem);
+        onOptionsItemSelected(isGridMode ? gridViewItem : listViewItem);
     }
 
     @Override

@@ -62,8 +62,9 @@ public class BucketsFragment extends BaseMvpFragmentWithListTypeSelection<Bucket
     private static final int LAST_X_BUCKETS_VISIBLE_TO_LOAD_MORE = 5;
 
     private final BucketsAdapter adapter = new BucketsAdapter(this);
-    private final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
-    private final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
+    private GridLayoutManager gridLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
     private Snackbar loadingMoreSnackbar;
 
     public static BucketsFragment newInstance() {
@@ -188,6 +189,8 @@ public class BucketsFragment extends BaseMvpFragmentWithListTypeSelection<Bucket
     }
 
     private void initRecyclerView() {
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        gridLayoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
         bucketsRecyclerView.setHasFixedSize(true);
         bucketsRecyclerView.setAdapter(adapter);
         bucketsRecyclerView.addOnScrollListener(

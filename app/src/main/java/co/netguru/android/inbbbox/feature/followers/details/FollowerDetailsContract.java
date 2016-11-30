@@ -13,6 +13,8 @@ interface FollowerDetailsContract {
     interface View extends MvpView {
         void showFollowerData(Follower follower);
 
+        void setUserShots(List<Shot> shotList);
+
         void showMoreUserShots(List<Shot> shotList);
 
         void showFollowersList();

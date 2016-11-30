@@ -19,8 +19,6 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
@@ -39,7 +37,7 @@ import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 public class FollowersFragment extends BaseMvpFragmentWithListTypeSelection<FollowersContract.View, FollowersContract.Presenter>
         implements FollowersContract.View, BaseFollowersViewHolder.OnFollowerClickListener {
 
-    public static final int GRID_VIEW_COLUMN_COUNT = 2;
+    private static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final int FOLLOWERS_TO_LOAD_MORE = 8;
 
     @BindDrawable(R.drawable.ic_following_emptystate)
@@ -57,14 +55,11 @@ public class FollowersFragment extends BaseMvpFragmentWithListTypeSelection<Foll
     @BindView(R.id.follower_progress_bar)
     ProgressBar progressBar;
 
-    @Inject
-    GridLayoutManager gridLayoutManager;
-    @Inject
-    LinearLayoutManager linearLayoutManager;
-
     private final FollowersAdapter adapter = new FollowersAdapter(this);
 
     private FollowersFragmentComponent component;
+    private GridLayoutManager gridLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
 
     public static FollowersFragment newInstance() {
         return new FollowersFragment();
@@ -159,6 +154,8 @@ public class FollowersFragment extends BaseMvpFragmentWithListTypeSelection<Foll
     }
 
     private void initRecyclerView() {
+        gridLayoutManager = new GridLayoutManager(getContext(), GRID_VIEW_COLUMN_COUNT);
+        linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new LoadMoreScrollListener(FOLLOWERS_TO_LOAD_MORE) {

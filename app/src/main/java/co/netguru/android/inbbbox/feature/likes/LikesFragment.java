@@ -38,7 +38,7 @@ public class LikesFragment extends BaseMvpFragmentWithListTypeSelection<LikesVie
         LikesViewContract.Presenter>
         implements LikesViewContract.View {
 
-    public static final int GRID_VIEW_COLUMN_COUNT = 2;
+    private static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final int LIKES_TO_LOAD_MORE = 10;
 
     @BindDrawable(R.drawable.ic_like_emptystate)
@@ -56,12 +56,10 @@ public class LikesFragment extends BaseMvpFragmentWithListTypeSelection<LikesVie
 
     @Inject
     LikesAdapter likesAdapter;
-    @Inject
-    GridLayoutManager gridLayoutManager;
-    @Inject
-    LinearLayoutManager linearLayoutManager;
 
     private LikesFragmentComponent component;
+    private GridLayoutManager gridLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
     private ShotsFragment.ShotActionListener shotActionListener;
 
     public static LikesFragment newInstance() {
@@ -162,6 +160,8 @@ public class LikesFragment extends BaseMvpFragmentWithListTypeSelection<LikesVie
     }
 
     private void initRecyclerView() {
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        gridLayoutManager = new GridLayoutManager(getContext(), GRID_VIEW_COLUMN_COUNT);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(likesAdapter);
         recyclerView.addOnScrollListener(new LoadMoreScrollListener(LIKES_TO_LOAD_MORE) {
