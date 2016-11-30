@@ -8,30 +8,35 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
+import co.netguru.android.inbbbox.model.ui.ShotImage;
+
 
 @AutoValue
-public abstract class Image implements Parcelable {
+public abstract class Image implements ShotImage, Parcelable {
 
     @Nullable
+    @Override
     @SerializedName("hidpi")
-    public abstract String hiDpiUrl();
+    public abstract String hiDpiImageUrl();
 
     @Nullable
+    @Override
     @SerializedName("normal")
-    public abstract String normalUrl();
+    public abstract String normalImageUrl();
 
     @Nullable
+    @Override
     @SerializedName("teaser")
-    public abstract String teaserUrl();
+    public abstract String thumbnailUrl();
 
     @AutoValue.Builder
     public abstract static class Builder {
 
-        public abstract Builder hiDpiUrl(String hidpi);
+        public abstract Builder hiDpiImageUrl(String hidpi);
 
-        public abstract Builder normalUrl(String normal);
+        public abstract Builder normalImageUrl(String normal);
 
-        public abstract Builder teaserUrl(String teaser);
+        public abstract Builder thumbnailUrl(String teaser);
 
         public abstract Image build();
     }

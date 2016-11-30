@@ -15,6 +15,7 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.feature.buckets.details.adapter.BucketShotViewHolder;
 import co.netguru.android.inbbbox.feature.common.BaseActivity;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
@@ -22,7 +23,7 @@ import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
 public class BucketDetailsActivity extends BaseActivity
-        implements BucketDetailsContract.View, BucketDetailsFragment.OnShotInBucketClickListener {
+        implements BucketShotViewHolder.OnShotInBucketClickListener {
 
     private static final String BUCKET_WITH_SHOTS_KEY = "bucket_with_shots_key";
     private static final String SHOTS_PER_PAGE_KEY = "shots_per_page_key";
@@ -52,14 +53,7 @@ public class BucketDetailsActivity extends BaseActivity
         initializeToolbar();
         initializeBottomSheet();
         if (savedInstanceState == null) {
-            BucketWithShots bucketWithShots = getIntent().getParcelableExtra(BUCKET_WITH_SHOTS_KEY);
-            int perPage = getIntent().getIntExtra(SHOTS_PER_PAGE_KEY, Constants.UNDEFINED);
-            if (bucketWithShots != null && perPage != Constants.UNDEFINED) {
-                replaceFragment(R.id.bucket_details_fragment_container,
-                        BucketDetailsFragment.newInstance(bucketWithShots, perPage), BucketDetailsFragment.TAG).commit();
-            } else {
-                throw new IllegalArgumentException("Error shots with buckets or per page count is empty");
-            }
+            initializeBucketDetailsFragment();
         }
     }
 
@@ -95,6 +89,17 @@ public class BucketDetailsActivity extends BaseActivity
                 .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
                 .commit();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    private void initializeBucketDetailsFragment() {
+        BucketWithShots bucketWithShots = getIntent().getParcelableExtra(BUCKET_WITH_SHOTS_KEY);
+        int perPage = getIntent().getIntExtra(SHOTS_PER_PAGE_KEY, Constants.UNDEFINED);
+        if (bucketWithShots != null && perPage != Constants.UNDEFINED) {
+            replaceFragment(R.id.bucket_details_fragment_container,
+                    BucketDetailsFragment.newInstance(bucketWithShots, perPage), BucketDetailsFragment.TAG).commit();
+        } else {
+            throw new IllegalArgumentException("Error shots with buckets or per page count is empty");
+        }
     }
 
     private boolean isBottomSheetOpen() {

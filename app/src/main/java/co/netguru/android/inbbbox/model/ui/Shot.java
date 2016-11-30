@@ -31,12 +31,11 @@ public abstract class Shot implements Parcelable, ShotImage {
     @Nullable
     public abstract String description();
 
-    @Override
     public abstract boolean isGif();
 
     @Override
     @Nullable
-    public abstract String hdpiImageUrl();
+    public abstract String hiDpiImageUrl();
 
     @Override
     @Nullable
@@ -68,7 +67,7 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .description(shot.description())
                 .isGif(shot.isGif())
                 .creationDate(shot.creationDate())
-                .hdpiImageUrl(shot.hdpiImageUrl())
+                .hiDpiImageUrl(shot.hiDpiImageUrl())
                 .normalImageUrl(shot.normalImageUrl())
                 .thumbnailUrl(shot.thumbnailUrl())
                 .isLiked(shot.isLiked())
@@ -100,7 +99,7 @@ public abstract class Shot implements Parcelable, ShotImage {
 
         public abstract Shot.Builder isGif(boolean state);
 
-        public abstract Shot.Builder hdpiImageUrl(String url);
+        public abstract Shot.Builder hiDpiImageUrl(String url);
 
         public abstract Shot.Builder normalImageUrl(String url);
 
@@ -130,10 +129,10 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .isGif(shotEntity.animated())
                 .isLiked(false)
                 .isBucketed(false)
+                .hiDpiImageUrl(shotEntity.image().hiDpiImageUrl())
+                .normalImageUrl(shotEntity.image().normalImageUrl())
+                .thumbnailUrl(shotEntity.image().thumbnailUrl())
                 .commentsCount(shotEntity.commentsCount())
-                .hdpiImageUrl(shotEntity.image().hiDpiUrl())
-                .normalImageUrl(shotEntity.image().normalUrl())
-                .thumbnailUrl(shotEntity.image().teaserUrl())
                 .build();
     }
 }
