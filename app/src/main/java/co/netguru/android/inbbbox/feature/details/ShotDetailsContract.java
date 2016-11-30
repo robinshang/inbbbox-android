@@ -24,6 +24,26 @@ public interface ShotDetailsContract {
         void showErrorMessage(String errorMessageLabel);
 
         Shot getShotInitialData();
+
+        String getCommentText();
+
+        void setInputShowingEnabled(boolean b);
+
+        boolean getCommentModeInitialState();
+
+        void scrollToLastItem();
+
+        void collapseAppbarWithAnimation();
+
+        void showCommentEditorDialog(String text);
+
+        void showKeyboard();
+
+        void showInputIfHidden();
+
+        void hideDetailsScreen();
+
+        void hideKeyboard();
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -33,5 +53,13 @@ public interface ShotDetailsContract {
         void handleShotLike(boolean newLikeState);
 
         void retrieveInitialData();
+
+        void sendComment();
+
+        void openCommentEditor(Comment currentComment);
+
+        void updateComment(String updatedComment);
+
+        void closeScreen();
     }
 }

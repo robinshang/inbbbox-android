@@ -74,25 +74,8 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     }
 
     private Shot changeShotLikeStatus(Shot shot) {
-        return Shot.builder()
-                .id(shot.id())
-                .title(shot.title())
-                .author(shot.author())
-                .team(shot.team())
-                .projectUrl(shot.projectUrl())
-                .creationDate(shot.creationDate())
-                .likesCount(shot.likesCount())
-                .bucketCount(shot.bucketCount())
-                .description(shot.description())
-                .isGif(shot.isGif())
-                .hdpiImageUrl(shot.hdpiImageUrl())
-                .normalImageUrl(shot.normalImageUrl())
-                .thumbnailUrl(shot.thumbnailUrl())
-                .creationDate(shot.creationDate())
-                .author(shot.author())
-                .isGif(shot.isGif())
+        return Shot.update(shot)
                 .isLiked(true)
-                .isBucketed(shot.isBucketed())
                 .build();
     }
 
@@ -134,6 +117,12 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     @Override
     public void showShotDetails(Shot shot) {
         getView().showShotDetails(shot);
+    }
+
+    @Override
+    public void showCommentInput(Shot selectedShot) {
+        getView().closeFabMenu();
+        getView().showDetailsScreenInCommentMode(selectedShot);
     }
 
     private void getShots() {

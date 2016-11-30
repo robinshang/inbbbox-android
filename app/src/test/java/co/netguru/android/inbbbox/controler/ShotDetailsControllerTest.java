@@ -27,6 +27,7 @@ import rx.Observable;
 import rx.Single;
 import rx.observers.TestSubscriber;
 
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -143,7 +144,7 @@ public class ShotDetailsControllerTest {
         controller.getShotComments(EXAMPLE_SHOT_ID).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(shotApiMock, times(1)).getShotComments(EXAMPLE_SHOT_ID.toString());
+        verify(shotApiMock, atLeastOnce()).getShotComments(EXAMPLE_SHOT_ID.toString());
     }
 
     @Test
