@@ -137,7 +137,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showErrorMessage(String errorMessageLabel) {
-        Toast.makeText(getContext(), errorMessageLabel, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), errorMessageLabel, Toast.LENGTH_LONG).show();
     }
 
     @Override

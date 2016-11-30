@@ -92,4 +92,7 @@
     <string name="edit_comment_update">Update comment</string>
     <string name="edit_comment_cancel">Cancel</string>
     <string name="comment_edit_hint">Edit comment</string>
+    <string name="error_to_low_rank">You rank is to low, you should be a \'Player\" or a \'Team\' to
+        do this
+    </string>
 </resources>
