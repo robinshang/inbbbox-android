@@ -24,7 +24,7 @@ public class ErrorMessageController {
         if (throwable.getMessage().contains(Integer.toString(HttpURLConnection.HTTP_FORBIDDEN))) {
             message = resources.getString(R.string.error_to_low_rank);
         } else {
-            throwable.getMessage();
+            message = throwable.getMessage();
         }
         return message;
     }

@@ -123,6 +123,9 @@ public final class Statics {
         List<CommentEntity> comments = new ArrayList<>();
         for (int i = 0; i < COMMENTS_COUNT; i++) {
             CommentEntity comment = new CommentEntity();
+            comment.setUser(USER_ENTITY);
+            comment.setCreatedAt(LocalDateTime.now());
+            comment.setBody("test");
             comments.add(comment);
         }
         return comments;
