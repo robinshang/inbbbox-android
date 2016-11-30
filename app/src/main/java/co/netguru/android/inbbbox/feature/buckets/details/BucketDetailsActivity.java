@@ -53,14 +53,7 @@ public class BucketDetailsActivity extends BaseActivity
         initializeToolbar();
         initializeBottomSheet();
         if (savedInstanceState == null) {
-            BucketWithShots bucketWithShots = getIntent().getParcelableExtra(BUCKET_WITH_SHOTS_KEY);
-            int perPage = getIntent().getIntExtra(SHOTS_PER_PAGE_KEY, Constants.UNDEFINED);
-            if (bucketWithShots != null && perPage != Constants.UNDEFINED) {
-                replaceFragment(R.id.bucket_details_fragment_container,
-                        BucketDetailsFragment.newInstance(bucketWithShots, perPage), BucketDetailsFragment.TAG).commit();
-            } else {
-                throw new IllegalArgumentException("Error shots with buckets or per page count is empty");
-            }
+            initializeBucketDetailsFragment();
         }
     }
 
@@ -96,6 +89,17 @@ public class BucketDetailsActivity extends BaseActivity
                 .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
                 .commit();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    private void initializeBucketDetailsFragment() {
+        BucketWithShots bucketWithShots = getIntent().getParcelableExtra(BUCKET_WITH_SHOTS_KEY);
+        int perPage = getIntent().getIntExtra(SHOTS_PER_PAGE_KEY, Constants.UNDEFINED);
+        if (bucketWithShots != null && perPage != Constants.UNDEFINED) {
+            replaceFragment(R.id.bucket_details_fragment_container,
+                    BucketDetailsFragment.newInstance(bucketWithShots, perPage), BucketDetailsFragment.TAG).commit();
+        } else {
+            throw new IllegalArgumentException("Error shots with buckets or per page count is empty");
+        }
     }
 
     private boolean isBottomSheetOpen() {

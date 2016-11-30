@@ -34,6 +34,7 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     private boolean canLoadMore;
 
     private long currentBucketId;
+    
     @NonNull
     private Subscription refreshShotsSubscription;
     @NonNull
@@ -44,6 +45,13 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         this.bucketsController = bucketsController;
         refreshShotsSubscription = Subscriptions.unsubscribed();
         loadNextBucketSubscription = Subscriptions.unsubscribed();
+    }
+
+    @Override
+    public void detachView(boolean retainInstance) {
+        super.detachView(retainInstance);
+        refreshShotsSubscription.unsubscribe();
+        loadNextBucketSubscription.unsubscribe();
     }
 
     @Override
@@ -62,14 +70,8 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
             loadNextBucketSubscription.unsubscribe();
             pageNumber = 1;
             refreshShotsSubscription = bucketsController.getShotsListFromBucket(currentBucketId, pageNumber, shotsPerPage)
-                    .toObservable()
-                    .compose(RxTransformerUtils.executeRunnableIfObservableDidntEmitUntilGivenTime(
-                            SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS, getView()::showLoadingMoreShotsView))
-                    .compose(RxTransformers.androidIO())
-                    .doAfterTerminate(() -> {
-                        getView().hideLoadingMoreShotsView();
-                        getView().hideProgressbar();
-                    })
+                    .compose(RxTransformerUtils.applySingleIoSchedulers())
+                    .doAfterTerminate(getView()::hideProgressbar)
                     .subscribe(this::handleNewShots,
                             throwable -> Timber.d(throwable, "Error while loading new shots from bucket")
                     );

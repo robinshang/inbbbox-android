@@ -43,13 +43,14 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
         } else {
             handleNotEmptyShotsList(shots);
         }
-
         bucketNameTextView.setText(bucketWithShots.bucket().name());
-        String shotsString = itemView.getResources().getQuantityString(R.plurals.fragment_buckets_shots_string, shots.size());
-        bucketShotsCountTextView.setText(String.format(shotsString, shots.size()));
+        int shotsCount = item.bucket().shotsCount();
+        String shotsString = itemView.getResources().getQuantityString(R.plurals.fragment_buckets_shots_string, shotsCount);
+        bucketShotsCountTextView.setText(String.format(shotsString, shotsCount));
     }
 
     private void loadImageInto(ImageView imageView, String url) {
+        Glide.clear(imageView);
         Glide.with(itemView.getContext())
                 .load(url)
                 .animate(android.R.anim.fade_in)
