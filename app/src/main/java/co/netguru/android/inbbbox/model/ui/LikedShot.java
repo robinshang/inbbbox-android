@@ -12,23 +12,22 @@ public class LikedShot implements ShotImage {
 
     public LikedShot(LikedShotEntity likedShotEntity) {
         this.id = likedShotEntity.shot().id();
-        this.imageUrl = likedShotEntity.shot().image().normalUrl();
+        this.imageUrl = likedShotEntity.shot().image().normalImageUrl();
         this.isGif = likedShotEntity.shot().animated();
-        this.thumbnailUrl = likedShotEntity.shot().image().teaserUrl();
-        this.hiDpiUrl = likedShotEntity.shot().image().hiDpiUrl();
+        this.thumbnailUrl = likedShotEntity.shot().image().thumbnailUrl();
+        this.hiDpiUrl = likedShotEntity.shot().image().hiDpiImageUrl();
     }
 
     public long getId() {
         return id;
     }
 
-    @Override
     public boolean isGif() {
         return isGif;
     }
 
     @Override
-    public String hdpiImageUrl() {
+    public String hiDpiImageUrl() {
         return this.hiDpiUrl;
     }
 
