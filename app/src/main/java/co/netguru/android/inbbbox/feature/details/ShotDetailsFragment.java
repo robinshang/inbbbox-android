@@ -223,8 +223,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onCommentDeleteSelected(Comment currentComment) {
-        // TODO: 28.11.2016
-        Toast.makeText(getContext(), "onCommentDeleteSelected: " + currentComment.text(), Toast.LENGTH_SHORT).show();
+        getPresenter().onCommentDelete(currentComment);
     }
 
     @Override
@@ -281,6 +280,19 @@ public class ShotDetailsFragment
     @Override
     public void clearCommentInput() {
         commentTextInputLayout.getEditText().setText("");
+    }
+
+    @Override
+    public void showDeleteCommentWarning() {
+        // TODO: 30.11.2016
+    }
+
+    @Override
+    public void showCommentDeletedInfo() {
+        Toast.makeText(getContext(),
+                getString(R.string.comment_deleted_complete),
+                Toast.LENGTH_SHORT)
+                .show();
     }
 
     private void initComponent() {

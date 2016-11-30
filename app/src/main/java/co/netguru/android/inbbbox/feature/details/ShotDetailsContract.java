@@ -52,6 +52,10 @@ public interface ShotDetailsContract {
         void addNewComment(Comment updatedComment);
 
         void clearCommentInput();
+
+        void showDeleteCommentWarning();
+
+        void showCommentDeletedInfo();
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -69,5 +73,9 @@ public interface ShotDetailsContract {
         void updateComment(String updatedComment);
 
         void closeScreen();
+
+        void onCommentDelete(Comment currentComment);
+
+        void onCommentDeleteConfirmed();
     }
 }
