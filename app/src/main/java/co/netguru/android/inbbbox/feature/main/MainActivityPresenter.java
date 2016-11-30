@@ -227,6 +227,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         setNotificationSettings(settings.getNotificationSettings());
         setStreamSourceSettings(settings.getStreamSourceSettings());
         getView().changeCustomizationStatus(settings.getCustomizationSettings().isShowDetails());
+        getView().setSettingsListeners();
     }
 
     private void setNotificationSettings(NotificationSettings notificationSettings) {

@@ -318,15 +318,10 @@ public class MainActivity
             getPresenter().notificationStatusChanged(isChecked);
         });
         followingSwitch = findDrawerSwitch(R.id.drawer_item_following);
-        followingSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().followingStatusChanged(isChecked)));
         newSwitch = findDrawerSwitch(R.id.drawer_item_new);
-        newSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().newStatusChanged(isChecked)));
         popularSwitch = findDrawerSwitch(R.id.drawer_item_popular);
-        popularSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().popularStatusChanged(isChecked)));
         debutsSwitch = findDrawerSwitch(R.id.drawer_item_debuts);
-        debutsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().debutsStatusChanged(isChecked));
         shotDetailsSwitch = findDrawerSwitch(R.id.drawer_item_shot_details);
-        shotDetailsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().customizationStatusChanged(isChecked));
     }
 
     private Switch findDrawerSwitch(@IdRes int itemId) {
@@ -406,6 +401,15 @@ public class MainActivity
     @Override
     public void changeCustomizationStatus(boolean isDetails) {
         shotDetailsSwitch.setChecked(isDetails);
+    }
+
+    @Override
+    public void setSettingsListeners() {
+        followingSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().followingStatusChanged(isChecked)));
+        newSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().newStatusChanged(isChecked)));
+        popularSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().popularStatusChanged(isChecked)));
+        debutsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().debutsStatusChanged(isChecked));
+        shotDetailsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().customizationStatusChanged(isChecked));
     }
 
     @Override

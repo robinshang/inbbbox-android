@@ -200,6 +200,8 @@ dependencies {
         exclude module: 'support-annotations'
     }
 
+    compile libs.mosbyViewState
+
     // Dagger
     compile libs.dagger
     apt proc.dagger
