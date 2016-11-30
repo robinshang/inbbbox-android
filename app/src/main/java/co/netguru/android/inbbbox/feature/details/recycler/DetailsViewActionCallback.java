@@ -21,4 +21,6 @@ public interface DetailsViewActionCallback {
     void onCommentEditSelected(Comment currentComment);
 
     void onCommentUpdated(String comment);
+
+    void onCommentDeleteConfirmed();
 }

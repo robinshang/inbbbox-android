@@ -237,6 +237,11 @@ public class ShotDetailsFragment
     }
 
     @Override
+    public void onCommentDeleteConfirmed() {
+        getPresenter().onCommentDeleteConfirmed();
+    }
+
+    @Override
     public void showMainImage(ShotImage shotImage) {
         parallaxImageView.setRadius(radius);
         parallaxImageView.disableRadiusForBottomEdge(true);
@@ -284,7 +289,9 @@ public class ShotDetailsFragment
 
     @Override
     public void showDeleteCommentWarning() {
-        // TODO: 30.11.2016
+        RemoveCommentFragmentDialog
+                .newInstance(this)
+                .show(getFragmentManager(), RemoveCommentFragmentDialog.TAG);
     }
 
     @Override
