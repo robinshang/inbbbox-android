@@ -33,9 +33,9 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotImage;
 import co.netguru.android.inbbbox.model.ui.Team;
 import co.netguru.android.inbbbox.model.ui.User;
+import co.netguru.android.inbbbox.utils.AnimationUtil;
 import co.netguru.android.inbbbox.utils.InputUtils;
 import co.netguru.android.inbbbox.utils.ShotLoadingManager;
-import co.netguru.android.inbbbox.utils.ViewAnimator;
 import co.netguru.android.inbbbox.view.RoundedCornersImageView;
 
 
@@ -80,16 +80,6 @@ public class ShotDetailsFragment
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
 
-    @OnClick(R.id.comment_send_imageView)
-    void onSendCommentClick() {
-        getPresenter().sendComment();
-    }
-
-    @OnClick(R.id.details_close_imageView)
-    void onCloseClick() {
-        getPresenter().closeScreen();
-    }
-
     public static ShotDetailsFragment newInstance(Shot shot) {
         return newInstance(shot, false);
     }
@@ -112,10 +102,12 @@ public class ShotDetailsFragment
                 .inflate(R.layout.fragment_shot_details, container, false);
     }
 
-    private void initComponent() {
-        component = App.getAppComponent(getContext())
-                .plus(new ShotsDetailsModule(this));
-        component.inject(this);
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
+        getPresenter().retrieveInitialData();
+        getPresenter().downloadData();
     }
 
     @NonNull
@@ -124,12 +116,14 @@ public class ShotDetailsFragment
         return component.getPresenter();
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
-        getPresenter().retrieveInitialData();
-        getPresenter().downloadData();
+    @OnClick(R.id.comment_send_ImageView)
+    void onSendCommentClick() {
+        getPresenter().sendComment();
+    }
+
+    @OnClick(R.id.details_close_imageView)
+    void onCloseClick() {
+        getPresenter().closeScreen();
     }
 
     @Override
@@ -253,7 +247,7 @@ public class ShotDetailsFragment
     @Override
     public void showInputIfHidden() {
         if (shotCommentInputPanel != null && shotCommentInputPanel.getVisibility() == View.GONE) {
-            ViewAnimator.startSlideInFromBottomShowAnimation(shotCommentInputPanel);
+            AnimationUtil.startSlideInFromBottomShowAnimation(shotCommentInputPanel);
         }
     }
 
@@ -287,6 +281,12 @@ public class ShotDetailsFragment
     @Override
     public void clearCommentInput() {
         commentTextInputLayout.getEditText().setText("");
+    }
+
+    private void initComponent() {
+        component = App.getAppComponent(getContext())
+                .plus(new ShotsDetailsModule(this));
+        component.inject(this);
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {
