@@ -55,7 +55,6 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
             pageNumber = 1;
             refreshSubscription = bucketsController.getUserBucketsWithShots(pageNumber, BUCKETS_PER_PAGE_COUNT, BUCKET_SHOTS_PER_PAGE_COUNT)
                     .compose(RxTransformerUtils.applySingleIoSchedulers())
-                    .toObservable()
                     .doAfterTerminate(getView()::hideProgressBars)
                     .subscribe(bucketWithShotsList -> {
                                 apiHasMoreBuckets = bucketWithShotsList.size() == BUCKETS_PER_PAGE_COUNT;

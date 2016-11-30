@@ -19,7 +19,7 @@ public class MockedBucketApi implements BucketApi {
     private static final List<ShotEntity> mockedBucketShots = getMockShots();
 
     @Override
-    public Single<List<ShotEntity>> getBucketShots(@Path("id") long id, @Query("page") int pageNumber, @Query("per_page") int pageCount) {
+    public Single<List<ShotEntity>> getBucketShotsList(@Path("id") long id, @Query("page") int pageNumber, @Query("per_page") int pageCount) {
         return Single.fromCallable(() -> new ArrayList<>(mockedBucketShots));
     }
 
@@ -42,7 +42,7 @@ public class MockedBucketApi implements BucketApi {
                     .bucketsCount(3)
                     .createdAt(LocalDateTime.now())
                     .build();
-            mockedBucketShots.add(entity);
+            shots.add(entity);
         }
         return shots;
     }

@@ -124,10 +124,10 @@ public class BucketDetailsFragment
 
 
     @Override
-    public void setFragmentTitle(Bucket bucket) {
+    public void setFragmentTitle(String title) {
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(bucket.name());
+            actionBar.setTitle(title);
         }
     }
 

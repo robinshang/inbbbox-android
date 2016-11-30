@@ -34,24 +34,26 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     private boolean canLoadMore;
 
     private long currentBucketId;
-    
+
     @NonNull
-    private Subscription refreshShotsSubscription;
+    protected Subscription refreshShotsSubscription;
     @NonNull
-    private Subscription loadNextBucketSubscription;
+    protected Subscription loadNextShotsSubscription;
 
     @Inject
     public BucketDetailsPresenter(BucketsController bucketsController) {
         this.bucketsController = bucketsController;
         refreshShotsSubscription = Subscriptions.unsubscribed();
-        loadNextBucketSubscription = Subscriptions.unsubscribed();
+        loadNextShotsSubscription = Subscriptions.unsubscribed();
     }
+
+
 
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
         refreshShotsSubscription.unsubscribe();
-        loadNextBucketSubscription.unsubscribe();
+        loadNextShotsSubscription.unsubscribe();
     }
 
     @Override
@@ -60,14 +62,14 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         Bucket bucket = bucketWithShots.bucket();
         currentBucketId = bucket.id();
         List<ShotEntity> shotEntities = bucketWithShots.shots();
-        getView().setFragmentTitle(bucket);
+        getView().setFragmentTitle(bucket.name());
         handleNewShots(shotEntities);
     }
 
     @Override
     public void refreshShots() {
         if (refreshShotsSubscription.isUnsubscribed()) {
-            loadNextBucketSubscription.unsubscribe();
+            loadNextShotsSubscription.unsubscribe();
             pageNumber = 1;
             refreshShotsSubscription = bucketsController.getShotsListFromBucket(currentBucketId, pageNumber, shotsPerPage)
                     .compose(RxTransformerUtils.applySingleIoSchedulers())
@@ -80,9 +82,9 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
 
     @Override
     public void loadMoreShots() {
-        if (canLoadMore && refreshShotsSubscription.isUnsubscribed() && loadNextBucketSubscription.isUnsubscribed()) {
+        if (canLoadMore && refreshShotsSubscription.isUnsubscribed() && loadNextShotsSubscription.isUnsubscribed()) {
             pageNumber++;
-            loadNextBucketSubscription =
+            loadNextShotsSubscription =
                     bucketsController.getShotsListFromBucket(currentBucketId, pageNumber, shotsPerPage)
                             .toObservable()
                             .compose(RxTransformerUtils.executeRunnableIfObservableDidntEmitUntilGivenTime(

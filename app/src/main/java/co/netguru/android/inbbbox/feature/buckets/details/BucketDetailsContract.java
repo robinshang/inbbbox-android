@@ -13,7 +13,7 @@ import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 public interface BucketDetailsContract {
     interface View extends MvpView {
 
-        void setFragmentTitle(Bucket bucket);
+        void setFragmentTitle(String string);
 
         void showShots(List<ShotEntity> shotEntities);
 
