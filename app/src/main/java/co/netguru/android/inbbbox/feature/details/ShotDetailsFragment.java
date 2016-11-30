@@ -116,7 +116,7 @@ public class ShotDetailsFragment
         return component.getPresenter();
     }
 
-    @OnClick(R.id.comment_send_ImageView)
+    @OnClick(R.id.comment_send_imageView)
     void onSendCommentClick() {
         getPresenter().sendComment();
     }
