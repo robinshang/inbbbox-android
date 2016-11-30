@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,14 +27,14 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
-import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
-public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<LikesViewContract.View,
+public class LikesFragment extends BaseMvpFragmentWithListTypeSelection<LikesViewContract.View,
         LikesViewContract.Presenter>
         implements LikesViewContract.View {
 
@@ -97,7 +99,6 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
         initEmptyView();
-        getPresenter().getLikesFromServer();
     }
 
     @Override
@@ -112,14 +113,27 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
         return component.getPresenter();
     }
 
+    @NonNull
+    @Override
+    public ViewState createViewState() {
+        return new LikesViewState();
+    }
+
+    @Override
+    public void onNewViewStateInstance() {
+        getPresenter().getLikesFromServer();
+    }
+
     @Override
     public void showLikes(List<Shot> likedShotList) {
         likesAdapter.setLikeList(likedShotList);
+        ((LikesViewState) viewState).setDataList(likedShotList);
     }
 
     @Override
     public void showMoreLikes(List<Shot> likedShotList) {
         likesAdapter.addMoreLikes(likedShotList);
+        ((LikesViewState) viewState).addMoreData(likedShotList);
     }
 
     @Override

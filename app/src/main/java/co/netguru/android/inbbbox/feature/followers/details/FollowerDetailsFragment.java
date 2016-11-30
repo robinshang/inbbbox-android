@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,7 +29,8 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.FollowerDetailsFragmentComponent;
 import co.netguru.android.inbbbox.di.module.FollowerDetailsFragmentModule;
-import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.followers.FollowersViewState;
 import co.netguru.android.inbbbox.feature.followers.details.adapter.FollowerDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -35,7 +38,7 @@ import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 import static butterknife.ButterKnife.findById;
 
-public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowerDetailsContract.View,
+public class FollowerDetailsFragment extends BaseMvpFragmentWithListTypeSelection<FollowerDetailsContract.View,
         FollowerDetailsContract.Presenter> implements FollowerDetailsContract.View {
 
     public static final int GRID_VIEW_COLUMN_COUNT = 2;
@@ -94,7 +97,6 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
-        getPresenter().followerDataReceived(getArguments().getParcelable(FOLLOWER_KEY));
     }
 
     @Override
@@ -120,9 +122,22 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         return component.getPresenter();
     }
 
+    @NonNull
+    @Override
+    public ViewState createViewState() {
+        return new FollowersViewState();
+    }
+
+    @Override
+    public void onNewViewStateInstance() {
+        getPresenter().followerDataReceived(getArguments().getParcelable(FOLLOWER_KEY));
+    }
+
     @Override
     public void showFollowerData(Follower follower) {
         adapter.setFollowerAdapterData(follower);
+        ((FollowerDetailsViewState) viewState).setFollower(follower);
+
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(follower.name());
@@ -132,6 +147,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     @Override
     public void showMoreUserShots(List<Shot> shotList) {
         adapter.addMoreUserShots(shotList);
+        ((FollowerDetailsViewState) viewState).addMoreData(shotList);
     }
 
     @Override

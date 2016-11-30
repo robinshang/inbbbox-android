@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.buckets.details;
 
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -29,14 +28,18 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.buckets.details.adapter.BucketShotViewHolder;
 import co.netguru.android.inbbbox.feature.buckets.details.adapter.BucketShotsAdapter;
-import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
+
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
+
+import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithListTypeSelection;
+
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
-public class BucketDetailsFragment
-        extends BaseMvpFragmentWithWithListTypeSelection<BucketDetailsContract.View, BucketDetailsContract.Presenter>
+public class BucketDetailsFragment extends
+        BaseMvpFragmentWithListTypeSelection<BucketDetailsContract.View, BucketDetailsContract.Presenter>
         implements BucketDetailsContract.View {
 
     public static final String TAG = BucketDetailsFragment.class.getSimpleName();
@@ -113,6 +116,17 @@ public class BucketDetailsFragment
     @Override
     public BucketDetailsContract.Presenter createPresenter() {
         return App.getAppComponent(getContext()).plusBucketDetailsComponent().getPresenter();
+    }
+
+    @NonNull
+    @Override
+    public ViewState createViewState() {
+        return new BucketDetailsViewState();
+    }
+
+    @Override
+    public void onNewViewStateInstance() {
+        // TODO: 30.11.2016 Add proper action
     }
 
     @Override
@@ -192,5 +206,10 @@ public class BucketDetailsFragment
         emptyTextDrawable.setBounds(0, 0, lineHeight, lineHeight);
         emptyViewText.setText(TextFormatterUtil
                 .addDrawableBetweenStrings(emptyStringBeforeIcon, emptyStringAfterIcon, emptyTextDrawable));
+    }
+
+    @FunctionalInterface
+    public interface OnShotInBucketClickListener {
+        void onShotClick(ShotEntity shotEntity);
     }
 }

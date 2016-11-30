@@ -15,6 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,7 +28,7 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.FollowersFragmentComponent;
 import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
-import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.followers.adapter.BaseFollowersViewHolder;
 import co.netguru.android.inbbbox.feature.followers.adapter.FollowersAdapter;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
@@ -34,7 +36,7 @@ import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
-public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowersContract.View, FollowersContract.Presenter>
+public class FollowersFragment extends BaseMvpFragmentWithListTypeSelection<FollowersContract.View, FollowersContract.Presenter>
         implements FollowersContract.View, BaseFollowersViewHolder.OnFollowerClickListener {
 
     public static final int GRID_VIEW_COLUMN_COUNT = 2;
@@ -88,7 +90,6 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
         initEmptyView();
-        getPresenter().getFollowedUsersFromServer();
     }
 
     @Override
@@ -103,14 +104,27 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
         return component.getPresenter();
     }
 
+    @NonNull
+    @Override
+    public ViewState createViewState() {
+        return new FollowersViewState();
+    }
+
+    @Override
+    public void onNewViewStateInstance() {
+        getPresenter().getFollowedUsersFromServer();
+    }
+
     @Override
     public void showFollowedUsers(List<Follower> followerList) {
         adapter.setFollowersList(followerList);
+        ((FollowersViewState) viewState).setDataList(followerList);
     }
 
     @Override
     public void showMoreFollowedUsers(List<Follower> followerList) {
         adapter.addMoreFollowers(followerList);
+        ((FollowersViewState) viewState).addMoreData(followerList);
     }
 
     @Override

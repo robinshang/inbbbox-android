@@ -17,6 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
+
 import java.util.List;
 
 import butterknife.BindDrawable;
@@ -29,12 +31,12 @@ import co.netguru.android.inbbbox.feature.buckets.adapter.BaseBucketViewHolder;
 import co.netguru.android.inbbbox.feature.buckets.adapter.BucketsAdapter;
 import co.netguru.android.inbbbox.feature.buckets.createbucket.CreateBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.buckets.details.BucketDetailsActivity;
-import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
-public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<BucketsFragmentContract.View, BucketsFragmentContract.Presenter>
+public class BucketsFragment extends BaseMvpFragmentWithListTypeSelection<BucketsFragmentContract.View, BucketsFragmentContract.Presenter>
         implements BucketsFragmentContract.View, BaseBucketViewHolder.BucketClickListener {
 
     @BindDrawable(R.drawable.ic_buckets_empty_state)
@@ -82,7 +84,6 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
         initEmptyView();
         initRecyclerView();
         initRefreshLayout();
-        getPresenter().loadBucketsWithShots(false);
     }
 
     @Override
@@ -97,6 +98,17 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
         return App.getAppComponent(getContext()).inject().getPresenter();
     }
 
+    @NonNull
+    @Override
+    public ViewState createViewState() {
+        return new BucketViewState();
+    }
+
+    @Override
+    public void onNewViewStateInstance() {
+        getPresenter().loadBucketsWithShots(false);
+    }
+
     @Override
     public void onBucketClick(BucketWithShots bucketWithShots) {
         getPresenter().handleBucketWithShotsClick(bucketWithShots);
@@ -107,6 +119,7 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
         bucketsRecyclerView.setVisibility(View.VISIBLE);
         emptyView.setVisibility(View.GONE);
         adapter.setNewBucketsWithShots(bucketsWithShots);
+        ((BucketViewState) viewState).setDataList(bucketsWithShots);
     }
 
     @Override
@@ -118,6 +131,7 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
     @Override
     public void addMoreBucketsWithShots(List<BucketWithShots> bucketWithShotsList) {
         adapter.addNewBucketsWithShots(bucketWithShotsList);
+        ((BucketViewState) viewState).addMoreData(bucketWithShotsList);
     }
 
     @Override
