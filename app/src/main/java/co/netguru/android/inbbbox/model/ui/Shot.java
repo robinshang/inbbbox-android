@@ -26,6 +26,8 @@ public abstract class Shot implements Parcelable, ShotImage {
 
     public abstract Integer bucketCount();
 
+    public abstract Integer commentsCount();
+
     @Nullable
     public abstract String description();
 
@@ -70,6 +72,7 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .normalImageUrl(shot.normalImageUrl())
                 .thumbnailUrl(shot.thumbnailUrl())
                 .isLiked(shot.isLiked())
+                .commentsCount(shot.commentsCount())
                 .isBucketed(shot.isBucketed());
     }
 
@@ -105,6 +108,8 @@ public abstract class Shot implements Parcelable, ShotImage {
 
         public abstract Shot.Builder author(User user);
 
+        public abstract Shot.Builder commentsCount(Integer commentsCount);
+
         public abstract Shot build();
     }
 
@@ -125,6 +130,7 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .isGif(shotEntity.animated())
                 .isLiked(false)
                 .isBucketed(false)
+                .commentsCount(shotEntity.commentsCount())
                 .hdpiImageUrl(shotEntity.image().hiDpiUrl())
                 .normalImageUrl(shotEntity.image().normalUrl())
                 .thumbnailUrl(shotEntity.image().teaserUrl())

@@ -76,6 +76,7 @@ public final class Statics {
             .isGif(false)
             .isLiked(false)
             .isBucketed(false)
+            .commentsCount(3)
             .hdpiImageUrl("")
             .normalImageUrl("")
             .thumbnailUrl("")
@@ -89,6 +90,7 @@ public final class Statics {
             .team(TEAM)
             .bucketCount(123)
             .likesCount(321)
+            .commentsCount(3)
             .creationDate(LocalDateTime.now().minusDays(2))
             .isGif(false)
             .isLiked(true)
@@ -110,6 +112,7 @@ public final class Statics {
                     .authorAvatarUrl("")
                     .date(LocalDateTime.now())
                     .text("text: " + i)
+                    .isCurrentUserAuthor(false)
                     .build();
             comments.add(comment);
         }

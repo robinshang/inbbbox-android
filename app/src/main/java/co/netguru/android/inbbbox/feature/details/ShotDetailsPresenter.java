@@ -6,12 +6,16 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
+import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
+import co.netguru.android.inbbbox.utils.StringUtils;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
+import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_END;
+import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_START;
 
 public class ShotDetailsPresenter
         extends MvpNullObjectBasePresenter<ShotDetailsContract.View>
@@ -20,7 +24,9 @@ public class ShotDetailsPresenter
     private final ShotDetailsController shotDetailsController;
     private final ErrorMessageController errorMessageController;
     private final CompositeSubscription subscriptions;
+    private boolean isCommentModeInit;
     private Shot shot;
+    private Comment commentInEditor;
 
     @Inject
     public ShotDetailsPresenter(ShotDetailsController shotDetailsController,
@@ -38,13 +44,23 @@ public class ShotDetailsPresenter
 
     @Override
     public void downloadData() {
+        enableInputWhenIfInCommentMode();
         getView().showMainImage(shot);
+        getView().setInputShowingEnabled(false);
         showShotDetails(shot);
         subscriptions.add(
                 shotDetailsController.getShotComments(shot.id())
                         .compose(androidIO())
+                        .doOnCompleted(() -> getView().setInputShowingEnabled(true))
                         .subscribe(this::handleDetailsStates, this::handleApiError)
         );
+    }
+
+    private void enableInputWhenIfInCommentMode() {
+        if (isCommentModeInit) {
+            getView().showInputIfHidden();
+            getView().showKeyboard();
+        }
     }
 
     @Override
@@ -60,6 +76,38 @@ public class ShotDetailsPresenter
     @Override
     public void retrieveInitialData() {
         this.shot = getView().getShotInitialData();
+        this.isCommentModeInit = getView().getCommentModeInitialState();
+    }
+
+    @Override
+    public void sendComment() {
+        String comment = getView().getCommentText();
+        if (!StringUtils.isBlank(comment)) {
+            sendCommentToApi(comment);
+        }
+    }
+
+    @Override
+    public void openCommentEditor(Comment currentComment) {
+        commentInEditor = currentComment;
+        getView().showCommentEditorDialog(
+                currentComment.text()
+                        .replace(PARAGRAPH_TAG_START, "")
+                        .replace(PARAGRAPH_TAG_END, ""));
+    }
+
+    @Override
+    public void updateComment(String updatedComment) {
+        // TODO: 28.11.2016 no in scope of this task
+    }
+
+    @Override
+    public void closeScreen() {
+        getView().hideDetailsScreen();
+    }
+
+    private void sendCommentToApi(String comment) {
+        // TODO: 23.11.2016 not in scope of this task
     }
 
     private void updateLikeState(boolean newLikeState) {
@@ -73,6 +121,14 @@ public class ShotDetailsPresenter
         getView().showComments(state.comments());
         updateShotDetails(state.isLiked(), state.isBucketed());
         showShotDetails(shot);
+        checkCommentMode();
+    }
+
+    private void checkCommentMode() {
+        if (isCommentModeInit) {
+            getView().collapseAppbarWithAnimation();
+            getView().scrollToLastItem();
+        }
     }
 
     private void updateShotDetails(boolean liked, boolean bucketed) {

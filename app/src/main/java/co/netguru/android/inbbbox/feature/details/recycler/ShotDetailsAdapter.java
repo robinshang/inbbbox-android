@@ -13,7 +13,11 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 
 public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHolder> {
 
-    static final int STATIC_ITEMS_COUNT = 2;
+    private static final int LOAD_MORE_ITEM = 1;
+    private static final int LOAD_MORE_VIEW_TYPE = -99;
+    private static final int USER_INFO_VIEW_TYPE = 0;
+    private static final int DESCRIPTION_VIEW_TYPE = 1;
+    private static final int STATIC_ITEMS_COUNT = 2;
 
     private final DetailsViewActionCallback actionCallback;
     private Shot details;
@@ -27,24 +31,51 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
 
     @Override
     public ShotDetailsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return ShotDetailsViewFactory
-                .getViewHolder(viewType, parent, actionCallback);
+        ShotDetailsViewHolder viewHolder;
+        switch (viewType) {
+            case USER_INFO_VIEW_TYPE:
+                viewHolder = new ShotDetailsUserInfoViewHolder(parent, actionCallback);
+                break;
+            case DESCRIPTION_VIEW_TYPE:
+                viewHolder = new ShotDetailsDescriptionViewHolder(parent, actionCallback);
+                break;
+            case LOAD_MORE_VIEW_TYPE:
+                viewHolder = new ShotDetailsLoadMoreViewHolder(parent, actionCallback);
+                break;
+            default:
+                viewHolder = new ShotDetailsCommentViewHolder(parent, actionCallback);
+                break;
+        }
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ShotDetailsViewHolder holder, int position) {
-        holder.bind(details, comments);
+        if (holder instanceof ShotDetailsUserInfoViewHolder) {
+            ((ShotDetailsUserInfoViewHolder) holder).bind(details);
+        } else if (holder instanceof ShotDetailsDescriptionViewHolder) {
+            ((ShotDetailsDescriptionViewHolder) holder).bind(details);
+        } else if (holder instanceof ShotDetailsCommentViewHolder) {
+            ((ShotDetailsCommentViewHolder) holder).bind(getComment(position));
+        } else if (holder instanceof ShotDetailsLoadMoreViewHolder) {
+            ((ShotDetailsLoadMoreViewHolder) holder).bind(details);
+        }
+    }
+
+    private Comment getComment(int position) {
+        return (!comments.isEmpty() && position > STATIC_ITEMS_COUNT - 1 && position < getItemCount() - 1) ?
+                comments.get(position - ShotDetailsAdapter.STATIC_ITEMS_COUNT)
+                : null;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position;
+        return position == getItemCount() - 1 ? LOAD_MORE_VIEW_TYPE : position;
     }
 
     @Override
     public int getItemCount() {
-        // TODO: 18.11.2016 handle empty descrption
-        return (details != null ? comments.size() : 0) + STATIC_ITEMS_COUNT;
+        return (details != null ? comments.size() + LOAD_MORE_ITEM : 0) + STATIC_ITEMS_COUNT;
     }
 
     public void setDetails(Shot details) {
@@ -55,5 +86,9 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     public void setComments(List<Comment> comments) {
         this.comments = comments;
         notifyDataSetChanged();
+    }
+
+    public boolean isInputVisibilityPermitted(int lastVisibleIndex) {
+        return lastVisibleIndex == getItemCount() - 1;
     }
 }

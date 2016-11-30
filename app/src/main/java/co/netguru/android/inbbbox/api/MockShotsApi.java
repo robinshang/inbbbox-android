@@ -71,6 +71,7 @@ public class MockShotsApi implements ShotsApi {
                             .likesCount(2)
                             .bucketsCount(3)
                             .createdAt(LocalDateTime.now())
+                            .commentsCount(2)
                             .build());
         }
         return result;

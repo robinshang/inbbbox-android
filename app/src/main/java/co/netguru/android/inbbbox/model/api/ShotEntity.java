@@ -35,6 +35,8 @@ public abstract class ShotEntity implements Parcelable {
     @SerializedName("created_at")
     public abstract LocalDateTime createdAt();
 
+    @SerializedName("comments_count")
+    public abstract int commentsCount();
 
     @SerializedName("animated")
     public abstract boolean animated();
@@ -68,6 +70,8 @@ public abstract class ShotEntity implements Parcelable {
         public abstract Builder likesCount(int likesCount);
 
         public abstract Builder bucketsCount(int bucketsCount);
+
+        public abstract Builder commentsCount(int commentsCount);
 
         public abstract Builder createdAt(LocalDateTime createdAt);
 
