@@ -200,6 +200,16 @@ public class ShotDetailsControllerTest {
         verify(shotApiMock, times(1)).createComment(id.toString(), exampleText);
     }
 
+    @Test
+    public void whenCommentDeleteSubscribed_thenReturnCompleteWhenSuccess() {
+        when(shotApiMock.deleteComment(anyString(), anyString())).thenReturn(Completable.complete());
+        TestSubscriber testSubscriber = new TestSubscriber();
+
+        controller.deleteComment(99L, 88L).subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+    }
+
     //ERRORS
     @Test
     public void whenLikePerformSubscribedAndErrorOccurredWhileLike_thenReturnError() {
