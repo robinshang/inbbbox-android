@@ -56,6 +56,8 @@ public interface ShotDetailsContract {
         void showDeleteCommentWarning();
 
         void showCommentDeletedInfo();
+
+        void removeCommentFromView(Comment commentInEditor);
     }
 
     interface Presenter extends MvpPresenter<View> {

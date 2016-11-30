@@ -302,6 +302,11 @@ public class ShotDetailsFragment
                 .show();
     }
 
+    @Override
+    public void removeCommentFromView(Comment commentInEditor) {
+        adapter.removeComment(commentInEditor);
+    }
+
     private void initComponent() {
         component = App.getAppComponent(getContext())
                 .plus(new ShotsDetailsModule(this));

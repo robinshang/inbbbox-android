@@ -62,12 +62,6 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
         }
     }
 
-    private Comment getComment(int position) {
-        return (!comments.isEmpty() && position > STATIC_ITEMS_COUNT - 1 && position < getItemCount() - 1) ?
-                comments.get(position - ShotDetailsAdapter.STATIC_ITEMS_COUNT)
-                : null;
-    }
-
     @Override
     public int getItemViewType(int position) {
         return position == getItemCount() - 1 ? LOAD_MORE_VIEW_TYPE : position;
@@ -95,5 +89,21 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     public void addComment(Comment updatedComment) {
         comments.add(getItemCount() - 1, updatedComment);
         notifyItemInserted(getItemCount() - 1);
+    }
+
+    public void removeComment(Comment commentToRemove) {
+        int index = getCommentItemPosition(commentToRemove);
+        notifyItemRemoved(index);
+        comments.remove(commentToRemove);
+    }
+
+    private int getCommentItemPosition(Comment commentToRemove) {
+        return comments.indexOf(commentToRemove) + STATIC_ITEMS_COUNT;
+    }
+
+    private Comment getComment(int position) {
+        return (!comments.isEmpty() && position > STATIC_ITEMS_COUNT - 1 && position < getItemCount() - 1) ?
+                comments.get(position - ShotDetailsAdapter.STATIC_ITEMS_COUNT)
+                : null;
     }
 }

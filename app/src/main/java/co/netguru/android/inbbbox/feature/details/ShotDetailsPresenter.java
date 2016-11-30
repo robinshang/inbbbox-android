@@ -121,9 +121,14 @@ public class ShotDetailsPresenter
                 shotDetailsController
                         .deleteComment(shot.id(), commentInEditor.id())
                         .compose(applyCompletableIoSchedulers())
-                        .subscribe(getView()::showCommentDeletedInfo,
+                        .subscribe(this::handleCommentDeleteComplete,
                                 this::handleApiError)
         );
+    }
+
+    private void handleCommentDeleteComplete() {
+        getView().removeCommentFromView(commentInEditor);
+        getView().showCommentDeletedInfo();
     }
 
     private void sendCommentToApi(String comment) {
