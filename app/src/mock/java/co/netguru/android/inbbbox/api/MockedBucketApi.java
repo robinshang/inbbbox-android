@@ -41,6 +41,7 @@ public class MockedBucketApi implements BucketApi {
                     .likesCount(2)
                     .bucketsCount(3)
                     .createdAt(LocalDateTime.now())
+                    .commentsCount(3)
                     .build();
             shots.add(entity);
         }

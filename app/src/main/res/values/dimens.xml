@@ -93,10 +93,26 @@
     <dimen name="details_action_label_left_margin">4dp</dimen>
     <dimen name="details_comment_top_padding">4dp</dimen>
     <dimen name="details_comment_divider_padding_bottom">16dp</dimen>
+    <dimen name="details_comment_footer_padding_bottom">10dp</dimen>
+    <dimen name="details_load_more_padding_bottom">48dp</dimen>
     <dimen name="details_description_divider_padding_bottom">24dp</dimen>
     <dimen name="details_comment_data_top_padding">2dp</dimen>
+    <dimen name="details_comment_send_button_size">40dp</dimen>
+    <dimen name="details_comment_input_right_margin">16dp</dimen>
+    <dimen name="details_comment_input_pannel_height">64dp</dimen>
+    <dimen name="details_comment_recycler_bottom_padding">16dp</dimen>
+    <dimen name="details_comment_shadow_height">1dp</dimen>
+    <dimen name="details_comment_input_margin">8dp</dimen>
 
     <dimen name="unfollow_user_dialog_text_margin">28dp</dimen>
+    <dimen name="details_comment_load_more_progress_size">32dp</dimen>
+    <dimen name="details_comment_action_icon_size">24dp</dimen>
+    <dimen name="details_comment_action_icon_side_margin">20dp</dimen>
+    <dimen name="details_comment_action_icon_top_margin">12dp</dimen>
+    <dimen name="details_comment_action_label_top">6dp</dimen>
+    <dimen name="details_comment_action_margin">4dp</dimen>
+    <dimen name="details_comment_edit_margin">24dp</dimen>
+    <dimen name="load_more_bottom_margin">8dp</dimen>
 
     <fraction name="four_images_view_percentage">50%</fraction>
 </resources>

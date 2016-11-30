@@ -86,5 +86,13 @@
     <string name="few_sec_ago">Few seconds ago</string>
     <string name="few_minutes_ago">Few minutes ago</string>
     <string name="few_hours_ago">Few hours ago</string>
-
+    <string name="comment_input_hint">Type your comment</string>
+    <string name="load_more_label">Load more comments</string>
+    <string name="comments_edit_label">Edit</string>
+    <string name="comments_delete_label">Delete</string>
+    <string name="comments_cancel_label">Cancel</string>
+    <string name="edit_comment_title">Edit comment</string>
+    <string name="edit_comment_update">Update comment</string>
+    <string name="edit_comment_cancel">Cancel</string>
+    <string name="comment_edit_hint">Edit comment</string>
 </resources>

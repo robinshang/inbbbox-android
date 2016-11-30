@@ -134,7 +134,7 @@ public class LikesFragment extends BaseMvpFragmentWithWithListTypeSelection<Like
 
     @Override
     public void openShowDetailsScreen(Shot shot) {
-        shotActionListener.showShotDetails(shot);
+        shotActionListener.showShotDetails(shot, false);
     }
 
     public void refreshFragmentData() {

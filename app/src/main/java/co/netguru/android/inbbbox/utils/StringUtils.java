@@ -7,6 +7,9 @@ import android.text.Spanned;
 
 public class StringUtils {
 
+    public static final String PARAGRAPH_TAG_START = "<p>";
+    public static final String PARAGRAPH_TAG_END = "</p>";
+
     private StringUtils() {
         throw new AssertionError();
     }

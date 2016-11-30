@@ -143,6 +143,15 @@
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
+    <style name="NoTitleDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
+        <item name="android:windowMinWidthMajor">40%</item>
+        <item name="android:windowMinWidthMinor">40%</item>
+    </style>
+
     <style name="GifLabel">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -185,4 +194,16 @@
         <item name="android:paddingBottom">@dimen/details_comment_top_padding</item>
     </style>
 
+    <style name="TextInputStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColorHint">@color/lightGray</item>
+        <item name="colorAccent">@color/lightGray</item>
+        <item name="colorControlNormal">@color/lightGray</item>
+        <item name="colorControlActivated">@color/lightGray</item>
+    </style>
+
+    <style name="LoadMoreText" parent="Font16">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>

@@ -14,11 +14,11 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.api.MockShotsApi;
-import co.netguru.android.inbbbox.api.MockedBucketApi;
 import co.netguru.android.inbbbox.controler.BucketsController;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.testcommons.RxSyncTestRule;
+import rx.Single;
 import rx.observers.TestSubscriber;
 import rx.subscriptions.Subscriptions;
 
@@ -35,8 +35,6 @@ public class BucketDetailsPresenterTest {
 
     @Rule
     public TestRule rule = new RxSyncTestRule();
-
-    private final MockedBucketApi mockedBucketApi = new MockedBucketApi();
 
     @Mock
     BucketDetailsContract.View view;
@@ -103,7 +101,7 @@ public class BucketDetailsPresenterTest {
         presenter.refreshShotsSubscription = Subscriptions.unsubscribed();
         presenter.loadNextShotsSubscription = loadNextShotsSubscription;
         when(bucketsControllerMock.getShotsListFromBucket(anyLong(), anyInt(), anyInt()))
-                .thenReturn(mockedBucketApi.getBucketShotsList(1, 1, 30));
+                .thenReturn(Single.just(shotEntities));
         //when
         presenter.refreshShots();
         //then

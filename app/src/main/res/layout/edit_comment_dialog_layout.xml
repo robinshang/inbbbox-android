@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_margin="@dimen/margin_default">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/comment_edit_textInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/details_comment_edit_margin"
+        android:layout_marginRight="@dimen/details_comment_edit_margin"
+        android:layout_marginBottom="@dimen/details_comment_input_margin"
+        android:theme="@style/TextInputStyle">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/comment_edit_editText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"/>
+    </android.support.design.widget.TextInputLayout>
+
+</ScrollView>

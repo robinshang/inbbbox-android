@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/comment_action_menu"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/lightGrayAlpha"
+              android:layout_marginTop="@dimen/details_comment_action_margin"
+              android:layout_marginBottom="@dimen/details_comment_action_margin"
+              android:gravity="center"
+              android:visibility="gone"
+              android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/comment_action_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/details_comment_action_icon_top_margin"
+        android:layout_marginBottom="@dimen/details_comment_action_icon_top_margin"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/details_comment_action_icon_size"
+            android:layout_height="@dimen/details_comment_action_icon_size"
+            android:layout_marginLeft="@dimen/details_comment_action_icon_side_margin"
+            android:layout_marginRight="@dimen/details_comment_action_icon_side_margin"
+            android:src="@drawable/ic_edit_comment"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_comment_action_label_top"
+            android:text="@string/comments_edit_label"
+            style="@style/Font12"
+            android:textColor="@color/actionButtonLabelColor"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/comment_action_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/details_comment_action_icon_size"
+            android:layout_height="@dimen/details_comment_action_icon_size"
+            android:layout_marginLeft="@dimen/details_comment_action_icon_side_margin"
+            android:layout_marginRight="@dimen/details_comment_action_icon_side_margin"
+            android:src="@drawable/ic_delete_comment"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_comment_action_label_top"
+            android:text="@string/comments_delete_label"
+            style="@style/Font12"
+            android:textColor="@color/actionButtonLabelColor"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/comment_action_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/details_comment_action_icon_size"
+            android:layout_height="@dimen/details_comment_action_icon_size"
+            android:layout_marginLeft="@dimen/details_comment_action_icon_side_margin"
+            android:layout_marginRight="@dimen/details_comment_action_icon_side_margin"
+            android:src="@drawable/ic_cancel_comment"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_comment_action_label_top"
+            android:text="@string/comments_cancel_label"
+            style="@style/Font12"
+            android:textColor="@color/actionButtonLabelColor"/>
+
+    </LinearLayout>
+
+</LinearLayout>

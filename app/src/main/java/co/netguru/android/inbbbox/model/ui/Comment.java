@@ -21,13 +21,16 @@ public abstract class Comment {
 
     public abstract String text();
 
-    public static Comment create(CommentEntity commentEntity) {
+    public abstract Boolean isCurrentUserAuthor();
+
+    public static Comment create(CommentEntity commentEntity, boolean isCurrentUserAuthor) {
         return Comment.builder()
                 .id(commentEntity.getId())
                 .author(commentEntity.getUser().name())
                 .authorAvatarUrl(commentEntity.getUser().avatarUrl())
                 .text(commentEntity.getBody())
                 .date(commentEntity.getCreatedAt())
+                .isCurrentUserAuthor(isCurrentUserAuthor)
                 .build();
     }
 
@@ -42,6 +45,8 @@ public abstract class Comment {
         public abstract Comment.Builder date(LocalDateTime date);
 
         public abstract Comment.Builder text(String text);
+
+        public abstract Comment.Builder  isCurrentUserAuthor(Boolean isCurrentUserAuthor);
 
         public abstract Comment build();
     }
