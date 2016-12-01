@@ -52,6 +52,10 @@ public class ShotDetailsController {
                         currentUserId));
     }
 
+    public Completable deleteComment(Long shotId, Long commentId) {
+        return shotsApi.deleteComment(shotId.toString(), commentId.toString());
+    }
+
     private Single<Comment> createComment(String shotId, String commentText, Long currentUserId) {
         return shotsApi.createComment(shotId, commentText)
                 .map(commentEntity ->

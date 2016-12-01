@@ -221,8 +221,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onCommentDeleteSelected(Comment currentComment) {
-        // TODO: 28.11.2016
-        Toast.makeText(getContext(), "onCommentDeleteSelected: " + currentComment.text(), Toast.LENGTH_SHORT).show();
+        getPresenter().onCommentDelete(currentComment);
     }
 
     @Override
@@ -233,6 +232,11 @@ public class ShotDetailsFragment
     @Override
     public void onCommentUpdated(String comment) {
         getPresenter().updateComment(comment);
+    }
+
+    @Override
+    public void onCommentDeleteConfirmed() {
+        getPresenter().onCommentDeleteConfirmed();
     }
 
     @Override
@@ -273,12 +277,33 @@ public class ShotDetailsFragment
 
     @Override
     public void addNewComment(Comment updatedComment) {
-        adapter.addComment(updatedComment);
+        int indexOfInsertedComment = adapter.addComment(updatedComment);
+        shotRecyclerView.smoothScrollToPosition(indexOfInsertedComment);
     }
 
     @Override
     public void clearCommentInput() {
         commentTextInputLayout.getEditText().setText("");
+    }
+
+    @Override
+    public void showDeleteCommentWarning() {
+        RemoveCommentFragmentDialog
+                .newInstance(this)
+                .show(getFragmentManager(), RemoveCommentFragmentDialog.TAG);
+    }
+
+    @Override
+    public void showCommentDeletedInfo() {
+        Toast.makeText(getContext(),
+                getString(R.string.comment_deleted_complete),
+                Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
+    public void removeCommentFromView(Comment commentInEditor) {
+        adapter.removeComment(commentInEditor);
     }
 
     private void initComponent() {

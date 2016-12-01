@@ -51,21 +51,20 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
 
     @Override
     public void onBindViewHolder(ShotDetailsViewHolder holder, int position) {
-        if (holder instanceof ShotDetailsUserInfoViewHolder) {
-            ((ShotDetailsUserInfoViewHolder) holder).bind(details);
-        } else if (holder instanceof ShotDetailsDescriptionViewHolder) {
-            ((ShotDetailsDescriptionViewHolder) holder).bind(details);
-        } else if (holder instanceof ShotDetailsCommentViewHolder) {
-            ((ShotDetailsCommentViewHolder) holder).bind(getComment(position));
-        } else if (holder instanceof ShotDetailsLoadMoreViewHolder) {
-            ((ShotDetailsLoadMoreViewHolder) holder).bind(details);
+        switch (getItemViewType(position)) {
+            case USER_INFO_VIEW_TYPE:
+                ((ShotDetailsUserInfoViewHolder) holder).bind(details);
+                break;
+            case DESCRIPTION_VIEW_TYPE:
+                ((ShotDetailsDescriptionViewHolder) holder).bind(details);
+                break;
+            case LOAD_MORE_VIEW_TYPE:
+                ((ShotDetailsLoadMoreViewHolder) holder).bind(details);
+                break;
+            default:
+                ((ShotDetailsCommentViewHolder) holder).bind(getComment(position));
+                break;
         }
-    }
-
-    private Comment getComment(int position) {
-        return (!comments.isEmpty() && position > STATIC_ITEMS_COUNT - 1 && position < getItemCount() - 1) ?
-                comments.get(position - ShotDetailsAdapter.STATIC_ITEMS_COUNT)
-                : null;
     }
 
     @Override
@@ -92,8 +91,25 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
         return lastVisibleIndex == getItemCount() - 1;
     }
 
-    public void addComment(Comment updatedComment) {
+    public int addComment(Comment updatedComment) {
         comments.add(0, updatedComment);
         notifyItemInserted(STATIC_ITEMS_COUNT);
+        return STATIC_ITEMS_COUNT;
+    }
+
+    public void removeComment(Comment commentToRemove) {
+        int index = getCommentItemPosition(commentToRemove);
+        notifyItemRemoved(index);
+        comments.remove(commentToRemove);
+    }
+
+    private int getCommentItemPosition(Comment commentToRemove) {
+        return comments.indexOf(commentToRemove) + STATIC_ITEMS_COUNT;
+    }
+
+    private Comment getComment(int position) {
+        return (!comments.isEmpty() && position > STATIC_ITEMS_COUNT - 1 && position < getItemCount() - 1) ?
+                comments.get(position - ShotDetailsAdapter.STATIC_ITEMS_COUNT)
+                : null;
     }
 }

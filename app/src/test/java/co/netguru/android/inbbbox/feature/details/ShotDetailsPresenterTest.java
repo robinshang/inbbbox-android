@@ -302,7 +302,53 @@ public class ShotDetailsPresenterTest {
         verify(viewMock, times(1)).showCommentEditorDialog(expectedText);
     }
 
+    @Test
+    public void whenCommentDeleteSelected_thenShowDeleteCommentWarning() {
+        Comment commentMock = Statics.COMMENTS.get(0);
+
+        shotDetailsPresenter.onCommentDelete(commentMock);
+
+        verify(viewMock, times(1)).showDeleteCommentWarning();
+    }
+
+    @Test
+    public void whenCommentDeletionConfirmed_thenGetDeleteCommentComplete() {
+        Comment commentMock = Statics.COMMENTS.get(0);
+        shotDetailsPresenter.onCommentDelete(commentMock);
+        when(shotDetailsControllerMock.deleteComment(anyLong(), anyLong()))
+                .thenReturn(Completable.complete());
+
+        shotDetailsPresenter.onCommentDeleteConfirmed();
+
+        verify(shotDetailsControllerMock, times(1)).deleteComment(shotMock.id(), commentMock.id());
+    }
+
+    @Test
+    public void whenCommentDeletionComplete_thenRemoveSelectedCommentFromViewAndShowInfo() {
+        Comment commentMock = Statics.COMMENTS.get(0);
+        shotDetailsPresenter.onCommentDelete(commentMock);
+        when(shotDetailsControllerMock.deleteComment(anyLong(), anyLong()))
+                .thenReturn(Completable.complete());
+
+        shotDetailsPresenter.onCommentDeleteConfirmed();
+
+        verify(viewMock, times(1)).removeCommentFromView(commentMock);
+        verify(viewMock, times(1)).showCommentDeletedInfo();
+    }
+
     //ERRORS
+    @Test
+    public void whenCommentDeletionFaild_thenRemoveSelectedCommentFromView() {
+        Comment commentMock = Statics.COMMENTS.get(0);
+        shotDetailsPresenter.onCommentDelete(commentMock);
+        when(shotDetailsControllerMock.deleteComment(anyLong(), anyLong()))
+                .thenReturn(Completable.error(new Throwable()));
+
+        shotDetailsPresenter.onCommentDeleteConfirmed();
+
+        verify(viewMock, times(1)).showErrorMessage(anyString());
+    }
+
     @Test
     public void whenSendCommendFailed_thenShowError() {
         String exampleComment = "test";

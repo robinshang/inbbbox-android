@@ -14,6 +14,7 @@ import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
+import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletableIoSchedulers;
 import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applySingleIoSchedulers;
 import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_END;
 import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_START;
@@ -106,6 +107,28 @@ public class ShotDetailsPresenter
     @Override
     public void closeScreen() {
         getView().hideDetailsScreen();
+    }
+
+    @Override
+    public void onCommentDelete(Comment currentComment) {
+        commentInEditor = currentComment;
+        getView().showDeleteCommentWarning();
+    }
+
+    @Override
+    public void onCommentDeleteConfirmed() {
+        subscriptions.add(
+                shotDetailsController
+                        .deleteComment(shot.id(), commentInEditor.id())
+                        .compose(applyCompletableIoSchedulers())
+                        .subscribe(this::handleCommentDeleteComplete,
+                                this::handleApiError)
+        );
+    }
+
+    private void handleCommentDeleteComplete() {
+        getView().removeCommentFromView(commentInEditor);
+        getView().showCommentDeletedInfo();
     }
 
     private void sendCommentToApi(String comment) {

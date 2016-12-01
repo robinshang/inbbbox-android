@@ -98,4 +98,9 @@
     <string name="error_to_low_rank">You rank is to low, you should be a \'Player\" or a \'Team\' to
         do this
     </string>
+    <string name="comment_deleted_complete">Comment was sucessfully deleted</string>
+    <string name="action_ok">Ok</string>
+    <string name="delete_comment_waring">This comment will be deleted, are you sure to do that?
+    </string>
+    <string name="action_warning">Warning</string>
 </resources>
