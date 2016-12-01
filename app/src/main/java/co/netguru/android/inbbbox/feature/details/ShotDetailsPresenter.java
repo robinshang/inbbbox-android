@@ -19,7 +19,6 @@ import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
-import static android.R.attr.id;
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_END;
 import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_START;
@@ -121,7 +120,7 @@ public class ShotDetailsPresenter
 
     @Override
     public void downloadUserShots(User user) {
-        final Subscription subscription = userShotsController.getUserShotsList(id,
+        final Subscription subscription = userShotsController.getUserShotsList(user.id(),
                 PAGE_NUMBER, SHOT_PAGE_COUNT)
                 .compose(androidIO())
                 .subscribe(list -> createFollower(user, list),
