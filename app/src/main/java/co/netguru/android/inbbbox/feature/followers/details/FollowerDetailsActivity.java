@@ -53,9 +53,8 @@ public class FollowerDetailsActivity extends BaseActivity
         initializeBottomSheet();
         if (savedInstanceState == null) {
             replaceFragment(R.id.follower_details_fragment_container,
-                    FollowerDetailsFragment.newInstance(getIntent()
-                                    .getParcelableExtra(FOLLOWER_KEY)), FollowerDetailsFragment.TAG)
-                    .commit();
+                    FollowerDetailsFragment.newInstance(getIntent().getParcelableExtra(FOLLOWER_KEY)),
+                    FollowerDetailsFragment.TAG).commit();
         }
     }
 

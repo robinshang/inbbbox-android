@@ -2,14 +2,20 @@ package co.netguru.android.inbbbox.feature.details;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
+import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
+import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.inbbbox.utils.StringUtils;
+import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -23,8 +29,12 @@ public class ShotDetailsPresenter
         extends MvpNullObjectBasePresenter<ShotDetailsContract.View>
         implements ShotDetailsContract.Presenter {
 
+    private static final int SHOT_PAGE_COUNT = 30;
+    private static final int PAGE_NUMBER = 1;
+
     private final ShotDetailsController shotDetailsController;
     private final ErrorMessageController errorMessageController;
+    private final UserShotsController userShotsController;
     private final CompositeSubscription subscriptions;
     private boolean isCommentModeInit;
     private Shot shot;
@@ -32,9 +42,11 @@ public class ShotDetailsPresenter
 
     @Inject
     public ShotDetailsPresenter(ShotDetailsController shotDetailsController,
-                                ErrorMessageController messageController) {
+                                ErrorMessageController messageController,
+                                UserShotsController userShotsController) {
         this.shotDetailsController = shotDetailsController;
         this.errorMessageController = messageController;
+        this.userShotsController = userShotsController;
         this.subscriptions = new CompositeSubscription();
     }
 
@@ -110,9 +122,23 @@ public class ShotDetailsPresenter
     }
 
     @Override
+    public void downloadUserShots(User user) {
+        final Subscription subscription = userShotsController.getUserShotsList(user.id(),
+                PAGE_NUMBER, SHOT_PAGE_COUNT)
+                .compose(androidIO())
+                .subscribe(list -> createFollower(user, list),
+                        throwable -> Timber.e(throwable, "Error while getting user shots"));
+        subscriptions.add(subscription);
+    }
+
+    @Override
     public void onCommentDelete(Comment currentComment) {
         commentInEditor = currentComment;
         getView().showDeleteCommentWarning();
+    }
+
+    private void createFollower(User user, List<Shot> list) {
+        getView().showUserDetails(Follower.createFromUser(user, list));
     }
 
     @Override

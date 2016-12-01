@@ -40,6 +40,17 @@ public abstract class Follower implements Parcelable {
                 .build();
     }
 
+    public static Follower createFromUser(User user, List<Shot> shotList) {
+        return Follower.builder()
+                .id(user.id())
+                .name(user.name())
+                .username(user.username())
+                .avatarUrl(user.avatarUrl())
+                .shotsCount(user.shotsCount())
+                .shotList(shotList)
+                .build();
+    }
+
     @AutoValue.Builder
     public abstract static class Builder {
 
