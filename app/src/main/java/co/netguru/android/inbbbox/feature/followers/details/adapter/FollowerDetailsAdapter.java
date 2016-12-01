@@ -9,9 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.model.ui.Follower;
-import co.netguru.android.inbbbox.model.ui.Person;
 import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.inbbbox.view.ShotClickListener;
 
 public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -24,7 +22,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private final List<Shot> shotList;
     private final ShotClickListener shotClickListener;
-    private Person person;
+    private Follower follower;
     private boolean isGridMode;
 
     @Inject
@@ -51,7 +49,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case TYPE_HEADER:
-                ((FollowerDetailsHeaderViewHolder) holder).bind(person);
+                ((FollowerDetailsHeaderViewHolder) holder).bind(follower);
                 break;
             case TYPE_GRID:
                 ((FollowerDetailsGridViewHolder) holder).bind(shotList.get(getShotListPosition(position)));
@@ -74,7 +72,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        return person != null ? shotList.size() + 1 : shotList.size();
+        return follower != null ? shotList.size() + 1 : shotList.size();
     }
 
     public void setGridMode(boolean isGridMode) {
@@ -83,16 +81,9 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public void setFollowerAdapterData(Follower follower) {
-        this.person = Person.create(follower.name(), follower.avatarUrl(), follower.shotList());
+        this.follower = follower;
         this.shotList.clear();
         this.shotList.addAll(follower.shotList());
-        notifyDataSetChanged();
-    }
-
-    public void setUserAdapterData(User user, List<Shot> list) {
-        this.person = Person.create(user.name(), user.avatarUrl(), list);
-        this.shotList.clear();
-        this.shotList.addAll(list);
         notifyDataSetChanged();
     }
 
@@ -103,6 +94,6 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     private int getShotListPosition(int position) {
-        return person != null ? position - 1 : position;
+        return follower != null ? position - 1 : position;
     }
 }
