@@ -9,6 +9,7 @@ import co.netguru.android.inbbbox.controler.ShotDetailsController;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
+import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.inbbbox.utils.StringUtils;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -104,6 +105,11 @@ public class ShotDetailsPresenter
     @Override
     public void closeScreen() {
         getView().hideDetailsScreen();
+    }
+
+    @Override
+    public void downloadUserShots(User user) {
+
     }
 
     private void sendCommentToApi(String comment) {
