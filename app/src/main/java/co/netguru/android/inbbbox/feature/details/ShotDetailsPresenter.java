@@ -131,13 +131,14 @@ public class ShotDetailsPresenter
         subscriptions.add(subscription);
     }
 
-    private void createFollower(User user, List<Shot> list) {
-        getView().showUserDetails(Follower.createFromUser(user, list));
-    }
-
+    @Override
     public void onCommentDelete(Comment currentComment) {
         commentInEditor = currentComment;
         getView().showDeleteCommentWarning();
+    }
+
+    private void createFollower(User user, List<Shot> list) {
+        getView().showUserDetails(Follower.createFromUser(user, list));
     }
 
     @Override
