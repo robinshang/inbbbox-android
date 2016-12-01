@@ -31,7 +31,6 @@ import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListType
 import co.netguru.android.inbbbox.feature.followers.details.adapter.FollowerDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 import static butterknife.ButterKnife.findById;
