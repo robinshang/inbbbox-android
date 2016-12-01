@@ -86,9 +86,8 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     }
 
     public void addComments(List<Comment> comments) {
-        int updatedStartPosition = this.comments.size() + STATIC_ITEMS_COUNT;
         this.comments.addAll(comments);
-        notifyItemRangeInserted(updatedStartPosition, getItemCount() - 1);
+        notifyDataSetChanged();
     }
 
     public boolean isInputVisibilityPermitted(int lastVisibleIndex) {

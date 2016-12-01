@@ -34,6 +34,7 @@ public class ShotDetailsPresenter
     private Comment commentInEditor;
     private CommentLoadMoreState commentLoadMoreState;
     private int pageNumber = 1;
+    private int comentsCounter = 0;
 
     @Inject
     public ShotDetailsPresenter(ShotDetailsController shotDetailsController,
@@ -178,19 +179,19 @@ public class ShotDetailsPresenter
 
     private void handleDetailsStates(ShotDetailsState state) {
         List<Comment> comments = state.comments();
+        comentsCounter += comments.size();
 
         getView().showComments(comments);
-        updateLoadMoreState(comments.size());
+        updateLoadMoreState();
 
         updateShotDetails(state.isLiked(), state.isBucketed());
 
-        showShotDetails(shot);
         checkCommentMode();
     }
 
-    private void updateLoadMoreState(int commentsCount) {
+    private void updateLoadMoreState() {
         commentLoadMoreState.setWaitingForUpdate(false);
-        commentLoadMoreState.setLoadMoreActive(commentsCount < shot.commentsCount());
+        commentLoadMoreState.setLoadMoreActive(comentsCounter < shot.commentsCount());
         getView().updateLoadMoreState(commentLoadMoreState);
     }
 
@@ -211,10 +212,13 @@ public class ShotDetailsPresenter
     }
 
     private void updateShotDetails(boolean liked, boolean bucketed) {
-        shot = Shot.update(shot)
-                .isLiked(liked)
-                .isBucketed(bucketed)
-                .build();
+        if (shot.isLiked() != liked || shot.isBucketed() != bucketed) {
+            shot = Shot.update(shot)
+                    .isLiked(liked)
+                    .isBucketed(bucketed)
+                    .build();
+            showShotDetails(shot);
+        }
     }
 
     private void showShotDetails(Shot shotDetails) {
@@ -227,5 +231,4 @@ public class ShotDetailsPresenter
         Timber.e(throwable, "details download failed! ");
         getView().showErrorMessage(errorMessageController.getErrorMessageLabel(throwable));
     }
-
 }
