@@ -17,7 +17,6 @@
             android:autoRemoveFromRecents="true"
             android:launchMode="singleTask"
             android:noHistory="true"
-            android:resizeableActivity="true"
             android:stateNotNeeded="true"
             tools:ignore="UnusedAttribute"/>
 

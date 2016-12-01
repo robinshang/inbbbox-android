@@ -50,7 +50,7 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
     ProgressBar progressBar;
     @BindView(R.id.empty_view)
     ScrollView emptyView;
-    @BindView(R.id.fragment_followers_empty_text)
+    @BindView(R.id.fragment_buckets_empty_text)
     TextView emptyViewText;
     @BindView(R.id.buckets_recycler_view)
     RecyclerView bucketsRecyclerView;
@@ -163,7 +163,9 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
     }
 
     private void initEmptyView() {
-        emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
+        int lineHeight = emptyViewText.getLineHeight();
+        //noinspection SuspiciousNameCombination
+        emptyTextDrawable.setBounds(0, 0, lineHeight, lineHeight);
         emptyViewText.setText(TextFormatterUtil
                 .addDrawableBetweenStrings(emptyStringBeforeIcon, emptyStringAfterIcon, emptyTextDrawable));
     }

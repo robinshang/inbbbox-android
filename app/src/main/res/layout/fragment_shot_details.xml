@@ -115,7 +115,6 @@
                 android:id="@+id/send_progressBar"
                 android:layout_width="@dimen/details_comment_send_button_size"
                 android:layout_height="@dimen/details_comment_send_button_size"
-                android:layout_centerHorizontal="true"
                 android:indeterminate="true"
                 android:visibility="gone"/>
 
@@ -125,8 +124,7 @@
                 android:layout_height="@dimen/details_comment_send_button_size"
                 android:background="@drawable/selector_send_button_selector"
                 android:padding="@dimen/details_comment_input_margin"
-                android:src="@drawable/ic_send"
-                android:visibility="visible"/>
+                android:src="@drawable/ic_send"/>
         </FrameLayout>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
