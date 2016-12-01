@@ -277,7 +277,8 @@ public class ShotDetailsFragment
 
     @Override
     public void addNewComment(Comment updatedComment) {
-        adapter.addComment(updatedComment);
+        int indexOfInsertedComment = adapter.addComment(updatedComment);
+        shotRecyclerView.smoothScrollToPosition(indexOfInsertedComment);
     }
 
     @Override

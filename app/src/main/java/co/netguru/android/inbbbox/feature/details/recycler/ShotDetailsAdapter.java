@@ -86,9 +86,10 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
         return lastVisibleIndex == getItemCount() - 1;
     }
 
-    public void addComment(Comment updatedComment) {
+    public int addComment(Comment updatedComment) {
         comments.add(0, updatedComment);
         notifyItemInserted(STATIC_ITEMS_COUNT);
+        return STATIC_ITEMS_COUNT;
     }
 
     public void removeComment(Comment commentToRemove) {
