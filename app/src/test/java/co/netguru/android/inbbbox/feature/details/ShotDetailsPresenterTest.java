@@ -27,6 +27,7 @@ import rx.Single;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -59,6 +60,8 @@ public class ShotDetailsPresenterTest {
 
     @InjectMocks
     ShotDetailsPresenter shotDetailsPresenter;
+
+    private int requestedPage = 1;
 
     @Before
     public void setUp() {
@@ -99,10 +102,10 @@ public class ShotDetailsPresenterTest {
 
         shotDetailsPresenter.downloadData();
 
-        verify(viewMock, times(2)).showDetails(argumentCaptor.capture());
+        verify(viewMock, times(1)).showDetails(argumentCaptor.capture());
         Shot shot = argumentCaptor.getValue();
         Assert.assertEquals(expectedLikeState, shot.isLiked());
-        verify(viewMock, times(2)).initView();
+        verify(viewMock, times(1)).initView();
     }
 
     @Test
@@ -114,10 +117,10 @@ public class ShotDetailsPresenterTest {
 
         shotDetailsPresenter.downloadData();
 
-        verify(viewMock, times(2)).showDetails(argumentCaptor.capture());
+        verify(viewMock, times(1)).showDetails(argumentCaptor.capture());
         Shot shot = argumentCaptor.getValue();
         Assert.assertEquals(shot.isLiked(), expectedLikeState);
-        verify(viewMock, times(2)).initView();
+        verify(viewMock, times(1)).initView();
     }
 
     @Test
@@ -160,7 +163,7 @@ public class ShotDetailsPresenterTest {
     @Test
     public void whenInputModeEnabled_thenShowKeyboardAndShowInputOnDataDownload() {
         when(viewMock.getCommentModeInitialState()).thenReturn(true);
-        when(shotDetailsControllerMock.getShotComments(anyLong(), requestedPage)).thenReturn(Observable.empty());
+        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt())).thenReturn(Observable.empty());
 
         shotDetailsPresenter.retrieveInitialData();
         shotDetailsPresenter.downloadData();
@@ -172,7 +175,8 @@ public class ShotDetailsPresenterTest {
     @Test
     public void whenShotDetailsDownloadComplete_thenEnableInputShow() {
         when(viewMock.getCommentModeInitialState()).thenReturn(true);
-        when(shotDetailsControllerMock.getShotComments(anyLong(), requestedPage)).thenReturn(Observable.empty());
+        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+                .thenReturn(Observable.empty());
 
         shotDetailsPresenter.retrieveInitialData();
         shotDetailsPresenter.downloadData();
@@ -184,7 +188,7 @@ public class ShotDetailsPresenterTest {
     public void whenInputModeEnabled_thenAutoScrollViewAllDetailsAreReady() {
         when(viewMock.getCommentModeInitialState()).thenReturn(true);
         when(shotDetailsControllerMock
-                .getShotComments(anyLong(), requestedPage))
+                .getShotComments(anyLong(), anyInt()))
                 .thenReturn(Observable.just(mock(ShotDetailsState.class)));
 
         shotDetailsPresenter.retrieveInitialData();
@@ -367,7 +371,7 @@ public class ShotDetailsPresenterTest {
         String expectedMessage = "test";
         Throwable throwable = new Throwable(expectedMessage);
         when(errorMessageControllerMock.getErrorMessageLabel(throwable)).thenCallRealMethod();
-        when(shotDetailsControllerMock.getShotComments(anyLong(), requestedPage))
+        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
                 .thenReturn(Observable.error(throwable));
 
         shotDetailsPresenter.downloadData();

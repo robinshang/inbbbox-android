@@ -28,7 +28,9 @@ import rx.Observable;
 import rx.Single;
 import rx.observers.TestSubscriber;
 
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -64,10 +66,13 @@ public class ShotDetailsControllerTest {
     private List<CommentEntity> comments = Statics.generateCommentsEntity();
     private Long EXAMPLE_SHOT_ID = 1L;
     private Long EXAMPLE_USER_ID = 99L;
+    private int pageNumberExample = 1;
+    private int examplePerPageValue = 10;
+
 
     @Before
     public void setUp() {
-        when(shotApiMock.getShotComments(EXAMPLE_SHOT_ID.toString(), pageNumber, COMMENTS_PER_PAGE))
+        when(shotApiMock.getShotComments(eq(EXAMPLE_SHOT_ID.toString()), anyInt(), anyInt()))
                 .thenReturn(Observable.just(comments));
         when(userControllerMock.getUserFromCache()).thenReturn(Single.just(userMock));
         when(userMock.id()).thenReturn(EXAMPLE_USER_ID);
@@ -80,7 +85,7 @@ public class ShotDetailsControllerTest {
         mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
-        controller.getShotComments(EXAMPLE_SHOT_ID, requestedPage).subscribe(testSubscriber);
+        controller.getShotComments(EXAMPLE_SHOT_ID, examplePerPageValue).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
     }
@@ -91,7 +96,7 @@ public class ShotDetailsControllerTest {
         mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
-        controller.getShotComments(EXAMPLE_SHOT_ID, requestedPage).subscribe(testSubscriber);
+        controller.getShotComments(EXAMPLE_SHOT_ID, examplePerPageValue).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         ShotDetailsState shotDetailsState = testSubscriber.getOnNextEvents().get(0);
@@ -104,7 +109,7 @@ public class ShotDetailsControllerTest {
         mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
-        controller.getShotComments(EXAMPLE_SHOT_ID, requestedPage).subscribe(testSubscriber);
+        controller.getShotComments(EXAMPLE_SHOT_ID, examplePerPageValue).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         ShotDetailsState shotDetailsState = testSubscriber.getOnNextEvents().get(0);
@@ -117,7 +122,7 @@ public class ShotDetailsControllerTest {
         mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
-        controller.getShotComments(EXAMPLE_SHOT_ID, requestedPage).subscribe(testSubscriber);
+        controller.getShotComments(EXAMPLE_SHOT_ID, examplePerPageValue).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         ShotDetailsState shotDetailsState = testSubscriber.getOnNextEvents().get(0);
@@ -130,7 +135,7 @@ public class ShotDetailsControllerTest {
         mockNotInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
-        controller.getShotComments(EXAMPLE_SHOT_ID, requestedPage).subscribe(testSubscriber);
+        controller.getShotComments(EXAMPLE_SHOT_ID, examplePerPageValue).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         ShotDetailsState shotDetailsState = testSubscriber.getOnNextEvents().get(0);
@@ -143,10 +148,11 @@ public class ShotDetailsControllerTest {
         mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
-        controller.getShotComments(EXAMPLE_SHOT_ID, requestedPage).subscribe(testSubscriber);
+        controller.getShotComments(EXAMPLE_SHOT_ID, examplePerPageValue).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(shotApiMock, atLeastOnce()).getShotComments(EXAMPLE_SHOT_ID.toString(), pageNumber, COMMENTS_PER_PAGE);
+        verify(shotApiMock, atLeastOnce())
+                .getShotComments(eq(EXAMPLE_SHOT_ID.toString()), anyInt(), anyInt());
     }
 
     @Test
@@ -155,7 +161,7 @@ public class ShotDetailsControllerTest {
         mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
-        controller.getShotComments(EXAMPLE_SHOT_ID, requestedPage).subscribe(testSubscriber);
+        controller.getShotComments(EXAMPLE_SHOT_ID, examplePerPageValue).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         verify(likeShotControllerMock, times(1)).isShotLiked(EXAMPLE_SHOT_ID);
@@ -249,7 +255,7 @@ public class ShotDetailsControllerTest {
     }
 
     private void mockInBucketShotState() {
-        List<Bucket> buckets =new ArrayList<>();
+        List<Bucket> buckets = new ArrayList<>();
         Bucket currentUserBucket = Bucket.update(Statics.BUCKET)
                 .user(userEntityMock)
                 .build();
