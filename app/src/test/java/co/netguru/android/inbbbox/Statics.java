@@ -76,8 +76,8 @@ public final class Statics {
             .isGif(false)
             .isLiked(false)
             .isBucketed(false)
+            .hiDpiImageUrl("")
             .commentsCount(3)
-            .hdpiImageUrl("")
             .normalImageUrl("")
             .thumbnailUrl("")
             .build();
@@ -95,7 +95,7 @@ public final class Statics {
             .isGif(false)
             .isLiked(true)
             .isBucketed(false)
-            .hdpiImageUrl("")
+            .hiDpiImageUrl("")
             .normalImageUrl("")
             .thumbnailUrl("")
             .build();
@@ -123,6 +123,9 @@ public final class Statics {
         List<CommentEntity> comments = new ArrayList<>();
         for (int i = 0; i < COMMENTS_COUNT; i++) {
             CommentEntity comment = new CommentEntity();
+            comment.setUser(USER_ENTITY);
+            comment.setCreatedAt(LocalDateTime.now());
+            comment.setBody("test");
             comments.add(comment);
         }
         return comments;

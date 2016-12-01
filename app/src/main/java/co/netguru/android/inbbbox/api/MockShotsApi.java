@@ -12,9 +12,12 @@ import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.CommentEntity;
 import co.netguru.android.inbbbox.model.api.Image;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
+import retrofit2.http.Body;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 public class MockShotsApi implements ShotsApi {
 
@@ -54,6 +57,16 @@ public class MockShotsApi implements ShotsApi {
     @Override
     public Observable<List<Bucket>> getBucketsList(String shotId) {
         return Observable.just(Collections.emptyList());
+    }
+
+    @Override
+    public Single<CommentEntity> createComment(@Path("shotId") String shotId, @Body String comment) {
+        return Single.just(new CommentEntity());
+    }
+
+    @Override
+    public Completable deleteComment(@Path("shotId") String shotId, @Path("commentId") String commentId) {
+        return Completable.complete();
     }
 
     private static List<ShotEntity> getFollowingMock(int count, String label) {

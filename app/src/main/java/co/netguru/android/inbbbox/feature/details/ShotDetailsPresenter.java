@@ -20,6 +20,8 @@ import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
+import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletableIoSchedulers;
+import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applySingleIoSchedulers;
 import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_END;
 import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_START;
 
@@ -95,12 +97,13 @@ public class ShotDetailsPresenter
     public void sendComment() {
         String comment = getView().getCommentText();
         if (!StringUtils.isBlank(comment)) {
+            getView().showSendingCommentIndicator();
             sendCommentToApi(comment);
         }
     }
 
     @Override
-    public void openCommentEditor(Comment currentComment) {
+    public void onEditCommentClick(Comment currentComment) {
         commentInEditor = currentComment;
         getView().showCommentEditorDialog(
                 currentComment.text()
@@ -132,8 +135,46 @@ public class ShotDetailsPresenter
         getView().showUserDetails(Follower.createFromUser(user, list));
     }
 
+    public void onCommentDelete(Comment currentComment) {
+        commentInEditor = currentComment;
+        getView().showDeleteCommentWarning();
+    }
+
+    @Override
+    public void onCommentDeleteConfirmed() {
+        subscriptions.add(
+                shotDetailsController
+                        .deleteComment(shot.id(), commentInEditor.id())
+                        .compose(applyCompletableIoSchedulers())
+                        .subscribe(this::handleCommentDeleteComplete,
+                                this::handleApiError)
+        );
+    }
+
+    private void handleCommentDeleteComplete() {
+        getView().removeCommentFromView(commentInEditor);
+        getView().showCommentDeletedInfo();
+    }
+
     private void sendCommentToApi(String comment) {
-        // TODO: 23.11.2016 not in scope of this task
+        subscriptions.add(
+                shotDetailsController.sendComment(shot.id(), comment)
+                        .compose(applySingleIoSchedulers())
+                        .doAfterTerminate(this::handleSaveCommentTermination)
+                        .subscribe(this::handleCommentSavingComplete,
+                                this::handleApiError)
+        );
+    }
+
+    private void handleSaveCommentTermination() {
+        getView().hideSendingCommentIndicator();
+        getView().hideKeyboard();
+    }
+
+    private void handleCommentSavingComplete(Comment updatedComment) {
+        getView().hideSendingCommentIndicator();
+        getView().addNewComment(updatedComment);
+        getView().clearCommentInput();
     }
 
     private void updateLikeState(boolean newLikeState) {
