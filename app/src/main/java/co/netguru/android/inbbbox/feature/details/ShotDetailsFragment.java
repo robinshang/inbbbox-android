@@ -268,6 +268,8 @@ public class ShotDetailsFragment
     public void showUserDetails(Follower follower) {
         FollowerDetailsActivity.startActivity(getContext(), follower);
     }
+
+    @Override
     public void showSendingCommentIndicator() {
         sendProgressBar.setVisibility(View.VISIBLE);
         sendButton.setVisibility(View.GONE);
