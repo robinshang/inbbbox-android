@@ -45,10 +45,7 @@ class ShotDetailsLoadMoreViewHolder extends ShotDetailsViewHolder<CommentLoadMor
 
     @OnClick(R.id.shot_details_load_more_textView)
     void onLoadMoreSelected() {
-
         actionCallbackListener.onLoadMoreCommentsSelected();
-        loadMoreState.setLoadMoreActive(false);
-        updateButtonState();
     }
 
     @Override

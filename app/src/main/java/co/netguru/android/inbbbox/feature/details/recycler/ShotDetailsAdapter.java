@@ -3,7 +3,7 @@ package co.netguru.android.inbbbox.feature.details.recycler;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -28,7 +28,7 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     @Inject
     public ShotDetailsAdapter(DetailsViewActionCallback actionCallback) {
         this.actionCallback = actionCallback;
-        comments = Collections.emptyList();
+        comments = new ArrayList<>();
         this.loadMoreState = new CommentLoadMoreState();
     }
 
@@ -85,9 +85,10 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
         notifyDataSetChanged();
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-        notifyDataSetChanged();
+    public void addComments(List<Comment> comments) {
+        int updatedStartPosition = this.comments.size() + STATIC_ITEMS_COUNT;
+        this.comments.addAll(comments);
+        notifyItemRangeInserted(updatedStartPosition, getItemCount() - 1);
     }
 
     public boolean isInputVisibilityPermitted(int lastVisibleIndex) {

@@ -72,7 +72,7 @@ public class ShotDetailsPresenterTest {
 
     @Test
     public void whenShotDetailsDownload_thenShowMainShotImageWithShotImageInterface() {
-        when(shotDetailsControllerMock.getShotComments(EXAMPLE_ID)).thenReturn(Observable.empty());
+        when(shotDetailsControllerMock.getShotComments(EXAMPLE_ID, requestedPage)).thenReturn(Observable.empty());
 
         shotDetailsPresenter.downloadData();
 
@@ -81,7 +81,7 @@ public class ShotDetailsPresenterTest {
 
     @Test
     public void whenShotDetailsDownload_thenShowDetailsWithShotData() {
-        when(shotDetailsControllerMock.getShotComments(EXAMPLE_ID)).thenReturn(Observable.empty());
+        when(shotDetailsControllerMock.getShotComments(EXAMPLE_ID, requestedPage)).thenReturn(Observable.empty());
 
         shotDetailsPresenter.downloadData();
 
@@ -93,7 +93,7 @@ public class ShotDetailsPresenterTest {
     public void whenShotDetailsDownload_thenLoadDetailsAndUpdateItAfterStateAreDownloaded() {
         boolean expectedLikeState = true;
         ShotDetailsState resultState = ShotDetailsState.create(expectedLikeState, false, Statics.COMMENTS);
-        when(shotDetailsControllerMock.getShotComments(EXAMPLE_ID)).thenReturn(Observable.just(resultState));
+        when(shotDetailsControllerMock.getShotComments(EXAMPLE_ID, requestedPage)).thenReturn(Observable.just(resultState));
         when(shotMock.isLiked()).thenReturn(expectedLikeState);
         ArgumentCaptor<Shot> argumentCaptor = ArgumentCaptor.forClass(Shot.class);
 
@@ -109,7 +109,7 @@ public class ShotDetailsPresenterTest {
     public void whenShotDetailsDownload_thenShowShotNotLiked() {
         boolean expectedLikeState = false;
         ShotDetailsState resultState = ShotDetailsState.create(expectedLikeState, false, Statics.COMMENTS);
-        when(shotDetailsControllerMock.getShotComments(EXAMPLE_ID)).thenReturn(Observable.just(resultState));
+        when(shotDetailsControllerMock.getShotComments(EXAMPLE_ID, requestedPage)).thenReturn(Observable.just(resultState));
         ArgumentCaptor<Shot> argumentCaptor = ArgumentCaptor.forClass(Shot.class);
 
         shotDetailsPresenter.downloadData();
@@ -160,7 +160,7 @@ public class ShotDetailsPresenterTest {
     @Test
     public void whenInputModeEnabled_thenShowKeyboardAndShowInputOnDataDownload() {
         when(viewMock.getCommentModeInitialState()).thenReturn(true);
-        when(shotDetailsControllerMock.getShotComments(anyLong())).thenReturn(Observable.empty());
+        when(shotDetailsControllerMock.getShotComments(anyLong(), requestedPage)).thenReturn(Observable.empty());
 
         shotDetailsPresenter.retrieveInitialData();
         shotDetailsPresenter.downloadData();
@@ -172,7 +172,7 @@ public class ShotDetailsPresenterTest {
     @Test
     public void whenShotDetailsDownloadComplete_thenEnableInputShow() {
         when(viewMock.getCommentModeInitialState()).thenReturn(true);
-        when(shotDetailsControllerMock.getShotComments(anyLong())).thenReturn(Observable.empty());
+        when(shotDetailsControllerMock.getShotComments(anyLong(), requestedPage)).thenReturn(Observable.empty());
 
         shotDetailsPresenter.retrieveInitialData();
         shotDetailsPresenter.downloadData();
@@ -184,7 +184,7 @@ public class ShotDetailsPresenterTest {
     public void whenInputModeEnabled_thenAutoScrollViewAllDetailsAreReady() {
         when(viewMock.getCommentModeInitialState()).thenReturn(true);
         when(shotDetailsControllerMock
-                .getShotComments(anyLong()))
+                .getShotComments(anyLong(), requestedPage))
                 .thenReturn(Observable.just(mock(ShotDetailsState.class)));
 
         shotDetailsPresenter.retrieveInitialData();
@@ -367,7 +367,7 @@ public class ShotDetailsPresenterTest {
         String expectedMessage = "test";
         Throwable throwable = new Throwable(expectedMessage);
         when(errorMessageControllerMock.getErrorMessageLabel(throwable)).thenCallRealMethod();
-        when(shotDetailsControllerMock.getShotComments(anyLong()))
+        when(shotDetailsControllerMock.getShotComments(anyLong(), requestedPage))
                 .thenReturn(Observable.error(throwable));
 
         shotDetailsPresenter.downloadData();

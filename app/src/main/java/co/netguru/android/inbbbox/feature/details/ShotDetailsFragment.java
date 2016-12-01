@@ -189,7 +189,7 @@ public class ShotDetailsFragment
     @Override
     public void showComments(List<Comment> commentList) {
         verifyInputVisibility();
-        adapter.setComments(commentList);
+        adapter.addComments(commentList);
     }
 
     @Override
@@ -217,7 +217,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onLoadMoreCommentsSelected() {
-        Toast.makeText(getContext(), "LOAD MORE!!", Toast.LENGTH_SHORT).show();
+        getPresenter().getMoreComments();
     }
 
     @Override

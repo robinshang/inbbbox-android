@@ -36,7 +36,10 @@ public interface ShotsApi {
                                               @Query("page") int pageNumber, @Query("per_page") int pageCount);
 
     @GET("shots/{shotId}/comments")
-    Observable<List<CommentEntity>> getShotComments(@Path("shotId") String shotId);
+    Observable<List<CommentEntity>> getShotComments(
+            @Path("shotId") String shotId,
+            @Query("page") int pageNumber,
+            @Query("per_page") int commentsPerPage);
 
     @GET("shots/{shotId}/buckets")
     Observable<List<Bucket>> getBucketsList(@Path("shotId") String shotId);

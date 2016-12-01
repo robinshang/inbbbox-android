@@ -50,7 +50,7 @@ public class MockShotsApi implements ShotsApi {
     }
 
     @Override
-    public Observable<List<CommentEntity>> getShotComments(@Path("shotId") String shotId) {
+    public Observable<List<CommentEntity>> getShotComments(@Path("shotId") String shotId, int pageNumber, int commentsPerPage) {
         return Observable.just(Collections.emptyList());
     }
 

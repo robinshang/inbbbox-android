@@ -2,6 +2,8 @@ package co.netguru.android.inbbbox.feature.details;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
@@ -31,6 +33,7 @@ public class ShotDetailsPresenter
     private Shot shot;
     private Comment commentInEditor;
     private CommentLoadMoreState commentLoadMoreState;
+    private int pageNumber = 1;
 
     @Inject
     public ShotDetailsPresenter(ShotDetailsController shotDetailsController,
@@ -52,7 +55,7 @@ public class ShotDetailsPresenter
         enableInputWhenIfInCommentMode();
         initializeView();
 
-        retrieveCommentData();
+        downloadCommentsFromAPI();
     }
 
     @Override
@@ -116,6 +119,16 @@ public class ShotDetailsPresenter
         );
     }
 
+    @Override
+    public void getMoreComments() {
+        pageNumber++;
+        commentLoadMoreState.setLoadMoreActive(false);
+        commentLoadMoreState.setWaitingForUpdate(true);
+        getView().updateLoadMoreState(commentLoadMoreState);
+
+        downloadCommentsFromAPI();
+    }
+
     private void initializeView() {
         getView().showMainImage(shot);
         getView().updateLoadMoreState(commentLoadMoreState);
@@ -164,9 +177,13 @@ public class ShotDetailsPresenter
     }
 
     private void handleDetailsStates(ShotDetailsState state) {
-        getView().showComments(state.comments());
-        updateLoadMoreState(state.comments().size());
+        List<Comment> comments = state.comments();
+
+        getView().showComments(comments);
+        updateLoadMoreState(comments.size());
+
         updateShotDetails(state.isLiked(), state.isBucketed());
+
         showShotDetails(shot);
         checkCommentMode();
     }
@@ -184,9 +201,9 @@ public class ShotDetailsPresenter
         }
     }
 
-    private void retrieveCommentData() {
+    private void downloadCommentsFromAPI() {
         subscriptions.add(
-                shotDetailsController.getShotComments(shot.id())
+                shotDetailsController.getShotComments(shot.id(), pageNumber)
                         .compose(androidIO())
                         .doOnCompleted(() -> getView().setInputShowingEnabled(true))
                         .subscribe(this::handleDetailsStates, this::handleApiError)

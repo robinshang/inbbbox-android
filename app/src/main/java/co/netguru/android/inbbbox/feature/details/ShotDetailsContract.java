@@ -82,5 +82,7 @@ public interface ShotDetailsContract {
         void onCommentDelete(Comment currentComment);
 
         void onCommentDeleteConfirmed();
+
+        void getMoreComments();
     }
 }
