@@ -17,7 +17,6 @@ import timber.log.Timber;
 public class RemoveCommentFragmentDialog extends DialogFragment {
 
     public static final String TAG = RemoveCommentFragmentDialog.class.getSimpleName();
-    private static final String ARG_STRING_COMMENT = "arg:comment_text";
     private static final int TARGET_REQUEST_CODE = 9902;
 
     @BindView(R.id.comment_edit_editText)
