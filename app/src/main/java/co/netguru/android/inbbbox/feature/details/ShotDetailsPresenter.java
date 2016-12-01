@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
 import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
 import co.netguru.android.inbbbox.utils.StringUtils;
@@ -29,6 +30,7 @@ public class ShotDetailsPresenter
     private boolean isCommentModeInit;
     private Shot shot;
     private Comment commentInEditor;
+    private CommentLoadMoreState commentLoadMoreState;
 
     @Inject
     public ShotDetailsPresenter(ShotDetailsController shotDetailsController,
@@ -36,6 +38,7 @@ public class ShotDetailsPresenter
         this.shotDetailsController = shotDetailsController;
         this.errorMessageController = messageController;
         this.subscriptions = new CompositeSubscription();
+        this.commentLoadMoreState = new CommentLoadMoreState();
     }
 
     @Override
@@ -47,22 +50,9 @@ public class ShotDetailsPresenter
     @Override
     public void downloadData() {
         enableInputWhenIfInCommentMode();
-        getView().showMainImage(shot);
-        getView().setInputShowingEnabled(false);
-        showShotDetails(shot);
-        subscriptions.add(
-                shotDetailsController.getShotComments(shot.id())
-                        .compose(androidIO())
-                        .doOnCompleted(() -> getView().setInputShowingEnabled(true))
-                        .subscribe(this::handleDetailsStates, this::handleApiError)
-        );
-    }
+        initializeView();
 
-    private void enableInputWhenIfInCommentMode() {
-        if (isCommentModeInit) {
-            getView().showInputIfHidden();
-            getView().showKeyboard();
-        }
+        retrieveCommentData();
     }
 
     @Override
@@ -126,6 +116,20 @@ public class ShotDetailsPresenter
         );
     }
 
+    private void initializeView() {
+        getView().showMainImage(shot);
+        getView().updateLoadMoreState(commentLoadMoreState);
+        getView().setInputShowingEnabled(false);
+        showShotDetails(shot);
+    }
+
+    private void enableInputWhenIfInCommentMode() {
+        if (isCommentModeInit) {
+            getView().showInputIfHidden();
+            getView().showKeyboard();
+        }
+    }
+
     private void handleCommentDeleteComplete() {
         getView().removeCommentFromView(commentInEditor);
         getView().showCommentDeletedInfo();
@@ -161,9 +165,16 @@ public class ShotDetailsPresenter
 
     private void handleDetailsStates(ShotDetailsState state) {
         getView().showComments(state.comments());
+        updateLoadMoreState(state.comments().size());
         updateShotDetails(state.isLiked(), state.isBucketed());
         showShotDetails(shot);
         checkCommentMode();
+    }
+
+    private void updateLoadMoreState(int commentsCount) {
+        commentLoadMoreState.setWaitingForUpdate(false);
+        commentLoadMoreState.setLoadMoreActive(commentsCount < shot.commentsCount());
+        getView().updateLoadMoreState(commentLoadMoreState);
     }
 
     private void checkCommentMode() {
@@ -171,6 +182,15 @@ public class ShotDetailsPresenter
             getView().collapseAppbarWithAnimation();
             getView().scrollToLastItem();
         }
+    }
+
+    private void retrieveCommentData() {
+        subscriptions.add(
+                shotDetailsController.getShotComments(shot.id())
+                        .compose(androidIO())
+                        .doOnCompleted(() -> getView().setInputShowingEnabled(true))
+                        .subscribe(this::handleDetailsStates, this::handleApiError)
+        );
     }
 
     private void updateShotDetails(boolean liked, boolean bucketed) {

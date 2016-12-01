@@ -7,13 +7,14 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import butterknife.BindColor;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
 
-class ShotDetailsLoadMoreViewHolder extends ShotDetailsViewHolder<Shot> {
+class ShotDetailsLoadMoreViewHolder extends ShotDetailsViewHolder<CommentLoadMoreState> {
 
     @BindView(R.id.shot_details_load_more_textView)
     TextView loadMoreTextView;
@@ -21,11 +22,19 @@ class ShotDetailsLoadMoreViewHolder extends ShotDetailsViewHolder<Shot> {
     @BindView(R.id.load_more_progressBar)
     ProgressBar loadMoreProgressBar;
 
+    @BindView(R.id.load_more_container)
+    View loadMoreContainer;
+
     @BindString(R.string.load_more_label)
     String loadMoreLabel;
 
-    // TODO: 30.11.2016 loadingState will be handled in IA-41
-    private boolean isLoadingActive;
+    @BindColor(R.color.lightGray)
+    int lightGrayBackground;
+
+    @BindColor(R.color.white)
+    int whiteyBackground;
+
+    private CommentLoadMoreState loadMoreState;
 
     ShotDetailsLoadMoreViewHolder(ViewGroup parent, DetailsViewActionCallback actionCallback) {
         super(LayoutInflater
@@ -36,30 +45,39 @@ class ShotDetailsLoadMoreViewHolder extends ShotDetailsViewHolder<Shot> {
 
     @OnClick(R.id.shot_details_load_more_textView)
     void onLoadMoreSelected() {
-        loadMoreProgressBar.setVisibility(View.VISIBLE);
+
         actionCallbackListener.onLoadMoreCommentsSelected();
-        isLoadingActive = false;
+        loadMoreState.setLoadMoreActive(false);
         updateButtonState();
     }
 
     @Override
-    public void bind(@NonNull Shot item) {
-        // TODO: 25.11.2016 handle loader initial state - in logic task
-        //// TODO: 30.11.2016 bining with item state will be implemented in IA-41
-        isLoadingActive = false;
+    public void bind(@NonNull CommentLoadMoreState item) {
+        this.loadMoreState = item;
         loadMoreProgressBar.setVisibility(View.GONE);
         updateButtonState();
+        updateLoaderState();
+    }
+
+    private void updateLoaderState() {
+        if (loadMoreState.isWaitingForUpdate()) {
+            loadMoreProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            loadMoreProgressBar.setVisibility(View.GONE);
+        }
     }
 
     private void updateButtonState() {
         loadMoreTextView
-                .setActivated(isLoadingActive);
-        loadMoreTextView.setClickable(isLoadingActive);
+                .setActivated(loadMoreState.isLoadMoreActive());
+        loadMoreTextView.setClickable(loadMoreState.isLoadMoreActive());
 
-        if (loadMoreTextView.isActivated()) {
+        if (!loadMoreState.isWaitingForUpdate() && loadMoreState.isLoadMoreActive()) {
             loadMoreTextView.setText(loadMoreLabel);
+            loadMoreContainer.setBackgroundColor(lightGrayBackground);
         } else {
             loadMoreTextView.setText("");
+            loadMoreContainer.setBackgroundColor(whiteyBackground);
         }
     }
 }

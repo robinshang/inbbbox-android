@@ -9,6 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
 public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHolder> {
@@ -22,11 +23,13 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     private final DetailsViewActionCallback actionCallback;
     private Shot details;
     private List<Comment> comments;
+    private CommentLoadMoreState loadMoreState;
 
     @Inject
     public ShotDetailsAdapter(DetailsViewActionCallback actionCallback) {
         this.actionCallback = actionCallback;
         comments = Collections.emptyList();
+        this.loadMoreState = new CommentLoadMoreState();
     }
 
     @Override
@@ -59,7 +62,7 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
                 ((ShotDetailsDescriptionViewHolder) holder).bind(details);
                 break;
             case LOAD_MORE_VIEW_TYPE:
-                ((ShotDetailsLoadMoreViewHolder) holder).bind(details);
+                ((ShotDetailsLoadMoreViewHolder) holder).bind(loadMoreState);
                 break;
             default:
                 ((ShotDetailsCommentViewHolder) holder).bind(getComment(position));
@@ -101,6 +104,11 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
         int index = getCommentItemPosition(commentToRemove);
         notifyItemRemoved(index);
         comments.remove(commentToRemove);
+    }
+
+    public void updateLoadMoreState(CommentLoadMoreState state) {
+        this.loadMoreState = state;
+        notifyItemChanged(getItemCount() - 1);
     }
 
     private int getCommentItemPosition(Comment commentToRemove) {

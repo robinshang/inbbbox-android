@@ -6,6 +6,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 import java.util.List;
 
 import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotImage;
 
@@ -58,6 +59,8 @@ public interface ShotDetailsContract {
         void showCommentDeletedInfo();
 
         void removeCommentFromView(Comment commentInEditor);
+
+        void updateLoadMoreState(CommentLoadMoreState commentLoadMoreState);
     }
 
     interface Presenter extends MvpPresenter<View> {

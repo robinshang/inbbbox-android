@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/load_more_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selector_load_more"
+                android:background="@color/lightGray"
                 android:paddingBottom="@dimen/details_comment_footer_padding_bottom">
 
     <TextView
@@ -10,8 +11,9 @@
         style="@style/LoadMoreText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/selector_load_more"
         android:paddingBottom="@dimen/margin_default"
         android:paddingLeft="@dimen/margin_default"
         android:paddingRight="@dimen/margin_default"/>

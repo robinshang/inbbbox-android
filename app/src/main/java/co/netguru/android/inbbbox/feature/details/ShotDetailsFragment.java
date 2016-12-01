@@ -29,6 +29,7 @@ import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotImage;
 import co.netguru.android.inbbbox.model.ui.Team;
@@ -304,6 +305,11 @@ public class ShotDetailsFragment
     @Override
     public void removeCommentFromView(Comment commentInEditor) {
         adapter.removeComment(commentInEditor);
+    }
+
+    @Override
+    public void updateLoadMoreState(CommentLoadMoreState commentLoadMoreState) {
+        adapter.updateLoadMoreState(commentLoadMoreState);
     }
 
     private void initComponent() {
