@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.net.HttpURLConnection;
+
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 
@@ -47,5 +49,14 @@ public class ErrorMessageControllerTest {
 
         String result = parser.getErrorMessageLabel(throwable);
         Assert.assertEquals(expectedText, result);
+    }
+
+    @Test
+    public void whenPassThrowableWithForbiddenCode_thenShowOtherText() {
+        String expectedText = "test: " + HttpURLConnection.HTTP_FORBIDDEN;
+        Throwable throwable = new Throwable(expectedText);
+
+        String result = parser.getErrorMessageLabel(throwable);
+        Assert.assertNotEquals(expectedText, result);
     }
 }

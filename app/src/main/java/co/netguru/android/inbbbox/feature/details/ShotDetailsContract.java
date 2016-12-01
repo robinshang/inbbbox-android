@@ -44,6 +44,14 @@ public interface ShotDetailsContract {
         void hideDetailsScreen();
 
         void hideKeyboard();
+
+        void showSendingCommentIndicator();
+
+        void hideSendingCommentIndicator();
+
+        void addNewComment(Comment updatedComment);
+
+        void clearCommentInput();
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -56,7 +64,7 @@ public interface ShotDetailsContract {
 
         void sendComment();
 
-        void openCommentEditor(Comment currentComment);
+        void onEditCommentClick(Comment currentComment);
 
         void updateComment(String updatedComment);
 

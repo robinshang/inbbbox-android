@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/shot_details_background"
     android:focusableInTouchMode="true">
 
     <android.support.design.widget.AppBarLayout
@@ -59,8 +60,7 @@
         android:id="@+id/shot_details_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/details_comment_recycler_bottom_padding"
-        android:background="@color/lightGray"
+        android:background="@color/white"
         android:overScrollMode="never"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
@@ -88,7 +88,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_default"
             android:layout_marginRight="@dimen/details_comment_input_right_margin"
-            android:layout_toLeftOf="@+id/comment_send_ImageView"
+            android:layout_toLeftOf="@+id/comment_send_container"
             android:paddingTop="@dimen/details_comment_input_margin"
             android:theme="@style/TextInputStyle">
 
@@ -103,15 +103,28 @@
                 android:hint="@string/comment_input_hint"/>
         </android.support.design.widget.TextInputLayout>
 
-        <ImageView
-            android:id="@+id/comment_send_ImageView"
-            android:layout_width="@dimen/details_comment_send_button_size"
-            android:layout_height="@dimen/details_comment_send_button_size"
+        <FrameLayout
+            android:id="@+id/comment_send_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/margin_default"
-            android:background="@drawable/selector_send_button_selector"
-            android:padding="@dimen/details_comment_input_margin"
-            android:src="@drawable/ic_send"/>
+            android:layout_marginRight="@dimen/margin_default">
+
+            <ProgressBar
+                android:id="@+id/send_progressBar"
+                android:layout_width="@dimen/details_comment_send_button_size"
+                android:layout_height="@dimen/details_comment_send_button_size"
+                android:indeterminate="true"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/comment_send_imageView"
+                android:layout_width="@dimen/details_comment_send_button_size"
+                android:layout_height="@dimen/details_comment_send_button_size"
+                android:background="@drawable/selector_send_button_selector"
+                android:padding="@dimen/details_comment_input_margin"
+                android:src="@drawable/ic_send"/>
+        </FrameLayout>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

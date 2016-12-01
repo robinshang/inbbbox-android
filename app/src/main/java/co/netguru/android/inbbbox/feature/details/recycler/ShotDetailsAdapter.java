@@ -91,4 +91,9 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     public boolean isInputVisibilityPermitted(int lastVisibleIndex) {
         return lastVisibleIndex == getItemCount() - 1;
     }
+
+    public void addComment(Comment updatedComment) {
+        comments.add(0, updatedComment);
+        notifyItemInserted(STATIC_ITEMS_COUNT);
+    }
 }

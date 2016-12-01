@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.List;
@@ -61,6 +62,12 @@ public class ShotDetailsFragment
     @BindView(R.id.appBarLayout)
     AppBarLayout appBarLayout;
 
+    @BindView(R.id.send_progressBar)
+    ProgressBar sendProgressBar;
+
+    @BindView(R.id.comment_send_imageView)
+    View sendButton;
+
     @BindDimen(R.dimen.shot_corner_radius)
     int radius;
 
@@ -107,10 +114,9 @@ public class ShotDetailsFragment
         return component.getPresenter();
     }
 
-    @OnClick(R.id.comment_send_ImageView)
+    @OnClick(R.id.comment_send_imageView)
     void onSendCommentClick() {
         getPresenter().sendComment();
-        Toast.makeText(getContext(), getCommentText(), Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.details_close_imageView)
@@ -129,7 +135,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showErrorMessage(String errorMessageLabel) {
-        Toast.makeText(getContext(), errorMessageLabel, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), errorMessageLabel, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -221,7 +227,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onCommentEditSelected(Comment currentComment) {
-        getPresenter().openCommentEditor(currentComment);
+        getPresenter().onEditCommentClick(currentComment);
     }
 
     @Override
@@ -251,6 +257,28 @@ public class ShotDetailsFragment
     @Override
     public void hideKeyboard() {
         InputUtils.hideKeyboard(getContext(), shotRecyclerView);
+    }
+
+    @Override
+    public void showSendingCommentIndicator() {
+        sendProgressBar.setVisibility(View.VISIBLE);
+        sendButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideSendingCommentIndicator() {
+        sendProgressBar.setVisibility(View.GONE);
+        sendButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void addNewComment(Comment updatedComment) {
+        adapter.addComment(updatedComment);
+    }
+
+    @Override
+    public void clearCommentInput() {
+        commentTextInputLayout.getEditText().setText("");
     }
 
     private void initComponent() {
