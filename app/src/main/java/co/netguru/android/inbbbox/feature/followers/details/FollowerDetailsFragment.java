@@ -131,15 +131,6 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     }
 
     @Override
-    public void showUserData(User user, List<Shot> list) {
-        adapter.setUserAdapterData(user, list);
-        final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(user.name());
-        }
-    }
-
-    @Override
     public void showMoreUserShots(List<Shot> shotList) {
         adapter.addMoreUserShots(shotList);
     }
