@@ -15,7 +15,6 @@ import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
-import static android.R.attr.id;
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletableIoSchedulers;
 
@@ -59,7 +58,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     public void getMoreUserShotsFromServer() {
         if (hasMore) {
             pageNumber++;
-            final Subscription subscription = userShotsController.getUserShotsList(id,
+            final Subscription subscription = userShotsController.getUserShotsList(follower.id(),
                     pageNumber, SHOT_PAGE_COUNT)
                     .compose(androidIO())
                     .subscribe(this::onGetUserShotsNext,
@@ -75,7 +74,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     @Override
     public void unFollowUser() {
-        final Subscription subscription = followersController.unFollowUser(id)
+        final Subscription subscription = followersController.unFollowUser(follower.id())
                 .compose(applyCompletableIoSchedulers())
                 .subscribe(getView()::showFollowersList, throwable -> {
                     Timber.e(throwable, "Error while unFollow user");
