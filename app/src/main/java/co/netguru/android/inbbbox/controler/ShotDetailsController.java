@@ -53,6 +53,25 @@ public class ShotDetailsController {
                         currentUserId));
     }
 
+    public Single<Comment> updateComment(Long shotId, Long commentText, String comment) {
+        return getCurrentUserId()
+                .flatMap(currentUserId -> sendUpdateCommentRequest(shotId.toString(),
+                        commentText.toString(),
+                        currentUserId,
+                        comment)
+                );
+    }
+
+    private Single<Comment> sendUpdateCommentRequest(String shotId,
+                                                     String commentText,
+                                                     Long currentUserId,
+                                                     String comment) {
+        return shotsApi.updateComment(shotId, commentText, comment)
+                .map(commentEntity ->
+                        Comment.create(commentEntity,
+                                isCurrentUserAuthor(commentEntity.getUser(), currentUserId)));
+    }
+
     public Completable deleteComment(Long shotId, Long commentId) {
         return shotsApi.deleteComment(shotId.toString(), commentId.toString());
     }

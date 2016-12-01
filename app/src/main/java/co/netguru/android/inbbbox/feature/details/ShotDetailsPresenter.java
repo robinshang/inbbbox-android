@@ -19,8 +19,6 @@ import timber.log.Timber;
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletableIoSchedulers;
 import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applySingleIoSchedulers;
-import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_END;
-import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_START;
 
 public class ShotDetailsPresenter
         extends MvpNullObjectBasePresenter<ShotDetailsContract.View>
@@ -34,7 +32,7 @@ public class ShotDetailsPresenter
     private Comment commentInEditor;
     private CommentLoadMoreState commentLoadMoreState;
     private int pageNumber = 1;
-    private int comentsCounter = 0;
+    private int commentsCounter = 0;
 
     @Inject
     public ShotDetailsPresenter(ShotDetailsController shotDetailsController,
@@ -87,15 +85,20 @@ public class ShotDetailsPresenter
     @Override
     public void onEditCommentClick(Comment currentComment) {
         commentInEditor = currentComment;
-        getView().showCommentEditorDialog(
-                currentComment.text()
-                        .replace(PARAGRAPH_TAG_START, "")
-                        .replace(PARAGRAPH_TAG_END, ""));
+        getView().showCommentEditorDialog(currentComment.text());
     }
 
     @Override
     public void updateComment(String updatedComment) {
         // TODO: 28.11.2016 no in scope of this task
+        subscriptions.add(
+                shotDetailsController.updateComment(shot.id(),
+                        commentInEditor.id(),
+                        updatedComment)
+                        .compose(applySingleIoSchedulers())
+                        .subscribe(this::handleCommentUpdated,
+                                this::handleApiError)
+        );
     }
 
     @Override
@@ -179,7 +182,7 @@ public class ShotDetailsPresenter
 
     private void handleDetailsStates(ShotDetailsState state) {
         List<Comment> comments = state.comments();
-        comentsCounter += comments.size();
+        commentsCounter += comments.size();
 
         getView().showComments(comments);
         updateLoadMoreState();
@@ -191,7 +194,7 @@ public class ShotDetailsPresenter
 
     private void updateLoadMoreState() {
         commentLoadMoreState.setWaitingForUpdate(false);
-        commentLoadMoreState.setLoadMoreActive(comentsCounter < shot.commentsCount());
+        commentLoadMoreState.setLoadMoreActive(commentsCounter < shot.commentsCount());
         getView().updateLoadMoreState(commentLoadMoreState);
     }
 
@@ -225,6 +228,10 @@ public class ShotDetailsPresenter
         Timber.d("Shot details received: %s", shotDetails);
         getView().showDetails(shotDetails);
         getView().initView();
+    }
+
+    private void handleCommentUpdated(Comment comment) {
+
     }
 
     private void handleApiError(Throwable throwable) {

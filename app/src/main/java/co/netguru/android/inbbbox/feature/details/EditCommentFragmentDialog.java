@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
+import co.netguru.android.inbbbox.utils.StringUtils;
 import timber.log.Timber;
 
 public class EditCommentFragmentDialog extends DialogFragment {
@@ -51,7 +52,9 @@ public class EditCommentFragmentDialog extends DialogFragment {
                 .setView(contentView);
 
         ButterKnife.bind(this, contentView);
-        editCommentEditText.setText(getArguments().getString(ARG_STRING_COMMENT));
+
+        String text = getArguments().getString(ARG_STRING_COMMENT);
+        editCommentEditText.setText(StringUtils.removeHtml(text));
         return builder.create();
     }
 

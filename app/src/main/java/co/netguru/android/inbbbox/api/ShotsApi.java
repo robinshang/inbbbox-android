@@ -11,6 +11,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Completable;
@@ -50,4 +51,11 @@ public interface ShotsApi {
 
     @DELETE("shots/{shotId}/comments/{commentId}")
     Completable deleteComment(@Path("shotId") String shotId, @Path("commentId") String commentId);
+
+    @FormUrlEncoded
+    @PUT("shots/{shotId}/comments/{commentId}")
+    Single<CommentEntity> updateComment(
+            @Path("shotId") String shotId,
+            @Path("commentId") String commentId,
+            @Field("body") String comment);
 }
