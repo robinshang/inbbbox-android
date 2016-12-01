@@ -75,8 +75,9 @@ public class EditCommentFragmentDialog extends DialogFragment {
             if (which == DialogInterface.BUTTON_POSITIVE) {
                 String updatedComment = editCommentEditText.getText().toString();
                 callback.onCommentUpdated(updatedComment);
+            } else {
+                dismiss();
             }
-            dismiss();
         };
     }
 }

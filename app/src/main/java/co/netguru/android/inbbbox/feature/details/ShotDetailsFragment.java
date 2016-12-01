@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.feature.details;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -295,9 +296,9 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void showCommentDeletedInfo() {
+    public void showInfo(@StringRes int messageResId) {
         Toast.makeText(getContext(),
-                getString(R.string.comment_deleted_complete),
+                getString(messageResId),
                 Toast.LENGTH_SHORT)
                 .show();
     }
@@ -310,6 +311,20 @@ public class ShotDetailsFragment
     @Override
     public void updateLoadMoreState(CommentLoadMoreState commentLoadMoreState) {
         adapter.updateLoadMoreState(commentLoadMoreState);
+    }
+
+    @Override
+    public void dismissCommentEditor() {
+        EditCommentFragmentDialog editorFragmentDialog = (EditCommentFragmentDialog) getFragmentManager()
+                .findFragmentByTag(EditCommentFragmentDialog.TAG);
+        if (editorFragmentDialog != null) {
+            editorFragmentDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void updateComment(Comment commentToUpdate, Comment updatedComment) {
+        adapter.replaceComment(commentToUpdate, updatedComment);
     }
 
     private void initComponent() {

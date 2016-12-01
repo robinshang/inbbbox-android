@@ -103,4 +103,5 @@
     <string name="delete_comment_waring">This comment will be deleted, are you sure to do that?
     </string>
     <string name="action_warning">Warning</string>
+    <string name="comment_change_complete">Comment updated</string>
 </resources>

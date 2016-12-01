@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.feature.details;
 
+import android.support.annotation.StringRes;
+
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -56,11 +58,15 @@ public interface ShotDetailsContract {
 
         void showDeleteCommentWarning();
 
-        void showCommentDeletedInfo();
+        void showInfo(@StringRes int messageResId);
 
         void removeCommentFromView(Comment commentInEditor);
 
         void updateLoadMoreState(CommentLoadMoreState commentLoadMoreState);
+
+        void dismissCommentEditor();
+
+        void updateComment(Comment commentToUpdate, Comment updatedComment);
     }
 
     interface Presenter extends MvpPresenter<View> {

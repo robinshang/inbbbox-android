@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
 import co.netguru.android.inbbbox.model.ui.Comment;
@@ -90,7 +91,6 @@ public class ShotDetailsPresenter
 
     @Override
     public void updateComment(String updatedComment) {
-        // TODO: 28.11.2016 no in scope of this task
         subscriptions.add(
                 shotDetailsController.updateComment(shot.id(),
                         commentInEditor.id(),
@@ -149,7 +149,7 @@ public class ShotDetailsPresenter
 
     private void handleCommentDeleteComplete() {
         getView().removeCommentFromView(commentInEditor);
-        getView().showCommentDeletedInfo();
+        getView().showInfo(R.string.comment_deleted_complete);
     }
 
     private void sendCommentToApi(String comment) {
@@ -231,7 +231,9 @@ public class ShotDetailsPresenter
     }
 
     private void handleCommentUpdated(Comment comment) {
-
+        getView().dismissCommentEditor();
+        getView().updateComment(commentInEditor, comment);
+        getView().showInfo(R.string.comment_change_complete);
     }
 
     private void handleApiError(Throwable throwable) {

@@ -111,6 +111,13 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
         notifyItemChanged(getItemCount() - 1);
     }
 
+    public void replaceComment(Comment commentToUpdate, Comment updatedComment) {
+        int index = comments.indexOf(commentToUpdate);
+        comments.remove(index);
+        comments.add(index, updatedComment);
+        notifyItemChanged(index + STATIC_ITEMS_COUNT);
+    }
+
     private int getCommentItemPosition(Comment commentToRemove) {
         return comments.indexOf(commentToRemove) + STATIC_ITEMS_COUNT;
     }

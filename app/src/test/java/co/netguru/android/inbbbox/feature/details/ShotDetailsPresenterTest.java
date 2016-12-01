@@ -337,7 +337,7 @@ public class ShotDetailsPresenterTest {
         shotDetailsPresenter.onCommentDeleteConfirmed();
 
         verify(viewMock, times(1)).removeCommentFromView(commentMock);
-        verify(viewMock, times(1)).showCommentDeletedInfo();
+        verify(viewMock, times(1)).showInfo();
     }
 
     //ERRORS
