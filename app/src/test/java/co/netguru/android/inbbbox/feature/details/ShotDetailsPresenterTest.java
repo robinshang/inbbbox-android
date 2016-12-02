@@ -13,10 +13,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.threeten.bp.LocalDateTime;
 
+import java.util.List;
+
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
 import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
 import co.netguru.android.inbbbox.model.ui.User;
@@ -338,6 +341,116 @@ public class ShotDetailsPresenterTest {
 
         verify(viewMock, times(1)).removeCommentFromView(commentMock);
         verify(viewMock, times(1)).showInfo(anyInt());
+    }
+
+    @Test
+    public void whenGetMoreCommentsCalled_thenIncreaseRequestedPageCount() {
+        //page 1 is set initially
+        int pagingStart = 2;
+        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+                .thenReturn(Observable.empty());
+
+        for (int i = pagingStart; i < 200; i++) {
+            shotDetailsPresenter.getMoreComments();
+
+            verify(shotDetailsControllerMock).getShotComments(anyLong(), eq(i));
+        }
+    }
+
+    @Test
+    public void whenGetMoreCommentsCalled_thenChangeLoadMoreStateButtonToInactiveAndWaitingForUpdateTrue() {
+        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+                .thenReturn(Observable.empty());
+        ArgumentCaptor<CommentLoadMoreState> argumentCaptor = ArgumentCaptor
+                .forClass(CommentLoadMoreState.class);
+
+        shotDetailsPresenter.getMoreComments();
+
+        verify(viewMock).updateLoadMoreState(argumentCaptor.capture());
+        Assert.assertEquals(true, argumentCaptor.getValue().isWaitingForUpdate());
+        Assert.assertEquals(false, argumentCaptor.getValue().isLoadMoreActive());
+    }
+
+    @Test
+    public void whenGetMoreCommentsCompleted_thenAddNewCommentsToView() {
+        ShotDetailsState shotDetailsStateMock = mock(ShotDetailsState.class);
+        when(shotDetailsStateMock.comments()).thenReturn(Statics.COMMENTS);
+        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+                .thenReturn(Observable.just(shotDetailsStateMock));
+
+        shotDetailsPresenter.getMoreComments();
+
+        verify(viewMock, times(1)).addCommentsToList(Statics.COMMENTS);
+    }
+
+    @Test
+    public void whenGetMoreCommentsCompletedAndAllCommentsAreLoaded_thenUpdatedLoadMoreItemStateToActive() {
+        ShotDetailsState shotDetailsStateMock = mock(ShotDetailsState.class);
+        when(shotDetailsStateMock.comments()).thenReturn(Statics.COMMENTS);
+        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+                .thenReturn(Observable.just(shotDetailsStateMock));
+        when(shotMock.commentsCount()).thenReturn(Statics.COMMENTS.size() + 5);
+        ArgumentCaptor<CommentLoadMoreState> argumentCaptor = ArgumentCaptor
+                .forClass(CommentLoadMoreState.class);
+
+        shotDetailsPresenter.getMoreComments();
+
+        verify(viewMock, times(2)).updateLoadMoreState(argumentCaptor.capture());
+        List<CommentLoadMoreState> values = argumentCaptor.getAllValues();
+        Assert.assertEquals(false, values.get(1).isWaitingForUpdate());
+        Assert.assertEquals(true, values.get(1).isLoadMoreActive());
+    }
+
+    @Test
+    public void whenGetMoreCommentsCompletedAndNotAllCommentsAreLoaded_thenUpdatedLoadMoreItemStateToActive() {
+        ShotDetailsState shotDetailsStateMock = mock(ShotDetailsState.class);
+        when(shotDetailsStateMock.comments()).thenReturn(Statics.COMMENTS);
+        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+                .thenReturn(Observable.just(shotDetailsStateMock));
+        when(shotMock.commentsCount()).thenReturn(Statics.COMMENTS.size());
+        ArgumentCaptor<CommentLoadMoreState> argumentCaptor = ArgumentCaptor
+                .forClass(CommentLoadMoreState.class);
+
+        shotDetailsPresenter.getMoreComments();
+
+        verify(viewMock, times(2)).updateLoadMoreState(argumentCaptor.capture());
+        List<CommentLoadMoreState> values = argumentCaptor.getAllValues();
+        Assert.assertEquals(false, values.get(1).isWaitingForUpdate());
+        Assert.assertEquals(false, values.get(1).isLoadMoreActive());
+    }
+
+    @Test
+    public void whenLikedStateIsDifferentThanCurrent_thenUpdatedShotDetails() {
+        ShotDetailsState shotDetailsStateMock = mock(ShotDetailsState.class);
+        boolean isLiked = true;
+        boolean isBucketed = false;
+        when(shotMock.isLiked()).thenReturn(isLiked);
+        when(shotMock.isBucketed()).thenReturn(isBucketed);
+        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+                .thenReturn(Observable.just(shotDetailsStateMock));
+        when(shotMock.commentsCount()).thenReturn(Statics.COMMENTS.size());
+        when(shotDetailsStateMock.isLiked()).thenReturn(!isLiked);
+
+        shotDetailsPresenter.downloadData();
+
+        verify(viewMock, times(2)).showDetails(any(Shot.class));
+    }
+
+    @Test
+    public void whenBucketStateIsDifferentThanCurrent_thenUpdatedShotDetails() {
+        ShotDetailsState shotDetailsStateMock = mock(ShotDetailsState.class);
+        boolean isLiked = true;
+        boolean isBucketed = false;
+        when(shotMock.isLiked()).thenReturn(isLiked);
+        when(shotMock.isBucketed()).thenReturn(isBucketed);
+        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+                .thenReturn(Observable.just(shotDetailsStateMock));
+        when(shotMock.commentsCount()).thenReturn(Statics.COMMENTS.size());
+        when(shotDetailsStateMock.isBucketed()).thenReturn(!isLiked);
+
+        shotDetailsPresenter.downloadData();
+
+        verify(viewMock, times(2)).showDetails(any(Shot.class));
     }
 
     //ERRORS

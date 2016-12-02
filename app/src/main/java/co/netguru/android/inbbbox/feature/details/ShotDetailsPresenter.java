@@ -208,7 +208,7 @@ public class ShotDetailsPresenter
         List<Comment> comments = state.comments();
         commentsCounter += comments.size();
 
-        getView().showComments(comments);
+        getView().addCommentsToList(comments);
         updateLoadMoreState();
 
         updateShotDetails(state.isLiked(), state.isBucketed());

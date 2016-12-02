@@ -20,7 +20,7 @@ public interface ShotDetailsContract {
 
         void showDetails(Shot shotDetails);
 
-        void showComments(List<Comment> commentList);
+        void addCommentsToList(List<Comment> commentList);
 
         void showMainImage(ShotImage shotImage);
 
