@@ -61,7 +61,7 @@ public final class DateTimeFormatUtil {
     public static String getTimeLabel(Context context, LocalDateTime dateTime) {
         String label;
         LocalDateTime now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        Duration duration = Duration.between(now, dateTime);
+        Duration duration = Duration.between(dateTime, now);
 
         if (duration.getSeconds() <= DateTimeFormatUtil.SEC) {
 

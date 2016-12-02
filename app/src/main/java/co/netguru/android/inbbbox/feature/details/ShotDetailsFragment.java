@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.List;
@@ -27,7 +28,9 @@ import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
+import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
 import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotImage;
 import co.netguru.android.inbbbox.model.ui.Team;
@@ -60,6 +63,12 @@ public class ShotDetailsFragment
 
     @BindView(R.id.appBarLayout)
     AppBarLayout appBarLayout;
+
+    @BindView(R.id.send_progressBar)
+    ProgressBar sendProgressBar;
+
+    @BindView(R.id.comment_send_imageView)
+    View sendButton;
 
     @BindDimen(R.dimen.shot_corner_radius)
     int radius;
@@ -107,10 +116,9 @@ public class ShotDetailsFragment
         return component.getPresenter();
     }
 
-    @OnClick(R.id.comment_send_ImageView)
+    @OnClick(R.id.comment_send_imageView)
     void onSendCommentClick() {
         getPresenter().sendComment();
-        Toast.makeText(getContext(), getCommentText(), Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.details_close_imageView)
@@ -129,7 +137,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showErrorMessage(String errorMessageLabel) {
-        Toast.makeText(getContext(), errorMessageLabel, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), errorMessageLabel, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -193,8 +201,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onUserSelected(User user) {
-        // TODO: 15.11.2016 not in scope of this task
-        Toast.makeText(getContext(), "user clicked " + user.name(), Toast.LENGTH_SHORT).show();
+        getPresenter().downloadUserShots(user);
     }
 
     @Override
@@ -215,18 +222,22 @@ public class ShotDetailsFragment
 
     @Override
     public void onCommentDeleteSelected(Comment currentComment) {
-        // TODO: 28.11.2016
-        Toast.makeText(getContext(), "onCommentDeleteSelected: " + currentComment.text(), Toast.LENGTH_SHORT).show();
+        getPresenter().onCommentDelete(currentComment);
     }
 
     @Override
     public void onCommentEditSelected(Comment currentComment) {
-        getPresenter().openCommentEditor(currentComment);
+        getPresenter().onEditCommentClick(currentComment);
     }
 
     @Override
     public void onCommentUpdated(String comment) {
         getPresenter().updateComment(comment);
+    }
+
+    @Override
+    public void onCommentDeleteConfirmed() {
+        getPresenter().onCommentDeleteConfirmed();
     }
 
     @Override
@@ -251,6 +262,54 @@ public class ShotDetailsFragment
     @Override
     public void hideKeyboard() {
         InputUtils.hideKeyboard(getContext(), shotRecyclerView);
+    }
+
+    @Override
+    public void showUserDetails(Follower follower) {
+        FollowerDetailsActivity.startActivity(getContext(), follower);
+    }
+
+    @Override
+    public void showSendingCommentIndicator() {
+        sendProgressBar.setVisibility(View.VISIBLE);
+        sendButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideSendingCommentIndicator() {
+        sendProgressBar.setVisibility(View.GONE);
+        sendButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void addNewComment(Comment updatedComment) {
+        int indexOfInsertedComment = adapter.addComment(updatedComment);
+        shotRecyclerView.smoothScrollToPosition(indexOfInsertedComment);
+    }
+
+    @Override
+    public void clearCommentInput() {
+        commentTextInputLayout.getEditText().setText("");
+    }
+
+    @Override
+    public void showDeleteCommentWarning() {
+        RemoveCommentFragmentDialog
+                .newInstance(this)
+                .show(getFragmentManager(), RemoveCommentFragmentDialog.TAG);
+    }
+
+    @Override
+    public void showCommentDeletedInfo() {
+        Toast.makeText(getContext(),
+                getString(R.string.comment_deleted_complete),
+                Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
+    public void removeCommentFromView(Comment commentInEditor) {
+        adapter.removeComment(commentInEditor);
     }
 
     private void initComponent() {

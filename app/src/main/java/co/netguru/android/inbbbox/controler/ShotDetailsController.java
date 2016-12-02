@@ -40,6 +40,29 @@ public class ShotDetailsController {
                         .create(isLiked, isBucketed, comments));
     }
 
+    public Completable performLikeAction(long shotId, boolean newLikeState) {
+        return newLikeState ? likeShotController.likeShot(shotId) :
+                likeShotController.unLikeShot(shotId);
+    }
+
+    public Single<Comment> sendComment(Long shotId, String commentText) {
+        return getCurrentUserId()
+                .flatMap(currentUserId -> createComment(shotId.toString(),
+                        commentText,
+                        currentUserId));
+    }
+
+    public Completable deleteComment(Long shotId, Long commentId) {
+        return shotsApi.deleteComment(shotId.toString(), commentId.toString());
+    }
+
+    private Single<Comment> createComment(String shotId, String commentText, Long currentUserId) {
+        return shotsApi.createComment(shotId, commentText)
+                .map(commentEntity ->
+                        Comment.create(commentEntity,
+                                isCurrentUserAuthor(commentEntity.getUser(), currentUserId)));
+    }
+
     private Observable<Boolean> getBucketState(long shotId) {
         return Observable.zip(getCurrentBuckets(shotId),
                 getCurrentUserId().toObservable(),
@@ -82,10 +105,5 @@ public class ShotDetailsController {
         return likeShotController.isShotLiked(shotId)
                 .andThen(Observable.just(Boolean.TRUE))
                 .onErrorResumeNext(Observable.just(Boolean.FALSE));
-    }
-
-    public Completable performLikeAction(long shotId, boolean newLikeState) {
-        return newLikeState ? likeShotController.likeShot(shotId) :
-                likeShotController.unLikeShot(shotId);
     }
 }

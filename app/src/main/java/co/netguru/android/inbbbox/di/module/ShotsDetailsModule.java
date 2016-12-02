@@ -6,6 +6,7 @@ import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
 import co.netguru.android.inbbbox.controler.UserController;
+import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsPresenter;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
@@ -35,8 +36,9 @@ public class ShotsDetailsModule {
 
     @Provides
     ShotDetailsPresenter provideShotDetailsPresenter(ShotDetailsController shotDetailsController,
-                                                     ErrorMessageController messageController) {
-        return new ShotDetailsPresenter(shotDetailsController, messageController);
+                                                     ErrorMessageController messageController,
+                                                     UserShotsController userShotsController) {
+        return new ShotDetailsPresenter(shotDetailsController, messageController, userShotsController);
     }
 }
 

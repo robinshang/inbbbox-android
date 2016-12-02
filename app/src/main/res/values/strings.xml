@@ -35,6 +35,8 @@
     <string name="drawer_shot_details">Shot Details on Homescreen</string>
     <string name="drawer_logout">Log out</string>
 
+    <string name="change_stream_source_error">At least one stream source should be checked</string>
+
     <string name="fragment_like_empty_text">Like some shots first!</string>
     <string name="fragment_followers_empty_text">Follow someone first!</string>
     <string name="fragment_buckets_empty_text_before_icon">Create some buckets</string>
@@ -74,6 +76,8 @@
     <string name="dialog_fragment_create_bucket_optional">Description (optional)</string>
     <string name="dialog_fragment_create_bucket_create">Create</string>
     <string name="dialog_fragment_create_bucket_cancel">Cancel</string>
+    <string name="dialog_fragment_create_bucket_title">Create bucket</string>
+    <string name="dialog_fragment_create_bucket_creating_new_bucket">Creating new bucket…</string>
 
     <string name="gif">gif</string>
     <string name="drawer_open">Open drawer</string>
@@ -100,7 +104,14 @@
     <string name="edit_comment_update">Update comment</string>
     <string name="edit_comment_cancel">Cancel</string>
     <string name="comment_edit_hint">Edit comment</string>
-    <string name="dialog_fragment_create_bucket_title">Create bucket</string>
-    <string name="dialog_fragment_create_bucket_creating_new_bucket">Creating new bucket...</string>
+
+    <string name="error_to_low_rank">You rank is to low, you should be a \'Player\" or a \'Team\' to
+        do this
+    </string>
+    <string name="comment_deleted_complete">Comment was successfully deleted</string>
+    <string name="action_ok">OK</string>
+    <string name="delete_comment_waring">This comment will be deleted, are you sure to do that?
+    </string>
+    <string name="action_warning">Warning</string>
 
 </resources>

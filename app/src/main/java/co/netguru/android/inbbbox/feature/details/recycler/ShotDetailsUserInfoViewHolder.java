@@ -94,6 +94,11 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot> {
         actionCallbackListener.onUserSelected(item.author());
     }
 
+    @OnClick(R.id.details_user_imageView)
+    void onUserImageClick() {
+        actionCallbackListener.onUserSelected(item.author());
+    }
+
     @Override
     public void bind(@NonNull Shot item) {
         this.item = item;

@@ -6,8 +6,10 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 import java.util.List;
 
 import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotImage;
+import co.netguru.android.inbbbox.model.ui.User;
 
 public interface ShotDetailsContract {
 
@@ -44,6 +46,22 @@ public interface ShotDetailsContract {
         void hideDetailsScreen();
 
         void hideKeyboard();
+
+        void showUserDetails(Follower follower);
+
+        void showSendingCommentIndicator();
+
+        void hideSendingCommentIndicator();
+
+        void addNewComment(Comment updatedComment);
+
+        void clearCommentInput();
+
+        void showDeleteCommentWarning();
+
+        void showCommentDeletedInfo();
+
+        void removeCommentFromView(Comment commentInEditor);
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -56,10 +74,16 @@ public interface ShotDetailsContract {
 
         void sendComment();
 
-        void openCommentEditor(Comment currentComment);
+        void onEditCommentClick(Comment currentComment);
 
         void updateComment(String updatedComment);
 
         void closeScreen();
+
+        void downloadUserShots(User user);
+
+        void onCommentDelete(Comment currentComment);
+
+        void onCommentDeleteConfirmed();
     }
 }

@@ -22,6 +22,7 @@ import co.netguru.android.inbbbox.controler.UserController;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.CommentEntity;
 import co.netguru.android.inbbbox.model.api.UserEntity;
+import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
 import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.testcommons.RxSyncTestRule;
@@ -30,6 +31,7 @@ import rx.Observable;
 import rx.Single;
 import rx.observers.TestSubscriber;
 
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -182,6 +184,33 @@ public class ShotDetailsControllerTest {
 
         testSubscriber.assertNoErrors();
         verify(likeShotControllerMock, times(1)).unLikeShot(EXAMPLE_SHOT_ID);
+    }
+
+    @Test
+    public void whenSendCommentSubscribed_thenReturnNewCommentWhenTaskIsComplete() {
+        Long id = 99L;
+        String exampleText = "test";
+        CommentEntity exampleComment = Statics.generateCommentsEntity().get(0);
+        TestSubscriber<Comment> testSubscriber = new TestSubscriber<>();
+        when(userControllerMock.getUserFromCache()).thenReturn(Single.just(userMock));
+        when(shotApiMock
+                .createComment(anyString(), anyString()))
+                .thenReturn(Single.just(exampleComment));
+
+        controller.sendComment(id, exampleText).subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        verify(shotApiMock, times(1)).createComment(id.toString(), exampleText);
+    }
+
+    @Test
+    public void whenCommentDeleteSubscribed_thenReturnCompleteWhenSuccess() {
+        when(shotApiMock.deleteComment(anyString(), anyString())).thenReturn(Completable.complete());
+        TestSubscriber testSubscriber = new TestSubscriber();
+
+        controller.deleteComment(99L, 88L).subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
     }
 
     //ERRORS
