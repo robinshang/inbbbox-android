@@ -155,6 +155,8 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
 
     @Override
     public void addNewBucketWithShotsOnTop(BucketWithShots bucketWithShots) {
+        bucketsRecyclerView.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
         adapter.addNewBucketWithShots(bucketWithShots);
     }
 

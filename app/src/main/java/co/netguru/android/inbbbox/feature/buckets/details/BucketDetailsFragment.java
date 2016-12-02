@@ -89,7 +89,7 @@ public class BucketDetailsFragment
             bucketDetailsFragmentActionListener = (BucketDetailsFragmentActionListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnShotInBucketClickListener");
+                    + " must implement BucketDetailsFragmentActionListener");
         }
     }
 
@@ -181,8 +181,8 @@ public class BucketDetailsFragment
     }
 
     @Override
-    public void showRemoveBucketDialog() {
-        DeleteBucketDialogFragment.newInstance(this, "bla")
+    public void showRemoveBucketDialog(@NonNull String bucketName) {
+        DeleteBucketDialogFragment.newInstance(this, bucketName)
                 .show(getFragmentManager(), DeleteBucketDialogFragment.TAG);
     }
 

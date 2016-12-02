@@ -54,6 +54,8 @@
     <string name="fragment_bucket_is_empty_text_before_icon">Add some shots to this bucket</string>
     <string name="fragment_bucket_is_empty_text_after_icon">first!</string>
 
+    <string name="fragment_bucket_details_delete_are_you_sure_msg">Delete this %s bucket?</string>
+
     <string name="shots_fragment_add_shot_to_bucket_success">Shot successfully added to bucket</string>
 
     <string name="follower_item_shot">shots</string>

@@ -1,6 +1,8 @@
 package co.netguru.android.inbbbox.feature.buckets.details;
 
 
+import android.support.annotation.NonNull;
+
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -26,8 +28,7 @@ public interface BucketDetailsContract {
 
         void hideProgressbar();
 
-        void showRemoveBucketDialog();
-
+        void showRemoveBucketDialog(@NonNull String bucketName);
 
         void showError(String message);
 

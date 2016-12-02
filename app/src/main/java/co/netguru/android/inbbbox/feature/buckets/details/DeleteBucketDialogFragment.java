@@ -34,7 +34,7 @@ public class DeleteBucketDialogFragment extends DialogFragment {
         DeleteBucketDialogListener deleteBucketDialogListener = (DeleteBucketDialogListener) getTargetFragment();
 
         return new AlertDialog.Builder(getContext(), R.style.AlertDialog)
-                .setMessage(String.format("Delete this %s bucket?", bucketName))
+                .setMessage(String.format(getString(R.string.fragment_bucket_details_delete_are_you_sure_msg), bucketName))
                 .setPositiveButton(R.string.action_delete, (dialog, which) -> deleteBucketDialogListener.onDeleteBucket())
                 .setNegativeButton(R.string.action_cancel, null)
                 .create();

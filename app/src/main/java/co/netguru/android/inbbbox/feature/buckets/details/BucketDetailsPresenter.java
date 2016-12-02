@@ -34,6 +34,7 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     private boolean canLoadMore;
 
     private long currentBucketId;
+    private String currentBucketName;
 
     @NonNull
     protected Subscription refreshShotsSubscription;
@@ -60,6 +61,7 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         shotsPerPage = perPage;
         Bucket bucket = bucketWithShots.bucket();
         currentBucketId = bucket.id();
+        currentBucketName = bucket.name();
         List<ShotEntity> shotEntities = bucketWithShots.shots();
         getView().setFragmentTitle(bucket.name());
         handleNewShots(shotEntities);
@@ -82,7 +84,7 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
 
     @Override
     public void onDeleteBucketClick() {
-        getView().showRemoveBucketDialog();
+        getView().showRemoveBucketDialog(currentBucketName);
     }
 
     @Override
