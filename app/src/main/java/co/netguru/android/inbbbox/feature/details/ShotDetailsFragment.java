@@ -29,7 +29,9 @@ import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
+import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
 import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotImage;
@@ -201,8 +203,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onUserSelected(User user) {
-        // TODO: 15.11.2016 not in scope of this task
-        Toast.makeText(getContext(), "user clicked " + user.name(), Toast.LENGTH_SHORT).show();
+        getPresenter().downloadUserShots(user);
     }
 
     @Override
@@ -263,6 +264,11 @@ public class ShotDetailsFragment
     @Override
     public void hideKeyboard() {
         InputUtils.hideKeyboard(getContext(), shotRecyclerView);
+    }
+
+    @Override
+    public void showUserDetails(Follower follower) {
+        FollowerDetailsActivity.startActivity(getContext(), follower);
     }
 
     @Override

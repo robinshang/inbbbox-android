@@ -122,7 +122,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
 
     @Override
     public void showFollowerData(Follower follower) {
-        adapter.setAdapterData(follower);
+        adapter.setFollowerAdapterData(follower);
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(follower.name());
