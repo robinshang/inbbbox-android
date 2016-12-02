@@ -67,6 +67,8 @@ public interface ShotDetailsContract {
         void dismissCommentEditor();
 
         void updateComment(Comment commentToUpdate, Comment updatedComment);
+
+        void disableEditorProgressMode();
     }
 
     interface Presenter extends MvpPresenter<View> {

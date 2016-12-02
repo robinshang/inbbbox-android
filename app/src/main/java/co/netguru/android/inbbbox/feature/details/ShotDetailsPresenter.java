@@ -239,5 +239,6 @@ public class ShotDetailsPresenter
     private void handleApiError(Throwable throwable) {
         Timber.e(throwable, "details download failed! ");
         getView().showErrorMessage(errorMessageController.getErrorMessageLabel(throwable));
+        getView().disableEditorProgressMode();
     }
 }

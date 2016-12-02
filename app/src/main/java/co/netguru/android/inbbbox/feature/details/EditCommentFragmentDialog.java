@@ -9,7 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +29,12 @@ public class EditCommentFragmentDialog extends DialogFragment {
     @BindView(R.id.comment_edit_editText)
     EditText editCommentEditText;
 
+    @BindView(R.id.update_comment_progressBar)
+    ProgressBar updateCommentProgressBar;
+
     private DetailsViewActionCallback callback;
+    private Button positiveButton;
+    private Button negativeButton;
 
     public static EditCommentFragmentDialog newInstance(Fragment targetFragment,
                                                         String currentComment) {
@@ -47,15 +54,17 @@ public class EditCommentFragmentDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.NoTitleDialog)
                 .setTitle(R.string.edit_comment_title)
-                .setPositiveButton(R.string.edit_comment_update, createDialogListener())
-                .setNegativeButton(R.string.edit_comment_cancel, createDialogListener())
+                .setPositiveButton(R.string.edit_comment_update, null)
+                .setNegativeButton(R.string.edit_comment_cancel, null)
                 .setView(contentView);
 
+        AlertDialog dialog = builder.create();
         ButterKnife.bind(this, contentView);
 
+        dialog.setOnShowListener(this::initButtonsOnShow);
         String text = getArguments().getString(ARG_STRING_COMMENT);
         editCommentEditText.setText(StringUtils.removeHtml(text));
-        return builder.create();
+        return dialog;
     }
 
     @Override
@@ -70,14 +79,32 @@ public class EditCommentFragmentDialog extends DialogFragment {
         }
     }
 
-    private DialogInterface.OnClickListener createDialogListener() {
-        return (dialog, which) -> {
-            if (which == DialogInterface.BUTTON_POSITIVE) {
-                String updatedComment = editCommentEditText.getText().toString();
-                callback.onCommentUpdated(updatedComment);
-            } else {
-                dismiss();
-            }
-        };
+    public void enableInProgressMode() {
+        updateCommentProgressBar.setVisibility(View.VISIBLE);
+        editCommentEditText.setEnabled(false);
+        editCommentEditText.setAlpha(0.2f);
+        negativeButton.setEnabled(false);
+        positiveButton.setEnabled(false);
+    }
+
+    public void disableProgresMode() {
+        updateCommentProgressBar.setVisibility(View.GONE);
+        editCommentEditText.setEnabled(true);
+        editCommentEditText.setAlpha(1);
+        negativeButton.setEnabled(true);
+        positiveButton.setEnabled(true);
+    }
+
+    private void initButtonsOnShow(DialogInterface dialogInterface) {
+        positiveButton = ((AlertDialog) dialogInterface).getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setOnClickListener(view -> onPositiveClick());
+        negativeButton = ((AlertDialog) dialogInterface).getButton(AlertDialog.BUTTON_NEGATIVE);
+        negativeButton.setOnClickListener(view -> dismiss());
+    }
+
+    private void onPositiveClick() {
+        String updatedComment = editCommentEditText.getText().toString();
+        enableInProgressMode();
+        callback.onCommentUpdated(updatedComment);
     }
 }

@@ -327,6 +327,15 @@ public class ShotDetailsFragment
         adapter.replaceComment(commentToUpdate, updatedComment);
     }
 
+    @Override
+    public void disableEditorProgressMode() {
+        EditCommentFragmentDialog editorFragmentDialog = (EditCommentFragmentDialog) getFragmentManager()
+                .findFragmentByTag(EditCommentFragmentDialog.TAG);
+        if (editorFragmentDialog != null) {
+            editorFragmentDialog.disableProgresMode();
+        }
+    }
+
     private void initComponent() {
         component = App.getAppComponent(getContext())
                 .plus(new ShotsDetailsModule(this));
