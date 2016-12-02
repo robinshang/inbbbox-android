@@ -35,6 +35,11 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private final LogoutController logoutController;
     private final CompositeSubscription subscriptions;
 
+    private boolean isFollowing;
+    private boolean isNew;
+    private boolean isPopular;
+    private boolean isDebut;
+
     @Nullable
     private UserEntity user;
 
@@ -121,22 +126,26 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     @Override
     public void followingStatusChanged(boolean status) {
-        changeStreamSourceStatus(status, null, null, null);
+        isFollowing = status;
+        changeStreamSourceStatusIfCorrect();
     }
 
     @Override
     public void newStatusChanged(boolean status) {
-        changeStreamSourceStatus(null, status, null, null);
+        isNew = status;
+        changeStreamSourceStatusIfCorrect();
     }
 
     @Override
     public void popularStatusChanged(boolean status) {
-        changeStreamSourceStatus(null, null, status, null);
+        isPopular = status;
+        changeStreamSourceStatusIfCorrect();
     }
 
     @Override
     public void debutsStatusChanged(boolean status) {
-        changeStreamSourceStatus(null, null, null, status);
+        isDebut = status;
+        changeStreamSourceStatusIfCorrect();
     }
 
     @Override
@@ -148,9 +157,17 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         subscriptions.add(subscription);
     }
 
-    private void changeStreamSourceStatus(@Nullable Boolean isFollowing, @Nullable Boolean isNew,
-                                          @Nullable Boolean isPopular, @Nullable Boolean isDebuts) {
-        final Subscription subscription = settingsController.changeStreamSourceSettings(isFollowing, isNew, isPopular, isDebuts)
+    private void changeStreamSourceStatusIfCorrect() {
+        if (isFollowing || isNew || isPopular || isDebut) {
+            changeStreamSourceStatus();
+
+        } else {
+            canNotChangeStreamSourceStatus();
+        }
+    }
+
+    private void changeStreamSourceStatus() {
+        final Subscription subscription = settingsController.changeStreamSourceSettings(isFollowing, isNew, isPopular, isDebut)
                 .compose(RxTransformerUtils.applyCompletableIoSchedulers())
                 .subscribe(() -> {
                             Timber.d("Stream source settings changed");
@@ -158,6 +175,11 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                         },
                         throwable -> Timber.e(throwable, "Error while changing stream source settings"));
         subscriptions.add(subscription);
+    }
+
+    private void canNotChangeStreamSourceStatus() {
+        getView().showMessage(R.string.change_stream_source_error);
+        prepareUserSettings();
     }
 
     private void saveNotificationStatus(boolean status) {
