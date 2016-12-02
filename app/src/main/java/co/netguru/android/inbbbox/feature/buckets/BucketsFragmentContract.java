@@ -25,6 +25,12 @@ public interface BucketsFragmentContract {
         void hideLoadingMoreBucketsView();
 
         void showDetailedBucketView(BucketWithShots bucketWithShots, int bucketShotsPerPageCount);
+
+        void openCreateDialogFragment();
+
+        void addNewBucketWithShotsOnTop(BucketWithShots bucketWithShots);
+
+        void scrollToTop();
     }
 
     interface Presenter extends MvpPresenter<BucketsFragmentContract.View> {
@@ -34,5 +40,7 @@ public interface BucketsFragmentContract {
         void loadMoreBucketsWithShots();
 
         void handleBucketWithShotsClick(BucketWithShots bucketWithShots);
+
+        void handleCreateBucket();
     }
 }

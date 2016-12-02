@@ -5,12 +5,15 @@ import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.event.BucketCreatedEvent;
+import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.Subscription;
@@ -25,6 +28,7 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     private static final int BUCKET_SHOTS_PER_PAGE_COUNT = 30;
 
     private final BucketsController bucketsController;
+    private final RxBus rxBus;
 
     private int pageNumber = 1;
     private boolean apiHasMoreBuckets = true;
@@ -33,10 +37,12 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     private Subscription refreshSubscription;
     @NonNull
     private Subscription loadNextBucketSubscription;
+    private Subscription busSubscription;
 
     @Inject
-    BucketsFragmentPresenter(BucketsController bucketsController) {
+    BucketsFragmentPresenter(BucketsController bucketsController, RxBus rxBus) {
         this.bucketsController = bucketsController;
+        this.rxBus = rxBus;
         refreshSubscription = Subscriptions.unsubscribed();
         loadNextBucketSubscription = Subscriptions.unsubscribed();
     }
@@ -46,6 +52,13 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
         super.detachView(retainInstance);
         refreshSubscription.unsubscribe();
         loadNextBucketSubscription.unsubscribe();
+        busSubscription.unsubscribe();
+    }
+
+    @Override
+    public void attachView(BucketsFragmentContract.View view) {
+        super.attachView(view);
+        setupRxBus();
     }
 
     @Override
@@ -92,5 +105,21 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     @Override
     public void handleBucketWithShotsClick(BucketWithShots bucketWithShots) {
         getView().showDetailedBucketView(bucketWithShots, BUCKET_SHOTS_PER_PAGE_COUNT);
+    }
+
+    @Override
+    public void handleCreateBucket() {
+        getView().openCreateDialogFragment();
+    }
+
+    private void setupRxBus() {
+        busSubscription = rxBus.getEvents(BucketCreatedEvent.class)
+                .compose(RxTransformers.androidIO())
+                .subscribe(bucketCreatedEvent -> {
+                    BucketWithShots bucketWithShots = BucketWithShots.create(bucketCreatedEvent.getBucket(),
+                            Collections.emptyList());
+                    getView().addNewBucketWithShotsOnTop(bucketWithShots);
+                    getView().scrollToTop();
+                });
     }
 }

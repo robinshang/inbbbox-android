@@ -11,9 +11,10 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import co.netguru.android.commons.rx.RxTransformers;
+import co.netguru.android.inbbbox.App;
+import co.netguru.android.inbbbox.event.CriticalLogoutEvent;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
-import co.netguru.android.inbbbox.model.events.CriticalLogoutEvent;
-import co.netguru.android.inbbbox.utils.RxBus;
 import rx.Subscription;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -32,8 +33,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        criticalLogoutSubscription = RxBus.getInstance()
-                .register(CriticalLogoutEvent.class, this::handleUnauthorisedEvent);
+        criticalLogoutSubscription = App.getAppComponent(this).rxBus()
+                .getEvents(CriticalLogoutEvent.class)
+                .compose(RxTransformers.androidIO())
+                .subscribe(this::handleUnauthorisedEvent);
     }
 
     @Override

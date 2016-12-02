@@ -194,11 +194,16 @@
         <item name="android:paddingBottom">@dimen/details_comment_top_padding</item>
     </style>
 
-    <style name="TextInputStyle" parent="TextAppearance.AppCompat">
+    <style name="TextInputStyle" parent="Widget.Design.TextInputLayout">
         <item name="android:textColorHint">@color/lightGray</item>
         <item name="colorAccent">@color/lightGray</item>
         <item name="colorControlNormal">@color/lightGray</item>
         <item name="colorControlActivated">@color/lightGray</item>
+    </style>
+
+    <style name="CreateBucketTextInputStyle" parent="Widget.Design.TextInputLayout">
+        <item name="android:textColorHint">@color/lightGray</item>
+        <item name="colorControlNormal">@color/lightGray</item>
     </style>
 
     <style name="LoadMoreText" parent="Font16">

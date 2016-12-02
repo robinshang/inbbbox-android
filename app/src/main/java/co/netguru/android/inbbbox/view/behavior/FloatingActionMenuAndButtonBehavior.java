@@ -8,17 +8,18 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 /**
  * Behavior which makes clans fab move up when snackbar is shown
  */
 @SuppressWarnings("unused")
-public class FloatingActionMenuBehavior extends CoordinatorLayout.Behavior {
+public class FloatingActionMenuAndButtonBehavior extends CoordinatorLayout.Behavior {
 
     private float mTranslationY;
 
-    public FloatingActionMenuBehavior(Context context, AttributeSet attrs) {
+    public FloatingActionMenuAndButtonBehavior(Context context, AttributeSet attrs) {
         super();
     }
 
@@ -29,7 +30,7 @@ public class FloatingActionMenuBehavior extends CoordinatorLayout.Behavior {
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
-        if (child instanceof FloatingActionMenu && dependency instanceof Snackbar.SnackbarLayout) {
+        if (child instanceof FloatingActionButton || child instanceof FloatingActionMenu && dependency instanceof Snackbar.SnackbarLayout) {
             this.updateTranslation(parent, child, dependency);
         }
         return false;
