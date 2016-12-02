@@ -84,6 +84,22 @@ public class BucketDetailsActivity extends BaseActivity
         super.onBackPressed();
     }
 
+    @Override
+    public void onBucketDeleted() {
+        MainActivity.startActivityWithRequest(this, MainActivity.RequestType.REFRESH_BUCKET_LIST);
+        finish();
+    }
+
+    @Override
+    public void onShotClick(ShotEntity shotEntity) {
+        Fragment fragment = ShotDetailsFragment.newInstance(Shot.create(shotEntity));
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
+                .commit();
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
     private void initializeBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
     }
@@ -110,21 +126,5 @@ public class BucketDetailsActivity extends BaseActivity
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-    }
-
-    @Override
-    public void onBucketDeleted() {
-        MainActivity.startActivityWithRequest(this, MainActivity.RequestType.REFRESH_BUCKET_LIST);
-        finish();
-    }
-
-    @Override
-    public void onShotClick(ShotEntity shotEntity) {
-        Fragment fragment = ShotDetailsFragment.newInstance(Shot.create(shotEntity));
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
-                .commit();
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 }
