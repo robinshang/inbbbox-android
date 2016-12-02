@@ -115,7 +115,13 @@ public class ShotDetailsController {
                 .map(commentEntity -> Comment.create(commentEntity,
                         isCurrentUserAuthor(commentEntity.getUser(), currentUserId)))
                 .toList()
+                .map(this::reverseList)
                 .onErrorResumeNext(throwable -> Observable.just(Collections.emptyList()));
+    }
+
+    private List<Comment> reverseList(List<Comment> comments) {
+        Collections.reverse(comments);
+        return comments;
     }
 
     private boolean isCurrentUserAuthor(UserEntity user, Long currentUserId) {
