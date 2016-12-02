@@ -27,8 +27,8 @@ public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBuck
     @BindView(R.id.creating_new_bucket_progress_view)
     LinearLayout creatingNewBucketProgressView;
 
-    Button createButton;
-    Button cancelButton;
+    private Button createButton;
+    private Button cancelButton;
 
     public static CreateBucketDialogFragment newInstance() {
         return new CreateBucketDialogFragment();

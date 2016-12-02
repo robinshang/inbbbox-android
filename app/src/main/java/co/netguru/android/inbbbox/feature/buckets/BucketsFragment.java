@@ -159,7 +159,7 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
     }
 
     @Override
-    public void scrollToTop(){
+    public void scrollToTop() {
         bucketsRecyclerView.smoothScrollToPosition(0);
     }
 
@@ -167,7 +167,6 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
     public void onCreateBucketFabClick() {
         getPresenter().handleCreateBucket();
     }
-
 
     private void initRefreshLayout() {
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.accent));

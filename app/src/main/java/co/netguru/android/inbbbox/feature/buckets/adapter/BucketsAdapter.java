@@ -66,7 +66,7 @@ public final class BucketsAdapter extends RecyclerView.Adapter<BaseBucketViewHol
     }
 
     public void addNewBucketWithShots(BucketWithShots bucketWithShots) {
-        bucketWithShotsList.add(0,bucketWithShots);
+        bucketWithShotsList.add(0, bucketWithShots);
         notifyItemInserted(0);
     }
 
