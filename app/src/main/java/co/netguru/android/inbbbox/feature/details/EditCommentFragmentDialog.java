@@ -87,7 +87,7 @@ public class EditCommentFragmentDialog extends DialogFragment {
         positiveButton.setEnabled(false);
     }
 
-    public void disableProgresMode() {
+    public void disableProgressMode() {
         updateCommentProgressBar.setVisibility(View.GONE);
         editCommentEditText.setEnabled(true);
         editCommentEditText.setAlpha(1);

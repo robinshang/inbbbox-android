@@ -15,6 +15,7 @@ import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
@@ -453,7 +454,76 @@ public class ShotDetailsPresenterTest {
         verify(viewMock, times(2)).showDetails(any(Shot.class));
     }
 
+    @Test
+    public void whenOnEditCommentClick_thenShowCommentEditor() {
+        Comment comment = Statics.COMMENTS.get(0);
+        String exampleCommentText = comment.text();
+
+        shotDetailsPresenter.onEditCommentClick(comment);
+
+        verify(viewMock, times(1)).showCommentEditorDialog(exampleCommentText);
+    }
+
+    @Test
+    public void whenUpdateCommentConfirmed_thenSendUpdateRequestWithCommentIdShotIdAndNewValue() {
+        Comment comment = Statics.COMMENTS.get(0);
+        when(shotDetailsControllerMock.updateComment(anyLong(), anyLong(), anyString()))
+                .thenReturn(Single.just(comment));
+        long commentId = comment.id();
+        long shotId = shotMock.id();
+        shotDetailsPresenter.onEditCommentClick(comment);
+        String expectedCommentUpdate = "test";
+
+        shotDetailsPresenter.updateComment(expectedCommentUpdate);
+
+        verify(shotDetailsControllerMock, times(1))
+                .updateComment(shotId, commentId, expectedCommentUpdate);
+    }
+
+    @Test
+    public void whenUpdateCommentConfirmed_thenReplaceNewComment() {
+        Comment comment = Statics.COMMENTS.get(0);
+        when(shotDetailsControllerMock.updateComment(anyLong(), anyLong(), anyString()))
+                .thenReturn(Single.just(comment));
+        long commentId = comment.id();
+        long shotId = shotMock.id();
+        shotDetailsPresenter.onEditCommentClick(comment);
+        String expectedCommentUpdate = "test";
+
+        shotDetailsPresenter.updateComment(expectedCommentUpdate);
+
+        verify(viewMock, times(1)).updateComment(comment, comment);
+    }
+
+    @Test
+    public void whenUpdateCommentComplete_thenCloseCommentEditorAndShowCommentUpdateCompleteInfo() {
+        Comment comment = Statics.COMMENTS.get(0);
+        when(shotDetailsControllerMock.updateComment(anyLong(), anyLong(), anyString()))
+                .thenReturn(Single.just(comment));
+        shotDetailsPresenter.onEditCommentClick(comment);
+        String expectedCommentUpdate = "test";
+
+        shotDetailsPresenter.updateComment(expectedCommentUpdate);
+
+        verify(viewMock, times(1)).dismissCommentEditor();
+        verify(viewMock, times(1)).showInfo(R.string.comment_update_complete);
+    }
+
     //ERRORS
+    @Test
+    public void whenUpdateCommentFailed_thenShowInfoAndDisableProgressModeInCommentEditor() {
+        Comment comment = Statics.COMMENTS.get(0);
+        when(shotDetailsControllerMock.updateComment(anyLong(), anyLong(), anyString()))
+                .thenReturn(Single.error(new Throwable()));
+        shotDetailsPresenter.onEditCommentClick(comment);
+        String expectedCommentUpdate = "test";
+
+        shotDetailsPresenter.updateComment(expectedCommentUpdate);
+
+        verify(viewMock, times(1))
+                .disableEditorProgressMode();
+    }
+
     @Test
     public void whenCommentDeletionFaild_thenRemoveSelectedCommentFromView() {
         Comment commentMock = Statics.COMMENTS.get(0);

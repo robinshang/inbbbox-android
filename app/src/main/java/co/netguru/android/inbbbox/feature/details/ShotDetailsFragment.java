@@ -338,7 +338,7 @@ public class ShotDetailsFragment
         EditCommentFragmentDialog editorFragmentDialog = (EditCommentFragmentDialog) getFragmentManager()
                 .findFragmentByTag(EditCommentFragmentDialog.TAG);
         if (editorFragmentDialog != null) {
-            editorFragmentDialog.disableProgresMode();
+            editorFragmentDialog.disableProgressMode();
         }
     }
 

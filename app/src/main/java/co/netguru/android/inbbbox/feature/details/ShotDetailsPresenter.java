@@ -257,7 +257,7 @@ public class ShotDetailsPresenter
     private void handleCommentUpdated(Comment comment) {
         getView().dismissCommentEditor();
         getView().updateComment(commentInEditor, comment);
-        getView().showInfo(R.string.comment_change_complete);
+        getView().showInfo(R.string.comment_update_complete);
     }
 
     private void handleApiError(Throwable throwable) {
