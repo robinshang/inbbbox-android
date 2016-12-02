@@ -41,8 +41,8 @@ public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBuck
         super.onViewCreated(dialogContentView, savedInstanceState);
         Dialog dialog = new AlertDialog.Builder(getContext(), R.style.NoTitleDialog)
                 .setTitle(R.string.dialog_fragment_create_bucket_title)
-                .setPositiveButton(R.string.dialog_fragment_create_bucket_create, null)
-                .setNegativeButton(R.string.dialog_fragment_create_bucket_cancel, null)
+                .setPositiveButton(R.string.action_create, null)
+                .setNegativeButton(R.string.action_cancel, null)
                 .setView(dialogContentView)
                 .create();
 

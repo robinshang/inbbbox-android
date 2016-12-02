@@ -25,6 +25,13 @@ public interface BucketDetailsContract {
         void showEmptyView();
 
         void hideProgressbar();
+
+        void showRemoveBucketDialog();
+
+
+        void showError(String message);
+
+        void showRefreshedBucketsView();
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -34,5 +41,9 @@ public interface BucketDetailsContract {
         void loadMoreShots();
 
         void refreshShots();
+
+        void onDeleteBucketClick();
+
+        void deleteBucket();
     }
 }

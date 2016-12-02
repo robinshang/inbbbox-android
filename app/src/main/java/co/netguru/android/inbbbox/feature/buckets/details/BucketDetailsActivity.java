@@ -8,6 +8,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -15,15 +16,15 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.feature.buckets.details.adapter.BucketShotViewHolder;
 import co.netguru.android.inbbbox.feature.common.BaseActivity;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
+import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
 public class BucketDetailsActivity extends BaseActivity
-        implements BucketShotViewHolder.OnShotInBucketClickListener {
+        implements BucketDetailsFragment.BucketDetailsFragmentActionListener {
 
     private static final String BUCKET_WITH_SHOTS_KEY = "bucket_with_shots_key";
     private static final String SHOTS_PER_PAGE_KEY = "shots_per_page_key";
@@ -58,6 +59,12 @@ public class BucketDetailsActivity extends BaseActivity
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.bucket_details_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -79,16 +86,6 @@ public class BucketDetailsActivity extends BaseActivity
 
     private void initializeBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
-    }
-
-    @Override
-    public void onShotClick(ShotEntity shotEntity) {
-        Fragment fragment = ShotDetailsFragment.newInstance(Shot.create(shotEntity));
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
-                .commit();
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     private void initializeBucketDetailsFragment() {
@@ -113,5 +110,21 @@ public class BucketDetailsActivity extends BaseActivity
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @Override
+    public void onBucketDeleted() {
+        MainActivity.startActivityWithRequest(this, MainActivity.RequestType.REFRESH_BUCKET_LIST);
+        finish();
+    }
+
+    @Override
+    public void onShotClick(ShotEntity shotEntity) {
+        Fragment fragment = ShotDetailsFragment.newInstance(Shot.create(shotEntity));
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
+                .commit();
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 }

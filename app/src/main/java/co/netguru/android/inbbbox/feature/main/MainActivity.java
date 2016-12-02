@@ -36,6 +36,7 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.MainActivityComponent;
 import co.netguru.android.inbbbox.enumeration.TabItemType;
+import co.netguru.android.inbbbox.feature.buckets.BucketsFragment;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.followers.FollowersFragment;
@@ -57,6 +58,11 @@ public class MainActivity
         ShotsFragment.ShotActionListener {
 
     public static final int REQUEST_REFRESH_FOLLOWER_LIST = 101;
+
+    public enum RequestType {
+        REFRESH_FOLLOWER_LIST, REFRESH_BUCKET_LIST;
+    }
+
     private static final int REQUEST_DEFAULT = 0;
     private static final String REQUEST_EXTRA = "requestExtra";
     private static final String TOGGLE_BUTTON_STATE = "toggleButtonState";
@@ -102,10 +108,10 @@ public class MainActivity
         context.startActivity(intent);
     }
 
-    public static void startActivityWithRequest(Context context, int requestCode) {
+    public static void startActivityWithRequest(Context context, RequestType requestType) {
         final Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(REQUEST_EXTRA, requestCode);
+        intent.putExtra(REQUEST_EXTRA, requestType);
         context.startActivity(intent);
     }
 
@@ -166,14 +172,19 @@ public class MainActivity
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        switch (intent.getIntExtra(REQUEST_EXTRA, REQUEST_DEFAULT)) {
-            case REQUEST_REFRESH_FOLLOWER_LIST:
+        RequestType requestType = (RequestType) intent.getSerializableExtra(REQUEST_EXTRA);
+        switch (requestType) {
+            case REFRESH_FOLLOWER_LIST:
                 refreshFollowersFragment();
+                break;
+            case REFRESH_BUCKET_LIST:
+                refreshBucketsFragment();
                 break;
             default:
                 throw new IllegalStateException("Intent should contains REQUEST_EXTRA");
         }
     }
+
 
     private void initComponent() {
         component = App.getAppComponent(this)
@@ -449,6 +460,17 @@ public class MainActivity
         for (final Fragment fragment : fragments) {
             if (fragment instanceof FollowersFragment) {
                 ((FollowersFragment) fragment).refreshFragmentData();
+                break;
+            }
+        }
+    }
+
+
+    private void refreshBucketsFragment() {
+        final List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (final Fragment fragment : fragments) {
+            if (fragment instanceof BucketsFragment) {
+                ((BucketsFragment) fragment).refreshFragmentData();
                 break;
             }
         }

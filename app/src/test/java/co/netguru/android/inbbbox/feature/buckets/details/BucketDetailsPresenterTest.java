@@ -109,6 +109,22 @@ public class BucketDetailsPresenterTest {
         verify(view, times(1)).hideProgressbar();
         verify(view, times(1)).showShots(any(List.class));
         verify(view, never()).addShots(any(List.class));
+    }
+
+    @Test
+    public void whenRemoveBucketButtonIsClicked_thenShowDialog() {
+        //when
+        presenter.onDeleteBucketClick();
+        //then
+        verify(view, times(1)).showRemoveBucketDialog();
+    }
+
+    @Test
+    public void whenDeleteBucket_thenShowBucketView() throws Exception {
+        //when
+        presenter.deleteBucket();
+        //then
+        verify(view, times(1)).showRefreshedBucketsView();
 
     }
 }

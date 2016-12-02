@@ -34,4 +34,10 @@ public abstract class BaseMvpFragment<V extends MvpView, P extends MvpPresenter<
             Snackbar.make(getView(), stringRes, Snackbar.LENGTH_LONG).show();
         }
     }
+
+    protected void showTextOnSnackbar(String string) {
+        if (getView() != null) {
+            Snackbar.make(getView(), string, Snackbar.LENGTH_LONG).show();
+        }
+    }
 }

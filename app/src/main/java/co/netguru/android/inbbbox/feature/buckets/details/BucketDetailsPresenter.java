@@ -48,7 +48,6 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     }
 
 
-
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
@@ -74,10 +73,23 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
             refreshShotsSubscription = bucketsController.getShotsListFromBucket(currentBucketId, pageNumber, shotsPerPage)
                     .compose(RxTransformerUtils.applySingleIoSchedulers())
                     .doAfterTerminate(getView()::hideProgressbar)
-                    .subscribe(this::handleNewShots,
-                            throwable -> Timber.d(throwable, "Error while loading new shots from bucket")
-                    );
+                    .subscribe(this::handleNewShots, throwable -> {
+                        Timber.e(throwable, "Error while deleting bucket");
+                        getView().showError(throwable.getMessage());
+                    });
         }
+    }
+
+    @Override
+    public void onDeleteBucketClick() {
+        getView().showRemoveBucketDialog();
+    }
+
+    @Override
+    public void deleteBucket() {
+        bucketsController.deleteBucket(currentBucketId)
+                .subscribe(getView()::showRefreshedBucketsView,
+                        throwable -> getView().showError(throwable.getMessage()));
     }
 
     @Override
@@ -106,4 +118,5 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
             getView().showShots(shotEntities);
         }
     }
+
 }

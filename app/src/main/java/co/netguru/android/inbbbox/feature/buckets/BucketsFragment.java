@@ -82,7 +82,7 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
         initEmptyView();
         initRecyclerView();
         initRefreshLayout();
-        getPresenter().loadBucketsWithShots(false);
+        getPresenter().loadBucketsWithShots();
     }
 
     @Override
@@ -170,7 +170,11 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
 
     private void initRefreshLayout() {
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.accent));
-        swipeRefreshLayout.setOnRefreshListener(() -> getPresenter().loadBucketsWithShots(true));
+        swipeRefreshLayout.setOnRefreshListener(getPresenter()::loadBucketsWithShots);
+    }
+
+    public void refreshFragmentData() {
+        getPresenter().loadBucketsWithShots();
     }
 
     private void initRecyclerView() {

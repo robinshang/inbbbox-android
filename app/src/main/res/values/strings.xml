@@ -22,6 +22,9 @@
     <string name='action_follow'>Follow</string>
     <string name="action_unfollow">Unfollow</string>
     <string name="action_cancel">Cancel</string>
+    <string name="action_create">Create</string>
+    <string name="action_warning">Warning</string>
+    <string name="action_delete">Delete</string>
 
     <string name="drawer_group_notification">Notifications</string>
     <string name="drawer_enable_reminder">Enable daily reminder</string>
@@ -74,8 +77,6 @@
 
     <string name="dialog_fragment_create_bucket_name">Name</string>
     <string name="dialog_fragment_create_bucket_optional">Description (optional)</string>
-    <string name="dialog_fragment_create_bucket_create">Create</string>
-    <string name="dialog_fragment_create_bucket_cancel">Cancel</string>
     <string name="dialog_fragment_create_bucket_title">Create bucket</string>
     <string name="dialog_fragment_create_bucket_creating_new_bucket">Creating new bucket…</string>
 
@@ -112,6 +113,5 @@
     <string name="action_ok">OK</string>
     <string name="delete_comment_waring">This comment will be deleted, are you sure to do that?
     </string>
-    <string name="action_warning">Warning</string>
 
 </resources>
