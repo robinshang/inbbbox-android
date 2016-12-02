@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.controler;
+package co.netguru.android.inbbbox.controller;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,6 +16,9 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.api.ShotsApi;
+import co.netguru.android.inbbbox.controler.LikeShotController;
+import co.netguru.android.inbbbox.controler.ShotDetailsController;
+import co.netguru.android.inbbbox.controler.UserController;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.CommentEntity;
 import co.netguru.android.inbbbox.model.api.UserEntity;

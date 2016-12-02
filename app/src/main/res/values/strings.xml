@@ -70,6 +70,11 @@
 
     <string name="fragment_follower_details_dialog_text">Unfollow %s ?</string>
 
+    <string name="dialog_fragment_create_bucket_name">Name</string>
+    <string name="dialog_fragment_create_bucket_optional">Description (optional)</string>
+    <string name="dialog_fragment_create_bucket_create">Create</string>
+    <string name="dialog_fragment_create_bucket_cancel">Cancel</string>
+
     <string name="gif">gif</string>
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
@@ -95,4 +100,7 @@
     <string name="edit_comment_update">Update comment</string>
     <string name="edit_comment_cancel">Cancel</string>
     <string name="comment_edit_hint">Edit comment</string>
+    <string name="dialog_fragment_create_bucket_title">Create bucket</string>
+    <string name="dialog_fragment_create_bucket_creating_new_bucket">Creating new bucket...</string>
+
 </resources>

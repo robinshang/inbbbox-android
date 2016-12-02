@@ -53,16 +53,21 @@ public final class BucketsAdapter extends RecyclerView.Adapter<BaseBucketViewHol
         return isGridMode ? TYPE_GRID_BUCKET_SHOTS_VIEW_TYPE : TYPE_LIST_BUCKET_SHOTS_VIEW_TYPE;
     }
 
-    public void setNewBucketWithShots(Collection<BucketWithShots> bucketWithShotsList) {
+    public void setNewBucketsWithShots(Collection<BucketWithShots> bucketWithShotsList) {
         this.bucketWithShotsList.clear();
         this.bucketWithShotsList.addAll(bucketWithShotsList);
         notifyDataSetChanged();
     }
 
-    public void addNewBucketWithShots(Collection<BucketWithShots> bucketWithShotsList) {
+    public void addNewBucketsWithShots(Collection<BucketWithShots> bucketWithShotsList) {
         int oldSize = this.bucketWithShotsList.size();
         this.bucketWithShotsList.addAll(bucketWithShotsList);
         notifyItemRangeInserted(oldSize, bucketWithShotsList.size() + 1);
+    }
+
+    public void addNewBucketWithShots(BucketWithShots bucketWithShots) {
+        bucketWithShotsList.add(0,bucketWithShots);
+        notifyItemInserted(0);
     }
 
     public void setGridMode(boolean isGridMode) {

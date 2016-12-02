@@ -22,10 +22,12 @@ import java.util.List;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
+import butterknife.OnClick;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.buckets.adapter.BaseBucketViewHolder;
 import co.netguru.android.inbbbox.feature.buckets.adapter.BucketsAdapter;
+import co.netguru.android.inbbbox.feature.buckets.createbucket.CreateBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.buckets.details.BucketDetailsActivity;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
@@ -40,7 +42,6 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
 
     @BindString(R.string.fragment_buckets_empty_text_before_icon)
     String emptyStringBeforeIcon;
-
     @BindString(R.string.fragment_buckets_empty_text_after_icon)
     String emptyStringAfterIcon;
 
@@ -105,7 +106,7 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
     public void showBucketsWithShots(List<BucketWithShots> bucketsWithShots) {
         bucketsRecyclerView.setVisibility(View.VISIBLE);
         emptyView.setVisibility(View.GONE);
-        adapter.setNewBucketWithShots(bucketsWithShots);
+        adapter.setNewBucketsWithShots(bucketsWithShots);
     }
 
     @Override
@@ -116,7 +117,7 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
 
     @Override
     public void addMoreBucketsWithShots(List<BucketWithShots> bucketWithShotsList) {
-        adapter.addNewBucketWithShots(bucketWithShotsList);
+        adapter.addNewBucketsWithShots(bucketWithShotsList);
     }
 
     @Override
@@ -144,6 +145,29 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
     public void showDetailedBucketView(BucketWithShots bucketWithShots, int bucketShotsPerPageCount) {
         BucketDetailsActivity.startActivity(getContext(), bucketWithShots, bucketShotsPerPageCount);
     }
+
+    @Override
+    public void openCreateDialogFragment() {
+        CreateBucketDialogFragment
+                .newInstance()
+                .show(getFragmentManager(), CreateBucketDialogFragment.TAG);
+    }
+
+    @Override
+    public void addNewBucketWithShotsOnTop(BucketWithShots bucketWithShots) {
+        adapter.addNewBucketWithShots(bucketWithShots);
+    }
+
+    @Override
+    public void scrollToTop(){
+        bucketsRecyclerView.smoothScrollToPosition(0);
+    }
+
+    @OnClick(R.id.create_bucket_fab)
+    public void onCreateBucketFabClick() {
+        getPresenter().handleCreateBucket();
+    }
+
 
     private void initRefreshLayout() {
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.accent));

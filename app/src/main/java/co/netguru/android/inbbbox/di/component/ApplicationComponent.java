@@ -15,6 +15,7 @@ import co.netguru.android.inbbbox.di.module.LocalRepositoryModule;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
+import co.netguru.android.inbbbox.event.RxBus;
 import dagger.Component;
 
 @Singleton
@@ -49,6 +50,10 @@ public interface ApplicationComponent extends BaseComponent {
     BucketsDetailsComponent plusBucketDetailsComponent();
 
     AddToBucketComponent plusAddToBucketComponent();
+
+    CreateBucketComponent plusCreateBucketComponent();
+
+    RxBus rxBus();
 
     void inject(NotificationAlarmReceiver receiver);
 }
