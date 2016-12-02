@@ -127,25 +127,25 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     @Override
     public void followingStatusChanged(boolean status) {
         isFollowing = status;
-        changeStreamSourceStatus();
+        changeStreamSourceStatusIfCorrect();
     }
 
     @Override
     public void newStatusChanged(boolean status) {
         isNew = status;
-        changeStreamSourceStatus();
+        changeStreamSourceStatusIfCorrect();
     }
 
     @Override
     public void popularStatusChanged(boolean status) {
         isPopular = status;
-        changeStreamSourceStatus();
+        changeStreamSourceStatusIfCorrect();
     }
 
     @Override
     public void debutsStatusChanged(boolean status) {
         isDebut = status;
-        changeStreamSourceStatus();
+        changeStreamSourceStatusIfCorrect();
     }
 
     @Override
@@ -157,21 +157,29 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         subscriptions.add(subscription);
     }
 
-    private void changeStreamSourceStatus() {
+    private void changeStreamSourceStatusIfCorrect() {
         if (isFollowing || isNew || isPopular || isDebut) {
-            final Subscription subscription = settingsController.changeStreamSourceSettings(isFollowing, isNew, isPopular, isDebut)
-                    .compose(RxTransformerUtils.applyCompletableIoSchedulers())
-                    .subscribe(() -> {
-                                Timber.d("Stream source settings changed");
-                                getView().refreshShotsView();
-                            },
-                            throwable -> Timber.e(throwable, "Error while changing stream source settings"));
-            subscriptions.add(subscription);
+            changeStreamSourceStatus();
 
         } else {
-            getView().showMessage(R.string.change_stream_source_error);
-            prepareUserSettings();
+            canNotChangeStreamSourceStatus();
         }
+    }
+
+    private void changeStreamSourceStatus() {
+        final Subscription subscription = settingsController.changeStreamSourceSettings(isFollowing, isNew, isPopular, isDebut)
+                .compose(RxTransformerUtils.applyCompletableIoSchedulers())
+                .subscribe(() -> {
+                            Timber.d("Stream source settings changed");
+                            getView().refreshShotsView();
+                        },
+                        throwable -> Timber.e(throwable, "Error while changing stream source settings"));
+        subscriptions.add(subscription);
+    }
+
+    private void canNotChangeStreamSourceStatus() {
+        getView().showMessage(R.string.change_stream_source_error);
+        prepareUserSettings();
     }
 
     private void saveNotificationStatus(boolean status) {
