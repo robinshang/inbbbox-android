@@ -74,6 +74,6 @@ public class AutoItemScrollRecyclerView extends RecyclerView {
     }
 
     public int getCurrentItem() {
-        return currentItem;
+        return getChildCount() == 0 ? RecyclerView.NO_POSITION : currentItem;
     }
 }
