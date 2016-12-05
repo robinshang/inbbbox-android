@@ -80,7 +80,7 @@ public class ShotsFragment
         int currentItemPosition = shotsRecyclerView.getCurrentItem();
         if (currentItemPosition != RecyclerView.NO_POSITION) {
             getPresenter()
-                    .showCommentInput(adapter.getShotFromPosition(shotsRecyclerView.getCurrentItem()));
+                    .showCommentInput(adapter.getShotFromPosition(currentItemPosition));
         }
     }
 
