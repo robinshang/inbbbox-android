@@ -25,9 +25,6 @@ public class ShotDetailsPresenter
         extends MvpNullObjectBasePresenter<ShotDetailsContract.View>
         implements ShotDetailsContract.Presenter {
 
-    private static final int SHOT_PAGE_COUNT = 30;
-    private static final int PAGE_NUMBER = 1;
-
     private final ShotDetailsController shotDetailsController;
     private final ErrorMessageController errorMessageController;
     private final CompositeSubscription subscriptions;
