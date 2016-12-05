@@ -21,12 +21,14 @@ import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.inbbbox.utils.InputUtils;
 
 public class FollowerDetailsActivity extends BaseActivity
         implements FollowerDetailsFragment.OnFollowedShotActionListener {
 
     private static final String FOLLOWER_KEY = "follower_key";
+    private static final String USER_KEY = "user_key";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -39,9 +41,10 @@ public class FollowerDetailsActivity extends BaseActivity
 
     private BottomSheetBehavior<View> bottomSheetBehavior;
 
-    public static void startActivity(Context context, Follower follower) {
+    public static void startActivity(Context context, @Nullable Follower follower, @Nullable User user) {
         final Intent intent = new Intent(context, FollowerDetailsActivity.class);
         intent.putExtra(FOLLOWER_KEY, follower);
+        intent.putExtra(USER_KEY, user);
         context.startActivity(intent);
     }
 
@@ -53,7 +56,8 @@ public class FollowerDetailsActivity extends BaseActivity
         initializeBottomSheet();
         if (savedInstanceState == null) {
             replaceFragment(R.id.follower_details_fragment_container,
-                    FollowerDetailsFragment.newInstance(getIntent().getParcelableExtra(FOLLOWER_KEY)),
+                    FollowerDetailsFragment.newInstance(getIntent().getParcelableExtra(FOLLOWER_KEY),
+                            getIntent().getParcelableExtra(USER_KEY)),
                     FollowerDetailsFragment.TAG).commit();
         }
     }

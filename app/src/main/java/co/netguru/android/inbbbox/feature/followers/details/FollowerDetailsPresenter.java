@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.feature.followers.details;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -11,6 +12,7 @@ import co.netguru.android.inbbbox.controler.FollowersController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.model.ui.User;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -55,6 +57,14 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     }
 
     @Override
+    public void userDataReceived(User user) {
+        Timber.d("Received user : %s", user);
+        if (user != null) {
+            downloadUserShots(user);
+        }
+    }
+
+    @Override
     public void getMoreUserShotsFromServer() {
         if (hasMore) {
             pageNumber++;
@@ -91,5 +101,28 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     private void onGetUserShotsNext(List<Shot> shotList) {
         hasMore = shotList.size() == SHOT_PAGE_COUNT;
         getView().showMoreUserShots(shotList);
+    }
+
+    private void downloadUserShots(User user) {
+        final Subscription subscription = userShotsController.getUserShotsList(user.id(),
+                pageNumber, SHOT_PAGE_COUNT)
+                .compose(androidIO())
+                .subscribe(list -> setUserOnShot(user, list),
+                        throwable -> Timber.e(throwable, "Error while getting user shots"));
+        subscriptions.add(subscription);
+    }
+
+    private void setUserOnShot(User user, List<Shot> list) {
+        List<Shot> shotsList = new ArrayList<>();
+        for (Shot listShot: list) {
+            shotsList.add(Shot.update(listShot).author(user).build());
+        }
+
+        createFollower(user, shotsList);
+    }
+
+    private void createFollower(User user, List<Shot> list) {
+        this.follower = Follower.createFromUser(user, list);
+        getView().showFollowerData(follower);
     }
 }

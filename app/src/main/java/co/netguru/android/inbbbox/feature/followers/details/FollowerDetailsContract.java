@@ -7,6 +7,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.model.ui.User;
 
 interface FollowerDetailsContract {
 
@@ -26,6 +27,8 @@ interface FollowerDetailsContract {
 
     interface Presenter extends MvpPresenter<View> {
         void followerDataReceived(Follower follower);
+
+        void userDataReceived(User user);
 
         void getMoreUserShotsFromServer();
 

@@ -30,7 +30,6 @@ import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCall
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
 import co.netguru.android.inbbbox.model.ui.Comment;
-import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotImage;
 import co.netguru.android.inbbbox.model.ui.Team;
@@ -201,7 +200,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onUserSelected(User user) {
-        getPresenter().downloadUserShots(user);
+        FollowerDetailsActivity.startActivity(getContext(), null, user);
     }
 
     @Override
@@ -262,11 +261,6 @@ public class ShotDetailsFragment
     @Override
     public void hideKeyboard() {
         InputUtils.hideKeyboard(getContext(), shotRecyclerView);
-    }
-
-    @Override
-    public void showUserDetails(Follower follower) {
-        FollowerDetailsActivity.startActivity(getContext(), follower);
     }
 
     @Override
