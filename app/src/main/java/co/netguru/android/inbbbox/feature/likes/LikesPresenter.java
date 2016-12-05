@@ -46,8 +46,10 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
-        refreshSubscription.unsubscribe();
-        loadNextBucketSubscription.unsubscribe();
+        if (!retainInstance) {
+            refreshSubscription.unsubscribe();
+            loadNextBucketSubscription.unsubscribe();
+        }
     }
 
     @Override
@@ -74,7 +76,10 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
                             getView()::showLoadingMoreLikesView))
                     .toList()
                     .compose(androidIO())
-                    .doAfterTerminate(getView()::hideProgressBar)
+                    .doAfterTerminate(() -> {
+                        getView().hideProgressBar();
+                        getView().hideLoadingMoreBucketsView();
+                    })
                     .subscribe(this::onGetMoreLikeShotListNext,
                             throwable -> Timber.e(throwable, "Error while getting more likes from server"));
         }
@@ -85,14 +90,20 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
         getView().openShowDetailsScreen(shot);
     }
 
-    private void onGetLikeShotListNext(List<Shot> likedShotList) {
-        hasMore = likedShotList.size() == PAGE_COUNT;
-        if (likedShotList.isEmpty()) {
+    @Override
+    public void checkDataEmpty(boolean isEmpty) {
+        if (isEmpty) {
             getView().showEmptyLikesInfo();
         } else {
             getView().hideEmptyLikesInfo();
-            getView().showLikes(likedShotList);
+
         }
+    }
+
+    private void onGetLikeShotListNext(List<Shot> likedShotList) {
+        hasMore = likedShotList.size() == PAGE_COUNT;
+        getView().setData(likedShotList);
+        getView().showContent();
     }
 
     private void onGetMoreLikeShotListNext(List<Shot> likedShotList) {

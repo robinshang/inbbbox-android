@@ -3,7 +3,7 @@ package co.netguru.android.inbbbox.feature.likes.adapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,13 +20,13 @@ public class LikesAdapter extends RecyclerView.Adapter<BaseViewHolder<Shot>> {
     private static final int TYPE_LIST = 1;
 
     private final ShotClickListener likeClickListener;
-    private final List<Shot> likeList;
+    private List<Shot> likeList;
     private boolean isGridMode;
 
     @Inject
     public LikesAdapter(ShotClickListener likeClickListener) {
         this.likeClickListener = likeClickListener;
-        likeList = new ArrayList<>();
+        likeList = Collections.emptyList();
     }
 
     @Override
@@ -56,9 +56,12 @@ public class LikesAdapter extends RecyclerView.Adapter<BaseViewHolder<Shot>> {
         return isGridMode ? TYPE_GRID : TYPE_LIST;
     }
 
+    public List<Shot> getData() {
+        return likeList;
+    }
+
     public void setLikeList(List<Shot> likeList) {
-        this.likeList.clear();
-        this.likeList.addAll(likeList);
+        this.likeList = likeList;
         notifyDataSetChanged();
     }
 

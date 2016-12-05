@@ -13,10 +13,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
@@ -30,16 +32,15 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
-import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
-public class LikesFragment extends BaseMvpFragmentWithListTypeSelection<LikesViewContract.View,
-        LikesViewContract.Presenter>
-        implements LikesViewContract.View {
+public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
+        LikesViewContract.View, LikesViewContract.Presenter> implements LikesViewContract.View {
 
     private static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final int LIKES_TO_LOAD_MORE = 10;
@@ -53,7 +54,7 @@ public class LikesFragment extends BaseMvpFragmentWithListTypeSelection<LikesVie
     @BindColor(R.color.accent)
     int accentColor;
 
-    @BindView(R.id.swipe_refresh_layout)
+    @BindView(R.id.contentView)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.fragment_likes_recycler_view)
     RecyclerView recyclerView;
@@ -61,6 +62,8 @@ public class LikesFragment extends BaseMvpFragmentWithListTypeSelection<LikesVie
     ScrollView emptyView;
     @BindView(R.id.fragment_like_empty_text)
     TextView emptyViewText;
+    @BindView(R.id.loadingView)
+    ProgressBar progressBar;
 
     @Inject
     LikesAdapter likesAdapter;
@@ -121,27 +124,36 @@ public class LikesFragment extends BaseMvpFragmentWithListTypeSelection<LikesVie
         return component.getPresenter();
     }
 
+    @Override
+    public void showContent() {
+        super.showContent();
+        getPresenter().checkDataEmpty(getData().isEmpty());
+    }
+
     @NonNull
     @Override
-    public ViewState createViewState() {
-        return new LikesViewState();
+    public LceViewState<List<Shot>, LikesViewContract.View> createViewState() {
+        return new RetainingLceViewState<>();
     }
 
     @Override
-    public void onNewViewStateInstance() {
+    public List<Shot> getData() {
+        return likesAdapter.getData();
+    }
+
+    @Override
+    public void setData(List<Shot> data) {
+        likesAdapter.setLikeList(data);
+    }
+
+    @Override
+    public void loadData(boolean pullToRefresh) {
         getPresenter().getLikesFromServer();
-    }
-
-    @Override
-    public void showLikes(List<Shot> likedShotList) {
-        likesAdapter.setLikeList(likedShotList);
-        ((LikesViewState) viewState).setDataList(likedShotList);
     }
 
     @Override
     public void showMoreLikes(List<Shot> likedShotList) {
         likesAdapter.addMoreLikes(likedShotList);
-        ((LikesViewState) viewState).addMoreData(likedShotList);
     }
 
     @Override
@@ -153,18 +165,28 @@ public class LikesFragment extends BaseMvpFragmentWithListTypeSelection<LikesVie
     }
 
     @Override
+    public void hideLoadingMoreBucketsView() {
+        if (loadingMoreSnackbar != null) {
+            loadingMoreSnackbar.dismiss();
+        }
+    }
+
+    @Override
     public void hideEmptyLikesInfo() {
         emptyView.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void showEmptyLikesInfo() {
         emptyView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
     }
 
     @Override
