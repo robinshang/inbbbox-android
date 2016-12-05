@@ -495,8 +495,6 @@ public class ShotDetailsPresenterTest {
         Comment comment = Statics.COMMENTS.get(0);
         when(shotDetailsControllerMock.updateComment(anyLong(), anyLong(), anyString()))
                 .thenReturn(Single.just(comment));
-        long commentId = comment.id();
-        long shotId = shotMock.id();
         shotDetailsPresenter.onEditCommentClick(comment);
         String expectedCommentUpdate = "test";
 
@@ -537,7 +535,7 @@ public class ShotDetailsPresenterTest {
         List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT, Statics.NOT_LIKED_SHOT);
         when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
                 .thenReturn(Observable.just(listOfShots));
-        ArgumentCaptor<Follower> argumentCaptor = new ArgumentCaptor<>();
+        ArgumentCaptor<Follower> argumentCaptor = ArgumentCaptor.forClass(Follower.class);
 
         shotDetailsPresenter.downloadUserShots(exampleUser);
 
@@ -575,7 +573,7 @@ public class ShotDetailsPresenterTest {
     }
 
     @Test
-    public void whenCommentDeletionFaild_thenRemoveSelectedCommentFromView() {
+    public void whenCommentDeletionFailed_thenRemoveSelectedCommentFromView() {
         Comment commentMock = Statics.COMMENTS.get(0);
         shotDetailsPresenter.onCommentDelete(commentMock);
         when(shotDetailsControllerMock.deleteComment(anyLong(), anyLong()))
