@@ -27,8 +27,6 @@ import android.widget.ToggleButton;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.util.List;
-
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
@@ -36,11 +34,8 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.MainActivityComponent;
 import co.netguru.android.inbbbox.enumeration.TabItemType;
-import co.netguru.android.inbbbox.feature.buckets.BucketsFragment;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
-import co.netguru.android.inbbbox.feature.followers.FollowersFragment;
-import co.netguru.android.inbbbox.feature.likes.LikesFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
@@ -52,18 +47,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static butterknife.ButterKnife.findById;
 
 public class MainActivity
-        extends BaseMvpActivity<MainViewContract.View,
-        MainViewContract.Presenter>
-        implements MainViewContract.View,
-        ShotsFragment.ShotActionListener {
-
-    public static final int REQUEST_REFRESH_FOLLOWER_LIST = 101;
+        extends BaseMvpActivity<MainViewContract.View, MainViewContract.Presenter>
+        implements MainViewContract.View, ShotsFragment.ShotActionListener {
 
     public enum RequestType {
         REFRESH_FOLLOWER_LIST, REFRESH_BUCKET_LIST;
     }
 
-    private static final int REQUEST_DEFAULT = 0;
     private static final String REQUEST_EXTRA = "requestExtra";
     private static final String TOGGLE_BUTTON_STATE = "toggleButtonState";
 
@@ -175,10 +165,10 @@ public class MainActivity
         RequestType requestType = (RequestType) intent.getSerializableExtra(REQUEST_EXTRA);
         switch (requestType) {
             case REFRESH_FOLLOWER_LIST:
-                refreshFollowersFragment();
+                refreshPagerFragment(TabItemType.FOLLOWERS);
                 break;
             case REFRESH_BUCKET_LIST:
-                refreshBucketsFragment();
+                refreshPagerFragment(TabItemType.BUCKETS);
                 break;
             default:
                 throw new IllegalStateException("Intent should contains REQUEST_EXTRA");
@@ -425,54 +415,25 @@ public class MainActivity
     }
 
     @Override
-    public void shotLikeStatusChanged() {
-        final List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        for (final Fragment fragment : fragments) {
-            if (fragment instanceof LikesFragment) {
-                ((LikesFragment) fragment).refreshFragmentData();
-                break;
-            }
-        }
-    }
-
-    @Override
     public void showShotDetails(Shot shot, boolean isCommentModeEnabled) {
         showFragmentDetails(shot, isCommentModeEnabled);
     }
 
+    public void refreshPagerFragment(TabItemType tabItemType) {
+        pagerAdapter.refreshFragment(tabItemType);
+    }
+
+    @Override
+    public void shotLikeStatusChanged() {
+        refreshPagerFragment(TabItemType.LIKES);
+    }
+
     @Override
     public void refreshShotsView() {
-        final List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        for (final Fragment fragment : fragments) {
-            if (fragment instanceof ShotsFragment) {
-                ((ShotsFragment) fragment).refreshFragmentData();
-                break;
-            }
-        }
+        refreshPagerFragment(TabItemType.SHOTS);
     }
 
     private BottomSheetBehavior getBottomSheetBehavior() {
         return bottomSheetBehavior;
-    }
-
-    private void refreshFollowersFragment() {
-        final List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        for (final Fragment fragment : fragments) {
-            if (fragment instanceof FollowersFragment) {
-                ((FollowersFragment) fragment).refreshFragmentData();
-                break;
-            }
-        }
-    }
-
-
-    private void refreshBucketsFragment() {
-        final List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        for (final Fragment fragment : fragments) {
-            if (fragment instanceof BucketsFragment) {
-                ((BucketsFragment) fragment).refreshFragmentData();
-                break;
-            }
-        }
     }
 }

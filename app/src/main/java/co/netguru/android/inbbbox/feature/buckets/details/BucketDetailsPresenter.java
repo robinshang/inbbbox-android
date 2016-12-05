@@ -75,10 +75,8 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
             refreshShotsSubscription = bucketsController.getShotsListFromBucket(currentBucketId, pageNumber, shotsPerPage)
                     .compose(RxTransformerUtils.applySingleIoSchedulers())
                     .doAfterTerminate(getView()::hideProgressbar)
-                    .subscribe(this::handleNewShots, throwable -> {
-                        Timber.e(throwable, "Error while deleting bucket");
-                        getView().showError(throwable.getMessage());
-                    });
+                    .subscribe(this::handleNewShots,
+                            throwable -> handleError(throwable, "Error while refreshing shots"));
         }
     }
 
@@ -91,7 +89,7 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     public void deleteBucket() {
         bucketsController.deleteBucket(currentBucketId)
                 .subscribe(getView()::showRefreshedBucketsView,
-                        throwable -> getView().showError(throwable.getMessage()));
+                        throwable -> handleError(throwable, "Error while deleting bucket"));
     }
 
     @Override
@@ -108,8 +106,13 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
                             .subscribe(shotEntities -> {
                                 getView().addShots(shotEntities);
                                 canLoadMore = shotEntities.size() == shotsPerPage;
-                            }, throwable -> Timber.d(throwable, "Error while loading new shots from bucket"));
+                            }, throwable -> handleError(throwable, "Error while loading new shots from bucket"));
         }
+    }
+
+    private void handleError(Throwable throwable, String logMessage) {
+        getView().showError(throwable.getMessage());
+        Timber.d(throwable, logMessage);
     }
 
     private void handleNewShots(List<ShotEntity> shotEntities) {

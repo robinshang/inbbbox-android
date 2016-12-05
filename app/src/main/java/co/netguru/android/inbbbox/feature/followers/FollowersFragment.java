@@ -30,12 +30,14 @@ import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListType
 import co.netguru.android.inbbbox.feature.followers.adapter.BaseFollowersViewHolder;
 import co.netguru.android.inbbbox.feature.followers.adapter.FollowersAdapter;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
+import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
-public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowersContract.View, FollowersContract.Presenter>
-        implements FollowersContract.View, BaseFollowersViewHolder.OnFollowerClickListener {
+public class FollowersFragment
+        extends BaseMvpFragmentWithWithListTypeSelection<FollowersContract.View, FollowersContract.Presenter>
+        implements RefreshableFragment, FollowersContract.View, BaseFollowersViewHolder.OnFollowerClickListener {
 
     public static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final int FOLLOWERS_TO_LOAD_MORE = 8;
@@ -134,6 +136,7 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
         recyclerView.setVisibility(View.GONE);
     }
 
+    @Override
     public void refreshFragmentData() {
         getPresenter().getFollowedUsersFromServer();
     }

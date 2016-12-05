@@ -30,12 +30,14 @@ import co.netguru.android.inbbbox.feature.buckets.adapter.BucketsAdapter;
 import co.netguru.android.inbbbox.feature.buckets.createbucket.CreateBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.buckets.details.BucketDetailsActivity;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
-public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<BucketsFragmentContract.View, BucketsFragmentContract.Presenter>
-        implements BucketsFragmentContract.View, BaseBucketViewHolder.BucketClickListener {
+public class BucketsFragment
+        extends BaseMvpFragmentWithWithListTypeSelection<BucketsFragmentContract.View, BucketsFragmentContract.Presenter>
+        implements RefreshableFragment, BucketsFragmentContract.View, BaseBucketViewHolder.BucketClickListener {
 
     @BindDrawable(R.drawable.ic_buckets_empty_state)
     Drawable emptyTextDrawable;
@@ -175,6 +177,7 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
         swipeRefreshLayout.setOnRefreshListener(getPresenter()::loadBucketsWithShots);
     }
 
+    @Override
     public void refreshFragmentData() {
         getPresenter().loadBucketsWithShots();
     }
