@@ -7,7 +7,9 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.CommentEntity;
+import co.netguru.android.inbbbox.model.api.Image;
 import co.netguru.android.inbbbox.model.api.Links;
+import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -129,5 +131,26 @@ public final class Statics {
             comments.add(comment);
         }
         return comments;
+    }
+
+    public static List<ShotEntity> getShotsEntityList(int count) {
+        List<ShotEntity> result = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            Image image = Image.builder().build();
+            result.add(
+                    ShotEntity.builder()
+                            .id(i)
+                            .title("test: " + i)
+                            .image(image)
+                            .createdAt(LocalDateTime.now())
+                            .animated(false)
+                            .likesCount(2)
+                            .bucketsCount(3)
+                            .createdAt(LocalDateTime.now())
+                            .commentsCount(2)
+                            .build());
+        }
+        return result;
     }
 }

@@ -13,6 +13,7 @@ import co.netguru.android.inbbbox.model.api.CommentEntity;
 import co.netguru.android.inbbbox.model.api.Image;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Completable;
@@ -50,7 +51,7 @@ public class MockShotsApi implements ShotsApi {
     }
 
     @Override
-    public Observable<List<CommentEntity>> getShotComments(@Path("shotId") String shotId) {
+    public Observable<List<CommentEntity>> getShotComments(@Path("shotId") String shotId, int pageNumber, int commentsPerPage) {
         return Observable.just(Collections.emptyList());
     }
 
@@ -67,6 +68,11 @@ public class MockShotsApi implements ShotsApi {
     @Override
     public Completable deleteComment(@Path("shotId") String shotId, @Path("commentId") String commentId) {
         return Completable.complete();
+    }
+
+    @Override
+    public Single<CommentEntity> updateComment(@Path("shotId") String shotId, @Path("commentId") String commentId, @Field("body") String comment) {
+        return Single.just(new CommentEntity());
     }
 
     private static List<ShotEntity> getFollowingMock(int count, String label) {

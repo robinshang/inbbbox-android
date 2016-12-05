@@ -2,11 +2,15 @@ package co.netguru.android.inbbbox.feature.details;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
+import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
 import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
 import co.netguru.android.inbbbox.utils.StringUtils;
@@ -16,8 +20,6 @@ import timber.log.Timber;
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletableIoSchedulers;
 import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applySingleIoSchedulers;
-import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_END;
-import static co.netguru.android.inbbbox.utils.StringUtils.PARAGRAPH_TAG_START;
 
 public class ShotDetailsPresenter
         extends MvpNullObjectBasePresenter<ShotDetailsContract.View>
@@ -32,6 +34,9 @@ public class ShotDetailsPresenter
     private boolean isCommentModeInit;
     private Shot shot;
     private Comment commentInEditor;
+    private CommentLoadMoreState commentLoadMoreState;
+    private int pageNumber = 1;
+    private int commentsCounter = 0;
 
     @Inject
     public ShotDetailsPresenter(ShotDetailsController shotDetailsController,
@@ -39,6 +44,7 @@ public class ShotDetailsPresenter
         this.shotDetailsController = shotDetailsController;
         this.errorMessageController = messageController;
         this.subscriptions = new CompositeSubscription();
+        this.commentLoadMoreState = new CommentLoadMoreState();
     }
 
     @Override
@@ -50,22 +56,9 @@ public class ShotDetailsPresenter
     @Override
     public void downloadData() {
         enableInputWhenIfInCommentMode();
-        getView().showMainImage(shot);
-        getView().setInputShowingEnabled(false);
-        showShotDetails(shot);
-        subscriptions.add(
-                shotDetailsController.getShotComments(shot.id())
-                        .compose(androidIO())
-                        .doOnCompleted(() -> getView().setInputShowingEnabled(true))
-                        .subscribe(this::handleDetailsStates, this::handleApiError)
-        );
-    }
+        initializeView();
 
-    private void enableInputWhenIfInCommentMode() {
-        if (isCommentModeInit) {
-            getView().showInputIfHidden();
-            getView().showKeyboard();
-        }
+        downloadCommentsFromAPI();
     }
 
     @Override
@@ -96,15 +89,19 @@ public class ShotDetailsPresenter
     @Override
     public void onEditCommentClick(Comment currentComment) {
         commentInEditor = currentComment;
-        getView().showCommentEditorDialog(
-                currentComment.text()
-                        .replace(PARAGRAPH_TAG_START, "")
-                        .replace(PARAGRAPH_TAG_END, ""));
+        getView().showCommentEditorDialog(currentComment.text());
     }
 
     @Override
     public void updateComment(String updatedComment) {
-        // TODO: 28.11.2016 no in scope of this task
+        subscriptions.add(
+                shotDetailsController.updateComment(shot.id(),
+                        commentInEditor.id(),
+                        updatedComment)
+                        .compose(applySingleIoSchedulers())
+                        .subscribe(this::handleCommentUpdated,
+                                this::handleApiError)
+        );
     }
 
     @Override
@@ -129,9 +126,33 @@ public class ShotDetailsPresenter
         );
     }
 
+    @Override
+    public void getMoreComments() {
+        pageNumber++;
+        commentLoadMoreState.setLoadMoreActive(false);
+        commentLoadMoreState.setWaitingForUpdate(true);
+        getView().updateLoadMoreState(commentLoadMoreState);
+
+        downloadCommentsFromAPI();
+    }
+
+    private void initializeView() {
+        getView().showMainImage(shot);
+        getView().updateLoadMoreState(commentLoadMoreState);
+        getView().setInputShowingEnabled(false);
+        showShotDetails(shot);
+    }
+
+    private void enableInputWhenIfInCommentMode() {
+        if (isCommentModeInit) {
+            getView().showInputIfHidden();
+            getView().showKeyboard();
+        }
+    }
+
     private void handleCommentDeleteComplete() {
         getView().removeCommentFromView(commentInEditor);
-        getView().showCommentDeletedInfo();
+        getView().showInfo(R.string.comment_deleted_complete);
     }
 
     private void sendCommentToApi(String comment) {
@@ -163,10 +184,21 @@ public class ShotDetailsPresenter
     }
 
     private void handleDetailsStates(ShotDetailsState state) {
-        getView().showComments(state.comments());
+        List<Comment> comments = state.comments();
+        commentsCounter += comments.size();
+
+        getView().addCommentsToList(comments);
+        updateLoadMoreState();
+
         updateShotDetails(state.isLiked(), state.isBucketed());
-        showShotDetails(shot);
+
         checkCommentMode();
+    }
+
+    private void updateLoadMoreState() {
+        commentLoadMoreState.setWaitingForUpdate(false);
+        commentLoadMoreState.setLoadMoreActive(commentsCounter < shot.commentsCount());
+        getView().updateLoadMoreState(commentLoadMoreState);
     }
 
     private void checkCommentMode() {
@@ -176,11 +208,23 @@ public class ShotDetailsPresenter
         }
     }
 
+    private void downloadCommentsFromAPI() {
+        subscriptions.add(
+                shotDetailsController.getShotComments(shot.id(), pageNumber)
+                        .compose(androidIO())
+                        .doOnCompleted(() -> getView().setInputShowingEnabled(true))
+                        .subscribe(this::handleDetailsStates, this::handleApiError)
+        );
+    }
+
     private void updateShotDetails(boolean liked, boolean bucketed) {
-        shot = Shot.update(shot)
-                .isLiked(liked)
-                .isBucketed(bucketed)
-                .build();
+        if (shot.isLiked() != liked || shot.isBucketed() != bucketed) {
+            shot = Shot.update(shot)
+                    .isLiked(liked)
+                    .isBucketed(bucketed)
+                    .build();
+            showShotDetails(shot);
+        }
     }
 
     private void showShotDetails(Shot shotDetails) {
@@ -189,9 +233,15 @@ public class ShotDetailsPresenter
         getView().initView();
     }
 
+    private void handleCommentUpdated(Comment comment) {
+        getView().dismissCommentEditor();
+        getView().updateComment(commentInEditor, comment);
+        getView().showInfo(R.string.comment_update_complete);
+    }
+
     private void handleApiError(Throwable throwable) {
         Timber.e(throwable, "details download failed! ");
         getView().showErrorMessage(errorMessageController.getErrorMessageLabel(throwable));
+        getView().disableEditorProgressMode();
     }
-
 }
