@@ -16,15 +16,17 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.feature.buckets.details.adapter.BucketShotViewHolder;
 import co.netguru.android.inbbbox.feature.common.BaseActivity;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
-import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
 public class BucketDetailsActivity extends BaseActivity
-        implements BucketDetailsFragment.BucketDetailsFragmentActionListener {
+        implements BucketShotViewHolder.OnShotInBucketClickListener {
+
+    public static final int BUCKET_DELETED_RESULT_KEY = 1;
 
     private static final String BUCKET_WITH_SHOTS_KEY = "bucket_with_shots_key";
     private static final String SHOTS_PER_PAGE_KEY = "shots_per_page_key";
@@ -40,11 +42,13 @@ public class BucketDetailsActivity extends BaseActivity
 
     private BottomSheetBehavior<View> bottomSheetBehavior;
 
-    public static void startActivity(Context context, BucketWithShots bucketWithShots, int perPage) {
+    public static void startActivityForResult(Fragment fragment, Context context, int requestCode,
+                                              BucketWithShots bucketWithShots, int perPage) {
         final Intent intent = new Intent(context, BucketDetailsActivity.class);
         intent.putExtra(BUCKET_WITH_SHOTS_KEY, bucketWithShots);
         intent.putExtra(SHOTS_PER_PAGE_KEY, perPage);
-        context.startActivity(intent);
+
+        fragment.startActivityForResult(intent, requestCode);
     }
 
     @Override
@@ -82,12 +86,6 @@ public class BucketDetailsActivity extends BaseActivity
             return;
         }
         super.onBackPressed();
-    }
-
-    @Override
-    public void onBucketDeleted() {
-        MainActivity.startActivityWithRequest(this, MainActivity.RequestType.REFRESH_BUCKET_LIST);
-        finish();
     }
 
     @Override

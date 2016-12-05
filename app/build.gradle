@@ -289,6 +289,10 @@ dependencies {
     //HockeyApp
     compile libs.hockeyApp
 
+    //OnActivityResult
+    compile libs.onActivityResult
+    apt proc.onActivityResult
+
     // Unit testing
     testCompile(test.junit) {
         exclude module: 'hamcrest-core'

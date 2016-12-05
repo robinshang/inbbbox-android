@@ -69,7 +69,7 @@ public class BucketDetailsFragment
     private Snackbar loadingMoreSnackbar;
     private BucketShotsAdapter bucketShotsAdapter;
 
-    private BucketDetailsFragmentActionListener bucketDetailsFragmentActionListener;
+    private BucketShotViewHolder.OnShotInBucketClickListener shotInBucketClickListener;
 
     public static BucketDetailsFragment newInstance(BucketWithShots bucketWithShots, int perPage) {
 
@@ -86,7 +86,8 @@ public class BucketDetailsFragment
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            bucketDetailsFragmentActionListener = (BucketDetailsFragmentActionListener) context;
+            shotInBucketClickListener =
+                    (BucketShotViewHolder.OnShotInBucketClickListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement BucketDetailsFragmentActionListener");
@@ -193,11 +194,12 @@ public class BucketDetailsFragment
 
     @Override
     public void showRefreshedBucketsView() {
-        bucketDetailsFragmentActionListener.onBucketDeleted();
+        getActivity().setResult(BucketDetailsActivity.BUCKET_DELETED_RESULT_KEY);
+        getActivity().finish();
     }
 
     private void setupRecyclerView() {
-        bucketShotsAdapter = new BucketShotsAdapter(bucketDetailsFragmentActionListener);
+        bucketShotsAdapter = new BucketShotsAdapter(shotInBucketClickListener);
         recyclerView.setAdapter(bucketShotsAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(
@@ -225,11 +227,6 @@ public class BucketDetailsFragment
     @Override
     public void onDeleteBucket() {
         getPresenter().deleteBucket();
-    }
-
-    public interface BucketDetailsFragmentActionListener extends BucketShotViewHolder.OnShotInBucketClickListener {
-
-        void onBucketDeleted();
     }
 
 }

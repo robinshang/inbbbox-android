@@ -15,11 +15,11 @@ import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 
 public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment> extends FragmentStatePagerAdapter {
 
-    private SparseArray<T> fragments;
+    private SparseArray<T> activeRefreshableFragments;
 
     public MainActivityPagerAdapter(FragmentManager fm) {
         super(fm);
-        fragments = new SparseArray<>(TabItemType.values().length);
+        activeRefreshableFragments = new SparseArray<>(TabItemType.values().length);
     }
 
     @SuppressLint("DefaultLocale")
@@ -43,14 +43,14 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment> 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         //noinspection unchecked
-        T fragment = (T) super.instantiateItem(container, position);
-        fragments.put(position, fragment);
-        return fragment;
+        T refreshableFragment = (T) super.instantiateItem(container, position);
+        activeRefreshableFragments.put(position, refreshableFragment);
+        return refreshableFragment;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        fragments.delete(position);
+        activeRefreshableFragments.delete(position);
         super.destroyItem(container, position, object);
     }
 
@@ -60,9 +60,9 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment> 
     }
 
     public void refreshFragment(TabItemType tabItemType) {
-        T fragment = fragments.get(tabItemType.getPosition());
-        if (fragment != null) {
-            fragment.refreshFragmentData();
+        T refreshableFragment = activeRefreshableFragments.get(tabItemType.getPosition());
+        if (refreshableFragment != null) {
+            refreshableFragment.refreshFragmentData();
         }
     }
 }

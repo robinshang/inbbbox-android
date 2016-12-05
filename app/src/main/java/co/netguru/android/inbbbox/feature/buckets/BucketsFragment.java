@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.buckets;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -34,10 +35,14 @@ import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
+import onactivityresult.ActivityResult;
+import onactivityresult.OnActivityResult;
 
 public class BucketsFragment
         extends BaseMvpFragmentWithWithListTypeSelection<BucketsFragmentContract.View, BucketsFragmentContract.Presenter>
         implements RefreshableFragment, BucketsFragmentContract.View, BaseBucketViewHolder.BucketClickListener {
+
+    private static final int BUCKET_DETAILS_VIEW_REQUEST_CODE = 1;
 
     @BindDrawable(R.drawable.ic_buckets_empty_state)
     Drawable emptyTextDrawable;
@@ -85,6 +90,17 @@ public class BucketsFragment
         initRecyclerView();
         initRefreshLayout();
         getPresenter().loadBucketsWithShots();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        ActivityResult.onResult(requestCode, resultCode, data).into(this);
+    }
+
+    @OnActivityResult(requestCode = BUCKET_DETAILS_VIEW_REQUEST_CODE,
+            resultCodes = BucketDetailsActivity.BUCKET_DELETED_RESULT_KEY)
+    public void onActivityResultBucketDeleted() {
+        refreshFragmentData();
     }
 
     @Override
@@ -145,7 +161,8 @@ public class BucketsFragment
 
     @Override
     public void showDetailedBucketView(BucketWithShots bucketWithShots, int bucketShotsPerPageCount) {
-        BucketDetailsActivity.startActivity(getContext(), bucketWithShots, bucketShotsPerPageCount);
+        BucketDetailsActivity.startActivityForResult(this, getContext(), BUCKET_DETAILS_VIEW_REQUEST_CODE,
+                bucketWithShots, bucketShotsPerPageCount);
     }
 
     @Override
@@ -179,6 +196,7 @@ public class BucketsFragment
 
     @Override
     public void refreshFragmentData() {
+        swipeRefreshLayout.setRefreshing(true);
         getPresenter().loadBucketsWithShots();
     }
 

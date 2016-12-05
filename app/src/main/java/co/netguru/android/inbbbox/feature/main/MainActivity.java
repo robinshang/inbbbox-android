@@ -51,7 +51,7 @@ public class MainActivity
         implements MainViewContract.View, ShotsFragment.ShotActionListener {
 
     public enum RequestType {
-        REFRESH_FOLLOWER_LIST, REFRESH_BUCKET_LIST;
+        REFRESH_FOLLOWER_LIST
     }
 
     private static final String REQUEST_EXTRA = "requestExtra";
@@ -165,10 +165,7 @@ public class MainActivity
         RequestType requestType = (RequestType) intent.getSerializableExtra(REQUEST_EXTRA);
         switch (requestType) {
             case REFRESH_FOLLOWER_LIST:
-                refreshPagerFragment(TabItemType.FOLLOWERS);
-                break;
-            case REFRESH_BUCKET_LIST:
-                refreshPagerFragment(TabItemType.BUCKETS);
+                pagerAdapter.refreshFragment(TabItemType.FOLLOWERS);
                 break;
             default:
                 throw new IllegalStateException("Intent should contains REQUEST_EXTRA");
@@ -419,18 +416,14 @@ public class MainActivity
         showFragmentDetails(shot, isCommentModeEnabled);
     }
 
-    public void refreshPagerFragment(TabItemType tabItemType) {
-        pagerAdapter.refreshFragment(tabItemType);
-    }
-
     @Override
     public void shotLikeStatusChanged() {
-        refreshPagerFragment(TabItemType.LIKES);
+        pagerAdapter.refreshFragment(TabItemType.LIKES);
     }
 
     @Override
     public void refreshShotsView() {
-        refreshPagerFragment(TabItemType.SHOTS);
+        pagerAdapter.refreshFragment(TabItemType.SHOTS);
     }
 
     private BottomSheetBehavior getBottomSheetBehavior() {
