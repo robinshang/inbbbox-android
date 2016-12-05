@@ -200,7 +200,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onUserSelected(User user) {
-        FollowerDetailsActivity.startActivity(getContext(), null, user);
+        FollowerDetailsActivity.startActivityWithUser(getContext(), user);
     }
 
     @Override

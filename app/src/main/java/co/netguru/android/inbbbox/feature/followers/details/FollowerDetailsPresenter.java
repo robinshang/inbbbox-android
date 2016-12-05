@@ -8,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
+import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.FollowersController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.model.ui.Follower;
@@ -28,6 +29,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     private final UserShotsController userShotsController;
     private final FollowersController followersController;
+    private final ErrorMessageController errorMessageController;
     private final CompositeSubscription subscriptions;
 
     private Follower follower;
@@ -35,9 +37,11 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     private int pageNumber = 1;
 
     @Inject
-    FollowerDetailsPresenter(UserShotsController userShotsController, FollowersController followersController) {
+    FollowerDetailsPresenter(UserShotsController userShotsController, FollowersController followersController,
+                             ErrorMessageController errorMessageController) {
         this.userShotsController = userShotsController;
         this.followersController = followersController;
+        this.errorMessageController = errorMessageController;
         subscriptions = new CompositeSubscription();
     }
 
@@ -108,7 +112,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
                 pageNumber, SHOT_PAGE_COUNT)
                 .compose(androidIO())
                 .subscribe(list -> setUserOnShot(user, list),
-                        throwable -> Timber.e(throwable, "Error while getting user shots"));
+                        this::handleError);
         subscriptions.add(subscription);
     }
 
@@ -124,5 +128,11 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     private void createFollower(User user, List<Shot> list) {
         this.follower = Follower.createFromUser(user, list);
         getView().showFollowerData(follower);
+    }
+
+    private void handleError(Throwable throwable) {
+        Timber.e(throwable, errorMessageController.getErrorMessageLabel(throwable));
+        getView().showError(errorMessageController.getErrorMessageLabel(throwable));
+
     }
 }

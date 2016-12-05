@@ -41,9 +41,14 @@ public class FollowerDetailsActivity extends BaseActivity
 
     private BottomSheetBehavior<View> bottomSheetBehavior;
 
-    public static void startActivity(Context context, @Nullable Follower follower, @Nullable User user) {
+    public static void startActivityWithFollower(Context context, Follower follower) {
         final Intent intent = new Intent(context, FollowerDetailsActivity.class);
         intent.putExtra(FOLLOWER_KEY, follower);
+        context.startActivity(intent);
+    }
+
+    public static void startActivityWithUser(Context context, User user) {
+        final Intent intent = new Intent(context, FollowerDetailsActivity.class);
         intent.putExtra(USER_KEY, user);
         context.startActivity(intent);
     }
@@ -55,10 +60,17 @@ public class FollowerDetailsActivity extends BaseActivity
         initializeToolbar();
         initializeBottomSheet();
         if (savedInstanceState == null) {
-            replaceFragment(R.id.follower_details_fragment_container,
-                    FollowerDetailsFragment.newInstance(getIntent().getParcelableExtra(FOLLOWER_KEY),
-                            getIntent().getParcelableExtra(USER_KEY)),
-                    FollowerDetailsFragment.TAG).commit();
+
+            if (getIntent().getParcelableExtra(FOLLOWER_KEY) != null) {
+                replaceFragment(R.id.follower_details_fragment_container,
+                        FollowerDetailsFragment.newInstanceWithFollower(getIntent().getParcelableExtra(FOLLOWER_KEY)),
+                        FollowerDetailsFragment.TAG).commit();
+
+            } else if (getIntent().getParcelableExtra(USER_KEY) != null) {
+                replaceFragment(R.id.follower_details_fragment_container,
+                        FollowerDetailsFragment.newInstanceWithUser(getIntent().getParcelableExtra(USER_KEY)),
+                        FollowerDetailsFragment.TAG).commit();
+            }
         }
     }
 

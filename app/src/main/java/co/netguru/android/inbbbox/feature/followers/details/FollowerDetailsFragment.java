@@ -63,9 +63,17 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
     private OnFollowedShotActionListener onUnFollowCompletedListener;
     private FollowerDetailsFragmentComponent component;
 
-    public static FollowerDetailsFragment newInstance(@Nullable Follower follower, @Nullable User user) {
+    public static FollowerDetailsFragment newInstanceWithFollower(Follower follower) {
         final Bundle args = new Bundle();
         args.putParcelable(FOLLOWER_KEY, follower);
+
+        final FollowerDetailsFragment fragment = new FollowerDetailsFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static FollowerDetailsFragment newInstanceWithUser(User user) {
+        final Bundle args = new Bundle();
         args.putParcelable(USER_KEY, user);
 
         final FollowerDetailsFragment fragment = new FollowerDetailsFragment();
