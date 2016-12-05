@@ -122,7 +122,7 @@ public class ShotDetailsPresenter
                 PAGE_NUMBER, SHOT_PAGE_COUNT)
                 .compose(androidIO())
                 .subscribe(list -> createFollower(user, list),
-                        throwable -> Timber.e(throwable, "Error while getting user shots"));
+                        this::handleApiError);
         subscriptions.add(subscription);
     }
 
@@ -130,10 +130,6 @@ public class ShotDetailsPresenter
     public void onCommentDelete(Comment currentComment) {
         commentInEditor = currentComment;
         getView().showDeleteCommentWarning();
-    }
-
-    private void createFollower(User user, List<Shot> list) {
-        getView().showUserDetails(Follower.createFromUser(user, list));
     }
 
     @Override
@@ -155,6 +151,10 @@ public class ShotDetailsPresenter
         getView().updateLoadMoreState(commentLoadMoreState);
 
         downloadCommentsFromAPI();
+    }
+
+    private void createFollower(User user, List<Shot> list) {
+        getView().showUserDetails(Follower.createFromUser(user, list));
     }
 
     private void initializeView() {

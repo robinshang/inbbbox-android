@@ -13,14 +13,17 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.threeten.bp.LocalDateTime;
 
+import java.util.Arrays;
 import java.util.List;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
+import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
+import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
 import co.netguru.android.inbbbox.model.ui.User;
@@ -60,7 +63,13 @@ public class ShotDetailsPresenterTest {
     ErrorMessageController errorMessageControllerMock;
 
     @Mock
+    UserShotsController userShotsControllerMock;
+
+    @Mock
     ShotDetailsContract.View viewMock;
+
+    @Mock
+    User userMock;
 
     @InjectMocks
     ShotDetailsPresenter shotDetailsPresenter;
@@ -74,6 +83,7 @@ public class ShotDetailsPresenterTest {
         when(shotMock.author()).thenReturn(User.create(Statics.USER_ENTITY));
         when(shotMock.creationDate()).thenReturn(LocalDateTime.now());
         when(viewMock.getShotInitialData()).thenReturn(shotMock);
+        when(errorMessageControllerMock.getErrorMessageLabel(any(Throwable.class))).thenCallRealMethod();
         shotDetailsPresenter.retrieveInitialData();
     }
 
@@ -293,7 +303,7 @@ public class ShotDetailsPresenterTest {
         when(viewMock.getCommentText()).thenReturn(exampleComment);
         when(shotDetailsControllerMock
                 .sendComment(anyLong(), eq(exampleComment)))
-                .thenReturn(Single.error(new Throwable()));
+                .thenReturn(Single.error(new Throwable("test")));
 
         shotDetailsPresenter.sendComment();
 
@@ -509,12 +519,52 @@ public class ShotDetailsPresenterTest {
         verify(viewMock, times(1)).showInfo(R.string.comment_update_complete);
     }
 
+    @Test
+    public void whenUserSelected_thenDownloadUserUsingUserController() {
+        when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
+                .thenReturn(Observable.empty());
+        when(userMock.id()).thenReturn(EXAMPLE_ID);
+
+        shotDetailsPresenter.downloadUserShots(userMock);
+
+        verify(userShotsControllerMock, times(1))
+                .getUserShotsList(eq(EXAMPLE_ID), anyInt(), anyInt());
+    }
+
+    @Test
+    public void whenUserAccountSelectedAndUserDataDowloadComplete_thenShowUserDetails() {
+        User exampleUser = User.create(Statics.USER_ENTITY);
+        List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT, Statics.NOT_LIKED_SHOT);
+        when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
+                .thenReturn(Observable.just(listOfShots));
+        ArgumentCaptor<Follower> argumentCaptor = new ArgumentCaptor<>();
+
+        shotDetailsPresenter.downloadUserShots(exampleUser);
+
+        verify(viewMock, times(1)).showUserDetails(argumentCaptor.capture());
+        Assert.assertEquals(EXAMPLE_ID, argumentCaptor.getValue().id());
+        Assert.assertEquals(listOfShots, argumentCaptor.getValue().shotList());
+    }
+
     //ERRORS
+    @Test
+    public void whenUserAccountSelectedAndUserDataDownloadFailed_thenShowError() {
+        String message = "test";
+        Throwable throwable = new Throwable(message);
+        User exampleUser = User.create(Statics.USER_ENTITY);
+        when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
+                .thenReturn(Observable.error(throwable));
+
+        shotDetailsPresenter.downloadUserShots(exampleUser);
+
+        verify(viewMock, times(1)).showErrorMessage(message);
+    }
+
     @Test
     public void whenUpdateCommentFailed_thenShowInfoAndDisableProgressModeInCommentEditor() {
         Comment comment = Statics.COMMENTS.get(0);
         when(shotDetailsControllerMock.updateComment(anyLong(), anyLong(), anyString()))
-                .thenReturn(Single.error(new Throwable()));
+                .thenReturn(Single.error(new Throwable("test")));
         shotDetailsPresenter.onEditCommentClick(comment);
         String expectedCommentUpdate = "test";
 
@@ -529,7 +579,7 @@ public class ShotDetailsPresenterTest {
         Comment commentMock = Statics.COMMENTS.get(0);
         shotDetailsPresenter.onCommentDelete(commentMock);
         when(shotDetailsControllerMock.deleteComment(anyLong(), anyLong()))
-                .thenReturn(Completable.error(new Throwable()));
+                .thenReturn(Completable.error(new Throwable("test")));
 
         shotDetailsPresenter.onCommentDeleteConfirmed();
 
@@ -542,7 +592,7 @@ public class ShotDetailsPresenterTest {
         when(viewMock.getCommentText()).thenReturn(exampleComment);
         when(shotDetailsControllerMock
                 .sendComment(anyLong(), eq(exampleComment)))
-                .thenReturn(Single.error(new Throwable()));
+                .thenReturn(Single.error(new Throwable("test")));
 
         shotDetailsPresenter.sendComment();
 
