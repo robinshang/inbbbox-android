@@ -27,6 +27,14 @@ public class StringUtils {
         return true;
     }
 
+    public static String removeHtml(String input) {
+        String output = input.replaceAll("<(.*?)\\>", " ");
+        output = output.replaceAll("<(.*?)\\\n", " ");
+        output = output.replaceFirst("(.*?)\\>", " ");
+        output = output.replaceAll("&nbsp;", " ");
+        return output.replaceAll("&amp;", " ");
+    }
+
     public static Spanned getParsedHtmlTextSpanned(String html) {
         Spanned result;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.feature.details;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +31,7 @@ import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCall
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
 import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotImage;
@@ -188,9 +190,9 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void showComments(List<Comment> commentList) {
+    public void addCommentsToList(List<Comment> commentList) {
         verifyInputVisibility();
-        adapter.setComments(commentList);
+        adapter.addComments(commentList);
     }
 
     @Override
@@ -217,7 +219,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onLoadMoreCommentsSelected() {
-        Toast.makeText(getContext(), "LOAD MORE!!", Toast.LENGTH_SHORT).show();
+        getPresenter().getMoreComments();
     }
 
     @Override
@@ -300,9 +302,9 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void showCommentDeletedInfo() {
+    public void showInfo(@StringRes int messageResId) {
         Toast.makeText(getContext(),
-                getString(R.string.comment_deleted_complete),
+                getString(messageResId),
                 Toast.LENGTH_SHORT)
                 .show();
     }
@@ -310,6 +312,34 @@ public class ShotDetailsFragment
     @Override
     public void removeCommentFromView(Comment commentInEditor) {
         adapter.removeComment(commentInEditor);
+    }
+
+    @Override
+    public void updateLoadMoreState(CommentLoadMoreState commentLoadMoreState) {
+        adapter.updateLoadMoreState(commentLoadMoreState);
+    }
+
+    @Override
+    public void dismissCommentEditor() {
+        EditCommentFragmentDialog editorFragmentDialog = (EditCommentFragmentDialog) getFragmentManager()
+                .findFragmentByTag(EditCommentFragmentDialog.TAG);
+        if (editorFragmentDialog != null) {
+            editorFragmentDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void updateComment(Comment commentToUpdate, Comment updatedComment) {
+        adapter.replaceComment(commentToUpdate, updatedComment);
+    }
+
+    @Override
+    public void disableEditorProgressMode() {
+        EditCommentFragmentDialog editorFragmentDialog = (EditCommentFragmentDialog) getFragmentManager()
+                .findFragmentByTag(EditCommentFragmentDialog.TAG);
+        if (editorFragmentDialog != null) {
+            editorFragmentDialog.disableProgressMode();
+        }
     }
 
     private void initComponent() {

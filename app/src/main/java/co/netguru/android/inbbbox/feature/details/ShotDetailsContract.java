@@ -1,11 +1,14 @@
 package co.netguru.android.inbbbox.feature.details;
 
+import android.support.annotation.StringRes;
+
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
 import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotImage;
@@ -17,7 +20,7 @@ public interface ShotDetailsContract {
 
         void showDetails(Shot shotDetails);
 
-        void showComments(List<Comment> commentList);
+        void addCommentsToList(List<Comment> commentList);
 
         void showMainImage(ShotImage shotImage);
 
@@ -59,9 +62,17 @@ public interface ShotDetailsContract {
 
         void showDeleteCommentWarning();
 
-        void showCommentDeletedInfo();
+        void showInfo(@StringRes int messageResId);
 
         void removeCommentFromView(Comment commentInEditor);
+
+        void updateLoadMoreState(CommentLoadMoreState commentLoadMoreState);
+
+        void dismissCommentEditor();
+
+        void updateComment(Comment commentToUpdate, Comment updatedComment);
+
+        void disableEditorProgressMode();
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -85,5 +96,7 @@ public interface ShotDetailsContract {
         void onCommentDelete(Comment currentComment);
 
         void onCommentDeleteConfirmed();
+
+        void getMoreComments();
     }
 }
