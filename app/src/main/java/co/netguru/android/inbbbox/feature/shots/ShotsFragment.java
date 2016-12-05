@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,19 +60,28 @@ public class ShotsFragment
 
     @OnClick(R.id.fab_like_menu)
     void onLikeFabClick() {
-        getPresenter().likeShot(adapter.getShotFromPosition(shotsRecyclerView.getCurrentItem()));
+        int currentItemPosition = shotsRecyclerView.getCurrentItem();
+        if (currentItemPosition != RecyclerView.NO_POSITION) {
+            getPresenter().likeShot(adapter.getShotFromPosition(currentItemPosition));
+        }
     }
 
     @OnClick(R.id.fab_bucket_menu)
     void onBucketClick() {
-        getPresenter().handleAddShotToBucket(
-                adapter.getShotFromPosition(shotsRecyclerView.getCurrentItem()));
+        int currentItemPosition = shotsRecyclerView.getCurrentItem();
+        if (currentItemPosition != RecyclerView.NO_POSITION) {
+            getPresenter().handleAddShotToBucket(
+                    adapter.getShotFromPosition(currentItemPosition));
+        }
     }
 
     @OnClick(R.id.fab_comment_menu)
     void onCommentClick() {
-        getPresenter()
-                .showCommentInput(adapter.getShotFromPosition(shotsRecyclerView.getCurrentItem()));
+        int currentItemPosition = shotsRecyclerView.getCurrentItem();
+        if (currentItemPosition != RecyclerView.NO_POSITION) {
+            getPresenter()
+                    .showCommentInput(adapter.getShotFromPosition(shotsRecyclerView.getCurrentItem()));
+        }
     }
 
     @OnClick(R.id.fab_follow_menu)
