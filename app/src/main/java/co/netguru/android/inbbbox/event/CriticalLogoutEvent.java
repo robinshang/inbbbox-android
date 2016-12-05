@@ -1,6 +1,6 @@
-package co.netguru.android.inbbbox.model.events;
+package co.netguru.android.inbbbox.event;
 
-public class CriticalLogoutEvent {
+public class CriticalLogoutEvent implements Event {
 
     private final String reason;
 
@@ -12,4 +12,5 @@ public class CriticalLogoutEvent {
     public String getReason() {
         return reason;
     }
+
 }

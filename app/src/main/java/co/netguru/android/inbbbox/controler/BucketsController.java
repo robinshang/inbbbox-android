@@ -1,5 +1,8 @@
 package co.netguru.android.inbbbox.controler;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,7 +20,7 @@ import rx.Single;
 @Singleton
 public class BucketsController {
 
-    public static final int FIRST_PAGE_NUMBER = 1;
+    private static final int FIRST_PAGE_NUMBER = 1;
     private final UserApi userApi;
     private final BucketApi bucketApi;
 
@@ -50,5 +53,9 @@ public class BucketsController {
 
     public Single<List<ShotEntity>> getShotsListFromBucket(long bucketId, int pageNumber, int pageCount) {
         return bucketApi.getBucketShotsList(bucketId, pageNumber, pageCount);
+    }
+
+    public Single<Bucket> createBucket(@NonNull String name, @Nullable String description) {
+        return bucketApi.createBucket(name, description);
     }
 }

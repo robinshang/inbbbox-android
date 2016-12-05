@@ -7,10 +7,10 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.LogoutController;
+import co.netguru.android.inbbbox.event.CriticalLogoutEvent;
+import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import co.netguru.android.inbbbox.model.api.Token;
-import co.netguru.android.inbbbox.model.events.CriticalLogoutEvent;
-import co.netguru.android.inbbbox.utils.RxBus;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -25,14 +25,17 @@ public class RequestInterceptor implements Interceptor {
     private final LogoutController logoutController;
     private final ErrorMessageController messageController;
     private final TokenPrefsRepository tokenPrefsRepository;
+    private final RxBus rxBus;
 
     @Inject
     public RequestInterceptor(LogoutController logoutController,
                               ErrorMessageController messageController,
-                              TokenPrefsRepository tokenPrefsRepository) {
+                              TokenPrefsRepository tokenPrefsRepository,
+                              RxBus rxBus) {
         this.logoutController = logoutController;
         this.messageController = messageController;
         this.tokenPrefsRepository = tokenPrefsRepository;
+        this.rxBus = rxBus;
     }
 
     @Override
@@ -58,7 +61,7 @@ public class RequestInterceptor implements Interceptor {
 
     private void sendCriticalLogoutEvent(String message) {
         Timber.d(message);
-        RxBus.getInstance().publishEvent(new CriticalLogoutEvent(message));
+        rxBus.send(new CriticalLogoutEvent(message));
     }
 
     private Request getRequestWithToken(Request original, Token token) {
