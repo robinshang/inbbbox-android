@@ -50,9 +50,11 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
-        refreshSubscription.unsubscribe();
-        loadNextBucketSubscription.unsubscribe();
         busSubscription.unsubscribe();
+        if (!retainInstance) {
+            refreshSubscription.unsubscribe();
+            loadNextBucketSubscription.unsubscribe();
+        }
     }
 
     @Override
@@ -71,11 +73,8 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
                     .doAfterTerminate(getView()::hideProgressBars)
                     .subscribe(bucketWithShotsList -> {
                                 apiHasMoreBuckets = bucketWithShotsList.size() == BUCKETS_PER_PAGE_COUNT;
-                                if (bucketWithShotsList.isEmpty()) {
-                                    getView().showEmptyBucketView();
-                                } else {
-                                    getView().showBucketsWithShots(bucketWithShotsList);
-                                }
+                                getView().setData(bucketWithShotsList);
+                                getView().showContent();
                             },
                             throwable -> Timber.d(throwable, "Error while loading buckets"));
         }
@@ -110,6 +109,15 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     @Override
     public void handleCreateBucket() {
         getView().openCreateDialogFragment();
+    }
+
+    @Override
+    public void checkEmptyData(boolean isEmpty) {
+        if (isEmpty) {
+            getView().showEmptyBucketView();
+        } else {
+            getView().hideEmptyBucketView();
+        }
     }
 
     private void setupRxBus() {

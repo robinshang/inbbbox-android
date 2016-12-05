@@ -17,7 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
@@ -31,12 +32,13 @@ import co.netguru.android.inbbbox.feature.buckets.adapter.BaseBucketViewHolder;
 import co.netguru.android.inbbbox.feature.buckets.adapter.BucketsAdapter;
 import co.netguru.android.inbbbox.feature.buckets.createbucket.CreateBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.buckets.details.BucketDetailsActivity;
-import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
-public class BucketsFragment extends BaseMvpFragmentWithListTypeSelection<BucketsFragmentContract.View, BucketsFragmentContract.Presenter>
+public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout,
+        List<BucketWithShots>, BucketsFragmentContract.View, BucketsFragmentContract.Presenter>
         implements BucketsFragmentContract.View, BaseBucketViewHolder.BucketClickListener {
 
     @BindDrawable(R.drawable.ic_buckets_empty_state)
@@ -47,9 +49,9 @@ public class BucketsFragment extends BaseMvpFragmentWithListTypeSelection<Bucket
     @BindString(R.string.fragment_buckets_empty_text_after_icon)
     String emptyStringAfterIcon;
 
-    @BindView(R.id.swipe_refresh_layout)
+    @BindView(R.id.contentView)
     SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.progress_bar)
+    @BindView(R.id.loadingView)
     ProgressBar progressBar;
     @BindView(R.id.empty_view)
     ScrollView emptyView;
@@ -101,26 +103,34 @@ public class BucketsFragment extends BaseMvpFragmentWithListTypeSelection<Bucket
 
     @NonNull
     @Override
-    public ViewState createViewState() {
-        return new BucketViewState();
+    public LceViewState<List<BucketWithShots>, BucketsFragmentContract.View> createViewState() {
+        return new RetainingLceViewState<>();
     }
 
     @Override
-    public void onNewViewStateInstance() {
+    public void showContent() {
+        super.showContent();
+        getPresenter().checkEmptyData(getData().isEmpty());
+    }
+
+    @Override
+    public List<BucketWithShots> getData() {
+        return adapter.getData();
+    }
+
+    @Override
+    public void setData(List<BucketWithShots> data) {
+        adapter.setNewBucketsWithShots(data);
+    }
+
+    @Override
+    public void loadData(boolean pullToRefresh) {
         getPresenter().loadBucketsWithShots(false);
     }
 
     @Override
     public void onBucketClick(BucketWithShots bucketWithShots) {
         getPresenter().handleBucketWithShotsClick(bucketWithShots);
-    }
-
-    @Override
-    public void showBucketsWithShots(List<BucketWithShots> bucketsWithShots) {
-        bucketsRecyclerView.setVisibility(View.VISIBLE);
-        emptyView.setVisibility(View.GONE);
-        adapter.setNewBucketsWithShots(bucketsWithShots);
-        ((BucketViewState) viewState).setDataList(bucketsWithShots);
     }
 
     @Override
@@ -132,7 +142,12 @@ public class BucketsFragment extends BaseMvpFragmentWithListTypeSelection<Bucket
     @Override
     public void addMoreBucketsWithShots(List<BucketWithShots> bucketWithShotsList) {
         adapter.addNewBucketsWithShots(bucketWithShotsList);
-        ((BucketViewState) viewState).addMoreData(bucketWithShotsList);
+    }
+
+    @Override
+    public void hideEmptyBucketView() {
+        emptyView.setVisibility(View.GONE);
+        bucketsRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -171,6 +186,7 @@ public class BucketsFragment extends BaseMvpFragmentWithListTypeSelection<Bucket
     @Override
     public void addNewBucketWithShotsOnTop(BucketWithShots bucketWithShots) {
         adapter.addNewBucketWithShots(bucketWithShots);
+        hideEmptyBucketView();
     }
 
     @Override
