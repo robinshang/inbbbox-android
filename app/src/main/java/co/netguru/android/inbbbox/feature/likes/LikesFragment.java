@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +22,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
@@ -47,6 +50,11 @@ public class LikesFragment extends BaseMvpFragmentWithListTypeSelection<LikesVie
     @BindString(R.string.fragment_like_empty_text)
     String emptyString;
 
+    @BindColor(R.color.accent)
+    int accentColor;
+
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.fragment_likes_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.fragment_likes_empty_view)
@@ -57,6 +65,7 @@ public class LikesFragment extends BaseMvpFragmentWithListTypeSelection<LikesVie
     @Inject
     LikesAdapter likesAdapter;
 
+    private Snackbar loadingMoreSnackbar;
     private LikesFragmentComponent component;
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
@@ -95,6 +104,7 @@ public class LikesFragment extends BaseMvpFragmentWithListTypeSelection<LikesVie
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initRefreshLayout();
         initRecyclerView();
         initEmptyView();
     }
@@ -135,8 +145,21 @@ public class LikesFragment extends BaseMvpFragmentWithListTypeSelection<LikesVie
     }
 
     @Override
+    public void showLoadingMoreLikesView() {
+            if (loadingMoreSnackbar == null && getView() != null) {
+                loadingMoreSnackbar = Snackbar.make(getView(), R.string.loading_more_likes, Snackbar.LENGTH_INDEFINITE);
+            }
+            loadingMoreSnackbar.show();
+    }
+
+    @Override
     public void hideEmptyLikesInfo() {
         emptyView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -157,6 +180,11 @@ public class LikesFragment extends BaseMvpFragmentWithListTypeSelection<LikesVie
         emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
         emptyViewText.setText(TextFormatterUtil
                 .addDrawableToTextAtFirstSpace(emptyString, emptyTextDrawable), TextView.BufferType.SPANNABLE);
+    }
+
+    private void initRefreshLayout() {
+        swipeRefreshLayout.setColorSchemeColors(accentColor);
+        swipeRefreshLayout.setOnRefreshListener(getPresenter()::getLikesFromServer);
     }
 
     private void initRecyclerView() {

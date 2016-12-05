@@ -1,16 +1,20 @@
 package co.netguru.android.inbbbox.feature.likes;
 
+import android.support.annotation.NonNull;
+
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.controler.LikedShotsController;
 import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
@@ -20,9 +24,14 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
         implements LikesViewContract.Presenter {
 
     private static final int PAGE_COUNT = 30;
+    private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
 
     private final LikedShotsController likedShotsController;
-    private final CompositeSubscription subscriptions;
+
+    @NonNull
+    private Subscription refreshSubscription;
+    @NonNull
+    private Subscription loadNextBucketSubscription;
 
     private boolean hasMore = true;
     private int pageNumber = 1;
@@ -30,35 +39,44 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     @Inject
     LikesPresenter(LikedShotsController likedShotsController) {
         this.likedShotsController = likedShotsController;
-        subscriptions = new CompositeSubscription();
+        refreshSubscription = Subscriptions.unsubscribed();
+        loadNextBucketSubscription = Subscriptions.unsubscribed();
     }
 
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
-        subscriptions.clear();
+        refreshSubscription.unsubscribe();
+        loadNextBucketSubscription.unsubscribe();
     }
 
     @Override
     public void getLikesFromServer() {
-        final Subscription subscription = likedShotsController.getLikedShots(pageNumber, PAGE_COUNT)
-                .toList()
-                .compose(androidIO())
-                .subscribe(this::onGetLikeShotListNext,
-                        throwable -> Timber.e(throwable, "Error while getting likes from server"));
-        subscriptions.add(subscription);
+        if (refreshSubscription.isUnsubscribed()) {
+            loadNextBucketSubscription.unsubscribe();
+            pageNumber = 1;
+            refreshSubscription = likedShotsController.getLikedShots(pageNumber, PAGE_COUNT)
+                    .toList()
+                    .compose(androidIO())
+                    .doAfterTerminate(getView()::hideProgressBar)
+                    .subscribe(this::onGetLikeShotListNext,
+                            throwable -> Timber.e(throwable, "Error while getting likes from server"));
+        }
     }
 
     @Override
     public void getMoreLikesFromServer() {
-        if (hasMore) {
+        if (hasMore && refreshSubscription.isUnsubscribed() && loadNextBucketSubscription.isUnsubscribed()) {
             pageNumber++;
-            final Subscription subscription = likedShotsController.getLikedShots(pageNumber, PAGE_COUNT)
+            loadNextBucketSubscription = likedShotsController.getLikedShots(pageNumber, PAGE_COUNT)
+                    .compose(RxTransformerUtils.executeRunnableIfObservableDidntEmitUntilGivenTime(
+                            SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
+                            getView()::showLoadingMoreLikesView))
                     .toList()
                     .compose(androidIO())
+                    .doAfterTerminate(getView()::hideProgressBar)
                     .subscribe(this::onGetMoreLikeShotListNext,
                             throwable -> Timber.e(throwable, "Error while getting more likes from server"));
-            subscriptions.add(subscription);
         }
     }
 

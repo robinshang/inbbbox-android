@@ -48,6 +48,7 @@
         <item quantity="other">%d shots</item>
     </plurals>
     <string name="loading_more_shots">Loading more shots</string>
+    <string name="loading_more_likes">Loading more liked shots</string>
     <string name="fragment_bucket_is_empty_text_before_icon">Add some shots to this bucket</string>
     <string name="fragment_bucket_is_empty_text_after_icon">first!</string>
 

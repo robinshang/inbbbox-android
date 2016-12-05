@@ -15,7 +15,11 @@ interface LikesViewContract {
 
         void showMoreLikes(List<Shot> likedShotList);
 
+        void showLoadingMoreLikesView();
+
         void hideEmptyLikesInfo();
+
+        void hideProgressBar();
 
         void showEmptyLikesInfo();
 
