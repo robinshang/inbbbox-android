@@ -112,7 +112,9 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
                 pageNumber, SHOT_PAGE_COUNT)
                 .compose(androidIO())
                 .subscribe(list -> setUserOnShot(user, list),
-                        this::handleError);
+                        throwable -> {
+                            handleError(throwable, "Error while getting user shots list");
+                        });
         subscriptions.add(subscription);
     }
 
@@ -130,9 +132,8 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         getView().showFollowerData(follower);
     }
 
-    private void handleError(Throwable throwable) {
-        Timber.e(throwable, errorMessageController.getErrorMessageLabel(throwable));
+    private void handleError(Throwable throwable, String message) {
+        Timber.e(throwable, message);
         getView().showError(errorMessageController.getErrorMessageLabel(throwable));
-
     }
 }

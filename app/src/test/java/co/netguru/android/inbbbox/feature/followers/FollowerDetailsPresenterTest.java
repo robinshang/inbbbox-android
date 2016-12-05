@@ -2,7 +2,9 @@ package co.netguru.android.inbbbox.feature.followers;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -20,6 +22,7 @@ import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsPrese
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;
+import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 
 import static org.mockito.Matchers.any;
@@ -35,8 +38,14 @@ public class FollowerDetailsPresenterTest {
 
     private static final long EXAMPLE_ID = 1;
 
+    @Rule
+    public TestRule rule = new RxSyncTestRule();
+
     @Mock
     UserShotsController userShotsControllerMock;
+
+    @Mock
+    ErrorMessageController errorMessageControllerMock;
 
     @Mock
     User userMock;
@@ -46,9 +55,6 @@ public class FollowerDetailsPresenterTest {
 
     @Mock
     FollowerDetailsContract.View viewMock;
-
-    @Mock
-    ErrorMessageController errorMessageControllerMock;
 
     @Before
     public void setUp() {
