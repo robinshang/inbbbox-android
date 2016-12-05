@@ -3,7 +3,7 @@ package co.netguru.android.inbbbox.feature.followers.adapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.model.ui.Follower;
@@ -23,13 +23,13 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
     private static final int TYPE_FOUR_SHOT_GRID = 9;
 
     private final BaseFollowersViewHolder.OnFollowerClickListener onFollowerClickListener;
-    private final List<Follower> followersList;
+    private List<Follower> followersList;
 
     private boolean isGridMode;
 
     public FollowersAdapter(BaseFollowersViewHolder.OnFollowerClickListener onFollowerClickListener) {
         this.onFollowerClickListener = onFollowerClickListener;
-        followersList = new ArrayList<>();
+        followersList = Collections.emptyList();
     }
 
     @Override
@@ -71,8 +71,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
     }
 
     public void setFollowersList(List<Follower> followersList) {
-        this.followersList.clear();
-        this.followersList.addAll(followersList);
+        this.followersList = followersList;
         notifyDataSetChanged();
     }
 
@@ -85,6 +84,10 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
     public void setGridMode(boolean isGridMode) {
         this.isGridMode = isGridMode;
         notifyDataSetChanged();
+    }
+
+    public List<Follower> getData() {
+        return followersList;
     }
 
     @Override
