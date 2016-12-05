@@ -25,6 +25,8 @@ public class EditCommentFragmentDialog extends DialogFragment {
     public static final String TAG = EditCommentFragmentDialog.class.getSimpleName();
     private static final String ARG_STRING_COMMENT = "arg:comment_text";
     private static final int TARGET_REQUEST_CODE = 9901;
+    private static final float DISABLE_VIEW_ALPHA_VALUE = 0.2f;
+    private static final float ENABLED_VIEW_ALPHA_VALUE = 1;
 
     @BindView(R.id.comment_edit_editText)
     EditText editCommentEditText;
@@ -82,7 +84,7 @@ public class EditCommentFragmentDialog extends DialogFragment {
     public void enableInProgressMode() {
         updateCommentProgressBar.setVisibility(View.VISIBLE);
         editCommentEditText.setEnabled(false);
-        editCommentEditText.setAlpha(0.2f);
+        editCommentEditText.setAlpha(DISABLE_VIEW_ALPHA_VALUE);
         negativeButton.setEnabled(false);
         positiveButton.setEnabled(false);
     }
@@ -90,7 +92,7 @@ public class EditCommentFragmentDialog extends DialogFragment {
     public void disableProgressMode() {
         updateCommentProgressBar.setVisibility(View.GONE);
         editCommentEditText.setEnabled(true);
-        editCommentEditText.setAlpha(1);
+        editCommentEditText.setAlpha(ENABLED_VIEW_ALPHA_VALUE);
         negativeButton.setEnabled(true);
         positiveButton.setEnabled(true);
     }

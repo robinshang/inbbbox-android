@@ -24,7 +24,6 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"
-                android:text="test"
                 android:gravity="center_vertical"/>
         </android.support.design.widget.TextInputLayout>
 
