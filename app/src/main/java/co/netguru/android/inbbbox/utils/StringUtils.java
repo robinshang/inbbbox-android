@@ -32,8 +32,7 @@ public class StringUtils {
         output = output.replaceAll("<(.*?)\\\n", " ");
         output = output.replaceFirst("(.*?)\\>", " ");
         output = output.replaceAll("&nbsp;", " ");
-        output = output.replaceAll("&amp;", " ");
-        return output;
+        return output.replaceAll("&amp;", " ");
     }
 
     public static Spanned getParsedHtmlTextSpanned(String html) {
