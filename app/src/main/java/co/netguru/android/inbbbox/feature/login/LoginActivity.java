@@ -21,11 +21,13 @@ import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewDialogFragment;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewListener;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
+import co.netguru.android.inbbbox.utils.AnimationUtil;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
         implements LoginContract.View, WithComponent<LoginComponent>,
         OauthWebViewListener {
 
+    private static final int SLIDE_IN_DURATION = 300;
     private LoginComponent component;
 
     @BindView(R.id.btn_login)
@@ -116,8 +118,8 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @Override
     public void showGuestModeLoginButton() {
-        guestModeDivider.setVisibility(View.VISIBLE);
-        guestButton.setVisibility(View.VISIBLE);
+        AnimationUtil.startSlideInFromBottomShowAnimation(guestModeDivider, SLIDE_IN_DURATION);
+        AnimationUtil.startSlideInFromBottomShowAnimation(guestButton, SLIDE_IN_DURATION);
     }
 
     @Override

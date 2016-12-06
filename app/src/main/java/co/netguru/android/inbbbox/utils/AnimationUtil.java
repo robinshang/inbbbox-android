@@ -6,15 +6,16 @@ public class AnimationUtil {
 
     private static final long SLIDE_IN_DURATION = 700;
     private static final float SLID_IN_DESIGNATED_TRANSLATION = 0;
+    private static final float TRANSLATION_INITIAL_OFFSET = 250f;
 
     private AnimationUtil() {
         throw new AssertionError();
     }
 
-    public static void startSlideInFromBottomShowAnimation(View view) {
-        view.setTranslationY(view.getHeight());
+    public static void startSlideInFromBottomShowAnimation(View view, int duration) {
+        view.setTranslationY(TRANSLATION_INITIAL_OFFSET);
         view.animate()
-                .setDuration(SLIDE_IN_DURATION)
+                .setDuration(duration)
                 .translationY(SLID_IN_DESIGNATED_TRANSLATION)
                 .withStartAction(() -> view.setVisibility(View.VISIBLE))
                 .start();
