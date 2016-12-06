@@ -25,6 +25,7 @@
     <string name="action_create">Create</string>
     <string name="action_warning">Warning</string>
     <string name="action_delete">Delete</string>
+    <string name="action_warning">Warning</string>
 
     <string name="drawer_group_notification">Notifications</string>
     <string name="drawer_enable_reminder">Enable daily reminder</string>
@@ -115,5 +116,5 @@
     <string name="action_ok">OK</string>
     <string name="delete_comment_waring">This comment will be deleted, are you sure to do that?
     </string>
-
+    <string name="comment_update_complete">Comment updated</string>
 </resources>
