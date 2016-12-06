@@ -4,8 +4,8 @@ package co.netguru.android.inbbbox.feature.buckets.adapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
@@ -16,13 +16,13 @@ public final class BucketsAdapter extends RecyclerView.Adapter<BaseBucketViewHol
     private static final int TYPE_GRID_BUCKET_SHOTS_VIEW_TYPE = 2;
 
     private final BaseBucketViewHolder.BucketClickListener bucketClickListener;
-    private final List<BucketWithShots> bucketWithShotsList;
 
+    private List<BucketWithShots> bucketWithShotsList;
     private boolean isGridMode;
 
     public BucketsAdapter(BaseBucketViewHolder.BucketClickListener bucketClickListener) {
         this.bucketClickListener = bucketClickListener;
-        this.bucketWithShotsList = new ArrayList<>();
+        this.bucketWithShotsList = Collections.emptyList();
     }
 
     @Override
@@ -53,9 +53,12 @@ public final class BucketsAdapter extends RecyclerView.Adapter<BaseBucketViewHol
         return isGridMode ? TYPE_GRID_BUCKET_SHOTS_VIEW_TYPE : TYPE_LIST_BUCKET_SHOTS_VIEW_TYPE;
     }
 
-    public void setNewBucketsWithShots(Collection<BucketWithShots> bucketWithShotsList) {
-        this.bucketWithShotsList.clear();
-        this.bucketWithShotsList.addAll(bucketWithShotsList);
+    public List<BucketWithShots> getData() {
+        return bucketWithShotsList;
+    }
+
+    public void setNewBucketsWithShots(List<BucketWithShots> bucketWithShotsList) {
+        this.bucketWithShotsList = bucketWithShotsList;
         notifyDataSetChanged();
     }
 

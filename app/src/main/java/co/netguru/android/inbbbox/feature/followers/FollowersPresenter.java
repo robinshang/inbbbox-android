@@ -1,8 +1,11 @@
 package co.netguru.android.inbbbox.feature.followers;
 
+import android.support.annotation.NonNull;
+
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -10,8 +13,9 @@ import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.controler.FollowersController;
 import co.netguru.android.inbbbox.controler.FollowersShotController;
 import co.netguru.android.inbbbox.model.ui.Follower;
+import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
@@ -23,10 +27,15 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     private static final int FOLLOWERS_PAGE_COUNT = 15;
     private static final int FOLLOWERS_SHOT_PAGE_COUNT = 30;
     private static final int FOLLOWERS_SHOT_PAGE_NUMBER = 1;
+    private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
 
     private final FollowersController followersController;
     private final FollowersShotController followersShotController;
-    private final CompositeSubscription subscriptions;
+
+    @NonNull
+    private Subscription refreshSubscription;
+    @NonNull
+    private Subscription loadNextBucketSubscription;
 
     private boolean hasMore = true;
     private int pageNumber = 1;
@@ -35,52 +44,70 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     FollowersPresenter(FollowersController followersController, FollowersShotController followersShotController) {
         this.followersController = followersController;
         this.followersShotController = followersShotController;
-        subscriptions = new CompositeSubscription();
+        refreshSubscription = Subscriptions.unsubscribed();
+        loadNextBucketSubscription = Subscriptions.unsubscribed();
     }
 
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
-        subscriptions.clear();
+        if (!retainInstance) {
+            refreshSubscription.unsubscribe();
+            loadNextBucketSubscription.unsubscribe();
+        }
     }
 
     @Override
     public void getFollowedUsersFromServer() {
-        getView().showFollowersLoadingInfo();
-        final Subscription subscription = followersController.getFollowedUsers(pageNumber, FOLLOWERS_PAGE_COUNT)
-                .doOnSubscribe(() -> pageNumber = 1)
-                .flatMap(follower -> followersShotController.getFollowedUserWithShots(follower,
-                        FOLLOWERS_SHOT_PAGE_NUMBER, FOLLOWERS_SHOT_PAGE_COUNT))
-                .toList()
-                .compose(androidIO())
-                .subscribe(this::onGetFollowersNext,
-                        throwable -> Timber.e(throwable, "Error while getting followed users form server"));
-        subscriptions.add(subscription);
-    }
-
-    @Override
-    public void getMoreFollowedUsersFromServer() {
-        if (hasMore) {
-            pageNumber++;
-            final Subscription subscription = followersController.getFollowedUsers(pageNumber, FOLLOWERS_PAGE_COUNT)
+        if (refreshSubscription.isUnsubscribed()) {
+            pageNumber = 1;
+            loadNextBucketSubscription.unsubscribe();
+            refreshSubscription = followersController.getFollowedUsers(pageNumber, FOLLOWERS_PAGE_COUNT)
+                    .doOnSubscribe(() -> pageNumber = 1)
                     .flatMap(follower -> followersShotController.getFollowedUserWithShots(follower,
                             FOLLOWERS_SHOT_PAGE_NUMBER, FOLLOWERS_SHOT_PAGE_COUNT))
                     .toList()
                     .compose(androidIO())
+                    .doAfterTerminate(getView()::hideProgressBars)
+                    .subscribe(this::onGetFollowersNext,
+                            throwable -> Timber.e(throwable, "Error while getting followed users form server"));
+        }
+    }
+
+    @Override
+    public void getMoreFollowedUsersFromServer() {
+        if (hasMore && refreshSubscription.isUnsubscribed() && loadNextBucketSubscription.isUnsubscribed()) {
+            pageNumber++;
+            loadNextBucketSubscription = followersController.getFollowedUsers(pageNumber, FOLLOWERS_PAGE_COUNT)
+                    .compose(RxTransformerUtils.executeRunnableIfObservableDidntEmitUntilGivenTime(
+                            SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
+                            getView()::showLoadingMoreFollowersView))
+                    .flatMap(follower -> followersShotController.getFollowedUserWithShots(follower,
+                            FOLLOWERS_SHOT_PAGE_NUMBER, FOLLOWERS_SHOT_PAGE_COUNT))
+                    .toList()
+                    .compose(androidIO())
+                    .doAfterTerminate(() -> {
+                        getView().hideProgressBars();
+                        getView().hideLoadingMoreBucketsView();
+                    })
                     .subscribe(this::onGetMoreFollowersNext,
                             throwable -> Timber.e(throwable, "Error while getting followed users form server"));
-            subscriptions.add(subscription);
+        }
+    }
+
+    @Override
+    public void checkDataEmpty(List<Follower> data) {
+        if (data.isEmpty()) {
+            getView().showEmptyLikesInfo();
+        } else {
+            getView().hideEmptyLikesInfo();
         }
     }
 
     private void onGetFollowersNext(List<Follower> followersList) {
         hasMore = followersList.size() == FOLLOWERS_PAGE_COUNT;
-        if (followersList.isEmpty()) {
-            getView().showEmptyLikesInfo();
-        } else {
-            getView().hideEmptyLikesInfo();
-            getView().showFollowedUsers(followersList);
-        }
+        getView().setData(followersList);
+        getView().showContent();
     }
 
     private void onGetMoreFollowersNext(List<Follower> followersList) {

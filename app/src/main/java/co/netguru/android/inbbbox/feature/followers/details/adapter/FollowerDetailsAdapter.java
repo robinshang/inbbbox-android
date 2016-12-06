@@ -1,9 +1,10 @@
 package co.netguru.android.inbbbox.feature.followers.details.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,15 +21,17 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private static final int HEADER_POSITION = 0;
 
-    private final List<Shot> shotList;
     private final ShotClickListener shotClickListener;
+
+    @NonNull
+    private List<Shot> shotList;
     private Follower follower;
     private boolean isGridMode;
 
     @Inject
     public FollowerDetailsAdapter(ShotClickListener shotClickListener) {
         this.shotClickListener = shotClickListener;
-        shotList = new ArrayList<>();
+        shotList = Collections.emptyList();
     }
 
     @Override
@@ -80,10 +83,18 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         notifyDataSetChanged();
     }
 
+    public List<Shot> getData() {
+        return shotList;
+    }
+
     public void setFollowerAdapterData(Follower follower) {
         this.follower = follower;
-        this.shotList.clear();
-        this.shotList.addAll(follower.shotList());
+        this.shotList = follower.shotList();
+        notifyDataSetChanged();
+    }
+
+    public void setUserShots(List<Shot> shotList) {
+        this.shotList = shotList;
         notifyDataSetChanged();
     }
 

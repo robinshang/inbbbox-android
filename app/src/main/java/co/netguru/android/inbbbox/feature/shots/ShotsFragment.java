@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.feature.shots;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -13,6 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,8 +27,11 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
-import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
+
+import co.netguru.android.inbbbox.feature.common.BaseMvpViewStateFragment;
+
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
+
 import co.netguru.android.inbbbox.feature.shots.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotSwipeListener;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
@@ -34,9 +41,8 @@ import co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView;
 import co.netguru.android.inbbbox.view.FogFloatingActionMenu;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
-public class ShotsFragment
-        extends BaseMvpFragment<ShotsContract.View, ShotsContract.Presenter>
-        implements RefreshableFragment, ShotsContract.View, ShotSwipeListener,
+public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
+        ShotsContract.View, ShotsContract.Presenter> implements RefreshableFragment, ShotsContract.View, ShotSwipeListener,
         AddToBucketDialogFragment.BucketSelectListener {
 
     private static final int SHOTS_TO_LOAD_MORE = 5;
@@ -47,7 +53,7 @@ public class ShotsFragment
     @BindView(R.id.shots_recycler_view)
     AutoItemScrollRecyclerView shotsRecyclerView;
 
-    @BindView(R.id.swipe_refresh_layout)
+    @BindView(R.id.contentView)
     SwipeRefreshLayout swipeRefreshLayout;
 
     @BindView(R.id.fab_menu)
@@ -125,6 +131,7 @@ public class ShotsFragment
         component.inject(this);
     }
 
+    @NonNull
     @Override
     public ShotsContract.Presenter createPresenter() {
         return component.getPresenter();
@@ -136,6 +143,26 @@ public class ShotsFragment
         initRecycler();
         initRefreshLayout();
         initFabMenu();
+    }
+
+    @NonNull
+    @Override
+    public LceViewState<List<Shot>, ShotsContract.View> createViewState() {
+        return new RetainingLceViewState<>();
+    }
+
+    @Override
+    public List<Shot> getData() {
+        return adapter.getData();
+    }
+
+    @Override
+    public void setData(List<Shot> data) {
+        adapter.setItems(data);
+    }
+
+    @Override
+    public void loadData(boolean pullToRefresh) {
         getPresenter().getShotsFromServer();
     }
 
@@ -163,11 +190,6 @@ public class ShotsFragment
                 getPresenter().getMoreShotsFromServer();
             }
         });
-    }
-
-    @Override
-    public void showItems(List<Shot> items) {
-        adapter.setItems(items);
     }
 
     @Override
@@ -239,14 +261,6 @@ public class ShotsFragment
         getPresenter().showShotDetails(shot);
     }
 
-    public interface ShotActionListener {
-        void shotLikeStatusChanged();
-
-        void showShotDetails(Shot shot, boolean inCommentMode);
-
-
-    }
-
     @Override
     public void showLoadingIndicator() {
         swipeRefreshLayout.setRefreshing(true);
@@ -255,5 +269,11 @@ public class ShotsFragment
     @Override
     public void hideLoadingIndicator() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    public interface ShotActionListener {
+        void shotLikeStatusChanged();
+
+        void showShotDetails(Shot shot, boolean inCommentMode);
     }
 }

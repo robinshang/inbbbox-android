@@ -48,7 +48,6 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         loadNextShotsSubscription = Subscriptions.unsubscribed();
     }
 
-
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
@@ -77,6 +76,15 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
                     .doAfterTerminate(getView()::hideProgressbar)
                     .subscribe(this::handleNewShots,
                             throwable -> handleError(throwable, "Error while refreshing shots"));
+        }
+    }
+
+    @Override
+    public void checkDataEmpty(List<ShotEntity> data) {
+        if (data.isEmpty()) {
+            getView().showEmptyView();
+        } else {
+            getView().hideEmptyView();
         }
     }
 
@@ -117,11 +125,8 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
 
     private void handleNewShots(List<ShotEntity> shotEntities) {
         canLoadMore = shotEntities.size() == shotsPerPage;
-        if (shotEntities.isEmpty()) {
-            getView().showEmptyView();
-        } else {
-            getView().showShots(shotEntities);
-        }
+        getView().setData(shotEntities);
+        getView().showContent();
     }
 
 }
