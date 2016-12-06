@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,12 +17,12 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
     private final ShotSwipeListener shotSwipeListener;
-    private final List<Shot> items;
+    private List<Shot> items;
 
     @Inject
     public ShotsAdapter(@NonNull ShotSwipeListener shotSwipeListener) {
         this.shotSwipeListener = shotSwipeListener;
-        items = new ArrayList<>();
+        items = Collections.emptyList();
     }
 
     @Override
@@ -42,9 +42,12 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
         return items.size();
     }
 
+    public List<Shot> getData() {
+        return items;
+    }
+
     public void setItems(List<Shot> items) {
-        this.items.clear();
-        this.items.addAll(items);
+        this.items = items;
         notifyDataSetChanged();
     }
 

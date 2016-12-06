@@ -14,7 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
@@ -37,8 +38,8 @@ import co.netguru.android.inbbbox.view.FogFloatingActionMenu;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class ShotsFragment
-        extends BaseMvpViewStateFragment<ShotsContract.View, ShotsContract.Presenter>
-        implements ShotsContract.View, ShotSwipeListener,
+        extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
+        ShotsContract.View, ShotsContract.Presenter> implements ShotsContract.View, ShotSwipeListener,
         AddToBucketDialogFragment.BucketSelectListener {
 
     private static final int SHOTS_TO_LOAD_MORE = 5;
@@ -49,7 +50,7 @@ public class ShotsFragment
     @BindView(R.id.shots_recycler_view)
     AutoItemScrollRecyclerView shotsRecyclerView;
 
-    @BindView(R.id.swipe_refresh_layout)
+    @BindView(R.id.contentView)
     SwipeRefreshLayout swipeRefreshLayout;
 
     @BindView(R.id.fab_menu)
@@ -143,12 +144,22 @@ public class ShotsFragment
 
     @NonNull
     @Override
-    public ViewState createViewState() {
-        return new ShotsViewState();
+    public LceViewState<List<Shot>, ShotsContract.View> createViewState() {
+        return new RetainingLceViewState<>();
     }
 
     @Override
-    public void onNewViewStateInstance() {
+    public List<Shot> getData() {
+        return adapter.getData();
+    }
+
+    @Override
+    public void setData(List<Shot> data) {
+        adapter.setItems(data);
+    }
+
+    @Override
+    public void loadData(boolean pullToRefresh) {
         getPresenter().getShotsFromServer();
     }
 
@@ -178,15 +189,8 @@ public class ShotsFragment
     }
 
     @Override
-    public void showItems(List<Shot> items) {
-        adapter.setItems(items);
-        ((ShotsViewState) viewState).setDataList(items);
-    }
-
-    @Override
     public void showMoreItems(List<Shot> items) {
         adapter.addMoreItems(items);
-        ((ShotsViewState) viewState).addMoreData(items);
     }
 
     @Override
@@ -253,14 +257,6 @@ public class ShotsFragment
         getPresenter().showShotDetails(shot);
     }
 
-    public interface ShotActionListener {
-        void shotLikeStatusChanged();
-
-        void showShotDetails(Shot shot, boolean inCommentMode);
-
-
-    }
-
     @Override
     public void showLoadingIndicator() {
         swipeRefreshLayout.setRefreshing(true);
@@ -269,5 +265,11 @@ public class ShotsFragment
     @Override
     public void hideLoadingIndicator() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    public interface ShotActionListener {
+        void shotLikeStatusChanged();
+
+        void showShotDetails(Shot shot, boolean inCommentMode);
     }
 }

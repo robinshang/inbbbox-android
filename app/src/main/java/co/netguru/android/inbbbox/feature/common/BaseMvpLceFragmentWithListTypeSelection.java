@@ -3,7 +3,6 @@ package co.netguru.android.inbbbox.feature.common;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,14 +10,12 @@ import android.view.View;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
-import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
 
 import butterknife.BindDrawable;
-import butterknife.ButterKnife;
 import co.netguru.android.inbbbox.R;
 
 public abstract class BaseMvpLceFragmentWithListTypeSelection<CV extends View,M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
-        extends MvpLceViewStateFragment<CV, M, V, P> {
+        extends BaseMvpViewStateFragment<CV, M, V, P> {
 
     @BindDrawable(R.drawable.ic_listview)
     Drawable icListView;
@@ -55,12 +52,6 @@ public abstract class BaseMvpLceFragmentWithListTypeSelection<CV extends View,M,
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_grid_view:
@@ -75,11 +66,6 @@ public abstract class BaseMvpLceFragmentWithListTypeSelection<CV extends View,M,
         changeMenuItemIcons();
         changeGridMode(isGridMode);
         return true;
-    }
-
-    @Override
-    protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        return getString(R.string.empty_string);
     }
 
     protected abstract void changeGridMode(boolean isGridMode);

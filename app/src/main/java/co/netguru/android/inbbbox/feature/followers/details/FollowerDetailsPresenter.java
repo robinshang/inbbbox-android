@@ -4,8 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
