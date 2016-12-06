@@ -13,12 +13,12 @@ import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;
-import rx.Observable;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
+import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
 import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletableIoSchedulers;
 
 @FragmentScope
@@ -111,22 +111,17 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         final Subscription subscription = userShotsController.getUserShotsList(user.id(),
                 pageNumber, SHOT_PAGE_COUNT)
                 .compose(androidIO())
-                .subscribe(list -> setUserOnShot(user, list),
-                        throwable -> {
-                            handleError(throwable, "Error while getting user shots list");
-                        });
+                .compose(fromListObservable())
+                .map(shot -> Shot.update(shot).author(user).build())
+                .toList()
+                .map(list -> Follower.createFromUser(user, list))
+                .subscribe(this::showFollower,
+                        throwable ->
+                            handleError(throwable, "Error while getting user shots list"));
         subscriptions.add(subscription);
     }
 
-    private void setUserOnShot(User user, List<Shot> list) {
-        Observable.from(list)
-                .map(shot -> Shot.update(shot).author(user).build())
-                .toList()
-                .subscribe(shotsList -> createFollower(user, shotsList));
-    }
-
-    private void createFollower(User user, List<Shot> list) {
-        this.follower = Follower.createFromUser(user, list);
+    private void showFollower(Follower follower) {
         getView().showFollowerData(follower);
     }
 
