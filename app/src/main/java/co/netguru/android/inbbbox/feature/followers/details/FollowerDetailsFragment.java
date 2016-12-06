@@ -33,6 +33,7 @@ import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
+import timber.log.Timber;
 
 import static butterknife.ButterKnife.findById;
 
@@ -87,6 +88,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithWithListTypeSele
         try {
             onUnFollowCompletedListener = (OnFollowedShotActionListener) context;
         } catch (ClassCastException e) {
+            Timber.e(e, "must implement OnFollowedShotActionListener");
             throw new ClassCastException(context.toString()
                     + " must implement OnFollowedShotActionListener");
         }
