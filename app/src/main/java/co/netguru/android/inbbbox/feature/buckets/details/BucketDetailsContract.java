@@ -1,6 +1,8 @@
 package co.netguru.android.inbbbox.feature.buckets.details;
 
 
+import android.support.annotation.NonNull;
+
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -25,6 +27,12 @@ public interface BucketDetailsContract {
         void showEmptyView();
 
         void hideProgressbar();
+
+        void showRemoveBucketDialog(@NonNull String bucketName);
+
+        void showError(String message);
+
+        void showRefreshedBucketsView();
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -34,5 +42,9 @@ public interface BucketDetailsContract {
         void loadMoreShots();
 
         void refreshShots();
+
+        void onDeleteBucketClick();
+
+        void deleteBucket();
     }
 }

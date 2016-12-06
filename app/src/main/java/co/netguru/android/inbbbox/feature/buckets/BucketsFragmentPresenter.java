@@ -62,7 +62,7 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     }
 
     @Override
-    public void loadBucketsWithShots(boolean isUserRefresh) {
+    public void loadBucketsWithShots() {
         if (refreshSubscription.isUnsubscribed()) {
             loadNextBucketSubscription.unsubscribe();
             pageNumber = 1;

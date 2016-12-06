@@ -38,6 +38,11 @@ public class MockedBucketApi implements BucketApi {
         return Single.just(MOCKED_BUCKET);
     }
 
+    @Override
+    public Completable deleteBucket(@Field("id") long bucketId) {
+        return Completable.complete();
+    }
+
     private static List<ShotEntity> getMockShots() {
         ArrayList<ShotEntity> shots = new ArrayList<>();
         for (int i = 0; i < 10; i++) {

@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.feature.buckets;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,12 +32,18 @@ import co.netguru.android.inbbbox.feature.buckets.adapter.BucketsAdapter;
 import co.netguru.android.inbbbox.feature.buckets.createbucket.CreateBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.buckets.details.BucketDetailsActivity;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
+import onactivityresult.ActivityResult;
+import onactivityresult.OnActivityResult;
 
-public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<BucketsFragmentContract.View, BucketsFragmentContract.Presenter>
-        implements BucketsFragmentContract.View, BaseBucketViewHolder.BucketClickListener {
+public class BucketsFragment
+        extends BaseMvpFragmentWithWithListTypeSelection<BucketsFragmentContract.View, BucketsFragmentContract.Presenter>
+        implements RefreshableFragment, BucketsFragmentContract.View, BaseBucketViewHolder.BucketClickListener {
+
+    private static final int BUCKET_DETAILS_VIEW_REQUEST_CODE = 1;
 
     @BindDrawable(R.drawable.ic_buckets_empty_state)
     Drawable emptyTextDrawable;
@@ -82,7 +90,18 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
         initEmptyView();
         initRecyclerView();
         initRefreshLayout();
-        getPresenter().loadBucketsWithShots(false);
+        getPresenter().loadBucketsWithShots();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        ActivityResult.onResult(requestCode, resultCode, data).into(this);
+    }
+
+    @OnActivityResult(requestCode = BUCKET_DETAILS_VIEW_REQUEST_CODE,
+            resultCodes = Activity.RESULT_OK)
+    public void onActivityResultBucketDeleted() {
+        refreshFragmentData();
     }
 
     @Override
@@ -143,7 +162,8 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
 
     @Override
     public void showDetailedBucketView(BucketWithShots bucketWithShots, int bucketShotsPerPageCount) {
-        BucketDetailsActivity.startActivity(getContext(), bucketWithShots, bucketShotsPerPageCount);
+        BucketDetailsActivity.startActivityForDeleteResult(this, getContext(), BUCKET_DETAILS_VIEW_REQUEST_CODE,
+                bucketWithShots, bucketShotsPerPageCount);
     }
 
     @Override
@@ -155,6 +175,8 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
 
     @Override
     public void addNewBucketWithShotsOnTop(BucketWithShots bucketWithShots) {
+        bucketsRecyclerView.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
         adapter.addNewBucketWithShots(bucketWithShots);
     }
 
@@ -170,7 +192,13 @@ public class BucketsFragment extends BaseMvpFragmentWithWithListTypeSelection<Bu
 
     private void initRefreshLayout() {
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.accent));
-        swipeRefreshLayout.setOnRefreshListener(() -> getPresenter().loadBucketsWithShots(true));
+        swipeRefreshLayout.setOnRefreshListener(getPresenter()::loadBucketsWithShots);
+    }
+
+    @Override
+    public void refreshFragmentData() {
+        swipeRefreshLayout.setRefreshing(true);
+        getPresenter().loadBucketsWithShots();
     }
 
     private void initRecyclerView() {

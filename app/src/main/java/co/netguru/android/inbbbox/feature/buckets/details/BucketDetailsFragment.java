@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.feature.buckets.details;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
@@ -37,7 +39,7 @@ import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class BucketDetailsFragment
         extends BaseMvpFragmentWithWithListTypeSelection<BucketDetailsContract.View, BucketDetailsContract.Presenter>
-        implements BucketDetailsContract.View {
+        implements BucketDetailsContract.View, DeleteBucketDialogFragment.DeleteBucketDialogListener {
 
     public static final String TAG = BucketDetailsFragment.class.getSimpleName();
     private static final int LAST_X_SHOTS_VISIBLE_TO_LOAD_MORE = 10;
@@ -68,7 +70,7 @@ public class BucketDetailsFragment
     private Snackbar loadingMoreSnackbar;
     private BucketShotsAdapter bucketShotsAdapter;
 
-    private BucketShotViewHolder.OnShotInBucketClickListener shotClickListener;
+    private BucketShotViewHolder.OnShotInBucketClickListener shotInBucketClickListener;
 
     public static BucketDetailsFragment newInstance(BucketWithShots bucketWithShots, int perPage) {
 
@@ -85,10 +87,11 @@ public class BucketDetailsFragment
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            shotClickListener = (BucketShotViewHolder.OnShotInBucketClickListener) context;
+            shotInBucketClickListener =
+                    (BucketShotViewHolder.OnShotInBucketClickListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnShotInBucketClickListener");
+                    + " must implement BucketDetailsFragmentActionListener");
         }
     }
 
@@ -113,6 +116,17 @@ public class BucketDetailsFragment
     @Override
     public BucketDetailsContract.Presenter createPresenter() {
         return App.getAppComponent(getContext()).plusBucketDetailsComponent().getPresenter();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete_bucket:
+                getPresenter().onDeleteBucketClick();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -168,8 +182,25 @@ public class BucketDetailsFragment
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    public void showRemoveBucketDialog(@NonNull String bucketName) {
+        DeleteBucketDialogFragment.newInstance(this, bucketName)
+                .show(getFragmentManager(), DeleteBucketDialogFragment.TAG);
+    }
+
+    @Override
+    public void showError(String message) {
+        showTextOnSnackbar(message);
+    }
+
+    @Override
+    public void showRefreshedBucketsView() {
+        getActivity().setResult(Activity.RESULT_OK);
+        getActivity().finish();
+    }
+
     private void setupRecyclerView() {
-        bucketShotsAdapter = new BucketShotsAdapter(shotClickListener);
+        bucketShotsAdapter = new BucketShotsAdapter(shotInBucketClickListener);
         recyclerView.setAdapter(bucketShotsAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(
@@ -193,4 +224,10 @@ public class BucketDetailsFragment
         emptyViewText.setText(TextFormatterUtil
                 .addDrawableBetweenStrings(emptyStringBeforeIcon, emptyStringAfterIcon, emptyTextDrawable));
     }
+
+    @Override
+    public void onDeleteBucket() {
+        getPresenter().deleteBucket();
+    }
+
 }
