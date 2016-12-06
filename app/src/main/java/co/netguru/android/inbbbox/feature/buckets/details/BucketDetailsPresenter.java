@@ -81,6 +81,15 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     }
 
     @Override
+    public void checkDataEmpty(boolean isEmpty) {
+        if (isEmpty) {
+            getView().showEmptyView();
+        } else {
+            getView().hideEmptyView();
+        }
+    }
+
+    @Override
     public void loadMoreShots() {
         if (canLoadMore && refreshShotsSubscription.isUnsubscribed() && loadNextShotsSubscription.isUnsubscribed()) {
             pageNumber++;
@@ -100,10 +109,7 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
 
     private void handleNewShots(List<ShotEntity> shotEntities) {
         canLoadMore = shotEntities.size() == shotsPerPage;
-        if (shotEntities.isEmpty()) {
-            getView().showEmptyView();
-        } else {
-            getView().showShots(shotEntities);
-        }
+        getView().setData(shotEntities);
+        getView().showContent();
     }
 }

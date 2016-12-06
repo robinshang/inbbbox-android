@@ -29,17 +29,18 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.buckets.details.adapter.BucketShotViewHolder;
 import co.netguru.android.inbbbox.feature.buckets.details.adapter.BucketShotsAdapter;
 
-import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
-import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithListTypeSelection;
-
+import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class BucketDetailsFragment extends
-        BaseMvpFragmentWithListTypeSelection<BucketDetailsContract.View, BucketDetailsContract.Presenter>
+        BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<ShotEntity>,
+                BucketDetailsContract.View, BucketDetailsContract.Presenter>
         implements BucketDetailsContract.View {
 
     public static final String TAG = BucketDetailsFragment.class.getSimpleName();
@@ -49,8 +50,8 @@ public class BucketDetailsFragment extends
     private static final String SHOTS_PER_PAGE_ARG_KEY = "shots_per_page_arg_key";
     private static final int SPAN_COUNT = 2;
 
-    private final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
-    private final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+    private GridLayoutManager gridLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
 
     @BindDrawable(R.drawable.ic_buckets_empty_state)
     Drawable emptyTextDrawable;
@@ -59,7 +60,7 @@ public class BucketDetailsFragment extends
     @BindString(R.string.fragment_bucket_is_empty_text_after_icon)
     String emptyStringAfterIcon;
 
-    @BindView(R.id.shots_from_bucket_recycler_view)
+    @BindView(R.id.contentView)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -107,9 +108,6 @@ public class BucketDetailsFragment extends
         setupRecyclerView();
         initRefreshLayout();
         initEmptyView();
-        BucketWithShots bucketWithShots = getArguments().getParcelable(BUCKET_WITH_SHOTS_ARG_KEY);
-        int perPage = getArguments().getInt(SHOTS_PER_PAGE_ARG_KEY);
-        getPresenter().handleBucketData(bucketWithShots, perPage);
     }
 
     @NonNull
@@ -120,13 +118,25 @@ public class BucketDetailsFragment extends
 
     @NonNull
     @Override
-    public ViewState createViewState() {
-        return new BucketDetailsViewState();
+    public LceViewState<List<ShotEntity>, BucketDetailsContract.View> createViewState() {
+        return new RetainingLceViewState<>();
     }
 
     @Override
-    public void onNewViewStateInstance() {
-        // TODO: 30.11.2016 Add proper action
+    public List<ShotEntity> getData() {
+        return bucketShotsAdapter.getData();
+    }
+
+    @Override
+    public void setData(List<ShotEntity> data) {
+        bucketShotsAdapter.setNewShots(data);
+    }
+
+    @Override
+    public void loadData(boolean pullToRefresh) {
+        final BucketWithShots bucketWithShots = getArguments().getParcelable(BUCKET_WITH_SHOTS_ARG_KEY);
+        final int perPage = getArguments().getInt(SHOTS_PER_PAGE_ARG_KEY);
+        getPresenter().handleBucketData(bucketWithShots, perPage);
     }
 
     @Override
@@ -135,20 +145,12 @@ public class BucketDetailsFragment extends
         bucketShotsAdapter.setGridMode(isGridMode);
     }
 
-
     @Override
     public void setFragmentTitle(String title) {
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(title);
         }
-    }
-
-    @Override
-    public void showShots(List<ShotEntity> shotEntities) {
-        recyclerView.setVisibility(View.VISIBLE);
-        emptyView.setVisibility(View.GONE);
-        bucketShotsAdapter.setNewShots(shotEntities);
     }
 
     @Override
@@ -167,6 +169,12 @@ public class BucketDetailsFragment extends
     }
 
     @Override
+    public void showContent() {
+        super.showContent();
+        getPresenter().checkDataEmpty(getData().isEmpty());
+    }
+
+    @Override
     public void addShots(List<ShotEntity> shotEntities) {
         bucketShotsAdapter.addNewShots(shotEntities);
     }
@@ -178,11 +186,19 @@ public class BucketDetailsFragment extends
     }
 
     @Override
+    public void hideEmptyView() {
+        emptyView.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void hideProgressbar() {
         swipeRefreshLayout.setRefreshing(false);
     }
 
     private void setupRecyclerView() {
+        gridLayoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
+        linearLayoutManager = new LinearLayoutManager(getContext());
         bucketShotsAdapter = new BucketShotsAdapter(shotClickListener);
         recyclerView.setAdapter(bucketShotsAdapter);
         recyclerView.setHasFixedSize(true);
