@@ -31,7 +31,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     @NonNull
     private Subscription refreshSubscription;
     @NonNull
-    private Subscription loadNextBucketSubscription;
+    private Subscription loadMoreLikesSubscription;
 
     private boolean hasMore = true;
     private int pageNumber = 1;
@@ -40,7 +40,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     LikesPresenter(LikedShotsController likedShotsController) {
         this.likedShotsController = likedShotsController;
         refreshSubscription = Subscriptions.unsubscribed();
-        loadNextBucketSubscription = Subscriptions.unsubscribed();
+        loadMoreLikesSubscription = Subscriptions.unsubscribed();
     }
 
     @Override
@@ -48,14 +48,14 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
         super.detachView(retainInstance);
         if (!retainInstance) {
             refreshSubscription.unsubscribe();
-            loadNextBucketSubscription.unsubscribe();
+            loadMoreLikesSubscription.unsubscribe();
         }
     }
 
     @Override
     public void getLikesFromServer() {
         if (refreshSubscription.isUnsubscribed()) {
-            loadNextBucketSubscription.unsubscribe();
+            loadMoreLikesSubscription.unsubscribe();
             pageNumber = 1;
             refreshSubscription = likedShotsController.getLikedShots(pageNumber, PAGE_COUNT)
                     .toList()
@@ -68,9 +68,9 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
 
     @Override
     public void getMoreLikesFromServer() {
-        if (hasMore && refreshSubscription.isUnsubscribed() && loadNextBucketSubscription.isUnsubscribed()) {
+        if (hasMore && refreshSubscription.isUnsubscribed() && loadMoreLikesSubscription.isUnsubscribed()) {
             pageNumber++;
-            loadNextBucketSubscription = likedShotsController.getLikedShots(pageNumber, PAGE_COUNT)
+            loadMoreLikesSubscription = likedShotsController.getLikedShots(pageNumber, PAGE_COUNT)
                     .compose(RxTransformerUtils.executeRunnableIfObservableDidntEmitUntilGivenTime(
                             SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
                             getView()::showLoadingMoreLikesView))

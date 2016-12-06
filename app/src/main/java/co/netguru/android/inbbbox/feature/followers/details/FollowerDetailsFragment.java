@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -17,19 +18,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindColor;
 import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.FollowerDetailsFragmentComponent;
 import co.netguru.android.inbbbox.di.module.FollowerDetailsFragmentModule;
-import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.followers.details.adapter.FollowerDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -37,8 +39,8 @@ import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 import static butterknife.ButterKnife.findById;
 
-public class FollowerDetailsFragment extends BaseMvpFragmentWithListTypeSelection<FollowerDetailsContract.View,
-        FollowerDetailsContract.Presenter> implements FollowerDetailsContract.View {
+public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
+        FollowerDetailsContract.View, FollowerDetailsContract.Presenter> implements FollowerDetailsContract.View {
 
     private static final int GRID_VIEW_COLUMN_COUNT = 2;
     public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
@@ -50,6 +52,11 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithListTypeSelectio
     @BindString(R.string.fragment_follower_details_dialog_text)
     String dialogText;
 
+    @BindColor(R.color.accent)
+    int accentColor;
+
+    @BindView(R.id.contentView)
+    SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.fragment_follower_details_recycler_view)
     RecyclerView recyclerView;
 
@@ -93,6 +100,7 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithListTypeSelectio
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initRefreshLayout();
         initRecyclerView();
     }
 
@@ -121,21 +129,30 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithListTypeSelectio
 
     @NonNull
     @Override
-    public ViewState createViewState() {
+    public LceViewState<List<Shot>, FollowerDetailsContract.View> createViewState() {
         return new FollowerDetailsViewState();
     }
 
     @Override
-    public void onNewViewStateInstance() {
+    public List<Shot> getData() {
+        return adapter.getData();
+    }
+
+    @Override
+    public void setData(List<Shot> data) {
+        adapter.setUserShots(data);
+    }
+
+    @Override
+    public void loadData(boolean pullToRefresh) {
         final Follower follower = getArguments().getParcelable(FOLLOWER_KEY);
+        ((FollowerDetailsViewState) viewState).setFollower(follower);
         getPresenter().followerDataReceived(follower);
-        ((FollowerDetailsViewState) viewState).setDataList(follower.shotList());
     }
 
     @Override
     public void showFollowerData(Follower follower) {
         adapter.setFollowerAdapterData(follower);
-        ((FollowerDetailsViewState) viewState).setFollower(follower);
 
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
@@ -144,14 +161,8 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithListTypeSelectio
     }
 
     @Override
-    public void setUserShots(List<Shot> shotList) {
-        adapter.setUserShots(shotList);
-    }
-
-    @Override
     public void showMoreUserShots(List<Shot> shotList) {
         adapter.addMoreUserShots(shotList);
-        ((FollowerDetailsViewState) viewState).addMoreData(shotList);
     }
 
     @Override
@@ -162,6 +173,11 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithListTypeSelectio
     @Override
     public void showError(String message) {
         Snackbar.make(recyclerView, message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void hideProgress() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -180,6 +196,11 @@ public class FollowerDetailsFragment extends BaseMvpFragmentWithListTypeSelectio
                 .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.dismiss())
                 .create()
                 .show();
+    }
+
+    private void initRefreshLayout() {
+        swipeRefreshLayout.setColorSchemeColors(accentColor);
+        swipeRefreshLayout.setOnRefreshListener(getPresenter()::refreshUserShots);
     }
 
     private void initRecyclerView() {

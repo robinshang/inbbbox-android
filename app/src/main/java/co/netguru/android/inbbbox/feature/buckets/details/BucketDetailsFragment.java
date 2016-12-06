@@ -60,9 +60,9 @@ public class BucketDetailsFragment extends
     @BindString(R.string.fragment_bucket_is_empty_text_after_icon)
     String emptyStringAfterIcon;
 
-    @BindView(R.id.contentView)
+    @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    @BindView(R.id.swipe_refresh_layout)
+    @BindView(R.id.contentView)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.empty_view)
     ScrollView emptyView;
