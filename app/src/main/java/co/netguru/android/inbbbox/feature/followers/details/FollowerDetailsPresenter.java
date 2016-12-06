@@ -122,6 +122,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     }
 
     private void showFollower(Follower follower) {
+        this.follower = follower;
         getView().showFollowerData(follower);
     }
 
