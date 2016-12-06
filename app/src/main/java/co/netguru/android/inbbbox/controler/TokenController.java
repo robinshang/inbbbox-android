@@ -28,7 +28,7 @@ public class TokenController {
      */
     public Observable<Token> requestNewToken(String code) {
         return api.getToken(BuildConfig.DRIBBBLE_CLIENT_KEY,
-                BuildConfig.DRIBBBLE_CLIENT_SECRET, code)
+                BuildConfig.DRIBBBLE_CLIENT_TOKEN, code)
                 .flatMap(token ->
                         tokenPrefsRepository.saveToken(token).andThen(Observable.just(token)));
     }

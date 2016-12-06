@@ -12,11 +12,11 @@ apply from: '../buildsystem/jacocoTasks.gradle'
 ext {
 
     secrets = [
-            hockeyAppId             : keyProperty("HockeyAppAppIdDev"),
-            hockeyAppIdProd         : keyProperty("HockeyAppAppIdProd"),
-            dribbbleClientKey       : keyProperty("DribbbleClientKey"),
-            dribbbleClientSecret    : keyProperty("DribbbleClientSecret"),
-            dribbbleOauthRedirect   : keyProperty("DribbbleOauthRedirect"),
+            hockeyAppId          : keyProperty("HockeyAppAppIdDev"),
+            hockeyAppIdProd      : keyProperty("HockeyAppAppIdProd"),
+            dribbbleClientKey    : keyProperty("DribbbleClientKey"),
+            dribbbleClientToken  : keyProperty("DribbbleClientToken"),
+            dribbbleOauthRedirect: keyProperty("DribbbleOauthRedirect"),
     ]
 }
 
@@ -34,7 +34,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField 'String', 'DRIBBBLE_CLIENT_KEY', '"' + secrets.dribbbleClientKey + '"'
-        buildConfigField 'String', 'DRIBBBLE_CLIENT_SECRET', '"' + secrets.dribbbleClientSecret + '"'
+        buildConfigField 'String', 'DRIBBBLE_CLIENT_TOKEN', '"' + secrets.dribbbleClientToken + '"'
         buildConfigField 'String', 'DRIBBBLE_OAUTH_REDIRECT','"' + secrets.dribbbleOauthRedirect + '"'
     }
 
