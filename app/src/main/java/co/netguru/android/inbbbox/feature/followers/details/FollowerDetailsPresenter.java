@@ -2,7 +2,6 @@ package co.netguru.android.inbbbox.feature.followers.details;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -14,6 +13,7 @@ import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;
+import rx.Observable;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -119,12 +119,10 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     }
 
     private void setUserOnShot(User user, List<Shot> list) {
-        List<Shot> shotsList = new ArrayList<>();
-        for (Shot listShot: list) {
-            shotsList.add(Shot.update(listShot).author(user).build());
-        }
-
-        createFollower(user, shotsList);
+        Observable.from(list)
+                .map(shot -> Shot.update(shot).author(user).build())
+                .toList()
+                .subscribe(shotsList -> createFollower(user, shotsList));
     }
 
     private void createFollower(User user, List<Shot> list) {
