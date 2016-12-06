@@ -96,8 +96,8 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     }
 
     @Override
-    public void checkDataEmpty(boolean isEmpty) {
-        if (isEmpty) {
+    public void checkDataEmpty(List<Follower> data) {
+        if (data.isEmpty()) {
             getView().showEmptyLikesInfo();
         } else {
             getView().hideEmptyLikesInfo();

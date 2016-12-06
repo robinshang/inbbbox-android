@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.likes.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -20,6 +21,8 @@ public class LikesAdapter extends RecyclerView.Adapter<BaseViewHolder<Shot>> {
     private static final int TYPE_LIST = 1;
 
     private final ShotClickListener likeClickListener;
+
+    @NonNull
     private List<Shot> likeList;
     private boolean isGridMode;
 

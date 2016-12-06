@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
@@ -130,7 +131,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     @NonNull
     @Override
     public LceViewState<List<Shot>, FollowerDetailsContract.View> createViewState() {
-        return new FollowerDetailsViewState();
+        return new RetainingLceViewState<>();
     }
 
     @Override
@@ -140,14 +141,13 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
 
     @Override
     public void setData(List<Shot> data) {
+        getFollowerData();
         adapter.setUserShots(data);
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        final Follower follower = getArguments().getParcelable(FOLLOWER_KEY);
-        ((FollowerDetailsViewState) viewState).setFollower(follower);
-        getPresenter().followerDataReceived(follower);
+        getFollowerData();
     }
 
     @Override
@@ -196,6 +196,11 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
                 .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.dismiss())
                 .create()
                 .show();
+    }
+
+    private void getFollowerData() {
+        final Follower follower = getArguments().getParcelable(FOLLOWER_KEY);
+        getPresenter().followerDataReceived(follower);
     }
 
     private void initRefreshLayout() {

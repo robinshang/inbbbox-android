@@ -47,8 +47,6 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         loadNextShotsSubscription = Subscriptions.unsubscribed();
     }
 
-
-
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
@@ -81,8 +79,8 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     }
 
     @Override
-    public void checkDataEmpty(boolean isEmpty) {
-        if (isEmpty) {
+    public void checkDataEmpty(List<ShotEntity> data) {
+        if (data.isEmpty()) {
             getView().showEmptyView();
         } else {
             getView().hideEmptyView();

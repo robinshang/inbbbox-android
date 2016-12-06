@@ -43,6 +43,6 @@ public interface BucketsFragmentContract {
 
         void handleCreateBucket();
 
-        void checkEmptyData(boolean isEmpty);
+        void checkEmptyData(List<BucketWithShots> data);
     }
 }

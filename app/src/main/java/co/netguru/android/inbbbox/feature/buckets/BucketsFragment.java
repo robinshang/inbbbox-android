@@ -110,7 +110,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     @Override
     public void showContent() {
         super.showContent();
-        getPresenter().checkEmptyData(getData().isEmpty());
+        getPresenter().checkEmptyData(getData());
     }
 
     @Override

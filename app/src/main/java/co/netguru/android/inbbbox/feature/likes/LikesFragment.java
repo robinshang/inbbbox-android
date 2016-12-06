@@ -158,10 +158,10 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
 
     @Override
     public void showLoadingMoreLikesView() {
-            if (loadingMoreSnackbar == null && getView() != null) {
-                loadingMoreSnackbar = Snackbar.make(getView(), R.string.loading_more_likes, Snackbar.LENGTH_INDEFINITE);
-            }
-            loadingMoreSnackbar.show();
+        if (loadingMoreSnackbar == null && getView() != null) {
+            loadingMoreSnackbar = Snackbar.make(getView(), R.string.loading_more_likes, Snackbar.LENGTH_INDEFINITE);
+        }
+        loadingMoreSnackbar.show();
     }
 
     @Override

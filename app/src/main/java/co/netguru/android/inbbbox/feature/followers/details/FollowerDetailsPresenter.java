@@ -12,7 +12,6 @@ import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
@@ -27,12 +26,13 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     private final UserShotsController userShotsController;
     private final FollowersController followersController;
-    private final CompositeSubscription subscriptions;
 
     @NonNull
     private Subscription loadMoreShotsSubscription;
     @NonNull
     private Subscription refreshShotsSubscription;
+    @NonNull
+    private Subscription unfollowUserSubscription;
     private Follower follower;
     private boolean hasMore = true;
     private int pageNumber = 1;
@@ -43,16 +43,16 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         this.followersController = followersController;
         refreshShotsSubscription = Subscriptions.unsubscribed();
         loadMoreShotsSubscription = Subscriptions.unsubscribed();
-        subscriptions = new CompositeSubscription();
+        unfollowUserSubscription = Subscriptions.unsubscribed();
     }
 
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
-        subscriptions.clear();
         if (!retainInstance) {
             loadMoreShotsSubscription.unsubscribe();
             refreshShotsSubscription.unsubscribe();
+            unfollowUserSubscription.unsubscribe();
         }
     }
 
@@ -103,13 +103,12 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     @Override
     public void unFollowUser() {
-        final Subscription subscription = followersController.unFollowUser(follower.id())
+        unfollowUserSubscription = followersController.unFollowUser(follower.id())
                 .compose(applyCompletableIoSchedulers())
                 .subscribe(getView()::showFollowersList, throwable -> {
                     Timber.e(throwable, "Error while unFollow user");
                     getView().showError(throwable.getMessage());
                 });
-        subscriptions.add(subscription);
     }
 
     @Override

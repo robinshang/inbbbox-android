@@ -35,6 +35,6 @@ public interface BucketDetailsContract {
 
         void refreshShots();
 
-        void checkDataEmpty(boolean isEmpty);
+        void checkDataEmpty(List<ShotEntity> data);
     }
 }

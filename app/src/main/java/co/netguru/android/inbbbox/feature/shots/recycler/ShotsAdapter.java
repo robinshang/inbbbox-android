@@ -17,6 +17,8 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
     private final ShotSwipeListener shotSwipeListener;
+
+    @NonNull
     private List<Shot> items;
 
     @Inject

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -112,8 +113,8 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     }
 
     @Override
-    public void checkEmptyData(boolean isEmpty) {
-        if (isEmpty) {
+    public void checkEmptyData(List<BucketWithShots> data) {
+        if (data.isEmpty()) {
             getView().showEmptyBucketView();
         } else {
             getView().hideEmptyBucketView();

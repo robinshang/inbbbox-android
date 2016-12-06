@@ -15,8 +15,11 @@ public class BucketShotsAdapter extends RecyclerView.Adapter<BucketShotViewHolde
 
     private static final int TYPE_GRID_SHOT_VIEW_TYPE = 1;
     private static final int TYPE_LIST_SHOT_VIEW_TYPE = 2;
-    private List<ShotEntity> shotEntityList;
+
     private final BucketShotViewHolder.OnShotInBucketClickListener onShotInBucketClickListener;
+
+    @NonNull
+    private List<ShotEntity> shotEntityList;
     private boolean isGridMode;
 
     public BucketShotsAdapter(@NonNull BucketShotViewHolder.OnShotInBucketClickListener onShotInBucketClickListener) {

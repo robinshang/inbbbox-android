@@ -30,6 +30,6 @@ interface FollowersContract {
 
         void getMoreFollowedUsersFromServer();
 
-        void checkDataEmpty(boolean isEmpty);
+        void checkDataEmpty(List<Follower> data);
     }
 }

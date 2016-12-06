@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.followers.details.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -21,6 +22,8 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final int HEADER_POSITION = 0;
 
     private final ShotClickListener shotClickListener;
+
+    @NonNull
     private List<Shot> shotList;
     private Follower follower;
     private boolean isGridMode;

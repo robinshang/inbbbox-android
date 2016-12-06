@@ -134,7 +134,7 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     @Override
     public void showContent() {
         super.showContent();
-        getPresenter().checkDataEmpty(getData().isEmpty());
+        getPresenter().checkDataEmpty(getData());
     }
 
     @Override
