@@ -78,7 +78,7 @@ public class BucketDetailsPresenterTest {
         presenter.handleBucketData(bucketWithShots, perPage);
         //then
         verify(view, times(1)).setFragmentTitle(bucketWithShots.bucket().name());
-        verify(view, times(1)).showShots(shotEntities);
+        verify(view, times(1)).setData(shotEntities);
         verify(view, never()).showEmptyView();
     }
 
@@ -90,8 +90,8 @@ public class BucketDetailsPresenterTest {
         presenter.handleBucketData(bucketWIthNoShots, PER_PAGE);
         //then
         verify(view, times(1)).setFragmentTitle(BUCKET_WITH_SHOTS.bucket().name());
-        verify(view, never()).showShots(shotEntities);
-        verify(view, times(1)).showEmptyView();
+        verify(view, never()).setData(shotEntities);
+        verify(view, times(1)).showContent();
     }
 
     @Test
@@ -107,7 +107,7 @@ public class BucketDetailsPresenterTest {
         //then
         loadNextShotsSubscription.assertUnsubscribed();
         verify(view, times(1)).hideProgressbar();
-        verify(view, times(1)).showShots(any(List.class));
+        verify(view, times(1)).setData(any(List.class));
         verify(view, never()).addShots(any(List.class));
 
     }
