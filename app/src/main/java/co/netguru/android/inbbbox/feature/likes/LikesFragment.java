@@ -34,13 +34,14 @@ import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
+import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
-        LikesViewContract.View, LikesViewContract.Presenter> implements LikesViewContract.View {
+        LikesViewContract.View, LikesViewContract.Presenter> implements RefreshableFragment, LikesViewContract.View {
 
     private static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final int LIKES_TO_LOAD_MORE = 10;
@@ -194,6 +195,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         shotActionListener.showShotDetails(shot, false);
     }
 
+    @Override
     public void refreshFragmentData() {
         getPresenter().getLikesFromServer();
     }

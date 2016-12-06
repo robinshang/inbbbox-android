@@ -108,7 +108,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_follow:
+            case R.id.action_unfollow:
                 getPresenter().onUnFollowClick();
                 return true;
             default:

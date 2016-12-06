@@ -18,6 +18,7 @@ import co.netguru.android.inbbbox.controler.BucketsController;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.testcommons.RxSyncTestRule;
+import rx.Completable;
 import rx.Single;
 import rx.observers.TestSubscriber;
 import rx.subscriptions.Subscriptions;
@@ -25,6 +26,7 @@ import rx.subscriptions.Subscriptions;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -109,6 +111,24 @@ public class BucketDetailsPresenterTest {
         verify(view, times(1)).hideProgressbar();
         verify(view, times(1)).setData(any(List.class));
         verify(view, never()).addShots(any(List.class));
+    }
+
+    @Test
+    public void whenRemoveBucketButtonIsClicked_thenShowDialog() {
+        //when
+        presenter.onDeleteBucketClick();
+        //then
+        verify(view, times(1)).showRemoveBucketDialog(anyString());
+    }
+
+    @Test
+    public void whenDeleteBucket_thenShowBucketView() throws Exception {
+        //given
+        when(bucketsControllerMock.deleteBucket(anyLong())).thenReturn(Completable.complete());
+        //when
+        presenter.deleteBucket();
+        //then
+        verify(view, times(1)).showRefreshedBucketsView();
 
     }
 }

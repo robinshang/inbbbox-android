@@ -35,7 +35,7 @@ public interface BucketsFragmentContract {
 
     interface Presenter extends MvpPresenter<BucketsFragmentContract.View> {
 
-        void loadBucketsWithShots(boolean isUserRefresh);
+        void loadBucketsWithShots();
 
         void loadMoreBucketsWithShots();
 

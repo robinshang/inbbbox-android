@@ -43,6 +43,12 @@ public abstract class BaseMvpViewStateFragment<CV extends View, M, V extends Mvp
         }
     }
 
+    protected void showTextOnSnackbar(String string) {
+        if (getView() != null) {
+            Snackbar.make(getView(), string, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
         return getString(R.string.empty_string);

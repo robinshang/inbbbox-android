@@ -27,7 +27,11 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
+
 import co.netguru.android.inbbbox.feature.common.BaseMvpViewStateFragment;
+
+import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
+
 import co.netguru.android.inbbbox.feature.shots.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotSwipeListener;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
@@ -37,9 +41,8 @@ import co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView;
 import co.netguru.android.inbbbox.view.FogFloatingActionMenu;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
-public class ShotsFragment
-        extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
-        ShotsContract.View, ShotsContract.Presenter> implements ShotsContract.View, ShotSwipeListener,
+public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
+        ShotsContract.View, ShotsContract.Presenter> implements RefreshableFragment, ShotsContract.View, ShotSwipeListener,
         AddToBucketDialogFragment.BucketSelectListener {
 
     private static final int SHOTS_TO_LOAD_MORE = 5;
@@ -163,6 +166,7 @@ public class ShotsFragment
         getPresenter().getShotsFromServer();
     }
 
+    @Override
     public void refreshFragmentData() {
         getPresenter().getShotsFromServer();
     }

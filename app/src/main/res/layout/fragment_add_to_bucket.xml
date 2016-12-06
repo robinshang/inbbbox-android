@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/add_to_bucket_fragment_recycler_min_height"
     >
 
     <android.support.design.widget.AppBarLayout
@@ -124,7 +125,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/add_to_bucket_fragment_recycler_min_height"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ProgressBar
