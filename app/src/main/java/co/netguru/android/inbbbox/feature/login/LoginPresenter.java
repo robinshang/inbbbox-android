@@ -21,11 +21,14 @@ public final class LoginPresenter
         extends MvpNullObjectBasePresenter<LoginContract.View>
         implements LoginContract.Presenter {
 
+    private static final int GUEST_MODE_ACTIVATION_THRESHOLD = 5;
+
     private final OauthUrlController oauthUrlController;
     private final TokenController apiTokenController;
     private final ErrorMessageController errorHandler;
     private final UserController userController;
     private final CompositeSubscription compositeSubscription;
+    private int guestModeCounter = 1;
 
     @Inject
     LoginPresenter(OauthUrlController oauthUrlController,
@@ -79,6 +82,14 @@ public final class LoginPresenter
     @Override
     public void handleKnownOauthError(@NonNull String oauthErrorMessage) {
         getView().showApiError(oauthErrorMessage);
+    }
+
+    @Override
+    public void checkGuestMode() {
+        guestModeCounter++;
+        if (guestModeCounter == GUEST_MODE_ACTIVATION_THRESHOLD) {
+            getView().showGuestModeLoginButton();
+        }
     }
 
     private void requestTokenAndLoadUserData(String code) {

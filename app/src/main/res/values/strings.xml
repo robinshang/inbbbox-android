@@ -114,4 +114,6 @@
     </string>
     <string name="action_warning">Warning</string>
     <string name="comment_update_complete">Comment updated</string>
+    <string name="or_loging_with_guest">or</string>
+    <string name="guest_button_text">Use as guest</string>
 </resources>

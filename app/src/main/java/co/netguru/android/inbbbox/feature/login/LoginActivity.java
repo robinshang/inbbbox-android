@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -30,9 +31,20 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @BindView(R.id.btn_login)
     Button loginButton;
 
+    @BindView(R.id.guest_btn_divider)
+    View guestModeDivider;
+
+    @BindView(R.id.btn_guest)
+    Button guestButton;
+
     @OnClick(R.id.btn_login)
     void onLoginClick() {
         getPresenter().showLoginView();
+    }
+
+    @OnClick(R.id.login_logo_ball)
+    void onLogoClick() {
+        getPresenter().checkGuestMode();
     }
 
     public static void startActivity(Context context) {
@@ -100,6 +112,12 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     public void enableLoginButton() {
         loginButton.setEnabled(true);
+    }
+
+    @Override
+    public void showGuestModeLoginButton() {
+        guestModeDivider.setVisibility(View.VISIBLE);
+        guestButton.setVisibility(View.VISIBLE);
     }
 
     @Override
