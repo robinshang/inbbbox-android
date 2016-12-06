@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.feature.buckets.details;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -194,7 +195,7 @@ public class BucketDetailsFragment
 
     @Override
     public void showRefreshedBucketsView() {
-        getActivity().setResult(BucketDetailsActivity.BUCKET_DELETED_RESULT_KEY);
+        getActivity().setResult(Activity.RESULT_OK);
         getActivity().finish();
     }
 

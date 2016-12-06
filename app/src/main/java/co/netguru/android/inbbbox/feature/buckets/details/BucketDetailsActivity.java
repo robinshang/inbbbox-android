@@ -26,8 +26,6 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 public class BucketDetailsActivity extends BaseActivity
         implements BucketShotViewHolder.OnShotInBucketClickListener {
 
-    public static final int BUCKET_DELETED_RESULT_KEY = 1;
-
     private static final String BUCKET_WITH_SHOTS_KEY = "bucket_with_shots_key";
     private static final String SHOTS_PER_PAGE_KEY = "shots_per_page_key";
 
@@ -42,8 +40,8 @@ public class BucketDetailsActivity extends BaseActivity
 
     private BottomSheetBehavior<View> bottomSheetBehavior;
 
-    public static void startActivityForResult(Fragment fragment, Context context, int requestCode,
-                                              BucketWithShots bucketWithShots, int perPage) {
+    public static void startActivityForDeleteResult(Fragment fragment, Context context, int requestCode,
+                                                    BucketWithShots bucketWithShots, int perPage) {
         final Intent intent = new Intent(context, BucketDetailsActivity.class);
         intent.putExtra(BUCKET_WITH_SHOTS_KEY, bucketWithShots);
         intent.putExtra(SHOTS_PER_PAGE_KEY, perPage);

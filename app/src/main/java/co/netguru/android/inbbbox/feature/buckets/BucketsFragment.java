@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.buckets;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -98,7 +99,7 @@ public class BucketsFragment
     }
 
     @OnActivityResult(requestCode = BUCKET_DETAILS_VIEW_REQUEST_CODE,
-            resultCodes = BucketDetailsActivity.BUCKET_DELETED_RESULT_KEY)
+            resultCodes = Activity.RESULT_OK)
     public void onActivityResultBucketDeleted() {
         refreshFragmentData();
     }
@@ -161,7 +162,7 @@ public class BucketsFragment
 
     @Override
     public void showDetailedBucketView(BucketWithShots bucketWithShots, int bucketShotsPerPageCount) {
-        BucketDetailsActivity.startActivityForResult(this, getContext(), BUCKET_DETAILS_VIEW_REQUEST_CODE,
+        BucketDetailsActivity.startActivityForDeleteResult(this, getContext(), BUCKET_DETAILS_VIEW_REQUEST_CODE,
                 bucketWithShots, bucketShotsPerPageCount);
     }
 
