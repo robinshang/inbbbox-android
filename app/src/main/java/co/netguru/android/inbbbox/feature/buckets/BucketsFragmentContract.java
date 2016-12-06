@@ -1,16 +1,15 @@
 package co.netguru.android.inbbbox.feature.buckets;
 
 
-import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.MvpView;
-
 import java.util.List;
 
+import co.netguru.android.inbbbox.feature.common.BaseMvpRestPresenter;
+import co.netguru.android.inbbbox.feature.common.BaseMvpRestView;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 
 public interface BucketsFragmentContract {
 
-    interface View extends MvpView {
+    interface View extends BaseMvpRestView {
 
         void showBucketsWithShots(List<BucketWithShots> bucketsWithShots);
 
@@ -33,7 +32,7 @@ public interface BucketsFragmentContract {
         void scrollToTop();
     }
 
-    interface Presenter extends MvpPresenter<BucketsFragmentContract.View> {
+    interface Presenter extends BaseMvpRestPresenter<BucketsFragmentContract.View> {
 
         void loadBucketsWithShots(boolean isUserRefresh);
 
