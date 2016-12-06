@@ -41,13 +41,13 @@ public class FollowerDetailsActivity extends BaseActivity
 
     private BottomSheetBehavior<View> bottomSheetBehavior;
 
-    public static void startActivityWithFollower(Context context, Follower follower) {
+    public static void startActivity(Context context, Follower follower) {
         final Intent intent = new Intent(context, FollowerDetailsActivity.class);
         intent.putExtra(FOLLOWER_KEY, follower);
         context.startActivity(intent);
     }
 
-    public static void startActivityWithUser(Context context, User user) {
+    public static void startActivity(Context context, User user) {
         final Intent intent = new Intent(context, FollowerDetailsActivity.class);
         intent.putExtra(USER_KEY, user);
         context.startActivity(intent);
@@ -149,7 +149,6 @@ public class FollowerDetailsActivity extends BaseActivity
         replaceFragment(R.id.follower_details_fragment_container,
                 FollowerDetailsFragment.newInstanceWithFollower(getIntent().getParcelableExtra(FOLLOWER_KEY)),
                 FollowerDetailsFragment.TAG).commit();
-
     }
 
     private void instantiateFragmentWithUser() {

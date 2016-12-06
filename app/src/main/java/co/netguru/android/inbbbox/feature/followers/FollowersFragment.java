@@ -157,6 +157,6 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
 
     @Override
     public void onClick(Follower follower) {
-        FollowerDetailsActivity.startActivityWithFollower(getContext(), follower);
+        FollowerDetailsActivity.startActivity(getContext(), follower);
     }
 }
