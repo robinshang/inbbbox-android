@@ -23,9 +23,8 @@
     <string name="action_unfollow">Unfollow</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_create">Create</string>
-    <string name="action_warning">Warning</string>
     <string name="action_delete">Delete</string>
-    <string name="action_warning">Warning</string>
+    <string name="action_warning">Warning</string>h
 
     <string name="drawer_group_notification">Notifications</string>
     <string name="drawer_enable_reminder">Enable daily reminder</string>
