@@ -60,17 +60,7 @@ public class FollowerDetailsActivity extends BaseActivity
         initializeToolbar();
         initializeBottomSheet();
         if (savedInstanceState == null) {
-
-            if (getIntent().getParcelableExtra(FOLLOWER_KEY) != null) {
-                replaceFragment(R.id.follower_details_fragment_container,
-                        FollowerDetailsFragment.newInstanceWithFollower(getIntent().getParcelableExtra(FOLLOWER_KEY)),
-                        FollowerDetailsFragment.TAG).commit();
-
-            } else if (getIntent().getParcelableExtra(USER_KEY) != null) {
-                replaceFragment(R.id.follower_details_fragment_container,
-                        FollowerDetailsFragment.newInstanceWithUser(getIntent().getParcelableExtra(USER_KEY)),
-                        FollowerDetailsFragment.TAG).commit();
-            }
+            instantiateFragment();
         }
     }
 
@@ -144,5 +134,27 @@ public class FollowerDetailsActivity extends BaseActivity
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    private void instantiateFragment() {
+        if (getIntent().getParcelableExtra(FOLLOWER_KEY) != null) {
+            instantiateFragmentWithFollower();
+
+        } else if (getIntent().getParcelableExtra(USER_KEY) != null) {
+            instantiateFragmentWithUser();
+        }
+    }
+
+    private void instantiateFragmentWithFollower() {
+        replaceFragment(R.id.follower_details_fragment_container,
+                FollowerDetailsFragment.newInstanceWithFollower(getIntent().getParcelableExtra(FOLLOWER_KEY)),
+                FollowerDetailsFragment.TAG).commit();
+
+    }
+
+    private void instantiateFragmentWithUser() {
+        replaceFragment(R.id.follower_details_fragment_container,
+                FollowerDetailsFragment.newInstanceWithUser(getIntent().getParcelableExtra(USER_KEY)),
+                FollowerDetailsFragment.TAG).commit();
     }
 }
