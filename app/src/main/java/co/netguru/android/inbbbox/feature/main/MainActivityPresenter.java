@@ -157,6 +157,18 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         subscriptions.add(subscription);
     }
 
+    @Override
+    public void onTimePicked(int hour, int minute) {
+        final Subscription subscription = settingsController.changeNotificationTime(hour, minute)
+                .andThen(notificationController.scheduleNotification())
+                .compose(RxTransformerUtils.applySingleIoSchedulers())
+                .subscribe(notificationSettings ->
+                                getView().showNotificationTime(DateTimeFormatUtil.getFormattedTime(hour, minute)),
+                        this::onScheduleNotificationError);
+
+        subscriptions.add(subscription);
+    }
+
     private void changeStreamSourceStatusIfCorrect() {
         if (isFollowing || isNew || isPopular || isDebut) {
             changeStreamSourceStatus();
@@ -191,19 +203,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     }
 
     private void showTimePickDialog(NotificationSettings notificationSettings) {
-        getView().showTimePickDialog(notificationSettings.getHour(), notificationSettings.getMinute(),
-                (view, hour, minute) -> onTimePicked(hour, minute));
-    }
-
-    private void onTimePicked(int hour, int minute) {
-        final Subscription subscription = settingsController.changeNotificationTime(hour, minute)
-                .andThen(notificationController.scheduleNotification())
-                .compose(RxTransformerUtils.applySingleIoSchedulers())
-                .subscribe(notificationSettings ->
-                                getView().showNotificationTime(DateTimeFormatUtil.getFormattedTime(hour, minute)),
-                        this::onScheduleNotificationError);
-
-        subscriptions.add(subscription);
+        getView().showTimePickDialog(notificationSettings.getHour(), notificationSettings.getMinute());
     }
 
     private void prepareUserSettings() {

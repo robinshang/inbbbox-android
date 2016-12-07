@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.main;
 
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -45,7 +44,7 @@ import static butterknife.ButterKnife.findById;
 
 public class MainActivity
         extends BaseMvpActivity<MainViewContract.View, MainViewContract.Presenter>
-        implements MainViewContract.View, ShotsFragment.ShotActionListener {
+        implements MainViewContract.View, ShotsFragment.ShotActionListener, TimePickerDialogFragment.OnTimePickedListener {
 
     public enum RequestType {
         REFRESH_FOLLOWER_LIST
@@ -320,8 +319,14 @@ public class MainActivity
     }
 
     @Override
-    public void showTimePickDialog(int startHour, int startMinute, TimePickerDialog.OnTimeSetListener onTimeSetListener) {
-        new TimePickerDialog(this, R.style.TimePickerDialog, onTimeSetListener, startHour, startMinute, false).show();
+    public void showTimePickDialog(int startHour, int startMinute) {
+        TimePickerDialogFragment.newInstance(startHour, startMinute)
+                .show(getSupportFragmentManager(), TimePickerDialogFragment.TAG);
+    }
+
+    @Override
+    public void timePicked(int hour, int minute) {
+        getPresenter().onTimePicked(hour, minute);
     }
 
     @Override
