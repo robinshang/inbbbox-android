@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.UserController;
 import co.netguru.android.testcommons.RxSyncTestRule;
@@ -32,7 +32,7 @@ public class SplashPresenterTest {
     public UserController userControllerMock;
 
     @Mock
-    public ErrorMessageController errorMessageControllerMock;
+    public ErrorController errorControllerMock;
 
     @Mock
     public SplashContract.View splashViewMock;
@@ -96,10 +96,10 @@ public class SplashPresenterTest {
         Throwable exampleThrowable = new Throwable(test);
         when(tokenControllerMock.isTokenValid()).thenReturn(Observable.just(true));
         when(userControllerMock.requestUser()).thenReturn(Observable.error(exampleThrowable));
-        when(errorMessageControllerMock.getErrorMessageLabel(exampleThrowable)).thenReturn(test);
+        when(errorControllerMock.getThrowableMessage(exampleThrowable)).thenReturn(test);
 
         splashPresenter.attachView(splashViewMock);
 
-        verify(splashViewMock, times(1)).showError(test);
+        verify(splashViewMock, times(1)).showMessageOnServerError(test);
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.model.ui.Comment;
@@ -58,7 +58,7 @@ public class ShotDetailsPresenterTest {
     ShotDetailsController shotDetailsControllerMock;
 
     @Mock
-    ErrorMessageController errorMessageControllerMock;
+    ErrorController errorControllerMock;
 
     @Mock
     UserShotsController userShotsControllerMock;
@@ -81,7 +81,7 @@ public class ShotDetailsPresenterTest {
         when(shotMock.author()).thenReturn(User.create(Statics.USER_ENTITY));
         when(shotMock.creationDate()).thenReturn(LocalDateTime.now());
         when(viewMock.getShotInitialData()).thenReturn(shotMock);
-        when(errorMessageControllerMock.getErrorMessageLabel(any(Throwable.class))).thenCallRealMethod();
+        when(errorControllerMock.getThrowableMessage(any(Throwable.class))).thenCallRealMethod();
         shotDetailsPresenter.retrieveInitialData();
     }
 
@@ -538,7 +538,7 @@ public class ShotDetailsPresenterTest {
 
         shotDetailsPresenter.onCommentDeleteConfirmed();
 
-        verify(viewMock, times(1)).showErrorMessage(anyString());
+        verify(viewMock, times(1)).showMessageOnServerError(anyString());
     }
 
     @Test
@@ -551,14 +551,14 @@ public class ShotDetailsPresenterTest {
 
         shotDetailsPresenter.sendComment();
 
-        verify(viewMock, times(1)).showErrorMessage(anyString());
+        verify(viewMock, times(1)).showMessageOnServerError(anyString());
     }
 
     @Test
     public void whenShotDetailsDownloadFail_thenShowPreLoadedDetailsAndShowError() {
         String expectedMessage = "test";
         Throwable throwable = new Throwable(expectedMessage);
-        when(errorMessageControllerMock.getErrorMessageLabel(throwable)).thenCallRealMethod();
+        when(errorControllerMock.getThrowableMessage(throwable)).thenCallRealMethod();
         when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
                 .thenReturn(Observable.error(throwable));
 
@@ -566,14 +566,14 @@ public class ShotDetailsPresenterTest {
 
         verify(viewMock, times(1)).showDetails(any(Shot.class));
         verify(viewMock, times(1)).initView();
-        verify(viewMock, times(1)).showErrorMessage(anyString());
+        verify(viewMock, times(1)).showMessageOnServerError(anyString());
     }
 
     @Test
     public void whenShotLikingFailed_thenShowError() {
         String expectedMessage = "test";
         Throwable throwable = new Throwable(expectedMessage);
-        when(errorMessageControllerMock.getErrorMessageLabel(throwable)).thenCallRealMethod();
+        when(errorControllerMock.getThrowableMessage(throwable)).thenCallRealMethod();
         when(shotDetailsControllerMock.performLikeAction(anyLong(), anyBoolean()))
                 .thenReturn(Completable.error(throwable));
 
@@ -581,7 +581,7 @@ public class ShotDetailsPresenterTest {
 
         verify(viewMock, never()).showDetails(any(Shot.class));
         verify(viewMock, never()).initView();
-        verify(viewMock, times(1)).showErrorMessage(anyString());
+        verify(viewMock, times(1)).showMessageOnServerError(anyString());
     }
 
     @After

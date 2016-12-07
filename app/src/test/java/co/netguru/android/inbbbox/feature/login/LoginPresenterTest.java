@@ -15,7 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.UUID;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.OauthUrlController;
 import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.UserController;
@@ -39,7 +39,7 @@ public class LoginPresenterTest {
     private OauthUrlController oauthUrlControllerMock;
 
     @Mock
-    private ErrorMessageController errorMessageController;
+    private ErrorController errorControllerMock;
 
     @Mock
     private TokenController tokenControllerMock;
@@ -113,8 +113,8 @@ public class LoginPresenterTest {
         presenter.handleOauthCodeReceived(CODE);
 
         verify(viewMock, never()).showNextScreen();
-        verify(viewMock).showApiError(anyString());
-        verify(errorMessageController, times(1)).getErrorMessageLabel(testThrowable);
+        verify(viewMock).showMessageOnServerError(anyString());
+        verify(errorControllerMock, times(1)).getThrowableMessage(testThrowable);
     }
 
 }
