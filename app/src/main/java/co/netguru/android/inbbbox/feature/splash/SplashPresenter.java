@@ -4,7 +4,7 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.UserController;
 import timber.log.Timber;
@@ -16,16 +16,15 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
 
     private final TokenController tokenController;
     private final UserController userController;
-    private ErrorMessageController errorParser;
+    private ErrorController errorController;
 
     @Inject
     SplashPresenter(TokenController tokenController,
                     UserController userController,
-                    ErrorMessageController errorParser) {
-
+                    ErrorController errorController) {
         this.tokenController = tokenController;
         this.userController = userController;
-        this.errorParser = errorParser;
+        this.errorController = errorController;
     }
 
     @Override
@@ -34,10 +33,18 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
         checkToken();
     }
 
+    @Override
+    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+        Timber.e(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
+        getView().showLoginScreen();
+    }
+
     private void checkToken() {
         tokenController.isTokenValid()
                 .compose(androidIO())
-                .subscribe(this::handleTokenVerificationResult, this::handleError);
+                .subscribe(this::handleTokenVerificationResult,
+                        throwable -> handleHttpErrorResponse(throwable, "Error while token validation"));
     }
 
     private void handleTokenVerificationResult(boolean isValid) {
@@ -54,12 +61,6 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
         userController.requestUser()
                 .compose(androidIO())
                 .subscribe(user -> getView().showMainScreen(),
-                        this::handleError);
-    }
-
-    private void handleError(Throwable throwable) {
-        Timber.e(throwable.getMessage());
-        getView().showError(errorParser.getErrorMessageLabel(throwable));
-        getView().showLoginScreen();
+                        throwable -> handleHttpErrorResponse(throwable, "Error while requesting user"));
     }
 }

@@ -47,7 +47,7 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
     }
 
     @Override
-    public void showError(String error) {
-        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(this, errorText, Toast.LENGTH_LONG).show();
     }
 }
