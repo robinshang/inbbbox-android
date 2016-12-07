@@ -101,7 +101,7 @@ public class ShotsPresenterTest {
 
         presenter.getShotsFromServer();
 
-        verify(viewMock, times(1)).showItems(expectedShots);
+        verify(viewMock, times(1)).setData(expectedShots);
     }
 
     @Test

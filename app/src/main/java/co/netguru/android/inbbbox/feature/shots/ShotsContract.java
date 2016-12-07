@@ -1,7 +1,7 @@
 package co.netguru.android.inbbbox.feature.shots;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
@@ -10,9 +10,7 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 
 interface ShotsContract {
 
-    interface View extends MvpView {
-
-        void showItems(List<Shot> items);
+    interface View extends MvpLceView<List<Shot>> {
 
         void showMoreItems(List<Shot> items);
 

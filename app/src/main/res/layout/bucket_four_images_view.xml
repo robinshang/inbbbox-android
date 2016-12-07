@@ -6,14 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray"
-    android:orientation="vertical"
-    android:weightSum="4">
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/top_image_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_height="0dp"
+        android:layout_weight="3">
 
         <ProgressBar
             android:layout_width="wrap_content"
@@ -32,7 +31,8 @@
     <android.support.percent.PercentRelativeLayout
         android:id="@+id/bottom_image_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <ImageView
             android:id="@+id/bottom_first_image_view"

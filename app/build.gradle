@@ -202,6 +202,8 @@ dependencies {
         exclude module: 'support-annotations'
     }
 
+    compile libs.mosbyViewState
+
     // Dagger
     compile libs.dagger
     apt proc.dagger
@@ -290,6 +292,10 @@ dependencies {
 
     //HockeyApp
     compile libs.hockeyApp
+
+    //OnActivityResult
+    compile libs.onActivityResult
+    apt proc.onActivityResult
 
     // Unit testing
     testCompile(test.junit) {

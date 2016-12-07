@@ -8,6 +8,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -31,5 +32,8 @@ public interface BucketApi {
     @POST("buckets/")
     Single<Bucket> createBucket(@Field("name") @NonNull String newBucketName,
                                 @Field("description") @Nullable String bucketDescription);
+
+    @DELETE("buckets/{id}")
+    Completable deleteBucket(@Path("id") long bucketId);
 
 }

@@ -34,6 +34,7 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     private boolean canLoadMore;
 
     private long currentBucketId;
+    private String currentBucketName;
 
     @NonNull
     protected Subscription refreshShotsSubscription;
@@ -47,8 +48,6 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         loadNextShotsSubscription = Subscriptions.unsubscribed();
     }
 
-
-
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
@@ -61,6 +60,7 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         shotsPerPage = perPage;
         Bucket bucket = bucketWithShots.bucket();
         currentBucketId = bucket.id();
+        currentBucketName = bucket.name();
         List<ShotEntity> shotEntities = bucketWithShots.shots();
         getView().setFragmentTitle(bucket.name());
         handleNewShots(shotEntities);
@@ -75,9 +75,29 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
                     .compose(RxTransformerUtils.applySingleIoSchedulers())
                     .doAfterTerminate(getView()::hideProgressbar)
                     .subscribe(this::handleNewShots,
-                            throwable -> Timber.d(throwable, "Error while loading new shots from bucket")
-                    );
+                            throwable -> handleError(throwable, "Error while refreshing shots"));
         }
+    }
+
+    @Override
+    public void checkDataEmpty(List<ShotEntity> data) {
+        if (data.isEmpty()) {
+            getView().showEmptyView();
+        } else {
+            getView().hideEmptyView();
+        }
+    }
+
+    @Override
+    public void onDeleteBucketClick() {
+        getView().showRemoveBucketDialog(currentBucketName);
+    }
+
+    @Override
+    public void deleteBucket() {
+        bucketsController.deleteBucket(currentBucketId)
+                .subscribe(getView()::showRefreshedBucketsView,
+                        throwable -> handleError(throwable, "Error while deleting bucket"));
     }
 
     @Override
@@ -94,16 +114,19 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
                             .subscribe(shotEntities -> {
                                 getView().addShots(shotEntities);
                                 canLoadMore = shotEntities.size() == shotsPerPage;
-                            }, throwable -> Timber.d(throwable, "Error while loading new shots from bucket"));
+                            }, throwable -> handleError(throwable, "Error while loading new shots from bucket"));
         }
+    }
+
+    private void handleError(Throwable throwable, String logMessage) {
+        getView().showError(throwable.getMessage());
+        Timber.d(throwable, logMessage);
     }
 
     private void handleNewShots(List<ShotEntity> shotEntities) {
         canLoadMore = shotEntities.size() == shotsPerPage;
-        if (shotEntities.isEmpty()) {
-            getView().showEmptyView();
-        } else {
-            getView().showShots(shotEntities);
-        }
+        getView().setData(shotEntities);
+        getView().showContent();
     }
+
 }
