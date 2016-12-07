@@ -15,7 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.UUID;
 
-import co.netguru.android.inbbbox.controler.OauthUrlController;
+import co.netguru.android.inbbbox.controler.TokenParametersController;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.observers.TestSubscriber;
 
@@ -32,7 +32,7 @@ public class OauthUrlControllerTest {
     Resources resourcesMock;
 
     @InjectMocks
-    OauthUrlController urlProvider;
+    TokenParametersController urlProvider;
 
     private String resourceString = "TEST";
 

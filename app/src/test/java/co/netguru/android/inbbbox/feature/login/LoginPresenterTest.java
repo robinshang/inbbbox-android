@@ -16,8 +16,8 @@ import java.util.UUID;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
-import co.netguru.android.inbbbox.controler.OauthUrlController;
 import co.netguru.android.inbbbox.controler.TokenController;
+import co.netguru.android.inbbbox.controler.TokenParametersController;
 import co.netguru.android.inbbbox.controler.UserController;
 import co.netguru.android.inbbbox.model.api.Token;
 import co.netguru.android.testcommons.RxSyncTestRule;
@@ -36,7 +36,7 @@ public class LoginPresenterTest {
     public TestRule rule = new RxSyncTestRule();
 
     @Mock
-    private OauthUrlController oauthUrlControllerMock;
+    private TokenParametersController oauthUrlControllerMock;
 
     @Mock
     private ErrorMessageController errorMessageController;

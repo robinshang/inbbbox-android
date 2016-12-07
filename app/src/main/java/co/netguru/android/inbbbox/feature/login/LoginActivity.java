@@ -49,6 +49,11 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         getPresenter().checkGuestMode();
     }
 
+    @OnClick(R.id.btn_guest)
+    void onGuestLoginClick() {
+        getPresenter().loginWithGuestClicked();
+    }
+
     public static void startActivity(Context context) {
         final Intent intent = new Intent(context, LoginActivity.class);
         context.startActivity(intent);

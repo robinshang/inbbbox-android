@@ -39,5 +39,7 @@ public interface LoginContract {
         void handleKnownOauthError(@NonNull String oauthErrorMessage);
 
         void checkGuestMode();
+
+        void loginWithGuestClicked();
     }
 }
