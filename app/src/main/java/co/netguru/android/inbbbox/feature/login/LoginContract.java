@@ -2,15 +2,13 @@ package co.netguru.android.inbbbox.feature.login;
 
 import android.support.annotation.NonNull;
 
-import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.MvpView;
+import co.netguru.android.inbbbox.feature.common.BaseMvpRestPresenter;
+import co.netguru.android.inbbbox.feature.common.BaseMvpRestView;
 
 public interface LoginContract {
-    interface View extends MvpView {
+    interface View extends BaseMvpRestView {
 
         void openAuthWebViewFragment(String urlString, String stateKey);
-
-        void showApiError(String oauthErrorMessage);
 
         void showNextScreen();
 
@@ -23,7 +21,7 @@ public interface LoginContract {
         void enableLoginButton();
     }
 
-    interface Presenter extends MvpPresenter<View> {
+    interface Presenter extends BaseMvpRestPresenter<View> {
         void showLoginView();
 
         void handleKeysNotMatching();
