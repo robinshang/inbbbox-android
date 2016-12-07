@@ -1,11 +1,11 @@
 package co.netguru.android.inbbbox.feature.buckets.createbucket;
 
 
-import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.MvpView;
+import co.netguru.android.inbbbox.feature.common.BaseMvpRestPresenter;
+import co.netguru.android.inbbbox.feature.common.BaseMvpRestView;
 
 public interface CreateBucketContract {
-    interface View extends MvpView {
+    interface View extends BaseMvpRestView {
 
         void close();
 
@@ -18,7 +18,7 @@ public interface CreateBucketContract {
         void hideProgressView();
     }
 
-    interface Presenter extends MvpPresenter<View> {
+    interface Presenter extends BaseMvpRestPresenter<View> {
 
         void handleCreateBucket(String name, String description);
 
