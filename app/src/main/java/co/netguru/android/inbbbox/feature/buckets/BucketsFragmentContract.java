@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.buckets;
 
+import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
@@ -9,13 +10,15 @@ import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 
 public interface BucketsFragmentContract {
 
-    interface View extends BaseMvpRestView {
+    interface View extends BaseMvpRestView, MvpLceView<List<BucketWithShots>> {
 
         void showBucketsWithShots(List<BucketWithShots> bucketsWithShots);
 
         void hideProgressBars();
 
         void addMoreBucketsWithShots(List<BucketWithShots> bucketWithShotsList);
+
+        void hideEmptyBucketView();
 
         void showEmptyBucketView();
 
@@ -34,12 +37,14 @@ public interface BucketsFragmentContract {
 
     interface Presenter extends BaseMvpRestPresenter<BucketsFragmentContract.View> {
 
-        void loadBucketsWithShots(boolean isUserRefresh);
+        void loadBucketsWithShots();
 
         void loadMoreBucketsWithShots();
 
         void handleBucketWithShotsClick(BucketWithShots bucketWithShots);
 
         void handleCreateBucket();
+
+        void checkEmptyData(List<BucketWithShots> data);
     }
 }

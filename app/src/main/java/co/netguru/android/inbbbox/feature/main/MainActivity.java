@@ -27,8 +27,6 @@ import android.widget.ToggleButton;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.util.List;
-
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
@@ -38,8 +36,6 @@ import co.netguru.android.inbbbox.di.component.MainActivityComponent;
 import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
-import co.netguru.android.inbbbox.feature.followers.FollowersFragment;
-import co.netguru.android.inbbbox.feature.likes.LikesFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
@@ -51,13 +47,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static butterknife.ButterKnife.findById;
 
 public class MainActivity
-        extends BaseMvpActivity<MainViewContract.View,
-        MainViewContract.Presenter>
-        implements MainViewContract.View,
-        ShotsFragment.ShotActionListener {
+        extends BaseMvpActivity<MainViewContract.View, MainViewContract.Presenter>
+        implements MainViewContract.View, ShotsFragment.ShotActionListener {
 
-    public static final int REQUEST_REFRESH_FOLLOWER_LIST = 101;
-    private static final int REQUEST_DEFAULT = 0;
+    public enum RequestType {
+        REFRESH_FOLLOWER_LIST
+    }
+
     private static final String REQUEST_EXTRA = "requestExtra";
     private static final String TOGGLE_BUTTON_STATE = "toggleButtonState";
 
@@ -102,10 +98,10 @@ public class MainActivity
         context.startActivity(intent);
     }
 
-    public static void startActivityWithRequest(Context context, int requestCode) {
+    public static void startActivityWithRequest(Context context, RequestType requestType) {
         final Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(REQUEST_EXTRA, requestCode);
+        intent.putExtra(REQUEST_EXTRA, requestType);
         context.startActivity(intent);
     }
 
@@ -166,14 +162,16 @@ public class MainActivity
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        switch (intent.getIntExtra(REQUEST_EXTRA, REQUEST_DEFAULT)) {
-            case REQUEST_REFRESH_FOLLOWER_LIST:
-                refreshFollowersFragment();
+        RequestType requestType = (RequestType) intent.getSerializableExtra(REQUEST_EXTRA);
+        switch (requestType) {
+            case REFRESH_FOLLOWER_LIST:
+                pagerAdapter.refreshFragment(TabItemType.FOLLOWERS);
                 break;
             default:
                 throw new IllegalStateException("Intent should contains REQUEST_EXTRA");
         }
     }
+
 
     private void initComponent() {
         component = App.getAppComponent(this)
@@ -318,15 +316,10 @@ public class MainActivity
             getPresenter().notificationStatusChanged(isChecked);
         });
         followingSwitch = findDrawerSwitch(R.id.drawer_item_following);
-        followingSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().followingStatusChanged(isChecked)));
         newSwitch = findDrawerSwitch(R.id.drawer_item_new);
-        newSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().newStatusChanged(isChecked)));
         popularSwitch = findDrawerSwitch(R.id.drawer_item_popular);
-        popularSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().popularStatusChanged(isChecked)));
         debutsSwitch = findDrawerSwitch(R.id.drawer_item_debuts);
-        debutsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().debutsStatusChanged(isChecked));
         shotDetailsSwitch = findDrawerSwitch(R.id.drawer_item_shot_details);
-        shotDetailsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().customizationStatusChanged(isChecked));
     }
 
     private Switch findDrawerSwitch(@IdRes int itemId) {
@@ -409,19 +402,17 @@ public class MainActivity
     }
 
     @Override
-    public void showMessage(@StringRes int message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void setSettingsListeners() {
+        followingSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().followingStatusChanged(isChecked)));
+        newSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().newStatusChanged(isChecked)));
+        popularSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().popularStatusChanged(isChecked)));
+        debutsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().debutsStatusChanged(isChecked));
+        shotDetailsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().customizationStatusChanged(isChecked));
     }
 
     @Override
-    public void shotLikeStatusChanged() {
-        final List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        for (final Fragment fragment : fragments) {
-            if (fragment instanceof LikesFragment) {
-                ((LikesFragment) fragment).refreshFragmentData();
-                break;
-            }
-        }
+    public void showMessage(@StringRes int message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -430,27 +421,16 @@ public class MainActivity
     }
 
     @Override
+    public void shotLikeStatusChanged() {
+        pagerAdapter.refreshFragment(TabItemType.LIKES);
+    }
+
+    @Override
     public void refreshShotsView() {
-        final List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        for (final Fragment fragment : fragments) {
-            if (fragment instanceof ShotsFragment) {
-                ((ShotsFragment) fragment).refreshFragmentData();
-                break;
-            }
-        }
+        pagerAdapter.refreshFragment(TabItemType.SHOTS);
     }
 
     private BottomSheetBehavior getBottomSheetBehavior() {
         return bottomSheetBehavior;
-    }
-
-    private void refreshFollowersFragment() {
-        final List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        for (final Fragment fragment : fragments) {
-            if (fragment instanceof FollowersFragment) {
-                ((FollowersFragment) fragment).refreshFragmentData();
-                break;
-            }
-        }
     }
 }

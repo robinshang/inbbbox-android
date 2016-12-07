@@ -8,6 +8,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -39,11 +40,13 @@ public class BucketDetailsActivity extends BaseActivity
 
     private BottomSheetBehavior<View> bottomSheetBehavior;
 
-    public static void startActivity(Context context, BucketWithShots bucketWithShots, int perPage) {
+    public static void startActivityForDeleteResult(Fragment fragment, Context context, int requestCode,
+                                                    BucketWithShots bucketWithShots, int perPage) {
         final Intent intent = new Intent(context, BucketDetailsActivity.class);
         intent.putExtra(BUCKET_WITH_SHOTS_KEY, bucketWithShots);
         intent.putExtra(SHOTS_PER_PAGE_KEY, perPage);
-        context.startActivity(intent);
+
+        fragment.startActivityForResult(intent, requestCode);
     }
 
     @Override
@@ -55,6 +58,12 @@ public class BucketDetailsActivity extends BaseActivity
         if (savedInstanceState == null) {
             initializeBucketDetailsFragment();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.bucket_details_menu, menu);
+        return true;
     }
 
     @Override
@@ -77,10 +86,6 @@ public class BucketDetailsActivity extends BaseActivity
         super.onBackPressed();
     }
 
-    private void initializeBottomSheet() {
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
-    }
-
     @Override
     public void onShotClick(ShotEntity shotEntity) {
         Fragment fragment = ShotDetailsFragment.newInstance(Shot.create(shotEntity));
@@ -89,6 +94,10 @@ public class BucketDetailsActivity extends BaseActivity
                 .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
                 .commit();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    private void initializeBottomSheet() {
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
     }
 
     private void initializeBucketDetailsFragment() {
