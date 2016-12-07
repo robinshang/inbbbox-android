@@ -1,15 +1,16 @@
 package co.netguru.android.inbbbox.feature.followers;
 
-import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.feature.common.BaseMvpRestPresenter;
+import co.netguru.android.inbbbox.feature.common.BaseMvpRestView;
 import co.netguru.android.inbbbox.model.ui.Follower;
 
 interface FollowersContract {
 
-    interface View extends MvpLceView<List<Follower>> {
+    interface View extends BaseMvpRestView, MvpLceView<List<Follower>> {
 
         void showMoreFollowedUsers(List<Follower> followerList);
 
@@ -24,7 +25,7 @@ interface FollowersContract {
         void hideProgressBars();
     }
 
-    interface Presenter extends MvpPresenter<View> {
+    interface Presenter extends BaseMvpRestPresenter<View> {
 
         void getFollowedUsersFromServer();
 
