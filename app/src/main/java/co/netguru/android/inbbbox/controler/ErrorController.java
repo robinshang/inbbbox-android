@@ -1,10 +1,18 @@
 package co.netguru.android.inbbbox.controler;
 
+import android.content.res.Resources;
+
+import co.netguru.android.inbbbox.Constants;
+import co.netguru.android.inbbbox.R;
 import retrofit2.adapter.rxjava.HttpException;
 
 public class ErrorController {
 
-    private static final int ERROR_429 = 429;
+    private final Resources resources;
+
+    public ErrorController(Resources resources) {
+        this.resources = resources;
+    }
 
     public String getThrowableMessage(Throwable throwable) {
         String message;
@@ -22,8 +30,8 @@ public class ErrorController {
     private String getMessageBasedOnErrorCode(HttpException httpException) {
         String message;
 
-        if (httpException.code() == ERROR_429) {
-            message = "You're doing too much work! Hold on";
+        if (httpException.code() == Constants.CODES.API_ERROR_429) {
+            message = resources.getString(R.string.api_error_429);
         } else {
             message = httpException.message();
         }

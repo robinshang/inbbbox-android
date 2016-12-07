@@ -118,4 +118,6 @@
     <string name="delete_comment_waring">This comment will be deleted, are you sure to do that?
     </string>
     <string name="comment_update_complete">Comment updated</string>
+
+    <string name="api_error_429">You are doing too much work! Slow down for a while</string>
 </resources>

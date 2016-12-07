@@ -41,6 +41,12 @@ public final class Constants {
         }
     }
 
+    public static class CODES {
+        public static final int API_ERROR_429 = 429;
+
+        private CODES() { throw new AssertionError(); }
+    }
+
     public static class Animations {
         public static final long FOG_ANIM_DURATION = 200;
 
