@@ -198,11 +198,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     @Override
-    public void showError(String error) {
-        Snackbar.make(shotsRecyclerView, error, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
     public void changeShotLikeStatus(Shot shot) {
         adapter.changeShotLikeStatus(shot);
         shotActionListener.shotLikeStatusChanged();
@@ -269,6 +264,11 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void hideLoadingIndicator() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Snackbar.make(shotsRecyclerView, errorText, Snackbar.LENGTH_LONG).show();
     }
 
     public interface ShotActionListener {

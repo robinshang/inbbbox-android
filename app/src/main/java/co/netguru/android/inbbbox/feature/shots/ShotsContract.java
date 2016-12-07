@@ -1,20 +1,19 @@
 package co.netguru.android.inbbbox.feature.shots;
 
-import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.feature.common.BaseMvpRestPresenter;
+import co.netguru.android.inbbbox.feature.common.BaseMvpRestView;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
 interface ShotsContract {
 
-    interface View extends MvpLceView<List<Shot>> {
+    interface View extends BaseMvpRestView, MvpLceView<List<Shot>> {
 
         void showMoreItems(List<Shot> items);
-
-        void showError(String error);
 
         void showLoadingIndicator();
 
@@ -33,7 +32,7 @@ interface ShotsContract {
         void showDetailsScreenInCommentMode(Shot selectedShot);
     }
 
-    interface Presenter extends MvpPresenter<View> {
+    interface Presenter extends BaseMvpRestPresenter<View> {
 
         void likeShot(Shot shot);
 
