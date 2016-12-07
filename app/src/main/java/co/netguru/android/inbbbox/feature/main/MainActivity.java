@@ -9,10 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -40,7 +38,6 @@ import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.utils.InputUtils;
 import co.netguru.android.inbbbox.view.NonSwipeableViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -68,9 +65,6 @@ public class MainActivity
     @BindView(R.id.activity_main_drawer_layout)
     DrawerLayout drawerLayout;
 
-    @BindView(R.id.fragment_container)
-    View bottomSheetView;
-
     @BindDrawable(R.drawable.toolbar_center_background)
     Drawable toolbarCenterBackground;
     @BindDrawable(R.drawable.toolbar_start_background)
@@ -91,7 +85,7 @@ public class MainActivity
     private Switch shotDetailsSwitch;
     private ToggleButton drawerToggleButton;
     private MainActivityPagerAdapter pagerAdapter;
-    private BottomSheetBehavior bottomSheetBehavior;
+
 
     public static void startActivity(Context context) {
         final Intent intent = new Intent(context, MainActivity.class);
@@ -113,7 +107,6 @@ public class MainActivity
         initializePager();
         initializeToolbar();
         initializeDrawer();
-        initializeBottomSheet();
         getPresenter().prepareUserData();
         navigationView.setSaveEnabled(false);
     }
@@ -136,23 +129,10 @@ public class MainActivity
         return component.getMainActivityPresenter();
     }
 
-    private void showFragmentDetails(Shot shot, boolean isCommentModeEnabled) {
-        Fragment fragment = ShotDetailsFragment.newInstance(shot, isCommentModeEnabled);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
-                .commit();
-        getBottomSheetBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
-    }
-
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-            return;
-        }
-        if (isBottomSheetOpen()) {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             return;
         }
         super.onBackPressed();
@@ -172,7 +152,6 @@ public class MainActivity
         }
     }
 
-
     private void initComponent() {
         component = App.getAppComponent(this)
                 .plusMainActivityComponent();
@@ -183,27 +162,6 @@ public class MainActivity
         final boolean toggleButtonState = savedInstanceState.getBoolean(TOGGLE_BUTTON_STATE, false);
         drawerToggleButton.setChecked(toggleButtonState);
         getPresenter().toggleButtonChanged(toggleButtonState);
-    }
-
-    private void initializeBottomSheet() {
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
-        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    InputUtils.hideKeyboard(MainActivity.this, bottomSheetView);
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                //no-op
-            }
-        });
-    }
-
-    private boolean isBottomSheetOpen() {
-        return bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED;
     }
 
     private void initializePager() {
@@ -417,7 +375,7 @@ public class MainActivity
 
     @Override
     public void showShotDetails(Shot shot, boolean isCommentModeEnabled) {
-        showFragmentDetails(shot, isCommentModeEnabled);
+        showBottomSheet(ShotDetailsFragment.newInstance(shot, isCommentModeEnabled), ShotDetailsFragment.TAG);
     }
 
     @Override
@@ -428,9 +386,5 @@ public class MainActivity
     @Override
     public void refreshShotsView() {
         pagerAdapter.refreshFragment(TabItemType.SHOTS);
-    }
-
-    private BottomSheetBehavior getBottomSheetBehavior() {
-        return bottomSheetBehavior;
     }
 }
