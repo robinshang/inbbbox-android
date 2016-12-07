@@ -6,6 +6,7 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
@@ -16,13 +17,15 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
         implements AddToBucketContract.Presenter {
 
     private final BucketsController bucketsController;
+    private final ErrorController errorController;
     private final CompositeSubscription subscriptions;
 
     private Shot shot;
 
     @Inject
-    AddToBucketPresenter(BucketsController bucketsController) {
+    AddToBucketPresenter(BucketsController bucketsController, ErrorController errorController) {
         this.bucketsController = bucketsController;
+        this.errorController = errorController;
         subscriptions = new CompositeSubscription();
     }
 
@@ -58,10 +61,7 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
                             } else {
                                 getView().showBuckets(buckets);
                             }
-                        }, throwable -> {
-                            Timber.d(throwable, "Error occurred while requesting buckets");
-                            getView().showApiError();
-                        })
+                        }, throwable -> handleHttpErrorResponse(throwable, "Error occurred while requesting buckets"))
         );
     }
 
@@ -70,4 +70,9 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
         getView().passResultAndCloseFragment(bucket, shot);
     }
 
+    @Override
+    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+        Timber.e(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
+    }
 }
