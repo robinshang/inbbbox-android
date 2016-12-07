@@ -32,15 +32,12 @@
 
         <activity
             android:name=".feature.main.MainActivity"
-            android:configChanges="orientation|screenSize"
             android:launchMode="singleTop"
             tools:ignore="UnusedAttribute" />
 
-        <activity android:name=".feature.followers.details.FollowerDetailsActivity"
-            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".feature.followers.details.FollowerDetailsActivity" />
 
-        <activity android:name=".feature.buckets.details.BucketDetailsActivity"
-            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".feature.buckets.details.BucketDetailsActivity" />
 
         <meta-data
             android:name="net.hockeyapp.android.appIdentifier"
