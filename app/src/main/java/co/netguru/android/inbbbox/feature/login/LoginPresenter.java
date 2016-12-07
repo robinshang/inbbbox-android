@@ -99,6 +99,7 @@ public final class LoginPresenter
         compositeSubscription.add(
                 tokenParametersController.getUserGuestToken()
                         .flatMapCompletable(apiTokenController::saveToken)
+                        .andThen(userController.enableGuestMode())
                         .subscribe(() -> getView().showNextScreen(),
                                 this::handleError)
         );

@@ -15,8 +15,9 @@ ext {
             hockeyAppId          : keyProperty("HockeyAppAppIdDev"),
             hockeyAppIdProd      : keyProperty("HockeyAppAppIdProd"),
             dribbbleClientKey    : keyProperty("DribbbleClientKey"),
-            dribbbleClientToken  : keyProperty("DribbbleClientToken"),
+            dribbbleClientSecret : keyProperty("DribbbleClientSecret"),
             dribbbleOauthRedirect: keyProperty("DribbbleOauthRedirect"),
+            dribbbleClientToken  : keyProperty("DribbbleClientToken"),
     ]
 }
 
@@ -34,6 +35,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField 'String', 'DRIBBBLE_CLIENT_KEY', '"' + secrets.dribbbleClientKey + '"'
+        buildConfigField 'String', 'DRIBBBLE_CLIENT_SECRET', '"' + secrets.dribbbleClientSecret + '"'
         buildConfigField 'String', 'DRIBBBLE_CLIENT_TOKEN', '"' + secrets.dribbbleClientToken + '"'
         buildConfigField 'String', 'DRIBBBLE_OAUTH_REDIRECT','"' + secrets.dribbbleOauthRedirect + '"'
     }

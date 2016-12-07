@@ -17,8 +17,6 @@ import static co.netguru.android.inbbbox.Constants.OAUTH;
 @Singleton
 public class TokenParametersController {
 
-    private Object guestToken;
-
     @Inject
     public TokenParametersController() {
     }
