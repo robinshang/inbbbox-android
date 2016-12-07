@@ -137,11 +137,6 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void showErrorMessage(String errorMessageLabel) {
-        Toast.makeText(getContext(), errorMessageLabel, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public Shot getShotInitialData() {
         return getArguments().getParcelable(ARG_SHOT);
     }
@@ -334,6 +329,11 @@ public class ShotDetailsFragment
         if (editorFragmentDialog != null) {
             editorFragmentDialog.disableProgressMode();
         }
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
     }
 
     private void initComponent() {
