@@ -12,8 +12,6 @@ public interface BucketsFragmentContract {
 
     interface View extends BaseMvpRestView, MvpLceView<List<BucketWithShots>> {
 
-        void showBucketsWithShots(List<BucketWithShots> bucketsWithShots);
-
         void hideProgressBars();
 
         void addMoreBucketsWithShots(List<BucketWithShots> bucketWithShotsList);
