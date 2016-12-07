@@ -5,7 +5,7 @@ import java.net.HttpURLConnection;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.LogoutController;
 import co.netguru.android.inbbbox.event.CriticalLogoutEvent;
 import co.netguru.android.inbbbox.event.RxBus;
@@ -23,17 +23,17 @@ public class RequestInterceptor implements Interceptor {
     private static final String HEADER_AUTHORIZATION = "AUTHORIZATION";
 
     private final LogoutController logoutController;
-    private final ErrorMessageController messageController;
+    private final ErrorController errorController;
     private final TokenPrefsRepository tokenPrefsRepository;
     private final RxBus rxBus;
 
     @Inject
     public RequestInterceptor(LogoutController logoutController,
-                              ErrorMessageController messageController,
+                              ErrorController errorController,
                               TokenPrefsRepository tokenPrefsRepository,
                               RxBus rxBus) {
         this.logoutController = logoutController;
-        this.messageController = messageController;
+        this.errorController = errorController;
         this.tokenPrefsRepository = tokenPrefsRepository;
         this.rxBus = rxBus;
     }
@@ -48,7 +48,7 @@ public class RequestInterceptor implements Interceptor {
 
     private Response handleResponseErrors(Response response) {
         if (!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-            performLogout(messageController.getMessage(response.code()));
+            performLogout(errorController.getMessageBasedOnErrorCode(response.code()));
         }
         return response;
     }
