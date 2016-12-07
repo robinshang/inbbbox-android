@@ -186,11 +186,6 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     @Override
-    public void showError(String message) {
-        Snackbar.make(recyclerView, message, Snackbar.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void hideProgress() {
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -211,6 +206,11 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
                 .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.dismiss())
                 .create()
                 .show();
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Snackbar.make(recyclerView, errorText, Snackbar.LENGTH_SHORT).show();
     }
 
     private void getFollowerData() {
