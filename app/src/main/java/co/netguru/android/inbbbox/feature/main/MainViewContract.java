@@ -3,12 +3,12 @@ package co.netguru.android.inbbbox.feature.main;
 import android.app.TimePickerDialog;
 import android.support.annotation.StringRes;
 
-import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.MvpView;
+import co.netguru.android.inbbbox.feature.common.BaseMvpRestPresenter;
+import co.netguru.android.inbbbox.feature.common.BaseMvpRestView;
 
 interface MainViewContract {
 
-    interface View extends MvpView {
+    interface View extends BaseMvpRestView {
 
         void showLogoutMenu();
 
@@ -43,7 +43,7 @@ interface MainViewContract {
         void refreshShotsView();
     }
 
-    interface Presenter extends MvpPresenter<View> {
+    interface Presenter extends BaseMvpRestPresenter<View> {
 
         void toggleButtonChanged(boolean isChecked);
 

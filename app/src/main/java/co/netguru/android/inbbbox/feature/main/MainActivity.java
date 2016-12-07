@@ -172,6 +172,11 @@ public class MainActivity
         }
     }
 
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(this, errorText, Toast.LENGTH_SHORT).show();
+    }
+
 
     private void initComponent() {
         component = App.getAppComponent(this)

@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.LogoutController;
 import co.netguru.android.inbbbox.controler.SettingsController;
 import co.netguru.android.inbbbox.controler.notification.NotificationController;
@@ -33,6 +34,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private final NotificationController notificationController;
     private final SettingsController settingsController;
     private final LogoutController logoutController;
+    private final ErrorController errorController;
     private final CompositeSubscription subscriptions;
 
     private boolean isFollowing;
@@ -48,12 +50,14 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                           NotificationScheduler notificationScheduler,
                           NotificationController notificationController,
                           SettingsController settingsController,
-                          LogoutController logoutController) {
+                          LogoutController logoutController,
+                          ErrorController errorController) {
         this.userPrefsRepository = userPrefsRepository;
         this.notificationScheduler = notificationScheduler;
         this.notificationController = notificationController;
         this.settingsController = settingsController;
         this.logoutController = logoutController;
+        this.errorController = errorController;
         this.subscriptions = new CompositeSubscription();
     }
 
@@ -84,7 +88,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         subscriptions.add(
                 logoutController.performLogout()
                         .subscribe(getView()::showLoginActivity,
-                                throwable -> Timber.e(throwable, "critical logout error"))
+                                throwable -> handleHttpErrorResponse(throwable, "critical logout error"))
         );
     }
 
@@ -92,7 +96,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     public void prepareUserData() {
         final Subscription subscription = userPrefsRepository.getUser()
                 .subscribe(this::handleUserData,
-                        throwable -> Timber.e(throwable, "Error while getting user"));
+                        throwable -> handleHttpErrorResponse(throwable, "Error while getting user"));
         subscriptions.add(subscription);
         prepareUserSettings();
     }
@@ -104,7 +108,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                 .compose(RxTransformerUtils.applySingleIoSchedulers())
                 .subscribe(this::showTimePickDialog,
                         throwable -> {
-                            Timber.e(throwable, "Error while getting settings");
+                            handleHttpErrorResponse(throwable, "Error while getting settings");
                             getView().showMessage(R.string.error_database);
                         });
         subscriptions.add(subscription);
@@ -153,8 +157,14 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         final Subscription subscription = settingsController.changeShotsDetailsStatus(isDetails)
                 .compose(RxTransformerUtils.applyCompletableIoSchedulers())
                 .subscribe(() -> Timber.d("Customization settings changed"),
-                        throwable -> Timber.e(throwable, "Error while changing customization settings"));
+                        throwable -> handleHttpErrorResponse(throwable, "Error while changing customization settings"));
         subscriptions.add(subscription);
+    }
+
+    @Override
+    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+        Timber.e(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
     private void changeStreamSourceStatusIfCorrect() {
