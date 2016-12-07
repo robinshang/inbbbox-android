@@ -1,7 +1,7 @@
 package co.netguru.android.inbbbox.feature.followers.details;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import co.netguru.android.inbbbox.model.ui.User;
 
 public interface FollowerDetailsContract {
 
-    interface View extends MvpView {
+    interface View extends MvpLceView<List<Shot>> {
         void showFollowerData(Follower follower);
 
         void showMoreUserShots(List<Shot> shotList);
@@ -19,6 +19,8 @@ public interface FollowerDetailsContract {
         void showFollowersList();
 
         void showError(String message);
+
+        void hideProgress();
 
         void openShotDetailsScreen(Shot shot);
 
@@ -29,6 +31,8 @@ public interface FollowerDetailsContract {
         void followerDataReceived(Follower follower);
 
         void userDataReceived(User user);
+
+        void refreshUserShots();
 
         void getMoreUserShotsFromServer();
 

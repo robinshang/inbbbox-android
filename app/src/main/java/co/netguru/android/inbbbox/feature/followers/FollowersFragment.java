@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,10 +17,12 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
+
 import java.util.List;
 
-import javax.inject.Inject;
-
+import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
@@ -26,18 +30,19 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.FollowersFragmentComponent;
 import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
-import co.netguru.android.inbbbox.feature.common.BaseMvpFragmentWithWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.followers.adapter.BaseFollowersViewHolder;
 import co.netguru.android.inbbbox.feature.followers.adapter.FollowersAdapter;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
+import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
-public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<FollowersContract.View, FollowersContract.Presenter>
-        implements FollowersContract.View, BaseFollowersViewHolder.OnFollowerClickListener {
+public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Follower>, FollowersContract.View, FollowersContract.Presenter>
+        implements RefreshableFragment, FollowersContract.View, BaseFollowersViewHolder.OnFollowerClickListener {
 
-    public static final int GRID_VIEW_COLUMN_COUNT = 2;
+    private static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final int FOLLOWERS_TO_LOAD_MORE = 8;
 
     @BindDrawable(R.drawable.ic_following_emptystate)
@@ -46,23 +51,26 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
     @BindString(R.string.fragment_followers_empty_text)
     String emptyString;
 
+    @BindColor(R.color.accent)
+    int accentColor;
+
+    @BindView(R.id.contentView)
+    SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.fragment_followers_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.fragment_followers_empty_view)
     ScrollView emptyView;
     @BindView(R.id.fragment_followers_empty_text)
     TextView emptyViewText;
-    @BindView(R.id.follower_progress_bar)
+    @BindView(R.id.loadingView)
     ProgressBar progressBar;
-
-    @Inject
-    GridLayoutManager gridLayoutManager;
-    @Inject
-    LinearLayoutManager linearLayoutManager;
 
     private final FollowersAdapter adapter = new FollowersAdapter(this);
 
+    private Snackbar loadingMoreSnackbar;
     private FollowersFragmentComponent component;
+    private GridLayoutManager gridLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
 
     public static FollowersFragment newInstance() {
         return new FollowersFragment();
@@ -86,9 +94,9 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initRefreshLayout();
         initRecyclerView();
         initEmptyView();
-        getPresenter().getFollowedUsersFromServer();
     }
 
     @Override
@@ -103,9 +111,31 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
         return component.getPresenter();
     }
 
+    @NonNull
     @Override
-    public void showFollowedUsers(List<Follower> followerList) {
-        adapter.setFollowersList(followerList);
+    public LceViewState<List<Follower> ,FollowersContract.View> createViewState() {
+        return new RetainingLceViewState<>();
+    }
+
+    @Override
+    public List<Follower> getData() {
+        return adapter.getData();
+    }
+
+    @Override
+    public void loadData(boolean pullToRefresh) {
+        getPresenter().getFollowedUsersFromServer();
+    }
+
+    @Override
+    public void setData(List<Follower> data) {
+        adapter.setFollowersList(data);
+    }
+
+    @Override
+    public void showContent() {
+        super.showContent();
+        getPresenter().checkDataEmpty(getData());
     }
 
     @Override
@@ -114,37 +144,54 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
     }
 
     @Override
+    public void hideLoadingMoreBucketsView() {
+        if (loadingMoreSnackbar != null) {
+            loadingMoreSnackbar.dismiss();
+        }
+    }
+
+    @Override
     public void hideEmptyLikesInfo() {
-        progressBar.setVisibility(View.GONE);
         emptyView.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showEmptyLikesInfo() {
-        progressBar.setVisibility(View.GONE);
         emptyView.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
     }
 
     @Override
-    public void showFollowersLoadingInfo() {
-        progressBar.setVisibility(View.VISIBLE);
-        emptyView.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.GONE);
+    public void showLoadingMoreFollowersView() {
+        if (loadingMoreSnackbar == null && getView() != null) {
+            loadingMoreSnackbar = Snackbar.make(getView(), R.string.loading_more_followers, Snackbar.LENGTH_INDEFINITE);
+        }
+        loadingMoreSnackbar.show();
     }
 
+    @Override
+    public void hideProgressBars() {
+        progressBar.setVisibility(View.GONE);
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
     public void refreshFragmentData() {
         getPresenter().getFollowedUsersFromServer();
     }
 
     private void initEmptyView() {
-        emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
+        int lineHeight = emptyViewText.getLineHeight();
+        //noinspection SuspiciousNameCombination
+        emptyTextDrawable.setBounds(0, 0, lineHeight, lineHeight);
         emptyViewText.setText(TextFormatterUtil
                 .addDrawableToTextAtFirstSpace(emptyString, emptyTextDrawable), TextView.BufferType.SPANNABLE);
     }
 
     private void initRecyclerView() {
+        gridLayoutManager = new GridLayoutManager(getContext(), GRID_VIEW_COLUMN_COUNT);
+        linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new LoadMoreScrollListener(FOLLOWERS_TO_LOAD_MORE) {
@@ -154,6 +201,11 @@ public class FollowersFragment extends BaseMvpFragmentWithWithListTypeSelection<
             }
         });
     }
+    private void initRefreshLayout() {
+        swipeRefreshLayout.setColorSchemeColors(accentColor);
+        swipeRefreshLayout.setOnRefreshListener(getPresenter()::getFollowedUsersFromServer);
+    }
+
 
     @Override
     public void onClick(Follower follower) {

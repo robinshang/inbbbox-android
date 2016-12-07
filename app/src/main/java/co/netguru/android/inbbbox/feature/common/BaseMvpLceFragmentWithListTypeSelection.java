@@ -2,17 +2,20 @@ package co.netguru.android.inbbbox.feature.common;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import butterknife.BindDrawable;
 import co.netguru.android.inbbbox.R;
 
-public abstract class BaseMvpFragmentWithWithListTypeSelection<V extends MvpView, P extends MvpPresenter<V>>  extends BaseMvpFragment<V, P>  {
+public abstract class BaseMvpLceFragmentWithListTypeSelection<CV extends View,M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
+        extends BaseMvpViewStateFragment<CV, M, V, P> {
 
     @BindDrawable(R.drawable.ic_listview)
     Drawable icListView;
@@ -35,11 +38,17 @@ public abstract class BaseMvpFragmentWithWithListTypeSelection<V extends MvpView
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.fragment_menu, menu);
         listViewItem = menu.findItem(R.id.action_list_view);
         gridViewItem = menu.findItem(R.id.action_grid_view);
-        onOptionsItemSelected(listViewItem);
+        onOptionsItemSelected(isGridMode ? gridViewItem : listViewItem);
     }
 
     @Override

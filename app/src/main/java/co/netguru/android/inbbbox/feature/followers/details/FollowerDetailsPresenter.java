@@ -1,8 +1,8 @@
 package co.netguru.android.inbbbox.feature.followers.details;
 
-import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
+import android.support.annotation.NonNull;
 
-import java.util.List;
+import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
@@ -15,6 +15,7 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
+import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
@@ -32,6 +33,12 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     private final ErrorMessageController errorMessageController;
     private final CompositeSubscription subscriptions;
 
+    @NonNull
+    private Subscription loadMoreShotsSubscription;
+    @NonNull
+    private Subscription refreshShotsSubscription;
+    @NonNull
+    private Subscription unfollowUserSubscription;
     private Follower follower;
     private boolean hasMore = true;
     private int pageNumber = 1;
@@ -43,12 +50,19 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         this.followersController = followersController;
         this.errorMessageController = errorMessageController;
         subscriptions = new CompositeSubscription();
+        refreshShotsSubscription = Subscriptions.unsubscribed();
+        loadMoreShotsSubscription = Subscriptions.unsubscribed();
+        unfollowUserSubscription = Subscriptions.unsubscribed();
     }
 
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
-        subscriptions.clear();
+        if (!retainInstance) {
+            loadMoreShotsSubscription.unsubscribe();
+            refreshShotsSubscription.unsubscribe();
+            unfollowUserSubscription.unsubscribe();
+        }
     }
 
     @Override
@@ -57,6 +71,23 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         if (follower != null) {
             this.follower = follower;
             getView().showFollowerData(follower);
+            getView().showContent();
+        }
+    }
+
+    @Override
+    public void refreshUserShots() {
+        if (refreshShotsSubscription.isUnsubscribed()) {
+            loadMoreShotsSubscription.unsubscribe();
+            pageNumber = 1;
+            loadMoreShotsSubscription= userShotsController.getUserShotsList(follower.id(),
+                    pageNumber, SHOT_PAGE_COUNT)
+                    .compose(androidIO())
+                    .doAfterTerminate(getView()::hideProgress)
+                    .subscribe(shotList -> {
+                        hasMore = shotList.size() == SHOT_PAGE_COUNT;
+                        getView().setData(shotList);
+                    }, throwable -> Timber.e(throwable, "Error while refreshing user shots"));
         }
     }
 
@@ -70,14 +101,15 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     @Override
     public void getMoreUserShotsFromServer() {
-        if (hasMore) {
+        if (hasMore && refreshShotsSubscription.isUnsubscribed() && loadMoreShotsSubscription.isUnsubscribed()) {
             pageNumber++;
-            final Subscription subscription = userShotsController.getUserShotsList(follower.id(),
+            loadMoreShotsSubscription= userShotsController.getUserShotsList(follower.id(),
                     pageNumber, SHOT_PAGE_COUNT)
                     .compose(androidIO())
-                    .subscribe(this::onGetUserShotsNext,
-                            throwable -> Timber.e(throwable, "Error while getting more user shots"));
-            subscriptions.add(subscription);
+                    .subscribe(shotList -> {
+                                hasMore = shotList.size() == SHOT_PAGE_COUNT;
+                                getView().showMoreUserShots(shotList);
+                    }, throwable -> Timber.e(throwable, "Error while getting more user shots"));
         }
     }
 
@@ -88,23 +120,17 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     @Override
     public void unFollowUser() {
-        final Subscription subscription = followersController.unFollowUser(follower.id())
+        unfollowUserSubscription = followersController.unFollowUser(follower.id())
                 .compose(applyCompletableIoSchedulers())
                 .subscribe(getView()::showFollowersList, throwable -> {
                     Timber.e(throwable, "Error while unFollow user");
                     getView().showError(throwable.getMessage());
                 });
-        subscriptions.add(subscription);
     }
 
     @Override
     public void showShotDetails(Shot shot) {
         getView().openShotDetailsScreen(shot);
-    }
-
-    private void onGetUserShotsNext(List<Shot> shotList) {
-        hasMore = shotList.size() == SHOT_PAGE_COUNT;
-        getView().showMoreUserShots(shotList);
     }
 
     private void downloadUserShots(User user) {

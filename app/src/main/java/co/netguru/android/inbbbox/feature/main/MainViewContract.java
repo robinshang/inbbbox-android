@@ -36,6 +36,8 @@ interface MainViewContract {
 
         void changeCustomizationStatus(boolean isDetails);
 
+        void setSettingsListeners();
+
         void showMessage(@StringRes int message);
 
         void refreshShotsView();

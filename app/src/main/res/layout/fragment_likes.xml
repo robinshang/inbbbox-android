@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_likes_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingTop="@dimen/fragment_like_recycler_view_padding_top"/>
 
     <ScrollView
         android:id="@+id/fragment_likes_empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -28,7 +21,7 @@
                 android:layout_height="@dimen/fragment_like_empty_view_logo_size"
                 android:layout_centerInParent="true"
                 android:contentDescription="@null"
-                android:src="@drawable/logo_empty"/>
+                android:src="@drawable/logo_empty" />
 
             <TextView
                 android:id="@+id/fragment_like_empty_text"
@@ -38,7 +31,32 @@
                 android:layout_below="@id/fragment_like_empty_logo"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/fragment_like_empty_view_text_margin_top"
-                android:gravity="center"/>
+                android:gravity="center" />
         </RelativeLayout>
     </ScrollView>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/contentView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_likes_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/fragment_like_recycler_view_padding_top" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <ProgressBar
+        android:id="@+id/loadingView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true" />
+
+    <TextView
+        android:id="@+id/errorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </FrameLayout>

@@ -6,16 +6,24 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
-import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import co.netguru.android.inbbbox.R;
 
-public abstract class BaseMvpFragment<V extends MvpView, P extends MvpPresenter<V>> extends MvpFragment<V, P> {
+public abstract class BaseMvpViewStateFragment<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
+        extends MvpLceViewStateFragment<CV, M, V, P> {
 
     private Unbinder unbinder;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -39,5 +47,10 @@ public abstract class BaseMvpFragment<V extends MvpView, P extends MvpPresenter<
         if (getView() != null) {
             Snackbar.make(getView(), string, Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
+        return getString(R.string.empty_string);
     }
 }

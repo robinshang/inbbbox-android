@@ -58,4 +58,8 @@ public class BucketsController {
     public Single<Bucket> createBucket(@NonNull String name, @Nullable String description) {
         return bucketApi.createBucket(name, description);
     }
+
+    public Completable deleteBucket(long bucketId) {
+        return bucketApi.deleteBucket(bucketId);
+    }
 }

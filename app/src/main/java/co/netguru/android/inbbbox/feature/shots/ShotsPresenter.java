@@ -1,8 +1,8 @@
 package co.netguru.android.inbbbox.feature.shots;
 
-import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
+import android.support.annotation.NonNull;
 
-import java.util.List;
+import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
@@ -15,6 +15,7 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
+import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
@@ -32,6 +33,10 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private final BucketsController bucketsController;
     private final CompositeSubscription subscriptions;
 
+    @NonNull
+    private Subscription refreshSubscription;
+    @NonNull
+    private Subscription loadMoreSubscription;
     private int pageNumber = FIRST_PAGE;
     private boolean hasMore = true;
 
@@ -44,12 +49,17 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         this.likeShotController = likeShotController;
         this.bucketsController = bucketsController;
         subscriptions = new CompositeSubscription();
+        refreshSubscription = Subscriptions.unsubscribed();
+        loadMoreSubscription = Subscriptions.unsubscribed();
     }
 
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
-        subscriptions.clear();
+        if (!retainInstance) {
+            refreshSubscription.unsubscribe();
+            loadMoreSubscription.unsubscribe();
+        }
     }
 
     @Override
@@ -81,16 +91,34 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     @Override
     public void getShotsFromServer() {
-        pageNumber = FIRST_PAGE;
-        getView().showLoadingIndicator();
-        getShots();
+        if (refreshSubscription.isUnsubscribed()) {
+            loadMoreSubscription.unsubscribe();
+            pageNumber = FIRST_PAGE;
+            getView().showLoadingIndicator();
+            refreshSubscription = shotsController.getShots(pageNumber, SHOTS_PER_PAGE)
+                    .compose(androidIO())
+                    .subscribe(shotList -> {
+                        Timber.d("Shots received!");
+                        hasMore = shotList.size() >= SHOTS_PER_PAGE;
+                        getView().hideLoadingIndicator();
+                        getView().setData(shotList);
+                        getView().showContent();
+                    }, this::handleException);
+        }
     }
 
     @Override
     public void getMoreShotsFromServer() {
-        if (hasMore) {
+        if (hasMore && refreshSubscription.isUnsubscribed() && loadMoreSubscription.isUnsubscribed()) {
             pageNumber++;
-            getShots();
+            loadMoreSubscription = shotsController.getShots(pageNumber, SHOTS_PER_PAGE)
+                    .compose(androidIO())
+                    .subscribe(shotList -> {
+                        Timber.d("Shots received!");
+                        hasMore = shotList.size() >= SHOTS_PER_PAGE;
+                        getView().hideLoadingIndicator();
+                        getView().showMoreItems(shotList);
+                    }, this::handleException);
         }
     }
 
@@ -123,26 +151,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     public void showCommentInput(Shot selectedShot) {
         getView().closeFabMenu();
         getView().showDetailsScreenInCommentMode(selectedShot);
-    }
-
-    private void getShots() {
-        final Subscription subscription = shotsController.getShots(pageNumber, SHOTS_PER_PAGE)
-                .compose(androidIO())
-                .subscribe(this::showRetrievedItems,
-                        this::handleException);
-        subscriptions.add(subscription);
-    }
-
-    private void showRetrievedItems(List<Shot> shotsList) {
-        Timber.d("Shots received!");
-        hasMore = shotsList.size() >= SHOTS_PER_PAGE;
-        getView().hideLoadingIndicator();
-
-        if (pageNumber == FIRST_PAGE) {
-            getView().showItems(shotsList);
-        } else {
-            getView().showMoreItems(shotsList);
-        }
     }
 
     private void handleException(Throwable exception) {
