@@ -63,9 +63,9 @@ public class UserPrefsRepository {
     }
 
     public Single<Boolean> isGuestModeEnabled() {
-        return Single.fromCallable(() -> {
-            return sharedPreferences.getBoolean(USER_KEY, false);
-        });
+        return Single.fromCallable(() ->
+                sharedPreferences.getBoolean(GUEST_MODE_STATE_KEY, false)
+        );
     }
 
     public static class UserNotFoundException extends IOException {

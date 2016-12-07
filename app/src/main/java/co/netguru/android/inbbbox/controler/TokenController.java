@@ -10,6 +10,7 @@ import co.netguru.android.inbbbox.model.api.Token;
 import co.netguru.android.inbbbox.utils.StringUtils;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 @Singleton
 public class TokenController {
@@ -29,14 +30,14 @@ public class TokenController {
      */
     public Observable<Token> requestNewToken(String code) {
         return api.getToken(BuildConfig.DRIBBBLE_CLIENT_KEY,
-                BuildConfig.DRIBBBLE_CLIENT_TOKEN, code)
+                BuildConfig.DRIBBBLE_CLIENT_SECRET, code)
                 .flatMap(token ->
                         tokenPrefsRepository.saveToken(token).andThen(Observable.just(token)));
     }
 
 
-    public Observable<Boolean> isTokenValid() {
-        return Observable.fromCallable(() -> {
+    public Single<Boolean> isTokenValid() {
+        return Single.fromCallable(() -> {
             Token token = tokenPrefsRepository.getToken();
             return token != null && !StringUtils.isBlank(token.getAccessToken());
         });
