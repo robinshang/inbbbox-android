@@ -1,29 +1,31 @@
 package co.netguru.android.inbbbox.controler;
 
-import android.content.res.Resources;
-
-import javax.inject.Inject;
-
-import co.netguru.android.inbbbox.R;
 import retrofit2.adapter.rxjava.HttpException;
 
 public class ErrorController {
 
-    private final Resources resources;
-
-    @Inject
-    public ErrorController(Resources resources) {
-        this.resources = resources;
-    }
+    private static final int ERROR_429 = 429;
 
     public String getThrowableMessage(Throwable throwable) {
         String message;
 
         if(throwable instanceof HttpException){
-           message = ((HttpException) throwable).message();
+            message = getMessageBasedOnErrorCode((HttpException) throwable);
 
         } else {
-            message = resources.getString(R.string.undefined_api_error);
+            message = throwable.getMessage();
+        }
+
+        return message;
+    }
+
+    private String getMessageBasedOnErrorCode(HttpException httpException) {
+        String message;
+
+        if (httpException.code() == ERROR_429) {
+            message = "You're doing too much work! Hold on";
+        } else {
+            message = httpException.message();
         }
 
         return message;
