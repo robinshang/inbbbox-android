@@ -23,7 +23,7 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OauthUrlControllerTest {
+public class TokenParametersControllerTest {
 
     @Rule
     public TestRule rule = new RxSyncTestRule();

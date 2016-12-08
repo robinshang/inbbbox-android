@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.feature.login;
 import android.net.Uri;
 import android.support.v4.util.Pair;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -115,6 +116,11 @@ public class LoginPresenterTest {
         verify(viewMock, never()).showNextScreen();
         verify(viewMock).showApiError(anyString());
         verify(errorMessageController, times(1)).getErrorMessageLabel(testThrowable);
+    }
+
+    @After
+    public void tearDown() {
+        presenter.detachView(false);
     }
 
 }
