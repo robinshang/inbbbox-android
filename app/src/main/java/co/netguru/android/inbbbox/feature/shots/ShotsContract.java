@@ -1,17 +1,19 @@
 package co.netguru.android.inbbbox.feature.shots;
 
+import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.feature.common.BaseMvpRestPresenter;
-import co.netguru.android.inbbbox.feature.common.BaseMvpRestView;
+import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.HttpErrorView;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
 interface ShotsContract {
 
-    interface View extends BaseMvpRestView, MvpLceView<List<Shot>> {
+    interface View extends MvpView, HttpErrorView, MvpLceView<List<Shot>> {
 
         void showMoreItems(List<Shot> items);
 
@@ -32,7 +34,7 @@ interface ShotsContract {
         void showDetailsScreenInCommentMode(Shot selectedShot);
     }
 
-    interface Presenter extends BaseMvpRestPresenter<View> {
+    interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
 
         void likeShot(Shot shot);
 

@@ -3,17 +3,19 @@ package co.netguru.android.inbbbox.feature.buckets.details;
 
 import android.support.annotation.NonNull;
 
+import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.feature.common.BaseMvpRestPresenter;
-import co.netguru.android.inbbbox.feature.common.BaseMvpRestView;
+import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.HttpErrorView;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 
 public interface BucketDetailsContract {
-    interface View extends BaseMvpRestView, MvpLceView<List<ShotEntity>> {
+    interface View extends MvpView, HttpErrorView, MvpLceView<List<ShotEntity>> {
 
         void setFragmentTitle(String string);
 
@@ -34,7 +36,7 @@ public interface BucketDetailsContract {
         void showRefreshedBucketsView();
     }
 
-    interface Presenter extends BaseMvpRestPresenter<View> {
+    interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
 
         void handleBucketData(BucketWithShots bucketWithShots, int perPage);
 

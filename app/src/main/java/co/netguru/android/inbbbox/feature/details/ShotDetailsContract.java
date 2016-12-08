@@ -2,10 +2,13 @@ package co.netguru.android.inbbbox.feature.details;
 
 import android.support.annotation.StringRes;
 
+import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
+
 import java.util.List;
 
-import co.netguru.android.inbbbox.feature.common.BaseMvpRestPresenter;
-import co.netguru.android.inbbbox.feature.common.BaseMvpRestView;
+import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.HttpErrorView;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -13,7 +16,7 @@ import co.netguru.android.inbbbox.model.ui.ShotImage;
 
 public interface ShotDetailsContract {
 
-    interface View extends BaseMvpRestView {
+    interface View extends MvpView, HttpErrorView {
 
         void showDetails(Shot shotDetails);
 
@@ -68,7 +71,7 @@ public interface ShotDetailsContract {
         void disableEditorProgressMode();
     }
 
-    interface Presenter extends BaseMvpRestPresenter<ShotDetailsContract.View> {
+    interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
 
         void downloadData();
 

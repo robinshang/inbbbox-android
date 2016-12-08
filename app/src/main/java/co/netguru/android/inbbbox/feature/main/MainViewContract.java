@@ -2,12 +2,15 @@ package co.netguru.android.inbbbox.feature.main;
 
 import android.support.annotation.StringRes;
 
-import co.netguru.android.inbbbox.feature.common.BaseMvpRestPresenter;
-import co.netguru.android.inbbbox.feature.common.BaseMvpRestView;
+import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
+
+import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.HttpErrorView;
 
 interface MainViewContract {
 
-    interface View extends BaseMvpRestView {
+    interface View extends MvpView, HttpErrorView {
 
         void showLogoutMenu();
 
@@ -42,7 +45,7 @@ interface MainViewContract {
         void refreshShotsView();
     }
 
-    interface Presenter extends BaseMvpRestPresenter<View> {
+    interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
 
         void toggleButtonChanged(boolean isChecked);
 

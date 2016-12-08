@@ -1,17 +1,20 @@
 package co.netguru.android.inbbbox.feature.shots.addtobucket;
 
 
+import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
+
 import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.feature.common.BaseMvpRestPresenter;
-import co.netguru.android.inbbbox.feature.common.BaseMvpRestView;
+import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.HttpErrorView;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
 public interface AddToBucketContract {
-    interface View extends BaseMvpRestView {
+    interface View extends MvpView, HttpErrorView {
 
         void setShotTitle(String title);
 
@@ -34,7 +37,7 @@ public interface AddToBucketContract {
         void passResultAndCloseFragment(Bucket bucket, Shot shot);
     }
 
-    interface Presenter extends BaseMvpRestPresenter<View> {
+    interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
 
         void handleShot(Shot shot);
 
