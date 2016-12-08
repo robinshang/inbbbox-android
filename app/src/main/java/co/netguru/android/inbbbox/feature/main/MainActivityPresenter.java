@@ -31,7 +31,7 @@ import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applySingleIoS
 public final class MainActivityPresenter extends MvpNullObjectBasePresenter<MainViewContract.View>
         implements Presenter {
 
-    private UserController userController;
+    private final UserController userController;
     private final NotificationScheduler notificationScheduler;
     private final NotificationController notificationController;
     private final SettingsController settingsController;
@@ -96,13 +96,20 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     @Override
     public void prepareUserData() {
-        final Subscription subscription = userController.getUserFromCache()
-                .subscribe(this::handleUserData,
-                        throwable -> Timber.e(throwable, "Error while getting user"));
-        subscriptions.add(subscription);
+        userController.isGuestModeEnabled()
+                .compose(applySingleIoSchedulers())
+                .subscribe(this::verifyGuestMode,
+                        throwable -> Timber.e(throwable, "Error while getting guest mode state"));
         prepareUserSettings();
     }
 
+    private void verifyGuestMode(Boolean isGuestModeEnabled) {
+        if (!isGuestModeEnabled) {
+            requestUserData();
+        } else {
+            getView().showCreateAccountButton();
+        }
+    }
 
     @Override
     public void timeViewClicked() {
@@ -182,6 +189,13 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                                 throwable -> Timber
                                         .e(throwable, "Error during sign up url retrieving"))
         );
+    }
+
+    private void requestUserData() {
+        subscriptions.add(
+                userController.getUserFromCache()
+                        .subscribe(this::handleUserData,
+                                throwable -> Timber.e(throwable, "Error while getting user")));
     }
 
     private void changeStreamSourceStatusIfCorrect() {

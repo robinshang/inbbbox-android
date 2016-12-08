@@ -275,6 +275,11 @@ public class MainActivity
         startActivity(intent);
     }
 
+    @Override
+    public void showCreateAccountButton() {
+        drawerCreateAccountButton.setVisibility(View.VISIBLE);
+    }
+
     private void initComponent() {
         component = App.getAppComponent(this)
                 .plusMainActivityComponent();

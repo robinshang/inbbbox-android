@@ -42,6 +42,8 @@ interface MainViewContract {
         void refreshShotsView();
 
         void openSignUpPage(String url);
+
+        void showCreateAccountButton();
     }
 
     interface Presenter extends MvpPresenter<View> {

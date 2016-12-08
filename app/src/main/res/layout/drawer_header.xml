@@ -55,6 +55,7 @@
         android:textStyle="bold"
         android:text="@string/create_account_label"
         android:padding="@dimen/margin_default"
+        android:visibility="gone"
         android:background="@drawable/selector_create_account_button"
         android:layout_alignParentEnd="true"/>
 </RelativeLayout>
