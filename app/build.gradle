@@ -295,6 +295,9 @@ dependencies {
     compile libs.onActivityResult
     apt proc.onActivityResult
 
+    //PhotoView
+    compile libs.photoView
+
     // Unit testing
     testCompile(test.junit) {
         exclude module: 'hamcrest-core'
