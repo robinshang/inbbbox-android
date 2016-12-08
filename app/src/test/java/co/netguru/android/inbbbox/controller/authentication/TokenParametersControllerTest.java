@@ -15,7 +15,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.UUID;
 
+import co.netguru.android.inbbbox.BuildConfig;
+import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.controler.TokenParametersController;
+import co.netguru.android.inbbbox.model.api.Token;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.observers.TestSubscriber;
 
@@ -32,7 +35,7 @@ public class TokenParametersControllerTest {
     Resources resourcesMock;
 
     @InjectMocks
-    TokenParametersController urlProvider;
+    TokenParametersController tokenParametersController;
 
     private String resourceString = "TEST";
 
@@ -46,7 +49,7 @@ public class TokenParametersControllerTest {
         String expected = generateExpectedUrl();
         TestSubscriber<Pair<String, UUID>> testSubscriber = new TestSubscriber<>();
 
-        urlProvider.getOauthAuthorizeUrlAndUuidPair().subscribe(testSubscriber);
+        tokenParametersController.getOauthAuthorizeUrlAndUuidPair().subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         String urlString = testSubscriber.getOnNextEvents().get(0).first;
@@ -56,9 +59,31 @@ public class TokenParametersControllerTest {
         Assert.assertTrue(urlString.endsWith(uuid.toString()));
     }
 
-    private String generateExpectedUrl() {
-        return "https://dribbble.com/oauth/authorize?client_id=";
+    @Test
+    public void whenGetUserPublicSubscribed_thenReturnDefaultToken() {
+        TestSubscriber<Token> testSubscriber = new TestSubscriber<>();
+
+        tokenParametersController.getUserGuestToken().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        Token token = testSubscriber.getOnNextEvents().get(0);
+        Assert.assertEquals(BuildConfig.DRIBBBLE_CLIENT_TOKEN, token.getAccessToken());
+    }
+
+    @Test
+    public void whenGetSignUpUrlSubscribed_thenReturnSignedUrlWithOauthBaseUrlAndSignIpEndpoint() {
+        TestSubscriber<String> testSubscriber = new TestSubscriber<>();
+
+        tokenParametersController.getSignUpUrl().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        String url = testSubscriber.getOnNextEvents().get(0);
+        Assert.assertEquals(true, url.contains(Constants.OAUTH.BASE_URL));
+        Assert.assertEquals(true, url.contains(Constants.OAUTH.SIGN_UP_ENDPOINT));
     }
 
 
+    private String generateExpectedUrl() {
+        return "https://dribbble.com/oauth/authorize?client_id=";
+    }
 }
