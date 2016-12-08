@@ -10,7 +10,7 @@ import co.netguru.android.inbbbox.model.localrepository.NotificationSettings;
 import rx.Single;
 
 @Singleton
-public final class NotificationController {
+public class NotificationController {
 
     private final SettingsController settingsController;
     private final NotificationScheduler notificationScheduler;
