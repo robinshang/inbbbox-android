@@ -27,11 +27,8 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
-
 import co.netguru.android.inbbbox.feature.common.BaseMvpViewStateFragment;
-
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
-
 import co.netguru.android.inbbbox.feature.shots.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotSwipeListener;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
@@ -40,7 +37,6 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView;
 import co.netguru.android.inbbbox.view.FogFloatingActionMenu;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
-import timber.log.Timber;
 
 public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
         ShotsContract.View, ShotsContract.Presenter> implements RefreshableFragment, ShotsContract.View, ShotSwipeListener,
@@ -108,7 +104,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         try {
             shotActionListener = (ShotActionListener) context;
         } catch (ClassCastException e) {
-            Timber.e(e, "%s must implement ShotActionListener", context.toString());
             throw new ClassCastException(context.toString()
                     + " must implement ShotActionListener");
         }

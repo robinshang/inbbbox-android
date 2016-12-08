@@ -40,7 +40,6 @@ import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
-import timber.log.Timber;
 
 public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
         LikesViewContract.View, LikesViewContract.Presenter> implements RefreshableFragment, LikesViewContract.View {
@@ -95,7 +94,6 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         try {
             shotActionListener = (ShotsFragment.ShotActionListener) context;
         } catch (ClassCastException e) {
-            Timber.e(e, "%s must implement ShotActionListener", context.toString());
             throw new ClassCastException(context.toString()
                     + " must implement ShotActionListener");
         }

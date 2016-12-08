@@ -37,7 +37,6 @@ import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.DividerItemDecorator;
 import de.hdodenhof.circleimageview.CircleImageView;
-import timber.log.Timber;
 
 public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucketContract.View, AddToBucketContract.Presenter>
         implements AddToBucketContract.View, BucketViewHolder.BucketClickListener {
@@ -193,7 +192,6 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
             listener.onBucketForShotSelect(bucket, shot);
             dismiss();
         } catch (ClassCastException e) {
-            Timber.e(e, "%s must implement OnHeadlineSelectedListener", targetFragment.toString());
             throw new ClassCastException(targetFragment.toString()
                     + " must implement OnHeadlineSelectedListener");
         }
