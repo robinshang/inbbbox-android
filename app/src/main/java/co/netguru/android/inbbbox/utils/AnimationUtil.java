@@ -6,7 +6,7 @@ public class AnimationUtil {
 
     private static final long SLIDE_IN_DURATION = 700;
     private static final float SLID_IN_DESIGNATED_TRANSLATION = 0;
-    private static final float TRANSLATION_INITIAL_OFFSET = 250f;
+    private static final float TRANSLATION_INITIAL_OFFSET = 550f;
 
     private AnimationUtil() {
         throw new AssertionError();
