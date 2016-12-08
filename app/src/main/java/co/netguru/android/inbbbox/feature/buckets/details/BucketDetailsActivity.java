@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -35,11 +33,6 @@ public class BucketDetailsActivity extends BaseActivity
     @BindColor(R.color.white)
     int colorWhite;
 
-    @BindView(R.id.fragment_container)
-    View bottomSheetView;
-
-    private BottomSheetBehavior<View> bottomSheetBehavior;
-
     public static void startActivityForDeleteResult(Fragment fragment, Context context, int requestCode,
                                                     BucketWithShots bucketWithShots, int perPage) {
         final Intent intent = new Intent(context, BucketDetailsActivity.class);
@@ -54,7 +47,6 @@ public class BucketDetailsActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bucket_details);
         initializeToolbar();
-        initializeBottomSheet();
         if (savedInstanceState == null) {
             initializeBucketDetailsFragment();
         }
@@ -78,26 +70,9 @@ public class BucketDetailsActivity extends BaseActivity
     }
 
     @Override
-    public void onBackPressed() {
-        if (isBottomSheetOpen()) {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            return;
-        }
-        super.onBackPressed();
-    }
-
-    @Override
     public void onShotClick(ShotEntity shotEntity) {
-        Fragment fragment = ShotDetailsFragment.newInstance(Shot.create(shotEntity));
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment, ShotDetailsFragment.TAG)
-                .commit();
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-    }
-
-    private void initializeBottomSheet() {
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
+        final Fragment fragment = ShotDetailsFragment.newInstance(Shot.create(shotEntity));
+        showBottomSheet(fragment, ShotDetailsFragment.TAG);
     }
 
     private void initializeBucketDetailsFragment() {
@@ -109,10 +84,6 @@ public class BucketDetailsActivity extends BaseActivity
         } else {
             throw new IllegalArgumentException("Error shots with buckets or per page count is empty");
         }
-    }
-
-    private boolean isBottomSheetOpen() {
-        return bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED;
     }
 
     private void initializeToolbar() {

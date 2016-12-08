@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.main;
 
-import android.app.TimePickerDialog;
 import android.support.annotation.StringRes;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
@@ -20,7 +19,7 @@ interface MainViewContract {
 
         void showUserPhoto(String url);
 
-        void showTimePickDialog(int startHour, int startMinute, TimePickerDialog.OnTimeSetListener onTimeSetListener);
+        void showTimePickDialog(int startHour, int startMinute);
 
         void showNotificationTime(String time);
 
@@ -64,5 +63,7 @@ interface MainViewContract {
         void debutsStatusChanged(boolean status);
 
         void customizationStatusChanged(boolean isDetails);
+
+        void onTimePicked(int hour, int minute);
     }
 }
