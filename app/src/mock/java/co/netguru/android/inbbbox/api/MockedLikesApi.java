@@ -29,6 +29,7 @@ public class MockedLikesApi implements LikesApi {
                         .animated(false)
                         .likesCount(2)
                         .bucketsCount(3)
+                        .commentsCount(2)
                         .createdAt(LocalDateTime.now())
                         .build()
                 ).build());
