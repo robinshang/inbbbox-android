@@ -28,7 +28,7 @@ public final class LoginPresenter
     private final ErrorMessageController errorHandler;
     private final UserController userController;
     private final CompositeSubscription compositeSubscription;
-    private int guestModeCounter = 1;
+    private int guestModeCounter = 0;
 
     @Inject
     LoginPresenter(TokenParametersController oauthUrlController,
