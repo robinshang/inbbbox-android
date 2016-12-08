@@ -172,7 +172,6 @@ public class MainActivity
         }
     }
 
-
     private void initComponent() {
         component = App.getAppComponent(this)
                 .plusMainActivityComponent();

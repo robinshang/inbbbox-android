@@ -23,7 +23,7 @@
     <dimen name="drawer_header_height">188dp</dimen>
     <dimen name="drawer_header_photo_size">72dp</dimen>
     <dimen name="drawer_header_photo_border">5dp</dimen>
-    <dimen name="drawer_header_photo_margin_top">52dp</dimen>
+    <dimen name="drawer_header_photo_margin_top">14dp</dimen>
     <dimen name="drawer_arrow_size">24dp</dimen> 
     <dimen name="drawer_arrow_margin_end">6dp</dimen>
     <dimen name="shot_image_height">600dp</dimen>

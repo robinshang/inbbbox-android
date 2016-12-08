@@ -1,42 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/drawer_header_height"
-    android:background="@color/pink"
-    android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/drawer_header_height"
+                android:background="@color/pink"
+                android:orientation="vertical">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/drawer_user_photo"
         android:layout_width="@dimen/drawer_header_photo_size"
         android:layout_height="@dimen/drawer_header_photo_size"
+        android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/margin_default"
         android:layout_marginTop="@dimen/drawer_header_photo_margin_top"
+        android:src="@drawable/logo_ball"
         app:civ_border_color="@color/white"
-        app:civ_fill_color="@color/lightGray"
-        app:civ_border_width="@dimen/drawer_header_photo_border" />
+        app:civ_border_width="@dimen/drawer_header_photo_border"
+        app:civ_fill_color="@color/lightGray"/>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:layout_alignParentBottom="true">
 
         <TextView
-            style="@style/Font14.White"
             android:id="@+id/drawer_user_name"
+            style="@style/Font14.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/margin_default"
-            android:layout_gravity="center_vertical" />
+            android:text="@string/guest_label"/>
 
         <ToggleButton
             android:id="@+id/drawer_header_toggle"
             android:layout_width="@dimen/drawer_arrow_size"
             android:layout_height="@dimen/drawer_arrow_size"
-            android:layout_marginEnd="@dimen/drawer_arrow_margin_end"
             android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="@dimen/drawer_arrow_margin_end"
             android:background="@android:color/transparent"
             android:button="@drawable/drawer_toggle_button"
             android:textOff="@string/empty_string"
-            android:textOn="@string/empty_string" />
+            android:textOn="@string/empty_string"/>
     </FrameLayout>
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/create_account_textView"
+        style="@style/Font14.White"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="right|center_vertical"
+        android:textStyle="bold"
+        android:text="@string/create_account_label"
+        android:padding="@dimen/margin_default"
+        android:background="@drawable/selector_create_account_button"
+        android:layout_alignParentEnd="true"/>
+</RelativeLayout>
