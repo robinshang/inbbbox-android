@@ -69,6 +69,8 @@ public interface ShotDetailsContract {
         void updateComment(Comment commentToUpdate, Comment updatedComment);
 
         void disableEditorProgressMode();
+
+        void openShotFullscreen(Shot shot);
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -92,5 +94,7 @@ public interface ShotDetailsContract {
         void onCommentDeleteConfirmed();
 
         void getMoreComments();
+
+        void onOpenShotFullscreen();
     }
 }

@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.details;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,9 +28,11 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotDetailsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
+import co.netguru.android.inbbbox.feature.details.fullscreen.ShotFullscreenActivity;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
+import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -125,6 +128,11 @@ public class ShotDetailsFragment
     @OnClick(R.id.details_close_imageView)
     void onCloseClick() {
         getPresenter().closeScreen();
+    }
+    
+    @OnClick(R.id.parallax_image_view)
+    void onOpenShotFullscreen() {
+        getPresenter().onOpenShotFullscreen();
     }
 
     @Override
@@ -334,6 +342,11 @@ public class ShotDetailsFragment
         if (editorFragmentDialog != null) {
             editorFragmentDialog.disableProgressMode();
         }
+    }
+
+    @Override
+    public void openShotFullscreen(Shot shot) {
+        ShotFullscreenActivity.startActivity(getContext(), shot);
     }
 
     private void initComponent() {
