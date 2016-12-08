@@ -8,7 +8,6 @@ import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.UserController;
 import rx.Single;
-import rx.functions.Func2;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -57,12 +56,7 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     private Single<Boolean> getTokenValidationSingle() {
         return Single.zip(tokenController.isTokenValid(),
                 userController.isGuestModeEnabled(),
-                new Func2<Boolean, Boolean, Boolean>() {
-                    @Override
-                    public Boolean call(Boolean isTokenValid, Boolean isGuestModeEnabled) {
-                        return isTokenValid && !isGuestModeEnabled;
-                    }
-                });
+                (isTokenValid, isGuestModeEnabled) -> isTokenValid && !isGuestModeEnabled);
     }
 
     private void handleTokenVerificationResult(Boolean isValid) {

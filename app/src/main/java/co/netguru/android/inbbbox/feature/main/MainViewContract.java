@@ -40,6 +40,8 @@ interface MainViewContract {
         void showMessage(@StringRes int message);
 
         void refreshShotsView();
+
+        void openSignUpPage(String url);
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -65,5 +67,7 @@ interface MainViewContract {
         void customizationStatusChanged(boolean isDetails);
 
         void onTimePicked(int hour, int minute);
+
+        void onCreateAccountClick();
     }
 }

@@ -7,7 +7,6 @@
     <dimen name="margin_default">16dp</dimen>
     <dimen name="margin_small">8dp</dimen>
 
-
     <dimen name='activity_login_logo_margin_top'>81dp</dimen>
     <dimen name='activity_login_logo_text_margin_top'>18dp</dimen>
     <dimen name="activity_login_text_margin_top">50dp</dimen>

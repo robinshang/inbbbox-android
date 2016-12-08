@@ -49,4 +49,8 @@ public class TokenParametersController {
                 OAUTH.INBBBOX_DEFAULT_TOKEN_TYPE,
                 OAUTH.INBBBOX_GUEST_SCOPE));
     }
+
+    public Single<String> getSignUpUrl() {
+        return Single.just(OAUTH.BASE_URL + OAUTH.SIGN_UP_ENDPOINT);
+    }
 }

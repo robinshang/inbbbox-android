@@ -10,6 +10,7 @@ import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.controler.LogoutController;
 import co.netguru.android.inbbbox.controler.SettingsController;
+import co.netguru.android.inbbbox.controler.TokenParametersController;
 import co.netguru.android.inbbbox.controler.notification.NotificationController;
 import co.netguru.android.inbbbox.controler.notification.NotificationScheduler;
 import co.netguru.android.inbbbox.feature.main.MainViewContract.Presenter;
@@ -34,6 +35,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private final NotificationScheduler notificationScheduler;
     private final NotificationController notificationController;
     private final SettingsController settingsController;
+    private final TokenParametersController tokenParametersController;
     private final LogoutController logoutController;
     private final CompositeSubscription subscriptions;
 
@@ -50,11 +52,13 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                           NotificationScheduler notificationScheduler,
                           NotificationController notificationController,
                           SettingsController settingsController,
+                          TokenParametersController tokenParametersController,
                           LogoutController logoutController) {
         this.userPrefsRepository = userPrefsRepository;
         this.notificationScheduler = notificationScheduler;
         this.notificationController = notificationController;
         this.settingsController = settingsController;
+        this.tokenParametersController = tokenParametersController;
         this.logoutController = logoutController;
         this.subscriptions = new CompositeSubscription();
     }
@@ -167,6 +171,17 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                 .subscribe(notificationSettings ->
                                 getView().showNotificationTime(DateTimeFormatUtil.getFormattedTime(hour, minute)),
                         this::onScheduleNotificationError));
+    }
+
+    @Override
+    public void onCreateAccountClick() {
+        subscriptions.add(
+                tokenParametersController
+                        .getSignUpUrl()
+                        .subscribe(getView()::openSignUpPage,
+                                throwable -> Timber
+                                        .e(throwable, "Error during sign up url retrieving"))
+        );
     }
 
     private void changeStreamSourceStatusIfCorrect() {
