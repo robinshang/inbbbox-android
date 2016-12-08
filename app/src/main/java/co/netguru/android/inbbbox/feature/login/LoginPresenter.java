@@ -118,5 +118,4 @@ public final class LoginPresenter
         Timber.e(throwable, "Error while getting user");
         getView().showApiError(errorHandler.getErrorMessageLabel(throwable));
     }
-
 }
