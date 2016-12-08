@@ -10,8 +10,9 @@ public final class Constants {
 
     public static class OAUTH {
         public static final String BASE_URL = "https://dribbble.com/";
+        public static final String SIGNUP_ENDPOINT = "oauth/authorize";
         public static final String OAUTH_AUTHORIZE_ENDPOINT = "oauth/authorize";
-        public static final String OAUTH_TOKEN_ENDPOINT = "oauth/token";
+        public static final String OAUTH_TOKEN_ENDPOINT = "signup";
 
         public static final String CLIENT_ID_KEY = "client_id";
         public static final String SCOPE_KEY = "scope";
