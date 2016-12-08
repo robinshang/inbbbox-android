@@ -40,7 +40,9 @@
         <activity android:name=".feature.buckets.details.BucketDetailsActivity" />
 
         <activity
-            android:name=".feature.details.fullscreen.ShotFullscreenActivity" />
+            android:name=".feature.details.fullscreen.ShotFullscreenActivity"
+            android:theme="@style/AppThemeGallery"
+            />
 
         <meta-data
             android:name="net.hockeyapp.android.appIdentifier"
