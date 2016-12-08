@@ -100,7 +100,7 @@ public final class LoginPresenter
                 tokenParametersController.getUserGuestToken()
                         .flatMapCompletable(apiTokenController::saveToken)
                         .andThen(userController.enableGuestMode())
-                        .subscribe(() -> getView().showNextScreen(),
+                        .subscribe(getView()::showNextScreen,
                                 this::handleError)
         );
     }
