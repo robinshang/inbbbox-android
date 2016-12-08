@@ -40,6 +40,7 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView;
 import co.netguru.android.inbbbox.view.FogFloatingActionMenu;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
+import timber.log.Timber;
 
 public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
         ShotsContract.View, ShotsContract.Presenter> implements RefreshableFragment, ShotsContract.View, ShotSwipeListener,
@@ -107,6 +108,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         try {
             shotActionListener = (ShotActionListener) context;
         } catch (ClassCastException e) {
+            Timber.e(e, "%s must implement ShotActionListener", context.toString());
             throw new ClassCastException(context.toString()
                     + " must implement ShotActionListener");
         }

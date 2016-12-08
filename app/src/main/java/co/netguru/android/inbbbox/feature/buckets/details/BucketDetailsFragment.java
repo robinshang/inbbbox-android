@@ -39,6 +39,7 @@ import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
+import timber.log.Timber;
 
 public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<ShotEntity>,
                 BucketDetailsContract.View, BucketDetailsContract.Presenter>
@@ -94,6 +95,7 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
             shotInBucketClickListener =
                     (BucketShotViewHolder.OnShotInBucketClickListener) context;
         } catch (ClassCastException e) {
+            Timber.e(e, "%s must implement BucketDetailsFragmentActionListener", context.toString());
             throw new ClassCastException(context.toString()
                     + " must implement BucketDetailsFragmentActionListener");
         }
