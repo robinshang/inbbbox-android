@@ -24,6 +24,8 @@ import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
+import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applySingleIoSchedulers;
+
 @ActivityScope
 public final class MainActivityPresenter extends MvpNullObjectBasePresenter<MainViewContract.View>
         implements Presenter {
@@ -101,7 +103,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     @Override
     public void timeViewClicked() {
         final Subscription subscription = settingsController.getNotificationSettings()
-                .compose(RxTransformerUtils.applySingleIoSchedulers())
+                .compose(applySingleIoSchedulers())
                 .subscribe(this::showTimePickDialog,
                         throwable -> {
                             Timber.e(throwable, "Error while getting settings");
@@ -118,7 +120,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
             return;
         }
         final Subscription subscription = notificationController.scheduleNotification()
-                .compose(RxTransformerUtils.applySingleIoSchedulers())
+                .compose(applySingleIoSchedulers())
                 .subscribe(this::onScheduleNotificationNext, this::onScheduleNotificationError);
 
         subscriptions.add(subscription);
@@ -157,6 +159,16 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         subscriptions.add(subscription);
     }
 
+    @Override
+    public void onTimePicked(int hour, int minute) {
+        subscriptions.add(settingsController.changeNotificationTime(hour, minute)
+                .andThen(notificationController.scheduleNotification())
+                .compose(applySingleIoSchedulers())
+                .subscribe(notificationSettings ->
+                                getView().showNotificationTime(DateTimeFormatUtil.getFormattedTime(hour, minute)),
+                        this::onScheduleNotificationError));
+    }
+
     private void changeStreamSourceStatusIfCorrect() {
         if (isFollowing || isNew || isPopular || isDebut) {
             changeStreamSourceStatus();
@@ -191,25 +203,13 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     }
 
     private void showTimePickDialog(NotificationSettings notificationSettings) {
-        getView().showTimePickDialog(notificationSettings.getHour(), notificationSettings.getMinute(),
-                (view, hour, minute) -> onTimePicked(hour, minute));
-    }
-
-    private void onTimePicked(int hour, int minute) {
-        final Subscription subscription = settingsController.changeNotificationTime(hour, minute)
-                .andThen(notificationController.scheduleNotification())
-                .compose(RxTransformerUtils.applySingleIoSchedulers())
-                .subscribe(notificationSettings ->
-                                getView().showNotificationTime(DateTimeFormatUtil.getFormattedTime(hour, minute)),
-                        this::onScheduleNotificationError);
-
-        subscriptions.add(subscription);
+        getView().showTimePickDialog(notificationSettings.getHour(), notificationSettings.getMinute());
     }
 
     private void prepareUserSettings() {
         final Subscription subscription = settingsController.getSettings()
                 .doOnSuccess(settings -> checkNotificationSchedule(settings.getNotificationSettings()))
-                .compose(RxTransformerUtils.applySingleIoSchedulers())
+                .compose(applySingleIoSchedulers())
                 .subscribe(this::setSettings,
                         throwable -> Timber.e(throwable, "Error while getting settings"));
         subscriptions.add(subscription);
@@ -218,7 +218,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private void checkNotificationSchedule(NotificationSettings settings) {
         if (settings.isEnabled()) {
             notificationController.scheduleNotification()
-                    .compose(RxTransformerUtils.applySingleIoSchedulers())
+                    .compose(applySingleIoSchedulers())
                     .subscribe(this::onScheduleNotificationNext, this::onScheduleNotificationError);
         }
     }
