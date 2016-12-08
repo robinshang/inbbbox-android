@@ -11,14 +11,14 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.controler.LogoutController;
 import co.netguru.android.inbbbox.controler.SettingsController;
 import co.netguru.android.inbbbox.controler.TokenParametersController;
+import co.netguru.android.inbbbox.controler.UserController;
 import co.netguru.android.inbbbox.controler.notification.NotificationController;
 import co.netguru.android.inbbbox.controler.notification.NotificationScheduler;
 import co.netguru.android.inbbbox.feature.main.MainViewContract.Presenter;
-import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
-import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.inbbbox.model.localrepository.NotificationSettings;
 import co.netguru.android.inbbbox.model.localrepository.Settings;
 import co.netguru.android.inbbbox.model.localrepository.StreamSourceSettings;
+import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.Subscription;
@@ -31,7 +31,7 @@ import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applySingleIoS
 public final class MainActivityPresenter extends MvpNullObjectBasePresenter<MainViewContract.View>
         implements Presenter {
 
-    private final UserPrefsRepository userPrefsRepository;
+    private UserController userController;
     private final NotificationScheduler notificationScheduler;
     private final NotificationController notificationController;
     private final SettingsController settingsController;
@@ -45,16 +45,16 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private boolean isDebut;
 
     @Nullable
-    private UserEntity user;
+    private User user;
 
     @Inject
-    MainActivityPresenter(UserPrefsRepository userPrefsRepository,
+    MainActivityPresenter(UserController userController,
                           NotificationScheduler notificationScheduler,
                           NotificationController notificationController,
                           SettingsController settingsController,
                           TokenParametersController tokenParametersController,
                           LogoutController logoutController) {
-        this.userPrefsRepository = userPrefsRepository;
+        this.userController = userController;
         this.notificationScheduler = notificationScheduler;
         this.notificationController = notificationController;
         this.settingsController = settingsController;
@@ -96,7 +96,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     @Override
     public void prepareUserData() {
-        final Subscription subscription = userPrefsRepository.getUser()
+        final Subscription subscription = userController.getUserFromCache()
                 .subscribe(this::handleUserData,
                         throwable -> Timber.e(throwable, "Error while getting user"));
         subscriptions.add(subscription);
@@ -266,7 +266,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         Timber.e(throwable, "Error while scheduling notification");
     }
 
-    private void handleUserData(UserEntity user) {
+    private void handleUserData(User user) {
         this.user = user;
         getView().showUserName(user.username());
         getView().showUserPhoto(user.avatarUrl());
