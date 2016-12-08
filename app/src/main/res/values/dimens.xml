@@ -114,6 +114,7 @@
     <dimen name="details_comment_edit_margin">24dp</dimen>
     <dimen name="details_comment_load_more_bottom_margin">8dp</dimen>
     <dimen name="recycler_view_with_fab_bottom_padding">88dp</dimen>
+    <dimen name="shot_item_width_landscape">200dp</dimen>
 
     <fraction name="four_images_view_percentage">50%</fraction>
 </resources>
