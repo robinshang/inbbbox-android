@@ -41,10 +41,11 @@ public final class Constants {
         }
     }
 
-    public static class CODES {
-        public static final int API_ERROR_429 = 429;
-
-        private CODES() { throw new AssertionError(); }
+    public enum HttpErrorCodes {
+        ;
+        public static final int HTTP_TOO_MANY_REQUESTS_429 = 429;
+        public static final int HTTP_FORBIDDEN_403 = 403;
+        public static final int HTTP_UNAUTHORIZED_401 = 401;
     }
 
     public static class Animations {

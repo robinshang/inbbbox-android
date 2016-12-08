@@ -2,8 +2,6 @@ package co.netguru.android.inbbbox.controler;
 
 import android.content.res.Resources;
 
-import java.net.HttpURLConnection;
-
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.Constants;
@@ -35,13 +33,13 @@ public class ErrorController {
     public String getMessageBasedOnErrorCode(int code) {
         String message;
 
-        if (code == Constants.CODES.API_ERROR_429) {
+        if (code == Constants.HttpErrorCodes.HTTP_TOO_MANY_REQUESTS_429) {
             message = resources.getString(R.string.api_error_429);
 
-        } else if (code == HttpURLConnection.HTTP_FORBIDDEN) {
+        } else if (code == Constants.HttpErrorCodes.HTTP_FORBIDDEN_403) {
             message = resources.getString(R.string.error_to_low_rank);
 
-        } else if (code == HttpURLConnection.HTTP_UNAUTHORIZED) {
+        } else if (code == Constants.HttpErrorCodes.HTTP_UNAUTHORIZED_401) {
             message = resources.getString(R.string.authorization_error);
 
         } else {
