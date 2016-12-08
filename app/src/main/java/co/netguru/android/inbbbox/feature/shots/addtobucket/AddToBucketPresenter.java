@@ -70,4 +70,9 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
         getView().passResultAndCloseFragment(bucket, shot);
     }
 
+    @Override
+    public void onOpenShotFullscreen() {
+        getView().openShotFullscreen(shot);
+    }
+
 }
