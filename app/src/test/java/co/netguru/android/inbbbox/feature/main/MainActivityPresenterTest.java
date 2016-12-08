@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.controler.LogoutController;
 import co.netguru.android.inbbbox.controler.SettingsController;
 import co.netguru.android.inbbbox.controler.TokenParametersController;
@@ -23,6 +24,10 @@ import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Single;
 
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -80,6 +85,8 @@ public class MainActivityPresenterTest {
         when(settingsControllerMock.getNotificationSettings())
                 .thenReturn(Single.just(notificationSettingsMock));
         when(logoutControllerMock.performLogout()).thenReturn(Completable.complete());
+
+        when(userControllerMock.isGuestModeEnabled()).thenReturn(Single.just(false));
     }
 
     @Test
@@ -161,6 +168,152 @@ public class MainActivityPresenterTest {
         mainActivityPresenter.performLogout();
 
         verify(viewMock, times(1)).showLoginActivity();
+    }
+
+    @Test
+    public void whenToggleStatusChangedToTrue_thenShowLogoutMenu() {
+
+        mainActivityPresenter.toggleButtonChanged(true);
+
+        verify(viewMock, times(1)).showLogoutMenu();
+    }
+
+    @Test
+    public void whenToggleStatusChangedToFalse_thenShowMainMenu() {
+
+        mainActivityPresenter.toggleButtonChanged(false);
+
+        verify(viewMock, times(1)).showMainMenu();
+    }
+
+    @Test
+    public void whenToggleStatusChangedToTrueAndUserIsNotNull_thenShowUserName() {
+        mainActivityPresenter.prepareUserData();
+
+        mainActivityPresenter.toggleButtonChanged(true);
+
+        verify(viewMock, atLeastOnce()).showUserName(anyString());
+    }
+
+    @Test
+    public void whenToggleStatusChangedToFalseAndUserIsNotNull_thenShowUserName() {
+        mainActivityPresenter.prepareUserData();
+
+        mainActivityPresenter.toggleButtonChanged(false);
+
+        verify(viewMock, atLeastOnce()).showUserName(anyString());
+    }
+
+    @Test
+    public void whenNotificationEnabled_thenSaveNotificationSettings() {
+        Boolean notificationState = false;
+        when(settingsControllerMock.changeNotificationStatus(anyBoolean()))
+                .thenReturn(Completable.complete());
+        when(notificationControllerMock.scheduleNotification())
+                .thenReturn(Single.just(notificationSettingsMock));
+
+        mainActivityPresenter.notificationStatusChanged(notificationState);
+
+        verify(settingsControllerMock, times(1)).changeNotificationStatus(notificationState);
+    }
+
+    @Test
+    public void whenNotificationDisabled_thenSaveNotificationSettings() {
+        Boolean notificationState = false;
+        when(settingsControllerMock.changeNotificationStatus(anyBoolean()))
+                .thenReturn(Completable.complete());
+
+        mainActivityPresenter.notificationStatusChanged(notificationState);
+
+        verify(settingsControllerMock, times(1)).changeNotificationStatus(notificationState);
+    }
+
+    @Test
+    public void whenNotificationDisabled_thenCancelNotification() {
+        when(settingsControllerMock.changeNotificationStatus(anyBoolean()))
+                .thenReturn(Completable.complete());
+
+        mainActivityPresenter.notificationStatusChanged(false);
+
+        verify(notificationSchedulerMock, times(1)).cancelNotification();
+    }
+
+    @Test
+    public void whenNotificationEnabled_thenScheduleNotification() {
+        when(settingsControllerMock.changeNotificationStatus(anyBoolean()))
+                .thenReturn(Completable.complete());
+        when(notificationControllerMock.scheduleNotification())
+                .thenReturn(Single.just(notificationSettingsMock));
+
+        mainActivityPresenter.notificationStatusChanged(true);
+
+        verify(notificationControllerMock, times(1)).scheduleNotification();
+    }
+
+    @Test
+    public void whenFollowingStatusEnabled_thenEnabledChangeIt() {
+        Boolean status = true;
+        when(settingsControllerMock
+                .changeStreamSourceSettings(anyBoolean(), anyBoolean(), anyBoolean(), anyBoolean()))
+                .thenReturn(Completable.complete());
+
+        mainActivityPresenter.followingStatusChanged(status);
+
+        verify(settingsControllerMock, times(1))
+                .changeStreamSourceSettings(eq(status), anyBoolean(), anyBoolean(), anyBoolean());
+    }
+
+    @Test
+    public void whenNewStatusEnabled_thenEnabledChangeIt() {
+        Boolean status = true;
+        when(settingsControllerMock
+                .changeStreamSourceSettings(anyBoolean(), anyBoolean(), anyBoolean(), anyBoolean()))
+                .thenReturn(Completable.complete());
+
+        mainActivityPresenter.newStatusChanged(status);
+
+        verify(settingsControllerMock, times(1))
+                .changeStreamSourceSettings(anyBoolean(), eq(status), anyBoolean(), anyBoolean());
+    }
+
+    @Test
+    public void whenPopularStatusEnabled_thenEnabledChangeIt() {
+        Boolean status = true;
+        when(settingsControllerMock
+                .changeStreamSourceSettings(anyBoolean(), anyBoolean(), anyBoolean(), anyBoolean()))
+                .thenReturn(Completable.complete());
+
+        mainActivityPresenter.popularStatusChanged(status);
+
+        verify(settingsControllerMock, times(1))
+                .changeStreamSourceSettings(anyBoolean(), anyBoolean(), eq(status), anyBoolean());
+    }
+
+    @Test
+    public void whenDebutsStatusEnabled_thenEnabledChangeIt() {
+        Boolean status = true;
+        when(settingsControllerMock
+                .changeStreamSourceSettings(anyBoolean(), anyBoolean(), anyBoolean(), anyBoolean()))
+                .thenReturn(Completable.complete());
+
+        mainActivityPresenter.debutsStatusChanged(status);
+
+        verify(settingsControllerMock, times(1))
+                .changeStreamSourceSettings(anyBoolean(), anyBoolean(), anyBoolean(), eq(status));
+    }
+
+    @Test
+    public void whenAllStreamsSourceStatusAreDisabled_thenShowAtLestOneMustBeEnabledInfo() {
+        when(settingsControllerMock
+                .changeStreamSourceSettings(anyBoolean(), anyBoolean(), anyBoolean(), anyBoolean()))
+                .thenReturn(Completable.complete());
+
+        mainActivityPresenter.followingStatusChanged(false);
+        mainActivityPresenter.newStatusChanged(false);
+        mainActivityPresenter.popularStatusChanged(false);
+        mainActivityPresenter.debutsStatusChanged(false);
+
+        verify(viewMock, atLeastOnce()).showMessage(R.string.change_stream_source_error);
     }
 
     @After
