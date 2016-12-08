@@ -5,11 +5,12 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 
 import co.netguru.android.inbbbox.R;
 import timber.log.Timber;
 
-public class TimePickerDialogFragment extends android.support.v4.app.DialogFragment {
+public class TimePickerDialogFragment extends DialogFragment {
 
     public static final String TAG = TimePickerDialogFragment.class.getSimpleName();
 
@@ -43,9 +44,11 @@ public class TimePickerDialogFragment extends android.support.v4.app.DialogFragm
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new TimePickerDialog(getContext(), R.style.TimePickerDialog,
+        return new TimePickerDialog(getContext(),
+                R.style.TimePickerDialog,
                 (view, hourOfDay, minute) -> onTimePickedListener.timePicked(hourOfDay, minute),
-                getArguments().getInt(START_HOUR), getArguments().getInt(START_MINUTE), false);
+                getArguments().getInt(START_HOUR),
+                getArguments().getInt(START_MINUTE), false);
     }
 
     public interface OnTimePickedListener {

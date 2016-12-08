@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.feature.common;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
@@ -28,9 +29,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @BindView(android.R.id.content)
     View contentView;
+    @Nullable
     @BindView(R.id.fragment_container)
     View bottomSheetView;
 
+    @Nullable
     private BottomSheetBehavior bottomSheetBehavior;
     private Subscription criticalLogoutSubscription;
 
@@ -44,14 +47,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(BOTTOM_SHEET_STATE, bottomSheetBehavior.getState());
+        if (bottomSheetBehavior != null) {
+            outState.putInt(BOTTOM_SHEET_STATE, bottomSheetBehavior.getState());
+        }
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        bottomSheetBehavior.setState(savedInstanceState.getInt(BOTTOM_SHEET_STATE,
-                BottomSheetBehavior.STATE_COLLAPSED));
+        if (bottomSheetBehavior != null) {
+            bottomSheetBehavior.setState(savedInstanceState.getInt(BOTTOM_SHEET_STATE,
+                    BottomSheetBehavior.STATE_COLLAPSED));
+        }
     }
 
     @Override
@@ -71,7 +78,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (isBottomSheetOpen()) {
+        if (bottomSheetBehavior != null && isBottomSheetOpen()) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             return;
         }
@@ -89,8 +96,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void showBottomSheet(Fragment fragment, String tag) {
-        replaceFragment(R.id.fragment_container, fragment, tag).commit();
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        if (bottomSheetView != null && bottomSheetBehavior != null) {
+            replaceFragment(R.id.fragment_container, fragment, tag).commit();
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
     }
 
     private void handleUnauthorisedEvent(CriticalLogoutEvent object) {
@@ -104,19 +113,21 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void initializeBottomSheet() {
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
-        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    InputUtils.hideKeyboard(BaseActivity.this, bottomSheetView);
+        if (bottomSheetView != null) {
+            bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
+            bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+                @Override
+                public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                        InputUtils.hideKeyboard(BaseActivity.this, bottomSheetView);
+                    }
                 }
-            }
 
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                //no-op
-            }
-        });
+                @Override
+                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                    //no-op
+                }
+            });
+        }
     }
 }
