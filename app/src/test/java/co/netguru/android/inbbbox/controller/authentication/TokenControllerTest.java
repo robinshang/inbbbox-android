@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.controller.authentication;
 
 import android.content.res.Resources;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,11 +25,12 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ApiTokenControllerTest {
+public class TokenControllerTest {
 
     @Rule
     public TestRule rule = new RxSyncTestRule();
@@ -42,8 +44,11 @@ public class ApiTokenControllerTest {
     @Mock
     public Resources resourcesMock;
 
+    @Mock
+    public Token tokenMock;
+
     @InjectMocks
-    public TokenController apiTokenController;
+    public TokenController tokenController;
 
     private static final String CODE = "testCode";
     private static final String RESOURCES_STRING = "clientId";
@@ -53,6 +58,7 @@ public class ApiTokenControllerTest {
     @Before
     public void setUp() {
         when(resourcesMock.getString(anyInt())).thenReturn(RESOURCES_STRING);
+        when(tokenPrefsRepository.getToken()).thenReturn(tokenMock);
         expectedToken = new Token("", "", "");
     }
 
@@ -64,7 +70,7 @@ public class ApiTokenControllerTest {
         when(tokenPrefsRepository.saveToken(expectedToken))
                 .thenReturn(Completable.complete());
 
-        apiTokenController.requestNewToken(CODE).subscribe(testSubscriber);
+        tokenController.requestNewToken(CODE).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         testSubscriber.assertCompleted();
@@ -79,7 +85,7 @@ public class ApiTokenControllerTest {
         when(tokenPrefsRepository.saveToken(expectedToken))
                 .thenReturn(Completable.complete());
 
-        apiTokenController.requestNewToken(CODE).subscribe(testSubscriber);
+        tokenController.requestNewToken(CODE).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         testSubscriber.assertValue(expectedToken);
@@ -92,9 +98,41 @@ public class ApiTokenControllerTest {
         when(authorizeApiMock.getToken(anyString(), anyString(), anyString()))
                 .thenReturn(Observable.error(expectedThrowable));
 
-        apiTokenController.requestNewToken(CODE).subscribe(testSubscriber);
+        tokenController.requestNewToken(CODE).subscribe(testSubscriber);
 
         testSubscriber.assertError(expectedThrowable);
         verify(tokenPrefsRepository, never()).saveToken(anyObject());
+    }
+
+    @Test
+    public void whenTokenExist_thenReturnTrueWhenTokenIsValid() {
+        String exampleToken = "token";
+        when(tokenMock.getAccessToken()).thenReturn(exampleToken);
+        TestSubscriber<Boolean> testSubscriber = new TestSubscriber<>();
+
+        tokenController.isTokenValid().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        Assert.assertEquals(true, testSubscriber.getOnNextEvents().get(0));
+    }
+
+    @Test
+    public void whenTokenNotExist_thenReturnFalseWhenTokenIsValid() {
+        String exampleToken = null;
+        when(tokenMock.getAccessToken()).thenReturn(exampleToken);
+        TestSubscriber<Boolean> testSubscriber = new TestSubscriber<>();
+
+        tokenController.isTokenValid().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        Assert.assertEquals(false, testSubscriber.getOnNextEvents().get(0));
+    }
+
+    @Test
+    public void whenTokenSaveIsSubscribed_thenCallSaveMethodOnRepository() {
+
+        tokenController.saveToken(tokenMock);
+
+        verify(tokenPrefsRepository, times(1)).saveToken(tokenMock);
     }
 }

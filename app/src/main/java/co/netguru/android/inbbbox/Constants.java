@@ -10,6 +10,7 @@ public final class Constants {
 
     public static class OAUTH {
         public static final String BASE_URL = "https://dribbble.com/";
+        public static final String SIGN_UP_ENDPOINT = "signup";
         public static final String OAUTH_AUTHORIZE_ENDPOINT = "oauth/authorize";
         public static final String OAUTH_TOKEN_ENDPOINT = "oauth/token";
 
@@ -20,6 +21,8 @@ public final class Constants {
         public static final String CODE_KEY = "code";
         public static final String ERROR_KEY = "error";
         public static final String INBBBOX_SCOPE = "public+write+comment";
+        public static final String INBBBOX_GUEST_SCOPE = "public";
+        public static final String INBBBOX_DEFAULT_TOKEN_TYPE = "Bearer";
 
         private OAUTH() {
             throw new AssertionError();
