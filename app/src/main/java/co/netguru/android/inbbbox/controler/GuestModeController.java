@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.controler;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.localrepository.GuestModeRepository;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
 import timber.log.Timber;
 
@@ -19,10 +20,10 @@ public class GuestModeController {
         this.guestModeRepository = guestModeRepository;
     }
 
-    public Completable.CompletableTransformer getTransformerForShotLike(long id) {
+    public Completable.CompletableTransformer getTransformerForShotLike(Shot shot) {
         return completable -> completable
                 .startWith(isGuestModeDisabled())
-                .onErrorResumeNext(exception -> performLike(exception, id));
+                .onErrorResumeNext(exception -> performLike(exception, shot));
     }
 
     public Completable.CompletableTransformer getTransformerForIsShotLiked(long id) {
@@ -44,14 +45,15 @@ public class GuestModeController {
     /**
      * logged with i() because exception is expected when guest mode is enabled
      */
-    private Completable performLike(Throwable exception, Long id) {
+    private Completable performLike(Throwable exception, Shot shot) {
         Timber.i(exception.getMessage());
-        return guestModeRepository.addLikeId(id);
+        return guestModeRepository.addLikeId(shot);
     }
 
     private Completable checkIsLiked(long id) {
         return guestModeRepository.isShotLiked(id)
-                .doOnCompleted(() -> Timber.i("Shot is liked"));
+                .doOnCompleted(() -> Timber.i("Shot is liked"))
+                .doOnError(throwable -> Timber.i("Shot is not liked"));
     }
 
     private Completable getGuestModeCompletable(Boolean guestModeState) {

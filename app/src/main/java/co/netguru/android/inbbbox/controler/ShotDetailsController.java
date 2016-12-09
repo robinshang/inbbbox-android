@@ -9,6 +9,7 @@ import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.api.ShotsApi;
 import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
 import co.netguru.android.inbbbox.model.ui.User;
 import rx.Completable;
@@ -41,9 +42,10 @@ public class ShotDetailsController {
                         .create(isLiked, isBucketed, comments));
     }
 
-    public Completable performLikeAction(long shotId, boolean newLikeState) {
-        return newLikeState ? likeShotController.likeShot(shotId) :
-                likeShotController.unLikeShot(shotId);
+    public Completable performLikeAction(Shot shot, boolean newLikeState) {
+        return newLikeState ? likeShotController.likeShot(shot) :
+                // TODO: 09.12.2016 shot unlike
+                likeShotController.unLikeShot(shot.id());
     }
 
     public Single<Comment> sendComment(Long shotId, String commentText) {

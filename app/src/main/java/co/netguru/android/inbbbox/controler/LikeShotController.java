@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.api.LikesApi;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
 
 @Singleton
@@ -23,9 +24,10 @@ public class LikeShotController {
                 .compose(guestModeController.getTransformerForIsShotLiked(id));
     }
 
-    public Completable likeShot(long id) {
-        return likesApi.likeShot(id)
-                .compose(guestModeController.getTransformerForShotLike(id));
+    public Completable likeShot(Shot shot) {
+        return likesApi.likeShot(shot.id())
+                // TODO: 09.12.2016 change for shot saving
+                .compose(guestModeController.getTransformerForShotLike(shot));
     }
 
     public Completable unLikeShot(long id) {

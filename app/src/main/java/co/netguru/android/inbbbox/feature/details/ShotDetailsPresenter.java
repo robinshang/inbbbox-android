@@ -62,7 +62,7 @@ public class ShotDetailsPresenter
     public void handleShotLike(boolean newLikeState) {
         subscriptions.add(
                 shotDetailsController
-                        .performLikeAction(shot.id(), newLikeState)
+                        .performLikeAction(shot, newLikeState)
                         .subscribe(() -> updateLikeState(newLikeState),
                                 this::handleApiError)
         );
