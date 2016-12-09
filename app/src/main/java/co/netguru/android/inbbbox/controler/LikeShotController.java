@@ -19,11 +19,12 @@ public class LikeShotController {
     }
 
     public Completable isShotLiked(long id) {
-        return likesApi.isShotLiked(id);
+        return likesApi.isShotLiked(id)
+                .compose(guestModeController.getTransformerForIsShotLiked(id));
     }
 
     public Completable likeShot(long id) {
-        return likesApi.isShotLiked(id)
+        return likesApi.likeShot(id)
                 .compose(guestModeController.getTransformerForShotLike(id));
     }
 

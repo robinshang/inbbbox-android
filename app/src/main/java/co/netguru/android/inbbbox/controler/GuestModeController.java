@@ -22,9 +22,20 @@ public class GuestModeController {
     public Completable.CompletableTransformer getTransformerForShotLike(long id) {
         return completable -> completable
                 .startWith(isGuestModeDisabled())
-                .onErrorResumeNext(exception -> handleGuestModeLike(exception, id));
+                .onErrorResumeNext(exception -> performLike(exception, id));
     }
 
+    public Completable.CompletableTransformer getTransformerForIsShotLiked(long id) {
+        return completable -> completable
+                .startWith(isGuestModeDisabled())
+                .onErrorResumeNext(e -> checkIsLiked(id));
+    }
+
+    /**
+     * when guest mode is disabled Completable is complete and stream will follow ONLINE action flow,
+     * when guest mode is enabled Completable returns exception and stream will OFFLINE action flow
+     * - e.g. like id will be cached in local storage
+     */
     private Completable isGuestModeDisabled() {
         return userController.isGuestModeEnabled()
                 .flatMapCompletable(this::getGuestModeCompletable);
@@ -33,9 +44,14 @@ public class GuestModeController {
     /**
      * logged with i() because exception is expected when guest mode is enabled
      */
-    private Completable handleGuestModeLike(Throwable exception, Long id) {
+    private Completable performLike(Throwable exception, Long id) {
         Timber.i(exception.getMessage());
         return guestModeRepository.addLikeId(id);
+    }
+
+    private Completable checkIsLiked(long id) {
+        return guestModeRepository.isShotLiked(id)
+                .doOnCompleted(() -> Timber.d("Shot is liked"));
     }
 
     private Completable getGuestModeCompletable(Boolean guestModeState) {

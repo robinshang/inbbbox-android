@@ -20,6 +20,7 @@ import timber.log.Timber;
 public class GuestModeRepository {
 
     private static final String LIKES_LIST_KEY = "key:likes";
+    private static final String SHOT_IS_NOT_LIKED_ERROR = "Shot is not liked";
     private final SharedPreferences sharedPreferences;
     private final Gson gson;
     private final Type listType;
@@ -38,7 +39,14 @@ public class GuestModeRepository {
                 .flatMapCompletable(this::saveLikesList);
     }
 
-    public Single<List<Long>> getLikesList() {
+    public Completable isShotLiked(long id) {
+        return getLikesList()
+                .flatMapCompletable(longs -> longs.contains(id)
+                        ? Completable.complete()
+                        : Completable.error(new Throwable(SHOT_IS_NOT_LIKED_ERROR)));
+    }
+
+    private Single<List<Long>> getLikesList() {
         return Single.fromCallable(this::getListFromPrefs
         );
     }
