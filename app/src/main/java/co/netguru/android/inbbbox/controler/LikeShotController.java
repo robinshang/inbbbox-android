@@ -4,16 +4,17 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.api.LikesApi;
-
 import rx.Completable;
 
 @Singleton
 public class LikeShotController {
 
+    private final GuestModeController guestModeController;
     private final LikesApi likesApi;
 
     @Inject
-    LikeShotController(LikesApi likesApi) {
+    LikeShotController(GuestModeController guestModeController, LikesApi likesApi) {
+        this.guestModeController = guestModeController;
         this.likesApi = likesApi;
     }
 
@@ -22,7 +23,8 @@ public class LikeShotController {
     }
 
     public Completable likeShot(long id) {
-        return likesApi.likeShot(id);
+        return likesApi.isShotLiked(id)
+                .compose(guestModeController.getTransformerForShotLike(id));
     }
 
     public Completable unLikeShot(long id) {

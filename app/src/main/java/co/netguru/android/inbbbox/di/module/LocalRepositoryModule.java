@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import co.netguru.android.inbbbox.localrepository.GuestModeRepository;
 import co.netguru.android.inbbbox.localrepository.SettingsPrefsRepository;
 import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
@@ -18,6 +19,7 @@ import dagger.Provides;
 @Module
 public class LocalRepositoryModule {
 
+    private static final String GUEST_MODE_SHARED_PREFERENCES_NAME = "guest_mode";
     private static final String SETTINGS_SHARED_PREFERENCES_NAME = "settings";
     private static final String TOKEN_SHARED_PREFERENCES_NAME = "token";
     private static final String USER_SHARED_PREFERENCES_NAME = "user";
@@ -25,19 +27,29 @@ public class LocalRepositoryModule {
     @Named(SETTINGS_SHARED_PREFERENCES_NAME)
     @Provides
     SharedPreferences provideSettingsSharedPreferences(Context context) {
-        return context.getSharedPreferences(context.getPackageName().concat(SETTINGS_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
+        return context.getSharedPreferences(context.getPackageName()
+                .concat(SETTINGS_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
     }
 
     @Named(TOKEN_SHARED_PREFERENCES_NAME)
     @Provides
     SharedPreferences provideTokenSharedPreferences(Context context) {
-        return context.getSharedPreferences(context.getPackageName().concat(TOKEN_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
+        return context.getSharedPreferences(context.getPackageName()
+                .concat(TOKEN_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
     }
 
     @Named(USER_SHARED_PREFERENCES_NAME)
     @Provides
     SharedPreferences provideUserSharedPreferences(Context context) {
-        return context.getSharedPreferences(context.getPackageName().concat(USER_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
+        return context.getSharedPreferences(context.getPackageName()
+                .concat(USER_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
+    }
+
+    @Named(GUEST_MODE_SHARED_PREFERENCES_NAME)
+    @Provides
+    SharedPreferences provideGuestModeSharedPreferences(Context context) {
+        return context.getSharedPreferences(context.getPackageName()
+                .concat(GUEST_MODE_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
     }
 
     @Provides
@@ -56,5 +68,12 @@ public class LocalRepositoryModule {
     UserPrefsRepository provideUserPrefsRepository(
             @Named(USER_SHARED_PREFERENCES_NAME) SharedPreferences sharedPreferences, Gson gson) {
         return new UserPrefsRepository(sharedPreferences, gson);
+    }
+
+    @Provides
+    GuestModeRepository provideGuestModeRepository(
+            @Named(GUEST_MODE_SHARED_PREFERENCES_NAME) SharedPreferences sharedPreferences,
+            Gson gson) {
+        return new GuestModeRepository(sharedPreferences, gson);
     }
 }
