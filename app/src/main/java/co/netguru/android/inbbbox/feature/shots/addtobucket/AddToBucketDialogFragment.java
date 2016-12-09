@@ -214,7 +214,8 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     }
 
     private String getFormattedDate(LocalDateTime creationDate) {
-        return String.format(shotCreatedOnString, DateTimeFormatUtil.getMonthShortDayAndYearFormattedDate(creationDate));
+        return String.format(shotCreatedOnString,
+                DateTimeFormatUtil.getMonthShortDayAndYearFormattedDate(creationDate));
     }
 
     @FunctionalInterface

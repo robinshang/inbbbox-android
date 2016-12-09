@@ -14,22 +14,21 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseActivity;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.ShotLoadingManager;
+import timber.log.Timber;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class ShotFullscreenActivity extends BaseActivity implements RequestListener {
 
     public static final String KEY_SHOT = "key:shot";
 
+    @BindView(R.id.shot_fullscreen_image)
+    ImageView shotImageView;
+
     public static void startActivity(Context context, Shot shot) {
         Intent intent = new Intent(context, ShotFullscreenActivity.class);
         intent.putExtra(KEY_SHOT, shot);
         context.startActivity(intent);
     }
-
-    @BindView(R.id.shot_fullscreen_image)
-    ImageView shotImageView;
-
-    private PhotoViewAttacher attacher;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,13 +41,16 @@ public class ShotFullscreenActivity extends BaseActivity implements RequestListe
 
     @Override
     public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
+        if(e != null) {
+            Timber.e(e, "Error occurred when getting shot image");
+        }
         return false;
     }
 
     @Override
     public boolean onResourceReady(Object resource, Object model, Target target,
                                    boolean isFromMemoryCache, boolean isFirstResource) {
-        attacher = new PhotoViewAttacher(shotImageView);
+        PhotoViewAttacher attacher = new PhotoViewAttacher(shotImageView);
         return false;
     }
 }

@@ -95,6 +95,6 @@ public interface ShotDetailsContract {
 
         void getMoreComments();
 
-        void onOpenShotFullscreen();
+        void onShotImageClick();
     }
 }

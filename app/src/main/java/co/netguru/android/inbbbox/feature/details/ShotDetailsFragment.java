@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.details;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,7 +31,6 @@ import co.netguru.android.inbbbox.feature.details.fullscreen.ShotFullscreenActiv
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
-import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -131,8 +129,8 @@ public class ShotDetailsFragment
     }
     
     @OnClick(R.id.parallax_image_view)
-    void onOpenShotFullscreen() {
-        getPresenter().onOpenShotFullscreen();
+    void onShotImageClick() {
+        getPresenter().onShotImageClick();
     }
 
     @Override

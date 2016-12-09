@@ -584,6 +584,12 @@ public class ShotDetailsPresenterTest {
         verify(viewMock, times(1)).showErrorMessage(anyString());
     }
 
+    @Test
+    public void whenOnShotImageClicked_thenShowFullscreen() {
+        shotDetailsPresenter.onShotImageClick();
+        verify(viewMock, times(1)).openShotFullscreen(any(Shot.class));
+    }
+
     @After
     public void tearDown() {
         shotDetailsPresenter.detachView(false);
