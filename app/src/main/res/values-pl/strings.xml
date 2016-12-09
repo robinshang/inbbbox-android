@@ -92,4 +92,5 @@
     <string name="create_account_label">Zarejestruj się w Dribbble</string>
     <string name="guest_label">Gość?</string>
     <string name="guest_button_text">Używaj jako gość</string>
+    <string name="or_loging_with_guest">albo</string>
 </resources>
