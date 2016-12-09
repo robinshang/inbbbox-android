@@ -89,4 +89,7 @@
     <string name="yesterday">wczoraj</string>
     <string name="loading_more_shots">Ładowanie projektów</string>
     <string name="login_button_text">Zaloguj się z Dribbble</string>
+    <string name="create_account_label">Zarejestruj się w Dribbble</string>
+    <string name="guest_label">Gość?</string>
+    <string name="guest_button_text">Używaj jako gość</string>
 </resources>
