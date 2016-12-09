@@ -96,10 +96,13 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     @Override
     public void prepareUserData() {
-        userController.isGuestModeEnabled()
-                .compose(applySingleIoSchedulers())
-                .subscribe(this::verifyGuestMode,
-                        throwable -> Timber.e(throwable, "Error while getting guest mode state"));
+        subscriptions.add(
+                userController.isGuestModeEnabled()
+                        .compose(applySingleIoSchedulers())
+                        .subscribe(this::verifyGuestMode,
+                                throwable -> Timber
+                                        .e(throwable, "Error while getting guest mode state"))
+        );
         prepareUserSettings();
     }
 

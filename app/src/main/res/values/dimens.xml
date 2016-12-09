@@ -118,6 +118,8 @@
     <dimen name="activity_login_divider_side_margin">8dp</dimen>
     <dimen name="activity_login_button_radius">70dp</dimen>
     <dimen name="shot_item_width_landscape">200dp</dimen>
+    <dimen name="guest_avatar_padding">8dp</dimen>
+    <dimen name="button_border_width">2dp</dimen>
 
     <fraction name="four_images_view_percentage">50%</fraction>
 </resources>
