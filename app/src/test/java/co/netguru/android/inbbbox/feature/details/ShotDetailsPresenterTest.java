@@ -138,29 +138,29 @@ public class ShotDetailsPresenterTest {
     @Test
     public void whenShotLiked_thenPerformLikeActionWithTrue() {
         boolean likeState = true;
-        when(shotDetailsControllerMock.performLikeAction(EXAMPLE_ID, likeState))
+        when(shotDetailsControllerMock.performLikeAction(shotMock, likeState))
                 .thenReturn(Completable.complete());
 
         shotDetailsPresenter.handleShotLike(likeState);
 
-        verify(shotDetailsControllerMock, times(1)).performLikeAction(EXAMPLE_ID, likeState);
+        verify(shotDetailsControllerMock, times(1)).performLikeAction(shotMock, likeState);
     }
 
     @Test
     public void whenShotLiked_thenPerformLikeActionWithFalse() {
         boolean likeState = false;
-        when(shotDetailsControllerMock.performLikeAction(EXAMPLE_ID, likeState))
+        when(shotDetailsControllerMock.performLikeAction(shotMock, likeState))
                 .thenReturn(Completable.complete());
 
         shotDetailsPresenter.handleShotLike(likeState);
 
-        verify(shotDetailsControllerMock, times(1)).performLikeAction(EXAMPLE_ID, likeState);
+        verify(shotDetailsControllerMock, times(1)).performLikeAction(shotMock, likeState);
     }
 
     @Test
     public void whenShotLiked_thenUpdateUserDetails() {
         boolean likeState = false;
-        when(shotDetailsControllerMock.performLikeAction(anyLong(), anyBoolean()))
+        when(shotDetailsControllerMock.performLikeAction(any(Shot.class), anyBoolean()))
                 .thenReturn(Completable.complete());
         ArgumentCaptor<Shot> argumentCaptor = ArgumentCaptor.forClass(Shot.class);
 
@@ -574,7 +574,7 @@ public class ShotDetailsPresenterTest {
         String expectedMessage = "test";
         Throwable throwable = new Throwable(expectedMessage);
         when(errorMessageControllerMock.getErrorMessageLabel(throwable)).thenCallRealMethod();
-        when(shotDetailsControllerMock.performLikeAction(anyLong(), anyBoolean()))
+        when(shotDetailsControllerMock.performLikeAction(any(Shot.class), anyBoolean()))
                 .thenReturn(Completable.error(throwable));
 
         shotDetailsPresenter.handleShotLike(true);
