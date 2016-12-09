@@ -7,7 +7,6 @@
     <dimen name="margin_default">16dp</dimen>
     <dimen name="margin_small">8dp</dimen>
 
-
     <dimen name='activity_login_logo_margin_top'>81dp</dimen>
     <dimen name='activity_login_logo_text_margin_top'>18dp</dimen>
     <dimen name="activity_login_text_margin_top">50dp</dimen>
@@ -23,7 +22,7 @@
     <dimen name="drawer_header_height">188dp</dimen>
     <dimen name="drawer_header_photo_size">72dp</dimen>
     <dimen name="drawer_header_photo_border">5dp</dimen>
-    <dimen name="drawer_header_photo_margin_top">52dp</dimen>
+    <dimen name="drawer_header_photo_margin_top">14dp</dimen>
     <dimen name="drawer_arrow_size">24dp</dimen> 
     <dimen name="drawer_arrow_margin_end">6dp</dimen>
     <dimen name="shot_image_height">600dp</dimen>
@@ -114,7 +113,13 @@
     <dimen name="details_comment_edit_margin">24dp</dimen>
     <dimen name="details_comment_load_more_bottom_margin">8dp</dimen>
     <dimen name="recycler_view_with_fab_bottom_padding">88dp</dimen>
+    <dimen name="activity_login_divider_width">50dp</dimen>
+    <dimen name="activity_login_divider_height">1dp</dimen>
+    <dimen name="activity_login_divider_side_margin">8dp</dimen>
+    <dimen name="activity_login_button_radius">70dp</dimen>
     <dimen name="shot_item_width_landscape">200dp</dimen>
+    <dimen name="guest_avatar_padding">8dp</dimen>
+    <dimen name="button_border_width">2dp</dimen>
 
     <fraction name="four_images_view_percentage">50%</fraction>
 </resources>

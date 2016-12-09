@@ -119,4 +119,8 @@
     </string>
     <string name="comment_update_complete">Comment updated</string>
     <string name="api_error_429">You are doing too much work! Slow down for a while</string>
+    <string name="or_loging_with_guest">or</string>
+    <string name="guest_button_text">Use as guest</string>
+    <string name="create_account_label">Create Dribbble account</string>
+    <string name="guest_label">Guest?</string>
 </resources>

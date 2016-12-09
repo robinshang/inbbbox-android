@@ -49,6 +49,7 @@ public class ShotDetailsFragment
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_SHOT = "arg:shot";
     private static final String ARG_IS_COMMENT_MODE_ENABLED = "arg:comment_mode_state";
+    private static final int SLIDE_IN_DURATION = 500;
 
     @BindView(R.id.shot_details_recyclerView)
     RecyclerView shotRecyclerView;
@@ -251,7 +252,8 @@ public class ShotDetailsFragment
     @Override
     public void showInputIfHidden() {
         if (shotCommentInputPanel != null && shotCommentInputPanel.getVisibility() == View.GONE) {
-            AnimationUtil.startSlideInFromBottomShowAnimation(shotCommentInputPanel);
+            AnimationUtil.startSlideInFromBottomShowAnimation(shotCommentInputPanel,
+                    SLIDE_IN_DURATION);
         }
     }
 

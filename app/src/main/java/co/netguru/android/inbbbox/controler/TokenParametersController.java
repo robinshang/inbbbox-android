@@ -8,15 +8,17 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.BuildConfig;
+import co.netguru.android.inbbbox.model.api.Token;
 import rx.Observable;
+import rx.Single;
 
 import static co.netguru.android.inbbbox.Constants.OAUTH;
 
 @Singleton
-public class OauthUrlController {
+public class TokenParametersController {
 
     @Inject
-    public OauthUrlController() {
+    public TokenParametersController() {
     }
 
     public Observable<Pair<String, UUID>> getOauthAuthorizeUrlAndUuidPair() {
@@ -42,4 +44,13 @@ public class OauthUrlController {
                 stateString;
     }
 
+    public Single<Token> getUserGuestToken() {
+        return Single.just(new Token(BuildConfig.DRIBBBLE_CLIENT_TOKEN,
+                OAUTH.INBBBOX_DEFAULT_TOKEN_TYPE,
+                OAUTH.INBBBOX_GUEST_SCOPE));
+    }
+
+    public Single<String> getSignUpUrl() {
+        return Single.just(OAUTH.BASE_URL + OAUTH.SIGN_UP_ENDPOINT);
+    }
 }

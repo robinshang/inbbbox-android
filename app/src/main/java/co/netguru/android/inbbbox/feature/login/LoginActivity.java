@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -20,19 +21,37 @@ import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewDialogFragment;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewListener;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
+import co.netguru.android.inbbbox.utils.AnimationUtil;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
         implements LoginContract.View, WithComponent<LoginComponent>,
         OauthWebViewListener {
 
+    private static final int SLIDE_IN_DURATION = 300;
     private LoginComponent component;
 
     @BindView(R.id.btn_login)
     Button loginButton;
 
+    @BindView(R.id.guest_btn_divider)
+    View guestModeDivider;
+
+    @BindView(R.id.btn_guest)
+    Button guestButton;
+
     @OnClick(R.id.btn_login)
     void onLoginClick() {
         getPresenter().showLoginView();
+    }
+
+    @OnClick(R.id.login_logo_ball)
+    void onLogoClick() {
+        getPresenter().checkGuestMode();
+    }
+
+    @OnClick(R.id.btn_guest)
+    void onGuestLoginClick() {
+        getPresenter().loginWithGuestClicked();
     }
 
     public static void startActivity(Context context) {
@@ -100,6 +119,12 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     public void enableLoginButton() {
         loginButton.setEnabled(true);
+    }
+
+    @Override
+    public void showGuestModeLoginButton() {
+        AnimationUtil.startSlideInFromBottomShowAnimation(guestModeDivider, SLIDE_IN_DURATION);
+        AnimationUtil.startSlideInFromBottomShowAnimation(guestButton, SLIDE_IN_DURATION);
     }
 
     @Override

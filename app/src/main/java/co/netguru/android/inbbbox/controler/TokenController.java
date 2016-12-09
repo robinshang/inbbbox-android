@@ -8,7 +8,9 @@ import co.netguru.android.inbbbox.api.AuthorizeApi;
 import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import co.netguru.android.inbbbox.model.api.Token;
 import co.netguru.android.inbbbox.utils.StringUtils;
+import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 @Singleton
 public class TokenController {
@@ -34,10 +36,14 @@ public class TokenController {
     }
 
 
-    public Observable<Boolean> isTokenValid() {
-        return Observable.fromCallable(() -> {
+    public Single<Boolean> isTokenValid() {
+        return Single.fromCallable(() -> {
             Token token = tokenPrefsRepository.getToken();
             return token != null && !StringUtils.isBlank(token.getAccessToken());
         });
+    }
+
+    public Completable saveToken(Token token) {
+        return tokenPrefsRepository.saveToken(token);
     }
 }

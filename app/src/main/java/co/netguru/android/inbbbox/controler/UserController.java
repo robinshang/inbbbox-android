@@ -7,6 +7,7 @@ import co.netguru.android.inbbbox.api.UserApi;
 import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
 import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.inbbbox.model.ui.User;
+import rx.Completable;
 import rx.Observable;
 import rx.Single;
 
@@ -35,5 +36,13 @@ public class UserController {
         return userPrefsRepository
                 .getUser()
                 .map(User::create);
+    }
+
+    public Completable enableGuestMode() {
+        return userPrefsRepository.setGuestModeEnabled(true);
+    }
+
+    public Single<Boolean> isGuestModeEnabled() {
+        return userPrefsRepository.isGuestModeEnabled();
     }
 }
