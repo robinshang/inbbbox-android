@@ -51,7 +51,7 @@ public class GuestModeController {
 
     private Completable checkIsLiked(long id) {
         return guestModeRepository.isShotLiked(id)
-                .doOnCompleted(() -> Timber.d("Shot is liked"));
+                .doOnCompleted(() -> Timber.i("Shot is liked"));
     }
 
     private Completable getGuestModeCompletable(Boolean guestModeState) {
