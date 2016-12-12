@@ -14,7 +14,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controler.BucketsController;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.LikedShotsController;
 import co.netguru.android.inbbbox.controler.ShotsController;
@@ -48,7 +48,7 @@ public class ShotsPresenterTest {
     ShotsController shotsControllerMock;
 
     @Mock
-    ErrorMessageController errorMessageControllerMock;
+    ErrorController errorControllerMock;
 
     @Mock
     LikedShotsController likedShotsControllerMock;
@@ -160,11 +160,11 @@ public class ShotsPresenterTest {
         String message = "test";
         Throwable exampleException = new Exception(message);
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.error(exampleException));
-        when(errorMessageControllerMock.getErrorMessageLabel(exampleException)).thenCallRealMethod();
+        when(errorControllerMock.getThrowableMessage(exampleException)).thenCallRealMethod();
 
         presenter.getShotsFromServer();
 
-        verify(viewMock, times(1)).showError(message);
+        verify(viewMock, times(1)).showMessageOnServerError(message);
     }
 
     @Test
@@ -172,13 +172,13 @@ public class ShotsPresenterTest {
         String message = "test";
         Exception exampleException = new Exception(message);
         when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.error(exampleException));
-        when(errorMessageControllerMock.getErrorMessageLabel(exampleException)).thenCallRealMethod();
+        when(errorControllerMock.getThrowableMessage(exampleException)).thenCallRealMethod();
 
         presenter.getShotsFromServer();
 
         presenter.likeShot(NOT_LIKED_SHOT);
 
-        verify(viewMock).showError(message);
+        verify(viewMock).showMessageOnServerError(message);
     }
 
     @Test
@@ -208,6 +208,6 @@ public class ShotsPresenterTest {
         //when
         presenter.addShotToBucket(BUCKET, LIKED_SHOT);
         //then
-        verify(viewMock, only()).showError(anyString());
+        verify(viewMock, times(1)).showMessageOnServerError(anyString());
     }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;
@@ -21,6 +22,7 @@ import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Single;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -33,6 +35,9 @@ public class AddToBucketPresenterTest {
 
     @Mock
     BucketsController bucketsController;
+
+    @Mock
+    ErrorController errorControllerMock;
 
     @Mock
     AddToBucketContract.View viewMock;
@@ -111,7 +116,7 @@ public class AddToBucketPresenterTest {
         presenter.loadAvailableBuckets();
         //then
         verify(viewMock).showBucketListLoading();
-        verify(viewMock).showApiError();
+        verify(viewMock).showMessageOnServerError(anyString());
     }
 
     @Test

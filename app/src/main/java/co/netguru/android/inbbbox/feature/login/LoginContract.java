@@ -5,12 +5,13 @@ import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
+import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.HttpErrorView;
+
 public interface LoginContract {
-    interface View extends MvpView {
+    interface View extends MvpView, HttpErrorView {
 
         void openAuthWebViewFragment(String urlString, String stateKey);
-
-        void showApiError(String oauthErrorMessage);
 
         void showNextScreen();
 
@@ -25,7 +26,7 @@ public interface LoginContract {
         void showGuestModeLoginButton();
     }
 
-    interface Presenter extends MvpPresenter<View> {
+    interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
         void showLoginView();
 
         void handleKeysNotMatching();

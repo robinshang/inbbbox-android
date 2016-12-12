@@ -7,7 +7,7 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.TokenParametersController;
 import co.netguru.android.inbbbox.controler.UserController;
@@ -25,7 +25,7 @@ public final class LoginPresenter
 
     private final TokenParametersController tokenParametersController;
     private final TokenController apiTokenController;
-    private final ErrorMessageController errorHandler;
+    private final ErrorController errorController;
     private final UserController userController;
     private final CompositeSubscription compositeSubscription;
     private int guestModeCounter = 0;
@@ -33,11 +33,11 @@ public final class LoginPresenter
     @Inject
     LoginPresenter(TokenParametersController oauthUrlController,
                    TokenController apiTokenController,
-                   ErrorMessageController apiErrorParser,
+                   ErrorController errorController,
                    UserController userController) {
         this.tokenParametersController = oauthUrlController;
         this.apiTokenController = apiTokenController;
-        this.errorHandler = apiErrorParser;
+        this.errorController = errorController;
         this.userController = userController;
         compositeSubscription = new CompositeSubscription();
     }
@@ -58,7 +58,7 @@ public final class LoginPresenter
                                 urlUUIDPair -> getView()
                                         .openAuthWebViewFragment(urlUUIDPair.first,
                                                 urlUUIDPair.second.toString()),
-                                this::handleError));
+                                throwable -> handleHttpErrorResponse(throwable, "Problem with authorization")));
     }
 
     @Override
@@ -83,7 +83,14 @@ public final class LoginPresenter
 
     @Override
     public void handleKnownOauthError(@NonNull String oauthErrorMessage) {
-        getView().showApiError(oauthErrorMessage);
+        getView().showMessageOnServerError(oauthErrorMessage);
+    }
+
+    @Override
+    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+        Timber.e(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
+
     }
 
     @Override
@@ -101,7 +108,7 @@ public final class LoginPresenter
                         .flatMapCompletable(apiTokenController::saveToken)
                         .andThen(userController.enableGuestMode())
                         .subscribe(getView()::showNextScreen,
-                                this::handleError)
+                                throwable -> handleHttpErrorResponse(throwable, "Error while getting user guest token"))
         );
     }
 
@@ -111,11 +118,6 @@ public final class LoginPresenter
                         .flatMap(token -> userController.requestUser())
                         .compose(androidIO())
                         .subscribe(user -> getView().showNextScreen(),
-                                this::handleError));
-    }
-
-    private void handleError(Throwable throwable) {
-        Timber.e(throwable, "Error while getting user");
-        getView().showApiError(errorHandler.getErrorMessageLabel(throwable));
+                                throwable -> handleHttpErrorResponse(throwable, "Error while requesting new token")));
     }
 }

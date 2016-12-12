@@ -16,7 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.UUID;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.TokenParametersController;
 import co.netguru.android.inbbbox.controler.UserController;
@@ -44,7 +44,7 @@ public class LoginPresenterTest {
     private TokenParametersController tokenParametersControllerMock;
 
     @Mock
-    private ErrorMessageController errorMessageController;
+    private ErrorController errorControllerMock;
 
     @Mock
     private TokenController tokenControllerMock;
@@ -130,7 +130,7 @@ public class LoginPresenterTest {
 
         presenter.handleKnownOauthError(message);
 
-        verify(viewMock, times(1)).showApiError(message);
+        verify(viewMock, times(1)).showMessageOnServerError(message);
     }
 
     @Test
@@ -210,7 +210,7 @@ public class LoginPresenterTest {
         when(tokenParametersControllerMock.getUserGuestToken()).thenReturn(Single.just(tokenMock));
         when(userControllerMock.enableGuestMode()).thenReturn(Completable.complete());
         when(tokenControllerMock.saveToken(any(Token.class))).thenReturn(Completable.complete());
-        when(errorMessageController.getErrorMessageLabel(any(Throwable.class))).thenCallRealMethod();
+        when(errorControllerMock.getThrowableMessage(any(Throwable.class))).thenCallRealMethod();
 
         presenter.loginWithGuestClicked();
 
@@ -225,13 +225,13 @@ public class LoginPresenterTest {
         when(tokenMock.getAccessToken()).thenReturn(testToken);
         when(tokenParametersControllerMock.getUserGuestToken()).thenReturn(Single.just(tokenMock));
         when(userControllerMock.enableGuestMode()).thenReturn(Completable.complete());
-        when(errorMessageController.getErrorMessageLabel(any(Throwable.class))).thenCallRealMethod();
+        when(errorControllerMock.getThrowableMessage(any(Throwable.class))).thenCallRealMethod();
         when(tokenControllerMock.saveToken(any(Token.class)))
                 .thenReturn(Completable.error(new Throwable(errorMessage)));
 
         presenter.loginWithGuestClicked();
 
-        verify(viewMock, times(1)).showApiError(errorMessage);
+        verify(viewMock, times(1)).showMessageOnServerError(errorMessage);
     }
 
     //Error
@@ -244,8 +244,8 @@ public class LoginPresenterTest {
         presenter.handleOauthCodeReceived(CODE);
 
         verify(viewMock, never()).showNextScreen();
-        verify(viewMock).showApiError(anyString());
-        verify(errorMessageController, times(1)).getErrorMessageLabel(testThrowable);
+        verify(viewMock).showMessageOnServerError(anyString());
+        verify(errorControllerMock, times(1)).getThrowableMessage(testThrowable);
     }
 
     @After

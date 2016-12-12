@@ -1,16 +1,18 @@
 package co.netguru.android.inbbbox.feature.buckets;
 
-
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.HttpErrorView;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 
 public interface BucketsFragmentContract {
 
-    interface View extends MvpLceView<List<BucketWithShots>> {
+    interface View extends MvpView, HttpErrorView, MvpLceView<List<BucketWithShots>> {
 
         void hideProgressBars();
 
@@ -33,7 +35,7 @@ public interface BucketsFragmentContract {
         void scrollToTop();
     }
 
-    interface Presenter extends MvpPresenter<BucketsFragmentContract.View> {
+    interface Presenter extends MvpPresenter<BucketsFragmentContract.View>, HttpErrorPresenter {
 
         void loadBucketsWithShots();
 

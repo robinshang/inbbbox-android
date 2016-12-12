@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.shots.addtobucket;
 
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -169,11 +168,6 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     }
 
     @Override
-    public void showApiError() {
-        Toast.makeText(getContext(), R.string.undefined_api_error, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public void showBucketListLoading() {
         bucketListProgressBar.setVisibility(View.VISIBLE);
         noBucketsText.setVisibility(View.GONE);
@@ -211,6 +205,11 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     @Override
     public void openShotFullscreen(Shot shot) {
         ShotFullscreenActivity.startActivity(getContext(), shot);
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
     }
 
     private String getFormattedDate(LocalDateTime creationDate) {

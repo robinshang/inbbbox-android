@@ -5,9 +5,12 @@ import android.support.annotation.StringRes;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
+import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.HttpErrorView;
+
 interface MainViewContract {
 
-    interface View extends MvpView {
+    interface View extends MvpView, HttpErrorView {
 
         void showLogoutMenu();
 
@@ -46,7 +49,7 @@ interface MainViewContract {
         void showCreateAccountButton();
     }
 
-    interface Presenter extends MvpPresenter<View> {
+    interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
 
         void toggleButtonChanged(boolean isChecked);
 
