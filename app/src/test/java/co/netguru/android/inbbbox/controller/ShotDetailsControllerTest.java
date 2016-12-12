@@ -93,7 +93,7 @@ public class ShotDetailsControllerTest {
         mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
-        controller.getShotComments(EXAMPLE_SHOT_ID, examplePerPageValue).subscribe(testSubscriber);
+        controller.getShotComments(shotMock, examplePerPageValue).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
     }
@@ -104,7 +104,7 @@ public class ShotDetailsControllerTest {
         mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
-        controller.getShotComments(EXAMPLE_SHOT_ID, examplePerPageValue).subscribe(testSubscriber);
+        controller.getShotComments(shotMock, examplePerPageValue).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         ShotDetailsState shotDetailsState = testSubscriber.getOnNextEvents().get(0);
@@ -117,7 +117,7 @@ public class ShotDetailsControllerTest {
         mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
-        controller.getShotComments(EXAMPLE_SHOT_ID, examplePerPageValue).subscribe(testSubscriber);
+        controller.getShotComments(shotMock, examplePerPageValue).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         ShotDetailsState shotDetailsState = testSubscriber.getOnNextEvents().get(0);
@@ -130,7 +130,7 @@ public class ShotDetailsControllerTest {
         mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
-        controller.getShotComments(EXAMPLE_SHOT_ID, examplePerPageValue).subscribe(testSubscriber);
+        controller.getShotComments(shotMock, examplePerPageValue).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         ShotDetailsState shotDetailsState = testSubscriber.getOnNextEvents().get(0);
@@ -143,7 +143,7 @@ public class ShotDetailsControllerTest {
         mockNotInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
-        controller.getShotComments(EXAMPLE_SHOT_ID, examplePerPageValue).subscribe(testSubscriber);
+        controller.getShotComments(shotMock, examplePerPageValue).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         ShotDetailsState shotDetailsState = testSubscriber.getOnNextEvents().get(0);
@@ -156,7 +156,7 @@ public class ShotDetailsControllerTest {
         mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
-        controller.getShotComments(EXAMPLE_SHOT_ID, examplePerPageValue).subscribe(testSubscriber);
+        controller.getShotComments(shotMock, examplePerPageValue).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         verify(shotApiMock, atLeastOnce())
@@ -169,10 +169,10 @@ public class ShotDetailsControllerTest {
         mockInBucketShotState();
         TestSubscriber<ShotDetailsState> testSubscriber = new TestSubscriber<>();
 
-        controller.getShotComments(EXAMPLE_SHOT_ID, examplePerPageValue).subscribe(testSubscriber);
+        controller.getShotComments(shotMock, examplePerPageValue).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(likeShotControllerMock, times(1)).isShotLiked(EXAMPLE_SHOT_ID);
+        verify(likeShotControllerMock, times(1)).isShotLiked(shotMock);
     }
 
     @Test
@@ -189,12 +189,12 @@ public class ShotDetailsControllerTest {
     @Test
     public void whenLikePerformSubscribed_thenSendUnlikeRequest() {
         TestSubscriber testSubscriber = new TestSubscriber<>();
-        when(likeShotControllerMock.unLikeShot(EXAMPLE_SHOT_ID)).thenReturn(Completable.complete());
+        when(likeShotControllerMock.unLikeShot(shotMock)).thenReturn(Completable.complete());
 
         controller.performLikeAction(shotMock, false).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(likeShotControllerMock, times(1)).unLikeShot(EXAMPLE_SHOT_ID);
+        verify(likeShotControllerMock, times(1)).unLikeShot(shotMock);
     }
 
     @Test
@@ -243,7 +243,7 @@ public class ShotDetailsControllerTest {
         TestSubscriber testSubscriber = new TestSubscriber<>();
         when(likeShotControllerMock.likeShot(shotMock))
                 .thenReturn(Completable.error(throwable));
-        when(likeShotControllerMock.unLikeShot(EXAMPLE_SHOT_ID))
+        when(likeShotControllerMock.unLikeShot(shotMock))
                 .thenReturn(Completable.error(throwable));
 
 
@@ -253,12 +253,12 @@ public class ShotDetailsControllerTest {
     }
 
     private void mockLikedShotState() {
-        when(likeShotControllerMock.isShotLiked(EXAMPLE_SHOT_ID))
+        when(likeShotControllerMock.isShotLiked(shotMock))
                 .thenReturn(Completable.complete());
     }
 
     private void mockNotLikedShotState() {
-        when(likeShotControllerMock.isShotLiked(EXAMPLE_SHOT_ID))
+        when(likeShotControllerMock.isShotLiked(shotMock))
                 .thenReturn(Completable.error(new Throwable()));
     }
 
