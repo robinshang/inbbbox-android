@@ -5,7 +5,10 @@ import javax.inject.Inject;
 import co.netguru.android.inbbbox.localrepository.GuestModeRepository;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
+import rx.Observable;
 import timber.log.Timber;
+
+import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
 
 public class GuestModeController {
 
@@ -36,6 +39,12 @@ public class GuestModeController {
         return completable -> completable
                 .startWith(isGuestModeDisabled())
                 .onErrorResumeNext(exception -> performUnlike(exception, shot));
+    }
+
+    public Observable.Transformer<Shot, Shot> getLikedShotTransformer() {
+        return shotObservable -> shotObservable
+                .startWith(isGuestModeDisabled().toObservable())
+                .onErrorResumeNext(exception -> getCachedLikedShot());
     }
 
     /**
@@ -78,6 +87,11 @@ public class GuestModeController {
                     .error(new GuestModeStateException(GUEST_MODE_ENABLED_ERROR_MESSAGE));
         }
         return completable;
+    }
+
+    private Observable<Shot> getCachedLikedShot() {
+        Timber.d("getting liked shots from cache");
+        return guestModeRepository.getLikedShots().compose(fromListObservable());
     }
 
     private static class GuestModeStateException extends Throwable {

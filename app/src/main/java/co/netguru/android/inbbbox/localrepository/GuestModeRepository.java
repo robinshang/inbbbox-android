@@ -7,12 +7,15 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
+import rx.Observable;
 import rx.Single;
 import timber.log.Timber;
 
@@ -34,22 +37,27 @@ public class GuestModeRepository {
     }
 
     public Completable addLikedShot(@NonNull Shot shot) {
-        return getLikedShots()
+        return getLikedShotsMap()
                 .map(shots -> addLikeIdsIfNotExist(shots, shot))
                 .flatMapCompletable(this::saveLikesList);
     }
 
     public Completable isShotLiked(Shot shot) {
-        return getLikedShots()
+        return getLikedShotsMap()
                 .flatMapCompletable(shots -> shots.containsKey(shot.id())
                         ? Completable.complete()
                         : Completable.error(new Throwable(SHOT_IS_NOT_LIKED_ERROR)));
     }
 
     public Completable removeLikedShot(Shot shot) {
-        return getLikedShots()
+        return getLikedShotsMap()
                 .map(shots -> removeShotIfExist(shots, shot))
                 .flatMapCompletable(this::saveLikesList);
+    }
+
+    public Observable<List<Shot>> getLikedShots() {
+        return getLikedShotsMap()
+                .flatMapObservable(shotsMap -> Observable.just(new ArrayList<>(shotsMap.values())));
     }
 
     private HashMap<Long, Shot> removeShotIfExist(HashMap<Long, Shot> shots, Shot shotToRemove) {
@@ -59,7 +67,7 @@ public class GuestModeRepository {
         return shots;
     }
 
-    private Single<HashMap<Long, Shot>> getLikedShots() {
+    public Single<HashMap<Long, Shot>> getLikedShotsMap() {
         return Single.fromCallable(this::getListsFromPrefs);
     }
 
@@ -88,4 +96,5 @@ public class GuestModeRepository {
         }
         return shots;
     }
+
 }

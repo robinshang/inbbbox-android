@@ -26,7 +26,6 @@ public class LikeShotController {
 
     public Completable likeShot(Shot shot) {
         return likesApi.likeShot(shot.id())
-                // TODO: 09.12.2016 change for shot saving
                 .compose(guestModeController.getShotLikeTransformer(shot));
     }
 
