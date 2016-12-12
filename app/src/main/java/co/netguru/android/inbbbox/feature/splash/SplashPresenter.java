@@ -49,6 +49,7 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     public void handleHttpErrorResponse(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
+        getView().showLoginScreen();
     }
 
     private void checkToken() {
