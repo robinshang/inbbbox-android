@@ -1,5 +1,8 @@
 package co.netguru.android.inbbbox.controler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.localrepository.GuestModeRepository;
@@ -7,8 +10,6 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
 import rx.Observable;
 import timber.log.Timber;
-
-import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
 
 public class GuestModeController {
 
@@ -41,10 +42,14 @@ public class GuestModeController {
                 .onErrorResumeNext(exception -> performUnlike(exception, shot));
     }
 
-    public Observable.Transformer<Shot, Shot> getLikedShotTransformer() {
-        return shotObservable -> shotObservable
+    public Observable<List<Shot>> getCachedLikedShotIfGuestEnabled() {
+        return Observable.just(initList())
                 .startWith(isGuestModeDisabled().toObservable())
                 .onErrorResumeNext(exception -> getCachedLikedShot());
+    }
+
+    private List<Shot> initList() {
+        return new ArrayList<>();
     }
 
     /**
@@ -89,9 +94,9 @@ public class GuestModeController {
         return completable;
     }
 
-    private Observable<Shot> getCachedLikedShot() {
+    private Observable<List<Shot>> getCachedLikedShot() {
         Timber.d("getting liked shots from cache");
-        return guestModeRepository.getLikedShots().compose(fromListObservable());
+        return guestModeRepository.getLikedShots();
     }
 
     private static class GuestModeStateException extends Throwable {
