@@ -207,7 +207,7 @@ public class ShotDetailsPresenter
 
     private void downloadCommentsFromAPI() {
         subscriptions.add(
-                shotDetailsController.getShotComments(shot.id(), pageNumber)
+                shotDetailsController.getShotComments(shot, pageNumber)
                         .compose(androidIO())
                         .doOnCompleted(() -> getView().setInputShowingEnabled(true))
                         .subscribe(this::handleDetailsStates, this::handleApiError)

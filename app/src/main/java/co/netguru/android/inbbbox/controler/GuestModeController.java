@@ -26,10 +26,10 @@ public class GuestModeController {
                 .onErrorResumeNext(exception -> performLike(exception, shot));
     }
 
-    public Completable.CompletableTransformer getTransformerForIsShotLiked(long id) {
+    public Completable.CompletableTransformer getTransformerForIsShotLiked(Shot shot) {
         return completable -> completable
                 .startWith(isGuestModeDisabled())
-                .onErrorResumeNext(e -> checkIsLiked(id));
+                .onErrorResumeNext(e -> checkIsLiked(shot));
     }
 
     /**
@@ -43,17 +43,18 @@ public class GuestModeController {
     }
 
     /**
-     * logged with i() because exception is expected when guest mode is enabled
+     * logged with d() because exception is expected when guest mode is enabled
      */
     private Completable performLike(Throwable exception, Shot shot) {
-        Timber.i(exception.getMessage());
+        Timber.d("Performing local like action- " + exception.getMessage());
         return guestModeRepository.addLikeId(shot);
     }
 
-    private Completable checkIsLiked(long id) {
-        return guestModeRepository.isShotLiked(id)
-                .doOnCompleted(() -> Timber.i("Shot is liked"))
-                .doOnError(throwable -> Timber.i("Shot is not liked"));
+    private Completable checkIsLiked(Shot shot) {
+        Timber.d("checking is shot liked...");
+        return guestModeRepository.isShotLiked(shot)
+                .doOnCompleted(() -> Timber.d("Shot is liked"))
+                .doOnError(throwable -> Timber.d("Shot is not liked"));
     }
 
     private Completable getGuestModeCompletable(Boolean guestModeState) {

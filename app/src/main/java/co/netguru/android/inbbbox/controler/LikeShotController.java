@@ -19,9 +19,9 @@ public class LikeShotController {
         this.likesApi = likesApi;
     }
 
-    public Completable isShotLiked(long id) {
-        return likesApi.isShotLiked(id)
-                .compose(guestModeController.getTransformerForIsShotLiked(id));
+    public Completable isShotLiked(Shot shot) {
+        return likesApi.isShotLiked(shot.id())
+                .compose(guestModeController.getTransformerForIsShotLiked(shot));
     }
 
     public Completable likeShot(Shot shot) {

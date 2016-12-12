@@ -34,10 +34,10 @@ public class ShotDetailsController {
         this.userController = userController;
     }
 
-    public Observable<ShotDetailsState> getShotComments(Long shotId, int pageNumber) {
-        return Observable.zip(getCommentListWithAuthorState(shotId.toString(), pageNumber),
-                getLikeState(shotId),
-                getBucketState(shotId),
+    public Observable<ShotDetailsState> getShotComments(Shot shot, int pageNumber) {
+        return Observable.zip(getCommentListWithAuthorState(Long.toString(shot.id()), pageNumber),
+                getLikeState(shot),
+                getBucketState(shot.id()),
                 (comments, isLiked, isBucketed) -> ShotDetailsState
                         .create(isLiked, isBucketed, comments));
     }
@@ -131,8 +131,8 @@ public class ShotDetailsController {
         return user != null && user.id() == currentUserId;
     }
 
-    private Observable<Boolean> getLikeState(Long shotId) {
-        return likeShotController.isShotLiked(shotId)
+    private Observable<Boolean> getLikeState(Shot shot) {
+        return likeShotController.isShotLiked(shot)
                 .andThen(Observable.just(Boolean.TRUE))
                 .onErrorResumeNext(Observable.just(Boolean.FALSE));
     }
