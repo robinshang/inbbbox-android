@@ -20,16 +20,22 @@ public class GuestModeController {
         this.guestModeRepository = guestModeRepository;
     }
 
-    public Completable.CompletableTransformer getTransformerForShotLike(Shot shot) {
+    public Completable.CompletableTransformer getShotLikeTransformer(Shot shot) {
         return completable -> completable
                 .startWith(isGuestModeDisabled())
                 .onErrorResumeNext(exception -> performLike(exception, shot));
     }
 
-    public Completable.CompletableTransformer getTransformerForIsShotLiked(Shot shot) {
+    public Completable.CompletableTransformer getIsShotLikedTransformer(Shot shot) {
         return completable -> completable
                 .startWith(isGuestModeDisabled())
                 .onErrorResumeNext(e -> checkIsLiked(shot));
+    }
+
+    public Completable.CompletableTransformer getShotUnlikeTransformer(Shot shot) {
+        return completable -> completable
+                .startWith(isGuestModeDisabled())
+                .onErrorResumeNext(exception -> performUnlike(exception, shot));
     }
 
     /**
@@ -47,7 +53,12 @@ public class GuestModeController {
      */
     private Completable performLike(Throwable exception, Shot shot) {
         Timber.d("Performing local like action- " + exception.getMessage());
-        return guestModeRepository.addLikeId(shot);
+        return guestModeRepository.addLikedShot(shot);
+    }
+
+    private Completable performUnlike(Throwable exception, Shot shot) {
+        Timber.d("Performing local unLike action- " + exception.getMessage());
+        return guestModeRepository.removeLikedShot(shot);
     }
 
     private Completable checkIsLiked(Shot shot) {

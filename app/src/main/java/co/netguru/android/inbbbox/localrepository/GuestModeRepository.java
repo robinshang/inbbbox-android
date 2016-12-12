@@ -7,8 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import javax.inject.Singleton;
 
@@ -30,11 +29,11 @@ public class GuestModeRepository {
 
         this.sharedPreferences = sharedPreferences;
         this.gson = gson;
-        listType = new TypeToken<List<Shot>>() {
+        listType = new TypeToken<HashMap<Long, Shot>>() {
         }.getType();
     }
 
-    public Completable addLikeId(@NonNull Shot shot) {
+    public Completable addLikedShot(@NonNull Shot shot) {
         return getLikedShots()
                 .map(shots -> addLikeIdsIfNotExist(shots, shot))
                 .flatMapCompletable(this::saveLikesList);
@@ -42,17 +41,30 @@ public class GuestModeRepository {
 
     public Completable isShotLiked(Shot shot) {
         return getLikedShots()
-                .flatMapCompletable(shots -> shots.contains(shot)
+                .flatMapCompletable(shots -> shots.containsKey(shot.id())
                         ? Completable.complete()
                         : Completable.error(new Throwable(SHOT_IS_NOT_LIKED_ERROR)));
     }
 
-    private Single<List<Shot>> getLikedShots() {
+    public Completable removeLikedShot(Shot shot) {
+        return getLikedShots()
+                .map(shots -> removeShotIfExist(shots, shot))
+                .flatMapCompletable(this::saveLikesList);
+    }
+
+    private HashMap<Long, Shot> removeShotIfExist(HashMap<Long, Shot> shots, Shot shotToRemove) {
+        if (shots.containsKey(shotToRemove.id())) {
+            shots.remove(shotToRemove.id());
+        }
+        return shots;
+    }
+
+    private Single<HashMap<Long, Shot>> getLikedShots() {
         return Single.fromCallable(this::getListsFromPrefs);
     }
 
-    private List<Shot> getListsFromPrefs() {
-        List<Shot> resultList = new ArrayList<>();
+    private HashMap<Long, Shot> getListsFromPrefs() {
+        HashMap<Long, Shot> resultList = new HashMap<>();
         String dataFromPrefs = sharedPreferences.getString(LIKED_SHOTS_KEY, "");
         Timber.d("Local likes list: " + dataFromPrefs);
         if (!dataFromPrefs.isEmpty()) {
@@ -61,7 +73,7 @@ public class GuestModeRepository {
         return resultList;
     }
 
-    private Completable saveLikesList(List<Shot> shots) {
+    private Completable saveLikesList(HashMap<Long, Shot> shots) {
         return Completable.fromCallable(() -> {
             sharedPreferences.edit()
                     .putString(LIKED_SHOTS_KEY, gson.toJson(shots))
@@ -70,9 +82,9 @@ public class GuestModeRepository {
         });
     }
 
-    private List<Shot> addLikeIdsIfNotExist(List<Shot> shots, Shot shot) {
-        if (shots != null && !shots.contains(shot)) {
-            shots.add(shot);
+    private HashMap<Long, Shot> addLikeIdsIfNotExist(HashMap<Long, Shot> shots, Shot shot) {
+        if (shots != null && !shots.containsKey(shot.id())) {
+            shots.put(shot.id(), shot);
         }
         return shots;
     }

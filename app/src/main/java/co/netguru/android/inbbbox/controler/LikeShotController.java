@@ -21,16 +21,17 @@ public class LikeShotController {
 
     public Completable isShotLiked(Shot shot) {
         return likesApi.isShotLiked(shot.id())
-                .compose(guestModeController.getTransformerForIsShotLiked(shot));
+                .compose(guestModeController.getIsShotLikedTransformer(shot));
     }
 
     public Completable likeShot(Shot shot) {
         return likesApi.likeShot(shot.id())
                 // TODO: 09.12.2016 change for shot saving
-                .compose(guestModeController.getTransformerForShotLike(shot));
+                .compose(guestModeController.getShotLikeTransformer(shot));
     }
 
-    public Completable unLikeShot(long id) {
-        return likesApi.unLikeShot(id);
+    public Completable unLikeShot(Shot shot) {
+        return likesApi.unLikeShot(shot.id())
+                .compose(guestModeController.getShotUnlikeTransformer(shot));
     }
 }
