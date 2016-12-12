@@ -22,6 +22,8 @@ public interface LoginContract {
         void disableLoginButton();
 
         void enableLoginButton();
+
+        void showGuestModeLoginButton();
     }
 
     interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
@@ -36,5 +38,9 @@ public interface LoginContract {
         void handleUnknownOauthError();
 
         void handleKnownOauthError(@NonNull String oauthErrorMessage);
+
+        void checkGuestMode();
+
+        void loginWithGuestClicked();
     }
 }

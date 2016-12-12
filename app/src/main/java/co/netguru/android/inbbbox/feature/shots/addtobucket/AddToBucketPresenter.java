@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.shots.addtobucket;
 
-
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
@@ -74,5 +73,10 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
     public void handleHttpErrorResponse(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
+    }
+
+    @Override
+    public void onOpenShotFullscreen() {
+        getView().openShotFullscreen(shot);
     }
 }

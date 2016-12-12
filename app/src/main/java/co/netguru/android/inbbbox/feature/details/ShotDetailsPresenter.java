@@ -140,6 +140,11 @@ public class ShotDetailsPresenter
         getView().disableEditorProgressMode();
     }
 
+    @Override
+    public void onShotImageClick() {
+        getView().openShotFullscreen(shot);
+    }
+
     private void initializeView() {
         getView().showMainImage(shot);
         getView().updateLoadMoreState(commentLoadMoreState);

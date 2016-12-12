@@ -35,6 +35,8 @@ public interface AddToBucketContract {
         void showBuckets(List<Bucket> buckets);
 
         void passResultAndCloseFragment(Bucket bucket, Shot shot);
+
+        void openShotFullscreen(Shot shot);
     }
 
     interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
@@ -44,5 +46,7 @@ public interface AddToBucketContract {
         void loadAvailableBuckets();
 
         void handleBucketClick(Bucket bucket);
+
+        void onOpenShotFullscreen();
     }
 }

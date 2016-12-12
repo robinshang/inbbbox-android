@@ -12,11 +12,12 @@ apply from: '../buildsystem/jacocoTasks.gradle'
 ext {
 
     secrets = [
-            hockeyAppId             : keyProperty("HockeyAppAppIdDev"),
-            hockeyAppIdProd         : keyProperty("HockeyAppAppIdProd"),
-            dribbbleClientKey       : keyProperty("DribbbleClientKey"),
-            dribbbleClientSecret    : keyProperty("DribbbleClientSecret"),
-            dribbbleOauthRedirect   : keyProperty("DribbbleOauthRedirect"),
+            hockeyAppId          : keyProperty("HockeyAppAppIdDev"),
+            hockeyAppIdProd      : keyProperty("HockeyAppAppIdProd"),
+            dribbbleClientKey    : keyProperty("DribbbleClientKey"),
+            dribbbleClientSecret : keyProperty("DribbbleClientSecret"),
+            dribbbleOauthRedirect: keyProperty("DribbbleOauthRedirect"),
+            dribbbleClientToken  : keyProperty("DribbbleClientToken"),
     ]
 }
 
@@ -35,6 +36,7 @@ android {
 
         buildConfigField 'String', 'DRIBBBLE_CLIENT_KEY', '"' + secrets.dribbbleClientKey + '"'
         buildConfigField 'String', 'DRIBBBLE_CLIENT_SECRET', '"' + secrets.dribbbleClientSecret + '"'
+        buildConfigField 'String', 'DRIBBBLE_CLIENT_TOKEN', '"' + secrets.dribbbleClientToken + '"'
         buildConfigField 'String', 'DRIBBBLE_OAUTH_REDIRECT','"' + secrets.dribbbleOauthRedirect + '"'
     }
 
@@ -294,6 +296,9 @@ dependencies {
     //OnActivityResult
     compile libs.onActivityResult
     apt proc.onActivityResult
+
+    //PhotoView
+    compile libs.photoView
 
     // Unit testing
     testCompile(test.junit) {

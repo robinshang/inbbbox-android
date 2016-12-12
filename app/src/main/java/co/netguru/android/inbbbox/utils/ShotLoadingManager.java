@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
 import co.netguru.android.inbbbox.R;
@@ -38,11 +39,17 @@ public class ShotLoadingManager {
     }
 
     public static void loadMainViewShot(Context context, ImageView target, ShotImage shot) {
+        loadMainViewShotWithListener(context, target, shot, null);
+    }
+
+    public static void loadMainViewShotWithListener(Context context, ImageView target, ShotImage shot,
+                                                    RequestListener requestListener) {
         String imageUrl = getImageUrl(shot);
         Timber.d("shot image url: %s", imageUrl);
         GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(target);
         Glide.with(context)
                 .load(imageUrl)
+                .listener(requestListener)
                 .placeholder(R.drawable.shot_placeholder)
                 .thumbnail(ShotLoadingManager.getThumbnailRequest(context, shot.thumbnailUrl()))
                 .animate(android.R.anim.fade_in)

@@ -19,6 +19,7 @@ import rx.Single;
 public class UserPrefsRepository {
 
     private static final String USER_KEY = "user";
+    private static final String GUEST_MODE_STATE_KEY = "guest_mode";
 
     private final SharedPreferences sharedPreferences;
     private final Gson gson;
@@ -50,6 +51,21 @@ public class UserPrefsRepository {
                 return gson.fromJson(userJson, UserEntity.class);
             }
         });
+    }
+
+    public Completable setGuestModeEnabled(boolean guestModeEnabled) {
+        return Completable.fromCallable(() -> {
+            sharedPreferences.edit()
+                    .putBoolean(GUEST_MODE_STATE_KEY, guestModeEnabled)
+                    .apply();
+            return null;
+        });
+    }
+
+    public Single<Boolean> isGuestModeEnabled() {
+        return Single.fromCallable(() ->
+                sharedPreferences.getBoolean(GUEST_MODE_STATE_KEY, false)
+        );
     }
 
     public static class UserNotFoundException extends IOException {

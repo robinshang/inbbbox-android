@@ -43,6 +43,10 @@ interface MainViewContract {
         void showMessage(@StringRes int message);
 
         void refreshShotsView();
+
+        void openSignUpPage(String url);
+
+        void showCreateAccountButton();
     }
 
     interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
@@ -68,5 +72,7 @@ interface MainViewContract {
         void customizationStatusChanged(boolean isDetails);
 
         void onTimePicked(int hour, int minute);
+
+        void onCreateAccountClick();
     }
 }

@@ -92,7 +92,8 @@ public class ShotDetailsController {
 
     private Single<Long> getCurrentUserId() {
         return userController.getUserFromCache()
-                .map(User::id);
+                .map(User::id)
+                .onErrorResumeNext(throwable -> Single.just((long) Constants.UNDEFINED));
     }
 
     private Observable<List<Long>> getCurrentBuckets(Long shotId) {

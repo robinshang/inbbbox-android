@@ -27,6 +27,7 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotDetailsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
+import co.netguru.android.inbbbox.feature.details.fullscreen.ShotFullscreenActivity;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
@@ -49,6 +50,7 @@ public class ShotDetailsFragment
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_SHOT = "arg:shot";
     private static final String ARG_IS_COMMENT_MODE_ENABLED = "arg:comment_mode_state";
+    private static final int SLIDE_IN_DURATION = 500;
 
     @BindView(R.id.shot_details_recyclerView)
     RecyclerView shotRecyclerView;
@@ -125,6 +127,11 @@ public class ShotDetailsFragment
     @OnClick(R.id.details_close_imageView)
     void onCloseClick() {
         getPresenter().closeScreen();
+    }
+    
+    @OnClick(R.id.parallax_image_view)
+    void onShotImageClick() {
+        getPresenter().onShotImageClick();
     }
 
     @Override
@@ -246,7 +253,8 @@ public class ShotDetailsFragment
     @Override
     public void showInputIfHidden() {
         if (shotCommentInputPanel != null && shotCommentInputPanel.getVisibility() == View.GONE) {
-            AnimationUtil.startSlideInFromBottomShowAnimation(shotCommentInputPanel);
+            AnimationUtil.startSlideInFromBottomShowAnimation(shotCommentInputPanel,
+                    SLIDE_IN_DURATION);
         }
     }
 
@@ -334,6 +342,11 @@ public class ShotDetailsFragment
     @Override
     public void showMessageOnServerError(String errorText) {
         Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void openShotFullscreen(Shot shot) {
+        ShotFullscreenActivity.startActivity(getContext(), shot);
     }
 
     private void initComponent() {

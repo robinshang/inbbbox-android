@@ -8,8 +8,8 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.OauthUrlController;
 import co.netguru.android.inbbbox.controler.TokenController;
+import co.netguru.android.inbbbox.controler.TokenParametersController;
 import co.netguru.android.inbbbox.controler.UserController;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -21,18 +21,21 @@ public final class LoginPresenter
         extends MvpNullObjectBasePresenter<LoginContract.View>
         implements LoginContract.Presenter {
 
-    private final OauthUrlController oauthUrlController;
+    private static final int GUEST_MODE_ACTIVATION_THRESHOLD = 5;
+
+    private final TokenParametersController tokenParametersController;
     private final TokenController apiTokenController;
     private final ErrorController errorController;
     private final UserController userController;
     private final CompositeSubscription compositeSubscription;
+    private int guestModeCounter = 0;
 
     @Inject
-    LoginPresenter(OauthUrlController oauthUrlController,
+    LoginPresenter(TokenParametersController oauthUrlController,
                    TokenController apiTokenController,
                    ErrorController errorController,
                    UserController userController) {
-        this.oauthUrlController = oauthUrlController;
+        this.tokenParametersController = oauthUrlController;
         this.apiTokenController = apiTokenController;
         this.errorController = errorController;
         this.userController = userController;
@@ -49,11 +52,13 @@ public final class LoginPresenter
     public void showLoginView() {
         getView().disableLoginButton();
         compositeSubscription.add(
-                oauthUrlController.getOauthAuthorizeUrlAndUuidPair()
+                tokenParametersController.getOauthAuthorizeUrlAndUuidPair()
                         .compose(androidIO())
                         .subscribe(
-                                urlUUIDPair -> getView().openAuthWebViewFragment(urlUUIDPair.first, urlUUIDPair.second.toString()),
-                                throwable -> handleHttpErrorResponse(throwable, "Error while getting user")));
+                                urlUUIDPair -> getView()
+                                        .openAuthWebViewFragment(urlUUIDPair.first,
+                                                urlUUIDPair.second.toString()),
+                                throwable -> handleHttpErrorResponse(throwable, "Problem with authorization")));
     }
 
     @Override
@@ -83,9 +88,28 @@ public final class LoginPresenter
 
     @Override
     public void handleHttpErrorResponse(Throwable throwable, String errorText) {
-        Timber.e(throwable, "Error while getting user");
+        Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
 
+    }
+
+    @Override
+    public void checkGuestMode() {
+        guestModeCounter++;
+        if (guestModeCounter == GUEST_MODE_ACTIVATION_THRESHOLD) {
+            getView().showGuestModeLoginButton();
+        }
+    }
+
+    @Override
+    public void loginWithGuestClicked() {
+        compositeSubscription.add(
+                tokenParametersController.getUserGuestToken()
+                        .flatMapCompletable(apiTokenController::saveToken)
+                        .andThen(userController.enableGuestMode())
+                        .subscribe(getView()::showNextScreen,
+                                throwable -> handleHttpErrorResponse(throwable, "Error while getting user guest token"))
+        );
     }
 
     private void requestTokenAndLoadUserData(String code) {

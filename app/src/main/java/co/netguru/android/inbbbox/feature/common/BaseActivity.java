@@ -19,6 +19,7 @@ import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.event.CriticalLogoutEvent;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.utils.InputUtils;
 import rx.Subscription;
@@ -115,19 +116,34 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void initializeBottomSheet() {
         if (bottomSheetView != null) {
             bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
-            bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-                @Override
-                public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                        InputUtils.hideKeyboard(BaseActivity.this, bottomSheetView);
-                    }
-                }
+            bottomSheetBehavior.setBottomSheetCallback(createBottomSheetCallback());
+        }
+    }
 
-                @Override
-                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                    //no-op
+    private BottomSheetBehavior.BottomSheetCallback createBottomSheetCallback() {
+        return new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    InputUtils.hideKeyboard(BaseActivity.this, bottomSheetView);
+                    removeBottomSheetFragment();
                 }
-            });
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                //no-op
+            }
+        };
+    }
+
+    private void removeBottomSheetFragment() {
+        Fragment fragmentToRemove = getSupportFragmentManager()
+                .findFragmentByTag(ShotDetailsFragment.TAG);
+        if (fragmentToRemove != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .remove(fragmentToRemove)
+                    .commit();
         }
     }
 }

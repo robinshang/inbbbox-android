@@ -16,7 +16,7 @@ import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 import timber.log.Timber;
 
 @Singleton
-public final class NotificationScheduler {
+public class NotificationScheduler {
 
     private static final int BROADCAST_REQUEST_CODE = 0;
 

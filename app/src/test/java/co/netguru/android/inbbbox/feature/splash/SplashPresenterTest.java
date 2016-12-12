@@ -14,6 +14,7 @@ import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.UserController;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
+import rx.Single;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -42,7 +43,7 @@ public class SplashPresenterTest {
 
     @Test
     public void whenViewAttached_thenCheckTokenValidity() {
-        when(tokenControllerMock.isTokenValid()).thenReturn(Observable.just(true));
+        when(tokenControllerMock.isTokenValid()).thenReturn(Single.just(true));
         when(userControllerMock.requestUser()).thenReturn(Observable.just(Statics.USER_ENTITY));
 
         splashPresenter.attachView(splashViewMock);
@@ -52,8 +53,9 @@ public class SplashPresenterTest {
 
     @Test
     public void whenViewAttachedAndTokenIsInvalid_thenGetUserInstance() {
-        when(tokenControllerMock.isTokenValid()).thenReturn(Observable.just(true));
+        when(tokenControllerMock.isTokenValid()).thenReturn(Single.just(true));
         when(userControllerMock.requestUser()).thenReturn(Observable.just(Statics.USER_ENTITY));
+        when(userControllerMock.isGuestModeEnabled()).thenReturn(Single.just(false));
 
         splashPresenter.attachView(splashViewMock);
 
@@ -62,7 +64,8 @@ public class SplashPresenterTest {
 
     @Test
     public void whenViewAttachedAndUserInstanceIsSaved_thenShowMainView() {
-        when(tokenControllerMock.isTokenValid()).thenReturn(Observable.just(true));
+        when(tokenControllerMock.isTokenValid()).thenReturn(Single.just(true));
+        when(userControllerMock.isGuestModeEnabled()).thenReturn(Single.just(false));
         when(userControllerMock.requestUser()).thenReturn(Observable.just(Statics.USER_ENTITY));
 
         splashPresenter.attachView(splashViewMock);
@@ -72,7 +75,7 @@ public class SplashPresenterTest {
 
     @Test
     public void whenViewAttachedAndTokenIsInvalidOrNull_thenShowLoginScreen() {
-        when(tokenControllerMock.isTokenValid()).thenReturn(Observable.just(false));
+        when(tokenControllerMock.isTokenValid()).thenReturn(Single.just(false));
 
         splashPresenter.attachView(splashViewMock);
 
@@ -82,7 +85,7 @@ public class SplashPresenterTest {
     @Test
     public void whenViewAttachedAndUserInstanceErrorOccurred_thenShowLoginScreen() {
         Throwable exampleThrowable = new Throwable();
-        when(tokenControllerMock.isTokenValid()).thenReturn(Observable.just(true));
+        when(tokenControllerMock.isTokenValid()).thenReturn(Single.just(true));
         when(userControllerMock.requestUser()).thenReturn(Observable.error(exampleThrowable));
 
         splashPresenter.attachView(splashViewMock);
@@ -94,7 +97,8 @@ public class SplashPresenterTest {
     public void whenViewAttachedAndUserInstanceErrorOccurred_thenShowErrorMessage() {
         String test = "test";
         Throwable exampleThrowable = new Throwable(test);
-        when(tokenControllerMock.isTokenValid()).thenReturn(Observable.just(true));
+        when(tokenControllerMock.isTokenValid()).thenReturn(Single.just(true));
+        when(userControllerMock.isGuestModeEnabled()).thenReturn(Single.just(false));
         when(userControllerMock.requestUser()).thenReturn(Observable.error(exampleThrowable));
         when(errorControllerMock.getThrowableMessage(exampleThrowable)).thenReturn(test);
 

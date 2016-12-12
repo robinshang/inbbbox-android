@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -44,7 +45,9 @@ import static butterknife.ButterKnife.findById;
 
 public class MainActivity
         extends BaseMvpActivity<MainViewContract.View, MainViewContract.Presenter>
-        implements MainViewContract.View, ShotsFragment.ShotActionListener, TimePickerDialogFragment.OnTimePickedListener {
+        implements MainViewContract.View,
+        ShotsFragment.ShotActionListener,
+        TimePickerDialogFragment.OnTimePickedListener {
 
     public enum RequestType {
         REFRESH_FOLLOWER_LIST
@@ -84,7 +87,7 @@ public class MainActivity
     private Switch shotDetailsSwitch;
     private ToggleButton drawerToggleButton;
     private MainActivityPagerAdapter pagerAdapter;
-
+    private View drawerCreateAccountButton;
 
     public static void startActivity(Context context) {
         final Intent intent = new Intent(context, MainActivity.class);
@@ -122,12 +125,6 @@ public class MainActivity
         restoreToggleButtonState(savedInstanceState);
     }
 
-    @NonNull
-    @Override
-    public MainViewContract.Presenter createPresenter() {
-        return component.getMainActivityPresenter();
-    }
-
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -154,6 +151,138 @@ public class MainActivity
     @Override
     public void showMessageOnServerError(String errorText) {
         Toast.makeText(this, errorText, Toast.LENGTH_SHORT).show();
+    }
+
+    @NonNull
+    @Override
+    public MainViewContract.Presenter createPresenter() {
+        return component.getMainActivityPresenter();
+    }
+
+    @Override
+    public void showLogoutMenu() {
+        changeMenuGroupsVisibility(false, true);
+    }
+
+    @Override
+    public void showMainMenu() {
+        changeMenuGroupsVisibility(true, false);
+    }
+
+    @Override
+    public void showLoginActivity() {
+        LoginActivity.startActivity(this);
+        finish();
+    }
+
+    @Override
+    public void showUserName(String username) {
+        drawerUserName.setText(username);
+    }
+
+    @Override
+    public void showUserPhoto(String url) {
+        Glide.with(MainActivity.this)
+                .load(url)
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(drawerUserPhoto);
+    }
+
+    @Override
+    public void showTimePickDialog(int startHour, int startMinute) {
+        TimePickerDialogFragment.newInstance(startHour, startMinute)
+                .show(getSupportFragmentManager(), TimePickerDialogFragment.TAG);
+    }
+
+    @Override
+    public void timePicked(int hour, int minute) {
+        getPresenter().onTimePicked(hour, minute);
+    }
+
+    @Override
+    public void showNotificationTime(String time) {
+        drawerReminderTime.setText(time);
+    }
+
+    @Override
+    public void changeNotificationStatus(boolean status) {
+        notificationSwitch.setChecked(status);
+    }
+
+    @Override
+    public void changeFollowingStatus(boolean status) {
+        followingSwitch.setChecked(status);
+    }
+
+    @Override
+    public void changeNewStatus(boolean status) {
+        newSwitch.setChecked(status);
+    }
+
+    @Override
+    public void changePopularStatus(boolean status) {
+        popularSwitch.setChecked(status);
+    }
+
+    @Override
+    public void changeDebutsStatus(boolean status) {
+        debutsSwitch.setChecked(status);
+    }
+
+    @Override
+    public void changeCustomizationStatus(boolean isDetails) {
+        shotDetailsSwitch.setChecked(isDetails);
+    }
+
+    @Override
+    public void setSettingsListeners() {
+        followingSwitch
+                .setOnCheckedChangeListener((buttonView, isChecked)
+                        -> getPresenter().followingStatusChanged(isChecked));
+        newSwitch
+                .setOnCheckedChangeListener((buttonView, isChecked)
+                        -> getPresenter().newStatusChanged(isChecked));
+        popularSwitch
+                .setOnCheckedChangeListener((buttonView, isChecked)
+                        -> getPresenter().popularStatusChanged(isChecked));
+        debutsSwitch
+                .setOnCheckedChangeListener((buttonView, isChecked)
+                        -> getPresenter().debutsStatusChanged(isChecked));
+        shotDetailsSwitch
+                .setOnCheckedChangeListener((buttonView, isChecked)
+                        -> getPresenter().customizationStatusChanged(isChecked));
+    }
+
+    @Override
+    public void showMessage(@StringRes int message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showShotDetails(Shot shot, boolean isCommentModeEnabled) {
+        showBottomSheet(ShotDetailsFragment.newInstance(shot, isCommentModeEnabled), ShotDetailsFragment.TAG);
+    }
+
+    @Override
+    public void shotLikeStatusChanged() {
+        pagerAdapter.refreshFragment(TabItemType.LIKES);
+    }
+
+    @Override
+    public void refreshShotsView() {
+        pagerAdapter.refreshFragment(TabItemType.SHOTS);
+    }
+
+    @Override
+    public void openSignUpPage(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+    }
+
+    @Override
+    public void showCreateAccountButton() {
+        drawerCreateAccountButton.setVisibility(View.VISIBLE);
     }
 
     private void initComponent() {
@@ -235,11 +364,13 @@ public class MainActivity
         drawerToggleButton = findById(header, R.id.drawer_header_toggle);
         drawerUserName = findById(header, R.id.drawer_user_name);
         drawerUserPhoto = findById(header, R.id.drawer_user_photo);
+        drawerCreateAccountButton = findById(header, R.id.create_account_textView);
         drawerReminderTime = findById(navigationView.getMenu()
                 .findItem(R.id.drawer_item_reminder).getActionView(), R.id.drawer_item_time);
 
         drawerToggleButton.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> getPresenter().toggleButtonChanged(isChecked));
+        drawerCreateAccountButton.setOnClickListener(view -> getPresenter().onCreateAccountClick());
 
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -285,116 +416,12 @@ public class MainActivity
     }
 
     private Switch findDrawerSwitch(@IdRes int itemId) {
-        return findById(navigationView.getMenu().findItem(itemId).getActionView(), R.id.drawer_item_switch);
+        return findById(navigationView.getMenu()
+                .findItem(itemId).getActionView(), R.id.drawer_item_switch);
     }
 
     private void changeMenuGroupsVisibility(boolean isMainMenuVisible, boolean isLogoutMenuVisible) {
         navigationView.getMenu().setGroupVisible(R.id.group_all, isMainMenuVisible);
         navigationView.getMenu().setGroupVisible(R.id.group_logout, isLogoutMenuVisible);
-    }
-
-    @Override
-    public void showLogoutMenu() {
-        changeMenuGroupsVisibility(false, true);
-    }
-
-    @Override
-    public void showMainMenu() {
-        changeMenuGroupsVisibility(true, false);
-    }
-
-    @Override
-    public void showLoginActivity() {
-        LoginActivity.startActivity(this);
-        finish();
-    }
-
-    @Override
-    public void showUserName(String username) {
-        drawerUserName.setText(username);
-    }
-
-    @Override
-    public void showUserPhoto(String url) {
-        Glide.with(MainActivity.this)
-                .load(url)
-                .fitCenter()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(drawerUserPhoto);
-    }
-
-    @Override
-    public void showTimePickDialog(int startHour, int startMinute) {
-        TimePickerDialogFragment.newInstance(startHour, startMinute)
-                .show(getSupportFragmentManager(), TimePickerDialogFragment.TAG);
-    }
-
-    @Override
-    public void timePicked(int hour, int minute) {
-        getPresenter().onTimePicked(hour, minute);
-    }
-
-    @Override
-    public void showNotificationTime(String time) {
-        drawerReminderTime.setText(time);
-    }
-
-    @Override
-    public void changeNotificationStatus(boolean status) {
-        notificationSwitch.setChecked(status);
-    }
-
-    @Override
-    public void changeFollowingStatus(boolean status) {
-        followingSwitch.setChecked(status);
-    }
-
-    @Override
-    public void changeNewStatus(boolean status) {
-        newSwitch.setChecked(status);
-    }
-
-    @Override
-    public void changePopularStatus(boolean status) {
-        popularSwitch.setChecked(status);
-    }
-
-    @Override
-    public void changeDebutsStatus(boolean status) {
-        debutsSwitch.setChecked(status);
-    }
-
-    @Override
-    public void changeCustomizationStatus(boolean isDetails) {
-        shotDetailsSwitch.setChecked(isDetails);
-    }
-
-    @Override
-    public void setSettingsListeners() {
-        followingSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().followingStatusChanged(isChecked)));
-        newSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().newStatusChanged(isChecked)));
-        popularSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> getPresenter().popularStatusChanged(isChecked)));
-        debutsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().debutsStatusChanged(isChecked));
-        shotDetailsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> getPresenter().customizationStatusChanged(isChecked));
-    }
-
-    @Override
-    public void showMessage(@StringRes int message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showShotDetails(Shot shot, boolean isCommentModeEnabled) {
-        showBottomSheet(ShotDetailsFragment.newInstance(shot, isCommentModeEnabled), ShotDetailsFragment.TAG);
-    }
-
-    @Override
-    public void shotLikeStatusChanged() {
-        pagerAdapter.refreshFragment(TabItemType.LIKES);
-    }
-
-    @Override
-    public void refreshShotsView() {
-        pagerAdapter.refreshFragment(TabItemType.SHOTS);
     }
 }
