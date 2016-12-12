@@ -42,6 +42,17 @@ public class GuestModeController {
                 .onErrorResumeNext(exception -> performUnlike(exception, shot));
     }
 
+    public Observable.Transformer<List<Shot>, List<Shot>> getGuestModeCachedShotTransformer() {
+        return listObservable -> Observable.zip(
+                getCachedLikedShotIfGuestEnabled(),
+                listObservable,
+                (cacheShots, apiShots) -> {
+                    Timber.d("apiShots %d | cacheShots %d", apiShots.size(), cacheShots.size());
+                    cacheShots.addAll(apiShots);
+                    return cacheShots;
+                });
+    }
+
     public Observable<List<Shot>> getCachedLikedShotIfGuestEnabled() {
         return Observable.just(initList())
                 .startWith(isGuestModeDisabled().toObservable())
