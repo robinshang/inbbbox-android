@@ -85,6 +85,7 @@ public class MainActivity
     private Switch popularSwitch;
     private Switch debutsSwitch;
     private Switch shotDetailsSwitch;
+    private Switch nightModeSwitch;
     private ToggleButton drawerToggleButton;
     private MainActivityPagerAdapter pagerAdapter;
     private View drawerCreateAccountButton;
@@ -236,22 +237,24 @@ public class MainActivity
     }
 
     @Override
+    public void changeNightModeStatus(boolean isNightMode) {
+        nightModeSwitch.setChecked(isNightMode);
+    }
+
+    @Override
     public void setSettingsListeners() {
-        followingSwitch
-                .setOnCheckedChangeListener((buttonView, isChecked)
-                        -> getPresenter().followingStatusChanged(isChecked));
-        newSwitch
-                .setOnCheckedChangeListener((buttonView, isChecked)
-                        -> getPresenter().newStatusChanged(isChecked));
-        popularSwitch
-                .setOnCheckedChangeListener((buttonView, isChecked)
-                        -> getPresenter().popularStatusChanged(isChecked));
-        debutsSwitch
-                .setOnCheckedChangeListener((buttonView, isChecked)
-                        -> getPresenter().debutsStatusChanged(isChecked));
-        shotDetailsSwitch
-                .setOnCheckedChangeListener((buttonView, isChecked)
-                        -> getPresenter().customizationStatusChanged(isChecked));
+        followingSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                getPresenter().followingStatusChanged(isChecked));
+        newSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                getPresenter().newStatusChanged(isChecked));
+        popularSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                getPresenter().popularStatusChanged(isChecked));
+        debutsSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                getPresenter().debutsStatusChanged(isChecked));
+        shotDetailsSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                getPresenter().customizationStatusChanged(isChecked));
+        nightModeSwitch.setOnCheckedChangeListener(((buttonView, isChecked) ->
+                getPresenter().nightModeChanged(isChecked)));
     }
 
     @Override
@@ -413,6 +416,7 @@ public class MainActivity
         popularSwitch = findDrawerSwitch(R.id.drawer_item_popular);
         debutsSwitch = findDrawerSwitch(R.id.drawer_item_debuts);
         shotDetailsSwitch = findDrawerSwitch(R.id.drawer_item_shot_details);
+        nightModeSwitch = findDrawerSwitch(R.id.drawer_item_night_mode);
     }
 
     private Switch findDrawerSwitch(@IdRes int itemId) {

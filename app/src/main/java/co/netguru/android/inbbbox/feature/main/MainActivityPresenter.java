@@ -16,14 +16,13 @@ import co.netguru.android.inbbbox.controler.UserController;
 import co.netguru.android.inbbbox.controler.notification.NotificationController;
 import co.netguru.android.inbbbox.controler.notification.NotificationScheduler;
 import co.netguru.android.inbbbox.feature.main.MainViewContract.Presenter;
-import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
+import co.netguru.android.inbbbox.model.localrepository.CustomizationSettings;
 import co.netguru.android.inbbbox.model.localrepository.NotificationSettings;
 import co.netguru.android.inbbbox.model.localrepository.Settings;
 import co.netguru.android.inbbbox.model.localrepository.StreamSourceSettings;
 import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
-import retrofit2.http.HEAD;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -180,6 +179,15 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     }
 
     @Override
+    public void nightModeChanged(boolean isNightMode) {
+        final Subscription subscription = settingsController.changeNightMode(isNightMode)
+                .compose(RxTransformerUtils.applyCompletableIoSchedulers())
+                .subscribe(() -> Timber.d("Customization settings changed"),
+                        throwable -> handleHttpErrorResponse(throwable, "Error while changing customization settings"));
+        subscriptions.add(subscription);
+    }
+
+    @Override
     public void handleHttpErrorResponse(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
@@ -216,7 +224,6 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private void changeStreamSourceStatusIfCorrect() {
         if (isFollowing || isNew || isPopular || isDebut) {
             changeStreamSourceStatus();
-
         } else {
             canNotChangeStreamSourceStatus();
         }
@@ -270,7 +277,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private void setSettings(Settings settings) {
         setNotificationSettings(settings.getNotificationSettings());
         setStreamSourceSettings(settings.getStreamSourceSettings());
-        getView().changeCustomizationStatus(settings.getCustomizationSettings().isShowDetails());
+        setCustomizationSettings(settings.getCustomizationSettings());
         getView().setSettingsListeners();
     }
 
@@ -285,6 +292,11 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         getView().changeNewStatus(streamSourceSettings.isNewToday());
         getView().changePopularStatus(streamSourceSettings.isPopularToday());
         getView().changeDebutsStatus(streamSourceSettings.isDebut());
+    }
+
+    private void setCustomizationSettings(CustomizationSettings settings) {
+        getView().changeCustomizationStatus(settings.isShowDetails());
+        getView().changeNightModeStatus(settings.isNightMode());
     }
 
     private void onScheduleNotificationNext(NotificationSettings settings) {
