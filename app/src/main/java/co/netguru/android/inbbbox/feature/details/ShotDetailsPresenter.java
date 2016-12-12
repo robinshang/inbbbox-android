@@ -133,6 +133,11 @@ public class ShotDetailsPresenter
         downloadCommentsFromAPI();
     }
 
+    @Override
+    public void onShotImageClick() {
+        getView().openShotFullscreen(shot);
+    }
+
     private void initializeView() {
         getView().showMainImage(shot);
         getView().updateLoadMoreState(commentLoadMoreState);

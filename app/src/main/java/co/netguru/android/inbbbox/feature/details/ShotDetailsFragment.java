@@ -27,6 +27,7 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotDetailsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
+import co.netguru.android.inbbbox.feature.details.fullscreen.ShotFullscreenActivity;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsActivity;
@@ -126,6 +127,11 @@ public class ShotDetailsFragment
     @OnClick(R.id.details_close_imageView)
     void onCloseClick() {
         getPresenter().closeScreen();
+    }
+    
+    @OnClick(R.id.parallax_image_view)
+    void onShotImageClick() {
+        getPresenter().onShotImageClick();
     }
 
     @Override
@@ -336,6 +342,11 @@ public class ShotDetailsFragment
         if (editorFragmentDialog != null) {
             editorFragmentDialog.disableProgressMode();
         }
+    }
+
+    @Override
+    public void openShotFullscreen(Shot shot) {
+        ShotFullscreenActivity.startActivity(getContext(), shot);
     }
 
     private void initComponent() {
