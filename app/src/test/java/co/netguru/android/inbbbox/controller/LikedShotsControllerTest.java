@@ -64,7 +64,7 @@ public class LikedShotsControllerTest {
 
     @Test
     public void whenGetLikedShot_thenObservableReturnsListOfLikedShots() {
-        TestSubscriber<Shot> testSubscriber = new TestSubscriber<>();
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
 
         likedShotsController.getLikedShots(PAGE_NUMBER, PAGE_COUNT).subscribe(testSubscriber);
 

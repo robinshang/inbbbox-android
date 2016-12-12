@@ -58,7 +58,6 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
             loadMoreLikesSubscription.unsubscribe();
             pageNumber = 1;
             refreshSubscription = likedShotsController.getLikedShots(pageNumber, PAGE_COUNT)
-                    .toList()
                     .compose(androidIO())
                     .doAfterTerminate(getView()::hideProgressBar)
                     .subscribe(this::onGetLikeShotListNext,
@@ -74,7 +73,6 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
                     .compose(RxTransformerUtils.executeRunnableIfObservableDidntEmitUntilGivenTime(
                             SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
                             getView()::showLoadingMoreLikesView))
-                    .toList()
                     .compose(androidIO())
                     .doAfterTerminate(() -> {
                         getView().hideProgressBar();
