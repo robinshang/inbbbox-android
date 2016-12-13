@@ -72,13 +72,13 @@ public class GuestModeRepository {
     }
 
     private HashMap<Long, Shot> getListsFromPrefs() {
-        HashMap<Long, Shot> resultList = new HashMap<>();
+        HashMap<Long, Shot> resultMap = new HashMap<>();
         String dataFromPrefs = sharedPreferences.getString(LIKED_SHOTS_KEY, "");
-        Timber.d("Local likes list: " + dataFromPrefs);
+        Timber.d("Local likes list: %s", dataFromPrefs);
         if (!dataFromPrefs.isEmpty()) {
-            resultList = gson.fromJson(dataFromPrefs, listType);
+            resultMap = gson.fromJson(dataFromPrefs, listType);
         }
-        return resultList;
+        return resultMap;
     }
 
     private Completable saveLikesList(HashMap<Long, Shot> shots) {

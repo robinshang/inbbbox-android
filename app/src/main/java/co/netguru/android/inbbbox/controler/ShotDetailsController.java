@@ -44,7 +44,6 @@ public class ShotDetailsController {
 
     public Completable performLikeAction(Shot shot, boolean newLikeState) {
         return newLikeState ? likeShotController.likeShot(shot) :
-                // TODO: 09.12.2016 shot unlike
                 likeShotController.unLikeShot(shot);
     }
 

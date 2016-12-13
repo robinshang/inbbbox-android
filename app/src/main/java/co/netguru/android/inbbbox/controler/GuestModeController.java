@@ -110,7 +110,7 @@ public class GuestModeController {
         return guestModeRepository.getLikedShots();
     }
 
-    private static class GuestModeStateException extends Throwable {
+    private static class GuestModeStateException extends Exception {
 
         GuestModeStateException(String message) {
             super(message);
