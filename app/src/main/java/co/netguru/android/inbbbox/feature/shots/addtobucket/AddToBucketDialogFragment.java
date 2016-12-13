@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.shots.addtobucket;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,9 +8,11 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,6 +30,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.feature.buckets.createbucket.CreateBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.common.BaseMvpDialogFragment;
 import co.netguru.android.inbbbox.feature.details.fullscreen.ShotFullscreenActivity;
 import co.netguru.android.inbbbox.feature.shots.addtobucket.adapter.BucketViewHolder;
@@ -36,6 +40,7 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.DividerItemDecorator;
+import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucketContract.View, AddToBucketContract.Presenter>
@@ -45,6 +50,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     private static final String SHOT_ARG_KEY = "shot_arg_key";
     private static final int FRAGMENT_REQUEST_CODE = 1;
+    private static final int LAST_X_BUCKETS_VISIBLE_TO_LOAD_MORE = 10;
 
     @BindView(R.id.shot_preview_image)
     ImageView shotPreviewImage;
@@ -65,6 +71,8 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @BindColor(R.color.pink)
     int pinkColor;
+
+    float heightPercentage;
 
     @BindString(R.string.fragment_add_to_bucket_shot_created_on)
     String shotCreatedOnString;
@@ -96,10 +104,16 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        bucketsRecyclerView.setAdapter(bucketsAdapter);
-        bucketsRecyclerView.addItemDecoration(new DividerItemDecorator(getContext(), DividerItemDecorator.Orientation.VERTICAL_LIST));
+        heightPercentage = getResources().getFraction(R.fraction.big_dialog_height_width_percentage, 1, 1);
+        setupRecyclerView();
         getPresenter().handleShot(getArguments().getParcelable(SHOT_ARG_KEY));
         getPresenter().loadAvailableBuckets();
+    }
+
+    @Override
+    public void onStart() {
+        setupDialogHeight();
+        super.onStart();
     }
 
     @NonNull
@@ -115,7 +129,12 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @OnClick(R.id.shot_preview_image)
     void onOpenShotFullscreen() {
-        presenter.onOpenShotFullscreen();
+        getPresenter().onOpenShotFullscreen();
+    }
+
+    @OnClick(R.id.create_bucket_button)
+    void onCreateBucketButtonClick() {
+        getPresenter().createBucket();
     }
 
     @Override
@@ -176,17 +195,18 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @Override
     public void showNoBucketsAvailable() {
-        bucketListProgressBar.setVisibility(View.GONE);
         noBucketsText.setVisibility(View.VISIBLE);
         bucketsRecyclerView.setVisibility(View.GONE);
     }
 
     @Override
-    public void showBuckets(List<Bucket> buckets) {
+    public void setBucketsList(List<Bucket> buckets) {
+        bucketsAdapter.setBuckets(buckets);
+    }
+
+    @Override
+    public void hideProgressBar() {
         bucketListProgressBar.setVisibility(View.GONE);
-        noBucketsText.setVisibility(View.GONE);
-        bucketsRecyclerView.setVisibility(View.VISIBLE);
-        bucketsAdapter.showBucketsList(buckets);
     }
 
     @Override
@@ -208,8 +228,64 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     }
 
     @Override
+    public void showBucketListLoadingMore() {
+        Toast.makeText(getContext(), R.string.loading_more_buckets, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showMoreBuckets(List<Bucket> buckets) {
+        bucketsAdapter.addMoreBuckets(buckets);
+    }
+
+    @Override
+    public void addNewBucketOnTop(Bucket bucket) {
+        bucketsAdapter.addBucketOnTop(bucket);
+    }
+
+    @Override
+    public void scrollToTop() {
+        bucketsRecyclerView.smoothScrollToPosition(0);
+    }
+
+    @Override
+    public void showCreateBucketView() {
+        CreateBucketDialogFragment.newInstance().show(getFragmentManager(), CreateBucketDialogFragment.TAG);
+    }
+
+    @Override
+    public void showBucketsList() {
+        noBucketsText.setVisibility(View.GONE);
+        bucketsRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void showMessageOnServerError(String errorText) {
         Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
+    }
+
+    private void setupRecyclerView() {
+        bucketsRecyclerView.setAdapter(bucketsAdapter);
+        bucketsRecyclerView.addItemDecoration(
+                new DividerItemDecorator(getContext(), DividerItemDecorator.Orientation.VERTICAL_LIST, false));
+        bucketsRecyclerView.addOnScrollListener(
+                new LoadMoreScrollListener(LAST_X_BUCKETS_VISIBLE_TO_LOAD_MORE) {
+                    @Override
+                    public void requestMoreData() {
+                        getPresenter().loadMoreBuckets();
+                    }
+                });
+    }
+
+    /**
+     * This method set dialog height to fixed size (heightPercentage * windowHeight) instead of wrap content,
+     * fixing problems with wrong height calculation for inflated layout.
+     **/
+    private void setupDialogHeight() {
+        Window window = getDialog().getWindow();
+        Point size = new Point();
+        Display display = window.getWindowManager().getDefaultDisplay();
+        display.getSize(size);
+        window.setLayout(window.getAttributes().width, Math.round(size.y * heightPercentage));
     }
 
     private String getFormattedDate(LocalDateTime creationDate) {

@@ -49,7 +49,6 @@
     <dimen name="bucket_grid_shots_height">150dp</dimen>
     <dimen name="fragment_bucket_empty_view_logo_size">140dp</dimen>
 
-
     <dimen name="follower_detail_header_item_height">100dp</dimen>
     <dimen name="follower_detail_header_item_margin_bottom">36dp</dimen>
     <dimen name="follower_detail_header_item_photo_size">72dp</dimen>
@@ -120,6 +119,9 @@
     <dimen name="shot_item_width_landscape">200dp</dimen>
     <dimen name="guest_avatar_padding">8dp</dimen>
     <dimen name="button_border_width">2dp</dimen>
+    <dimen name="add_to_bucket_fragment_create_bucket_button_height">48dp</dimen>
 
     <fraction name="four_images_view_percentage">50%</fraction>
+    <fraction name="big_dialog_height_width_percentage">90%</fraction>
+
 </resources>
