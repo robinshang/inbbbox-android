@@ -15,6 +15,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Switch;
@@ -239,6 +240,12 @@ public class MainActivity
     @Override
     public void changeNightModeStatus(boolean isNightMode) {
         nightModeSwitch.setChecked(isNightMode);
+        final int nightMode = isNightMode
+                ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
+        if (AppCompatDelegate.getDefaultNightMode() != nightMode) {
+            AppCompatDelegate.setDefaultNightMode(nightMode);
+            recreate();
+        }
     }
 
     @Override

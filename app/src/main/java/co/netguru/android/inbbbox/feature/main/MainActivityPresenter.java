@@ -182,8 +182,10 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     public void nightModeChanged(boolean isNightMode) {
         final Subscription subscription = settingsController.changeNightMode(isNightMode)
                 .compose(RxTransformerUtils.applyCompletableIoSchedulers())
-                .subscribe(() -> Timber.d("Customization settings changed"),
-                        throwable -> handleHttpErrorResponse(throwable, "Error while changing customization settings"));
+                .subscribe(() -> {
+                    Timber.d("Customization settings changed");
+                    getView().changeNightModeStatus(isNightMode);
+                }, throwable -> handleHttpErrorResponse(throwable, "Error while changing customization settings"));
         subscriptions.add(subscription);
     }
 
