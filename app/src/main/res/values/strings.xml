@@ -124,4 +124,5 @@
     <string name="guest_button_text">Use as guest</string>
     <string name="create_account_label">Create Dribbble account</string>
     <string name="guest_label">Guest?</string>
+    <string name="add_to_bucket_fragment_create_new_bucket">Create new bucket</string>
 </resources>
