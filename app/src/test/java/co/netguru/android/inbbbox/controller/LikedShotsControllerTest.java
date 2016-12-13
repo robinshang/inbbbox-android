@@ -15,7 +15,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.api.LikesApi;
 import co.netguru.android.inbbbox.controler.LikedShotsController;
-import co.netguru.android.inbbbox.controler.likescontroller.GuestModeController;
+import co.netguru.android.inbbbox.controler.likescontroller.LikeShotControllerGuest;
 import co.netguru.android.inbbbox.model.api.Image;
 import co.netguru.android.inbbbox.model.api.LikedShotEntity;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
@@ -42,7 +42,7 @@ public class LikedShotsControllerTest {
     ShotEntity shotEntityMock;
 
     @Mock
-    GuestModeController guestModeController;
+    LikeShotControllerGuest guestModeController;
 
     @Mock
     Image imageMock;
@@ -64,7 +64,7 @@ public class LikedShotsControllerTest {
         when(shotEntityMock.image()).thenReturn(imageMock);
         when(shotEntityMock.createdAt()).thenReturn(LocalDateTime.now());
         when(likesApiMock.getLikedShots(PAGE_NUMBER, PAGE_COUNT)).thenReturn(Observable.just(expectedItems));
-        when(guestModeController.getGuestModeCachedShotTransformer()).thenReturn(listObservable -> Observable.just(new ArrayList<>()));
+//        when(guestModeController.getGuestModeCachedShotTransformer()).thenReturn(listObservable -> Observable.just(new ArrayList<>()));
     }
 
     @Test

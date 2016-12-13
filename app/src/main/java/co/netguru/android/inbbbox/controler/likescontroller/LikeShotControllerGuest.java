@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.controler.likescontroller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,15 +12,15 @@ import rx.Completable;
 import rx.Observable;
 import timber.log.Timber;
 
-public class GuestModeController implements LikeShotController {
+public class LikeShotControllerGuest implements LikeShotController {
 
     private static final String GUEST_MODE_ENABLED_ERROR_MESSAGE = "Guest mode enabled";
     private final GuestModeRepository guestModeRepository;
     private final LikesApi likesApi;
 
     @Inject
-    public GuestModeController(GuestModeRepository guestModeRepository,
-                               LikesApi likesApi) {
+    public LikeShotControllerGuest(GuestModeRepository guestModeRepository,
+                                   LikesApi likesApi) {
         this.guestModeRepository = guestModeRepository;
         this.likesApi = likesApi;
     }
@@ -58,39 +57,6 @@ public class GuestModeController implements LikeShotController {
                 .flatMap(Observable::from)
                 .map(likedShotEntity -> Shot.create(likedShotEntity.shot()))
                 .toList();
-    }
-
-//    public Observable.Transformer<List<Shot>, List<Shot>> getGuestModeCachedShotTransformer() {
-//        return listObservable -> Observable.zip(
-//                getCachedLikedShotIfGuestEnabled(),
-//                listObservable,
-//                (cacheShots, apiShots) -> {
-//                    Timber.d("apiShots %d | cacheShots %d", apiShots.size(), cacheShots.size());
-//                    cacheShots.addAll(apiShots);
-//                    return cacheShots;
-//                });
-//    }
-//
-//    public Completable.CompletableTransformer getShotLikeTransformer(Shot shot) {
-//        return completable -> completable
-//                .startWith(isGuestModeDisabled())
-//                .onErrorResumeNext(exception -> performLike(exception, shot));
-//    }
-//
-//    public Completable.CompletableTransformer getIsShotLikedTransformer(Shot shot) {
-//        return completable -> completable
-//                .startWith(isGuestModeDisabled())
-//                .onErrorResumeNext(e -> checkIsLiked(e, shot));
-//    }
-
-//    public Completable.CompletableTransformer getShotUnlikeTransformer(Shot shot) {
-//        return completable -> completable
-//                .startWith(isGuestModeDisabled())
-//                .onErrorResumeNext(exception -> performUnlike(exception, shot));
-//    }
-
-    private List<Shot> initList() {
-        return new ArrayList<>();
     }
 
     private Completable performLike(Shot shot) {

@@ -14,7 +14,7 @@ import co.netguru.android.inbbbox.api.RequestInterceptor;
 import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.LogoutController;
-import co.netguru.android.inbbbox.controler.likescontroller.GuestModeController;
+import co.netguru.android.inbbbox.controler.likescontroller.LikeShotControllerGuest;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.localrepository.GuestModeRepository;
 import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
@@ -68,6 +68,6 @@ public class ConfigurationModule {
 
     @Provides
     LikeShotController provideLikeShotController(GuestModeRepository guestModeRepository, LikesApi likesApi) {
-        return new GuestModeController(guestModeRepository, likesApi);
+        return new LikeShotControllerGuest(guestModeRepository, likesApi);
     }
 }
