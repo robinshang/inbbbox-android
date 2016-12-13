@@ -148,6 +148,11 @@ public class MainActivity
         }
     }
 
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(this, errorText, Toast.LENGTH_SHORT).show();
+    }
+
     @NonNull
     @Override
     public MainViewContract.Presenter createPresenter() {

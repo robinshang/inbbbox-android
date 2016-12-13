@@ -13,6 +13,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.event.BucketCreatedEvent;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.model.api.Bucket;
@@ -24,6 +25,7 @@ import rx.Single;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -40,6 +42,9 @@ public class AddToBucketPresenterTest {
 
     @Mock
     RxBus rxBusMock;
+
+    @Mock
+    ErrorController errorControllerMock;
 
     @Mock
     AddToBucketContract.View viewMock;
@@ -118,7 +123,7 @@ public class AddToBucketPresenterTest {
         presenter.loadAvailableBuckets();
         //then
         verify(viewMock).showBucketListLoading();
-        verify(viewMock).showApiError();
+        verify(viewMock).showMessageOnServerError(anyString());
     }
 
     @Test

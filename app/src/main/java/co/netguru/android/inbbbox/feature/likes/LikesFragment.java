@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
@@ -198,6 +199,11 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     @Override
     public void refreshFragmentData() {
         getPresenter().getLikesFromServer();
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(getActivity(), errorText, Toast.LENGTH_LONG).show();
     }
 
     private void initEmptyView() {

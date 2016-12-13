@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.shots.addtobucket;
 
-
 import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
@@ -11,6 +10,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.event.BucketCreatedEvent;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.model.api.Bucket;
@@ -27,21 +27,24 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
 
     private final BucketsController bucketsController;
-    private final RxBus rxBus;
+    private final ErrorController errorController;
 
+    private final RxBus rxBus;
     @NonNull
     private Subscription refreshSubscription;
     @NonNull
     private Subscription loadNextBucketsSubscription;
     private Subscription busSubscription;
 
+
     private Shot shot;
     private int pageNumber = 1;
     private boolean apiHasMoreBuckets = true;
 
     @Inject
-    AddToBucketPresenter(BucketsController bucketsController, RxBus rxBus) {
+    AddToBucketPresenter(BucketsController bucketsController, ErrorController errorController, RxBus rxBus) {
         this.bucketsController = bucketsController;
+        this.errorController = errorController;
         this.rxBus = rxBus;
         refreshSubscription = Subscriptions.unsubscribed();
         loadNextBucketsSubscription = Subscriptions.unsubscribed();
@@ -94,7 +97,7 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
                             getView().setBucketsList(buckets);
                             getView().showBucketsList();
                         }
-                    }, this::handleApiError);
+                    }, throwable -> handleHttpErrorResponse(throwable, "Error occurred while requesting buckets"));
         }
     }
 
@@ -111,13 +114,19 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
                     .subscribe(buckets -> {
                         apiHasMoreBuckets = buckets.size() == BUCKETS_PER_PAGE_COUNT;
                         getView().showMoreBuckets(buckets);
-                    }, this::handleApiError);
+                    }, throwable -> handleHttpErrorResponse(throwable, "Error occurred while requesting more buckets"));
         }
     }
 
     @Override
     public void handleBucketClick(Bucket bucket) {
         getView().passResultAndCloseFragment(bucket, shot);
+    }
+
+    @Override
+    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+        Timber.e(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
     @Override
@@ -130,11 +139,6 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
         getView().showCreateBucketView();
     }
 
-    private void handleApiError(Throwable throwable) {
-        Timber.d(throwable, "Error occurred while requesting buckets");
-        getView().showApiError();
-    }
-
     private void setupRxBus() {
         busSubscription = rxBus.getEvents(BucketCreatedEvent.class)
                 .compose(RxTransformers.androidIO())
@@ -144,5 +148,4 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
                     getView().scrollToTop();
                 });
     }
-
 }

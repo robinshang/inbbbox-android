@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.shots.addtobucket;
 
-
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -188,11 +187,6 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     }
 
     @Override
-    public void showApiError() {
-        Toast.makeText(getContext(), R.string.undefined_api_error, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public void showBucketListLoading() {
         bucketListProgressBar.setVisibility(View.VISIBLE);
         noBucketsText.setVisibility(View.GONE);
@@ -262,6 +256,11 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     public void showBucketsList() {
         noBucketsText.setVisibility(View.GONE);
         bucketsRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
     }
 
     private void setupRecyclerView() {

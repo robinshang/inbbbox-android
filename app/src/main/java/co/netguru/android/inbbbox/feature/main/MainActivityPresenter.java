@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.LogoutController;
 import co.netguru.android.inbbbox.controler.SettingsController;
 import co.netguru.android.inbbbox.controler.TokenParametersController;
@@ -15,12 +16,14 @@ import co.netguru.android.inbbbox.controler.UserController;
 import co.netguru.android.inbbbox.controler.notification.NotificationController;
 import co.netguru.android.inbbbox.controler.notification.NotificationScheduler;
 import co.netguru.android.inbbbox.feature.main.MainViewContract.Presenter;
+import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
 import co.netguru.android.inbbbox.model.localrepository.NotificationSettings;
 import co.netguru.android.inbbbox.model.localrepository.Settings;
 import co.netguru.android.inbbbox.model.localrepository.StreamSourceSettings;
 import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
+import retrofit2.http.HEAD;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -37,6 +40,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private final SettingsController settingsController;
     private final TokenParametersController tokenParametersController;
     private final LogoutController logoutController;
+    private final ErrorController errorController;
     private final CompositeSubscription subscriptions;
 
     private boolean isFollowing;
@@ -52,6 +56,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                           NotificationScheduler notificationScheduler,
                           NotificationController notificationController,
                           SettingsController settingsController,
+                          ErrorController errorController,
                           TokenParametersController tokenParametersController,
                           LogoutController logoutController) {
         this.userController = userController;
@@ -60,6 +65,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         this.settingsController = settingsController;
         this.tokenParametersController = tokenParametersController;
         this.logoutController = logoutController;
+        this.errorController = errorController;
         this.subscriptions = new CompositeSubscription();
     }
 
@@ -90,7 +96,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         subscriptions.add(
                 logoutController.performLogout()
                         .subscribe(getView()::showLoginActivity,
-                                throwable -> Timber.e(throwable, "critical logout error"))
+                                throwable -> handleHttpErrorResponse(throwable, "critical logout error"))
         );
     }
 
@@ -120,7 +126,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                 .compose(applySingleIoSchedulers())
                 .subscribe(this::showTimePickDialog,
                         throwable -> {
-                            Timber.e(throwable, "Error while getting settings");
+                            handleHttpErrorResponse(throwable, "Error while getting settings");
                             getView().showMessage(R.string.error_database);
                         });
         subscriptions.add(subscription);
@@ -169,8 +175,14 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         final Subscription subscription = settingsController.changeShotsDetailsStatus(isDetails)
                 .compose(RxTransformerUtils.applyCompletableIoSchedulers())
                 .subscribe(() -> Timber.d("Customization settings changed"),
-                        throwable -> Timber.e(throwable, "Error while changing customization settings"));
+                        throwable -> handleHttpErrorResponse(throwable, "Error while changing customization settings"));
         subscriptions.add(subscription);
+    }
+
+    @Override
+    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+        Timber.e(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
@@ -85,6 +86,11 @@ public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBuck
         createButton.setEnabled(true);
         cancelButton.setEnabled(true);
         setCancelable(true);
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(getActivity(), errorText, Toast.LENGTH_LONG).show();
     }
 
     private void setupDialogButtons(Dialog dialog) {

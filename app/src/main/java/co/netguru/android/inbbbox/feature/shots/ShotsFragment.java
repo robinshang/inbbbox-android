@@ -27,11 +27,8 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
-
 import co.netguru.android.inbbbox.feature.common.BaseMvpViewStateFragment;
-
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
-
 import co.netguru.android.inbbbox.feature.shots.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotSwipeListener;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
@@ -198,11 +195,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     @Override
-    public void showError(String error) {
-        Snackbar.make(shotsRecyclerView, error, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
     public void changeShotLikeStatus(Shot shot) {
         adapter.changeShotLikeStatus(shot);
         shotActionListener.shotLikeStatusChanged();
@@ -269,6 +261,11 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void hideLoadingIndicator() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Snackbar.make(shotsRecyclerView, errorText, Snackbar.LENGTH_LONG).show();
     }
 
     public interface ShotActionListener {
