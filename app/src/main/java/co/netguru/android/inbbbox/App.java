@@ -6,8 +6,6 @@ import android.content.Context;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
-import net.hockeyapp.android.CrashManager;
-
 import co.netguru.android.inbbbox.di.component.ApplicationComponent;
 import co.netguru.android.inbbbox.di.component.DaggerApplicationComponent;
 import co.netguru.android.inbbbox.di.module.ApplicationModule;
@@ -25,7 +23,6 @@ public class App extends Application {
         super.onCreate();
         appComponent.getDebugMetricsHelper().init(this);
         AndroidThreeTen.init(this);
-        CrashManager.register(this);
     }
 
     @Override
