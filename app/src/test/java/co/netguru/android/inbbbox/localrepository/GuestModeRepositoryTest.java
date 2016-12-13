@@ -39,7 +39,7 @@ public class GuestModeRepositoryTest {
     @Mock
     SharedPreferences.Editor editorMock;
 
-    GuestModeRepository guestModeRepository;
+    private GuestModeRepository guestModeRepository;
 
     private Shot exampleShot = Statics.LIKED_SHOT;
 
