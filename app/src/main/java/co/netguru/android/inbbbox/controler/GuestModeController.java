@@ -24,24 +24,6 @@ public class GuestModeController {
         this.guestModeRepository = guestModeRepository;
     }
 
-    public Completable.CompletableTransformer getShotLikeTransformer(Shot shot) {
-        return completable -> completable
-                .startWith(isGuestModeDisabled())
-                .onErrorResumeNext(exception -> performLike(exception, shot));
-    }
-
-    public Completable.CompletableTransformer getIsShotLikedTransformer(Shot shot) {
-        return completable -> completable
-                .startWith(isGuestModeDisabled())
-                .onErrorResumeNext(e -> checkIsLiked(shot));
-    }
-
-    public Completable.CompletableTransformer getShotUnlikeTransformer(Shot shot) {
-        return completable -> completable
-                .startWith(isGuestModeDisabled())
-                .onErrorResumeNext(exception -> performUnlike(exception, shot));
-    }
-
     public Observable.Transformer<List<Shot>, List<Shot>> getGuestModeCachedShotTransformer() {
         return listObservable -> Observable.zip(
                 getCachedLikedShotIfGuestEnabled(),
@@ -53,10 +35,28 @@ public class GuestModeController {
                 });
     }
 
-    public Observable<List<Shot>> getCachedLikedShotIfGuestEnabled() {
+    Completable.CompletableTransformer getShotLikeTransformer(Shot shot) {
+        return completable -> completable
+                .startWith(isGuestModeDisabled())
+                .onErrorResumeNext(exception -> performLike(exception, shot));
+    }
+
+    Completable.CompletableTransformer getIsShotLikedTransformer(Shot shot) {
+        return completable -> completable
+                .startWith(isGuestModeDisabled())
+                .onErrorResumeNext(e -> checkIsLiked(e, shot));
+    }
+
+    Completable.CompletableTransformer getShotUnlikeTransformer(Shot shot) {
+        return completable -> completable
+                .startWith(isGuestModeDisabled())
+                .onErrorResumeNext(exception -> performUnlike(exception, shot));
+    }
+
+    private Observable<List<Shot>> getCachedLikedShotIfGuestEnabled() {
         return Observable.just(initList())
                 .startWith(isGuestModeDisabled().toObservable())
-                .onErrorResumeNext(exception -> getCachedLikedShot());
+                .onErrorResumeNext(this::getCachedLikedShot);
     }
 
     private List<Shot> initList() {
@@ -77,20 +77,38 @@ public class GuestModeController {
      * logged with d() because exception is expected when guest mode is enabled
      */
     private Completable performLike(Throwable exception, Shot shot) {
-        Timber.d("Performing local like action- " + exception.getMessage());
-        return guestModeRepository.addLikedShot(shot);
+        Completable resultActionCompletable;
+        if (exception instanceof GuestModeStateException) {
+            Timber.d("Performing local like action- %s", exception.getMessage());
+            resultActionCompletable = guestModeRepository.addLikedShot(shot);
+        } else {
+            resultActionCompletable = Completable.error(exception);
+        }
+        return resultActionCompletable;
     }
 
     private Completable performUnlike(Throwable exception, Shot shot) {
-        Timber.d("Performing local unLike action- " + exception.getMessage());
-        return guestModeRepository.removeLikedShot(shot);
+        Completable resultActionCompletable;
+        if (exception instanceof GuestModeStateException) {
+            Timber.d("Performing local unLike action-  %s", exception.getMessage());
+            resultActionCompletable = guestModeRepository.removeLikedShot(shot);
+        } else {
+            resultActionCompletable = Completable.error(exception);
+        }
+        return resultActionCompletable;
     }
 
-    private Completable checkIsLiked(Shot shot) {
-        Timber.d("checking is shot liked...");
-        return guestModeRepository.isShotLiked(shot)
-                .doOnCompleted(() -> Timber.d("Shot is liked"))
-                .doOnError(throwable -> Timber.d("Shot is not liked"));
+    private Completable checkIsLiked(Throwable exception, Shot shot) {
+        Completable resultActionCompletable;
+        if (exception instanceof GuestModeStateException) {
+            Timber.d("checking is shot liked...");
+            resultActionCompletable = guestModeRepository.isShotLiked(shot)
+                    .doOnCompleted(() -> Timber.d("Shot is liked"))
+                    .doOnError(throwable -> Timber.d("Shot is not liked"));
+        } else {
+            resultActionCompletable = Completable.error(exception);
+        }
+        return resultActionCompletable;
     }
 
     private Completable getGuestModeCompletable(Boolean guestModeState) {
@@ -105,9 +123,16 @@ public class GuestModeController {
         return completable;
     }
 
-    private Observable<List<Shot>> getCachedLikedShot() {
-        Timber.d("getting liked shots from cache");
-        return guestModeRepository.getLikedShots();
+    private Observable<List<Shot>> getCachedLikedShot(Throwable exception) {
+        Observable<List<Shot>> resultActionObservable;
+        if (exception instanceof GuestModeStateException) {
+            Timber.d("getting liked shots from cache");
+            resultActionObservable = guestModeRepository.getLikedShots();
+        } else {
+            resultActionObservable = Observable.error(exception);
+        }
+        return resultActionObservable;
+
     }
 
     private static class GuestModeStateException extends Exception {
