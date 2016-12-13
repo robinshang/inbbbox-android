@@ -15,7 +15,6 @@ import java.util.List;
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controler.BucketsController;
 import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.LikedShotsController;
 import co.netguru.android.inbbbox.controler.ShotsController;
 import co.netguru.android.inbbbox.controler.likescontroller.LikeShotControllerApi;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -49,9 +48,6 @@ public class ShotsPresenterTest {
 
     @Mock
     ErrorController errorControllerMock;
-
-    @Mock
-    LikedShotsController likedShotsControllerMock;
 
     @Mock
     LikeShotControllerApi likeShotControllerApiMock;

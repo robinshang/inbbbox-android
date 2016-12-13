@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.controller;
+package co.netguru.android.inbbbox.controler.likescontroller;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.netguru.android.inbbbox.api.LikesApi;
-import co.netguru.android.inbbbox.controler.LikedShotsController;
-import co.netguru.android.inbbbox.controler.likescontroller.LikeShotControllerGuest;
 import co.netguru.android.inbbbox.model.api.Image;
 import co.netguru.android.inbbbox.model.api.LikedShotEntity;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
@@ -27,7 +25,7 @@ import rx.observers.TestSubscriber;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LikedShotsControllerTest {
+public class LikeShotControllerApiTest {
 
     private static final int PAGE_COUNT = 20;
     private static final int PAGE_NUMBER = 1;
@@ -48,7 +46,7 @@ public class LikedShotsControllerTest {
     Image imageMock;
 
     @InjectMocks
-    LikedShotsController likedShotsController;
+    LikeShotControllerApi likeShotControllerApi;
 
     private List<LikedShotEntity> expectedItems;
 
@@ -64,16 +62,14 @@ public class LikedShotsControllerTest {
         when(shotEntityMock.image()).thenReturn(imageMock);
         when(shotEntityMock.createdAt()).thenReturn(LocalDateTime.now());
         when(likesApiMock.getLikedShots(PAGE_NUMBER, PAGE_COUNT)).thenReturn(Observable.just(expectedItems));
-//        when(guestModeController.getGuestModeCachedShotTransformer()).thenReturn(listObservable -> Observable.just(new ArrayList<>()));
     }
 
     @Test
     public void whenGetLikedShot_thenObservableReturnsListOfLikedShots() {
         TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
 
-//        likedShotsController.getLikedShots(PAGE_NUMBER, PAGE_COUNT).subscribe(testSubscriber);
+        likeShotControllerApi.getLikedShots(PAGE_NUMBER, PAGE_COUNT).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
     }
-
 }
