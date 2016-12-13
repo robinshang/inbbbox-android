@@ -1,9 +1,9 @@
 package co.netguru.android.inbbbox.feature.shots.addtobucket.adapter;
 
-
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,7 +12,7 @@ import co.netguru.android.inbbbox.model.api.Bucket;
 public class BucketsAdapter extends RecyclerView.Adapter<BucketViewHolder> {
 
     private final BucketViewHolder.BucketClickListener bucketClickListener;
-    private List<Bucket> buckets = Collections.emptyList();
+    private List<Bucket> buckets = new ArrayList<>();
 
 
     public BucketsAdapter(BucketViewHolder.BucketClickListener bucketClickListener) {
@@ -34,8 +34,19 @@ public class BucketsAdapter extends RecyclerView.Adapter<BucketViewHolder> {
         return buckets.size();
     }
 
-    public void showBucketsList(List<Bucket> bucketsToDisplay) {
+    public void setBuckets(List<Bucket> bucketsToDisplay) {
         buckets = bucketsToDisplay;
         notifyDataSetChanged();
+    }
+
+    public void addMoreBuckets(List<Bucket> bucketsToAdd) {
+        int oldSize = this.buckets.size();
+        this.buckets.addAll(bucketsToAdd);
+        notifyItemRangeInserted(oldSize, bucketsToAdd.size() + 1);
+    }
+
+    public void addBucketOnTop(Bucket bucket) {
+        buckets.add(0, bucket);
+        notifyItemInserted(0);
     }
 }

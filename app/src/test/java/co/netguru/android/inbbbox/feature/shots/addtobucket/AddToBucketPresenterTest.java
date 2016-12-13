@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.shots.addtobucket;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
@@ -14,14 +13,19 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.event.BucketCreatedEvent;
+import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.testcommons.RxSyncTestRule;
+import rx.Observable;
 import rx.Single;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,7 +36,10 @@ public class AddToBucketPresenterTest {
     public TestRule rule = new RxSyncTestRule();
 
     @Mock
-    BucketsController bucketsController;
+    BucketsController bucketsControllerMock;
+
+    @Mock
+    RxBus rxBusMock;
 
     @Mock
     AddToBucketContract.View viewMock;
@@ -40,13 +47,9 @@ public class AddToBucketPresenterTest {
     @InjectMocks
     AddToBucketPresenter presenter;
 
-    @Before
-    public void setUp() {
-        presenter.attachView(viewMock);
-    }
-
     @Test
     public void whenShotWithTeamIsHandled_thenSetupView() {
+        setupWithEmptyRxBus();
         //given
         Shot shotWithTeam = Shot.update(Statics.LIKED_SHOT)
                 .author(User.create(Statics.USER_ENTITY))
@@ -65,6 +68,7 @@ public class AddToBucketPresenterTest {
 
     @Test
     public void whenShotWithoutTeamIsHandled_thenSetupView() {
+        setupWithEmptyRxBus();
         //given
         Shot shotWithoutTeam = Shot.update(Statics.LIKED_SHOT)
                 .author(User.create(Statics.USER_ENTITY))
@@ -82,8 +86,9 @@ public class AddToBucketPresenterTest {
 
     @Test
     public void whenLoadBucketsAndBucketsEmpty_thenShowEmptyView() {
+        setupWithEmptyRxBus();
         //given
-        when(bucketsController.getCurrentUserBuckets()).thenReturn(Single.just(Collections.emptyList()));
+        when(bucketsControllerMock.getCurrentUserBuckets(anyInt(), anyInt())).thenReturn(Single.just(Collections.emptyList()));
         //when
         presenter.loadAvailableBuckets();
         //then
@@ -93,20 +98,22 @@ public class AddToBucketPresenterTest {
 
     @Test
     public void whenLoadBucketsAndBucketAvailable_thenShowBuckets() {
+        setupWithEmptyRxBus();
         //given
         List<Bucket> bucketList = Collections.singletonList(Statics.BUCKET);
-        when(bucketsController.getCurrentUserBuckets()).thenReturn(Single.just(bucketList));
+        when(bucketsControllerMock.getCurrentUserBuckets(anyInt(), anyInt())).thenReturn(Single.just(bucketList));
         //when
         presenter.loadAvailableBuckets();
         //then
         verify(viewMock).showBucketListLoading();
-        verify(viewMock).showBuckets(bucketList);
+        verify(viewMock).setBucketsList(bucketList);
     }
 
     @Test
     public void whenLoadBucketsAndErrorOccurs_thenShowError() {
+        setupWithEmptyRxBus();
         //given
-        when(bucketsController.getCurrentUserBuckets()).thenReturn(Single.error(new Throwable()));
+        when(bucketsControllerMock.getCurrentUserBuckets(anyInt(), anyInt())).thenReturn(Single.error(new Throwable()));
         //when
         presenter.loadAvailableBuckets();
         //then
@@ -116,12 +123,30 @@ public class AddToBucketPresenterTest {
 
     @Test
     public void whenBucketSelected_thenPassResult() {
+        setupWithEmptyRxBus();
         //given
         presenter.handleShot(Statics.LIKED_SHOT);
         //when
         presenter.handleBucketClick(Statics.BUCKET);
         //then
         verify(viewMock).passResultAndCloseFragment(Statics.BUCKET, Statics.LIKED_SHOT);
+    }
+
+    @Test
+    public void whenRxBusBucketCreatedEventReceived_thenAddBucket() {
+        //given
+        when(rxBusMock.getEvents(any())).thenReturn(Observable.just(new BucketCreatedEvent(Statics.BUCKET)));
+        //when
+        presenter.attachView(viewMock);
+        //then
+        verify(viewMock, times(1)).addNewBucketOnTop(Statics.BUCKET);
+        verify(viewMock, times(1)).showBucketsList();
+        verify(viewMock, times(1)).scrollToTop();
+    }
+
+    private void setupWithEmptyRxBus() {
+        when(rxBusMock.getEvents(any())).thenReturn(Observable.empty());
+        presenter.attachView(viewMock);
     }
 
 }

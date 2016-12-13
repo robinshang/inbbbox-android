@@ -32,11 +32,25 @@ public interface AddToBucketContract {
 
         void showNoBucketsAvailable();
 
-        void showBuckets(List<Bucket> buckets);
+        void setBucketsList(List<Bucket> buckets);
+
+        void hideProgressBar();
 
         void passResultAndCloseFragment(Bucket bucket, Shot shot);
 
         void openShotFullscreen(Shot shot);
+
+        void showBucketListLoadingMore();
+
+        void showMoreBuckets(List<Bucket> buckets);
+
+        void addNewBucketOnTop(Bucket bucket);
+
+        void scrollToTop();
+
+        void showCreateBucketView();
+
+        void showBucketsList();
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -45,8 +59,12 @@ public interface AddToBucketContract {
 
         void loadAvailableBuckets();
 
+        void loadMoreBuckets();
+
         void handleBucketClick(Bucket bucket);
 
         void onOpenShotFullscreen();
+
+        void createBucket();
     }
 }

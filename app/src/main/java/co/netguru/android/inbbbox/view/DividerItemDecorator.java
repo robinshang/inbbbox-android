@@ -25,10 +25,13 @@ public class DividerItemDecorator extends RecyclerView.ItemDecoration {
     private final Drawable divider;
     private final Orientation orientation;
 
-    public DividerItemDecorator(Context context, Orientation orientation) {
+    private boolean drawDividerAfterLastItem;
+
+    public DividerItemDecorator(Context context, Orientation orientation, boolean drawDividerAfterLastItem) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         divider = a.getDrawable(0);
         a.recycle();
+        this.drawDividerAfterLastItem = drawDividerAfterLastItem;
 
         this.orientation = orientation;
     }
@@ -48,14 +51,16 @@ public class DividerItemDecorator extends RecyclerView.ItemDecoration {
 
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
-            View child = parent.getChildAt(i);
-            RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+            if (i != childCount - 1 || drawDividerAfterLastItem) {
+                View child = parent.getChildAt(i);
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
-            int top = child.getBottom() + params.bottomMargin + Math.round(ViewCompat.getTranslationY(child));
-            int bottom = top + divider.getIntrinsicHeight();
+                int top = child.getBottom() + params.bottomMargin + Math.round(ViewCompat.getTranslationY(child));
+                int bottom = top + divider.getIntrinsicHeight();
 
-            divider.setBounds(left, top, right, bottom);
-            divider.draw(canvas);
+                divider.setBounds(left, top, right, bottom);
+                divider.draw(canvas);
+            }
         }
     }
 
@@ -65,14 +70,17 @@ public class DividerItemDecorator extends RecyclerView.ItemDecoration {
 
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
-            View child = parent.getChildAt(i);
-            RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+            if (i != childCount - 1 || drawDividerAfterLastItem) {
 
-            int left = child.getRight() + params.rightMargin + Math.round(ViewCompat.getTranslationX(child));
-            int right = left + divider.getIntrinsicHeight();
+                View child = parent.getChildAt(i);
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
-            divider.setBounds(left, top, right, bottom);
-            divider.draw(canvas);
+                int left = child.getRight() + params.rightMargin + Math.round(ViewCompat.getTranslationX(child));
+                int right = left + divider.getIntrinsicHeight();
+
+                divider.setBounds(left, top, right, bottom);
+                divider.draw(canvas);
+            }
         }
     }
 

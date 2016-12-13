@@ -51,7 +51,6 @@ public class CreateBucketPresenterTest {
         //given
         String bucketName = "Bucket";
         String description = null;
-        BucketCreatedEvent bucketCreatedEvent = new BucketCreatedEvent(Statics.BUCKET);
         when(bucketsController.createBucket(anyString(), anyString())).thenReturn(Single.just(Statics.BUCKET));
         //when
         presenter.handleCreateBucket(bucketName, description);

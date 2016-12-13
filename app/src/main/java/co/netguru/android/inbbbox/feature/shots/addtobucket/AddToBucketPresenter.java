@@ -1,35 +1,66 @@
 package co.netguru.android.inbbbox.feature.shots.addtobucket;
 
 
+import android.support.annotation.NonNull;
+
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.event.BucketCreatedEvent;
+import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
-import rx.subscriptions.CompositeSubscription;
+import rx.Subscription;
+import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
 public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucketContract.View>
         implements AddToBucketContract.Presenter {
 
+    private static final int BUCKETS_PER_PAGE_COUNT = 30;
+    private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
+
     private final BucketsController bucketsController;
-    private final CompositeSubscription subscriptions;
+    private final RxBus rxBus;
+
+    @NonNull
+    private Subscription refreshSubscription;
+    @NonNull
+    private Subscription loadNextBucketsSubscription;
+    private Subscription busSubscription;
 
     private Shot shot;
+    private int pageNumber = 1;
+    private boolean apiHasMoreBuckets = true;
 
     @Inject
-    AddToBucketPresenter(BucketsController bucketsController) {
+    AddToBucketPresenter(BucketsController bucketsController, RxBus rxBus) {
         this.bucketsController = bucketsController;
-        subscriptions = new CompositeSubscription();
+        this.rxBus = rxBus;
+        refreshSubscription = Subscriptions.unsubscribed();
+        loadNextBucketsSubscription = Subscriptions.unsubscribed();
     }
 
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
-        subscriptions.clear();
+        busSubscription.unsubscribe();
+        if (!retainInstance) {
+            refreshSubscription.unsubscribe();
+            loadNextBucketsSubscription.unsubscribe();
+        }
+    }
+
+    @Override
+    public void attachView(AddToBucketContract.View view) {
+        super.attachView(view);
+        setupRxBus();
     }
 
     @Override
@@ -48,21 +79,40 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
 
     @Override
     public void loadAvailableBuckets() {
-        subscriptions.add(
-                bucketsController.getCurrentUserBuckets()
-                        .doOnSubscribe(getView()::showBucketListLoading)
-                        .compose(RxTransformerUtils.applySingleIoSchedulers())
-                        .subscribe(buckets -> {
-                            if (buckets.isEmpty()) {
-                                getView().showNoBucketsAvailable();
-                            } else {
-                                getView().showBuckets(buckets);
-                            }
-                        }, throwable -> {
-                            Timber.d(throwable, "Error occurred while requesting buckets");
-                            getView().showApiError();
-                        })
-        );
+        if (refreshSubscription.isUnsubscribed()) {
+            loadNextBucketsSubscription.unsubscribe();
+            pageNumber = 1;
+            refreshSubscription = bucketsController.getCurrentUserBuckets(pageNumber, BUCKETS_PER_PAGE_COUNT)
+                    .doOnSubscribe(getView()::showBucketListLoading)
+                    .compose(RxTransformerUtils.applySingleIoSchedulers())
+                    .doAfterTerminate(getView()::hideProgressBar)
+                    .subscribe(buckets -> {
+                        apiHasMoreBuckets = buckets.size() == BUCKETS_PER_PAGE_COUNT;
+                        if (buckets.isEmpty()) {
+                            getView().showNoBucketsAvailable();
+                        } else {
+                            getView().setBucketsList(buckets);
+                            getView().showBucketsList();
+                        }
+                    }, this::handleApiError);
+        }
+    }
+
+    @Override
+    public void loadMoreBuckets() {
+        if (apiHasMoreBuckets && refreshSubscription.isUnsubscribed() && loadNextBucketsSubscription.isUnsubscribed()) {
+            pageNumber++;
+            loadNextBucketsSubscription = bucketsController.getCurrentUserBuckets(pageNumber, BUCKETS_PER_PAGE_COUNT)
+                    .toObservable()
+                    .compose(RxTransformerUtils.executeRunnableIfObservableDidntEmitUntilGivenTime(
+                            SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
+                            getView()::showBucketListLoadingMore))
+                    .compose(RxTransformers.androidIO())
+                    .subscribe(buckets -> {
+                        apiHasMoreBuckets = buckets.size() == BUCKETS_PER_PAGE_COUNT;
+                        getView().showMoreBuckets(buckets);
+                    }, this::handleApiError);
+        }
     }
 
     @Override
@@ -73,6 +123,26 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
     @Override
     public void onOpenShotFullscreen() {
         getView().openShotFullscreen(shot);
+    }
+
+    @Override
+    public void createBucket() {
+        getView().showCreateBucketView();
+    }
+
+    private void handleApiError(Throwable throwable) {
+        Timber.d(throwable, "Error occurred while requesting buckets");
+        getView().showApiError();
+    }
+
+    private void setupRxBus() {
+        busSubscription = rxBus.getEvents(BucketCreatedEvent.class)
+                .compose(RxTransformers.androidIO())
+                .subscribe(bucketCreatedEvent -> {
+                    getView().addNewBucketOnTop(bucketCreatedEvent.getBucket());
+                    getView().showBucketsList();
+                    getView().scrollToTop();
+                });
     }
 
 }
