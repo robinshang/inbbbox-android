@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
@@ -26,7 +24,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindColor;
-import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
@@ -40,10 +37,9 @@ import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 import timber.log.Timber;
 
-import static butterknife.ButterKnife.findById;
-
 public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
-        FollowerDetailsContract.View, FollowerDetailsContract.Presenter> implements FollowerDetailsContract.View {
+        FollowerDetailsContract.View, FollowerDetailsContract.Presenter>
+        implements FollowerDetailsContract.View, UnFollowUserDialogFragment.OnUnFollowClickedListener {
 
     private static final int GRID_VIEW_COLUMN_COUNT = 2;
     public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
@@ -52,9 +48,6 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     private static final int SHOTS_TO_LOAD_MORE = 10;
     private static final int RECYCLER_VIEW_HEADER_POSITION = 0;
     private static final int RECYCLER_VIEW_ITEM_SPAN_SIZE = 1;
-
-    @BindString(R.string.fragment_follower_details_dialog_text)
-    String dialogText;
 
     @BindColor(R.color.accent)
     int accentColor;
@@ -197,20 +190,19 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
 
     @Override
     public void showUnFollowDialog(String username) {
-        final View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_unfollow_user, null);
-        final TextView textView = findById(view, R.id.dialog_unfollow_text);
-        textView.setText(String.format(dialogText, username));
-        new AlertDialog.Builder(getContext(), R.style.AlertDialog)
-                .setView(view)
-                .setPositiveButton(R.string.action_unfollow, (dialog, which) -> getPresenter().unFollowUser())
-                .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.dismiss())
-                .create()
-                .show();
+        UnFollowUserDialogFragment
+                .newInstance(this, username)
+                .show(getFragmentManager(), UnFollowUserDialogFragment.TAG);
     }
 
     @Override
     public void showMessageOnServerError(String errorText) {
         Snackbar.make(recyclerView, errorText, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onUnFollowClicked() {
+        getPresenter().unFollowUser();
     }
 
     private void getFollowerData() {
