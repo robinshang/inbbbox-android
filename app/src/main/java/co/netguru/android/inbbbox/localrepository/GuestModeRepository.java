@@ -67,7 +67,7 @@ public class GuestModeRepository {
         return shots;
     }
 
-    public Single<HashMap<Long, Shot>> getLikedShotsMap() {
+    private Single<HashMap<Long, Shot>> getLikedShotsMap() {
         return Single.fromCallable(this::getListsFromPrefs);
     }
 
