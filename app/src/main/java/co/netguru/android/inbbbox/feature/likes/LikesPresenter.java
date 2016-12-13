@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.LikedShotsController;
+import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.Subscription;
@@ -27,7 +27,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     private static final int PAGE_COUNT = 30;
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
 
-    private final LikedShotsController likedShotsController;
+    private final LikeShotController likedShotsController;
     private final ErrorController errorController;
 
     @NonNull
@@ -39,7 +39,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     private int pageNumber = 1;
 
     @Inject
-    LikesPresenter(LikedShotsController likedShotsController, ErrorController errorController) {
+    LikesPresenter(LikeShotController likedShotsController, ErrorController errorController) {
         this.likedShotsController = likedShotsController;
         this.errorController = errorController;
         refreshSubscription = Subscriptions.unsubscribed();

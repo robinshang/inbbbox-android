@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.Statics;
+import co.netguru.android.inbbbox.controler.likescontroller.GuestModeController;
 import co.netguru.android.inbbbox.localrepository.GuestModeRepository;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;

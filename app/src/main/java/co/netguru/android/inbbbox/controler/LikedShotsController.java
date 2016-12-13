@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.controler;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -13,23 +11,15 @@ import rx.Observable;
 public class LikedShotsController {
 
     private final LikesApi likesApi;
-    private final GuestModeController guestModeController;
 
     @Inject
-    LikedShotsController(LikesApi likesApi, GuestModeController guestModeController) {
+    LikedShotsController(LikesApi likesApi) {
         this.likesApi = likesApi;
-        this.guestModeController = guestModeController;
     }
 
-    public Observable<List<Shot>> getLikedShots(int pageNumber, int pageCount) {
-        return getLikedShotsFromApi(pageNumber, pageCount)
-                .compose(guestModeController.getGuestModeCachedShotTransformer());
-    }
-
-    private Observable<List<Shot>> getLikedShotsFromApi(int pageNumber, int pageCount) {
+    public Observable<Shot> getLikedShots(int pageNumber, int pageCount) {
         return likesApi.getLikedShots(pageNumber, pageCount)
                 .flatMap(Observable::from)
-                .map(likedShotEntity -> Shot.create(likedShotEntity.shot()))
-                .toList();
+                .map(likedShotEntity -> Shot.create(likedShotEntity.shot()));
     }
 }

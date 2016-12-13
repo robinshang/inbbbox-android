@@ -9,9 +9,12 @@ import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.api.DateTimeConverter;
+import co.netguru.android.inbbbox.api.LikesApi;
 import co.netguru.android.inbbbox.api.RequestInterceptor;
 import co.netguru.android.inbbbox.controler.ErrorController;
+import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.LogoutController;
+import co.netguru.android.inbbbox.controler.likescontroller.LikeShotControllerApi;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import dagger.Module;
@@ -60,5 +63,10 @@ public class ConfigurationModule {
                 .baseUrl(Constants.API.DRIBBLE_BASE_URL)
                 .client(okHttpClient)
                 .build();
+    }
+
+    @Provides
+    LikeShotController provoideLikeShots(LikesApi likesApi) {
+        return new LikeShotControllerApi(likesApi);
     }
 }

@@ -1,10 +1,11 @@
-package co.netguru.android.inbbbox.controler;
+package co.netguru.android.inbbbox.controler.likescontroller;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import co.netguru.android.inbbbox.controler.UserController;
 import co.netguru.android.inbbbox.localrepository.GuestModeRepository;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
@@ -35,19 +36,19 @@ public class GuestModeController {
                 });
     }
 
-    Completable.CompletableTransformer getShotLikeTransformer(Shot shot) {
+    public Completable.CompletableTransformer getShotLikeTransformer(Shot shot) {
         return completable -> completable
                 .startWith(isGuestModeDisabled())
                 .onErrorResumeNext(exception -> performLike(exception, shot));
     }
 
-    Completable.CompletableTransformer getIsShotLikedTransformer(Shot shot) {
+    public Completable.CompletableTransformer getIsShotLikedTransformer(Shot shot) {
         return completable -> completable
                 .startWith(isGuestModeDisabled())
                 .onErrorResumeNext(e -> checkIsLiked(e, shot));
     }
 
-    Completable.CompletableTransformer getShotUnlikeTransformer(Shot shot) {
+    public Completable.CompletableTransformer getShotUnlikeTransformer(Shot shot) {
         return completable -> completable
                 .startWith(isGuestModeDisabled())
                 .onErrorResumeNext(exception -> performUnlike(exception, shot));
