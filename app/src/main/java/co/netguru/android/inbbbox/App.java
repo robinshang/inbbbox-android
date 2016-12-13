@@ -25,7 +25,6 @@ public class App extends Application {
         super.onCreate();
         appComponent.getDebugMetricsHelper().init(this);
         AndroidThreeTen.init(this);
-        CrashManager.register(this);
     }
 
     @Override
