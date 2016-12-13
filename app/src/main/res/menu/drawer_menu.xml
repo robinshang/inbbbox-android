@@ -50,6 +50,10 @@
                         android:title="@string/drawer_shot_details"
                         app:actionLayout="@layout/drawer_item_switch"
                         android:id="@+id/drawer_item_shot_details"/>
+                    <item
+                        android:title="@string/drawer_night_mode"
+                        app:actionLayout="@layout/drawer_item_switch"
+                        android:id="@+id/drawer_item_night_mode" />
                 </group>
             </menu>
         </item>

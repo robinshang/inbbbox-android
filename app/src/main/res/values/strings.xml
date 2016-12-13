@@ -36,6 +36,7 @@
     <string name="drawer_debuts">Debuts</string>
     <string name="drawer_group_customization">Customization</string>
     <string name="drawer_shot_details">Shot Details on Homescreen</string>
+    <string name="drawer_night_mode">Night Mode</string>
     <string name="drawer_logout">Log out</string>
 
     <string name="change_stream_source_error">At least one stream source should be checked</string>
