@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.HashMap;
+import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -88,8 +88,6 @@ public class GuestModeRepositoryTest {
     @Test
     public void whenIsLikedCalledAndShotIsNotLiked_thenReturnError() {
         TestSubscriber subscriber = new TestSubscriber();
-        HashMap<Long, Shot> hashMap = new HashMap<>();
-        hashMap.put(exampleShot.id(), exampleShot);
         when(sharedPreferencesMock.getString(anyString(), anyString()))
                 .thenReturn("");
 
@@ -121,7 +119,7 @@ public class GuestModeRepositoryTest {
 
     @Test
     public void whenGetShotsCalled_thenGetLikesFromPrefs() {
-        TestSubscriber subscriber = new TestSubscriber();
+        TestSubscriber<List> subscriber = new TestSubscriber<>();
 
         guestModeRepository.getLikedShots().subscribe(subscriber);
 
