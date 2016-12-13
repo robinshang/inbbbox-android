@@ -38,6 +38,8 @@ interface MainViewContract {
 
         void changeCustomizationStatus(boolean isDetails);
 
+        void changeNightModeStatus(boolean isNightMode);
+
         void setSettingsListeners();
 
         void showMessage(@StringRes int message);
@@ -70,6 +72,8 @@ interface MainViewContract {
         void debutsStatusChanged(boolean status);
 
         void customizationStatusChanged(boolean isDetails);
+
+        void nightModeChanged(boolean isNightMode);
 
         void onTimePicked(int hour, int minute);
 

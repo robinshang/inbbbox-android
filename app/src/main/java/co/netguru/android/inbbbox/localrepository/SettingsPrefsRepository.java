@@ -27,6 +27,7 @@ public class SettingsPrefsRepository {
     private static final String NOTIFICATION_SETTINGS_IS_ENABLED_KEY = "notification_settings_is_enabled";
 
     private static final String DETAILS_SHOWED_KEY = "details_showed_key";
+    private static final String DETAILS_NIGHT_MODE = "details_night_mode";
 
     private final SharedPreferences sharedPreferences;
 
@@ -86,9 +87,20 @@ public class SettingsPrefsRepository {
         });
     }
 
+    public Completable saveNightMode(boolean isEnabled) {
+        return Completable.fromCallable(() -> {
+            sharedPreferences.edit()
+                    .putBoolean(DETAILS_NIGHT_MODE, isEnabled)
+                    .apply();
+            return null;
+        });
+    }
+
     public Single<CustomizationSettings> getCustomizationSettings() {
         return Single.fromCallable(() ->
-                new CustomizationSettings(sharedPreferences.getBoolean(DETAILS_SHOWED_KEY, false)));
+                new CustomizationSettings(
+                        sharedPreferences.getBoolean(DETAILS_SHOWED_KEY, false),
+                        sharedPreferences.getBoolean(DETAILS_NIGHT_MODE, false)));
     }
 
     public Completable clear() {
