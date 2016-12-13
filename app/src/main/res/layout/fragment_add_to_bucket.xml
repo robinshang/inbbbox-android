@@ -32,7 +32,6 @@
             android:padding="@dimen/margin_default"
             android:text="@string/fragment_add_to_bucket_there_are_no_buckets_add_one_first"/>
 
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/buckets_recycler_view"
             android:layout_width="match_parent"
