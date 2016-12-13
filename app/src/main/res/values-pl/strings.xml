@@ -38,6 +38,7 @@
     <string name="drawer_group_customization">Dostosowywanie</string>
     <string name="drawer_group_notification">Notyfikacje</string>
     <string name="drawer_group_stream">Inbbbox Źródła</string>
+    <string name="drawer_night_mode">Tryb Nocny</string>
     <string name="drawer_logout">Wyloguj</string>
     <string name="drawer_new_today">Dodane dzisiaj</string>
     <string name="drawer_popular_today">Popularne dzisiaj</string>

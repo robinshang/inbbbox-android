@@ -72,6 +72,10 @@ public class SettingsController {
         return settingsPrefsRepository.saveDetailsShowed(isEnabled);
     }
 
+    public Completable changeNightMode(boolean isEnabled) {
+        return settingsPrefsRepository.saveNightMode(isEnabled);
+    }
+
     private StreamSourceSettings getNewStreamSourceSettings(StreamSourceSettings settings, @Nullable Boolean isFollowing,
                                                             @Nullable Boolean isNew, @Nullable Boolean isPopular,
                                                             @Nullable Boolean isDebut) {
