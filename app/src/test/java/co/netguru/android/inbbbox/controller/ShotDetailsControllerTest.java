@@ -16,7 +16,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.api.ShotsApi;
-import co.netguru.android.inbbbox.controler.LikeShotController;
+import co.netguru.android.inbbbox.controler.LikeShotControllerApi;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
 import co.netguru.android.inbbbox.controler.UserController;
 import co.netguru.android.inbbbox.model.api.Bucket;
@@ -50,7 +50,7 @@ public class ShotDetailsControllerTest {
     ShotsApi shotApiMock;
 
     @Mock
-    LikeShotController likeShotControllerMock;
+    LikeShotControllerApi likeShotControllerApiMock;
 
     @Mock
     ShotDetailsState state;
@@ -172,29 +172,29 @@ public class ShotDetailsControllerTest {
         controller.getShotComments(shotMock, examplePerPageValue).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(likeShotControllerMock, times(1)).isShotLiked(shotMock);
+        verify(likeShotControllerApiMock, times(1)).isShotLiked(shotMock);
     }
 
     @Test
     public void whenLikePerformSubscribed_thenSendLikeRequest() {
         TestSubscriber testSubscriber = new TestSubscriber<>();
-        when(likeShotControllerMock.likeShot(shotMock)).thenReturn(Completable.complete());
+        when(likeShotControllerApiMock.likeShot(shotMock)).thenReturn(Completable.complete());
 
         controller.performLikeAction(shotMock, true).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(likeShotControllerMock, times(1)).likeShot(shotMock);
+        verify(likeShotControllerApiMock, times(1)).likeShot(shotMock);
     }
 
     @Test
     public void whenLikePerformSubscribed_thenSendUnlikeRequest() {
         TestSubscriber testSubscriber = new TestSubscriber<>();
-        when(likeShotControllerMock.unLikeShot(shotMock)).thenReturn(Completable.complete());
+        when(likeShotControllerApiMock.unLikeShot(shotMock)).thenReturn(Completable.complete());
 
         controller.performLikeAction(shotMock, false).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(likeShotControllerMock, times(1)).unLikeShot(shotMock);
+        verify(likeShotControllerApiMock, times(1)).unLikeShot(shotMock);
     }
 
     @Test
@@ -229,7 +229,7 @@ public class ShotDetailsControllerTest {
     public void whenLikePerformSubscribedAndErrorOccurredWhileLike_thenReturnError() {
         Throwable throwable = new Throwable("test");
         TestSubscriber testSubscriber = new TestSubscriber<>();
-        when(likeShotControllerMock.likeShot(shotMock))
+        when(likeShotControllerApiMock.likeShot(shotMock))
                 .thenReturn(Completable.error(throwable));
 
         controller.performLikeAction(shotMock, true).subscribe(testSubscriber);
@@ -241,9 +241,9 @@ public class ShotDetailsControllerTest {
     public void whenLikePerformSubscribedAndErrorOccurredWhileUnlike_thenReturnError() {
         Throwable throwable = new Throwable("test");
         TestSubscriber testSubscriber = new TestSubscriber<>();
-        when(likeShotControllerMock.likeShot(shotMock))
+        when(likeShotControllerApiMock.likeShot(shotMock))
                 .thenReturn(Completable.error(throwable));
-        when(likeShotControllerMock.unLikeShot(shotMock))
+        when(likeShotControllerApiMock.unLikeShot(shotMock))
                 .thenReturn(Completable.error(throwable));
 
 
@@ -253,12 +253,12 @@ public class ShotDetailsControllerTest {
     }
 
     private void mockLikedShotState() {
-        when(likeShotControllerMock.isShotLiked(shotMock))
+        when(likeShotControllerApiMock.isShotLiked(shotMock))
                 .thenReturn(Completable.complete());
     }
 
     private void mockNotLikedShotState() {
-        when(likeShotControllerMock.isShotLiked(shotMock))
+        when(likeShotControllerApiMock.isShotLiked(shotMock))
                 .thenReturn(Completable.error(new Throwable()));
     }
 
