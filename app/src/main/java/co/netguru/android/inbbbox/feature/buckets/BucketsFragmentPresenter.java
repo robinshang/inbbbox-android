@@ -54,8 +54,10 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
         busSubscription.unsubscribe();
-        refreshSubscription.unsubscribe();
-        loadNextBucketSubscription.unsubscribe();
+        if (!retainInstance) {
+            refreshSubscription.unsubscribe();
+            loadNextBucketSubscription.unsubscribe();
+        }
     }
 
     @Override

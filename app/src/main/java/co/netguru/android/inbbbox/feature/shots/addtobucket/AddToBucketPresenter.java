@@ -53,10 +53,8 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
         busSubscription.unsubscribe();
-        if (!retainInstance) {
-            refreshSubscription.unsubscribe();
-            loadNextBucketsSubscription.unsubscribe();
-        }
+        refreshSubscription.unsubscribe();
+        loadNextBucketsSubscription.unsubscribe();
     }
 
     @Override
