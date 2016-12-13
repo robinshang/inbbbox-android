@@ -36,7 +36,6 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
     private Subscription loadNextBucketsSubscription;
     private Subscription busSubscription;
 
-
     private Shot shot;
     private int pageNumber = 1;
     private boolean apiHasMoreBuckets = true;
