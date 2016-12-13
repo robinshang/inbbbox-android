@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.LikedShotsController;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
@@ -27,6 +28,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
 
     private final LikedShotsController likedShotsController;
+    private final ErrorController errorController;
 
     @NonNull
     private Subscription refreshSubscription;
@@ -37,8 +39,9 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     private int pageNumber = 1;
 
     @Inject
-    LikesPresenter(LikedShotsController likedShotsController) {
+    LikesPresenter(LikedShotsController likedShotsController, ErrorController errorController) {
         this.likedShotsController = likedShotsController;
+        this.errorController = errorController;
         refreshSubscription = Subscriptions.unsubscribed();
         loadMoreLikesSubscription = Subscriptions.unsubscribed();
     }
@@ -61,7 +64,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
                     .compose(androidIO())
                     .doAfterTerminate(getView()::hideProgressBar)
                     .subscribe(this::onGetLikeShotListNext,
-                            throwable -> Timber.e(throwable, "Error while getting likes from server"));
+                            throwable -> handleHttpErrorResponse(throwable, "Error while getting likes from server"));
         }
     }
 
@@ -79,7 +82,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
                         getView().hideLoadingMoreBucketsView();
                     })
                     .subscribe(this::onGetMoreLikeShotListNext,
-                            throwable -> Timber.e(throwable, "Error while getting more likes from server"));
+                            throwable -> handleHttpErrorResponse(throwable, "Error while getting more likes from server"));
         }
     }
 
@@ -96,6 +99,12 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
             getView().hideEmptyLikesInfo();
 
         }
+    }
+
+    @Override
+    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+        Timber.e(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
     private void onGetLikeShotListNext(List<Shot> likedShotList) {

@@ -7,7 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
@@ -26,7 +26,7 @@ public class ShotDetailsPresenter
         implements ShotDetailsContract.Presenter {
 
     private final ShotDetailsController shotDetailsController;
-    private final ErrorMessageController errorMessageController;
+    private final ErrorController errorController;
     private final CompositeSubscription subscriptions;
     private boolean isCommentModeInit;
     private Shot shot;
@@ -37,9 +37,9 @@ public class ShotDetailsPresenter
 
     @Inject
     public ShotDetailsPresenter(ShotDetailsController shotDetailsController,
-                                ErrorMessageController messageController) {
+                                ErrorController errorController) {
         this.shotDetailsController = shotDetailsController;
-        this.errorMessageController = messageController;
+        this.errorController = errorController;
         this.subscriptions = new CompositeSubscription();
         this.commentLoadMoreState = new CommentLoadMoreState();
     }
@@ -64,7 +64,7 @@ public class ShotDetailsPresenter
                 shotDetailsController
                         .performLikeAction(shot, newLikeState)
                         .subscribe(() -> updateLikeState(newLikeState),
-                                this::handleApiError)
+                                throwable -> handleHttpErrorResponse(throwable, "Error while performing like action"))
         );
     }
 
@@ -97,7 +97,7 @@ public class ShotDetailsPresenter
                         updatedComment)
                         .compose(applySingleIoSchedulers())
                         .subscribe(this::handleCommentUpdated,
-                                this::handleApiError)
+                                throwable -> handleHttpErrorResponse(throwable, "Error while updating comment"))
         );
     }
 
@@ -119,7 +119,7 @@ public class ShotDetailsPresenter
                         .deleteComment(shot.id(), commentInEditor.id())
                         .compose(applyCompletableIoSchedulers())
                         .subscribe(this::handleCommentDeleteComplete,
-                                this::handleApiError)
+                                throwable -> handleHttpErrorResponse(throwable, "Error while deleting comment"))
         );
     }
 
@@ -131,6 +131,13 @@ public class ShotDetailsPresenter
         getView().updateLoadMoreState(commentLoadMoreState);
 
         downloadCommentsFromAPI();
+    }
+
+    @Override
+    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+        Timber.e(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
+        getView().disableEditorProgressMode();
     }
 
     @Override
@@ -163,7 +170,7 @@ public class ShotDetailsPresenter
                         .compose(applySingleIoSchedulers())
                         .doAfterTerminate(this::handleSaveCommentTermination)
                         .subscribe(this::handleCommentSavingComplete,
-                                this::handleApiError)
+                                throwable -> handleHttpErrorResponse(throwable, "Error while sending comment"))
         );
     }
 
@@ -215,7 +222,8 @@ public class ShotDetailsPresenter
                 shotDetailsController.getShotComments(shot, pageNumber)
                         .compose(androidIO())
                         .doOnCompleted(() -> getView().setInputShowingEnabled(true))
-                        .subscribe(this::handleDetailsStates, this::handleApiError)
+                        .subscribe(this::handleDetailsStates,
+                                throwable -> handleHttpErrorResponse(throwable, "Error while getting shot comments"))
         );
     }
 
@@ -239,11 +247,5 @@ public class ShotDetailsPresenter
         getView().dismissCommentEditor();
         getView().updateComment(commentInEditor, comment);
         getView().showInfo(R.string.comment_update_complete);
-    }
-
-    private void handleApiError(Throwable throwable) {
-        Timber.e(throwable, "details download failed! ");
-        getView().showErrorMessage(errorMessageController.getErrorMessageLabel(throwable));
-        getView().disableEditorProgressMode();
     }
 }

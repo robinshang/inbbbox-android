@@ -97,11 +97,6 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     }
 
     @Override
-    public void showApiError(String oauthErrorMessage) {
-        Toast.makeText(this, oauthErrorMessage, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public void showInvalidOauthUrlError() {
         Toast.makeText(this, R.string.invalid_outh_url, Toast.LENGTH_LONG).show();
     }
@@ -156,5 +151,10 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     public void onOauthFragmentClose() {
         getPresenter().handleWebViewClose();
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(this, errorText, Toast.LENGTH_LONG).show();
     }
 }

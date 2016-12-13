@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsContract;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsPresenter;
@@ -45,7 +45,7 @@ public class FollowerDetailsPresenterTest {
     UserShotsController userShotsControllerMock;
 
     @Mock
-    ErrorMessageController errorMessageControllerMock;
+    ErrorController errorControllerMock;
 
     @Mock
     User userMock;
@@ -59,7 +59,7 @@ public class FollowerDetailsPresenterTest {
     @Before
     public void setUp() {
         followerDetailsPresenter.attachView(viewMock);
-        when(errorMessageControllerMock.getErrorMessageLabel(any(Throwable.class))).thenCallRealMethod();
+        when(errorControllerMock.getThrowableMessage(any(Throwable.class))).thenCallRealMethod();
     }
 
     @Test
@@ -100,6 +100,6 @@ public class FollowerDetailsPresenterTest {
 
         followerDetailsPresenter.userDataReceived(exampleUser);
 
-        verify(viewMock, times(1)).showError(message);
+        verify(viewMock, times(1)).showMessageOnServerError(message);
     }
 }

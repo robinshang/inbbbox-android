@@ -1,15 +1,18 @@
 package co.netguru.android.inbbbox.feature.likes;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.HttpErrorView;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
 interface LikesViewContract {
 
-    interface View extends MvpLceView<List<Shot>> {
+    interface View extends MvpView, HttpErrorView, MvpLceView<List<Shot>> {
 
         void showMoreLikes(List<Shot> likedShotList);
 
@@ -26,7 +29,7 @@ interface LikesViewContract {
         void openShowDetailsScreen(Shot shot);
     }
 
-    interface Presenter extends MvpPresenter<View> {
+    interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
         void getLikesFromServer();
 
         void getMoreLikesFromServer();

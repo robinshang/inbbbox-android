@@ -8,11 +8,13 @@ import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.HttpErrorView;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
 public interface AddToBucketContract {
-    interface View extends MvpView {
+    interface View extends MvpView, HttpErrorView {
 
         void setShotTitle(String title);
 
@@ -26,8 +28,6 @@ public interface AddToBucketContract {
 
         void showShotCreationDate(LocalDateTime localDateTime);
 
-        void showApiError();
-
         void showBucketListLoading();
 
         void showNoBucketsAvailable();
@@ -39,7 +39,7 @@ public interface AddToBucketContract {
         void openShotFullscreen(Shot shot);
     }
 
-    interface Presenter extends MvpPresenter<View> {
+    interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
 
         void handleShot(Shot shot);
 
