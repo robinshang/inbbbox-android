@@ -24,19 +24,16 @@ public class LikeShotControllerApi implements LikeShotController {
     @Override
     public Completable isShotLiked(Shot shot) {
         return likesApi.isShotLiked(shot.id());
-//                .compose(guestModeController.getIsShotLikedTransformer(shot));
     }
 
     @Override
     public Completable likeShot(Shot shot) {
         return likesApi.likeShot(shot.id());
-//                .compose(guestModeController.getShotLikeTransformer(shot));
     }
 
     @Override
     public Completable unLikeShot(Shot shot) {
         return likesApi.unLikeShot(shot.id());
-//                .compose(guestModeController.getShotUnlikeTransformer(shot));
     }
 
     @Override

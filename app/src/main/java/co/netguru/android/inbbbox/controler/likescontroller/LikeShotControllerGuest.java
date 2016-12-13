@@ -14,7 +14,6 @@ import timber.log.Timber;
 
 public class LikeShotControllerGuest implements LikeShotController {
 
-    private static final String GUEST_MODE_ENABLED_ERROR_MESSAGE = "Guest mode enabled";
     private final GuestModeRepository guestModeRepository;
     private final LikesApi likesApi;
 
