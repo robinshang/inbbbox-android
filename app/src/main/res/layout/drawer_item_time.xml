@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- TODO take look at drawer_time_text -->
     <TextView
         style="@style/Font14"
         android:id="@+id/drawer_item_time"

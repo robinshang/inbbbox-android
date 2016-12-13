@@ -26,6 +26,7 @@ import android.widget.ToggleButton;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
@@ -56,6 +57,9 @@ public class MainActivity
 
     private static final String REQUEST_EXTRA = "requestExtra";
     private static final String TOGGLE_BUTTON_STATE = "toggleButtonState";
+
+    @BindColor(R.color.accent)
+    int highlightColor;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -346,7 +350,7 @@ public class MainActivity
     private void selectTab(TabLayout.Tab tab) {
         final Drawable icon = tab.getIcon();
         if (icon != null) {
-            icon.setColorFilter(getResources().getColor(R.color.pink), PorterDuff.Mode.SRC_IN);
+            icon.setColorFilter(highlightColor, PorterDuff.Mode.SRC_IN);
         }
         tab.setText(getString(TabItemType.getTabItemForPosition(tab.getPosition()).getTitle()));
     }
