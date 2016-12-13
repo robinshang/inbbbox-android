@@ -16,6 +16,7 @@ import javax.inject.Inject;
  * <li> Stetho
  * <li> StrictMode
  * <li> LeakCanary
+ * <li> Timber
  * </ul>
  * Release type tools:
  * <ul>
