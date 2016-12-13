@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:drawablePadding="@dimen/margin_small"
-            android:drawableStart="@drawable/ic_add_accent"
+            android:drawableStart="@drawable/ic_fab_add"
             android:gravity="center"
             android:text="@string/add_to_bucket_fragment_create_new_bucket"/>
 
