@@ -94,6 +94,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         notificationScheduler.cancelNotification();
         subscriptions.add(
                 logoutController.performLogout()
+                        .doAfterTerminate(getView()::turnOffNightMode)
                         .subscribe(getView()::showLoginActivity,
                                 throwable -> handleHttpErrorResponse(throwable, "critical logout error"))
         );

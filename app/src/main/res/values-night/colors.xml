@@ -4,8 +4,10 @@
 
     <color name="accent">#F0377E</color>
     <color name="primary">#000000</color>
-    <color name="primaryDark">#d43170</color>
+    <color name="primaryDark">#000000</color>
     <color name="windowBackground">#2B3133</color>
+    <color name="tabBackground">#000000</color>
+    <color name="textColor">#FFFFFF</color>
 
     <color name="white">#FFFFFF</color>
     <color name="white_alpha">#f8ffffff</color>

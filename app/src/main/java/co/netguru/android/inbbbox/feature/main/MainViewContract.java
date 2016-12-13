@@ -49,6 +49,8 @@ interface MainViewContract {
         void openSignUpPage(String url);
 
         void showCreateAccountButton();
+
+        void turnOffNightMode();
     }
 
     interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
