@@ -260,8 +260,8 @@ public class MainActivity
                 getPresenter().debutsStatusChanged(isChecked));
         shotDetailsSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
                 getPresenter().customizationStatusChanged(isChecked));
-        nightModeSwitch.setOnCheckedChangeListener(((buttonView, isChecked) ->
-                getPresenter().nightModeChanged(isChecked)));
+        nightModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                getPresenter().nightModeChanged(isChecked));
     }
 
     @Override
