@@ -7,6 +7,6 @@
     <ImageView
         android:id="@+id/shot_fullscreen_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_height="match_parent"
+        android:contentDescription="@null"/>
 </FrameLayout>

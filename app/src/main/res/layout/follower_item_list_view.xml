@@ -3,10 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/margin_default"
-    android:paddingLeft="@dimen/margin_default"
-    android:paddingRight="@dimen/margin_default"
-    android:paddingTop="@dimen/margin_default">
+    android:padding="@dimen/margin_default">
 
     <co.netguru.android.inbbbox.view.RoundedCornersFourImagesView
         android:id="@+id/four_image_view"

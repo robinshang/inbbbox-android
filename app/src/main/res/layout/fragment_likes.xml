@@ -24,7 +24,7 @@
 
             <TextView
                 android:id="@+id/fragment_like_empty_text"
-                style="@style/Font25.RobotoLight.Gray"
+                style="@style/Font25.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/fragment_like_empty_logo"

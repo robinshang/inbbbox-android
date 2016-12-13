@@ -36,7 +36,7 @@
 
                 <TextView
                     android:id="@+id/details_title_textView"
-                    style="@style/Font16"
+                    style="@style/TextAppearance.AppCompat.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -51,7 +51,7 @@
 
                     <TextView
                         android:id="@+id/by_label_TextView"
-                        style="@style/Font12.DarkGray"
+                        style="@style/Font12.Gray"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lines="1"
@@ -68,7 +68,7 @@
 
                     <TextView
                         android:id="@+id/for_label_textView"
-                        style="@style/Font12.DarkGray"
+                        style="@style/Font12.Gray"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lines="1"
@@ -87,7 +87,7 @@
 
                 <TextView
                     android:id="@+id/details_info_textView"
-                    style="@style/Font12.DarkGray"
+                    style="@style/Font12.Gray"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/info_when_pattern" />

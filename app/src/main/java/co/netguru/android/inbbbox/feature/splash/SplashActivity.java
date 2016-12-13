@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.feature.splash;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatDelegate;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
@@ -21,6 +22,7 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
     protected void onCreate(Bundle savedInstanceState) {
         initComponent();
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     }
 
     private void initComponent() {

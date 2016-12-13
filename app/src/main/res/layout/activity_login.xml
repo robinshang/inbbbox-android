@@ -54,6 +54,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/margin_default"
+                android:layout_marginEnd="@dimen/margin_default"
+                android:layout_marginStart="@dimen/margin_default"
                 android:layout_marginTop="@dimen/activity_login_button_margin_top"
                 android:background="@drawable/selector_login_button"
                 android:drawablePadding="@dimen/activity_login_button_drawable_padding"
@@ -61,9 +64,6 @@
                 android:gravity="start|center_vertical"
                 android:paddingStart="@dimen/activity_login_button_padding_start"
                 android:text="@string/login_button_text"
-                android:layout_marginStart="@dimen/margin_default"
-                android:layout_marginEnd="@dimen/margin_default"
-                android:layout_marginBottom="@dimen/margin_default"
                 android:textAllCaps="false" />
 
             <LinearLayout
@@ -71,51 +71,52 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:visibility="gone"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-                <View android:layout_width="@dimen/activity_login_divider_width"
-                      android:layout_height="@dimen/activity_login_divider_height"
-                      android:background="@color/white"
-                      android:alpha="0.5"
-                      android:layout_marginStart="@dimen/activity_login_divider_side_margin"
-                      android:layout_marginEnd="@dimen/activity_login_divider_side_margin"
-                      android:layout_gravity="center"/>
+                <View
+                    android:layout_width="@dimen/activity_login_divider_width"
+                    android:layout_height="@dimen/activity_login_divider_height"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/activity_login_divider_side_margin"
+                    android:layout_marginStart="@dimen/activity_login_divider_side_margin"
+                    android:alpha="0.5"
+                    android:background="@color/white" />
 
                 <TextView
+                    style="@style/Font12.White"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Font12"
                     android:text="@string/or_loging_with_guest"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"/>
+                    android:textAllCaps="true" />
 
 
-                <View android:layout_width="@dimen/activity_login_divider_width"
-                      android:layout_height="@dimen/activity_login_divider_height"
-                      android:background="@color/white"
-                      android:alpha="0.5"
-                      android:layout_marginStart="@dimen/activity_login_divider_side_margin"
-                      android:layout_marginEnd="@dimen/activity_login_divider_side_margin"
-                      android:layout_gravity="center"/>
+                <View
+                    android:layout_width="@dimen/activity_login_divider_width"
+                    android:layout_height="@dimen/activity_login_divider_height"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/activity_login_divider_side_margin"
+                    android:layout_marginStart="@dimen/activity_login_divider_side_margin"
+                    android:alpha="0.5"
+                    android:background="@color/white" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/btn_guest"
                 style="@style/Font14.White"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginEnd="@dimen/margin_default"
+                android:layout_marginStart="@dimen/margin_default"
                 android:layout_marginTop="@dimen/margin_default"
                 android:background="@drawable/selector_guest_button"
                 android:drawablePadding="@dimen/activity_login_button_drawable_padding"
                 android:gravity="center"
                 android:paddingStart="@dimen/activity_login_button_padding_start"
                 android:text="@string/guest_button_text"
-                android:layout_marginStart="@dimen/margin_default"
-                android:layout_marginEnd="@dimen/margin_default"
-                android:textAllCaps="false"/>
+                android:textAllCaps="false"
+                android:visibility="gone" />
         </LinearLayout>
     </FrameLayout>
 </ScrollView>

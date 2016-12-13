@@ -116,11 +116,12 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackground"
+                    android:contentDescription="@null"
                     android:src="@drawable/ic_close_modal"/>
 
                 <TextView
                     android:id="@+id/textView"
-                    style="@style/Font25.RobotoLight.Gray"
+                    style="@style/Font25.Gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -163,14 +164,14 @@
 
                 <TextView
                     android:id="@+id/author_text_view"
-                    style="@style/Font14"
+                    style="@style/TextAppearance.AppCompat.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="by Łukasz Łanecki for netguru"/>
 
                 <TextView
                     android:id="@+id/date_text_view"
-                    style="@style/Font14"
+                    style="@style/TextAppearance.AppCompat.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="on Dec 23, 2015"/>

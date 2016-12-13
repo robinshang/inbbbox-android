@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- TODO temporary solution, not in scope of this task -->
-
     <color name="accent">#F0377E</color>
     <color name="primary">#000000</color>
     <color name="primaryDark">#000000</color>
     <color name="windowBackground">#2B3133</color>
+    <color name="secondaryWindowBackground">#576267</color>
     <color name="tabBackground">#000000</color>
     <color name="textColor">#FFFFFF</color>
 
+    <color name="disabledGray">#A4B4BC</color>
+
     <color name="white">#FFFFFF</color>
-    <color name="white_alpha">#f8ffffff</color>
     <color name="transparentWhite">#00000000</color>
     <color name="black">#000000</color>
     <color name="shadowBlack">#04000000</color>
-    <color name="lighterGrayBackground">#F6F8F8</color>
     <color name="lightGray">#BDBDBD</color>
     <color name="lightGrayAlpha">#f8f8f8f8</color>
     <color name="lightShadow">#b58b8b8b</color>
     <color name="whiteAlphaBackground">#34ffffff</color>
-    <color name="whiteFog">#c1ffffff</color>
     <color name="gray">#DEDEDE</color>
     <color name="palePink">#F9D4E2</color>
     <color name="pink">#F0377E</color>
