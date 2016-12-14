@@ -1,6 +1,6 @@
 ext {
     // Versions
-    supportLibraryVersion = '25.0.1'
+    supportLibraryVersion = '25.1.0'
     multiDexVersion = '1.0.1'
     constraintLayoutVersion = '1.0.0-beta4'
     daggerVersion = '2.6'
