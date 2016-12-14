@@ -2,6 +2,8 @@ package co.netguru.android.inbbbox.feature.details.fullscreen;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -15,7 +17,7 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
     }
 
     @Override
-    public void onViewCreated(Shot shot) {
-        getView().previewShot(shot);
+    public void onViewCreated(Shot shot, List<Shot> allShots) {
+        getView().previewShot(shot, allShots);
     }
 }

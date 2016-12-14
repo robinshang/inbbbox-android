@@ -55,4 +55,18 @@ public class ShotLoadingManager {
                 .animate(android.R.anim.fade_in)
                 .into(imageViewTarget);
     }
+
+    public static void loadMainViewShotWithListenerNoPlaceholder(Context context,
+                             ImageView target, ShotImage shot, RequestListener requestListener) {
+
+        String imageUrl = getImageUrl(shot);
+        Timber.d("shot image url: %s", imageUrl);
+        GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(target);
+        Glide.with(context)
+                .load(imageUrl)
+                .listener(requestListener)
+                .thumbnail(ShotLoadingManager.getThumbnailRequest(context, shot.thumbnailUrl()))
+                .animate(android.R.anim.fade_in)
+                .into(imageViewTarget);
+    }
 }

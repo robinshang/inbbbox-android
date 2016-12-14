@@ -2,36 +2,43 @@ package co.netguru.android.inbbbox.feature.details.fullscreen;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.di.component.ShotFullscreenComponent;
+import co.netguru.android.inbbbox.di.module.ShotFullscreenModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.utils.ShotLoadingManager;
-import timber.log.Timber;
-import uk.co.senab.photoview.PhotoViewAttacher;
+import co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView;
+import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class ShotFullscreenFragment extends
         BaseMvpFragment<ShotFullscreenContract.View, ShotFullscreenContract.Presenter> implements
-        ShotFullscreenContract.View, RequestListener {
+        ShotFullscreenContract.View {
 
     public static final String TAG = ShotFullscreenFragment.class.getSimpleName();
     public static final String KEY_SHOT = "key:shot";
     public static final String KEY_ALL_SHOTS = "key:all_shots";
+    private static final int SHOTS_TO_LOAD_MORE = 5;
 
-    @BindView(R.id.shot_fullscreen_image)
-    ImageView shotImageView;
+    @BindView(R.id.shot_fullscreen_recycler_view)
+    AutoItemScrollRecyclerView shotsRecyclerView;
+
+    @Inject
+    ShotFullscreenAdapter adapter;
+
+    private ShotFullscreenComponent component;
 
     public static ShotFullscreenFragment newInstance(Shot shot, List<Shot> allShots) {
         Bundle args = new Bundle();
@@ -51,7 +58,13 @@ public class ShotFullscreenFragment extends
 
     @Override
     public ShotFullscreenContract.Presenter createPresenter() {
-        return App.getAppComponent(getContext()).plusShotFullscreenComponent().getPresenter();
+        return component.getPresenter();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initComponent();
     }
 
     @Nullable
@@ -67,28 +80,28 @@ public class ShotFullscreenFragment extends
 
         Shot shot = getArguments().getParcelable(KEY_SHOT);
         List<Shot> allShots = getArguments().getParcelableArrayList(KEY_ALL_SHOTS);
-        // TODO create viewpager with shots and lazy loading
 
-        getPresenter().onViewCreated(shot);
+        getPresenter().onViewCreated(shot, allShots);
     }
 
     @Override
-    public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
-        if (e != null) {
-            Timber.e(e, "Error occurred when getting shot image");
-        }
-        return false;
+    public void previewShot(Shot shot, List<Shot> allShots) {
+        adapter.setItems(allShots);
+        shotsRecyclerView.setAdapter(adapter);
+        shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), OrientationHelper.HORIZONTAL, false));
+        shotsRecyclerView.setHasFixedSize(true);
+        shotsRecyclerView.addOnScrollListener(new LoadMoreScrollListener(SHOTS_TO_LOAD_MORE) {
+            @Override
+            public void requestMoreData() {
+                // TODO request more shots
+            }
+        });
+        shotsRecyclerView.scrollToPosition(allShots.indexOf(shot));
     }
 
-    @Override
-    public boolean onResourceReady(Object resource, Object model, Target target,
-                                   boolean isFromMemoryCache, boolean isFirstResource) {
-        new PhotoViewAttacher(shotImageView);
-        return false;
-    }
-
-    @Override
-    public void previewShot(Shot shot) {
-        ShotLoadingManager.loadMainViewShotWithListener(getContext(), shotImageView, shot, this);
+    private void initComponent() {
+        component = App.getAppComponent(getContext())
+                .plusShotFullscreenComponent(new ShotFullscreenModule());
+        component.inject(this);
     }
 }

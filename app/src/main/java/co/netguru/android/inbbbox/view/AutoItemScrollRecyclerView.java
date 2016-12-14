@@ -88,5 +88,4 @@ public class AutoItemScrollRecyclerView extends RecyclerView {
             throw new RuntimeException("Layout manager should be instance of LinearLayoutManager");
         }
     }
-
 }

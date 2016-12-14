@@ -13,6 +13,7 @@ import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.di.module.LocalRepositoryModule;
 import co.netguru.android.inbbbox.di.module.LoginModule;
+import co.netguru.android.inbbbox.di.module.ShotFullscreenModule;
 import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
 import co.netguru.android.inbbbox.event.RxBus;
@@ -53,7 +54,7 @@ public interface ApplicationComponent extends BaseComponent {
 
     CreateBucketComponent plusCreateBucketComponent();
 
-    ShotFullscreenComponent plusShotFullscreenComponent();
+    ShotFullscreenComponent plusShotFullscreenComponent(ShotFullscreenModule module);
 
     RxBus rxBus();
 

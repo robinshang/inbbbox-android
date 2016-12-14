@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.threeten.bp.LocalDateTime;
 
+import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.R;
@@ -586,8 +587,8 @@ public class ShotDetailsPresenterTest {
 
     @Test
     public void whenOnShotImageClicked_thenShowFullscreen() {
-        shotDetailsPresenter.onShotImageClick();
-        verify(viewMock, times(1)).openShotFullscreen(any(Shot.class));
+        shotDetailsPresenter.onShotImageClick(Collections.emptyList());
+        verify(viewMock, times(1)).openShotFullscreen(any(Shot.class), any(List.class));
     }
 
     @After
