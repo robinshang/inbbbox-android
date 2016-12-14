@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/add_to_bucket_fragment_create_bucket_button_height"
         android:layout_gravity="bottom"
-        android:background="@color/white"
+        android:background="@color/secondaryWindowBackground"
         android:foreground="?selectableItemBackground">
 
         <include

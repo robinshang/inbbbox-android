@@ -62,7 +62,6 @@
     <dimen name="toolbar_logo_left_margin">52dp</dimen>
     <dimen name="gif_label_top_bottom_padding">8dp</dimen>
     <dimen name="gif_label_side_padding">6dp</dimen>
-    <dimen name="add_to_bucket_fragment_recycler_min_height">600dp</dimen>
 
     <dimen name="shots_label_radius">24dp</dimen>
 
