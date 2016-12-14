@@ -2,8 +2,6 @@ package co.netguru.android.inbbbox.controler.likescontroller;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import co.netguru.android.inbbbox.api.LikesApi;
 import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.localrepository.GuestModeRepository;
@@ -17,7 +15,6 @@ public class LikeShotControllerGuest implements LikeShotController {
     private final GuestModeRepository guestModeRepository;
     private final LikesApi likesApi;
 
-    @Inject
     public LikeShotControllerGuest(GuestModeRepository guestModeRepository,
                                    LikesApi likesApi) {
         this.guestModeRepository = guestModeRepository;

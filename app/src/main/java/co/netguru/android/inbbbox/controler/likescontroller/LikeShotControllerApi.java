@@ -2,7 +2,6 @@ package co.netguru.android.inbbbox.controler.likescontroller;
 
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.api.LikesApi;
@@ -16,7 +15,6 @@ public class LikeShotControllerApi implements LikeShotController {
 
     private final LikesApi likesApi;
 
-    @Inject
     public LikeShotControllerApi(LikesApi likesApi) {
         this.likesApi = likesApi;
     }
