@@ -11,6 +11,7 @@ import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.TokenParametersController;
 import co.netguru.android.inbbbox.controler.UserController;
+import co.netguru.android.inbbbox.enumeration.UserModeType;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -107,9 +108,15 @@ public final class LoginPresenter
                 tokenParametersController.getUserGuestToken()
                         .flatMapCompletable(apiTokenController::saveToken)
                         .andThen(userController.enableGuestMode())
-                        .subscribe(getView()::showNextScreen,
-                                throwable -> handleHttpErrorResponse(throwable, "Error while getting user guest token"))
+                        .subscribe(this::handleGuestLogin,
+                                throwable -> handleHttpErrorResponse(throwable,
+                                        "Error while getting user guest token"))
         );
+    }
+
+    private void handleGuestLogin() {
+        getView().initializeUserMode(UserModeType.GUEST_USER_MODE);
+        getView().showNextScreen();
     }
 
     private void requestTokenAndLoadUserData(String code) {
@@ -117,7 +124,13 @@ public final class LoginPresenter
                 apiTokenController.requestNewToken(code)
                         .flatMap(token -> userController.requestUser())
                         .compose(androidIO())
-                        .subscribe(user -> getView().showNextScreen(),
-                                throwable -> handleHttpErrorResponse(throwable, "Error while requesting new token")));
+                        .subscribe(user -> handleOnlineUserLogin(),
+                                throwable -> handleHttpErrorResponse(throwable,
+                                        "Error while requesting new token")));
+    }
+
+    private void handleOnlineUserLogin() {
+        getView().initializeUserMode(UserModeType.ONLINE_USER_MODE);
+        getView().showNextScreen();
     }
 }

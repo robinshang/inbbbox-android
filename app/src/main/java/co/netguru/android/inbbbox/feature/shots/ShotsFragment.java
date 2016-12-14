@@ -123,7 +123,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     private void initComponent() {
-        component = App.getAppComponent(getContext())
+        component = App.getUserComponent(getContext())
                 .plus(new ShotsModule(this));
         component.inject(this);
     }
