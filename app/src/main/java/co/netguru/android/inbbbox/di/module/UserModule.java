@@ -23,6 +23,7 @@ public class UserModule {
     }
 
     @Provides
+    @Singleton
     LikeShotController likeShotController(LikesApi likesApi, GuestModeRepository guestModeRepository) {
         LikeShotController likeShotControllerApi;
         if (mode.equals(UserModeType.GUEST_USER_MODE)) {

@@ -26,17 +26,22 @@ public class LikeShotControllerGuest implements LikeShotController {
 
     @Override
     public Completable isShotLiked(Shot shot) {
-        return checkIsLiked(shot);
+        Timber.d("checking is shot liked...");
+        return guestModeRepository.isShotLiked(shot)
+                .doOnCompleted(() -> Timber.d("Shot is liked"))
+                .doOnError(throwable -> Timber.d("Shot is not liked"));
     }
 
     @Override
     public Completable likeShot(Shot shot) {
-        return performLike(shot);
+        Timber.d("Performing local like action");
+        return guestModeRepository.addLikedShot(shot);
     }
 
     @Override
     public Completable unLikeShot(Shot shot) {
-        return performUnlike(shot);
+        Timber.d("Performing local unLike action");
+        return guestModeRepository.removeLikedShot(shot);
     }
 
     @Override
@@ -58,26 +63,8 @@ public class LikeShotControllerGuest implements LikeShotController {
                 .toList();
     }
 
-    private Completable performLike(Shot shot) {
-        Timber.d("Performing local like action");
-        return guestModeRepository.addLikedShot(shot);
-    }
-
-    private Completable performUnlike(Shot shot) {
-        Timber.d("Performing local unLike action");
-        return guestModeRepository.removeLikedShot(shot);
-    }
-
-    private Completable checkIsLiked(Shot shot) {
-        Timber.d("checking is shot liked...");
-        return guestModeRepository.isShotLiked(shot)
-                .doOnCompleted(() -> Timber.d("Shot is liked"))
-                .doOnError(throwable -> Timber.d("Shot is not liked"));
-    }
-
     private Observable<List<Shot>> getCachedLikedShot() {
         Timber.d("getting liked shots from cache");
         return guestModeRepository.getLikedShots();
-
     }
 }

@@ -26,6 +26,7 @@ public class LocalRepositoryModule {
 
     @Named(SETTINGS_SHARED_PREFERENCES_NAME)
     @Provides
+    @Singleton
     SharedPreferences provideSettingsSharedPreferences(Context context) {
         return context.getSharedPreferences(context.getPackageName()
                 .concat(SETTINGS_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
@@ -33,6 +34,7 @@ public class LocalRepositoryModule {
 
     @Named(TOKEN_SHARED_PREFERENCES_NAME)
     @Provides
+    @Singleton
     SharedPreferences provideTokenSharedPreferences(Context context) {
         return context.getSharedPreferences(context.getPackageName()
                 .concat(TOKEN_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
@@ -40,6 +42,7 @@ public class LocalRepositoryModule {
 
     @Named(USER_SHARED_PREFERENCES_NAME)
     @Provides
+    @Singleton
     SharedPreferences provideUserSharedPreferences(Context context) {
         return context.getSharedPreferences(context.getPackageName()
                 .concat(USER_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
@@ -47,30 +50,35 @@ public class LocalRepositoryModule {
 
     @Named(GUEST_MODE_SHARED_PREFERENCES_NAME)
     @Provides
+    @Singleton
     SharedPreferences provideGuestModeSharedPreferences(Context context) {
         return context.getSharedPreferences(context.getPackageName()
                 .concat(GUEST_MODE_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
     }
 
     @Provides
+    @Singleton
     SettingsPrefsRepository provideSettingsPrefsRepository(
             @Named(SETTINGS_SHARED_PREFERENCES_NAME) SharedPreferences sharedPreferences) {
         return new SettingsPrefsRepository(sharedPreferences);
     }
 
     @Provides
+    @Singleton
     TokenPrefsRepository provideTokenPrefsRepository(
             @Named(TOKEN_SHARED_PREFERENCES_NAME) SharedPreferences sharedPreferences) {
         return new TokenPrefsRepository(sharedPreferences);
     }
 
     @Provides
+    @Singleton
     UserPrefsRepository provideUserPrefsRepository(
             @Named(USER_SHARED_PREFERENCES_NAME) SharedPreferences sharedPreferences, Gson gson) {
         return new UserPrefsRepository(sharedPreferences, gson);
     }
 
     @Provides
+    @Singleton
     GuestModeRepository provideGuestModeRepository(
             @Named(GUEST_MODE_SHARED_PREFERENCES_NAME) SharedPreferences sharedPreferences,
             Gson gson) {
