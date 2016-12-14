@@ -7,7 +7,7 @@
         <item name="colorControlNormal">@color/white</item>
         <item name="android:windowBackground">@color/windowBackground</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textColorSecondary">@color/textGrey</item>
         <item name="android:textColorTertiary">@color/white</item>
         <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
     </style>
@@ -24,6 +24,7 @@
     <style name="BigDialog" parent="Theme.AppCompat.Dialog">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorAccent">@color/accent</item>
+        <item name="android:background">@color/windowBackground</item>
         <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
         <item name="android:windowMinWidthMajor">90%</item>
         <item name="android:windowMinWidthMinor">90%</item>
@@ -33,8 +34,14 @@
     <style name="NoTitleDialog" parent="Theme.AppCompat.Dialog">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorAccent">@color/accent</item>
+        <item name="android:background">@color/windowBackground</item>
         <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
         <item name="android:windowMinWidthMajor">40%</item>
         <item name="android:windowMinWidthMinor">40%</item>
+    </style>
+
+    <style name="Font12.Gray" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/disabledGray</item>
     </style>
 </resources>

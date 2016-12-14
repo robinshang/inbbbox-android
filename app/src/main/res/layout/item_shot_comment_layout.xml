@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                style="@style/ShotCommentSectionContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/ShotCommentSectionContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/secondaryWindowBackground"
+    android:orientation="vertical">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/comment_avatar_imageView"
@@ -16,7 +17,7 @@
         app:civ_border_color="@color/white"
         app:civ_border_overlay="true"
         app:civ_border_width="@dimen/drawer_header_photo_border"
-        app:civ_fill_color="@color/lightGray"/>
+        app:civ_fill_color="@color/lightGray" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,22 +30,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lines="1"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <FrameLayout
             android:id="@+id/comment_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:animateLayoutChanges="true">
 
             <TextView
                 android:id="@+id/comment_text_textView"
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
-            <include layout="@layout/comment_action_layout"/>
+            <include layout="@layout/comment_action_layout" />
 
         </FrameLayout>
 
@@ -54,12 +54,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/details_comment_data_top_padding"
-            android:lines="1"/>
+            android:lines="1" />
 
-        <View style="@style/Divider"
-              android:layout_marginBottom="@dimen/details_comment_divider_padding_bottom"
-              android:layout_marginTop="@dimen/details_comment_divider_padding_top"
-              android:alpha="0.5"/>
+        <View
+            style="@style/Divider"
+            android:layout_marginBottom="@dimen/details_comment_divider_padding_bottom"
+            android:layout_marginTop="@dimen/details_comment_divider_padding_top"
+            android:alpha="0.5" />
     </LinearLayout>
-
 </RelativeLayout>

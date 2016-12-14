@@ -23,7 +23,7 @@
     <color name="pink">#F0377E</color>
 
     <color name="materialDivider">#1f000000</color>
-    <color name="shotDetailsBackgroundLightGray">#F6F8F8</color>
+    <color name="shotDetailsBackground">#2B3133</color>
     <color name="actionButtonLabelColor">#95a5ae</color>
 
     <color name="textGrey">#6D6D72</color>
