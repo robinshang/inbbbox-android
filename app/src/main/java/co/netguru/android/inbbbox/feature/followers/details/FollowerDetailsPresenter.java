@@ -105,10 +105,10 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
             pageNumber++;
             loadMoreShotsSubscription= userShotsController.getUserShotsList(follower.id(),
                     pageNumber, SHOT_PAGE_COUNT)
-                    .compose(androidIO())
                     .compose(fromListObservable())
                     .map(shot -> Shot.update(shot).author(User.createFromFollower(follower)).build())
                     .toList()
+                    .compose(androidIO())
                     .subscribe(shotList -> {
                                 hasMore = shotList.size() == SHOT_PAGE_COUNT;
                                 getView().showMoreUserShots(shotList);
