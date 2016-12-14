@@ -25,6 +25,8 @@ import android.widget.ToggleButton;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.util.List;
+
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
@@ -255,8 +257,8 @@ public class MainActivity
     }
 
     @Override
-    public void showShotDetails(Shot shot, boolean isCommentModeEnabled) {
-        showBottomSheet(ShotDetailsFragment.newInstance(shot, isCommentModeEnabled), ShotDetailsFragment.TAG);
+    public void showShotDetails(Shot shot, List<Shot> allShots, boolean isCommentModeEnabled) {
+        showBottomSheet(ShotDetailsFragment.newInstance(shot, allShots, isCommentModeEnabled), ShotDetailsFragment.TAG);
     }
 
     @Override

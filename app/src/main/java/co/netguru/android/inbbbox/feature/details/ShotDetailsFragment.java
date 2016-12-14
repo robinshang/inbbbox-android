@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -48,7 +50,8 @@ public class ShotDetailsFragment
         implements ShotDetailsContract.View, DetailsViewActionCallback {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
-    private static final String ARG_SHOT = "arg:shot";
+    private static final String ARG_ALL_SHOTS = "arg:shot";
+    private static final String ARG_SHOT = "arg:all_shots";
     private static final String ARG_IS_COMMENT_MODE_ENABLED = "arg:comment_mode_state";
     private static final int SLIDE_IN_DURATION = 500;
 
@@ -84,12 +87,17 @@ public class ShotDetailsFragment
     private boolean isInputPanelShowingEnabled;
 
     public static ShotDetailsFragment newInstance(Shot shot) {
-        return newInstance(shot, false);
+        return newInstance(shot, Collections.emptyList(), false);
     }
 
-    public static ShotDetailsFragment newInstance(Shot shot, boolean isCommentModeEnabled) {
+    public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots, boolean isCommentModeEnabled) {
         Bundle args = new Bundle();
         args.putParcelable(ARG_SHOT, shot);
+        if (allShots instanceof ArrayList) {
+            args.putParcelableArrayList(ARG_ALL_SHOTS, (ArrayList<Shot>) allShots);
+        } else {
+            args.putParcelableArrayList(ARG_ALL_SHOTS, new ArrayList<Shot>(allShots));
+        }
         args.putBoolean(ARG_IS_COMMENT_MODE_ENABLED, isCommentModeEnabled);
         ShotDetailsFragment fragment = new ShotDetailsFragment();
         fragment.setArguments(args);
@@ -128,10 +136,11 @@ public class ShotDetailsFragment
     void onCloseClick() {
         getPresenter().closeScreen();
     }
-    
+
     @OnClick(R.id.parallax_image_view)
     void onShotImageClick() {
-        getPresenter().onShotImageClick();
+        List<Shot> shots = getArguments().getParcelableArrayList(ARG_ALL_SHOTS);
+        getPresenter().onShotImageClick(shots);
     }
 
     @Override
@@ -345,8 +354,8 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void openShotFullscreen(Shot shot) {
-        ShotFullscreenActivity.startActivity(getContext(), shot);
+    public void openShotFullscreen(Shot shot, List<Shot> allShots) {
+        ShotFullscreenActivity.startActivity(getContext(), shot, allShots);
     }
 
     private void initComponent() {

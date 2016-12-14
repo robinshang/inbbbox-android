@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 
 import org.threeten.bp.LocalDateTime;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindColor;
@@ -210,7 +211,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @Override
     public void openShotFullscreen(Shot shot) {
-        ShotFullscreenActivity.startActivity(getContext(), shot);
+        ShotFullscreenActivity.startActivity(getContext(), shot, Collections.emptyList());
     }
 
     private String getFormattedDate(LocalDateTime creationDate) {

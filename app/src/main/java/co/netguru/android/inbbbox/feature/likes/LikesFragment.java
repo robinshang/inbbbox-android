@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -192,7 +193,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
 
     @Override
     public void openShowDetailsScreen(Shot shot) {
-        shotActionListener.showShotDetails(shot, false);
+        shotActionListener.showShotDetails(shot, new ArrayList<>(), false);
     }
 
     @Override

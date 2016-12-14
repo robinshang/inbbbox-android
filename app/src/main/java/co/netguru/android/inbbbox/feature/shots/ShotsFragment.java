@@ -228,12 +228,12 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void showDetailsScreenInCommentMode(Shot selectedShot) {
-        shotActionListener.showShotDetails(selectedShot, true);
+        shotActionListener.showShotDetails(selectedShot, adapter.getItems(), true);
     }
 
     @Override
     public void showShotDetails(Shot shot) {
-        shotActionListener.showShotDetails(shot, false);
+        shotActionListener.showShotDetails(shot, adapter.getItems(), false);
     }
 
     @Override
@@ -269,11 +269,11 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void hideLoadingIndicator() {
         swipeRefreshLayout.setRefreshing(false);
-    }
+        }
 
-    public interface ShotActionListener {
-        void shotLikeStatusChanged();
+        public interface ShotActionListener {
+            void shotLikeStatusChanged();
 
-        void showShotDetails(Shot shot, boolean inCommentMode);
-    }
+            void showShotDetails(Shot shot, List<Shot> nearbyShots, boolean inCommentMode);
+        }
 }

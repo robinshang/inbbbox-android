@@ -134,8 +134,8 @@ public class ShotDetailsPresenter
     }
 
     @Override
-    public void onShotImageClick() {
-        getView().openShotFullscreen(shot);
+    public void onShotImageClick(List<Shot> allShots) {
+        getView().openShotFullscreen(shot, allShots);
     }
 
     private void initializeView() {

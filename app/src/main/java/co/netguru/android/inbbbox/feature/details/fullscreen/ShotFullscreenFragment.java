@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
@@ -25,13 +28,20 @@ public class ShotFullscreenFragment extends
 
     public static final String TAG = ShotFullscreenFragment.class.getSimpleName();
     public static final String KEY_SHOT = "key:shot";
+    public static final String KEY_ALL_SHOTS = "key:all_shots";
 
     @BindView(R.id.shot_fullscreen_image)
     ImageView shotImageView;
 
-    public static ShotFullscreenFragment newInstance(Shot shot) {
+    public static ShotFullscreenFragment newInstance(Shot shot, List<Shot> allShots) {
         Bundle args = new Bundle();
         args.putParcelable(KEY_SHOT, shot);
+
+        if (allShots instanceof ArrayList) {
+            args.putParcelableArrayList(KEY_ALL_SHOTS, (ArrayList<Shot>) allShots);
+        } else {
+            args.putParcelableArrayList(KEY_ALL_SHOTS, new ArrayList<Shot>(allShots));
+        }
 
         ShotFullscreenFragment shotFullscreenFragment = new ShotFullscreenFragment();
         shotFullscreenFragment.setArguments(args);
@@ -56,6 +66,9 @@ public class ShotFullscreenFragment extends
         super.onViewCreated(view, savedInstanceState);
 
         Shot shot = getArguments().getParcelable(KEY_SHOT);
+        List<Shot> allShots = getArguments().getParcelableArrayList(KEY_ALL_SHOTS);
+        // TODO create viewpager with shots and lazy loading
+
         getPresenter().onViewCreated(shot);
     }
 
