@@ -18,9 +18,9 @@ import timber.log.Timber;
 
 /**
  * Helper class that initializes a set of debugging tools
- * for the debug build type and does nothing for the release type.
+ * for the debug build type and register crash manager for release type.
  * <p>
- * Tools:
+ * Debug type tools:
  * <ul>
  * <li> AndroidDevMetrics
  * <li> Stetho
@@ -28,13 +28,17 @@ import timber.log.Timber;
  * <li> LeakCanary
  * <li> Timber
  * </ul>
+ * Release type tools:
+ * <ul>
+ * <li> CrashManager
+ * </ul>
  * <p>
- * Created by lukaszjanyga on 08/09/16.
  */
 public class DebugMetricsHelper {
 
     @Inject
     public DebugMetricsHelper() {
+        //DI
     }
 
     public void init(Context context) {
