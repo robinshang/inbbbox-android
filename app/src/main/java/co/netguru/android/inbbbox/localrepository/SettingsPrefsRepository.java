@@ -51,9 +51,9 @@ public class SettingsPrefsRepository {
     public Single<StreamSourceSettings> getStreamSourceSettings() {
         return Single.fromCallable(() ->
                 new StreamSourceSettings(
-                        sharedPreferences.getBoolean(STREAM_SOURCE_SETTINGS_IS_FOLLOWING_KEY, true),
+                        sharedPreferences.getBoolean(STREAM_SOURCE_SETTINGS_IS_FOLLOWING_KEY, false),
                         sharedPreferences.getBoolean(STREAM_SOURCE_SETTINGS_IS_NEW_TODAY_KEY, false),
-                        sharedPreferences.getBoolean(STREAM_SOURCE_SETTINGS_IS_POPULAR_TODAY_KEY, false),
+                        sharedPreferences.getBoolean(STREAM_SOURCE_SETTINGS_IS_POPULAR_TODAY_KEY, true),
                         sharedPreferences.getBoolean(STREAM_SOURCE_SETTINGS_IS_DEBUT_KEY, false)
                 ));
     }
