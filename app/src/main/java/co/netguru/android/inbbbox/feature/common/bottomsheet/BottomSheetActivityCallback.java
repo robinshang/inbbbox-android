@@ -10,4 +10,6 @@ public interface BottomSheetActivityCallback {
     Context getApplicationContext();
 
     FragmentTransaction replaceFragment(@IdRes int fragmentContainer, Fragment fragment, String tag);
+
+    void removeFragmentFromView(@IdRes int id);
 }

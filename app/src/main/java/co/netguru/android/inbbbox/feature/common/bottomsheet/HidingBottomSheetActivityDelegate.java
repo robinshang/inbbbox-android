@@ -7,7 +7,6 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.utils.InputUtils;
 
 public class HidingBottomSheetActivityDelegate implements HidingBottomSheetBearer {
@@ -34,7 +33,7 @@ public class HidingBottomSheetActivityDelegate implements HidingBottomSheetBeare
 
     @Override
     public void showBottomSheet(Fragment fragment, String tag) {
-        bottomSheetActivityCallback.replaceFragment(R.id.fragment_container, fragment, tag).commit();
+        bottomSheetActivityCallback.replaceFragment(bottomSheetView.getId(), fragment, tag).commit();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
@@ -61,6 +60,7 @@ public class HidingBottomSheetActivityDelegate implements HidingBottomSheetBeare
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     InputUtils.hideKeyboard(bottomSheetActivityCallback.getApplicationContext(), bottomSheetView);
+                    bottomSheetActivityCallback.removeFragmentFromView(bottomSheetView.getId());
                 }
             }
 

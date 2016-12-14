@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.feature.common;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -28,7 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomSh
     @BindView(android.R.id.content)
     View contentView;
     @Nullable
-    @BindView(R.id.fragment_container)
+    @BindView(R.id.bottom_sheet_fragment_container)
     View bottomSheetView;
 
     @Nullable
@@ -90,6 +91,16 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomSh
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(containerViewId, fragment, tag);
         return ft;
+    }
+
+    @Override
+    public void removeFragmentFromView(@IdRes int viewId) {
+        Fragment fragmentToRemove = getSupportFragmentManager().findFragmentById(viewId);
+        if (fragmentToRemove != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .remove(fragmentToRemove)
+                    .commit();
+        }
     }
 
     protected void showTextOnSnackbar(@StringRes int stringRes) {
