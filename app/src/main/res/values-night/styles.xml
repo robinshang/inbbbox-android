@@ -24,7 +24,6 @@
     <style name="BigDialog" parent="Theme.AppCompat.Dialog">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="android:background">@color/windowBackground</item>
         <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
         <item name="android:windowMinWidthMajor">90%</item>
         <item name="android:windowMinWidthMinor">90%</item>
