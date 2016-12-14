@@ -4,6 +4,7 @@
     <color name="primary">#F0377E</color>
     <color name="primaryDark">#d43170</color>
     <color name="windowBackground">#FFFFFF</color>
+    <color name="secondaryWindowBackground">#FFFFFF</color>
     <color name="tabBackground">#FFFFFF</color>
     <color name="textColor">#000000</color>
 
