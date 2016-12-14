@@ -2,10 +2,8 @@ package co.netguru.android.inbbbox.feature.common;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -22,14 +20,14 @@ import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.event.CriticalLogoutEvent;
+import co.netguru.android.inbbbox.feature.common.bottomsheet.BottomSheetActivityCallback;
+import co.netguru.android.inbbbox.feature.common.bottomsheet.BottomSheetActivityDelegate;
+import co.netguru.android.inbbbox.feature.common.bottomsheet.BottomSheetBearer;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
-import co.netguru.android.inbbbox.utils.InputUtils;
 import rx.Subscription;
 
 public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<V>>
-        extends MvpActivity<V, P> {
-
-    private static final String BOTTOM_SHEET_STATE = "bottomSheetState";
+        extends MvpActivity<V, P> implements BottomSheetActivityCallback, BottomSheetBearer {
 
     @BindView(android.R.id.content)
     View contentView;
@@ -38,30 +36,32 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
     View bottomSheetView;
 
     @Nullable
-    private BottomSheetBehavior bottomSheetBehavior;
+    private BottomSheetActivityDelegate bottomSheetActivityDelegate;
+
     private Subscription criticalLogoutSubscription;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         ButterKnife.bind(this);
-        initializeBottomSheet();
+        if (bottomSheetView != null) {
+            bottomSheetActivityDelegate = new BottomSheetActivityDelegate(this, bottomSheetView);
+        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (bottomSheetBehavior != null) {
-            outState.putInt(BOTTOM_SHEET_STATE, bottomSheetBehavior.getState());
+        if (bottomSheetActivityDelegate != null) {
+            bottomSheetActivityDelegate.onSaveInstanceState(outState);
         }
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (bottomSheetBehavior != null) {
-            bottomSheetBehavior.setState(savedInstanceState.getInt(BOTTOM_SHEET_STATE,
-                    BottomSheetBehavior.STATE_COLLAPSED));
+        if (bottomSheetActivityDelegate != null) {
+            bottomSheetActivityDelegate.onRestoreInstanceState(savedInstanceState);
         }
     }
 
@@ -82,14 +82,15 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
 
     @Override
     public void onBackPressed() {
-        if (bottomSheetBehavior != null && isBottomSheetOpen()) {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            return;
+        if (bottomSheetActivityDelegate != null && bottomSheetActivityDelegate.isBottomSheetOpen()) {
+            bottomSheetActivityDelegate.hideBottomSheet();
+        } else {
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 
-    protected FragmentTransaction replaceFragment(int containerViewId, Fragment fragment, String tag) {
+    @Override
+    public FragmentTransaction replaceFragment(int containerViewId, Fragment fragment, String tag) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(containerViewId, fragment, tag);
         return ft;
@@ -99,39 +100,20 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
         Snackbar.make(contentView, stringRes, Snackbar.LENGTH_LONG).show();
     }
 
-    protected void showBottomSheet(Fragment fragment, String tag) {
-        if (bottomSheetBehavior != null) {
-            replaceFragment(R.id.fragment_container, fragment, tag).commit();
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    @Override
+    public void showBottomSheet(Fragment fragment, String tag) {
+        if (bottomSheetActivityDelegate != null) {
+            bottomSheetActivityDelegate.showBottomSheet(fragment, tag);
+        } else {
+            throw new IllegalStateException("BottomSheetActivity delegate is null." +
+                    " Did you provide fragment_container view for this activity?");
         }
     }
+
 
     private void handleUnauthorisedEvent(CriticalLogoutEvent object) {
         Toast.makeText(this, object.getReason(), Toast.LENGTH_SHORT).show();
         LoginActivity.startActivityClearTask(this);
         finish();
-    }
-
-    private boolean isBottomSheetOpen() {
-        return bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED;
-    }
-
-    private void initializeBottomSheet() {
-        if (bottomSheetView != null) {
-            bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
-            bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-                @Override
-                public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                        InputUtils.hideKeyboard(BaseMvpActivity.this, bottomSheetView);
-                    }
-                }
-
-                @Override
-                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                    //no-op
-                }
-            });
-        }
     }
 }
