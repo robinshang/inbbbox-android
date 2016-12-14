@@ -53,6 +53,8 @@ public interface ApplicationComponent extends BaseComponent {
 
     CreateBucketComponent plusCreateBucketComponent();
 
+    ShotFullscreenComponent plusShotFullscreenComponent();
+
     RxBus rxBus();
 
     void inject(NotificationAlarmReceiver receiver);

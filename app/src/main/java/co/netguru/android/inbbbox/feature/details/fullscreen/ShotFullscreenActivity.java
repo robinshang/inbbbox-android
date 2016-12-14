@@ -4,25 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.widget.ImageView;
 
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-
-import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseActivity;
 import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.utils.ShotLoadingManager;
-import timber.log.Timber;
-import uk.co.senab.photoview.PhotoViewAttacher;
 
-public class ShotFullscreenActivity extends BaseActivity implements RequestListener {
+public class ShotFullscreenActivity extends BaseActivity {
 
     public static final String KEY_SHOT = "key:shot";
-
-    @BindView(R.id.shot_fullscreen_image)
-    ImageView shotImageView;
 
     public static void startActivity(Context context, Shot shot) {
         Intent intent = new Intent(context, ShotFullscreenActivity.class);
@@ -35,22 +24,18 @@ public class ShotFullscreenActivity extends BaseActivity implements RequestListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shot_fullscreen);
 
-        Shot shot = getIntent().getExtras().getParcelable(KEY_SHOT);
-        ShotLoadingManager.loadMainViewShotWithListener(this, shotImageView, shot, this);
-    }
-
-    @Override
-    public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
-        if(e != null) {
-            Timber.e(e, "Error occurred when getting shot image");
+        if (savedInstanceState == null) {
+            initializeShotFullscreenFragment();
         }
-        return false;
+
     }
 
-    @Override
-    public boolean onResourceReady(Object resource, Object model, Target target,
-                                   boolean isFromMemoryCache, boolean isFirstResource) {
-        PhotoViewAttacher attacher = new PhotoViewAttacher(shotImageView);
-        return false;
+    private void initializeShotFullscreenFragment() {
+        Shot shot = getIntent().getParcelableExtra(KEY_SHOT);
+
+        replaceFragment(R.id.shot_fullscreen_container,
+                ShotFullscreenFragment.newInstance(shot), ShotFullscreenFragment.TAG)
+                .commit();
     }
+
 }
