@@ -23,18 +23,12 @@ public class UserModule {
     }
 
     @Provides
-    UserModeType provideUserModeType() {
-        return mode;
-    }
-
-    @Provides
     LikeShotController likeShotController(LikesApi likesApi, GuestModeRepository guestModeRepository) {
         LikeShotController likeShotControllerApi;
         if (mode.equals(UserModeType.GUEST_USER_MODE)) {
             likeShotControllerApi = new LikeShotControllerGuest(guestModeRepository, likesApi);
         } else {
             likeShotControllerApi = new LikeShotControllerApi(likesApi);
-
         }
         return likeShotControllerApi;
     }
