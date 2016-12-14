@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.splash;
 
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
@@ -76,7 +77,7 @@ public class SplashPresenterTest {
     @Test
     public void whenViewAttachedAndTokenIsInvalidOrNull_thenShowLoginScreen() {
         when(tokenControllerMock.isTokenValid()).thenReturn(Single.just(false));
-
+        when(userControllerMock.isGuestModeEnabled()).thenReturn(Single.just(false));
         splashPresenter.attachView(splashViewMock);
 
         verify(splashViewMock, times(1)).showLoginScreen();
@@ -105,5 +106,10 @@ public class SplashPresenterTest {
         splashPresenter.attachView(splashViewMock);
 
         verify(splashViewMock, times(1)).showMessageOnServerError(test);
+    }
+
+    @After
+    public void tearDown() {
+        splashPresenter.detachView(false);
     }
 }
