@@ -64,7 +64,7 @@ public class ShotDetailsPresenter
                 shotDetailsController
                         .performLikeAction(shot, newLikeState)
                         .subscribe(() -> updateLikeState(newLikeState),
-                                throwable -> handleHttpErrorResponse(throwable, "Error while performing like action"))
+                                throwable -> handleError(throwable, "Error while performing like action"))
         );
     }
 
@@ -97,7 +97,7 @@ public class ShotDetailsPresenter
                         updatedComment)
                         .compose(applySingleIoSchedulers())
                         .subscribe(this::handleCommentUpdated,
-                                throwable -> handleHttpErrorResponse(throwable, "Error while updating comment"))
+                                throwable -> handleError(throwable, "Error while updating comment"))
         );
     }
 
@@ -119,7 +119,7 @@ public class ShotDetailsPresenter
                         .deleteComment(shot.id(), commentInEditor.id())
                         .compose(applyCompletableIoSchedulers())
                         .subscribe(this::handleCommentDeleteComplete,
-                                throwable -> handleHttpErrorResponse(throwable, "Error while deleting comment"))
+                                throwable -> handleError(throwable, "Error while deleting comment"))
         );
     }
 
@@ -134,7 +134,7 @@ public class ShotDetailsPresenter
     }
 
     @Override
-    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+    public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
         getView().disableEditorProgressMode();
@@ -170,7 +170,7 @@ public class ShotDetailsPresenter
                         .compose(applySingleIoSchedulers())
                         .doAfterTerminate(this::handleSaveCommentTermination)
                         .subscribe(this::handleCommentSavingComplete,
-                                throwable -> handleHttpErrorResponse(throwable, "Error while sending comment"))
+                                throwable -> handleError(throwable, "Error while sending comment"))
         );
     }
 
@@ -223,7 +223,7 @@ public class ShotDetailsPresenter
                         .compose(androidIO())
                         .doOnCompleted(() -> getView().setInputShowingEnabled(true))
                         .subscribe(this::handleDetailsStates,
-                                throwable -> handleHttpErrorResponse(throwable, "Error while getting shot comments"))
+                                throwable -> handleError(throwable, "Error while getting shot comments"))
         );
     }
 

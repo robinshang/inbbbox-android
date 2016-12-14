@@ -4,7 +4,7 @@ package co.netguru.android.inbbbox.feature.buckets.createbucket;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
-import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.common.HttpErrorView;
 
 public interface CreateBucketContract {
@@ -21,7 +21,7 @@ public interface CreateBucketContract {
         void hideProgressView();
     }
 
-    interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
+    interface Presenter extends MvpPresenter<View>, ErrorPresenter {
 
         void handleCreateBucket(String name, String description);
 

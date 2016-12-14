@@ -46,7 +46,7 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     }
 
     @Override
-    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+    public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
         getView().showLoginScreen();
@@ -57,7 +57,7 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
                 getTokenValidationSingle()
                         .compose(applySingleIoSchedulers())
                         .subscribe(this::handleTokenVerificationResult,
-                                throwable -> handleHttpErrorResponse(throwable, "Error while token validation"))
+                                throwable -> handleError(throwable, "Error while token validation"))
         );
     }
 
@@ -82,7 +82,7 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
                 userController.requestUser()
                         .compose(androidIO())
                         .subscribe(user -> handleLoggedUser(),
-                                throwable -> handleHttpErrorResponse(throwable, "Error while requesting user"))
+                                throwable -> handleError(throwable, "Error while requesting user"))
         );
     }
 

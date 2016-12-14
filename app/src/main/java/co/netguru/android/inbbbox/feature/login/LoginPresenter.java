@@ -59,7 +59,7 @@ public final class LoginPresenter
                                 urlUUIDPair -> getView()
                                         .openAuthWebViewFragment(urlUUIDPair.first,
                                                 urlUUIDPair.second.toString()),
-                                throwable -> handleHttpErrorResponse(throwable, "Problem with authorization")));
+                                throwable -> handleError(throwable, "Problem with authorization")));
     }
 
     @Override
@@ -88,7 +88,7 @@ public final class LoginPresenter
     }
 
     @Override
-    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+    public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
 
@@ -109,9 +109,8 @@ public final class LoginPresenter
                         .flatMapCompletable(apiTokenController::saveToken)
                         .andThen(userController.enableGuestMode())
                         .subscribe(this::handleGuestLogin,
-                                throwable -> handleHttpErrorResponse(throwable,
-                                        "Error while getting user guest token"))
-        );
+                                throwable -> handleError(throwable,
+                                        "Error while getting user guest token")));
     }
 
     private void handleGuestLogin() {
@@ -125,7 +124,7 @@ public final class LoginPresenter
                         .flatMap(token -> userController.requestUser())
                         .compose(androidIO())
                         .subscribe(user -> handleOnlineUserLogin(),
-                                throwable -> handleHttpErrorResponse(throwable,
+                                throwable -> handleError(throwable,
                                         "Error while requesting new token")));
     }
 

@@ -74,7 +74,7 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
                     .compose(androidIO())
                     .doAfterTerminate(getView()::hideProgressBars)
                     .subscribe(this::onGetFollowersNext,
-                            throwable -> handleHttpErrorResponse(throwable, "Error while getting followed users form server"));
+                            throwable -> handleError(throwable, "Error while getting followed users form server"));
         }
     }
 
@@ -95,7 +95,7 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
                         getView().hideLoadingMoreBucketsView();
                     })
                     .subscribe(this::onGetMoreFollowersNext,
-                            throwable -> handleHttpErrorResponse(throwable, "Error while getting followed users form server"));
+                            throwable -> handleError(throwable, "Error while getting followed users form server"));
         }
     }
 
@@ -109,7 +109,7 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     }
 
     @Override
-    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+    public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }

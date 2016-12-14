@@ -59,7 +59,7 @@ public class CreateBucketPresenter extends MvpNullObjectBasePresenter<CreateBuck
     }
 
     @Override
-    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+    public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }

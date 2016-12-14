@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.feature.followers.details;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -9,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 
 import co.netguru.android.inbbbox.R;
-import timber.log.Timber;
 
 public class UnFollowUserDialogFragment extends DialogFragment {
 
@@ -30,21 +28,10 @@ public class UnFollowUserDialogFragment extends DialogFragment {
         return fragment;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            onUnFollowClickedListener = (OnUnFollowClickedListener) getTargetFragment();
-        } catch (ClassCastException e) {
-            Timber.e(e.getMessage());
-            throw new ClassCastException(getTargetFragment().toString()
-                    + " must implement OnUnFollowClickedListener");
-        }
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        onUnFollowClickedListener = (OnUnFollowClickedListener) getTargetFragment();
         return new AlertDialog.Builder(getContext(), R.style.AlertDialog)
                 .setMessage(getContext().getString(R.string.fragment_follower_details_dialog_text,
                         getArguments().getString(USERNAME_KEY)))
