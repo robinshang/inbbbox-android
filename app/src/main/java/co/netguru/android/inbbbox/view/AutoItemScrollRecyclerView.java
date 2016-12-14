@@ -10,6 +10,7 @@ public class AutoItemScrollRecyclerView extends RecyclerView {
     private boolean isScrollingNext;
     private boolean isScrollingBack;
     private int currentItem;
+    private int orientation;
 
     public AutoItemScrollRecyclerView(Context context) {
         super(context);
@@ -58,10 +59,11 @@ public class AutoItemScrollRecyclerView extends RecyclerView {
     @Override
     public void onScrolled(int dx, int dy) {
         super.onScrolled(dx, dy);
-        if (dy > 0) {
+
+        if ((orientation == VERTICAL && dy > 0) || (orientation == HORIZONTAL && dx > 0)) {
             isScrollingNext = true;
             isScrollingBack = false;
-        } else if (dy < 0) {
+        } else if ((orientation == VERTICAL && dy < 0) || (orientation == HORIZONTAL && dx < 0)) {
             isScrollingNext = false;
             isScrollingBack = true;
         }
@@ -76,4 +78,15 @@ public class AutoItemScrollRecyclerView extends RecyclerView {
     public int getCurrentItem() {
         return getChildCount() == 0 ? RecyclerView.NO_POSITION : currentItem;
     }
+
+    @Override
+    public void setLayoutManager(LayoutManager layoutManager) {
+        if (layoutManager instanceof LinearLayoutManager) {
+            super.setLayoutManager(layoutManager);
+            orientation = ((LinearLayoutManager) layoutManager).getOrientation();
+        } else {
+            throw new RuntimeException("Layout manager should be instance of LinearLayoutManager");
+        }
+    }
+
 }
