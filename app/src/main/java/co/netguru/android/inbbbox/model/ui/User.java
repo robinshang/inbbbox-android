@@ -46,4 +46,14 @@ public abstract class User implements Parcelable{
                 .shotsCount(entity.shotsCount())
                 .build();
     }
+
+    public static User createFromFollower(Follower follower) {
+        return User.builder()
+                .id(follower.id())
+                .name(follower.name())
+                .username(follower.username())
+                .avatarUrl(follower.avatarUrl())
+                .shotsCount(follower.shotsCount())
+                .build();
+    }
 }
