@@ -21,13 +21,13 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.event.CriticalLogoutEvent;
 import co.netguru.android.inbbbox.feature.common.bottomsheet.BottomSheetActivityCallback;
-import co.netguru.android.inbbbox.feature.common.bottomsheet.BottomSheetActivityDelegate;
-import co.netguru.android.inbbbox.feature.common.bottomsheet.BottomSheetBearer;
+import co.netguru.android.inbbbox.feature.common.bottomsheet.HidingBottomSheetActivityDelegate;
+import co.netguru.android.inbbbox.feature.common.bottomsheet.HidingBottomSheetBearer;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import rx.Subscription;
 
 public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<V>>
-        extends MvpActivity<V, P> implements BottomSheetActivityCallback, BottomSheetBearer {
+        extends MvpActivity<V, P> implements BottomSheetActivityCallback, HidingBottomSheetBearer {
 
     @BindView(android.R.id.content)
     View contentView;
@@ -36,7 +36,7 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
     View bottomSheetView;
 
     @Nullable
-    private BottomSheetActivityDelegate bottomSheetActivityDelegate;
+    private HidingBottomSheetActivityDelegate bottomSheetActivityDelegate;
 
     private Subscription criticalLogoutSubscription;
 
@@ -45,7 +45,7 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
         super.setContentView(layoutResID);
         ButterKnife.bind(this);
         if (bottomSheetView != null) {
-            bottomSheetActivityDelegate = new BottomSheetActivityDelegate(this, bottomSheetView);
+            bottomSheetActivityDelegate = new HidingBottomSheetActivityDelegate(this, bottomSheetView);
         }
     }
 

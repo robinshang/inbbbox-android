@@ -10,7 +10,7 @@ import android.view.View;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.utils.InputUtils;
 
-public class BottomSheetActivityDelegate implements BottomSheetBearer {
+public class HidingBottomSheetActivityDelegate implements HidingBottomSheetBearer {
 
     private static final String BOTTOM_SHEET_STATE = "bottomSheetState";
     private final BottomSheetActivityCallback bottomSheetActivityCallback;
@@ -18,8 +18,8 @@ public class BottomSheetActivityDelegate implements BottomSheetBearer {
     private View bottomSheetView;
 
 
-    public BottomSheetActivityDelegate(BottomSheetActivityCallback bottomSheetActivityCallback,
-                                       @NonNull View bottomSheetView) {
+    public HidingBottomSheetActivityDelegate(BottomSheetActivityCallback bottomSheetActivityCallback,
+                                             @NonNull View bottomSheetView) {
         this.bottomSheetActivityCallback = bottomSheetActivityCallback;
         this.bottomSheetView = bottomSheetView;
         initializeBottomSheetBehavior();
@@ -59,7 +59,7 @@ public class BottomSheetActivityDelegate implements BottomSheetBearer {
         return new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     InputUtils.hideKeyboard(bottomSheetActivityCallback.getApplicationContext(), bottomSheetView);
                 }
             }
