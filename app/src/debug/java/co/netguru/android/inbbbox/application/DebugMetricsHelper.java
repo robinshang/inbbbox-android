@@ -71,7 +71,7 @@ public class DebugMetricsHelper {
         });
 
         // LeakCanary
-      //  LeakCanary.install((App) context.getApplicationContext());
+        LeakCanary.install((App) context.getApplicationContext());
 
         //Timber
         Timber.plant(new Timber.DebugTree());
