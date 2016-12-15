@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.feature.common;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -97,16 +96,6 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
         return ft;
     }
 
-    @Override
-    public void removeFragmentFromView(@IdRes int viewId) {
-        Fragment fragmentToRemove = getSupportFragmentManager().findFragmentById(viewId);
-        if (fragmentToRemove != null) {
-            getSupportFragmentManager().beginTransaction()
-                    .remove(fragmentToRemove)
-                    .commit();
-        }
-    }
-
     protected void showTextOnSnackbar(@StringRes int stringRes) {
         Snackbar.make(contentView, stringRes, Snackbar.LENGTH_LONG).show();
     }
@@ -117,7 +106,7 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
             bottomSheetActivityDelegate.showBottomSheet(fragment, tag);
         } else {
             throw new IllegalStateException("BottomSheetActivity delegate is null." +
-                    " Did you provide fragment_container view for this activity?");
+                    " Did you provide bottom_sheet_fragment_container view for this activity?");
         }
     }
 

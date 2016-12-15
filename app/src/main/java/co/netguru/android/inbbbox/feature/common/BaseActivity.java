@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.feature.common;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -24,7 +23,8 @@ import co.netguru.android.inbbbox.feature.common.bottomsheet.HidingBottomSheetBe
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import rx.Subscription;
 
-public abstract class BaseActivity extends AppCompatActivity implements BottomSheetActivityCallback, HidingBottomSheetBearer {
+public abstract class BaseActivity extends AppCompatActivity
+        implements BottomSheetActivityCallback, HidingBottomSheetBearer {
 
     @BindView(android.R.id.content)
     View contentView;
@@ -93,16 +93,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomSh
         return ft;
     }
 
-    @Override
-    public void removeFragmentFromView(@IdRes int viewId) {
-        Fragment fragmentToRemove = getSupportFragmentManager().findFragmentById(viewId);
-        if (fragmentToRemove != null) {
-            getSupportFragmentManager().beginTransaction()
-                    .remove(fragmentToRemove)
-                    .commit();
-        }
-    }
-
     protected void showTextOnSnackbar(@StringRes int stringRes) {
         Snackbar.make(contentView, stringRes, Snackbar.LENGTH_LONG).show();
     }
@@ -113,7 +103,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomSh
             bottomSheetActivityDelegate.showBottomSheet(fragment, tag);
         } else {
             throw new IllegalStateException("BottomSheetActivity delegate is null." +
-                    " Did you provide fragment_container view for this activity?");
+                    " Did you provide bottom_sheet_fragment_container view for this activity?");
         }
     }
 

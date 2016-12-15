@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.feature.common.bottomsheet;
 import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 public interface BottomSheetActivityCallback {
@@ -11,5 +12,5 @@ public interface BottomSheetActivityCallback {
 
     FragmentTransaction replaceFragment(@IdRes int fragmentContainer, Fragment fragment, String tag);
 
-    void removeFragmentFromView(@IdRes int id);
+    FragmentManager getSupportFragmentManager();
 }

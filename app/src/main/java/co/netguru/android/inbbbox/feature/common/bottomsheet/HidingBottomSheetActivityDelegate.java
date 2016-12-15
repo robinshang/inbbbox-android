@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import co.netguru.android.inbbbox.utils.InputUtils;
@@ -60,7 +61,7 @@ public class HidingBottomSheetActivityDelegate implements HidingBottomSheetBeare
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     InputUtils.hideKeyboard(bottomSheetActivityCallback.getApplicationContext(), bottomSheetView);
-                    bottomSheetActivityCallback.removeFragmentFromView(bottomSheetView.getId());
+                    removeFragmentFromBottomSheetView();
                 }
             }
 
@@ -69,5 +70,15 @@ public class HidingBottomSheetActivityDelegate implements HidingBottomSheetBeare
                 //no-op
             }
         };
+    }
+
+    private void removeFragmentFromBottomSheetView() {
+        FragmentManager fragmentManager = bottomSheetActivityCallback.getSupportFragmentManager();
+        Fragment fragmentToRemove = fragmentManager.findFragmentById(bottomSheetView.getId());
+        if (fragmentToRemove != null) {
+            fragmentManager.beginTransaction()
+                    .remove(fragmentToRemove)
+                    .commit();
+        }
     }
 }
