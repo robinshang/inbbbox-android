@@ -9,6 +9,7 @@ import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.api.ShotsApi;
 import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.inbbbox.model.ui.Comment;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.ShotDetailsState;
 import co.netguru.android.inbbbox.model.ui.User;
 import rx.Completable;
@@ -33,17 +34,17 @@ public class ShotDetailsController {
         this.userController = userController;
     }
 
-    public Observable<ShotDetailsState> getShotComments(Long shotId, int pageNumber) {
-        return Observable.zip(getCommentListWithAuthorState(shotId.toString(), pageNumber),
-                getLikeState(shotId),
-                getBucketState(shotId),
+    public Observable<ShotDetailsState> getShotComments(Shot shot, int pageNumber) {
+        return Observable.zip(getCommentListWithAuthorState(Long.toString(shot.id()), pageNumber),
+                getLikeState(shot),
+                getBucketState(shot.id()),
                 (comments, isLiked, isBucketed) -> ShotDetailsState
                         .create(isLiked, isBucketed, comments));
     }
 
-    public Completable performLikeAction(long shotId, boolean newLikeState) {
-        return newLikeState ? likeShotController.likeShot(shotId) :
-                likeShotController.unLikeShot(shotId);
+    public Completable performLikeAction(Shot shot, boolean newLikeState) {
+        return newLikeState ? likeShotController.likeShot(shot) :
+                likeShotController.unLikeShot(shot);
     }
 
     public Single<Comment> sendComment(Long shotId, String commentText) {
@@ -129,8 +130,8 @@ public class ShotDetailsController {
         return user != null && user.id() == currentUserId;
     }
 
-    private Observable<Boolean> getLikeState(Long shotId) {
-        return likeShotController.isShotLiked(shotId)
+    private Observable<Boolean> getLikeState(Shot shot) {
+        return likeShotController.isShotLiked(shot)
                 .andThen(Observable.just(Boolean.TRUE))
                 .onErrorResumeNext(Observable.just(Boolean.FALSE));
     }

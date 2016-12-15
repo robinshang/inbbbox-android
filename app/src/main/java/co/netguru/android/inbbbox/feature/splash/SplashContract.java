@@ -12,6 +12,8 @@ interface SplashContract {
         void showLoginScreen();
 
         void showMainScreen();
+
+        void initializeOnlineUserMode();
     }
 
     interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {

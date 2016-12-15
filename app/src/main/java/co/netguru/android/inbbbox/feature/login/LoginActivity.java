@@ -18,6 +18,7 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.LoginComponent;
 import co.netguru.android.inbbbox.di.module.LoginModule;
+import co.netguru.android.inbbbox.enumeration.UserModeType;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewDialogFragment;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewListener;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
@@ -120,6 +121,11 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     public void showGuestModeLoginButton() {
         AnimationUtil.startSlideInFromBottomShowAnimation(guestModeDivider, SLIDE_IN_DURATION);
         AnimationUtil.startSlideInFromBottomShowAnimation(guestButton, SLIDE_IN_DURATION);
+    }
+
+    @Override
+    public void initializeUserMode(UserModeType mode) {
+        App.initUserComponent(this, mode);
     }
 
     @Override

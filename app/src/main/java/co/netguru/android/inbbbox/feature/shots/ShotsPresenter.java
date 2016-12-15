@@ -66,7 +66,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     public void likeShot(Shot shot) {
         getView().closeFabMenu();
         if (!shot.isLiked()) {
-            final Subscription subscription = likeShotController.likeShot(shot.id())
+            final Subscription subscription = likeShotController.likeShot(shot)
                     .compose(applyCompletableIoSchedulers())
                     .subscribe(() -> onShotLikeCompleted(shot),
                             throwable -> handleHttpErrorResponse(throwable, "Error while sending shot like"));

@@ -350,7 +350,7 @@ public class ShotDetailsFragment
     }
 
     private void initComponent() {
-        component = App.getAppComponent(getContext())
+        component = App.getUserComponent(getContext())
                 .plus(new ShotsDetailsModule(this));
         component.inject(this);
     }

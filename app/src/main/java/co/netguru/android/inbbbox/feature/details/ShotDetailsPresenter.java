@@ -62,7 +62,7 @@ public class ShotDetailsPresenter
     public void handleShotLike(boolean newLikeState) {
         subscriptions.add(
                 shotDetailsController
-                        .performLikeAction(shot.id(), newLikeState)
+                        .performLikeAction(shot, newLikeState)
                         .subscribe(() -> updateLikeState(newLikeState),
                                 throwable -> handleHttpErrorResponse(throwable, "Error while performing like action"))
         );
@@ -219,7 +219,7 @@ public class ShotDetailsPresenter
 
     private void downloadCommentsFromAPI() {
         subscriptions.add(
-                shotDetailsController.getShotComments(shot.id(), pageNumber)
+                shotDetailsController.getShotComments(shot, pageNumber)
                         .compose(androidIO())
                         .doOnCompleted(() -> getView().setInputShowingEnabled(true))
                         .subscribe(this::handleDetailsStates,
