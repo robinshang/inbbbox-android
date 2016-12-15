@@ -8,14 +8,26 @@ import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import co.netguru.android.inbbbox.di.component.ApplicationComponent;
 import co.netguru.android.inbbbox.di.component.DaggerApplicationComponent;
+import co.netguru.android.inbbbox.di.component.UserComponent;
 import co.netguru.android.inbbbox.di.module.ApplicationModule;
+import co.netguru.android.inbbbox.di.module.UserModule;
+import co.netguru.android.inbbbox.enumeration.UserModeType;
 
 public class App extends Application {
 
     private ApplicationComponent appComponent;
+    private UserComponent userComponent;
 
     public static ApplicationComponent getAppComponent(Context context) {
         return ((App) context.getApplicationContext()).appComponent;
+    }
+
+    public static UserComponent getUserComponent(Context context) {
+        return ((App) context.getApplicationContext()).userComponent;
+    }
+
+    public static void initUserComponent(Context context, UserModeType userModeType) {
+        ((App) context.getApplicationContext()).setupUserComponent(userModeType);
     }
 
     @Override
@@ -35,4 +47,12 @@ public class App extends Application {
                 .applicationModule(new ApplicationModule(this))
                 .build();
     }
+
+    public void setupUserComponent(UserModeType userModeType) {
+        this.userComponent = appComponent
+                .userComponentBuilder()
+                .userModule(new UserModule(userModeType))
+                .build();
+    }
+
 }

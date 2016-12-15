@@ -83,7 +83,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        component = App.getAppComponent(getContext())
+        component = App.getUserComponent(getContext())
                 .plus(new LikesFragmentModule(shots -> getPresenter().showShotDetails(shots)));
         component.inject(this);
     }
@@ -94,8 +94,8 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         try {
             shotActionListener = (ShotsFragment.ShotActionListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement ShotActionListener");
+            throw new RuntimeException(context.toString()
+                    + " must implement ShotActionListener", e);
         }
     }
 

@@ -104,8 +104,8 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         try {
             shotActionListener = (ShotActionListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement ShotActionListener");
+            throw new RuntimeException(context.toString()
+                    + " must implement ShotActionListener", e);
         }
     }
 
@@ -123,7 +123,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     private void initComponent() {
-        component = App.getAppComponent(getContext())
+        component = App.getUserComponent(getContext())
                 .plus(new ShotsModule(this));
         component.inject(this);
     }

@@ -87,7 +87,7 @@ public class ShotDetailsPresenterTest {
 
     @Test
     public void whenShotDetailsDownload_thenShowMainShotImageWithShotImageInterface() {
-        when(shotDetailsControllerMock.getShotComments(EXAMPLE_ID, requestedPage)).thenReturn(Observable.empty());
+        when(shotDetailsControllerMock.getShotComments(shotMock, requestedPage)).thenReturn(Observable.empty());
 
         shotDetailsPresenter.downloadData();
 
@@ -96,7 +96,7 @@ public class ShotDetailsPresenterTest {
 
     @Test
     public void whenShotDetailsDownload_thenShowDetailsWithShotData() {
-        when(shotDetailsControllerMock.getShotComments(EXAMPLE_ID, requestedPage)).thenReturn(Observable.empty());
+        when(shotDetailsControllerMock.getShotComments(shotMock, requestedPage)).thenReturn(Observable.empty());
 
         shotDetailsPresenter.downloadData();
 
@@ -108,7 +108,7 @@ public class ShotDetailsPresenterTest {
     public void whenShotDetailsDownload_thenLoadDetailsAndUpdateItAfterStateAreDownloaded() {
         boolean expectedLikeState = true;
         ShotDetailsState resultState = ShotDetailsState.create(expectedLikeState, false, Statics.COMMENTS);
-        when(shotDetailsControllerMock.getShotComments(EXAMPLE_ID, requestedPage)).thenReturn(Observable.just(resultState));
+        when(shotDetailsControllerMock.getShotComments(shotMock, requestedPage)).thenReturn(Observable.just(resultState));
         when(shotMock.isLiked()).thenReturn(expectedLikeState);
         ArgumentCaptor<Shot> argumentCaptor = ArgumentCaptor.forClass(Shot.class);
 
@@ -124,7 +124,7 @@ public class ShotDetailsPresenterTest {
     public void whenShotDetailsDownload_thenShowShotNotLiked() {
         boolean expectedLikeState = false;
         ShotDetailsState resultState = ShotDetailsState.create(expectedLikeState, false, Statics.COMMENTS);
-        when(shotDetailsControllerMock.getShotComments(EXAMPLE_ID, requestedPage)).thenReturn(Observable.just(resultState));
+        when(shotDetailsControllerMock.getShotComments(shotMock, requestedPage)).thenReturn(Observable.just(resultState));
         ArgumentCaptor<Shot> argumentCaptor = ArgumentCaptor.forClass(Shot.class);
 
         shotDetailsPresenter.downloadData();
@@ -138,29 +138,29 @@ public class ShotDetailsPresenterTest {
     @Test
     public void whenShotLiked_thenPerformLikeActionWithTrue() {
         boolean likeState = true;
-        when(shotDetailsControllerMock.performLikeAction(EXAMPLE_ID, likeState))
+        when(shotDetailsControllerMock.performLikeAction(shotMock, likeState))
                 .thenReturn(Completable.complete());
 
         shotDetailsPresenter.handleShotLike(likeState);
 
-        verify(shotDetailsControllerMock, times(1)).performLikeAction(EXAMPLE_ID, likeState);
+        verify(shotDetailsControllerMock, times(1)).performLikeAction(shotMock, likeState);
     }
 
     @Test
     public void whenShotLiked_thenPerformLikeActionWithFalse() {
         boolean likeState = false;
-        when(shotDetailsControllerMock.performLikeAction(EXAMPLE_ID, likeState))
+        when(shotDetailsControllerMock.performLikeAction(shotMock, likeState))
                 .thenReturn(Completable.complete());
 
         shotDetailsPresenter.handleShotLike(likeState);
 
-        verify(shotDetailsControllerMock, times(1)).performLikeAction(EXAMPLE_ID, likeState);
+        verify(shotDetailsControllerMock, times(1)).performLikeAction(shotMock, likeState);
     }
 
     @Test
     public void whenShotLiked_thenUpdateUserDetails() {
         boolean likeState = false;
-        when(shotDetailsControllerMock.performLikeAction(anyLong(), anyBoolean()))
+        when(shotDetailsControllerMock.performLikeAction(any(Shot.class), anyBoolean()))
                 .thenReturn(Completable.complete());
         ArgumentCaptor<Shot> argumentCaptor = ArgumentCaptor.forClass(Shot.class);
 
@@ -175,7 +175,7 @@ public class ShotDetailsPresenterTest {
     @Test
     public void whenInputModeEnabled_thenShowKeyboardAndShowInputOnDataDownload() {
         when(viewMock.getCommentModeInitialState()).thenReturn(true);
-        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt())).thenReturn(Observable.empty());
+        when(shotDetailsControllerMock.getShotComments(any(Shot.class), anyInt())).thenReturn(Observable.empty());
 
         shotDetailsPresenter.retrieveInitialData();
         shotDetailsPresenter.downloadData();
@@ -187,7 +187,7 @@ public class ShotDetailsPresenterTest {
     @Test
     public void whenShotDetailsDownloadComplete_thenEnableInputShow() {
         when(viewMock.getCommentModeInitialState()).thenReturn(true);
-        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+        when(shotDetailsControllerMock.getShotComments(any(Shot.class), anyInt()))
                 .thenReturn(Observable.empty());
 
         shotDetailsPresenter.retrieveInitialData();
@@ -200,7 +200,7 @@ public class ShotDetailsPresenterTest {
     public void whenInputModeEnabled_thenAutoScrollViewAllDetailsAreReady() {
         when(viewMock.getCommentModeInitialState()).thenReturn(true);
         when(shotDetailsControllerMock
-                .getShotComments(anyLong(), anyInt()))
+                .getShotComments(any(Shot.class), anyInt()))
                 .thenReturn(Observable.just(mock(ShotDetailsState.class)));
 
         shotDetailsPresenter.retrieveInitialData();
@@ -356,19 +356,19 @@ public class ShotDetailsPresenterTest {
     public void whenGetMoreCommentsCalled_thenIncreaseRequestedPageCount() {
         //page 1 is set initially
         int pagingStart = 2;
-        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+        when(shotDetailsControllerMock.getShotComments(any(Shot.class), anyInt()))
                 .thenReturn(Observable.empty());
 
         for (int i = pagingStart; i < 200; i++) {
             shotDetailsPresenter.getMoreComments();
 
-            verify(shotDetailsControllerMock).getShotComments(anyLong(), eq(i));
+            verify(shotDetailsControllerMock).getShotComments(any(Shot.class), eq(i));
         }
     }
 
     @Test
     public void whenGetMoreCommentsCalled_thenChangeLoadMoreStateButtonToInactiveAndWaitingForUpdateTrue() {
-        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+        when(shotDetailsControllerMock.getShotComments(any(Shot.class), anyInt()))
                 .thenReturn(Observable.empty());
         ArgumentCaptor<CommentLoadMoreState> argumentCaptor = ArgumentCaptor
                 .forClass(CommentLoadMoreState.class);
@@ -384,7 +384,7 @@ public class ShotDetailsPresenterTest {
     public void whenGetMoreCommentsCompleted_thenAddNewCommentsToView() {
         ShotDetailsState shotDetailsStateMock = mock(ShotDetailsState.class);
         when(shotDetailsStateMock.comments()).thenReturn(Statics.COMMENTS);
-        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+        when(shotDetailsControllerMock.getShotComments(any(Shot.class), anyInt()))
                 .thenReturn(Observable.just(shotDetailsStateMock));
 
         shotDetailsPresenter.getMoreComments();
@@ -396,7 +396,7 @@ public class ShotDetailsPresenterTest {
     public void whenGetMoreCommentsCompletedAndAllCommentsAreLoaded_thenUpdatedLoadMoreItemStateToActive() {
         ShotDetailsState shotDetailsStateMock = mock(ShotDetailsState.class);
         when(shotDetailsStateMock.comments()).thenReturn(Statics.COMMENTS);
-        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+        when(shotDetailsControllerMock.getShotComments(any(Shot.class), anyInt()))
                 .thenReturn(Observable.just(shotDetailsStateMock));
         when(shotMock.commentsCount()).thenReturn(Statics.COMMENTS.size() + 5);
         ArgumentCaptor<CommentLoadMoreState> argumentCaptor = ArgumentCaptor
@@ -414,7 +414,7 @@ public class ShotDetailsPresenterTest {
     public void whenGetMoreCommentsCompletedAndNotAllCommentsAreLoaded_thenUpdatedLoadMoreItemStateToActive() {
         ShotDetailsState shotDetailsStateMock = mock(ShotDetailsState.class);
         when(shotDetailsStateMock.comments()).thenReturn(Statics.COMMENTS);
-        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+        when(shotDetailsControllerMock.getShotComments(any(Shot.class), anyInt()))
                 .thenReturn(Observable.just(shotDetailsStateMock));
         when(shotMock.commentsCount()).thenReturn(Statics.COMMENTS.size());
         ArgumentCaptor<CommentLoadMoreState> argumentCaptor = ArgumentCaptor
@@ -435,7 +435,7 @@ public class ShotDetailsPresenterTest {
         boolean isBucketed = false;
         when(shotMock.isLiked()).thenReturn(isLiked);
         when(shotMock.isBucketed()).thenReturn(isBucketed);
-        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+        when(shotDetailsControllerMock.getShotComments(any(Shot.class), anyInt()))
                 .thenReturn(Observable.just(shotDetailsStateMock));
         when(shotMock.commentsCount()).thenReturn(Statics.COMMENTS.size());
         when(shotDetailsStateMock.isLiked()).thenReturn(!isLiked);
@@ -452,7 +452,7 @@ public class ShotDetailsPresenterTest {
         boolean isBucketed = false;
         when(shotMock.isLiked()).thenReturn(isLiked);
         when(shotMock.isBucketed()).thenReturn(isBucketed);
-        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+        when(shotDetailsControllerMock.getShotComments(any(Shot.class), anyInt()))
                 .thenReturn(Observable.just(shotDetailsStateMock));
         when(shotMock.commentsCount()).thenReturn(Statics.COMMENTS.size());
         when(shotDetailsStateMock.isBucketed()).thenReturn(!isLiked);
@@ -559,7 +559,7 @@ public class ShotDetailsPresenterTest {
         String expectedMessage = "test";
         Throwable throwable = new Throwable(expectedMessage);
         when(errorControllerMock.getThrowableMessage(throwable)).thenCallRealMethod();
-        when(shotDetailsControllerMock.getShotComments(anyLong(), anyInt()))
+        when(shotDetailsControllerMock.getShotComments(any(Shot.class), anyInt()))
                 .thenReturn(Observable.error(throwable));
 
         shotDetailsPresenter.downloadData();
@@ -574,7 +574,7 @@ public class ShotDetailsPresenterTest {
         String expectedMessage = "test";
         Throwable throwable = new Throwable(expectedMessage);
         when(errorControllerMock.getThrowableMessage(throwable)).thenCallRealMethod();
-        when(shotDetailsControllerMock.performLikeAction(anyLong(), anyBoolean()))
+        when(shotDetailsControllerMock.performLikeAction(any(Shot.class), anyBoolean()))
                 .thenReturn(Completable.error(throwable));
 
         shotDetailsPresenter.handleShotLike(true);
