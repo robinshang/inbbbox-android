@@ -299,11 +299,6 @@ public class MainActivity
         drawerCreateAccountButton.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void turnOffNightMode() {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-    }
-
     private void initComponent() {
         component = App.getAppComponent(this)
                 .plusMainActivityComponent();
