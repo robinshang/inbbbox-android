@@ -70,7 +70,6 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         initComponent();
-        // TODO: 15.12.2016 Set local night mode depending on user configuration
         getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);

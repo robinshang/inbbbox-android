@@ -3,7 +3,6 @@ package co.netguru.android.inbbbox;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.v7.app.AppCompatDelegate;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
@@ -18,10 +17,6 @@ public class App extends Application {
 
     private ApplicationComponent appComponent;
     private UserComponent userComponent;
-
-    static {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-    }
 
     public static ApplicationComponent getAppComponent(Context context) {
         return ((App) context.getApplicationContext()).appComponent;

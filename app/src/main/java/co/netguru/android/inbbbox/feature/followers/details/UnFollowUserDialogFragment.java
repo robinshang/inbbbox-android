@@ -13,7 +13,7 @@ public class UnFollowUserDialogFragment extends DialogFragment {
 
     public static final String TAG = UnFollowUserDialogFragment.class.getSimpleName();
     private static final String USERNAME_KEY = "usernameKey";
-    public static final int TARGET_FRAGMENT_REQUESET_CODE = 201;
+    private static final int TARGET_FRAGMENT_REQUEST_CODE = 201;
 
     private OnUnFollowClickedListener onUnFollowClickedListener;
 
@@ -24,7 +24,7 @@ public class UnFollowUserDialogFragment extends DialogFragment {
 
         final UnFollowUserDialogFragment fragment = new UnFollowUserDialogFragment();
         fragment.setArguments(args);
-        fragment.setTargetFragment(targetFragment, TARGET_FRAGMENT_REQUESET_CODE);
+        fragment.setTargetFragment(targetFragment, TARGET_FRAGMENT_REQUEST_CODE);
         return fragment;
     }
 

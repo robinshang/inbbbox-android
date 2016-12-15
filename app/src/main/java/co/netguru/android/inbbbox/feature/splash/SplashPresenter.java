@@ -27,9 +27,7 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
 
     @Inject
     SplashPresenter(TokenController tokenController, UserController userController,
-                    SettingsController settingsController,
-                    ErrorController errorController) {
-
+                    SettingsController settingsController, ErrorController errorController) {
         this.tokenController = tokenController;
         this.userController = userController;
         this.settingsController = settingsController;
@@ -51,6 +49,7 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
 
     @Override
     public void initializeDefaultNightMode() {
+        // TODO: 15.12.2016 Set local night mode depending on user configuration
         compositeSubscription.add(
                 settingsController.getCustomizationSettings()
                         .map(CustomizationSettings::isNightMode)
