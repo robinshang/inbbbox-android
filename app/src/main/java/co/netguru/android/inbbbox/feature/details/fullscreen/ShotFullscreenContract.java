@@ -11,9 +11,13 @@ public interface ShotFullscreenContract {
 
     interface View extends MvpView {
         void previewShot(Shot shot, List<Shot> allShots);
+
+        void showMoreItems(List<Shot> shots);
     }
 
     interface Presenter extends MvpPresenter<View> {
         void onViewCreated(Shot shot, List<Shot> allShots);
+
+        void onRequestMoreData();
     }
 }

@@ -6,18 +6,51 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import co.netguru.android.inbbbox.controler.ShotsController;
 import co.netguru.android.inbbbox.model.ui.Shot;
+import rx.subscriptions.CompositeSubscription;
+import timber.log.Timber;
+
+import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 
 public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFullscreenContract.View>
         implements ShotFullscreenContract.Presenter {
 
-    @Inject
-    public ShotFullScreenPresenter() {
+    private static final int SHOTS_PER_PAGE = 15;
+    private final CompositeSubscription subscriptions = new CompositeSubscription();
+    private int currentPage;
+    private boolean hasMore = true;
+    private ShotsController shotsController;
 
+    @Inject
+    public ShotFullScreenPresenter(ShotsController shotsController) {
+        this.shotsController = shotsController;
     }
 
     @Override
     public void onViewCreated(Shot shot, List<Shot> allShots) {
+        currentPage = allShots.size() / SHOTS_PER_PAGE;
         getView().previewShot(shot, allShots);
+    }
+
+    @Override
+    public void onRequestMoreData() {
+        if (hasMore) {
+            currentPage++;
+            subscriptions.add(
+                    shotsController.getShots(currentPage, SHOTS_PER_PAGE)
+                            .compose(androidIO())
+                            .subscribe(shotList -> {
+                                hasMore = shotList.size() >= SHOTS_PER_PAGE;
+                                getView().showMoreItems(shotList);
+                            }, throwable -> Timber.e(throwable,
+                                    "Error occurred when getting more items")));
+        }
+    }
+
+    @Override
+    public void detachView(boolean retainInstance) {
+        subscriptions.clear();
+        super.detachView(retainInstance);
     }
 }

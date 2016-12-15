@@ -93,10 +93,15 @@ public class ShotFullscreenFragment extends
         shotsRecyclerView.addOnScrollListener(new LoadMoreScrollListener(SHOTS_TO_LOAD_MORE) {
             @Override
             public void requestMoreData() {
-                // TODO request more shots
+                getPresenter().onRequestMoreData();
             }
         });
         shotsRecyclerView.scrollToPosition(allShots.indexOf(shot));
+    }
+
+    @Override
+    public void showMoreItems(List<Shot> shots) {
+        adapter.addMoreItems(shots);
     }
 
     private void initComponent() {
