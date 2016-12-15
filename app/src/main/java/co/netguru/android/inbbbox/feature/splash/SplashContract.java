@@ -14,9 +14,11 @@ interface SplashContract {
         void showMainScreen();
 
         void initializeOnlineUserMode();
+
+        void setDefaultNightMode(boolean isNightMode);
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
-
+        void initializeDefaultNightMode();
     }
 }

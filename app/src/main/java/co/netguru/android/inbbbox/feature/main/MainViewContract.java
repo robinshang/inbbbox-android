@@ -38,7 +38,9 @@ interface MainViewContract {
 
         void changeCustomizationStatus(boolean isDetails);
 
-        void changeNightModeStatus(boolean isNightMode);
+        void changeNightMode(boolean isNightMode);
+
+        void setNightModeStatus(boolean isNightMode);
 
         void setSettingsListeners();
 

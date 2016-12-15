@@ -57,13 +57,11 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     }
 
     public static void startActivity(Context context) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         final Intent intent = new Intent(context, LoginActivity.class);
         context.startActivity(intent);
     }
 
     public static void startActivityClearTask(Context context) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         final Intent intent = new Intent(context, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
@@ -72,6 +70,8 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         initComponent();
+        // TODO: 15.12.2016 Set local night mode depending on user configuration
+        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);

@@ -242,14 +242,15 @@ public class MainActivity
     }
 
     @Override
-    public void changeNightModeStatus(boolean isNightMode) {
+    public void changeNightMode(boolean isNightMode) {
+        AppCompatDelegate.setDefaultNightMode(isNightMode
+                ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+        recreate();
+    }
+
+    @Override
+    public void setNightModeStatus(boolean isNightMode) {
         nightModeSwitch.setChecked(isNightMode);
-        final int nightMode = isNightMode
-                ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
-        if (AppCompatDelegate.getDefaultNightMode() != nightMode) {
-            AppCompatDelegate.setDefaultNightMode(nightMode);
-            recreate();
-        }
     }
 
     @Override

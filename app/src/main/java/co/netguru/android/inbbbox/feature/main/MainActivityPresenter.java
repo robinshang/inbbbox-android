@@ -184,7 +184,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                 .compose(RxTransformerUtils.applyCompletableIoSchedulers())
                 .subscribe(() -> {
                     Timber.d("Customization settings changed");
-                    getView().changeNightModeStatus(isNightMode);
+                    getView().changeNightMode(isNightMode);
                 }, throwable -> handleError(throwable, "Error while changing customization settings"));
         subscriptions.add(subscription);
     }
@@ -298,7 +298,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     private void setCustomizationSettings(CustomizationSettings settings) {
         getView().changeCustomizationStatus(settings.isShowDetails());
-        getView().changeNightModeStatus(settings.isNightMode());
+        getView().setNightModeStatus(settings.isNightMode());
     }
 
     private void onScheduleNotificationNext(NotificationSettings settings) {

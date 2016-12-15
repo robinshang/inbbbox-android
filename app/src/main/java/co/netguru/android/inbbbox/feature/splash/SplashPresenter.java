@@ -5,8 +5,10 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.controler.ErrorController;
+import co.netguru.android.inbbbox.controler.SettingsController;
 import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.UserController;
+import co.netguru.android.inbbbox.model.localrepository.CustomizationSettings;
 import rx.Single;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -19,16 +21,18 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
 
     private final TokenController tokenController;
     private final UserController userController;
-    private ErrorController errorController;
-    private CompositeSubscription compositeSubscription;
+    private final SettingsController settingsController;
+    private final ErrorController errorController;
+    private final CompositeSubscription compositeSubscription;
 
     @Inject
-    SplashPresenter(TokenController tokenController,
-                    UserController userController,
+    SplashPresenter(TokenController tokenController, UserController userController,
+                    SettingsController settingsController,
                     ErrorController errorController) {
 
         this.tokenController = tokenController;
         this.userController = userController;
+        this.settingsController = settingsController;
         this.errorController = errorController;
         this.compositeSubscription = new CompositeSubscription();
     }
@@ -43,6 +47,15 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
         compositeSubscription.unsubscribe();
+    }
+
+    @Override
+    public void initializeDefaultNightMode() {
+        compositeSubscription.add(
+                settingsController.getCustomizationSettings()
+                        .map(CustomizationSettings::isNightMode)
+                        .subscribe(getView()::setDefaultNightMode,
+                                throwable -> handleError(throwable, "Error while getting night mode settings")));
     }
 
     @Override
