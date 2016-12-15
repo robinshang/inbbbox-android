@@ -222,16 +222,6 @@ dependencies {
         exclude module: 'appcompat-v7'
         exclude module: 'rxbinding'
     }
-    compile(libs.rxLifeCycle) {
-        exclude module: 'rxjava'
-        exclude module: 'rxbinding'
-        exclude module: 'support-annotations'
-    }
-    compile(libs.rxLifeCycleComponent) {
-        exclude module: 'rxjava'
-        exclude module: 'rxlifecycle'
-        exclude module: 'appcompat-v7'
-    }
 
     // OkHttp + Retrofit
     compile libs.okHttp
