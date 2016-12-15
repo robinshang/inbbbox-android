@@ -15,7 +15,7 @@
     </style>
 
     <style name="AppThemeGallery" parent="AppTheme">
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="TimePickerDialog" parent="Theme.AppCompat.Light.Dialog.Alert">

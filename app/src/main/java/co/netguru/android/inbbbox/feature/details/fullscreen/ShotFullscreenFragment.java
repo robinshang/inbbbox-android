@@ -14,6 +14,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotFullscreenComponent;
@@ -84,6 +85,11 @@ public class ShotFullscreenFragment extends
         getPresenter().onViewCreated(shot, allShots);
     }
 
+    @OnClick(R.id.shot_fullscreen_back)
+    void onBackPressed() {
+        getPresenter().onBackArrowPressed();
+    }
+
     @Override
     public void previewShot(Shot shot, List<Shot> allShots) {
         adapter.setItems(allShots);
@@ -102,6 +108,11 @@ public class ShotFullscreenFragment extends
     @Override
     public void showMoreItems(List<Shot> shots) {
         adapter.addMoreItems(shots);
+    }
+
+    @Override
+    public void close() {
+        getActivity().finish();
     }
 
     private void initComponent() {

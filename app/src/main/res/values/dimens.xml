@@ -120,6 +120,7 @@
     <dimen name="shot_item_width_landscape">200dp</dimen>
     <dimen name="guest_avatar_padding">8dp</dimen>
     <dimen name="button_border_width">2dp</dimen>
+    <dimen name="fullscreen_arrow_size">48dp</dimen>
 
     <fraction name="four_images_view_percentage">50%</fraction>
 </resources>

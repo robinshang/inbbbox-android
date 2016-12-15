@@ -18,9 +18,9 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
 
     private static final int SHOTS_PER_PAGE = 15;
     private final CompositeSubscription subscriptions = new CompositeSubscription();
+    private final ShotsController shotsController;
     private int currentPage;
     private boolean hasMore = true;
-    private ShotsController shotsController;
 
     @Inject
     public ShotFullScreenPresenter(ShotsController shotsController) {
@@ -46,6 +46,11 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
                             }, throwable -> Timber.e(throwable,
                                     "Error occurred when getting more items")));
         }
+    }
+
+    @Override
+    public void onBackArrowPressed() {
+        getView().close();
     }
 
     @Override

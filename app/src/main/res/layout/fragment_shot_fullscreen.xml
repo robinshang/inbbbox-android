@@ -9,4 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <ImageButton
+        android:id="@+id/shot_fullscreen_back"
+        android:layout_width="@dimen/fullscreen_arrow_size"
+        android:layout_height="@dimen/fullscreen_arrow_size"
+        android:src="@drawable/ic_arrow_back_white_24dp"
+        android:background="@android:color/transparent"
+        />
+
 </FrameLayout>

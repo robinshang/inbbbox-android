@@ -13,11 +13,15 @@ public interface ShotFullscreenContract {
         void previewShot(Shot shot, List<Shot> allShots);
 
         void showMoreItems(List<Shot> shots);
+
+        void close();
     }
 
     interface Presenter extends MvpPresenter<View> {
         void onViewCreated(Shot shot, List<Shot> allShots);
 
         void onRequestMoreData();
+
+        void onBackArrowPressed();
     }
 }
