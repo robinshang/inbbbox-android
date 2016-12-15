@@ -94,7 +94,7 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
                             getView().setBucketsList(buckets);
                             getView().showBucketsList();
                         }
-                    }, throwable -> handleHttpErrorResponse(throwable, "Error occurred while requesting buckets"));
+                    }, throwable -> handleError(throwable, "Error occurred while requesting buckets"));
         }
     }
 
@@ -111,7 +111,7 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
                     .subscribe(buckets -> {
                         apiHasMoreBuckets = buckets.size() == BUCKETS_PER_PAGE_COUNT;
                         getView().showMoreBuckets(buckets);
-                    }, throwable -> handleHttpErrorResponse(throwable, "Error occurred while requesting more buckets"));
+                    }, throwable -> handleError(throwable, "Error occurred while requesting more buckets"));
         }
     }
 
@@ -121,7 +121,7 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
     }
 
     @Override
-    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+    public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }

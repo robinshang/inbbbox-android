@@ -95,7 +95,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         subscriptions.add(
                 logoutController.performLogout()
                         .subscribe(getView()::showLoginActivity,
-                                throwable -> handleHttpErrorResponse(throwable, "critical logout error"))
+                                throwable -> handleError(throwable, "critical logout error"))
         );
     }
 
@@ -125,7 +125,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                 .compose(applySingleIoSchedulers())
                 .subscribe(this::showTimePickDialog,
                         throwable -> {
-                            handleHttpErrorResponse(throwable, "Error while getting settings");
+                            handleError(throwable, "Error while getting settings");
                             getView().showMessage(R.string.error_database);
                         });
         subscriptions.add(subscription);
@@ -174,7 +174,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         final Subscription subscription = settingsController.changeShotsDetailsStatus(isDetails)
                 .compose(RxTransformerUtils.applyCompletableIoSchedulers())
                 .subscribe(() -> Timber.d("Customization settings changed"),
-                        throwable -> handleHttpErrorResponse(throwable, "Error while changing customization settings"));
+                        throwable -> handleError(throwable, "Error while changing customization settings"));
         subscriptions.add(subscription);
     }
 
@@ -184,13 +184,13 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                 .compose(RxTransformerUtils.applyCompletableIoSchedulers())
                 .subscribe(() -> {
                     Timber.d("Customization settings changed");
-                    getView().changeNightModeStatus(isNightMode);
-                }, throwable -> handleHttpErrorResponse(throwable, "Error while changing customization settings"));
+                    getView().changeNightMode(isNightMode);
+                }, throwable -> handleError(throwable, "Error while changing customization settings"));
         subscriptions.add(subscription);
     }
 
     @Override
-    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+    public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
@@ -298,7 +298,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     private void setCustomizationSettings(CustomizationSettings settings) {
         getView().changeCustomizationStatus(settings.isShowDetails());
-        getView().changeNightModeStatus(settings.isNightMode());
+        getView().setNightModeStatus(settings.isNightMode());
     }
 
     private void onScheduleNotificationNext(NotificationSettings settings) {

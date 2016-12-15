@@ -28,10 +28,10 @@ class ShotDetailsLoadMoreViewHolder extends ShotDetailsViewHolder<CommentLoadMor
     @BindString(R.string.load_more_label)
     String loadMoreLabel;
 
-    @BindColor(R.color.lightGray)
+    @BindColor(R.color.shotDetailsBackground)
     int lightGrayBackground;
 
-    @BindColor(R.color.white)
+    @BindColor(R.color.secondaryWindowBackground)
     int whiteyBackground;
 
     private CommentLoadMoreState loadMoreState;

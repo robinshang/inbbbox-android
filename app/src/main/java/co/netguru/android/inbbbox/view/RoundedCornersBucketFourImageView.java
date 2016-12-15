@@ -4,7 +4,6 @@ package co.netguru.android.inbbbox.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -27,7 +26,7 @@ public class RoundedCornersBucketFourImageView extends FrameLayout {
     @BindDimen(R.dimen.shot_corner_radius)
     float radius;
 
-    @BindColor(R.color.white)
+    @BindColor(R.color.windowBackground)
     int backgroundColor;
 
     @BindView(R.id.top_image_view)
@@ -100,7 +99,7 @@ public class RoundedCornersBucketFourImageView extends FrameLayout {
         Canvas canvas = new Canvas(mask);
 
         Paint cornersMaskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        cornersMaskPaint.setColor(Color.WHITE);
+        cornersMaskPaint.setColor(backgroundColor);
 
         canvas.drawRect(0, 0, width, height, cornersMaskPaint);
 

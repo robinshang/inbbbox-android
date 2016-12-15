@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -69,6 +70,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         initComponent();
+        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);

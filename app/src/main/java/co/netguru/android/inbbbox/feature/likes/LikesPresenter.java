@@ -64,7 +64,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
                     .compose(androidIO())
                     .doAfterTerminate(getView()::hideProgressBar)
                     .subscribe(this::onGetLikeShotListNext,
-                            throwable -> handleHttpErrorResponse(throwable, "Error while getting likes from server"));
+                            throwable -> handleError(throwable, "Error while getting likes from server"));
         }
     }
 
@@ -82,7 +82,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
                         getView().hideLoadingMoreBucketsView();
                     })
                     .subscribe(this::onGetMoreLikeShotListNext,
-                            throwable -> handleHttpErrorResponse(throwable, "Error while getting more likes from server"));
+                            throwable -> handleError(throwable, "Error while getting more likes from server"));
         }
     }
 
@@ -102,7 +102,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     }
 
     @Override
-    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+    public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }

@@ -5,8 +5,10 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.controler.ErrorController;
+import co.netguru.android.inbbbox.controler.SettingsController;
 import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.UserController;
+import co.netguru.android.inbbbox.model.localrepository.CustomizationSettings;
 import rx.Single;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -19,16 +21,16 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
 
     private final TokenController tokenController;
     private final UserController userController;
-    private ErrorController errorController;
-    private CompositeSubscription compositeSubscription;
+    private final SettingsController settingsController;
+    private final ErrorController errorController;
+    private final CompositeSubscription compositeSubscription;
 
     @Inject
-    SplashPresenter(TokenController tokenController,
-                    UserController userController,
-                    ErrorController errorController) {
-
+    SplashPresenter(TokenController tokenController, UserController userController,
+                    SettingsController settingsController, ErrorController errorController) {
         this.tokenController = tokenController;
         this.userController = userController;
+        this.settingsController = settingsController;
         this.errorController = errorController;
         this.compositeSubscription = new CompositeSubscription();
     }
@@ -46,7 +48,17 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     }
 
     @Override
-    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+    public void initializeDefaultNightMode() {
+        // TODO: 15.12.2016 Set local night mode depending on user configuration
+        compositeSubscription.add(
+                settingsController.getCustomizationSettings()
+                        .map(CustomizationSettings::isNightMode)
+                        .subscribe(getView()::setDefaultNightMode,
+                                throwable -> handleError(throwable, "Error while getting night mode settings")));
+    }
+
+    @Override
+    public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
         getView().showLoginScreen();
@@ -57,7 +69,7 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
                 getTokenValidationSingle()
                         .compose(applySingleIoSchedulers())
                         .subscribe(this::handleTokenVerificationResult,
-                                throwable -> handleHttpErrorResponse(throwable, "Error while token validation"))
+                                throwable -> handleError(throwable, "Error while token validation"))
         );
     }
 
@@ -82,7 +94,7 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
                 userController.requestUser()
                         .compose(androidIO())
                         .subscribe(user -> handleLoggedUser(),
-                                throwable -> handleHttpErrorResponse(throwable, "Error while requesting user"))
+                                throwable -> handleError(throwable, "Error while requesting user"))
         );
     }
 
