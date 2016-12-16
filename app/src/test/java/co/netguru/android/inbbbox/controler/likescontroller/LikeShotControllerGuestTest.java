@@ -50,7 +50,6 @@ public class LikeShotControllerGuestTest {
     public void setUp() {
         when(shotMock.id()).thenReturn(EXAMPLE_SHOT_ID);
         when(likesApiMock.getLikedShots(anyInt(), anyInt())).thenReturn(Observable.empty());
-
         when(guestModeLikesRepository.addLikedShot(any(Shot.class)))
                 .thenReturn(Completable.complete());
         when(guestModeLikesRepository.getLikedShots())
@@ -70,6 +69,7 @@ public class LikeShotControllerGuestTest {
                 .subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
+
         verify(guestModeLikesRepository, times(1)).addLikedShot(shotMock);
     }
 
@@ -81,6 +81,7 @@ public class LikeShotControllerGuestTest {
                 .subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
+
         verify(guestModeLikesRepository, times(1)).removeLikedShot(shotMock);
     }
 
@@ -92,6 +93,7 @@ public class LikeShotControllerGuestTest {
                 .subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
+
         verify(guestModeLikesRepository, times(1)).isShotLiked(shotMock);
     }
 
@@ -103,6 +105,7 @@ public class LikeShotControllerGuestTest {
                 subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
+
         verify(guestModeLikesRepository, times(1)).getLikedShots();
     }
 }

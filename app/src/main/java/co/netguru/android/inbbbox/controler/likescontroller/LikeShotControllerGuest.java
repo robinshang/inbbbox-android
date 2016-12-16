@@ -4,7 +4,9 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.api.LikesApi;
 import co.netguru.android.inbbbox.controler.LikeShotController;
+
 import co.netguru.android.inbbbox.localrepository.database.GuestModeLikesRepository;
+
 import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
 import rx.Observable;
