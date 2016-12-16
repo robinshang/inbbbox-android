@@ -3,7 +3,7 @@ package co.netguru.android.inbbbox.di.module;
 import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.api.LikesApi;
 import co.netguru.android.inbbbox.controler.followers.FollowersController;
-import co.netguru.android.inbbbox.controler.LikeShotController;
+import co.netguru.android.inbbbox.controler.likescontroller.LikeShotController;
 import co.netguru.android.inbbbox.controler.followers.FollowersControllerApi;
 import co.netguru.android.inbbbox.controler.followers.FollowersControllerGuest;
 import co.netguru.android.inbbbox.controler.likescontroller.LikeShotControllerApi;

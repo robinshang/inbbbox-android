@@ -3,7 +3,6 @@ package co.netguru.android.inbbbox.controler.likescontroller;
 import java.util.List;
 
 import co.netguru.android.inbbbox.api.LikesApi;
-import co.netguru.android.inbbbox.controler.LikeShotController;
 
 import co.netguru.android.inbbbox.localrepository.database.GuestModeLikesRepository;
 

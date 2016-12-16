@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.controler.followers;
 
+import java.util.List;
 
 import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.localrepository.GuestModeFollowersRepository;
@@ -20,11 +21,17 @@ public class FollowersControllerGuest implements FollowersController {
 
     @Override
     public Observable<FollowerEntity> getFollowedUsers(int pageNumber, int pageCount) {
-        return null;
+        return getFollowersFromApi(pageNumber, pageCount)
+                .flatMap(Observable::from)
+                .mergeWith(guestModeFollowersRepository.getFollowers());
     }
 
     @Override
     public Completable unFollowUser(long id) {
-        return null;
+        return guestModeFollowersRepository.removeFollower(id);
+    }
+
+    private Observable<List<FollowerEntity>> getFollowersFromApi(int pageNumber, int pageCount) {
+        return followersApi.getFollowedUsers(pageNumber, pageCount);
     }
 }
