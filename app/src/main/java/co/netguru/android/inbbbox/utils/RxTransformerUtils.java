@@ -20,7 +20,7 @@ public class RxTransformerUtils {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static Completable.CompletableTransformer applyCompletableIoSchedulers() {
+    public static Completable.Transformer applyCompletableIoSchedulers() {
         return completable -> completable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

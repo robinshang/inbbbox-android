@@ -11,11 +11,11 @@ import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.api.LikesApi;
 import co.netguru.android.inbbbox.api.ShotsApi;
 import co.netguru.android.inbbbox.api.UserApi;
+import co.netguru.android.inbbbox.api.updatedrxcalladapter.UpdatedRxJavaCallAdapter;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
@@ -26,7 +26,8 @@ public class ApiModule {
     AuthorizeApi provideAuthorizeApi(Gson gson, OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                // TODO: 15.12.2016 change to regular call adapter as noted in UpdatedRxJavaCallAdapter
+                .addCallAdapterFactory(UpdatedRxJavaCallAdapter.create())
                 .baseUrl(Constants.OAUTH.BASE_URL)
                 .client(okHttpClient)
                 .build()
