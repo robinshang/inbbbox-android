@@ -26,12 +26,12 @@ public class UpdatedRxJavaCallAdapter extends CallAdapter.Factory {
 
     private final RxJavaCallAdapterFactory rxJavaCallAdapterFactory;
 
-    public static UpdatedRxJavaCallAdapter create() {
-        return new UpdatedRxJavaCallAdapter();
+    private UpdatedRxJavaCallAdapter() {
+        rxJavaCallAdapterFactory = RxJavaCallAdapterFactory.create();
     }
 
-    public UpdatedRxJavaCallAdapter() {
-        rxJavaCallAdapterFactory = RxJavaCallAdapterFactory.create();
+    public static UpdatedRxJavaCallAdapter create() {
+        return new UpdatedRxJavaCallAdapter();
     }
 
     @Override
@@ -46,9 +46,13 @@ public class UpdatedRxJavaCallAdapter extends CallAdapter.Factory {
         }
     }
 
-    static final class CompletableHelper {
+    private static final class CompletableHelper {
         static CallAdapter<Completable> createCallAdapter() {
             return new CompletableHelper.CompletableCallAdapter();
+        }
+
+        private CompletableHelper() {
+            throw new AssertionError();
         }
 
         private static final class CompletableCallOnSubscribe implements Completable.OnSubscribe {
