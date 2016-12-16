@@ -248,18 +248,6 @@ dependencies {
 
     apt proc.retrolambda
 
-    // Stetho
-    compile libs.stetho
-
-    // LeakCanary
-    compile libs.leakCanary
-
-    // BlockCanary
-    compile libs.blockCanary
-
-    // StrictMode
-    compile libs.strictmodeNotifier
-
     //CircleImageView
     compile libs.circleImageView
 
@@ -278,9 +266,6 @@ dependencies {
     //Timber
     compile libs.timber
 
-    //HockeyApp
-    compile libs.hockeyApp
-
     //OnActivityResult
     compile libs.onActivityResult
     apt proc.onActivityResult
@@ -288,6 +273,23 @@ dependencies {
     //PhotoView
     compile libs.photoView
 
+    //Debug tools
+    // Stetho
+    debugCompile libs.stetho
+
+    // LeakCanary
+    debugCompile libs.leakCanary
+
+    // BlockCanary
+    debugCompile libs.blockCanary
+
+    // StrictMode
+    debugCompile libs.strictmodeNotifier
+
+    //Release tools
+    //HockeyApp
+    releaseCompile libs.hockeyApp
+    
     // Unit testing
     testCompile(test.junit) {
         exclude module: 'hamcrest-core'
