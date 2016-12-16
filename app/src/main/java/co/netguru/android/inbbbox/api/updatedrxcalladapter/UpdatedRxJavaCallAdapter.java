@@ -47,12 +47,13 @@ public class UpdatedRxJavaCallAdapter extends CallAdapter.Factory {
     }
 
     private static final class CompletableHelper {
-        static CallAdapter<Completable> createCallAdapter() {
-            return new CompletableHelper.CompletableCallAdapter();
-        }
 
         private CompletableHelper() {
             throw new AssertionError();
+        }
+
+        static CallAdapter<Completable> createCallAdapter() {
+            return new CompletableHelper.CompletableCallAdapter();
         }
 
         private static final class CompletableCallOnSubscribe implements Completable.OnSubscribe {
