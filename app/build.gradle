@@ -23,7 +23,7 @@ ext {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.1"
 
     defaultConfig {
         applicationId "co.netguru.android.inbbbox"
@@ -289,7 +289,7 @@ dependencies {
     //Release tools
     //HockeyApp
     releaseCompile libs.hockeyApp
-    
+
     // Unit testing
     testCompile(test.junit) {
         exclude module: 'hamcrest-core'
