@@ -1,11 +1,17 @@
 package co.netguru.android.inbbbox.di.module;
 
+import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.api.LikesApi;
+import co.netguru.android.inbbbox.controler.followers.FollowersController;
 import co.netguru.android.inbbbox.controler.LikeShotController;
+import co.netguru.android.inbbbox.controler.followers.FollowersControllerApi;
+import co.netguru.android.inbbbox.controler.followers.FollowersControllerGuest;
 import co.netguru.android.inbbbox.controler.likescontroller.LikeShotControllerApi;
 import co.netguru.android.inbbbox.controler.likescontroller.LikeShotControllerGuest;
 import co.netguru.android.inbbbox.di.UserScope;
 import co.netguru.android.inbbbox.enumeration.UserModeType;
+
+import co.netguru.android.inbbbox.localrepository.GuestModeFollowersRepository;
 import co.netguru.android.inbbbox.localrepository.database.GuestModeLikesRepository;
 
 import dagger.Module;
@@ -32,5 +38,16 @@ public class UserModule {
             likeShotControllerApi = new LikeShotControllerApi(likesApi);
         }
         return likeShotControllerApi;
+    }
+
+    @UserScope
+    @Provides
+    FollowersController provideFollowersController(FollowersApi followersApi,
+                                                   GuestModeFollowersRepository guestModeFollowersRepository) {
+        if (mode.equals(UserModeType.GUEST_USER_MODE)) {
+            return new FollowersControllerGuest(guestModeFollowersRepository, followersApi);
+        }
+
+        return new FollowersControllerApi(followersApi);
     }
 }

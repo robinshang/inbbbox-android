@@ -1,7 +1,9 @@
 package co.netguru.android.inbbbox.di.component;
 
 import co.netguru.android.inbbbox.di.UserScope;
+
 import co.netguru.android.inbbbox.di.module.ShotFullscreenModule;
+
 import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.di.module.UserModule;
 import dagger.Subcomponent;
@@ -17,6 +19,10 @@ public interface UserComponent {
     ShotDetailsComponent plus(ShotsDetailsModule module);
 
     ShotFullscreenComponent plus(ShotFullscreenModule module);
+
+    FollowersFragmentComponent plusFollowersFragmentComponent();
+
+    FollowerDetailsFragmentComponent plusFollowersDetailsFragmentComponent();
 
     @Subcomponent.Builder
     interface Builder {
