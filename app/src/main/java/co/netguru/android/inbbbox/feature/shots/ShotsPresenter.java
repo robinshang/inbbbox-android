@@ -69,7 +69,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
             final Subscription subscription = likeShotController.likeShot(shot)
                     .compose(applyCompletableIoSchedulers())
                     .subscribe(() -> onShotLikeCompleted(shot),
-                            throwable -> handleHttpErrorResponse(throwable, "Error while sending shot like"));
+                            throwable -> handleError(throwable, "Error while sending shot like"));
             subscriptions.add(subscription);
         }
     }
@@ -88,7 +88,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                         getView().hideLoadingIndicator();
                         getView().setData(shotList);
                         getView().showContent();
-                    }, throwable -> handleHttpErrorResponse(throwable, "Error while getting shots"));
+                    }, throwable -> handleError(throwable, "Error while getting shots"));
         }
     }
 
@@ -103,7 +103,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                         hasMore = shotList.size() >= SHOTS_PER_PAGE;
                         getView().hideLoadingIndicator();
                         getView().showMoreItems(shotList);
-                    }, throwable -> handleHttpErrorResponse(throwable, "Error while getting more shots"));
+                    }, throwable -> handleError(throwable, "Error while getting more shots"));
         }
     }
 
@@ -120,7 +120,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                         .compose(RxTransformerUtils.applyCompletableIoSchedulers())
                         .subscribe(
                                 getView()::showBucketAddSuccess,
-                                throwable -> handleHttpErrorResponse(throwable, "Error while adding shot to bucket"))
+                                throwable -> handleError(throwable, "Error while adding shot to bucket"))
         );
     }
 
@@ -136,7 +136,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     }
 
     @Override
-    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+    public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().hideLoadingIndicator();
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));

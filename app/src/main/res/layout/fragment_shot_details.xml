@@ -43,13 +43,14 @@
                     android:id="@+id/details_close_imageView"
                     android:layout_width="@dimen/details_close_button_size"
                     android:layout_height="@dimen/details_close_button_size"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
-                    android:layout_gravity="right|top"
+                    android:layout_gravity="end|top"
                     android:layout_margin="@dimen/details_close_button_margin"
                     android:alpha="0.7"
                     android:clickable="true"
                     android:minHeight="?attr/actionBarSize"
+                    android:contentDescription="@null"
                     android:src="@drawable/selector_details_close"/>
             </android.support.v7.widget.Toolbar>
 
@@ -60,7 +61,6 @@
         android:id="@+id/shot_details_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:overScrollMode="never"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
@@ -69,7 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/details_comment_input_pannel_height"
         android:layout_gravity="bottom"
-        android:background="@color/lightGrayAlpha"
+        android:background="@color/secondaryWindowBackground"
         android:orientation="horizontal"
         android:visibility="gone">
 
@@ -86,9 +86,9 @@
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margin_default"
-            android:layout_marginRight="@dimen/details_comment_input_right_margin"
-            android:layout_toLeftOf="@+id/comment_send_container"
+            android:layout_marginStart="@dimen/margin_default"
+            android:layout_marginEnd="@dimen/details_comment_input_right_margin"
+            android:layout_toStartOf="@+id/comment_send_container"
             android:paddingTop="@dimen/details_comment_input_margin"
             android:theme="@style/TextInputStyle">
 
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/margin_default">
+            android:layout_marginEnd="@dimen/margin_default">
 
             <ProgressBar
                 android:id="@+id/send_progressBar"
@@ -124,6 +124,7 @@
                 android:layout_height="@dimen/details_comment_send_button_size"
                 android:background="@drawable/selector_send_button_selector"
                 android:padding="@dimen/details_comment_input_margin"
+                android:contentDescription="@null"
                 android:src="@drawable/ic_send"/>
         </FrameLayout>
     </RelativeLayout>

@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alpha="0.1"
-            android:background="@color/whiteFog"
+            android:background="@color/windowBackground"
             android:clickable="false"
             android:visibility="gone"/>
     </FrameLayout>
@@ -59,7 +59,6 @@
         fab:menu_colorRipple="@color/accent"
         fab:menu_fab_size="normal"
         fab:menu_icon="@drawable/ic_fab_open"
-        fab:menu_labels_colorNormal="@color/white"
         fab:menu_labels_colorPressed="@color/lightGray"
         fab:menu_labels_cornerRadius="@dimen/shots_label_radius"
         fab:menu_labels_ellipsize="none"
@@ -75,7 +74,6 @@
         fab:menu_labels_showShadow="true"
         fab:menu_labels_singleLine="true"
         fab:menu_labels_style="@style/FabMenuLabel"
-        fab:menu_labels_textColor="@color/black"
         fab:menu_openDirection="up"
         fab:menu_shadowColor="@color/lightShadow"
         fab:menu_shadowRadius="0.5dp"
@@ -89,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_comment"
-            fab:fab_colorNormal="@color/white"
+            fab:fab_colorNormal="@color/windowBackground"
             fab:fab_colorPressed="@color/accent"
             fab:fab_label="@string/comment"
             fab:fab_size="mini"/>
@@ -99,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_bucket"
-            fab:fab_colorNormal="@color/white"
+            fab:fab_colorNormal="@color/windowBackground"
             fab:fab_colorPressed="@color/accent"
             fab:fab_label="@string/add_to_bucket"
             fab:fab_size="mini"/>
@@ -109,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_follow"
-            fab:fab_colorNormal="@color/white"
+            fab:fab_colorNormal="@color/windowBackground"
             fab:fab_colorPressed="@color/accent"
             fab:fab_label="@string/follow"
             fab:fab_size="mini"/>
@@ -119,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_like"
-            fab:fab_colorNormal="@color/white"
+            fab:fab_colorNormal="@color/windowBackground"
             fab:fab_colorPressed="@color/accent"
             fab:fab_label="@string/like"
             fab:fab_size="mini"/>

@@ -87,7 +87,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
                     .subscribe(shotList -> {
                         hasMore = shotList.size() == SHOT_PAGE_COUNT;
                         getView().setData(shotList);
-                    }, throwable -> handleHttpErrorResponse(throwable, "Error while refreshing user shots"));
+                    }, throwable -> handleError(throwable, "Error while refreshing user shots"));
         }
     }
 
@@ -112,7 +112,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
                     .subscribe(shotList -> {
                                 hasMore = shotList.size() == SHOT_PAGE_COUNT;
                                 getView().showMoreUserShots(shotList);
-                    }, throwable -> handleHttpErrorResponse(throwable, "Error while getting more user shots"));
+                    }, throwable -> handleError(throwable, "Error while getting more user shots"));
         }
     }
 
@@ -126,7 +126,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         unfollowUserSubscription = followersController.unFollowUser(follower.id())
                 .compose(applyCompletableIoSchedulers())
                 .subscribe(getView()::showFollowersList,
-                        throwable -> handleHttpErrorResponse(throwable, "Error while unFollow user"));
+                        throwable -> handleError(throwable, "Error while unFollow user"));
     }
 
     @Override
@@ -135,7 +135,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     }
 
     @Override
-    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+    public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
@@ -149,7 +149,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
                 .toList()
                 .map(list -> Follower.createFromUser(user, list))
                 .subscribe(this::showFollower,
-                        throwable -> handleHttpErrorResponse(throwable, "Error while getting user shots list"));
+                        throwable -> handleError(throwable, "Error while getting user shots list"));
         subscriptions.add(subscription);
     }
 

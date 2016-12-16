@@ -9,7 +9,7 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.common.HttpErrorView;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
@@ -36,7 +36,7 @@ public interface BucketDetailsContract {
         void showRefreshedBucketsView();
     }
 
-    interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
+    interface Presenter extends MvpPresenter<View>, ErrorPresenter {
 
         void handleBucketData(BucketWithShots bucketWithShots, int perPage);
 

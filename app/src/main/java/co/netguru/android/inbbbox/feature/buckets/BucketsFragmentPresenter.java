@@ -79,7 +79,7 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
                                 getView().setData(bucketWithShotsList);
                                 getView().showContent();
                             },
-                            throwable -> handleHttpErrorResponse(throwable, "Error while loading buckets"));
+                            throwable -> handleError(throwable, "Error while loading buckets"));
         }
     }
 
@@ -100,7 +100,7 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
                     .subscribe(bucketWithShotsList -> {
                         apiHasMoreBuckets = bucketWithShotsList.size() == BUCKETS_PER_PAGE_COUNT;
                         getView().addMoreBucketsWithShots(bucketWithShotsList);
-                    }, throwable -> handleHttpErrorResponse(throwable, "Error while loading more buckets"));
+                    }, throwable -> handleError(throwable, "Error while loading more buckets"));
         }
     }
 
@@ -124,7 +124,7 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     }
 
     @Override
-    public void handleHttpErrorResponse(Throwable throwable, String errorText) {
+    public void handleError(Throwable throwable, String errorText) {
         Timber.d(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }

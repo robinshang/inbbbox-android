@@ -6,7 +6,7 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.common.HttpErrorView;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 
@@ -35,7 +35,7 @@ public interface BucketsFragmentContract {
         void scrollToTop();
     }
 
-    interface Presenter extends MvpPresenter<BucketsFragmentContract.View>, HttpErrorPresenter {
+    interface Presenter extends MvpPresenter<BucketsFragmentContract.View>, ErrorPresenter {
 
         void loadBucketsWithShots();
 

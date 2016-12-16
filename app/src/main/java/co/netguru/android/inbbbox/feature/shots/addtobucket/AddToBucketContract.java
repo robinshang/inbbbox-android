@@ -8,7 +8,7 @@ import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.common.HttpErrorView;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -53,7 +53,7 @@ public interface AddToBucketContract {
         void showBucketsList();
     }
 
-    interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
+    interface Presenter extends MvpPresenter<View>, ErrorPresenter {
 
         void handleShot(Shot shot);
 

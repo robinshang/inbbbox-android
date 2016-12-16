@@ -7,7 +7,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.common.HttpErrorView;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
@@ -73,7 +73,7 @@ public interface ShotDetailsContract {
         void openShotFullscreen(Shot shot);
     }
 
-    interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
+    interface Presenter extends MvpPresenter<View>, ErrorPresenter {
 
         void downloadData();
 

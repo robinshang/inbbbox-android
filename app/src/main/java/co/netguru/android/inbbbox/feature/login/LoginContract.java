@@ -6,7 +6,7 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import co.netguru.android.inbbbox.enumeration.UserModeType;
-import co.netguru.android.inbbbox.feature.common.HttpErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.common.HttpErrorView;
 
 public interface LoginContract {
@@ -29,7 +29,7 @@ public interface LoginContract {
         void initializeUserMode(UserModeType guestUserMode);
     }
 
-    interface Presenter extends MvpPresenter<View>, HttpErrorPresenter {
+    interface Presenter extends MvpPresenter<View>, ErrorPresenter {
         void showLoginView();
 
         void handleKeysNotMatching();
