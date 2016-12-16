@@ -20,7 +20,7 @@ import rx.subscriptions.Subscriptions;
  * UpdatedRxJavaCallAdapter is a fast fix for changes in naming introduced in rxjava > 1.1.9, which
  * are not supported in rxjava call adapter 2.1.0 version. Most code is copy pasted from source.
  * todo 15.12.16 This class should removed as soon as new retrofit adapter is released >2.1.0, repo
- * already contain changes rxjava naming changes.
+ * already contain fix for rxjava naming changes.
  */
 public class UpdatedRxJavaCallAdapter extends CallAdapter.Factory {
 
