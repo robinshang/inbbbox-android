@@ -94,8 +94,8 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         try {
             shotActionListener = (ShotsFragment.ShotActionListener) context;
         } catch (ClassCastException e) {
-            throw new RuntimeException(context.toString()
-                    + " must implement ShotActionListener", e);
+            throw new ClassCastException(context.toString()
+                    + " must implement ShotActionListener");
         }
     }
 

@@ -36,7 +36,7 @@ public abstract class LoadMoreScrollListener extends RecyclerView.OnScrollListen
 
     private LinearLayoutManager getLayoutManager(RecyclerView recyclerView) {
         if (!(recyclerView.getLayoutManager() instanceof LinearLayoutManager)) {
-            throw new RuntimeException("Layout manager should be instance of LinearLayoutManager");
+            throw new ClassCastException("Layout manager should be instance of LinearLayoutManager");
         }
         return (LinearLayoutManager) recyclerView.getLayoutManager();
     }
