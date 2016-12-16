@@ -78,7 +78,6 @@ ext {
             autoValue               : "com.google.auto.value:auto-value:1.3",
             butterKnife             : "com.jakewharton:butterknife-compiler:$butterKnifeVersion", // apt
             dagger                  : "com.google.dagger:dagger-compiler:$daggerVersion", // apt
-            errorprone              : "com.google.errorprone:error_prone_core:2.0.9",
             icepick                 : "frankiesardo:icepick-processor:3.2.0", // apt (provided)
             javaxAnnotation         : "org.glassfish:javax.annotation:10.0-b28", // apt (provided)
             onActivityResult        : "com.vanniktech:onactivityresult-compiler:$onActivityResultVersion", // apt
