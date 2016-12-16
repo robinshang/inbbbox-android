@@ -11,6 +11,7 @@ import org.greenrobot.greendao.database.Database;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import co.netguru.android.inbbbox.localrepository.GuestModeFollowersRepository;
 import co.netguru.android.inbbbox.localrepository.SettingsPrefsRepository;
 import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
@@ -24,6 +25,7 @@ import dagger.Provides;
 public class LocalRepositoryModule {
 
     private static final String DATABASE_NAME = "inbbbox-db";
+    private static final String GUEST_MODE_FOLLOWERS_SHARED_PREFERENCES_NAME = "guest_mode_followers";
     private static final String SETTINGS_SHARED_PREFERENCES_NAME = "settings";
     private static final String TOKEN_SHARED_PREFERENCES_NAME = "token";
     private static final String USER_SHARED_PREFERENCES_NAME = "user";
@@ -50,6 +52,14 @@ public class LocalRepositoryModule {
     SharedPreferences provideUserSharedPreferences(Context context) {
         return context.getSharedPreferences(context.getPackageName()
                 .concat(USER_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
+    }
+
+    @Named(GUEST_MODE_FOLLOWERS_SHARED_PREFERENCES_NAME)
+    @Provides
+    @Singleton
+    SharedPreferences provideGuestModeFollowersSharedPreferences(Context context) {
+        return context.getSharedPreferences(context.getPackageName()
+                .concat(GUEST_MODE_FOLLOWERS_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
     }
 
     @Provides
@@ -83,5 +93,13 @@ public class LocalRepositoryModule {
     @Provides
     DaoSession provideDaoSession(Database database) {
         return new DaoMaster(database).newSession();
+    }
+
+    @Provides
+    @Singleton
+    GuestModeFollowersRepository proideGuestModeFollowersRepository(
+            @Named(GUEST_MODE_FOLLOWERS_SHARED_PREFERENCES_NAME) SharedPreferences sharedPreferences,
+            Gson gson) {
+        return new GuestModeFollowersRepository(sharedPreferences, gson);
     }
 }
