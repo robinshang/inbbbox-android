@@ -280,9 +280,6 @@ dependencies {
     //Percent layout
     compile libs.percent
 
-    //Glide Transformations
-    compile libs.glideTransformations
-
     //Timber
     compile libs.timber
 
