@@ -207,7 +207,8 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     private void initEmptyView() {
-        emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
+        int lineHeight = emptyViewText.getLineHeight();
+        emptyTextDrawable.setBounds(0, 0, lineHeight, lineHeight);
         emptyViewText.setText(TextFormatterUtil
                 .addDrawableToTextAtFirstSpace(emptyString, emptyTextDrawable), TextView.BufferType.SPANNABLE);
     }
