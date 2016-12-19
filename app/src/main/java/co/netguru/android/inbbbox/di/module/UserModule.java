@@ -11,7 +11,6 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-@UserScope
 public class UserModule {
 
     private UserModeType mode;
