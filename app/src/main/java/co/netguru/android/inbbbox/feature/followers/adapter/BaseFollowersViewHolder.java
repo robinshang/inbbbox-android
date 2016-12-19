@@ -78,6 +78,7 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
                 .into(userPhoto);
     }
 
+    @FunctionalInterface
     public interface OnFollowerClickListener {
         void onClick(Follower follower);
     }
