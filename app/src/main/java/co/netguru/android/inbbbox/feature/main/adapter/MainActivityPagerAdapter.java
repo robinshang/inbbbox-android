@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 
 import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.feature.buckets.BucketsFragment;
-import co.netguru.android.inbbbox.feature.followers.FollowersFragment;
-import co.netguru.android.inbbbox.feature.likes.LikesFragment;
-import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 
 public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment> extends FragmentStatePagerAdapter {
 
@@ -39,7 +36,7 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment> 
                         "There is no fragment defined for position: %d", position));
         }*/
 
-        return ShotsFragment.newInstance();
+        return BucketsFragment.newInstance();
     }
 
     @Override

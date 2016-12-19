@@ -36,7 +36,6 @@ import co.netguru.android.inbbbox.feature.buckets.createbucket.CreateBucketDialo
 import co.netguru.android.inbbbox.feature.buckets.details.BucketDetailsActivity;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
-
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
@@ -47,8 +46,9 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
         List<BucketWithShots>, BucketsFragmentContract.View, BucketsFragmentContract.Presenter>
         implements RefreshableFragment, BucketsFragmentContract.View, BaseBucketViewHolder.BucketClickListener {
 
-
     private static final int BUCKET_DETAILS_VIEW_REQUEST_CODE = 1;
+    private static final int SPAN_COUNT = 2;
+    private static final int LAST_X_BUCKETS_VISIBLE_TO_LOAD_MORE = 5;
 
     @BindDrawable(R.drawable.ic_buckets_empty_state)
     Drawable emptyTextDrawable;
@@ -69,11 +69,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     @BindView(R.id.buckets_recycler_view)
     RecyclerView bucketsRecyclerView;
 
-    private static final int SPAN_COUNT = 2;
-    private static final int LAST_X_BUCKETS_VISIBLE_TO_LOAD_MORE = 5;
-
-    private final BucketsAdapter adapter = new BucketsAdapter(this);
-
+    private BucketsAdapter adapter;
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
     private Snackbar loadingMoreSnackbar;
@@ -239,6 +235,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     }
 
     private void initRecyclerView() {
+        adapter = new BucketsAdapter(this);
         linearLayoutManager = new LinearLayoutManager(getContext());
         gridLayoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
         bucketsRecyclerView.setHasFixedSize(true);
