@@ -20,7 +20,7 @@ public interface ShotFullscreenContract {
     }
 
     interface Presenter extends MvpPresenter<View> {
-        void onViewCreated(Shot shot, List<Shot> allShots);
+        void onViewCreated(Shot shot, List<Shot> allShots, boolean fetchMore);
 
         void onRequestMoreData();
 

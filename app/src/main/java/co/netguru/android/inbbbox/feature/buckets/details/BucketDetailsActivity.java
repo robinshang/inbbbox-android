@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
 import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.Constants;
@@ -71,7 +73,11 @@ public class BucketDetailsActivity extends BaseActivity
 
     @Override
     public void onShotClick(ShotEntity shotEntity) {
-        final Fragment fragment = ShotDetailsFragment.newInstance(Shot.create(shotEntity));
+        BucketDetailsFragment bucketDetailsFragment =
+                (BucketDetailsFragment) getSupportFragmentManager().findFragmentByTag(BucketDetailsFragment.TAG);
+
+        List<Shot> allShots = Shot.createList(bucketDetailsFragment.getData());
+        final Fragment fragment = ShotDetailsFragment.newInstance(Shot.create(shotEntity), allShots, false, false);
         showBottomSheet(fragment, ShotDetailsFragment.TAG);
     }
 

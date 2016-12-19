@@ -16,10 +16,12 @@ public class ShotFullscreenActivity extends BaseActivity {
 
     public static final String KEY_SHOT = "key:shot";
     public static final String KEY_ALL_SHOTS = "key:all_shot";
+    public static final String KEY_FETCH_MORE = "key:fetch_state";
 
-    public static void startActivity(Context context, Shot shot, List<Shot> allShots) {
+    public static void startActivity(Context context, Shot shot, List<Shot> allShots, boolean fetchMore) {
         Intent intent = new Intent(context, ShotFullscreenActivity.class);
         intent.putExtra(KEY_SHOT, shot);
+        intent.putExtra(KEY_FETCH_MORE, fetchMore);
 
         if (allShots instanceof ArrayList) {
             intent.putParcelableArrayListExtra(KEY_ALL_SHOTS, (ArrayList<Shot>) allShots);
@@ -43,9 +45,10 @@ public class ShotFullscreenActivity extends BaseActivity {
     private void initializeShotFullscreenFragment() {
         Shot shot = getIntent().getParcelableExtra(KEY_SHOT);
         List<Shot> allShots = getIntent().getParcelableArrayListExtra(KEY_ALL_SHOTS);
+        boolean fetchMore = getIntent().getBooleanExtra(KEY_FETCH_MORE, false);
 
         replaceFragment(R.id.shot_fullscreen_container,
-                ShotFullscreenFragment.newInstance(shot, allShots), ShotFullscreenFragment.TAG)
+                ShotFullscreenFragment.newInstance(shot, allShots, fetchMore), ShotFullscreenFragment.TAG)
                 .commit();
     }
 

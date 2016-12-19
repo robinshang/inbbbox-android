@@ -257,8 +257,8 @@ public class MainActivity
     }
 
     @Override
-    public void showShotDetails(Shot shot, List<Shot> allShots, boolean isCommentModeEnabled) {
-        showBottomSheet(ShotDetailsFragment.newInstance(shot, allShots, isCommentModeEnabled), ShotDetailsFragment.TAG);
+    public void showShotDetails(Shot shot, List<Shot> allShots, boolean isCommentModeEnabled, boolean fetchMore) {
+        showBottomSheet(ShotDetailsFragment.newInstance(shot, allShots, isCommentModeEnabled, fetchMore), ShotDetailsFragment.TAG);
     }
 
     @Override

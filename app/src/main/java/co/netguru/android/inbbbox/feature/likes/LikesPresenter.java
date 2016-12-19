@@ -86,8 +86,8 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     }
 
     @Override
-    public void showShotDetails(Shot shot) {
-        getView().openShowDetailsScreen(shot);
+    public void showShotDetails(Shot shot, List<Shot> allShots) {
+        getView().openShowDetailsScreen(shot, allShots);
     }
 
     @Override

@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
 import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
@@ -78,8 +80,8 @@ public class FollowerDetailsActivity extends BaseActivity
     }
 
     @Override
-    public void showShotDetails(Shot shot) {
-        final Fragment fragment = ShotDetailsFragment.newInstance(shot);
+    public void showShotDetails(Shot shot, List<Shot> allShots) {
+        final Fragment fragment = ShotDetailsFragment.newInstance(shot, allShots, false, false);
         showBottomSheet(fragment, ShotDetailsFragment.TAG);
     }
 

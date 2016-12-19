@@ -130,7 +130,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     @Override
     public void showShotDetails(Shot shot) {
-        getView().openShotDetailsScreen(shot);
+        getView().openShotDetailsScreen(shot, follower.shotList());
     }
 
     private void downloadUserShots(User user) {

@@ -52,6 +52,7 @@ public class ShotDetailsFragment
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_ALL_SHOTS = "arg:shot";
     private static final String ARG_SHOT = "arg:all_shots";
+    private static final String ARG_IS_FETCH_MORE_ENABLED = "arg:fetch_state";
     private static final String ARG_IS_COMMENT_MODE_ENABLED = "arg:comment_mode_state";
     private static final int SLIDE_IN_DURATION = 500;
 
@@ -87,12 +88,13 @@ public class ShotDetailsFragment
     private boolean isInputPanelShowingEnabled;
 
     public static ShotDetailsFragment newInstance(Shot shot) {
-        return newInstance(shot, Collections.emptyList(), false);
+        return newInstance(shot, Collections.emptyList(), false, false);
     }
 
-    public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots, boolean isCommentModeEnabled) {
+    public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots, boolean isCommentModeEnabled, boolean fetchMore) {
         Bundle args = new Bundle();
         args.putParcelable(ARG_SHOT, shot);
+        args.putBoolean(ARG_IS_FETCH_MORE_ENABLED, fetchMore);
         if (allShots instanceof ArrayList) {
             args.putParcelableArrayList(ARG_ALL_SHOTS, (ArrayList<Shot>) allShots);
         } else {
@@ -355,7 +357,8 @@ public class ShotDetailsFragment
 
     @Override
     public void openShotFullscreen(Shot shot, List<Shot> allShots) {
-        ShotFullscreenActivity.startActivity(getContext(), shot, allShots);
+        boolean fetchMoreState = getArguments().getBoolean(ARG_IS_FETCH_MORE_ENABLED);
+        ShotFullscreenActivity.startActivity(getContext(), shot, allShots, fetchMoreState);
     }
 
     private void initComponent() {

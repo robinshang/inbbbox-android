@@ -84,7 +84,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         component = App.getAppComponent(getContext())
-                .plus(new LikesFragmentModule(shots -> getPresenter().showShotDetails(shots)));
+                .plus(new LikesFragmentModule(shots -> getPresenter().showShotDetails(shots, getData())));
         component.inject(this);
     }
 
@@ -192,8 +192,8 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     @Override
-    public void openShowDetailsScreen(Shot shot) {
-        shotActionListener.showShotDetails(shot, new ArrayList<>(), false);
+    public void openShowDetailsScreen(Shot shot, List<Shot> shotList) {
+        shotActionListener.showShotDetails(shot, shotList, false, false);
     }
 
     @Override

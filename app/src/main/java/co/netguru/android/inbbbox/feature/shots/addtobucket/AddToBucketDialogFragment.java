@@ -211,7 +211,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @Override
     public void openShotFullscreen(Shot shot) {
-        ShotFullscreenActivity.startActivity(getContext(), shot, Collections.emptyList());
+        ShotFullscreenActivity.startActivity(getContext(), shot, Collections.emptyList(), false);
     }
 
     private String getFormattedDate(LocalDateTime creationDate) {

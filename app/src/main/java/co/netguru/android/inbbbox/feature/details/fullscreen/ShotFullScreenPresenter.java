@@ -21,6 +21,7 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
     private final ShotsController shotsController;
     private int currentPage;
     private boolean hasMore = true;
+    private boolean fetchMore = false;
 
     @Inject
     public ShotFullScreenPresenter(ShotsController shotsController) {
@@ -28,7 +29,9 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
     }
 
     @Override
-    public void onViewCreated(Shot shot, List<Shot> allShots) {
+    public void onViewCreated(Shot shot, List<Shot> allShots, boolean fetchMore) {
+        this.fetchMore = fetchMore;
+
         if (allShots != null && allShots.size() > 0) {
             currentPage = allShots.size() / SHOTS_PER_PAGE;
             getView().previewShots(shot, allShots);
@@ -39,7 +42,7 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
 
     @Override
     public void onRequestMoreData() {
-        if (hasMore) {
+        if (fetchMore && hasMore) {
             currentPage++;
             subscriptions.add(
                     shotsController.getShots(currentPage, SHOTS_PER_PAGE)

@@ -23,7 +23,7 @@ interface LikesViewContract {
 
         void showEmptyLikesInfo();
 
-        void openShowDetailsScreen(Shot shot);
+        void openShowDetailsScreen(Shot shot, List<Shot> shotList);
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -31,7 +31,7 @@ interface LikesViewContract {
 
         void getMoreLikesFromServer();
 
-        void showShotDetails(Shot shot);
+        void showShotDetails(Shot shot, List<Shot> allShots);
 
         void checkDataEmpty(boolean isEmpty);
     }
