@@ -6,7 +6,6 @@ import co.netguru.android.inbbbox.feature.followers.FollowersFragment;
 import co.netguru.android.inbbbox.feature.followers.FollowersPresenter;
 import dagger.Subcomponent;
 
-
 @FragmentScope
 @Subcomponent(modules = FollowersFragmentModule.class)
 public interface FollowersFragmentComponent {

@@ -11,7 +11,6 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-@Singleton
 @Module
 public class ApplicationModule {
 
@@ -23,26 +22,31 @@ public class ApplicationModule {
     }
 
     @Provides
+    @Singleton
     Context provideContext() {
         return application;
     }
 
     @Provides
+    @Singleton
     Application provideApplication() {
         return application;
     }
 
     @Provides
+    @Singleton
     Resources provideResources() {
         return application.getResources();
     }
 
     @Provides
+    @Singleton
     NotificationManager provideNotificationManager() {
         return (NotificationManager) application.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     @Provides
+    @Singleton
     AlarmManager provideAlarmManager() {
         return (AlarmManager) application.getSystemService(Context.ALARM_SERVICE);
     }

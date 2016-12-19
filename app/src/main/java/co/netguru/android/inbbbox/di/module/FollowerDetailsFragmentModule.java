@@ -7,6 +7,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
+@FragmentScope
 public class FollowerDetailsFragmentModule {
 
     private final ShotClickListener shotClickListener;
@@ -17,7 +18,6 @@ public class FollowerDetailsFragmentModule {
     }
 
     @Provides
-    @FragmentScope
     FollowerDetailsAdapter provideShotDetailsAdapter() {
         return new FollowerDetailsAdapter(shotClickListener);
     }

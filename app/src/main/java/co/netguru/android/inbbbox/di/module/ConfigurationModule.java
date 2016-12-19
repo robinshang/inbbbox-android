@@ -22,11 +22,11 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@Singleton
 @Module
 public class ConfigurationModule {
 
     @Provides
+    @Singleton
     Gson provideGson() {
         return new GsonBuilder()
                 .registerTypeAdapterFactory(AutoGsonAdapterFactory.create())
@@ -35,6 +35,7 @@ public class ConfigurationModule {
     }
 
     @Provides
+    @Singleton
     RequestInterceptor providesRequestInterceptor(TokenPrefsRepository tokenPrefsRepository,
                                                   LogoutController logoutController,
                                                   ErrorController errorController,
@@ -44,6 +45,7 @@ public class ConfigurationModule {
     }
 
     @Provides
+    @Singleton
     OkHttpClient provideOkHttpClient(RequestInterceptor interceptor) {
         return new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor()
@@ -53,6 +55,7 @@ public class ConfigurationModule {
     }
 
     @Provides
+    @Singleton
     Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))

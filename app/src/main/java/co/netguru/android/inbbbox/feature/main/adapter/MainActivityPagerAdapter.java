@@ -25,7 +25,7 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment> 
     @SuppressLint("DefaultLocale")
     @Override
     public Fragment getItem(int position) {
-        switch (TabItemType.getTabItemForPosition(position)) {
+        /*switch (TabItemType.getTabItemForPosition(position)) {
             case SHOTS:
                 return ShotsFragment.newInstance();
             case LIKES:
@@ -37,7 +37,9 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment> 
             default:
                 throw new IllegalArgumentException(String.format(
                         "There is no fragment defined for position: %d", position));
-        }
+        }*/
+
+        return ShotsFragment.newInstance();
     }
 
     @Override
