@@ -80,7 +80,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @NonNull
     @Override
     public ShotsContract.Presenter createPresenter() {
-        return App.getUserComponent(getContext()).getShotsPresenter();
+        return App.getUserComponent(getContext()).getShotsComponent().getPresenter();
     }
 
     @Override
