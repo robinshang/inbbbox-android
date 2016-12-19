@@ -50,8 +50,8 @@ public class ShotDetailsFragment
         implements ShotDetailsContract.View, DetailsViewActionCallback {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
-    private static final String ARG_ALL_SHOTS = "arg:shot";
-    private static final String ARG_SHOT = "arg:all_shots";
+    private static final String ARG_ALL_SHOTS = "arg:all_shots";
+    private static final String ARG_SHOT = "arg:shot";
     private static final String ARG_SHOT_DETAIL_REQUEST = "arg:detail_request";
     private static final int SLIDE_IN_DURATION = 500;
 

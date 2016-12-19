@@ -59,17 +59,4 @@ public class ShotFullscreenAdapter extends RecyclerView.Adapter<ShotFullscreenVi
         this.items.addAll(items);
         notifyItemRangeChanged(currentSize - 1, items.size());
     }
-
-    public Shot getShotFromPosition(int shotPosition) {
-        return items.get(shotPosition);
-    }
-
-    private int findShotPosition(long id) {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).id() == id) {
-                return i;
-            }
-        }
-        throw new IllegalArgumentException("There is no shot with id :" + id);
-    }
 }

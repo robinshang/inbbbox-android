@@ -134,9 +134,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     @Override
     public void showShotDetails(Shot shot) {
-        if(user != null) {
-            getView().openShotDetailsScreen(shot, follower.shotList(), user.id());
-        } else if(follower != null) {
+        if(follower != null) {
             getView().openShotDetailsScreen(shot, follower.shotList(), follower.id());
         }
     }
