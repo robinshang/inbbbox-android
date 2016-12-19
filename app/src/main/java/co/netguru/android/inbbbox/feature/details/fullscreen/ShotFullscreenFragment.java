@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -79,6 +80,8 @@ public class ShotFullscreenFragment extends
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initRecyclerView();
+
         Shot shot = getArguments().getParcelable(KEY_SHOT);
         List<Shot> allShots = getArguments().getParcelableArrayList(KEY_ALL_SHOTS);
 
@@ -91,18 +94,14 @@ public class ShotFullscreenFragment extends
     }
 
     @Override
-    public void previewShot(Shot shot, List<Shot> allShots) {
+    public void previewShots(Shot shot, List<Shot> allShots) {
         adapter.setItems(allShots);
-        shotsRecyclerView.setAdapter(adapter);
-        shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), OrientationHelper.HORIZONTAL, false));
-        shotsRecyclerView.setHasFixedSize(true);
-        shotsRecyclerView.addOnScrollListener(new LoadMoreScrollListener(SHOTS_TO_LOAD_MORE) {
-            @Override
-            public void requestMoreData() {
-                getPresenter().onRequestMoreData();
-            }
-        });
-        shotsRecyclerView.scrollToPosition(allShots.indexOf(shot));
+        shotsRecyclerView.post(() -> shotsRecyclerView.scrollToPosition(allShots.indexOf(shot)));
+    }
+
+    @Override
+    public void previewSingleShot(Shot shot) {
+        adapter.setItems(Arrays.asList(shot));
     }
 
     @Override
@@ -113,6 +112,18 @@ public class ShotFullscreenFragment extends
     @Override
     public void close() {
         getActivity().finish();
+    }
+
+    private void initRecyclerView() {
+        shotsRecyclerView.setAdapter(adapter);
+        shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), OrientationHelper.HORIZONTAL, false));
+        shotsRecyclerView.setHasFixedSize(true);
+        shotsRecyclerView.addOnScrollListener(new LoadMoreScrollListener(SHOTS_TO_LOAD_MORE) {
+            @Override
+            public void requestMoreData() {
+                getPresenter().onRequestMoreData();
+            }
+        });
     }
 
     private void initComponent() {

@@ -29,8 +29,12 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
 
     @Override
     public void onViewCreated(Shot shot, List<Shot> allShots) {
-        currentPage = allShots.size() / SHOTS_PER_PAGE;
-        getView().previewShot(shot, allShots);
+        if (allShots != null && allShots.size() > 0) {
+            currentPage = allShots.size() / SHOTS_PER_PAGE;
+            getView().previewShots(shot, allShots);
+        } else {
+            getView().previewSingleShot(shot);
+        }
     }
 
     @Override

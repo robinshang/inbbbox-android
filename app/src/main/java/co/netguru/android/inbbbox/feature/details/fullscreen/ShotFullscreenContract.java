@@ -10,7 +10,9 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 public interface ShotFullscreenContract {
 
     interface View extends MvpView {
-        void previewShot(Shot shot, List<Shot> allShots);
+        void previewShots(Shot shot, List<Shot> allShots);
+
+        void previewSingleShot(Shot shot);
 
         void showMoreItems(List<Shot> shots);
 
