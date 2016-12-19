@@ -35,7 +35,7 @@ class ShotFullscreenViewHolder extends BaseViewHolder<Shot> {
 
         if (photoViewAttacher != null) {
             photoViewAttacher.update();
-            photoViewAttacher.setScale(0);
+            photoViewAttacher.setScale(1);
         }
 
         ShotLoadingManager.loadMainViewShotWithListenerNoPlaceholder(context, shotImageView, shot, new RequestListener() {

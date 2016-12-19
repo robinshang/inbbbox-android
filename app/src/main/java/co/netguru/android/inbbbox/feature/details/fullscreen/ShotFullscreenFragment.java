@@ -21,6 +21,7 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotFullscreenComponent;
 import co.netguru.android.inbbbox.di.module.ShotFullscreenModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
@@ -32,7 +33,7 @@ public class ShotFullscreenFragment extends
     public static final String TAG = ShotFullscreenFragment.class.getSimpleName();
     public static final String KEY_SHOT = "key:shot";
     public static final String KEY_ALL_SHOTS = "key:all_shots";
-    public static final String KEY_FETCH_MORE = "key:fetch_state";
+    public static final String KEY_DETAILS_REQUEST = "key:details_request";
     private static final int SHOTS_TO_LOAD_MORE = 5;
 
     @BindView(R.id.shot_fullscreen_recycler_view)
@@ -43,10 +44,10 @@ public class ShotFullscreenFragment extends
 
     private ShotFullscreenComponent component;
 
-    public static ShotFullscreenFragment newInstance(Shot shot, List<Shot> allShots, boolean fetchMore) {
+    public static ShotFullscreenFragment newInstance(Shot shot, List<Shot> allShots, ShotDetailsRequest detailsRequest) {
         Bundle args = new Bundle();
         args.putParcelable(KEY_SHOT, shot);
-        args.putBoolean(KEY_FETCH_MORE, fetchMore);
+        args.putParcelable(KEY_DETAILS_REQUEST, detailsRequest);
 
         if (allShots instanceof ArrayList) {
             args.putParcelableArrayList(KEY_ALL_SHOTS, (ArrayList<Shot>) allShots);
@@ -86,9 +87,9 @@ public class ShotFullscreenFragment extends
 
         Shot shot = getArguments().getParcelable(KEY_SHOT);
         List<Shot> allShots = getArguments().getParcelableArrayList(KEY_ALL_SHOTS);
-        boolean fetchMore = getArguments().getBoolean(KEY_FETCH_MORE);
+        ShotDetailsRequest detailsRequest = getArguments().getParcelable(KEY_DETAILS_REQUEST);
 
-        getPresenter().onViewCreated(shot, allShots, fetchMore);
+        getPresenter().onViewCreated(shot, allShots, detailsRequest);
     }
 
     @OnClick(R.id.shot_fullscreen_back)

@@ -30,6 +30,8 @@ import co.netguru.android.inbbbox.di.module.ShotsModule;
 
 import co.netguru.android.inbbbox.feature.common.BaseMvpViewStateFragment;
 
+import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 
 import co.netguru.android.inbbbox.feature.shots.addtobucket.AddToBucketDialogFragment;
@@ -228,12 +230,14 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void showDetailsScreenInCommentMode(Shot selectedShot) {
-        shotActionListener.showShotDetails(selectedShot, adapter.getItems(), true, true);
+        shotActionListener.showShotDetails(selectedShot, adapter.getItems(),
+                ShotDetailsRequest.create(ShotDetailsType.DEFAULT, true));
     }
 
     @Override
     public void showShotDetails(Shot shot) {
-        shotActionListener.showShotDetails(shot, adapter.getItems(), false, true);
+        shotActionListener.showShotDetails(shot, adapter.getItems(),
+                ShotDetailsRequest.create(ShotDetailsType.DEFAULT));
     }
 
     @Override
@@ -274,6 +278,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         public interface ShotActionListener {
             void shotLikeStatusChanged();
 
-            void showShotDetails(Shot shot, List<Shot> nearbyShots, boolean inCommentMode, boolean fetchMore);
+            void showShotDetails(Shot shot, List<Shot> nearbyShots, ShotDetailsRequest detailsRequest);
         }
 }

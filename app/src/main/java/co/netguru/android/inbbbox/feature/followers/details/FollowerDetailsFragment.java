@@ -196,8 +196,8 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     @Override
-    public void openShotDetailsScreen(Shot shot, List<Shot> allShots) {
-        onUnFollowCompletedListener.showShotDetails(shot, allShots);
+    public void openShotDetailsScreen(Shot shot, List<Shot> allShots, long userId) {
+        onUnFollowCompletedListener.showShotDetails(shot, allShots, userId);
     }
 
     @Override
@@ -246,7 +246,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     public interface OnFollowedShotActionListener {
-        void showShotDetails(Shot shot, List<Shot> allShots);
+        void showShotDetails(Shot shot, List<Shot> allShots, long userId);
 
         void unFollowCompleted();
     }

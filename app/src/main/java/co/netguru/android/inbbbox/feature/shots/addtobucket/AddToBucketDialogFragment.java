@@ -30,6 +30,8 @@ import butterknife.OnClick;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseMvpDialogFragment;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.details.fullscreen.ShotFullscreenActivity;
 import co.netguru.android.inbbbox.feature.shots.addtobucket.adapter.BucketViewHolder;
 import co.netguru.android.inbbbox.feature.shots.addtobucket.adapter.BucketsAdapter;
@@ -211,7 +213,8 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @Override
     public void openShotFullscreen(Shot shot) {
-        ShotFullscreenActivity.startActivity(getContext(), shot, Collections.emptyList(), false);
+        ShotFullscreenActivity.startActivity(getContext(), shot, Collections.emptyList(),
+                ShotDetailsRequest.create(ShotDetailsType.ADD_TO_BUCKET));
     }
 
     private String getFormattedDate(LocalDateTime creationDate) {

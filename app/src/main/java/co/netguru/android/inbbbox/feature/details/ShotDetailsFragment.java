@@ -52,8 +52,7 @@ public class ShotDetailsFragment
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_ALL_SHOTS = "arg:shot";
     private static final String ARG_SHOT = "arg:all_shots";
-    private static final String ARG_IS_FETCH_MORE_ENABLED = "arg:fetch_state";
-    private static final String ARG_IS_COMMENT_MODE_ENABLED = "arg:comment_mode_state";
+    private static final String ARG_SHOT_DETAIL_REQUEST = "arg:detail_request";
     private static final int SLIDE_IN_DURATION = 500;
 
     @BindView(R.id.shot_details_recyclerView)
@@ -87,20 +86,16 @@ public class ShotDetailsFragment
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
 
-    public static ShotDetailsFragment newInstance(Shot shot) {
-        return newInstance(shot, Collections.emptyList(), false, false);
-    }
-
-    public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots, boolean isCommentModeEnabled, boolean fetchMore) {
+    public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots,
+                                                  ShotDetailsRequest detailsRequest) {
         Bundle args = new Bundle();
         args.putParcelable(ARG_SHOT, shot);
-        args.putBoolean(ARG_IS_FETCH_MORE_ENABLED, fetchMore);
+        args.putParcelable(ARG_SHOT_DETAIL_REQUEST, detailsRequest);
         if (allShots instanceof ArrayList) {
             args.putParcelableArrayList(ARG_ALL_SHOTS, (ArrayList<Shot>) allShots);
         } else {
             args.putParcelableArrayList(ARG_ALL_SHOTS, new ArrayList<Shot>(allShots));
         }
-        args.putBoolean(ARG_IS_COMMENT_MODE_ENABLED, isCommentModeEnabled);
         ShotDetailsFragment fragment = new ShotDetailsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -176,7 +171,7 @@ public class ShotDetailsFragment
 
     @Override
     public boolean getCommentModeInitialState() {
-        return getArguments().getBoolean(ARG_IS_COMMENT_MODE_ENABLED);
+        return ((ShotDetailsRequest) getArguments().getParcelable(ARG_SHOT_DETAIL_REQUEST)).isCommentModeEnabled();
     }
 
     @Override
@@ -357,8 +352,8 @@ public class ShotDetailsFragment
 
     @Override
     public void openShotFullscreen(Shot shot, List<Shot> allShots) {
-        boolean fetchMoreState = getArguments().getBoolean(ARG_IS_FETCH_MORE_ENABLED);
-        ShotFullscreenActivity.startActivity(getContext(), shot, allShots, fetchMoreState);
+        ShotDetailsRequest detailsRequest = getArguments().getParcelable(ARG_SHOT_DETAIL_REQUEST);
+        ShotFullscreenActivity.startActivity(getContext(), shot, allShots, detailsRequest);
     }
 
     private void initComponent() {

@@ -34,6 +34,8 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
@@ -193,7 +195,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
 
     @Override
     public void openShowDetailsScreen(Shot shot, List<Shot> shotList) {
-        shotActionListener.showShotDetails(shot, shotList, false, false);
+        shotActionListener.showShotDetails(shot, shotList, ShotDetailsRequest.create(ShotDetailsType.LIKES));
     }
 
     @Override

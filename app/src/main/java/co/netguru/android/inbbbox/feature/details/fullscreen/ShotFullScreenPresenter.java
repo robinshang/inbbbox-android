@@ -6,8 +6,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.controler.LikedShotsController;
 import co.netguru.android.inbbbox.controler.ShotsController;
+import co.netguru.android.inbbbox.controler.UserShotsController;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
 import co.netguru.android.inbbbox.model.ui.Shot;
+import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -19,21 +24,30 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
     private static final int SHOTS_PER_PAGE = 15;
     private final CompositeSubscription subscriptions = new CompositeSubscription();
     private final ShotsController shotsController;
+    private final LikedShotsController likedShotsController;
+    private final BucketsController bucketsController;
+    private final UserShotsController userShotsController;
+
     private int currentPage;
     private boolean hasMore = true;
-    private boolean fetchMore = false;
+    private ShotDetailsRequest detailsRequest;
 
     @Inject
-    public ShotFullScreenPresenter(ShotsController shotsController) {
+    public ShotFullScreenPresenter(ShotsController shotsController, LikedShotsController likedShotsController,
+                                   BucketsController bucketsController, UserShotsController userShotsController) {
         this.shotsController = shotsController;
+        this.likedShotsController = likedShotsController;
+        this.bucketsController = bucketsController;
+        this.userShotsController = userShotsController;
     }
 
     @Override
-    public void onViewCreated(Shot shot, List<Shot> allShots, boolean fetchMore) {
-        this.fetchMore = fetchMore;
+    public void onViewCreated(Shot shot, List<Shot> allShots, ShotDetailsRequest detailsRequest) {
+        this.detailsRequest = detailsRequest;
 
         if (allShots != null && allShots.size() > 0) {
             currentPage = allShots.size() / SHOTS_PER_PAGE;
+            hasMore = allShots.size() % SHOTS_PER_PAGE == 0;
             getView().previewShots(shot, allShots);
         } else {
             getView().previewSingleShot(shot);
@@ -42,10 +56,34 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
 
     @Override
     public void onRequestMoreData() {
-        if (fetchMore && hasMore) {
+        if (hasMore) {
             currentPage++;
+            Observable<List<Shot>> requestMoreObservable;
+
+            switch (detailsRequest.detailsType()) {
+                case DEFAULT:
+                    requestMoreObservable = shotsController.getShots(currentPage, SHOTS_PER_PAGE);
+                    break;
+                case LIKES:
+                    requestMoreObservable = likedShotsController.getLikedShots(currentPage, SHOTS_PER_PAGE)
+                            .toList();
+                    break;
+                case BUCKET:
+                    requestMoreObservable = bucketsController.getShotsListFromBucket(detailsRequest.id(), currentPage, SHOTS_PER_PAGE)
+                            .toObservable()
+                            .flatMap(Observable::from)
+                            .map(shotEntity -> Shot.create(shotEntity))
+                            .toList();
+                    break;
+                case USER:
+                    requestMoreObservable = userShotsController.getUserShotsList(detailsRequest.id(), currentPage, SHOTS_PER_PAGE);
+                    break;
+                default:
+                    return;
+            }
+
             subscriptions.add(
-                    shotsController.getShots(currentPage, SHOTS_PER_PAGE)
+                    requestMoreObservable
                             .compose(androidIO())
                             .subscribe(shotList -> {
                                 hasMore = shotList.size() >= SHOTS_PER_PAGE;

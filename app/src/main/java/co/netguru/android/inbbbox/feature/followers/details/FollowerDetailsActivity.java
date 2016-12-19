@@ -17,6 +17,8 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseActivity;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -80,8 +82,9 @@ public class FollowerDetailsActivity extends BaseActivity
     }
 
     @Override
-    public void showShotDetails(Shot shot, List<Shot> allShots) {
-        final Fragment fragment = ShotDetailsFragment.newInstance(shot, allShots, false, false);
+    public void showShotDetails(Shot shot, List<Shot> allShots, long userId) {
+        ShotDetailsRequest detailsRequest = ShotDetailsRequest.create(ShotDetailsType.USER, userId);
+        final Fragment fragment = ShotDetailsFragment.newInstance(shot, allShots, detailsRequest);
         showBottomSheet(fragment, ShotDetailsFragment.TAG);
     }
 

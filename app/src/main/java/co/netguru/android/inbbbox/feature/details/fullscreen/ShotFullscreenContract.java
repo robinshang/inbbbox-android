@@ -5,6 +5,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
 public interface ShotFullscreenContract {
@@ -20,7 +21,7 @@ public interface ShotFullscreenContract {
     }
 
     interface Presenter extends MvpPresenter<View> {
-        void onViewCreated(Shot shot, List<Shot> allShots, boolean fetchMore);
+        void onViewCreated(Shot shot, List<Shot> allShots, ShotDetailsRequest detailsRequest);
 
         void onRequestMoreData();
 

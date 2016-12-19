@@ -10,6 +10,8 @@ import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.controler.ErrorMessageController;
 import co.netguru.android.inbbbox.controler.FollowersController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsType;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;
@@ -40,6 +42,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     @NonNull
     private Subscription unfollowUserSubscription;
     private Follower follower;
+    private User user;
     private boolean hasMore = true;
     private int pageNumber = 1;
 
@@ -95,6 +98,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     public void userDataReceived(User user) {
         Timber.d("Received user : %s", user);
         if (user != null) {
+            this.user = user;
             downloadUserShots(user);
         }
     }
@@ -130,7 +134,11 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     @Override
     public void showShotDetails(Shot shot) {
-        getView().openShotDetailsScreen(shot, follower.shotList());
+        if(user != null) {
+            getView().openShotDetailsScreen(shot, follower.shotList(), user.id());
+        } else if(follower != null) {
+            getView().openShotDetailsScreen(shot, follower.shotList(), follower.id());
+        }
     }
 
     private void downloadUserShots(User user) {
