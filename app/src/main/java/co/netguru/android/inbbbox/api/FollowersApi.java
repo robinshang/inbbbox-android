@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.api;
 import java.util.List;
 
 import co.netguru.android.inbbbox.model.api.FollowerEntity;
+import retrofit2.Response;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
@@ -21,4 +22,7 @@ public interface FollowersApi {
 
     @PUT("users/{user}/follow")
     Completable followUser(@Path("user") long id);
+
+    @PUT("user/following/{user}")
+    Observable<Response<Completable>> checkIfUserIsFollowed(@Path("user") long id);
 }

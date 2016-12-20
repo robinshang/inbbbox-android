@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.model.api.FollowerEntity;
+import retrofit2.Response;
 import rx.Completable;
 import rx.Observable;
 
@@ -29,5 +30,9 @@ public class FollowersController {
 
     public Completable followUser(long id) {
         return followersApi.followUser(id);
+    }
+
+    public Observable<Response<Completable>> checkIfUserIsFollowed(long id) {
+        return followersApi.checkIfUserIsFollowed(id);
     }
 }
