@@ -94,7 +94,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
             throw new InterfaceNotImplementedException(e, context.toString(), OnFollowedShotActionListener.class.getSimpleName());
         }
         component = App.getAppComponent(getContext())
-                .plus(new FollowerDetailsFragmentModule(shot -> getPresenter().showShotDetails(shot)));
+                .plus(new FollowerDetailsFragmentModule(getPresenter()::showShotDetails));
         component.inject(this);
     }
 
