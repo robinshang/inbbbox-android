@@ -222,14 +222,21 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void showDetailsScreenInCommentMode(Shot selectedShot) {
-        shotActionListener.showShotDetails(selectedShot, adapter.getItems(),
-                ShotDetailsRequest.create(ShotDetailsType.DEFAULT, true));
+        ShotDetailsRequest request = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.DEFAULT)
+                .isCommentModeEnabled(true)
+                .build();
+
+        shotActionListener.showShotDetails(selectedShot, adapter.getItems(), request);
     }
 
     @Override
     public void showShotDetails(Shot shot) {
-        shotActionListener.showShotDetails(shot, adapter.getItems(),
-                ShotDetailsRequest.create(ShotDetailsType.DEFAULT));
+        ShotDetailsRequest request = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.DEFAULT)
+                .build();
+
+        shotActionListener.showShotDetails(shot, adapter.getItems(), request);
     }
 
     @Override

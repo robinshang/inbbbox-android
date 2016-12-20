@@ -17,12 +17,7 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 public class ShotFullscreenAdapter extends RecyclerView.Adapter<ShotFullscreenViewHolder> {
 
     @NonNull
-    private List<Shot> items;
-
-    @Inject
-    public ShotFullscreenAdapter() {
-        items = Collections.emptyList();
-    }
+    private List<Shot> items = Collections.emptyList();
 
     @Override
     public ShotFullscreenViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

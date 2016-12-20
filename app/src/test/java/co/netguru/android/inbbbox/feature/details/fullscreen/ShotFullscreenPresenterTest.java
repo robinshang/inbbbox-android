@@ -51,7 +51,8 @@ public class ShotFullscreenPresenterTest {
     @Mock
     ShotsController shotsControllerMock;
 
-    ShotDetailsRequest defaultDetailsRequest = ShotDetailsRequest.create(ShotDetailsType.DEFAULT);
+    ShotDetailsRequest defaultDetailsRequest = ShotDetailsRequest.builder()
+            .detailsType(ShotDetailsType.DEFAULT).build();
 
     private List<Shot> shotsFullPage;
 

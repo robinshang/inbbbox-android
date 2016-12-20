@@ -227,8 +227,11 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @Override
     public void openShotFullscreen(Shot shot) {
-        ShotFullscreenActivity.startActivity(getContext(), shot, Collections.emptyList(),
-                ShotDetailsRequest.create(ShotDetailsType.ADD_TO_BUCKET));
+        ShotDetailsRequest request = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.ADD_TO_BUCKET)
+                .build();
+
+        ShotFullscreenActivity.startActivity(getContext(), shot, Collections.emptyList(), request);
     }
 
     @Override

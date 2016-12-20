@@ -21,8 +21,6 @@ public interface ShotFullscreenContract {
     }
 
     interface Presenter extends MvpPresenter<View> {
-        void onViewCreated(Shot shot, List<Shot> allShots, ShotDetailsRequest detailsRequest);
-
         void onRequestMoreData();
 
         void onBackArrowPressed();

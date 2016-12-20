@@ -25,6 +25,7 @@ import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
+import timber.log.Timber;
 
 public class ShotFullscreenFragment extends
         BaseMvpFragment<ShotFullscreenContract.View, ShotFullscreenContract.Presenter> implements
@@ -43,6 +44,8 @@ public class ShotFullscreenFragment extends
     ShotFullscreenAdapter adapter;
 
     private ShotFullscreenComponent component;
+
+    private int currentShotIndex;
 
     public static ShotFullscreenFragment newInstance(Shot shot, List<Shot> allShots, ShotDetailsRequest detailsRequest) {
         Bundle args = new Bundle();
@@ -82,14 +85,7 @@ public class ShotFullscreenFragment extends
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         initRecyclerView();
-
-        Shot shot = getArguments().getParcelable(KEY_SHOT);
-        List<Shot> allShots = getArguments().getParcelableArrayList(KEY_ALL_SHOTS);
-        ShotDetailsRequest detailsRequest = getArguments().getParcelable(KEY_DETAILS_REQUEST);
-
-        getPresenter().onViewCreated(shot, allShots, detailsRequest);
     }
 
     @OnClick(R.id.shot_fullscreen_back)
@@ -99,8 +95,8 @@ public class ShotFullscreenFragment extends
 
     @Override
     public void previewShots(Shot shot, List<Shot> allShots) {
+        this.currentShotIndex = allShots.indexOf(shot);
         adapter.setItems(allShots);
-        shotsRecyclerView.post(() -> shotsRecyclerView.scrollToPosition(allShots.indexOf(shot)));
     }
 
     @Override
@@ -128,12 +124,16 @@ public class ShotFullscreenFragment extends
                 getPresenter().onRequestMoreData();
             }
         });
+        shotsRecyclerView.post(() -> shotsRecyclerView.scrollToPosition(currentShotIndex));
     }
 
     private void initComponent() {
-        component = App.getUserComponent(getContext())
-                .plus(new ShotFullscreenModule());
+        Shot shot = getArguments().getParcelable(KEY_SHOT);
+        List<Shot> allShots = getArguments().getParcelableArrayList(KEY_ALL_SHOTS);
+        ShotDetailsRequest detailsRequest = getArguments().getParcelable(KEY_DETAILS_REQUEST);
 
+        component = App.getUserComponent(getContext())
+                .plus(new ShotFullscreenModule(shot, allShots, detailsRequest));
         component.inject(this);
     }
 }

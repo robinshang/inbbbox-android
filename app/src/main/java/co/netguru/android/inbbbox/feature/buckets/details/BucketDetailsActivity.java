@@ -79,8 +79,11 @@ public class BucketDetailsActivity extends BaseActivity
                 (BucketDetailsFragment) getSupportFragmentManager().findFragmentByTag(BucketDetailsFragment.TAG);
         BucketWithShots bucketWithShots = getIntent().getParcelableExtra(BUCKET_WITH_SHOTS_KEY);
 
-        ShotDetailsRequest request = ShotDetailsRequest.create
-                (ShotDetailsType.BUCKET, bucketWithShots.bucket().id());
+        ShotDetailsRequest request = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.BUCKET)
+                .id(bucketWithShots.bucket().id())
+                .build();
+
         List<Shot> allShots = Shot.createList(bucketDetailsFragment.getData());
 
         final Fragment fragment = ShotDetailsFragment.newInstance(

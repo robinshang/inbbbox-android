@@ -195,7 +195,11 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
 
     @Override
     public void openShowDetailsScreen(Shot shot, List<Shot> shotList) {
-        shotActionListener.showShotDetails(shot, shotList, ShotDetailsRequest.create(ShotDetailsType.LIKES));
+        ShotDetailsRequest request = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.LIKES)
+                .build();
+
+        shotActionListener.showShotDetails(shot, shotList, request);
     }
 
     @Override

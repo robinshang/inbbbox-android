@@ -83,7 +83,10 @@ public class FollowerDetailsActivity extends BaseActivity
 
     @Override
     public void showShotDetails(Shot shot, List<Shot> allShots, long userId) {
-        ShotDetailsRequest detailsRequest = ShotDetailsRequest.create(ShotDetailsType.USER, userId);
+        ShotDetailsRequest detailsRequest = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.USER)
+                .id(userId)
+                .build();
         final Fragment fragment = ShotDetailsFragment.newInstance(shot, allShots, detailsRequest);
         showBottomSheet(fragment, ShotDetailsFragment.TAG);
     }

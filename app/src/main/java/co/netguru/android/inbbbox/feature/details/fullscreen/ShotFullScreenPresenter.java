@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.controler.BucketsController;
 import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.ShotsController;
@@ -18,6 +19,7 @@ import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 
+@FragmentScope
 public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFullscreenContract.View>
         implements ShotFullscreenContract.Presenter {
 
@@ -30,24 +32,31 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
 
     private int currentPage;
     private boolean hasMore = true;
-    private ShotDetailsRequest detailsRequest;
+    private final ShotDetailsRequest detailsRequest;
+    private final Shot shot;
+    private final List<Shot> allShots;
 
     @Inject
     public ShotFullScreenPresenter(ShotsController shotsController, LikeShotController likedShotsController,
-                                   BucketsController bucketsController, UserShotsController userShotsController) {
+                                   BucketsController bucketsController, UserShotsController userShotsController,
+                                   Shot shot, List<Shot> allShots, ShotDetailsRequest shotDetailsRequest) {
         this.shotsController = shotsController;
         this.likedShotsController = likedShotsController;
         this.bucketsController = bucketsController;
         this.userShotsController = userShotsController;
+        this.detailsRequest = shotDetailsRequest;
+        this.shot = shot;
+        this.allShots = allShots;
     }
 
     @Override
-    public void onViewCreated(Shot shot, List<Shot> allShots, ShotDetailsRequest detailsRequest) {
-        this.detailsRequest = detailsRequest;
+    public void attachView(ShotFullscreenContract.View view) {
+        super.attachView(view);
 
         if (allShots != null && !allShots.isEmpty()) {
             currentPage = allShots.size() / SHOTS_PER_PAGE;
             hasMore = allShots.size() % SHOTS_PER_PAGE == 0;
+
             getView().previewShots(shot, allShots);
         } else {
             getView().previewSingleShot(shot);
