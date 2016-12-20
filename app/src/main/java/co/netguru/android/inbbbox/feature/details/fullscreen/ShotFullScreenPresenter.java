@@ -45,7 +45,7 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
     public void onViewCreated(Shot shot, List<Shot> allShots, ShotDetailsRequest detailsRequest) {
         this.detailsRequest = detailsRequest;
 
-        if (allShots != null && allShots.size() > 0) {
+        if (allShots != null && !allShots.isEmpty()) {
             currentPage = allShots.size() / SHOTS_PER_PAGE;
             hasMore = allShots.size() % SHOTS_PER_PAGE == 0;
             getView().previewShots(shot, allShots);

@@ -10,8 +10,6 @@ import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.FollowersController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
-import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
-import co.netguru.android.inbbbox.feature.details.ShotDetailsType;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;
@@ -42,7 +40,6 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     @NonNull
     private Subscription unfollowUserSubscription;
     private Follower follower;
-    private User user;
     private boolean hasMore = true;
     private int pageNumber = 1;
 
@@ -83,7 +80,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         if (refreshShotsSubscription.isUnsubscribed()) {
             loadMoreShotsSubscription.unsubscribe();
             pageNumber = 1;
-            loadMoreShotsSubscription= userShotsController.getUserShotsList(follower.id(),
+            loadMoreShotsSubscription = userShotsController.getUserShotsList(follower.id(),
                     pageNumber, SHOT_PAGE_COUNT)
                     .compose(androidIO())
                     .doAfterTerminate(getView()::hideProgress)
@@ -98,7 +95,6 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     public void userDataReceived(User user) {
         Timber.d("Received user : %s", user);
         if (user != null) {
-            this.user = user;
             downloadUserShots(user);
         }
     }
@@ -107,15 +103,15 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     public void getMoreUserShotsFromServer() {
         if (hasMore && refreshShotsSubscription.isUnsubscribed() && loadMoreShotsSubscription.isUnsubscribed()) {
             pageNumber++;
-            loadMoreShotsSubscription= userShotsController.getUserShotsList(follower.id(),
+            loadMoreShotsSubscription = userShotsController.getUserShotsList(follower.id(),
                     pageNumber, SHOT_PAGE_COUNT)
                     .compose(fromListObservable())
                     .map(shot -> Shot.update(shot).author(User.createFromFollower(follower)).build())
                     .toList()
                     .compose(androidIO())
                     .subscribe(shotList -> {
-                                hasMore = shotList.size() == SHOT_PAGE_COUNT;
-                                getView().showMoreUserShots(shotList);
+                        hasMore = shotList.size() == SHOT_PAGE_COUNT;
+                        getView().showMoreUserShots(shotList);
                     }, throwable -> handleError(throwable, "Error while getting more user shots"));
         }
     }
@@ -135,7 +131,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     @Override
     public void showShotDetails(Shot shot) {
-        if(follower != null) {
+        if (follower != null) {
             getView().openShotDetailsScreen(shot, follower.shotList(), follower.id());
         }
     }

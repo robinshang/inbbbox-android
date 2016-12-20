@@ -15,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -351,6 +350,7 @@ public class ShotDetailsFragment
         ShotFullscreenActivity.startActivity(getContext(), shot, allShots, detailsRequest);
     }
 
+    @Override
     public void showMessageOnServerError(String errorText) {
         Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
     }
