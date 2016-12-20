@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.model.localrepository;
+package co.netguru.android.inbbbox.model.localrepository.database;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
@@ -10,6 +10,7 @@ public class TeamDB {
     @Id
     private long id;
     private String name;
+
     @Generated(hash = 269872159)
     public TeamDB(long id, String name) {
         this.id = id;

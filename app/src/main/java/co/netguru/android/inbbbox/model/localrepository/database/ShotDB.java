@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.model.localrepository;
+package co.netguru.android.inbbbox.model.localrepository.database;
 
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
@@ -7,7 +7,7 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.ToOne;
 import org.threeten.bp.LocalDateTime;
 
-import co.netguru.android.inbbbox.model.localrepository.converter.LocalDateTimeConverter;
+import co.netguru.android.inbbbox.model.localrepository.database.converter.LocalDateTimeConverter;
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.NotNull;
 
@@ -49,10 +49,10 @@ public class ShotDB {
     private transient Long team__resolvedKey;
 
     @Generated(hash = 1191128644)
-    public ShotDB(long id, String title, LocalDateTime creationDate, String projectUrl,
-            int likesCount, int bucketCount, int commentsCount, String description,
-            boolean isGif, String hiDpiImageUrl, String normalImageUrl, String thumbnailUrl,
-            boolean isBucketed, boolean isLiked, long userId, long teamId) {
+    public ShotDB(long id, String title, LocalDateTime creationDate, String projectUrl, int likesCount,
+            int bucketCount, int commentsCount, String description, boolean isGif, String hiDpiImageUrl,
+            String normalImageUrl, String thumbnailUrl, boolean isBucketed, boolean isLiked,
+            long userId, long teamId) {
         this.id = id;
         this.title = title;
         this.creationDate = creationDate;

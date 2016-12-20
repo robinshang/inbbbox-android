@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.model.localrepository.converter;
+package co.netguru.android.inbbbox.model.localrepository.database.converter;
 
 import org.greenrobot.greendao.converter.PropertyConverter;
 import org.threeten.bp.LocalDateTime;

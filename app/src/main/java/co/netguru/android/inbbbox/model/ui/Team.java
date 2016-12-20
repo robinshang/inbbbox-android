@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
 import co.netguru.android.inbbbox.model.api.TeamEntity;
+import co.netguru.android.inbbbox.model.localrepository.database.TeamDB;
 
 @AutoValue
 public abstract class Team implements Parcelable {
@@ -32,6 +33,13 @@ public abstract class Team implements Parcelable {
         return Team.builder()
                 .id(entity.id())
                 .name(entity.name())
+                .build();
+    }
+
+    public static Team fromDB(TeamDB teamDB) {
+        return Team.builder()
+                .id(teamDB.getId())
+                .name(teamDB.getName())
                 .build();
     }
 

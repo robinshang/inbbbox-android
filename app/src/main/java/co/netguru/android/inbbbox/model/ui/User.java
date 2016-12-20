@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
 import co.netguru.android.inbbbox.model.api.UserEntity;
+import co.netguru.android.inbbbox.model.localrepository.database.UserDB;
 
 @AutoValue
 public abstract class User implements Parcelable{
@@ -46,6 +47,16 @@ public abstract class User implements Parcelable{
                 .avatarUrl(entity.avatarUrl())
                 .username(entity.username())
                 .shotsCount(entity.shotsCount())
+                .build();
+    }
+
+    public static User fromDB(UserDB userDB) {
+        return User.builder()
+                .id(userDB.getId())
+                .name(userDB.getName())
+                .avatarUrl(userDB.getAvatarUrl())
+                .username(userDB.getUsername())
+                .shotsCount(userDB.getShotsCount())
                 .build();
     }
 

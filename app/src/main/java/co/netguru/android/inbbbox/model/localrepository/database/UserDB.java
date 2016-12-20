@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.model.localrepository;
+package co.netguru.android.inbbbox.model.localrepository.database;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
@@ -13,6 +13,7 @@ public class UserDB {
     private String avatarUrl;
     private String username;
     private int shotsCount;
+
     @Generated(hash = 1250734072)
     public UserDB(long id, String name, String avatarUrl, String username,
             int shotsCount) {
@@ -25,6 +26,7 @@ public class UserDB {
     @Generated(hash = 1312299826)
     public UserDB() {
     }
+
     public long getId() {
         return this.id;
     }
