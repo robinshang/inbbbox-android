@@ -33,6 +33,7 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
+import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
@@ -94,8 +95,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         try {
             shotActionListener = (ShotsFragment.ShotActionListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement ShotActionListener");
+            throw new InterfaceNotImplementedException(e, context.toString(), ShotsFragment.ShotActionListener.class.getSimpleName());
         }
     }
 
