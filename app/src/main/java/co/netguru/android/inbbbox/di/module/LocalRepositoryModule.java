@@ -11,13 +11,13 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.App;
-import co.netguru.android.inbbbox.localrepository.DaoMaster;
-import co.netguru.android.inbbbox.localrepository.DaoSession;
 import co.netguru.android.inbbbox.localrepository.GuestModeRepository;
 import co.netguru.android.inbbbox.localrepository.SettingsPrefsRepository;
 import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
 
+import co.netguru.android.inbbbox.model.localrepository.DaoMaster;
+import co.netguru.android.inbbbox.model.localrepository.DaoSession;
 import dagger.Module;
 import dagger.Provides;
 
