@@ -85,7 +85,7 @@ public class AutoItemScrollRecyclerView extends RecyclerView {
             super.setLayoutManager(layoutManager);
             orientation = ((LinearLayoutManager) layoutManager).getOrientation();
         } else {
-            throw new RuntimeException("Layout manager should be instance of LinearLayoutManager");
+            throw new IllegalStateException("Layout manager should be instance of LinearLayoutManager");
         }
     }
 }

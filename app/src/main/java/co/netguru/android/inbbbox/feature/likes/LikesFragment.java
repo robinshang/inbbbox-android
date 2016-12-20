@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;

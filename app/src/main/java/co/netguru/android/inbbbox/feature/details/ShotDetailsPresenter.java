@@ -138,6 +138,7 @@ public class ShotDetailsPresenter
         getView().openShotFullscreen(shot, allShots);
     }
 
+    @Override
     public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));

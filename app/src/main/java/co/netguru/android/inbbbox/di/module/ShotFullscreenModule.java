@@ -14,10 +14,6 @@ import dagger.Provides;
 @Module
 public class ShotFullscreenModule {
 
-    public ShotFullscreenModule() {
-
-    }
-
     @Provides
     ShotFullscreenAdapter provideShotsAdapter() {
         return new ShotFullscreenAdapter();

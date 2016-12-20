@@ -12,7 +12,6 @@ import co.netguru.android.inbbbox.di.module.FollowerDetailsFragmentModule;
 import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
 import co.netguru.android.inbbbox.di.module.LocalRepositoryModule;
 import co.netguru.android.inbbbox.di.module.LoginModule;
-import co.netguru.android.inbbbox.di.module.ShotFullscreenModule;
 import co.netguru.android.inbbbox.event.RxBus;
 import dagger.Component;
 
