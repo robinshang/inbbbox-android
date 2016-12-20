@@ -91,7 +91,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
             onUnFollowCompletedListener = (OnFollowedShotActionListener) context;
         } catch (ClassCastException e) {
             Timber.e(e, "must implement OnFollowedShotActionListener");
-            throw new InterfaceNotImplementedException(e, this.getClass(), OnFollowedShotActionListener.class);
+            throw new InterfaceNotImplementedException(e, context.toString(), OnFollowedShotActionListener.class.getSimpleName());
         }
         component = App.getAppComponent(getContext())
                 .plus(new FollowerDetailsFragmentModule(shot -> getPresenter().showShotDetails(shot)));
