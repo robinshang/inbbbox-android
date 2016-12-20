@@ -29,6 +29,7 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.FollowerDetailsFragmentComponent;
 import co.netguru.android.inbbbox.di.module.FollowerDetailsFragmentModule;
+import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.followers.details.adapter.FollowerDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Follower;
@@ -90,8 +91,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
             onUnFollowCompletedListener = (OnFollowedShotActionListener) context;
         } catch (ClassCastException e) {
             Timber.e(e, "must implement OnFollowedShotActionListener");
-            throw new ClassCastException(context.toString()
-                    + " must implement OnFollowedShotActionListener");
+            throw new InterfaceNotImplementedException(e, this.getClass(), OnFollowedShotActionListener.class);
         }
         component = App.getAppComponent(getContext())
                 .plus(new FollowerDetailsFragmentModule(shot -> getPresenter().showShotDetails(shot)));

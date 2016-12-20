@@ -30,6 +30,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.buckets.createbucket.CreateBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.common.BaseMvpDialogFragment;
 import co.netguru.android.inbbbox.feature.details.fullscreen.ShotFullscreenActivity;
@@ -217,8 +218,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
             listener.onBucketForShotSelect(bucket, shot);
             dismiss();
         } catch (ClassCastException e) {
-            throw new ClassCastException(targetFragment.toString()
-                    + " must implement OnHeadlineSelectedListener");
+            throw new InterfaceNotImplementedException(e, targetFragment.getClass().getSimpleName(), BucketSelectListener.class.getSimpleName());
         }
     }
 
