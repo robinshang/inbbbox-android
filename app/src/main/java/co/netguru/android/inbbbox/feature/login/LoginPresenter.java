@@ -7,10 +7,11 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.TokenParametersController;
 import co.netguru.android.inbbbox.controler.UserController;
+import co.netguru.android.inbbbox.enumeration.UserModeType;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -25,7 +26,7 @@ public final class LoginPresenter
 
     private final TokenParametersController tokenParametersController;
     private final TokenController apiTokenController;
-    private final ErrorMessageController errorHandler;
+    private final ErrorController errorController;
     private final UserController userController;
     private final CompositeSubscription compositeSubscription;
     private int guestModeCounter = 0;
@@ -33,11 +34,11 @@ public final class LoginPresenter
     @Inject
     LoginPresenter(TokenParametersController oauthUrlController,
                    TokenController apiTokenController,
-                   ErrorMessageController apiErrorParser,
+                   ErrorController errorController,
                    UserController userController) {
         this.tokenParametersController = oauthUrlController;
         this.apiTokenController = apiTokenController;
-        this.errorHandler = apiErrorParser;
+        this.errorController = errorController;
         this.userController = userController;
         compositeSubscription = new CompositeSubscription();
     }
@@ -58,7 +59,7 @@ public final class LoginPresenter
                                 urlUUIDPair -> getView()
                                         .openAuthWebViewFragment(urlUUIDPair.first,
                                                 urlUUIDPair.second.toString()),
-                                this::handleError));
+                                throwable -> handleError(throwable, "Problem with authorization")));
     }
 
     @Override
@@ -83,7 +84,14 @@ public final class LoginPresenter
 
     @Override
     public void handleKnownOauthError(@NonNull String oauthErrorMessage) {
-        getView().showApiError(oauthErrorMessage);
+        getView().showMessageOnServerError(oauthErrorMessage);
+    }
+
+    @Override
+    public void handleError(Throwable throwable, String errorText) {
+        Timber.e(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
+
     }
 
     @Override
@@ -100,9 +108,14 @@ public final class LoginPresenter
                 tokenParametersController.getUserGuestToken()
                         .flatMapCompletable(apiTokenController::saveToken)
                         .andThen(userController.enableGuestMode())
-                        .subscribe(getView()::showNextScreen,
-                                this::handleError)
-        );
+                        .subscribe(this::handleGuestLogin,
+                                throwable -> handleError(throwable,
+                                        "Error while getting user guest token")));
+    }
+
+    private void handleGuestLogin() {
+        getView().initializeUserMode(UserModeType.GUEST_USER_MODE);
+        getView().showNextScreen();
     }
 
     private void requestTokenAndLoadUserData(String code) {
@@ -110,12 +123,13 @@ public final class LoginPresenter
                 apiTokenController.requestNewToken(code)
                         .flatMap(token -> userController.requestUser())
                         .compose(androidIO())
-                        .subscribe(user -> getView().showNextScreen(),
-                                this::handleError));
+                        .subscribe(user -> handleOnlineUserLogin(),
+                                throwable -> handleError(throwable,
+                                        "Error while requesting new token")));
     }
 
-    private void handleError(Throwable throwable) {
-        Timber.e(throwable, "Error while getting user");
-        getView().showApiError(errorHandler.getErrorMessageLabel(throwable));
+    private void handleOnlineUserLogin() {
+        getView().initializeUserMode(UserModeType.ONLINE_USER_MODE);
+        getView().showNextScreen();
     }
 }

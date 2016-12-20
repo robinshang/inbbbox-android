@@ -2,12 +2,14 @@ package co.netguru.android.inbbbox.feature.splash;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatDelegate;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.di.component.SplashScreenComponent;
+import co.netguru.android.inbbbox.enumeration.UserModeType;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 
@@ -20,6 +22,7 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
     protected void onCreate(Bundle savedInstanceState) {
         initComponent();
         super.onCreate(savedInstanceState);
+        getPresenter().initializeDefaultNightMode();
     }
 
     private void initComponent() {
@@ -47,7 +50,18 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
     }
 
     @Override
-    public void showError(String error) {
-        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    public void initializeOnlineUserMode() {
+        App.initUserComponent(this, UserModeType.ONLINE_USER_MODE);
+    }
+
+    @Override
+    public void setDefaultNightMode(boolean isNightMode) {
+        AppCompatDelegate.setDefaultNightMode(isNightMode
+                ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(this, errorText, Toast.LENGTH_LONG).show();
     }
 }

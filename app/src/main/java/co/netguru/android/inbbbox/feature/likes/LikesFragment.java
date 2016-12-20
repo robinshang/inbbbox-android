@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
@@ -85,7 +86,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        component = App.getAppComponent(getContext())
+        component = App.getUserComponent(getContext())
                 .plus(new LikesFragmentModule(shots -> getPresenter().showShotDetails(shots, getData())));
         component.inject(this);
     }
@@ -96,8 +97,8 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         try {
             shotActionListener = (ShotsFragment.ShotActionListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement ShotActionListener");
+            throw new RuntimeException(context.toString()
+                    + " must implement ShotActionListener", e);
         }
     }
 
@@ -201,6 +202,11 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     @Override
     public void refreshFragmentData() {
         getPresenter().getLikesFromServer();
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(getActivity(), errorText, Toast.LENGTH_LONG).show();
     }
 
     private void initEmptyView() {

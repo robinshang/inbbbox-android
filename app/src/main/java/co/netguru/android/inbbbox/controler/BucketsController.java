@@ -30,10 +30,6 @@ public class BucketsController {
         this.bucketApi = bucketApi;
     }
 
-    public Single<List<Bucket>> getCurrentUserBuckets() {
-        return userApi.getUserBucketsList();
-    }
-
     public Single<List<Bucket>> getCurrentUserBuckets(int pageNumber, int pageCount) {
         return userApi.getUserBucketsList(pageNumber, pageCount);
     }

@@ -4,14 +4,75 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="@dimen/add_to_bucket_fragment_recycler_min_height"
+    android:layout_height="match_parent"
+    android:background="@color/secondaryWindowBackground"
     >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ProgressBar
+            android:id="@+id/bucket_list_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:indeterminate="true"
+            android:padding="@dimen/margin_default"
+            />
+
+        <TextView
+            android:id="@+id/no_buckets_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:drawablePadding="@dimen/margin_small"
+            android:drawableTop="@drawable/ic_buckets"
+            android:gravity="center"
+            android:padding="@dimen/margin_default"
+            android:text="@string/fragment_add_to_bucket_there_are_no_buckets_add_one_first"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/buckets_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/add_to_bucket_fragment_create_bucket_button_height"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            tools:listitem="@layout/bucket_list_item"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/create_bucket_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/add_to_bucket_fragment_create_bucket_button_height"
+        android:layout_gravity="bottom"
+        android:background="@color/secondaryWindowBackground"
+        android:foreground="?selectableItemBackground">
+
+        <include
+            layout="@layout/divider_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_gravity="top"/>
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawablePadding="@dimen/margin_small"
+            android:drawableStart="@drawable/ic_fab_add"
+            android:gravity="center"
+            android:text="@string/add_to_bucket_fragment_create_new_bucket"/>
+
+    </FrameLayout>
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:background="@color/windowBackground">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -56,11 +117,12 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackground"
+                    android:contentDescription="@null"
                     android:src="@drawable/ic_close_modal"/>
 
                 <TextView
                     android:id="@+id/textView"
-                    style="@style/Font25.RobotoLight.Gray"
+                    style="@style/Font25.Gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -75,9 +137,9 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_default"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_default">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/author_avatar_circle_image"
@@ -93,7 +155,7 @@
 
                 <TextView
                     android:id="@+id/image_title_text_view"
-                    style="@style/Font14.Black"
+                    style="@style/TextAppearance.AppCompat.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -103,56 +165,24 @@
 
                 <TextView
                     android:id="@+id/author_text_view"
-                    style="@style/Font14"
+                    style="@style/TextAppearance.AppCompat.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="by Łukasz Łanecki for netguru"/>
 
                 <TextView
                     android:id="@+id/date_text_view"
-                    style="@style/Font14"
+                    style="@style/TextAppearance.AppCompat.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="on Dec 23, 2015"/>
 
             </LinearLayout>
+
         </LinearLayout>
 
         <include layout="@layout/divider_vertical"/>
 
     </android.support.design.widget.AppBarLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <ProgressBar
-            android:id="@+id/bucket_list_progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:indeterminate="true"
-            android:padding="@dimen/margin_default"
-            />
-
-        <TextView
-            android:id="@+id/no_buckets_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:drawablePadding="@dimen/margin_small"
-            android:drawableTop="@drawable/ic_buckets"
-            android:gravity="center"
-            android:padding="@dimen/margin_default"
-            android:text="@string/fragment_add_to_bucket_there_are_no_buckets_add_one_first"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/buckets_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:listitem="@layout/bucket_list_item"/>
-    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

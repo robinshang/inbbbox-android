@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
@@ -28,6 +29,7 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
 
     private final BucketsController bucketsController;
+    private final ErrorController errorController;
 
     private int shotsPerPage;
     private int pageNumber = 1;
@@ -42,8 +44,9 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     protected Subscription loadNextShotsSubscription;
 
     @Inject
-    public BucketDetailsPresenter(BucketsController bucketsController) {
+    public BucketDetailsPresenter(BucketsController bucketsController, ErrorController errorController) {
         this.bucketsController = bucketsController;
+        this.errorController = errorController;
         refreshShotsSubscription = Subscriptions.unsubscribed();
         loadNextShotsSubscription = Subscriptions.unsubscribed();
     }
@@ -118,9 +121,10 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         }
     }
 
-    private void handleError(Throwable throwable, String logMessage) {
-        getView().showError(throwable.getMessage());
-        Timber.d(throwable, logMessage);
+    @Override
+    public void handleError(Throwable throwable, String errorText) {
+        Timber.e(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
     private void handleNewShots(List<ShotEntity> shotEntities) {
@@ -128,5 +132,4 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         getView().setData(shotEntities);
         getView().showContent();
     }
-
 }

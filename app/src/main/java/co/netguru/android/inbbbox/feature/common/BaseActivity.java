@@ -2,10 +2,8 @@ package co.netguru.android.inbbbox.feature.common;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -19,46 +17,48 @@ import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.event.CriticalLogoutEvent;
-import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
+import co.netguru.android.inbbbox.feature.common.bottomsheet.BottomSheetActivityCallback;
+import co.netguru.android.inbbbox.feature.common.bottomsheet.HidingBottomSheetActivityDelegate;
+import co.netguru.android.inbbbox.feature.common.bottomsheet.HidingBottomSheetBearer;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
-import co.netguru.android.inbbbox.utils.InputUtils;
 import rx.Subscription;
 
-public abstract class BaseActivity extends AppCompatActivity {
-
-    private static final String BOTTOM_SHEET_STATE = "bottomSheetState";
+public abstract class BaseActivity extends AppCompatActivity
+        implements BottomSheetActivityCallback, HidingBottomSheetBearer {
 
     @BindView(android.R.id.content)
     View contentView;
     @Nullable
-    @BindView(R.id.fragment_container)
+    @BindView(R.id.bottom_sheet_fragment_container)
     View bottomSheetView;
 
     @Nullable
-    private BottomSheetBehavior bottomSheetBehavior;
+    private HidingBottomSheetActivityDelegate bottomSheetActivityDelegate;
+
     private Subscription criticalLogoutSubscription;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         ButterKnife.bind(this);
-        initializeBottomSheet();
+        if (bottomSheetView != null) {
+            bottomSheetActivityDelegate = new HidingBottomSheetActivityDelegate(this, bottomSheetView);
+        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (bottomSheetBehavior != null) {
-            outState.putInt(BOTTOM_SHEET_STATE, bottomSheetBehavior.getState());
+        if (bottomSheetActivityDelegate != null) {
+            bottomSheetActivityDelegate.onSaveInstanceState(outState);
         }
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (bottomSheetBehavior != null) {
-            bottomSheetBehavior.setState(savedInstanceState.getInt(BOTTOM_SHEET_STATE,
-                    BottomSheetBehavior.STATE_COLLAPSED));
+        if (bottomSheetActivityDelegate != null) {
+            bottomSheetActivityDelegate.onRestoreInstanceState(savedInstanceState);
         }
     }
 
@@ -79,14 +79,15 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (bottomSheetBehavior != null && isBottomSheetOpen()) {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            return;
+        if (bottomSheetActivityDelegate != null && bottomSheetActivityDelegate.isBottomSheetOpen()) {
+            bottomSheetActivityDelegate.hideBottomSheet();
+        } else {
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 
-    protected FragmentTransaction replaceFragment(int containerViewId, Fragment fragment, String tag) {
+    @Override
+    public FragmentTransaction replaceFragment(int containerViewId, Fragment fragment, String tag) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(containerViewId, fragment, tag);
         return ft;
@@ -96,10 +97,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         Snackbar.make(contentView, stringRes, Snackbar.LENGTH_LONG).show();
     }
 
-    protected void showBottomSheet(Fragment fragment, String tag) {
-        if (bottomSheetView != null && bottomSheetBehavior != null) {
-            replaceFragment(R.id.fragment_container, fragment, tag).commit();
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    @Override
+    public void showBottomSheet(Fragment fragment, String tag) {
+        if (bottomSheetActivityDelegate != null) {
+            bottomSheetActivityDelegate.showBottomSheet(fragment, tag);
+        } else {
+            throw new IllegalStateException("BottomSheetActivity delegate is null." +
+                    " Did you provide bottom_sheet_fragment_container view for this activity?");
         }
     }
 
@@ -107,43 +111,5 @@ public abstract class BaseActivity extends AppCompatActivity {
         Toast.makeText(this, object.getReason(), Toast.LENGTH_SHORT).show();
         LoginActivity.startActivityClearTask(this);
         finish();
-    }
-
-    private boolean isBottomSheetOpen() {
-        return bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED;
-    }
-
-    private void initializeBottomSheet() {
-        if (bottomSheetView != null) {
-            bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
-            bottomSheetBehavior.setBottomSheetCallback(createBottomSheetCallback());
-        }
-    }
-
-    private BottomSheetBehavior.BottomSheetCallback createBottomSheetCallback() {
-        return new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    InputUtils.hideKeyboard(BaseActivity.this, bottomSheetView);
-                    removeBottomSheetFragment();
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                //no-op
-            }
-        };
-    }
-
-    private void removeBottomSheetFragment() {
-        Fragment fragmentToRemove = getSupportFragmentManager()
-                .findFragmentByTag(ShotDetailsFragment.TAG);
-        if (fragmentToRemove != null) {
-            getSupportFragmentManager().beginTransaction()
-                    .remove(fragmentToRemove)
-                    .commit();
-        }
     }
 }

@@ -1,31 +1,18 @@
 package co.netguru.android.inbbbox.controler;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import java.util.List;
 
-import co.netguru.android.inbbbox.api.LikesApi;
-
+import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
+import rx.Observable;
 
-@Singleton
-public class LikeShotController {
+public interface LikeShotController {
 
-    private final LikesApi likesApi;
+    Completable isShotLiked(Shot shot);
 
-    @Inject
-    LikeShotController(LikesApi likesApi) {
-        this.likesApi = likesApi;
-    }
+    Completable likeShot(Shot shot);
 
-    public Completable isShotLiked(long id) {
-        return likesApi.isShotLiked(id);
-    }
+    Completable unLikeShot(Shot shot);
 
-    public Completable likeShot(long id) {
-        return likesApi.likeShot(id);
-    }
-
-    public Completable unLikeShot(long id) {
-        return likesApi.unLikeShot(id);
-    }
+    Observable<List<Shot>> getLikedShots(int pageNumber, int pageCount);
 }

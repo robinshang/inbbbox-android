@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.splash;
 
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
@@ -9,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.UserController;
 import co.netguru.android.testcommons.RxSyncTestRule;
@@ -33,7 +34,7 @@ public class SplashPresenterTest {
     public UserController userControllerMock;
 
     @Mock
-    public ErrorMessageController errorMessageControllerMock;
+    public ErrorController errorControllerMock;
 
     @Mock
     public SplashContract.View splashViewMock;
@@ -76,7 +77,7 @@ public class SplashPresenterTest {
     @Test
     public void whenViewAttachedAndTokenIsInvalidOrNull_thenShowLoginScreen() {
         when(tokenControllerMock.isTokenValid()).thenReturn(Single.just(false));
-
+        when(userControllerMock.isGuestModeEnabled()).thenReturn(Single.just(false));
         splashPresenter.attachView(splashViewMock);
 
         verify(splashViewMock, times(1)).showLoginScreen();
@@ -100,10 +101,15 @@ public class SplashPresenterTest {
         when(tokenControllerMock.isTokenValid()).thenReturn(Single.just(true));
         when(userControllerMock.isGuestModeEnabled()).thenReturn(Single.just(false));
         when(userControllerMock.requestUser()).thenReturn(Observable.error(exampleThrowable));
-        when(errorMessageControllerMock.getErrorMessageLabel(exampleThrowable)).thenReturn(test);
+        when(errorControllerMock.getThrowableMessage(exampleThrowable)).thenReturn(test);
 
         splashPresenter.attachView(splashViewMock);
 
-        verify(splashViewMock, times(1)).showError(test);
+        verify(splashViewMock, times(1)).showMessageOnServerError(test);
+    }
+
+    @After
+    public void tearDown() {
+        splashPresenter.detachView(false);
     }
 }

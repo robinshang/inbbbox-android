@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox;
 import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.model.api.Bucket;
@@ -103,7 +104,7 @@ public final class Statics {
             .build();
 
     public static final List<Comment> COMMENTS = generateComments();
-    private static final int COMMENTS_COUNT = 15;
+    public static final List<Shot> SHOT_LIST = Collections.emptyList();
 
     public static List<Comment> generateComments() {
         List<Comment> comments = new ArrayList<>();
@@ -153,4 +154,6 @@ public final class Statics {
         }
         return result;
     }
+
+    private static final int COMMENTS_COUNT = 15;
 }

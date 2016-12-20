@@ -7,7 +7,7 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.controler.BucketsController;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.ShotsController;
 import co.netguru.android.inbbbox.model.api.Bucket;
@@ -28,7 +28,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private static final int FIRST_PAGE = 1;
 
     private final ShotsController shotsController;
-    private final ErrorMessageController errorMessageController;
+    private final ErrorController errorController;
     private final LikeShotController likeShotController;
     private final BucketsController bucketsController;
     private final CompositeSubscription subscriptions;
@@ -41,13 +41,13 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private boolean hasMore = true;
 
     @Inject
-    ShotsPresenter(ShotsController shotsController, ErrorMessageController errorMessageController, LikeShotController likeShotController,
-                   BucketsController bucketsController) {
+    ShotsPresenter(ShotsController shotsController, LikeShotController likeShotController,
+                   BucketsController bucketsController, ErrorController errorController) {
 
         this.shotsController = shotsController;
-        this.errorMessageController = errorMessageController;
         this.likeShotController = likeShotController;
         this.bucketsController = bucketsController;
+        this.errorController = errorController;
         subscriptions = new CompositeSubscription();
         refreshSubscription = Subscriptions.unsubscribed();
         loadMoreSubscription = Subscriptions.unsubscribed();
@@ -66,27 +66,12 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     public void likeShot(Shot shot) {
         getView().closeFabMenu();
         if (!shot.isLiked()) {
-            final Subscription subscription = likeShotController.likeShot(shot.id())
+            final Subscription subscription = likeShotController.likeShot(shot)
                     .compose(applyCompletableIoSchedulers())
-                    .subscribe(() -> onShotLikeCompleted(shot), this::onShotLikeError);
+                    .subscribe(() -> onShotLikeCompleted(shot),
+                            throwable -> handleError(throwable, "Error while sending shot like"));
             subscriptions.add(subscription);
         }
-    }
-
-    private void onShotLikeCompleted(Shot shot) {
-        Timber.d("Shot liked : %s", shot);
-        getView().changeShotLikeStatus(changeShotLikeStatus(shot));
-    }
-
-    private void onShotLikeError(Throwable throwable) {
-        Timber.e(throwable, "Error while sending shot like");
-        getView().showError(errorMessageController.getErrorMessageLabel(throwable));
-    }
-
-    private Shot changeShotLikeStatus(Shot shot) {
-        return Shot.update(shot)
-                .isLiked(true)
-                .build();
     }
 
     @Override
@@ -103,7 +88,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                         getView().hideLoadingIndicator();
                         getView().setData(shotList);
                         getView().showContent();
-                    }, this::handleException);
+                    }, throwable -> handleError(throwable, "Error while getting shots"));
         }
     }
 
@@ -118,7 +103,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                         hasMore = shotList.size() >= SHOTS_PER_PAGE;
                         getView().hideLoadingIndicator();
                         getView().showMoreItems(shotList);
-                    }, this::handleException);
+                    }, throwable -> handleError(throwable, "Error while getting more shots"));
         }
     }
 
@@ -135,10 +120,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                         .compose(RxTransformerUtils.applyCompletableIoSchedulers())
                         .subscribe(
                                 getView()::showBucketAddSuccess,
-                                throwable -> {
-                                    Timber.d(throwable, "Error while adding shot to bucket");
-                                    getView().showError(throwable.getMessage());
-                                })
+                                throwable -> handleError(throwable, "Error while adding shot to bucket"))
         );
     }
 
@@ -153,9 +135,21 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         getView().showDetailsScreenInCommentMode(selectedShot);
     }
 
-    private void handleException(Throwable exception) {
-        Timber.e(exception, "Shots item receiving exception ");
+    @Override
+    public void handleError(Throwable throwable, String errorText) {
+        Timber.e(throwable, errorText);
         getView().hideLoadingIndicator();
-        getView().showError(errorMessageController.getErrorMessageLabel(exception));
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
+    }
+
+    private void onShotLikeCompleted(Shot shot) {
+        Timber.d("Shot liked : %s", shot);
+        getView().changeShotLikeStatus(changeShotLikeStatus(shot));
+    }
+
+    private Shot changeShotLikeStatus(Shot shot) {
+        return Shot.update(shot)
+                .isLiked(true)
+                .build();
     }
 }

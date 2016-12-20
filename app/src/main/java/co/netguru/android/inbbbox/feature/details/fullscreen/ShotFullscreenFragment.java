@@ -20,6 +20,7 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotFullscreenComponent;
 import co.netguru.android.inbbbox.di.module.ShotFullscreenModule;
+import co.netguru.android.inbbbox.di.module.ShotsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -131,8 +132,9 @@ public class ShotFullscreenFragment extends
     }
 
     private void initComponent() {
-        component = App.getAppComponent(getContext())
-                .plusShotFullscreenComponent(new ShotFullscreenModule());
+        component = App.getUserComponent(getContext())
+                .plus(new ShotFullscreenModule());
+
         component.inject(this);
     }
 }

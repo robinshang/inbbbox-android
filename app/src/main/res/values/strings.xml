@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Inbbbox</string>
+    <string name="block_canary_display_activity_label" translatable="false">Inbbbox block canary</string>
+    <string name="leak_canary_display_activity_label" translatable="false">Inbbbox leak canary</string>
 
     <string name="empty_string" translatable="false"></string>
 
@@ -36,6 +38,7 @@
     <string name="drawer_debuts">Debuts</string>
     <string name="drawer_group_customization">Customization</string>
     <string name="drawer_shot_details">Shot Details on Homescreen</string>
+    <string name="drawer_night_mode">Night Mode</string>
     <string name="drawer_logout">Log out</string>
 
     <string name="change_stream_source_error">At least one stream source should be checked</string>
@@ -123,4 +126,5 @@
     <string name="guest_button_text">Use as guest</string>
     <string name="create_account_label">Create Dribbble account</string>
     <string name="guest_label">Guest?</string>
+    <string name="add_to_bucket_fragment_create_new_bucket">Create new bucket</string>
 </resources>

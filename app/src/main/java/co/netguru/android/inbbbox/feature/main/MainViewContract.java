@@ -5,9 +5,12 @@ import android.support.annotation.StringRes;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
+import co.netguru.android.inbbbox.feature.common.ErrorPresenter;
+import co.netguru.android.inbbbox.feature.common.HttpErrorView;
+
 interface MainViewContract {
 
-    interface View extends MvpView {
+    interface View extends MvpView, HttpErrorView {
 
         void showLogoutMenu();
 
@@ -35,6 +38,10 @@ interface MainViewContract {
 
         void changeCustomizationStatus(boolean isDetails);
 
+        void changeNightMode(boolean isNightMode);
+
+        void setNightModeStatus(boolean isNightMode);
+
         void setSettingsListeners();
 
         void showMessage(@StringRes int message);
@@ -46,7 +53,7 @@ interface MainViewContract {
         void showCreateAccountButton();
     }
 
-    interface Presenter extends MvpPresenter<View> {
+    interface Presenter extends MvpPresenter<View>, ErrorPresenter {
 
         void toggleButtonChanged(boolean isChecked);
 
@@ -67,6 +74,8 @@ interface MainViewContract {
         void debutsStatusChanged(boolean status);
 
         void customizationStatusChanged(boolean isDetails);
+
+        void nightModeChanged(boolean isNightMode);
 
         void onTimePicked(int hour, int minute);
 

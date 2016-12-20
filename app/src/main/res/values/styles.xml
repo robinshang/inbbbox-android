@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
@@ -10,7 +9,10 @@
         <item name="colorAccent">@color/accent</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="colorControlNormal">@color/white</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
         <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorSecondary">@color/textGrey</item>
+        <item name="android:textColorTertiary">@color/black</item>
         <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
     </style>
 
@@ -35,79 +37,42 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="Font12">
+    <style name="Font12.Primary" parent="TextAppearance.AppCompat.Small">
         <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="Font12.Gray" parent="Font12">
-        <item name="android:textColor">@color/lightGray</item>
-    </style>
-
-    <style name="Font12.DarkGray" parent="Font12">
-        <item name="android:textColor">@color/textGrey</item>
-    </style>
-
-    <style name="Font12.Primary" parent="Font12">
-        <item name="android:textColor">@color/primary</item>
-    </style>
-
-    <style name="Font14">
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="Font14.Gray" parent="Font14">
-        <item name="android:textColor">@color/lightGray</item>
-    </style>
-
-    <style name="Font14.DarkGray" parent="Font14">
-        <item name="android:textColor">@color/textGrey</item>
-    </style>
-
-    <style name="Font14.RobotoSmallCaps" parent="Font14">
-        <item name="android:fontFamily">sans-serif-smallcaps</item>
-    </style>
-
-    <style name="Font14.RobotoSmallCaps.Pink" parent="Font14.RobotoSmallCaps">
         <item name="android:textColor">@color/pink</item>
     </style>
 
-    <style name="Font14.Pink" parent="Font14">
-        <item name="android:textColor">@color/pink</item>
+    <style name="Font12.Gray" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/textGrey</item>
     </style>
 
-    <style name="Font14.White" parent="Font14">
+    <style name="Font12.White" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="Font14.Black" parent="Font14">
+    <style name="Font14.Black" parent="TextAppearance.AppCompat.Small">
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="Font16">
-        <item name="android:textSize">16sp</item>
+    <style name="Font14.White" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="Font16.SemiBlack" parent="Font16">
+    <style name="Font14.Pink" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/pink</item>
+    </style>
+
+    <style name="Font16.SemiBlack" parent="TextAppearance.AppCompat.Medium">
         <item name="android:textColor">@color/semiBlack</item>
     </style>
 
-    <style name="Font25">
-        <item name="android:textSize">25sp</item>
-    </style>
-
-    <style name="Font25.PalePink" parent="Font25">
+    <style name="Font25.PalePink" parent="TextAppearance.AppCompat.Large">
         <item name="android:textColor">@color/palePink</item>
     </style>
 
-    <style name="Font25.RobotoLight" parent="Font25">
-        <item name="android:fontFamily">sans-serif-light</item>
-    </style>
-
-    <style name="Font25.RobotoLight.PalePink" parent="Font25.RobotoLight">
-        <item name="android:textColor">@color/palePink</item>
-    </style>
-
-    <style name="Font25.RobotoLight.Gray" parent="Font25.RobotoLight">
+    <style name="Font25.Gray" parent="TextAppearance.AppCompat.Large">
         <item name="android:textColor">@color/gray</item>
     </style>
 
@@ -140,40 +105,37 @@
     <style name="BigDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="android:textColorPrimary">@color/black</item>
         <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
-        <item name="android:windowMinWidthMajor">90%</item>
-        <item name="android:windowMinWidthMinor">90%</item>
+        <item name="android:windowMinWidthMajor">@fraction/big_dialog_height_width_percentage</item>
+        <item name="android:windowMinWidthMinor">@fraction/big_dialog_height_width_percentage</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
     <style name="NoTitleDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="android:textColorPrimary">@color/black</item>
         <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
         <item name="android:windowMinWidthMajor">40%</item>
         <item name="android:windowMinWidthMinor">40%</item>
     </style>
 
-    <style name="GifLabel">
+    <style name="GifLabel" parent="Font12.Gray">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:text">@string/gif</item>
-        <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/shape_gif_label_background</item>
+        <item name="android:textAllCaps">true</item>
         <item name="android:paddingLeft">@dimen/gif_label_side_padding</item>
         <item name="android:paddingRight">@dimen/gif_label_side_padding</item>
         <item name="android:top">@dimen/gif_label_top_bottom_padding</item>
         <item name="android:bottom">@dimen/gif_label_top_bottom_padding</item>
         <item name="android:alpha">0.7</item>
-        <item name="android:textSize">12sp</item>
         <item name="android:layout_margin">@dimen/margin_default</item>
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="DetailsActionButtonLabels" parent="Font12">
+    <style name="DetailsActionButtonLabels" parent="Font12.Gray">
         <item name="android:layout_gravity">center</item>
         <item name="android:textColor">@color/actionButtonLabelColor</item>
         <item name="android:layout_marginRight">@dimen/details_action_label_right_margin</item>
@@ -210,7 +172,7 @@
         <item name="colorControlNormal">@color/lightGray</item>
     </style>
 
-    <style name="LoadMoreText" parent="Font16">
+    <style name="LoadMoreText" parent="TextAppearance.AppCompat.Small">
         <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>

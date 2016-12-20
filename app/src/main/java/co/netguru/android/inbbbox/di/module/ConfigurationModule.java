@@ -10,7 +10,8 @@ import javax.inject.Singleton;
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.api.DateTimeConverter;
 import co.netguru.android.inbbbox.api.RequestInterceptor;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.api.updatedrxcalladapter.UpdatedRxJavaCallAdapter;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.LogoutController;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
@@ -19,7 +20,6 @@ import dagger.Provides;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Singleton
@@ -37,9 +37,9 @@ public class ConfigurationModule {
     @Provides
     RequestInterceptor providesRequestInterceptor(TokenPrefsRepository tokenPrefsRepository,
                                                   LogoutController logoutController,
-                                                  ErrorMessageController messageController,
+                                                  ErrorController errorController,
                                                   RxBus rxBus) {
-        return new RequestInterceptor(logoutController, messageController,
+        return new RequestInterceptor(logoutController, errorController,
                 tokenPrefsRepository, rxBus);
     }
 
@@ -56,7 +56,8 @@ public class ConfigurationModule {
     Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                // TODO: 15.12.2016 change to regular call adapter as noted in UpdatedRxJavaCallAdapter
+                .addCallAdapterFactory(UpdatedRxJavaCallAdapter.create())
                 .baseUrl(Constants.API.DRIBBLE_BASE_URL)
                 .client(okHttpClient)
                 .build();

@@ -7,7 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.controler.BucketsController;
-import co.netguru.android.inbbbox.controler.LikedShotsController;
+import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.ShotsController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
@@ -24,7 +24,7 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
     private static final int SHOTS_PER_PAGE = 15;
     private final CompositeSubscription subscriptions = new CompositeSubscription();
     private final ShotsController shotsController;
-    private final LikedShotsController likedShotsController;
+    private final LikeShotController likedShotsController;
     private final BucketsController bucketsController;
     private final UserShotsController userShotsController;
 
@@ -33,7 +33,7 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
     private ShotDetailsRequest detailsRequest;
 
     @Inject
-    public ShotFullScreenPresenter(ShotsController shotsController, LikedShotsController likedShotsController,
+    public ShotFullScreenPresenter(ShotsController shotsController, LikeShotController likedShotsController,
                                    BucketsController bucketsController, UserShotsController userShotsController) {
         this.shotsController = shotsController;
         this.likedShotsController = likedShotsController;
@@ -65,8 +65,7 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
                     requestMoreObservable = shotsController.getShots(currentPage, SHOTS_PER_PAGE);
                     break;
                 case LIKES:
-                    requestMoreObservable = likedShotsController.getLikedShots(currentPage, SHOTS_PER_PAGE)
-                            .toList();
+                    requestMoreObservable = likedShotsController.getLikedShots(currentPage, SHOTS_PER_PAGE);
                     break;
                 case BUCKET:
                     requestMoreObservable = bucketsController.getShotsListFromBucket(detailsRequest.id(), currentPage, SHOTS_PER_PAGE)

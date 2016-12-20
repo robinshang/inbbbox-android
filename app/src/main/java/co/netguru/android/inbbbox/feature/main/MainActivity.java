@@ -15,6 +15,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Switch;
@@ -26,7 +27,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
-
+import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
@@ -59,6 +60,9 @@ public class MainActivity
     private static final String REQUEST_EXTRA = "requestExtra";
     private static final String TOGGLE_BUTTON_STATE = "toggleButtonState";
 
+    @BindColor(R.color.accent)
+    int highlightColor;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.main_tab_layout)
@@ -88,6 +92,7 @@ public class MainActivity
     private Switch popularSwitch;
     private Switch debutsSwitch;
     private Switch shotDetailsSwitch;
+    private Switch nightModeSwitch;
     private ToggleButton drawerToggleButton;
     private MainActivityPagerAdapter pagerAdapter;
     private View drawerCreateAccountButton;
@@ -149,6 +154,11 @@ public class MainActivity
             default:
                 throw new IllegalStateException("Intent should contains REQUEST_EXTRA");
         }
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(this, errorText, Toast.LENGTH_SHORT).show();
     }
 
     @NonNull
@@ -234,22 +244,31 @@ public class MainActivity
     }
 
     @Override
+    public void changeNightMode(boolean isNightMode) {
+        AppCompatDelegate.setDefaultNightMode(isNightMode
+                ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+        recreate();
+    }
+
+    @Override
+    public void setNightModeStatus(boolean isNightMode) {
+        nightModeSwitch.setChecked(isNightMode);
+    }
+
+    @Override
     public void setSettingsListeners() {
-        followingSwitch
-                .setOnCheckedChangeListener((buttonView, isChecked)
-                        -> getPresenter().followingStatusChanged(isChecked));
-        newSwitch
-                .setOnCheckedChangeListener((buttonView, isChecked)
-                        -> getPresenter().newStatusChanged(isChecked));
-        popularSwitch
-                .setOnCheckedChangeListener((buttonView, isChecked)
-                        -> getPresenter().popularStatusChanged(isChecked));
-        debutsSwitch
-                .setOnCheckedChangeListener((buttonView, isChecked)
-                        -> getPresenter().debutsStatusChanged(isChecked));
-        shotDetailsSwitch
-                .setOnCheckedChangeListener((buttonView, isChecked)
-                        -> getPresenter().customizationStatusChanged(isChecked));
+        followingSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                getPresenter().followingStatusChanged(isChecked));
+        newSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                getPresenter().newStatusChanged(isChecked));
+        popularSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                getPresenter().popularStatusChanged(isChecked));
+        debutsSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                getPresenter().debutsStatusChanged(isChecked));
+        shotDetailsSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                getPresenter().customizationStatusChanged(isChecked));
+        nightModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                getPresenter().nightModeChanged(isChecked));
     }
 
     @Override
@@ -334,7 +353,7 @@ public class MainActivity
     private void selectTab(TabLayout.Tab tab) {
         final Drawable icon = tab.getIcon();
         if (icon != null) {
-            icon.setColorFilter(getResources().getColor(R.color.pink), PorterDuff.Mode.SRC_IN);
+            icon.setColorFilter(highlightColor, PorterDuff.Mode.SRC_IN);
         }
         tab.setText(getString(TabItemType.getTabItemForPosition(tab.getPosition()).getTitle()));
     }
@@ -411,6 +430,7 @@ public class MainActivity
         popularSwitch = findDrawerSwitch(R.id.drawer_item_popular);
         debutsSwitch = findDrawerSwitch(R.id.drawer_item_debuts);
         shotDetailsSwitch = findDrawerSwitch(R.id.drawer_item_shot_details);
+        nightModeSwitch = findDrawerSwitch(R.id.drawer_item_night_mode);
     }
 
     private Switch findDrawerSwitch(@IdRes int itemId) {

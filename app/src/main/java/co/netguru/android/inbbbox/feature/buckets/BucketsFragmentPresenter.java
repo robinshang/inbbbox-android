@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.buckets;
 
-
 import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
@@ -13,6 +12,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.event.BucketCreatedEvent;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
@@ -29,6 +29,7 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     private static final int BUCKET_SHOTS_PER_PAGE_COUNT = 30;
 
     private final BucketsController bucketsController;
+    private final ErrorController errorController;
     private final RxBus rxBus;
 
     private int pageNumber = 1;
@@ -41,9 +42,10 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     private Subscription busSubscription;
 
     @Inject
-    BucketsFragmentPresenter(BucketsController bucketsController, RxBus rxBus) {
+    BucketsFragmentPresenter(BucketsController bucketsController, RxBus rxBus, ErrorController errorController) {
         this.bucketsController = bucketsController;
         this.rxBus = rxBus;
+        this.errorController = errorController;
         refreshSubscription = Subscriptions.unsubscribed();
         loadNextBucketSubscription = Subscriptions.unsubscribed();
     }
@@ -77,7 +79,7 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
                                 getView().setData(bucketWithShotsList);
                                 getView().showContent();
                             },
-                            throwable -> Timber.d(throwable, "Error while loading buckets"));
+                            throwable -> handleError(throwable, "Error while loading buckets"));
         }
     }
 
@@ -98,7 +100,7 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
                     .subscribe(bucketWithShotsList -> {
                         apiHasMoreBuckets = bucketWithShotsList.size() == BUCKETS_PER_PAGE_COUNT;
                         getView().addMoreBucketsWithShots(bucketWithShotsList);
-                    }, throwable -> Timber.d(throwable, "Error while loading more buckets"));
+                    }, throwable -> handleError(throwable, "Error while loading more buckets"));
         }
     }
 
@@ -119,6 +121,12 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
         } else {
             getView().hideEmptyBucketView();
         }
+    }
+
+    @Override
+    public void handleError(Throwable throwable, String errorText) {
+        Timber.d(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
     private void setupRxBus() {

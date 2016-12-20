@@ -217,6 +217,11 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
         bucketsRecyclerView.smoothScrollToPosition(0);
     }
 
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Snackbar.make(bucketsRecyclerView, errorText, Snackbar.LENGTH_LONG).show();
+    }
+
     @OnClick(R.id.create_bucket_fab)
     public void onCreateBucketFabClick() {
         getPresenter().handleCreateBucket();

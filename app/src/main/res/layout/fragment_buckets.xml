@@ -34,7 +34,7 @@
 
             <TextView
                 android:id="@+id/fragment_buckets_empty_text"
-                style="@style/Font25.RobotoLight.Gray"
+                style="@style/Font25.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/fragment_buckets_empty_logo"
@@ -55,8 +55,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingTop="@dimen/margin_default"
-            android:paddingBottom="@dimen/recycler_view_with_fab_bottom_padding"/>
+            android:paddingBottom="@dimen/recycler_view_with_fab_bottom_padding"
+            android:paddingTop="@dimen/margin_default"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <com.github.clans.fab.FloatingActionButton
@@ -66,7 +66,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="@dimen/margin_default"
         android:layout_marginEnd="@dimen/margin_default"
-        android:src="@drawable/ic_add_accent"
+        android:src="@drawable/ic_fab_add"
         app:layout_behavior="co.netguru.android.inbbbox.view.behavior.FloatingActionMenuAndButtonBehavior"
         fab:fab_colorNormal="@color/white"
         fab:fab_colorRipple="@color/accent"
@@ -75,6 +75,6 @@
     <TextView
         android:id="@+id/errorView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -7,7 +7,7 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.FollowersController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
@@ -32,7 +32,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     private final UserShotsController userShotsController;
     private final FollowersController followersController;
-    private final ErrorMessageController errorMessageController;
+    private final ErrorController errorController;
     private final CompositeSubscription subscriptions;
 
     @NonNull
@@ -48,10 +48,10 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     @Inject
     FollowerDetailsPresenter(UserShotsController userShotsController, FollowersController followersController,
-                             ErrorMessageController errorMessageController) {
+                             ErrorController errorController) {
         this.userShotsController = userShotsController;
         this.followersController = followersController;
-        this.errorMessageController = errorMessageController;
+        this.errorController = errorController;
         subscriptions = new CompositeSubscription();
         refreshShotsSubscription = Subscriptions.unsubscribed();
         loadMoreShotsSubscription = Subscriptions.unsubscribed();
@@ -90,7 +90,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
                     .subscribe(shotList -> {
                         hasMore = shotList.size() == SHOT_PAGE_COUNT;
                         getView().setData(shotList);
-                    }, throwable -> Timber.e(throwable, "Error while refreshing user shots"));
+                    }, throwable -> handleError(throwable, "Error while refreshing user shots"));
         }
     }
 
@@ -109,11 +109,14 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
             pageNumber++;
             loadMoreShotsSubscription= userShotsController.getUserShotsList(follower.id(),
                     pageNumber, SHOT_PAGE_COUNT)
+                    .compose(fromListObservable())
+                    .map(shot -> Shot.update(shot).author(User.createFromFollower(follower)).build())
+                    .toList()
                     .compose(androidIO())
                     .subscribe(shotList -> {
                                 hasMore = shotList.size() == SHOT_PAGE_COUNT;
                                 getView().showMoreUserShots(shotList);
-                    }, throwable -> Timber.e(throwable, "Error while getting more user shots"));
+                    }, throwable -> handleError(throwable, "Error while getting more user shots"));
         }
     }
 
@@ -126,10 +129,8 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     public void unFollowUser() {
         unfollowUserSubscription = followersController.unFollowUser(follower.id())
                 .compose(applyCompletableIoSchedulers())
-                .subscribe(getView()::showFollowersList, throwable -> {
-                    Timber.e(throwable, "Error while unFollow user");
-                    getView().showError(throwable.getMessage());
-                });
+                .subscribe(getView()::showFollowersList,
+                        throwable -> handleError(throwable, "Error while unFollow user"));
     }
 
     @Override
@@ -137,6 +138,12 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         if(follower != null) {
             getView().openShotDetailsScreen(shot, follower.shotList(), follower.id());
         }
+    }
+
+    @Override
+    public void handleError(Throwable throwable, String errorText) {
+        Timber.e(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
     private void downloadUserShots(User user) {
@@ -148,18 +155,12 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
                 .toList()
                 .map(list -> Follower.createFromUser(user, list))
                 .subscribe(this::showFollower,
-                        throwable ->
-                            handleError(throwable, "Error while getting user shots list"));
+                        throwable -> handleError(throwable, "Error while getting user shots list"));
         subscriptions.add(subscription);
     }
 
     private void showFollower(Follower follower) {
         this.follower = follower;
         getView().showFollowerData(follower);
-    }
-
-    private void handleError(Throwable throwable, String message) {
-        Timber.e(throwable, message);
-        getView().showError(errorMessageController.getErrorMessageLabel(throwable));
     }
 }

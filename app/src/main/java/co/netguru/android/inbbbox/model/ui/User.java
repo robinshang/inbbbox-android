@@ -3,6 +3,8 @@ package co.netguru.android.inbbbox.model.ui;
 import android.os.Parcelable;
 
 import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 
 import co.netguru.android.inbbbox.model.api.UserEntity;
 
@@ -44,6 +46,20 @@ public abstract class User implements Parcelable{
                 .avatarUrl(entity.avatarUrl())
                 .username(entity.username())
                 .shotsCount(entity.shotsCount())
+                .build();
+    }
+
+    public static TypeAdapter<User> typeAdapter(Gson gson) {
+        return new AutoValue_User.GsonTypeAdapter(gson);
+    }
+
+    public static User createFromFollower(Follower follower) {
+        return User.builder()
+                .id(follower.id())
+                .name(follower.name())
+                .username(follower.username())
+                .avatarUrl(follower.avatarUrl())
+                .shotsCount(follower.shotsCount())
                 .build();
     }
 }

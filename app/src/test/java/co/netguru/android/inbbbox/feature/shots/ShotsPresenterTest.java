@@ -14,10 +14,9 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controler.BucketsController;
-import co.netguru.android.inbbbox.controler.ErrorMessageController;
-import co.netguru.android.inbbbox.controler.LikeShotController;
-import co.netguru.android.inbbbox.controler.LikedShotsController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.ShotsController;
+import co.netguru.android.inbbbox.controler.likescontroller.LikeShotControllerApi;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
@@ -27,7 +26,6 @@ import static co.netguru.android.inbbbox.Statics.BUCKET;
 import static co.netguru.android.inbbbox.Statics.LIKED_SHOT;
 import static co.netguru.android.inbbbox.Statics.NOT_LIKED_SHOT;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.only;
@@ -40,6 +38,7 @@ public class ShotsPresenterTest {
 
     private static final int SHOT_PAGE_COUNT = 15;
     private static final int SHOT_PAGE = 1;
+    private static final Long EXAMPLE_ID = 9L;
 
     @Rule
     public TestRule rule = new RxSyncTestRule();
@@ -48,19 +47,19 @@ public class ShotsPresenterTest {
     ShotsController shotsControllerMock;
 
     @Mock
-    ErrorMessageController errorMessageControllerMock;
+    ErrorController errorControllerMock;
 
     @Mock
-    LikedShotsController likedShotsControllerMock;
-
-    @Mock
-    LikeShotController likeShotControllerMock;
+    LikeShotControllerApi likeShotControllerApiMock;
 
     @Mock
     BucketsController bucketsControllerMock;
 
     @Mock
     ShotsContract.View viewMock;
+
+    @Mock
+    Shot shotMock;
 
     @InjectMocks
     ShotsPresenter presenter;
@@ -74,6 +73,7 @@ public class ShotsPresenterTest {
         Shot exampleShot = Statics.LIKED_SHOT;
         shotsList.add(exampleShot);
 
+        when(shotMock.id()).thenReturn(EXAMPLE_ID);
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.just(shotsList));
     }
 
@@ -106,17 +106,17 @@ public class ShotsPresenterTest {
 
     @Test
     public void whenShotNotLikedAndLikeActionCalled_thenCallLikeShotMethod() {
-        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.complete());
+        when(likeShotControllerApiMock.likeShot(NOT_LIKED_SHOT)).thenReturn(Completable.complete());
         presenter.getShotsFromServer();
 
         presenter.likeShot(NOT_LIKED_SHOT);
 
-        verify(likeShotControllerMock, times(1)).likeShot(NOT_LIKED_SHOT.id());
+        verify(likeShotControllerApiMock, times(1)).likeShot(NOT_LIKED_SHOT);
     }
 
     @Test
     public void whenShotLiked_thenChangeShotStatus() {
-        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.complete());
+        when(likeShotControllerApiMock.likeShot(any(Shot.class))).thenReturn(Completable.complete());
         presenter.getShotsFromServer();
         Shot expectedShot = Shot.update(Statics.LIKED_SHOT)
                 .id(NOT_LIKED_SHOT.id())
@@ -134,13 +134,13 @@ public class ShotsPresenterTest {
 
     @Test
     public void whenShotLikedAndLikeActionCalled_thenDoNotCallLikeShotMethod() {
-        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.complete());
+        when(likeShotControllerApiMock.likeShot(any(Shot.class))).thenReturn(Completable.complete());
 
         presenter.getShotsFromServer();
 
         presenter.likeShot(LIKED_SHOT);
 
-        verify(likeShotControllerMock, never()).likeShot(LIKED_SHOT.id());
+        verify(likeShotControllerApiMock, never()).likeShot(shotMock);
     }
 
     //ERRORS
@@ -160,25 +160,25 @@ public class ShotsPresenterTest {
         String message = "test";
         Throwable exampleException = new Exception(message);
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.error(exampleException));
-        when(errorMessageControllerMock.getErrorMessageLabel(exampleException)).thenCallRealMethod();
+        when(errorControllerMock.getThrowableMessage(exampleException)).thenCallRealMethod();
 
         presenter.getShotsFromServer();
 
-        verify(viewMock, times(1)).showError(message);
+        verify(viewMock, times(1)).showMessageOnServerError(message);
     }
 
     @Test
     public void whenShotLikeingFailed_thenShowApiError() {
         String message = "test";
         Exception exampleException = new Exception(message);
-        when(likeShotControllerMock.likeShot(anyInt())).thenReturn(Completable.error(exampleException));
-        when(errorMessageControllerMock.getErrorMessageLabel(exampleException)).thenCallRealMethod();
+        when(likeShotControllerApiMock.likeShot(any(Shot.class))).thenReturn(Completable.error(exampleException));
+        when(errorControllerMock.getThrowableMessage(exampleException)).thenCallRealMethod();
 
         presenter.getShotsFromServer();
 
         presenter.likeShot(NOT_LIKED_SHOT);
 
-        verify(viewMock).showError(message);
+        verify(viewMock).showMessageOnServerError(message);
     }
 
     @Test
@@ -208,6 +208,6 @@ public class ShotsPresenterTest {
         //when
         presenter.addShotToBucket(BUCKET, LIKED_SHOT);
         //then
-        verify(viewMock, only()).showError(anyString());
+        verify(viewMock, times(1)).showMessageOnServerError(anyString());
     }
 }

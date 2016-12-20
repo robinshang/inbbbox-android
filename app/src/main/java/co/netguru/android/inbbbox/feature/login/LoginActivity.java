@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.LoginComponent;
 import co.netguru.android.inbbbox.di.module.LoginModule;
+import co.netguru.android.inbbbox.enumeration.UserModeType;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewDialogFragment;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewListener;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
@@ -68,6 +70,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         initComponent();
+        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
@@ -97,11 +100,6 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     }
 
     @Override
-    public void showApiError(String oauthErrorMessage) {
-        Toast.makeText(this, oauthErrorMessage, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public void showInvalidOauthUrlError() {
         Toast.makeText(this, R.string.invalid_outh_url, Toast.LENGTH_LONG).show();
     }
@@ -125,6 +123,11 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     public void showGuestModeLoginButton() {
         AnimationUtil.startSlideInFromBottomShowAnimation(guestModeDivider, SLIDE_IN_DURATION);
         AnimationUtil.startSlideInFromBottomShowAnimation(guestButton, SLIDE_IN_DURATION);
+    }
+
+    @Override
+    public void initializeUserMode(UserModeType mode) {
+        App.initUserComponent(this, mode);
     }
 
     @Override
@@ -156,5 +159,10 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     @Override
     public void onOauthFragmentClose() {
         getPresenter().handleWebViewClose();
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(this, errorText, Toast.LENGTH_LONG).show();
     }
 }

@@ -150,11 +150,6 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void showErrorMessage(String errorMessageLabel) {
-        Toast.makeText(getContext(), errorMessageLabel, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public Shot getShotInitialData() {
         return getArguments().getParcelable(ARG_SHOT);
     }
@@ -356,8 +351,12 @@ public class ShotDetailsFragment
         ShotFullscreenActivity.startActivity(getContext(), shot, allShots, detailsRequest);
     }
 
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
+    }
+
     private void initComponent() {
-        component = App.getAppComponent(getContext())
+        component = App.getUserComponent(getContext())
                 .plus(new ShotsDetailsModule(this));
         component.inject(this);
     }

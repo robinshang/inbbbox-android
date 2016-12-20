@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.FollowersController;
 import co.netguru.android.inbbbox.controler.FollowersShotController;
 import co.netguru.android.inbbbox.model.ui.Follower;
@@ -31,6 +32,7 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
 
     private final FollowersController followersController;
     private final FollowersShotController followersShotController;
+    private final ErrorController errorController;
 
     @NonNull
     private Subscription refreshSubscription;
@@ -41,9 +43,11 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     private int pageNumber = 1;
 
     @Inject
-    FollowersPresenter(FollowersController followersController, FollowersShotController followersShotController) {
+    FollowersPresenter(FollowersController followersController, FollowersShotController followersShotController,
+                       ErrorController errorController) {
         this.followersController = followersController;
         this.followersShotController = followersShotController;
+        this.errorController = errorController;
         refreshSubscription = Subscriptions.unsubscribed();
         loadNextBucketSubscription = Subscriptions.unsubscribed();
     }
@@ -70,7 +74,7 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
                     .compose(androidIO())
                     .doAfterTerminate(getView()::hideProgressBars)
                     .subscribe(this::onGetFollowersNext,
-                            throwable -> Timber.e(throwable, "Error while getting followed users form server"));
+                            throwable -> handleError(throwable, "Error while getting followed users form server"));
         }
     }
 
@@ -91,7 +95,7 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
                         getView().hideLoadingMoreBucketsView();
                     })
                     .subscribe(this::onGetMoreFollowersNext,
-                            throwable -> Timber.e(throwable, "Error while getting followed users form server"));
+                            throwable -> handleError(throwable, "Error while getting followed users form server"));
         }
     }
 
@@ -102,6 +106,12 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
         } else {
             getView().hideEmptyLikesInfo();
         }
+    }
+
+    @Override
+    public void handleError(Throwable throwable, String errorText) {
+        Timber.e(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
     private void onGetFollowersNext(List<Follower> followersList) {

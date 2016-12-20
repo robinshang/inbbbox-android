@@ -27,13 +27,10 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.ShotsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsModule;
-
 import co.netguru.android.inbbbox.feature.common.BaseMvpViewStateFragment;
-
 import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
-
 import co.netguru.android.inbbbox.feature.shots.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotSwipeListener;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
@@ -109,8 +106,8 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         try {
             shotActionListener = (ShotActionListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement ShotActionListener");
+            throw new RuntimeException(context.toString()
+                    + " must implement ShotActionListener", e);
         }
     }
 
@@ -128,7 +125,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     private void initComponent() {
-        component = App.getAppComponent(getContext())
+        component = App.getUserComponent(getContext())
                 .plus(new ShotsModule(this));
         component.inject(this);
     }
@@ -200,11 +197,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     @Override
-    public void showError(String error) {
-        Snackbar.make(shotsRecyclerView, error, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
     public void changeShotLikeStatus(Shot shot) {
         adapter.changeShotLikeStatus(shot);
         shotActionListener.shotLikeStatusChanged();
@@ -273,11 +265,15 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void hideLoadingIndicator() {
         swipeRefreshLayout.setRefreshing(false);
-        }
+    }
 
-        public interface ShotActionListener {
-            void shotLikeStatusChanged();
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Snackbar.make(shotsRecyclerView, errorText, Snackbar.LENGTH_LONG).show();
+    }
 
-            void showShotDetails(Shot shot, List<Shot> nearbyShots, ShotDetailsRequest detailsRequest);
-        }
+    public interface ShotActionListener {
+        void shotLikeStatusChanged();
+        void showShotDetails(Shot shot, List<Shot> nearbyShots, ShotDetailsRequest detailsRequest);
+    }
 }

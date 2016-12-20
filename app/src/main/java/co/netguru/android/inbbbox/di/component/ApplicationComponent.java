@@ -10,23 +10,25 @@ import co.netguru.android.inbbbox.di.module.ApplicationModule;
 import co.netguru.android.inbbbox.di.module.ConfigurationModule;
 import co.netguru.android.inbbbox.di.module.FollowerDetailsFragmentModule;
 import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
-import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.di.module.LocalRepositoryModule;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.di.module.ShotFullscreenModule;
-import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
-import co.netguru.android.inbbbox.di.module.ShotsModule;
 import co.netguru.android.inbbbox.event.RxBus;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {ApplicationModule.class,
-        ConfigurationModule.class,
-        ApiModule.class,
-        LocalRepositoryModule.class})
+@Component(
+        modules = {
+                ApplicationModule.class,
+                ConfigurationModule.class,
+                ApiModule.class,
+                LocalRepositoryModule.class
+        })
 public interface ApplicationComponent extends BaseComponent {
 
     DebugMetricsHelper getDebugMetricsHelper();
+
+    UserComponent.Builder userComponentBuilder();
 
     LoginComponent plus(LoginModule module);
 
@@ -36,15 +38,9 @@ public interface ApplicationComponent extends BaseComponent {
 
     SplashScreenComponent plusSplashScreenComponent();
 
-    ShotsComponent plus(ShotsModule shotsModule);
-
-    LikesFragmentComponent plus(LikesFragmentModule module);
-
     FollowersFragmentComponent plus(FollowersFragmentModule module);
 
     FollowerDetailsFragmentComponent plus(FollowerDetailsFragmentModule module);
-
-    ShotDetailsComponent plus(ShotsDetailsModule module);
 
     BucketsFragmentComponent inject();
 
@@ -53,8 +49,6 @@ public interface ApplicationComponent extends BaseComponent {
     AddToBucketComponent plusAddToBucketComponent();
 
     CreateBucketComponent plusCreateBucketComponent();
-
-    ShotFullscreenComponent plusShotFullscreenComponent(ShotFullscreenModule module);
 
     RxBus rxBus();
 

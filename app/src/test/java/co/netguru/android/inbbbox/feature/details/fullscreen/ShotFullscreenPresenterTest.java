@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.controler.BucketsController;
-import co.netguru.android.inbbbox.controler.LikedShotsController;
+import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.controler.ShotsController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
@@ -50,15 +50,6 @@ public class ShotFullscreenPresenterTest {
 
     @Mock
     ShotsController shotsControllerMock;
-
-    @Mock
-    LikedShotsController likedShotsControllerMock;
-
-    @Mock
-    BucketsController bucketsControllerMock;
-
-    @Mock
-    UserShotsController userShotsControllerMock;
 
     ShotDetailsRequest defaultDetailsRequest = ShotDetailsRequest.create(ShotDetailsType.DEFAULT);
 

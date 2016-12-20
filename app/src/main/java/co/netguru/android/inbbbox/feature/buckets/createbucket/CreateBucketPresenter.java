@@ -8,6 +8,7 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.event.BucketCreatedEvent;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
@@ -20,13 +21,15 @@ public class CreateBucketPresenter extends MvpNullObjectBasePresenter<CreateBuck
         implements CreateBucketContract.Presenter {
 
     private final BucketsController bucketsController;
+    private final ErrorController errorController;
     private final RxBus rxBus;
     @NonNull
     private Subscription createBucketSubscription;
 
     @Inject
-    CreateBucketPresenter(BucketsController bucketsController, RxBus rxBus) {
+    CreateBucketPresenter(BucketsController bucketsController, ErrorController errorController, RxBus rxBus) {
         this.bucketsController = bucketsController;
+        this.errorController = errorController;
         this.rxBus = rxBus;
         createBucketSubscription = Subscriptions.unsubscribed();
     }
@@ -53,5 +56,11 @@ public class CreateBucketPresenter extends MvpNullObjectBasePresenter<CreateBuck
                             },
                             throwable -> Timber.d(throwable, "Error occurred while creating bucket"));
         }
+    }
+
+    @Override
+    public void handleError(Throwable throwable, String errorText) {
+        Timber.e(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 }

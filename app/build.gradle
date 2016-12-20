@@ -22,13 +22,13 @@ ext {
 }
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
 
     defaultConfig {
         applicationId "co.netguru.android.inbbbox"
         minSdkVersion 19
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode isBitrise ? Integer.parseInt(bitrise.io.buildNumber) : 1
         versionName "0.1.0"
 
@@ -37,7 +37,7 @@ android {
         buildConfigField 'String', 'DRIBBBLE_CLIENT_KEY', '"' + secrets.dribbbleClientKey + '"'
         buildConfigField 'String', 'DRIBBBLE_CLIENT_SECRET', '"' + secrets.dribbbleClientSecret + '"'
         buildConfigField 'String', 'DRIBBBLE_CLIENT_TOKEN', '"' + secrets.dribbbleClientToken + '"'
-        buildConfigField 'String', 'DRIBBBLE_OAUTH_REDIRECT','"' + secrets.dribbbleOauthRedirect + '"'
+        buildConfigField 'String', 'DRIBBBLE_OAUTH_REDIRECT', '"' + secrets.dribbbleOauthRedirect + '"'
     }
 
     buildTypes {
@@ -187,11 +187,12 @@ configurations {
 }
 
 dependencies {
-    compile "co.netguru.android:commons:0.1.0"
-    testCompile "co.netguru.android:test-commons:0.1.0"
-    androidTestCompile "co.netguru.android:test-commons:0.1.0"
-    // put entries from dependencies.gradle, for example:
-
+    compile('co.netguru.android:commons:0.1.0') {
+        exclude group: 'io.reactivex'
+    }
+    testCompile('co.netguru.android:test-commons:0.1.0') {
+        exclude group: 'io.reactivex'
+    }
     // Support
     compile libs.appCompat
     compile libs.design
@@ -222,16 +223,6 @@ dependencies {
         exclude module: 'appcompat-v7'
         exclude module: 'rxbinding'
     }
-    compile(libs.rxLifeCycle) {
-        exclude module: 'rxjava'
-        exclude module: 'rxbinding'
-        exclude module: 'support-annotations'
-    }
-    compile(libs.rxLifeCycleComponent) {
-        exclude module: 'rxjava'
-        exclude module: 'rxlifecycle'
-        exclude module: 'appcompat-v7'
-    }
 
     // OkHttp + Retrofit
     compile libs.okHttp
@@ -257,18 +248,6 @@ dependencies {
 
     apt proc.retrolambda
 
-    // Stetho
-    compile libs.stetho
-
-    // LeakCanary
-    compile libs.leakCanary
-
-    // BlockCanary
-    compile libs.blockCanary
-
-    // StrictMode
-    compile libs.strictmodeNotifier
-
     //CircleImageView
     compile libs.circleImageView
 
@@ -284,14 +263,8 @@ dependencies {
     //Percent layout
     compile libs.percent
 
-    //Glide Transformations
-    compile libs.glideTransformations
-
     //Timber
     compile libs.timber
-
-    //HockeyApp
-    compile libs.hockeyApp
 
     //OnActivityResult
     compile libs.onActivityResult
@@ -300,6 +273,23 @@ dependencies {
     //PhotoView
     compile libs.photoView
 
+    //Debug tools
+    // Stetho
+    debugCompile libs.stetho
+
+    // LeakCanary
+    debugCompile libs.leakCanary
+
+    // BlockCanary
+    debugCompile libs.blockCanary
+
+    // StrictMode
+    debugCompile libs.strictmodeNotifier
+
+    //Release tools
+    //HockeyApp
+    releaseCompile libs.hockeyApp
+
     // Unit testing
     testCompile(test.junit) {
         exclude module: 'hamcrest-core'
@@ -307,59 +297,7 @@ dependencies {
     testCompile test.hamcrest
     testCompile test.mockito
 
-    testCompile (test.threetenabp) {
-        exclude group:'com.jakewharton.threetenabp', module:'threetenabp'
-    }
-
-    androidTestCompile test.rxJavaDebug
-    androidTestCompile libs.rxAndroid
-
-    androidTestCompile(test.mockito) {
-        exclude module: 'hamcrest-integration'
-        exclude module: 'hamcrest-core'
-        exclude module: 'hamcrest-library'
-        exclude module: 'objenesis'
-        exclude group: 'org.homcrest'
-    }
-    androidTestCompile(test.dexmakerMockito) {
-        exclude module: 'objenesis'
-    }
-    androidTestCompile(test.dexmaker)
-            {
-                exclude module: 'objenesis'
-
-            }
-
-    androidTestCompile test.hamcrest
-    androidTestCompile libs.annotations
-    androidTestCompile(test.androidJUnitRunner) {
-        exclude module: 'support-annotations'
-    }
-    androidTestCompile(test.androidJUnit4Rules) {
-        exclude module: 'support-annotations'
-        exclude module: 'hamcrest-core'
-    }
-    androidTestCompile(test.espresso) {
-        exclude module: 'hamcrest-library'
-        exclude module: 'rules'
-        exclude module: 'runner'
-        exclude module: 'javax.annotation-api'
-        exclude module: 'support-annotations'
-    }
-    androidTestCompile(test.espressoContrib) {
-        exclude module: 'espresso-core'
-        exclude module: 'hamcrest-core'
-        exclude module: 'support-v4'
-        exclude module: 'appcompat-v7'
-        exclude module: 'recyclerview-v7'
-        exclude module: 'support-annotations'
-        exclude module: 'design'
-    }
-    androidTestCompile(test.espressoIntents) {
-        exclude module: 'espresso-core'
-        exclude module: 'support-annotations'
-    }
-    androidTestCompile(test.espressoIdlingResource) {
-        exclude module: 'espresso-core'
+    testCompile(test.threetenabp) {
+        exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
 }

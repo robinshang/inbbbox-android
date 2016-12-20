@@ -3,6 +3,8 @@ package co.netguru.android.inbbbox.model.ui;
 import android.os.Parcelable;
 
 import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 
 import co.netguru.android.inbbbox.model.api.TeamEntity;
 
@@ -31,5 +33,9 @@ public abstract class Team implements Parcelable {
                 .id(entity.id())
                 .name(entity.name())
                 .build();
+    }
+
+    public static TypeAdapter<Team> typeAdapter(Gson gson) {
+        return new AutoValue_Team.GsonTypeAdapter(gson);
     }
 }

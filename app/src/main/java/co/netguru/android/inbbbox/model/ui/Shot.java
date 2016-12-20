@@ -4,6 +4,8 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 
 import org.threeten.bp.LocalDateTime;
 
@@ -117,6 +119,10 @@ public abstract class Shot implements Parcelable, ShotImage {
 
     public static Shot.Builder builder() {
         return new AutoValue_Shot.Builder();
+    }
+
+    public static TypeAdapter<Shot> typeAdapter(Gson gson) {
+        return new AutoValue_Shot.GsonTypeAdapter(gson);
     }
 
     public static Shot create(ShotEntity shotEntity) {
