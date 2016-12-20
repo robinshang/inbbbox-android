@@ -33,6 +33,7 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
 import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
+import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
@@ -94,8 +95,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         try {
             shotActionListener = (ShotsFragment.ShotActionListener) context;
         } catch (ClassCastException e) {
-            throw new RuntimeException(context.toString()
-                    + " must implement ShotActionListener", e);
+            throw new InterfaceNotImplementedException(e, context.toString(), ShotsFragment.ShotActionListener.class.getSimpleName());
         }
     }
 
@@ -207,7 +207,8 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     private void initEmptyView() {
-        emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
+        int lineHeight = emptyViewText.getLineHeight();
+        emptyTextDrawable.setBounds(0, 0, lineHeight, lineHeight);
         emptyViewText.setText(TextFormatterUtil
                 .addDrawableToTextAtFirstSpace(emptyString, emptyTextDrawable), TextView.BufferType.SPANNABLE);
     }

@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.utils.StringUtils;
 import timber.log.Timber;
@@ -76,8 +77,7 @@ public class EditCommentFragmentDialog extends DialogFragment {
             callback = (DetailsViewActionCallback) getTargetFragment();
         } catch (ClassCastException e) {
             Timber.e(e.getMessage());
-            throw new ClassCastException(context.toString()
-                    + " must implement DetailsViewActionCallback");
+            throw new InterfaceNotImplementedException(e, getTargetFragment().getClass().getSimpleName(), DetailsViewActionCallback.class.getSimpleName());
         }
     }
 

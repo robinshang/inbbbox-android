@@ -52,7 +52,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     }
 
     @OnClick(R.id.iv_shot_image)
-    void onShotClick(){
+    void onShotClick() {
         shotSwipeListener.onShotSelected(shot);
     }
 
