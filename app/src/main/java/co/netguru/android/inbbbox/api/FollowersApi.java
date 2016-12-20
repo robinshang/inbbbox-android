@@ -23,6 +23,6 @@ public interface FollowersApi {
     @PUT("users/{user}/follow")
     Completable followUser(@Path("user") long id);
 
-    @PUT("user/following/{user}")
+    @GET("user/following/{user}")
     Observable<Response<Completable>> checkIfUserIsFollowed(@Path("user") long id);
 }
