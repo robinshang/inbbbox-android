@@ -140,6 +140,11 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
+    @Override
+    public void followUser() {
+        
+    }
+
     private void downloadUserShots(User user) {
         final Subscription subscription = userShotsController.getUserShotsList(user.id(),
                 pageNumber, SHOT_PAGE_COUNT)

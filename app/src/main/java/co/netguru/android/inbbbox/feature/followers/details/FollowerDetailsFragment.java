@@ -39,7 +39,9 @@ import timber.log.Timber;
 
 public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
         FollowerDetailsContract.View, FollowerDetailsContract.Presenter>
-        implements FollowerDetailsContract.View, UnFollowUserDialogFragment.OnUnFollowClickedListener {
+        implements FollowerDetailsContract.View,
+        UnFollowUserDialogFragment.OnUnFollowClickedListener,
+        FollowUserDialogFragment.OnFollowClickedListener {
 
     private static final int GRID_VIEW_COLUMN_COUNT = 2;
     public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
@@ -203,6 +205,11 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     @Override
     public void onUnFollowClicked() {
         getPresenter().unFollowUser();
+    }
+
+    @Override
+    public void onFollowClicked() {
+        getPresenter().followUser();
     }
 
     private void getFollowerData() {

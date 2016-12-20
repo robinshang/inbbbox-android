@@ -42,5 +42,7 @@ public interface FollowerDetailsContract {
         void unFollowUser();
 
         void showShotDetails(Shot shot);
+
+        void followUser();
     }
 }

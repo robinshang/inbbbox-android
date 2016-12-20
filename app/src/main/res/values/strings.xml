@@ -80,7 +80,8 @@
     <string name="fragment_add_to_bucket_there_are_no_buckets_add_one_first">There are no buckets, add one first.</string>
     <string name="fragment_add_to_bucket_title">Add to bucket</string>
 
-    <string name="fragment_follower_details_dialog_text">Unfollow %s ?</string>
+    <string name="fragment_unfollow_details_dialog_text">Unfollow %s ?</string>
+    <string name="fragment_follow_details_dialog_text">Follow %s ?</string>
 
     <string name="dialog_fragment_create_bucket_name">Name</string>
     <string name="dialog_fragment_create_bucket_optional">Description (optional)</string>
