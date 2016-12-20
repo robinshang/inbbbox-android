@@ -8,6 +8,8 @@ import android.os.StrictMode;
 
 import com.facebook.stetho.Stetho;
 import com.frogermcs.androiddevmetrics.AndroidDevMetrics;
+import com.github.moduth.blockcanary.BlockCanary;
+import com.github.moduth.blockcanary.BlockCanaryContext;
 import com.nshmura.strictmodenotifier.StrictModeNotifier;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -75,6 +77,9 @@ public class DebugMetricsHelper {
 
         //Timber
         Timber.plant(new Timber.DebugTree());
+
+        //BlockCanary
+        BlockCanary.install(context, new BlockCanaryContext()).start();
     }
 
 }
