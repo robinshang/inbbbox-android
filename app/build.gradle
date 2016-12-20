@@ -6,6 +6,7 @@ apply plugin: 'com.frogermcs.androiddevmetrics'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'org.sonarqube'
+apply plugin: 'org.greenrobot.greendao'
 apply from: '../buildsystem/sonarqube.gradle'
 apply from: '../buildsystem/jacocoTasks.gradle'
 
@@ -230,6 +231,9 @@ dependencies {
     compile libs.retrofit
     compile libs.retrofitGsonConverter
     compile libs.retrofitRxJavaAdapter
+
+    //GreenDAO
+    compile libs.greenDao
 
     compile libs.timber
     compile libs.fabMenu

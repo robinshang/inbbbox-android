@@ -5,19 +5,26 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
+import org.greenrobot.greendao.database.Database;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import co.netguru.android.inbbbox.App;
+import co.netguru.android.inbbbox.localrepository.DaoMaster;
+import co.netguru.android.inbbbox.localrepository.DaoSession;
 import co.netguru.android.inbbbox.localrepository.GuestModeRepository;
 import co.netguru.android.inbbbox.localrepository.SettingsPrefsRepository;
 import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
+
 import dagger.Module;
 import dagger.Provides;
 
 @Module
 public class LocalRepositoryModule {
 
+    private static final String DATABASE_NAME = "inbbbox-db";
     private static final String GUEST_MODE_SHARED_PREFERENCES_NAME = "guest_mode";
     private static final String SETTINGS_SHARED_PREFERENCES_NAME = "settings";
     private static final String TOKEN_SHARED_PREFERENCES_NAME = "token";
@@ -82,5 +89,17 @@ public class LocalRepositoryModule {
             @Named(GUEST_MODE_SHARED_PREFERENCES_NAME) SharedPreferences sharedPreferences,
             Gson gson) {
         return new GuestModeRepository(sharedPreferences, gson);
+    }
+
+    @Singleton
+    @Provides
+    Database provideDatabase(App app) {
+        return new DaoMaster.DevOpenHelper(app, DATABASE_NAME).getWritableDb();
+    }
+
+    @Singleton
+    @Provides
+    DaoSession provideDaoSession(Database database) {
+        return new DaoMaster(database).newSession();
     }
 }
