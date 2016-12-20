@@ -27,6 +27,8 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         implements FollowerDetailsContract.Presenter {
 
     private static final int SHOT_PAGE_COUNT = 30;
+    private static final int CODE_USER_IS_FOLLOWED = 204;
+    private static final int CODE_USER_IS_NOT_FOLLOWED = 404;
 
     private final UserShotsController userShotsController;
     private final FollowersController followersController;
@@ -70,8 +72,8 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         Timber.d("Received follower : %s", follower);
         if (follower != null) {
             this.follower = follower;
-            getView().showFollowerData(follower);
-            getView().showContent();
+            checkIfuserIsFollowed(follower.id());
+            showFollower(follower);
         }
     }
 
@@ -96,6 +98,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         Timber.d("Received user : %s", user);
         if (user != null) {
             downloadUserShots(user);
+            checkIfuserIsFollowed(user.id());
         }
     }
 
@@ -141,8 +144,13 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     }
 
     @Override
+    public void onFollowClick() {
+        getView().showFollowDialog(follower.name());
+    }
+
+    @Override
     public void followUser() {
-        
+
     }
 
     private void downloadUserShots(User user) {
@@ -161,5 +169,23 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     private void showFollower(Follower follower) {
         this.follower = follower;
         getView().showFollowerData(follower);
+        getView().showContent();
+    }
+
+    private void checkIfuserIsFollowed(long userId) {
+        final Subscription subscription = followersController.checkIfUserIsFollowed(userId)
+                .compose(androidIO())
+                .subscribe(response -> setMenuIcon(response.code()),
+                        throwable -> handleError(throwable, "Error while checking if user is followed"));
+        subscriptions.add(subscription);
+    }
+
+    private void setMenuIcon(int code) {
+        if (code == CODE_USER_IS_FOLLOWED) {
+            getView().setMenuIcon(true);
+
+        } else if (code == CODE_USER_IS_NOT_FOLLOWED) {
+            getView().setMenuIcon(false);
+        }
     }
 }

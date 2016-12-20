@@ -12,6 +12,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +52,9 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     private static final int SHOTS_TO_LOAD_MORE = 10;
     private static final int RECYCLER_VIEW_HEADER_POSITION = 0;
     private static final int RECYCLER_VIEW_ITEM_SPAN_SIZE = 1;
+
+    private MenuItem followMenuItem;
+    private MenuItem unfollowMenuItem;
 
     @BindColor(R.color.accent)
     int accentColor;
@@ -116,10 +121,26 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     @Override
+    public void setMenuIcon(boolean isFollowed) {
+        unfollowMenuItem.setVisible(isFollowed);
+        followMenuItem.setVisible(!isFollowed);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        followMenuItem = menu.findItem(R.id.action_follow);
+        unfollowMenuItem = menu.findItem(R.id.action_unfollow);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_unfollow:
                 getPresenter().onUnFollowClick();
+                return true;
+            case R.id.action_follow:
+                getPresenter().onFollowClick();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -195,6 +216,13 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
         UnFollowUserDialogFragment
                 .newInstance(this, username)
                 .show(getFragmentManager(), UnFollowUserDialogFragment.TAG);
+    }
+
+    @Override
+    public void showFollowDialog(String username) {
+        FollowUserDialogFragment
+                .newInstance(this, username)
+                .show(getFragmentManager(), FollowUserDialogFragment.TAG);
     }
 
     @Override
