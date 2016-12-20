@@ -67,7 +67,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     @Inject
     FollowerDetailsAdapter adapter;
 
-    private OnFollowedShotActionListener onUnFollowCompletedListener;
+    private OnFollowedShotActionListener onChangeFollowingStatusCompletedListener;
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
     private FollowerDetailsFragmentComponent component;
@@ -94,7 +94,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            onUnFollowCompletedListener = (OnFollowedShotActionListener) context;
+            onChangeFollowingStatusCompletedListener = (OnFollowedShotActionListener) context;
         } catch (ClassCastException e) {
             Timber.e(e, "must implement OnFollowedShotActionListener");
             throw new ClassCastException(context.toString()
@@ -198,7 +198,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
 
     @Override
     public void showFollowersList() {
-        onUnFollowCompletedListener.unFollowCompleted();
+        onChangeFollowingStatusCompletedListener.onFollowingStatusChangeCompleted();
     }
 
     @Override
@@ -208,7 +208,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
 
     @Override
     public void openShotDetailsScreen(Shot shot) {
-        onUnFollowCompletedListener.showShotDetails(shot);
+        onChangeFollowingStatusCompletedListener.showShotDetails(shot);
     }
 
     @Override
@@ -275,6 +275,6 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     public interface OnFollowedShotActionListener {
         void showShotDetails(Shot shot);
 
-        void unFollowCompleted();
+        void onFollowingStatusChangeCompleted();
     }
 }
