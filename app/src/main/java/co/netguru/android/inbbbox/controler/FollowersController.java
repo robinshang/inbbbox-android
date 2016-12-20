@@ -26,4 +26,8 @@ public class FollowersController {
     public Completable unFollowUser(long id) {
         return followersApi.unFollowUser(id);
     }
+
+    public Completable followUser(long id) {
+        return followersApi.followUser(id);
+    }
 }

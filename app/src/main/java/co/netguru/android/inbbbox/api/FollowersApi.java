@@ -5,6 +5,7 @@ import java.util.List;
 import co.netguru.android.inbbbox.model.api.FollowerEntity;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Completable;
@@ -17,4 +18,7 @@ public interface FollowersApi {
 
     @DELETE("users/{user}/follow")
     Completable unFollowUser(@Path("user") long id);
+
+    @PUT("users/{user}/follow")
+    Completable followUser(@Path("user") long id);
 }
