@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import timber.log.Timber;
 
 public class TimePickerDialogFragment extends DialogFragment {
@@ -36,8 +37,7 @@ public class TimePickerDialogFragment extends DialogFragment {
             onTimePickedListener = (OnTimePickedListener) context;
         } catch (ClassCastException e) {
             Timber.e(e.getMessage());
-            throw new ClassCastException(context.toString()
-                    + " must implement OnTimePickedListener");
+            throw new InterfaceNotImplementedException(e, context.toString(), OnTimePickedListener.class.getSimpleName());
         }
     }
 

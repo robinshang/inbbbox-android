@@ -32,6 +32,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.buckets.details.adapter.BucketShotViewHolder;
 import co.netguru.android.inbbbox.feature.buckets.details.adapter.BucketShotsAdapter;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
@@ -94,8 +95,7 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
             shotInBucketClickListener =
                     (BucketShotViewHolder.OnShotInBucketClickListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement BucketDetailsFragmentActionListener");
+            throw new InterfaceNotImplementedException(e, context.toString(), BucketShotViewHolder.OnShotInBucketClickListener.class.getSimpleName());
         }
     }
 

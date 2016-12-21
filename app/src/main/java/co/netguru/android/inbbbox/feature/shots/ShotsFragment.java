@@ -23,6 +23,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.common.BaseMvpViewStateFragment;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shots.addtobucket.AddToBucketDialogFragment;
@@ -65,8 +66,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         try {
             shotActionListener = (ShotActionListener) context;
         } catch (ClassCastException e) {
-            throw new RuntimeException(context.toString()
-                    + " must implement ShotActionListener", e);
+            throw new InterfaceNotImplementedException(e, context.toString(), ShotActionListener.class.getSimpleName());
         }
     }
 

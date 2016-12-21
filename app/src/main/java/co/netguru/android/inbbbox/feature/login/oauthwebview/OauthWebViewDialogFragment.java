@@ -18,6 +18,7 @@ import android.webkit.WebViewClient;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.common.BaseMvpDialogFragment;
 import timber.log.Timber;
 
@@ -52,8 +53,7 @@ public class OauthWebViewDialogFragment
             callback = (OauthWebViewListener) context;
         } catch (ClassCastException e) {
             Timber.e(e.getMessage());
-            throw new ClassCastException(context.toString()
-                    + " must implement OauthWebViewListener");
+            throw new InterfaceNotImplementedException(e, context.toString(), OauthWebViewListener.class.getSimpleName());
         }
     }
 

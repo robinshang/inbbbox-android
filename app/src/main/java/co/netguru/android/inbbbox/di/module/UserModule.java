@@ -24,7 +24,7 @@ public class UserModule {
     @UserScope
     LikeShotController likeShotController(LikesApi likesApi, GuestModeRepository guestModeRepository) {
         LikeShotController likeShotControllerApi;
-        if (mode.equals(UserModeType.GUEST_USER_MODE)) {
+        if (mode == UserModeType.GUEST_USER_MODE) {
             likeShotControllerApi = new LikeShotControllerGuest(guestModeRepository, likesApi);
         } else {
             likeShotControllerApi = new LikeShotControllerApi(likesApi);

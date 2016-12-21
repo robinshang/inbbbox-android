@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import timber.log.Timber;
 
@@ -52,8 +53,7 @@ public class RemoveCommentFragmentDialog extends DialogFragment {
             callback = (DetailsViewActionCallback) getTargetFragment();
         } catch (ClassCastException e) {
             Timber.e(e.getMessage());
-            throw new ClassCastException(context.toString()
-                    + " must implement DetailsViewActionCallback");
+            throw new InterfaceNotImplementedException(e, getTargetFragment().getClass().getSimpleName(), DetailsViewActionCallback.class.getSimpleName());
         }
     }
 

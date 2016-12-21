@@ -48,18 +48,21 @@ public class ShotsController {
             observablesToExecute.add(shotsApi.getFollowingShots(pageNumber, pageCount));
         }
         if (sourceSettings.isNewToday()) {
-            observablesToExecute.add(shotsApi.getShotsByDateSort(DateTimeFormatUtil.getCurrentDate(),
-                    Constants.API.LIST_PARAM_SORT_RECENT_PARAM, pageNumber, pageCount));
+            addShotsSortedByDate(observablesToExecute, pageNumber, pageCount);
         }
         if (sourceSettings.isPopularToday()) {
-            observablesToExecute.add(shotsApi.getShotsByDateSort(DateTimeFormatUtil.getCurrentDate(),
-                    Constants.API.LIST_PARAM_SORT_VIEWS_PARAM, pageNumber, pageCount));
+            addShotsSortedByDate(observablesToExecute, pageNumber, pageCount);
         }
         if (sourceSettings.isDebut()) {
             observablesToExecute.add(shotsApi.getShotsByList(Constants.API.LIST_PARAM_DEBUTS_PARAM, pageNumber, pageCount));
         }
 
         return Observable.zip(observablesToExecute, this::mergeResults);
+    }
+
+    private void addShotsSortedByDate(List<Observable<List<ShotEntity>>> observablesToExecute, int pageNumber, int pageCount) {
+        observablesToExecute.add(shotsApi.getShotsByDateSort(DateTimeFormatUtil.getCurrentDate(),
+                Constants.API.LIST_PARAM_SORT_RECENT_PARAM, pageNumber, pageCount));
     }
 
     private List<ShotEntity> mergeResults(Object[] args) {
