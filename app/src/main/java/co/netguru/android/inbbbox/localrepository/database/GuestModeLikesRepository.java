@@ -48,7 +48,7 @@ public class GuestModeLikesRepository {
         return shotDBDao.queryBuilder().rx().oneByOne().map(Shot::fromDB).toList();
     }
 
-    public Completable removeShot(Shot shot) {
+    public Completable removeLikedShot(Shot shot) {
         return shotDBDao.rx().deleteByKey(shot.id()).toCompletable();
     }
 

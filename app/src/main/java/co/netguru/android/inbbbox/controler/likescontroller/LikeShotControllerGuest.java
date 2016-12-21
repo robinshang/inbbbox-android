@@ -5,7 +5,6 @@ import java.util.List;
 import co.netguru.android.inbbbox.api.LikesApi;
 import co.netguru.android.inbbbox.controler.LikeShotController;
 import co.netguru.android.inbbbox.localrepository.database.GuestModeLikesRepository;
-import co.netguru.android.inbbbox.localrepository.GuestModeRepository;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
 import rx.Observable;
@@ -13,13 +12,11 @@ import timber.log.Timber;
 
 public class LikeShotControllerGuest implements LikeShotController {
 
-    private final GuestModeRepository guestModeRepository;
     private final GuestModeLikesRepository guestModeLikesRepository;
     private final LikesApi likesApi;
 
-    public LikeShotControllerGuest(GuestModeRepository guestModeRepository, GuestModeLikesRepository guestModeLikesRepository,
+    public LikeShotControllerGuest(GuestModeLikesRepository guestModeLikesRepository,
                                    LikesApi likesApi) {
-        this.guestModeRepository = guestModeRepository;
         this.guestModeLikesRepository = guestModeLikesRepository;
         this.likesApi = likesApi;
     }
@@ -41,7 +38,7 @@ public class LikeShotControllerGuest implements LikeShotController {
     @Override
     public Completable unLikeShot(Shot shot) {
         Timber.d("Performing local unLike action");
-        return guestModeLikesRepository.removeShot(shot);
+        return guestModeLikesRepository.removeLikedShot(shot);
     }
 
     @Override
