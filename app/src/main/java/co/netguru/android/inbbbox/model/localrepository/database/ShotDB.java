@@ -17,6 +17,7 @@ public class ShotDB {
     @Id
     private Long id;
     private String title;
+    // TODO: 21.12.2016 change to ZonedDateTime
     @Convert(converter = LocalDateTimeConverter.class, columnType = String.class)
     private LocalDateTime creationDate;
     private String projectUrl;
@@ -311,9 +312,7 @@ public class ShotDB {
         myDao.update(this);
     }
 
-    /**
-     * called by internal mechanisms, do not call yourself.
-     */
+    /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 907843013)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;

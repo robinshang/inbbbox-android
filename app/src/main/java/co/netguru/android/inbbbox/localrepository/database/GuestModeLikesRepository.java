@@ -38,7 +38,7 @@ public class GuestModeLikesRepository {
     }
 
     public Completable addLikedShot(@NonNull Shot shot) {
-        return shotDBDao.rx().insertOrReplace(ShotDBMapper.fromShot(shot))
+        return shotDBDao.rx().insertOrReplaceInTx(ShotDBMapper.fromShot(shot))
                 .flatMap(shotDB -> storeUser(shot.author()))
                 .flatMap(userDB -> storeTeam(shot.team()))
                 .toCompletable();
@@ -66,12 +66,16 @@ public class GuestModeLikesRepository {
     }
 
     private Observable<UserDB> storeUser(User user) {
-        return userDBDao.rx().insertOrReplace(UserDBMapper.fromUser(user));
+        return userDBDao.rx()
+                .insertOrReplaceInTx(UserDBMapper.fromUser(user))
+                .map(users -> (UserDB) users[0]);
     }
 
     private Observable<TeamDB> storeTeam(Team team) {
         if (team != null) {
-            return teamDBDao.rx().insertOrReplace(TeamDBMapper.fromTeam(team));
+            return teamDBDao.rx()
+                    .insertOrReplaceInTx(TeamDBMapper.fromTeam(team))
+                    .map(teams -> (TeamDB) teams[0]);
         }
         return Observable.empty();
     }

@@ -63,12 +63,15 @@ public class GuestModeLikesRepositoryTest {
 
     @Before
     public void setUp() {
+        final ShotDB[] shotDBs = {shotDB};
+        final UserDB[] userDBs = {userDB};
+        final TeamDB[] teamDBs = {teamDB};
         when(shotDBDao.rx()).thenReturn(shotRxDao);
-        when(shotRxDao.insertOrReplace(any())).thenReturn(Observable.just(shotDB));
+        when(shotRxDao.insertOrReplaceInTx(any(ShotDB.class))).thenReturn(Observable.just(shotDBs));
         when(userDBDao.rx()).thenReturn(userRxDao);
-        when(userRxDao.insertOrReplace(any())).thenReturn(Observable.just(userDB));
+        when(userRxDao.insertOrReplaceInTx(any(UserDB.class))).thenReturn(Observable.just(userDBs));
         when(teamDBDao.rx()).thenReturn(teamRxDao);
-        when(teamRxDao.insertOrReplace(any())).thenReturn(Observable.just(teamDB));
+        when(teamRxDao.insertOrReplaceInTx(any(TeamDB.class))).thenReturn(Observable.just(teamDBs));
     }
 
     @Test
@@ -79,7 +82,7 @@ public class GuestModeLikesRepositoryTest {
         repository.addLikedShot(Statics.NOT_LIKED_SHOT).subscribe(subscriber);
         //then
         verify(shotDBDao).rx();
-        verify(shotRxDao).insertOrReplace(any());
+        verify(shotRxDao).insertOrReplaceInTx(any(ShotDB.class));
         subscriber.assertNoErrors();
     }
 
@@ -91,7 +94,7 @@ public class GuestModeLikesRepositoryTest {
         repository.addLikedShot(Statics.NOT_LIKED_SHOT).subscribe(subscriber);
         //then
         verify(userDBDao).rx();
-        verify(userRxDao).insertOrReplace(any());
+        verify(userRxDao).insertOrReplaceInTx(any(UserDB.class));
         subscriber.assertNoErrors();
     }
 
@@ -103,7 +106,7 @@ public class GuestModeLikesRepositoryTest {
         repository.addLikedShot(Statics.NOT_LIKED_SHOT).subscribe(subscriber);
         //then
         verify(teamDBDao).rx();
-        verify(teamRxDao).insertOrReplace(any());
+        verify(teamRxDao).insertOrReplaceInTx(any(TeamDB.class));
         subscriber.assertNoErrors();
     }
 

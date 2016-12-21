@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.model.localrepository.database.mapper;
 
-
 import co.netguru.android.inbbbox.model.localrepository.database.UserDB;
 import co.netguru.android.inbbbox.model.ui.User;
 
