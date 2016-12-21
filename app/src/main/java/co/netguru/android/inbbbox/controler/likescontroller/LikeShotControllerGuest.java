@@ -27,7 +27,7 @@ public class LikeShotControllerGuest implements LikeShotController {
     @Override
     public Completable isShotLiked(Shot shot) {
         Timber.d("checking is shot liked...");
-        return guestModeRepository.isShotLiked(shot)
+        return guestModeLikesRepository.isShotLiked(shot)
                 .doOnCompleted(() -> Timber.d("Shot is liked"))
                 .doOnError(throwable -> Timber.d("Shot is not liked"));
     }
@@ -41,7 +41,7 @@ public class LikeShotControllerGuest implements LikeShotController {
     @Override
     public Completable unLikeShot(Shot shot) {
         Timber.d("Performing local unLike action");
-        return guestModeRepository.removeLikedShot(shot);
+        return guestModeLikesRepository.removeShot(shot);
     }
 
     @Override

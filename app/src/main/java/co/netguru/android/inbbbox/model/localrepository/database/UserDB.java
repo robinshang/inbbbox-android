@@ -8,14 +8,14 @@ import org.greenrobot.greendao.annotation.Generated;
 public class UserDB {
 
     @Id
-    private long id;
+    private Long id;
     private String name;
     private String avatarUrl;
     private String username;
     private int shotsCount;
 
-    @Generated(hash = 1250734072)
-    public UserDB(long id, String name, String avatarUrl, String username,
+    @Generated(hash = 1788000037)
+    public UserDB(Long id, String name, String avatarUrl, String username,
             int shotsCount) {
         this.id = id;
         this.name = name;
@@ -27,7 +27,7 @@ public class UserDB {
     public UserDB() {
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
     public void setId(long id) {
@@ -56,5 +56,8 @@ public class UserDB {
     }
     public void setShotsCount(int shotsCount) {
         this.shotsCount = shotsCount;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -24,6 +24,8 @@ import rx.Observable;
 @Singleton
 public class GuestModeLikesRepository {
 
+    private static final String SHOT_IS_NOT_LIKED_ERROR = "Shot is not liked";
+
     private final ShotDBDao shotDBDao;
     private final UserDBDao userDBDao;
     private final TeamDBDao teamDBDao;
@@ -44,6 +46,23 @@ public class GuestModeLikesRepository {
 
     public Observable<List<Shot>> getLikedShots() {
         return shotDBDao.queryBuilder().rx().oneByOne().map(Shot::fromDB).toList();
+    }
+
+    public Completable removeShot(Shot shot) {
+        return shotDBDao.rx().deleteByKey(shot.id()).toCompletable();
+    }
+
+    public Completable isShotLiked(Shot shot) {
+        return shotDBDao.queryBuilder()
+                .where(ShotDBDao.Properties.Id.eq(shot.id()))
+                .rx()
+                .unique()
+                .flatMap(shotDB -> {
+                    if (shotDB == null) {
+                        return Observable.error(new Throwable(SHOT_IS_NOT_LIKED_ERROR));
+                    }
+                    return Observable.empty();
+                }).toCompletable();
     }
 
     private Observable<UserDB> storeUser(User user) {

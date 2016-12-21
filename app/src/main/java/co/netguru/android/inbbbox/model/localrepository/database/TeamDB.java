@@ -8,18 +8,18 @@ import org.greenrobot.greendao.annotation.Generated;
 public class TeamDB {
 
     @Id
-    private long id;
+    private Long id;
     private String name;
 
-    @Generated(hash = 269872159)
-    public TeamDB(long id, String name) {
+    @Generated(hash = 1003723811)
+    public TeamDB(Long id, String name) {
         this.id = id;
         this.name = name;
     }
     @Generated(hash = 61943165)
     public TeamDB() {
     }
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
     public void setId(long id) {
@@ -30,5 +30,8 @@ public class TeamDB {
     }
     public void setName(String name) {
         this.name = name;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 }

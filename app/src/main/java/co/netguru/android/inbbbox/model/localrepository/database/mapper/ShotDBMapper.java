@@ -10,8 +10,8 @@ public class ShotDBMapper {
     }
 
     public static ShotDB fromShot(Shot shot) {
-        final long authorId = shot.author() != null ? shot.author().id() : -1;
-        final long teamId = shot.team() != null ? shot.team().id() : -1;
+        final Long authorId = shot.author() != null ? shot.author().id() : null;
+        final Long teamId = shot.team() != null ? shot.team().id() : null;
         return new ShotDB(shot.id(), shot.title(), shot.creationDate(), shot.projectUrl(),
                 shot.likesCount(), shot.bucketCount(), shot.commentsCount(), shot.description(),
                 shot.isGif(), shot.hiDpiImageUrl(), shot.normalImageUrl(), shot.thumbnailUrl(),

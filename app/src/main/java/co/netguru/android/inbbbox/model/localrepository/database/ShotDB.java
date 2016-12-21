@@ -15,7 +15,7 @@ import org.greenrobot.greendao.annotation.NotNull;
 public class ShotDB {
 
     @Id
-    private long id;
+    private Long id;
     private String title;
     @Convert(converter = LocalDateTimeConverter.class, columnType = String.class)
     private LocalDateTime creationDate;
@@ -48,8 +48,8 @@ public class ShotDB {
     @Generated(hash = 1834174654)
     private transient Long team__resolvedKey;
 
-    @Generated(hash = 1191128644)
-    public ShotDB(long id, String title, LocalDateTime creationDate, String projectUrl, int likesCount,
+    @Generated(hash = 220974353)
+    public ShotDB(Long id, String title, LocalDateTime creationDate, String projectUrl, int likesCount,
             int bucketCount, int commentsCount, String description, boolean isGif, String hiDpiImageUrl,
             String normalImageUrl, String thumbnailUrl, boolean isBucketed, boolean isLiked,
             long userId, long teamId) {
@@ -75,7 +75,7 @@ public class ShotDB {
     public ShotDB() {
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
@@ -303,6 +303,10 @@ public class ShotDB {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /** called by internal mechanisms, do not call yourself. */

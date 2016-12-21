@@ -10,7 +10,7 @@ import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.inbbbox.model.localrepository.database.UserDB;
 
 @AutoValue
-public abstract class User implements Parcelable{
+public abstract class User implements Parcelable {
     public abstract long id();
 
     public abstract String name();
