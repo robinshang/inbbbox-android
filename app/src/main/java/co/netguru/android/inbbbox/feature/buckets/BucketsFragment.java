@@ -95,6 +95,12 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        loadingMoreSnackbar = null;
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         ActivityResult.onResult(requestCode, resultCode, data).into(this);
     }

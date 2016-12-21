@@ -41,7 +41,7 @@ import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<ShotEntity>,
-                BucketDetailsContract.View, BucketDetailsContract.Presenter>
+        BucketDetailsContract.View, BucketDetailsContract.Presenter>
         implements BucketDetailsContract.View, DeleteBucketDialogFragment.DeleteBucketDialogListener {
 
 
@@ -111,6 +111,12 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
         setupRecyclerView();
         initRefreshLayout();
         initEmptyView();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        loadingMoreSnackbar = null;
     }
 
     @NonNull

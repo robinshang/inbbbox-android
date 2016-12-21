@@ -2,7 +2,6 @@ package co.netguru.android.inbbbox.feature.common;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,7 +13,7 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import butterknife.BindDrawable;
 import co.netguru.android.inbbbox.R;
 
-public abstract class BaseMvpLceFragmentWithListTypeSelection<CV extends View,M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
+public abstract class BaseMvpLceFragmentWithListTypeSelection<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
         extends BaseMvpViewStateFragment<CV, M, V, P> {
 
     @BindDrawable(R.drawable.ic_listview)
@@ -26,7 +25,7 @@ public abstract class BaseMvpLceFragmentWithListTypeSelection<CV extends View,M,
     @BindDrawable(R.drawable.ic_gridview_active)
     Drawable icGridViewActive;
 
-    protected boolean isGridMode;
+    private boolean isGridMode;
 
     private MenuItem listViewItem;
     private MenuItem gridViewItem;
@@ -38,17 +37,18 @@ public abstract class BaseMvpLceFragmentWithListTypeSelection<CV extends View,M,
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.fragment_menu, menu);
         listViewItem = menu.findItem(R.id.action_list_view);
         gridViewItem = menu.findItem(R.id.action_grid_view);
         onOptionsItemSelected(isGridMode ? gridViewItem : listViewItem);
+    }
+
+    @Override
+    public void onDestroyOptionsMenu() {
+        super.onDestroyOptionsMenu();
+        listViewItem = null;
+        gridViewItem = null;
     }
 
     @Override

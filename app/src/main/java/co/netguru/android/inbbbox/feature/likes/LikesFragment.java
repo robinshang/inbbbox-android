@@ -63,8 +63,8 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     @BindView(R.id.loadingView)
     ProgressBar progressBar;
 
-    private LikesAdapter likesAdapter;
     private Snackbar loadingMoreSnackbar;
+    private LikesAdapter likesAdapter;
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
     private ShotsFragment.ShotActionListener shotActionListener;
@@ -97,6 +97,12 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         initRefreshLayout();
         initRecyclerView();
         initEmptyView();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        loadingMoreSnackbar = null;
     }
 
     @Override
@@ -152,7 +158,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     @Override
-    public void hideLoadingMoreBucketsView() {
+    public void hideLoadingMoreLikesView() {
         if (loadingMoreSnackbar != null) {
             loadingMoreSnackbar.dismiss();
         }
