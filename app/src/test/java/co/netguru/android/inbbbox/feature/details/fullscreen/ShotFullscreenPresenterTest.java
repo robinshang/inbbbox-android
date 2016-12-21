@@ -49,19 +49,29 @@ public class ShotFullscreenPresenterTest {
     Shot shotMock;
 
     @Mock
-    ShotsController shotsControllerMock;
+    ShotsController shotsController;
 
-    ShotDetailsRequest defaultDetailsRequest = ShotDetailsRequest.builder()
-            .detailsType(ShotDetailsType.DEFAULT).build();
+    @Mock
+    LikeShotController likeShotController;
 
-    private List<Shot> shotsFullPage;
+    @Mock
+    BucketsController bucketsController;
 
-    private List<Shot> shotsHalfPage;
+    @Mock
+    UserShotsController userShotsController;
+
+    List<Shot> shotsFullPage;
+
+    List<Shot> shotsHalfPage;
+
+    List<Shot> expectedShots = Collections.emptyList();
+
+    ShotDetailsRequest defaultRequest = ShotDetailsRequest.builder()
+            .detailsType(ShotDetailsType.DEFAULT)
+            .build();
 
     @Before
     public void setUp() {
-        shotFullScreenPresenter.attachView(viewMock);
-
         shotsFullPage = new ArrayList<>();
         for (int i = 0; i < SHOT_PAGE_COUNT; i++) {
             shotsFullPage.add(shotMock);
@@ -75,7 +85,10 @@ public class ShotFullscreenPresenterTest {
 
     @Test
     public void whenViewCreatedWithSingleShot_thenPreviewSingleShot() {
-        shotFullScreenPresenter.onViewCreated(shotMock, Collections.emptyList(), defaultDetailsRequest);
+        ShotFullScreenPresenter presenter = new ShotFullScreenPresenter(shotsController, likeShotController,
+                bucketsController, userShotsController, shotMock, Collections.emptyList(), defaultRequest);
+
+        presenter.attachView(viewMock);
 
         verify(viewMock, times(1)).previewSingleShot(shotMock);
     }
@@ -83,36 +96,42 @@ public class ShotFullscreenPresenterTest {
     @Test
     public void whenViewCreatedWithSingleShot_thenPreviewShots() {
         List<Shot> shotList = Arrays.asList(shotMock);
+        ShotFullScreenPresenter presenter = new ShotFullScreenPresenter(shotsController, likeShotController,
+                bucketsController, userShotsController, shotMock, shotList, defaultRequest);
 
-        shotFullScreenPresenter.onViewCreated(shotMock, shotList, defaultDetailsRequest);
+        presenter.attachView(viewMock);
 
         verify(viewMock, times(1)).previewShots(shotMock, shotList);
     }
 
     @Test
     public void whenInitialShotsWereFullPageAndRequestedMore_thenShowMoreItems() {
-        List<Shot> expectedShots = new ArrayList<>();
-        when(shotsControllerMock.getShots(SHOT_PAGE_2, SHOT_PAGE_COUNT)).thenReturn(Observable.just(expectedShots));
+        ShotFullScreenPresenter presenter = new ShotFullScreenPresenter(shotsController, likeShotController,
+                bucketsController, userShotsController, shotMock, shotsFullPage, defaultRequest);
+        presenter.attachView(viewMock);
+        when(shotsController.getShots(SHOT_PAGE_2, SHOT_PAGE_COUNT)).thenReturn(Observable.just(expectedShots));
 
-        shotFullScreenPresenter.onViewCreated(shotMock, shotsFullPage, defaultDetailsRequest);
-        shotFullScreenPresenter.onRequestMoreData();
+        presenter.onRequestMoreData();
 
         verify(viewMock, times(1)).showMoreItems(expectedShots);
     }
 
     @Test
     public void whenInitialShotsWereNotFullPageAndRequestedMore_thenDoNotShowMoreItems() {
-        List<Shot> expectedShots = new ArrayList<>();
-        when(shotsControllerMock.getShots(SHOT_PAGE_2, SHOT_PAGE_COUNT)).thenReturn(Observable.just(expectedShots));
+        ShotFullScreenPresenter presenter = new ShotFullScreenPresenter(shotsController, likeShotController,
+                bucketsController, userShotsController, shotMock, shotsHalfPage, defaultRequest);
+        presenter.attachView(viewMock);
+        when(shotsController.getShots(SHOT_PAGE_2, SHOT_PAGE_COUNT)).thenReturn(Observable.just(expectedShots));
 
-        shotFullScreenPresenter.onViewCreated(shotMock, shotsHalfPage, defaultDetailsRequest);
-        shotFullScreenPresenter.onRequestMoreData();
+        presenter.onRequestMoreData();
 
         verify(viewMock, never()).showMoreItems(expectedShots);
     }
 
     @Test
     public void whenBackArrowPressed_thenCloseView() {
+        shotFullScreenPresenter.attachView(viewMock);
+
         shotFullScreenPresenter.onBackArrowPressed();
 
         verify(viewMock, times(1)).close();
