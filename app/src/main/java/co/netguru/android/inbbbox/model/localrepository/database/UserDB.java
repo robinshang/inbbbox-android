@@ -30,7 +30,7 @@ public class UserDB {
     public Long getId() {
         return this.id;
     }
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getName() {
@@ -56,8 +56,5 @@ public class UserDB {
     }
     public void setShotsCount(int shotsCount) {
         this.shotsCount = shotsCount;
-    }
-    public void setId(Long id) {
-        this.id = id;
     }
 }

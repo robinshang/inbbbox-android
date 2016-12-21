@@ -22,7 +22,7 @@ public class TeamDB {
     public Long getId() {
         return this.id;
     }
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getName() {
@@ -30,8 +30,5 @@ public class TeamDB {
     }
     public void setName(String name) {
         this.name = name;
-    }
-    public void setId(Long id) {
-        this.id = id;
     }
 }

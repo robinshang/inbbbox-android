@@ -8,8 +8,8 @@ import org.greenrobot.greendao.annotation.ToOne;
 import org.threeten.bp.LocalDateTime;
 
 import co.netguru.android.inbbbox.model.localrepository.database.converter.LocalDateTimeConverter;
+
 import org.greenrobot.greendao.DaoException;
-import org.greenrobot.greendao.annotation.NotNull;
 
 @Entity
 public class ShotDB {
@@ -30,29 +30,29 @@ public class ShotDB {
     private String thumbnailUrl;
     private boolean isBucketed;
     private boolean isLiked;
-    private long userId;
-    private long teamId;
+    private Long userId;
+    private Long teamId;
     @ToOne(joinProperty = "userId")
     private UserDB user;
     @ToOne(joinProperty = "teamId")
     private TeamDB team;
 
-    /** Used to resolve relations */
+    /**
+     * Used to resolve relations
+     */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
-    /** Used for active entity operations. */
+    /**
+     * Used for active entity operations.
+     */
     @Generated(hash = 163997700)
     private transient ShotDBDao myDao;
-    @Generated(hash = 251390918)
-    private transient Long user__resolvedKey;
-    @Generated(hash = 1834174654)
-    private transient Long team__resolvedKey;
 
-    @Generated(hash = 220974353)
+    @Generated(hash = 1611337159)
     public ShotDB(Long id, String title, LocalDateTime creationDate, String projectUrl, int likesCount,
-            int bucketCount, int commentsCount, String description, boolean isGif, String hiDpiImageUrl,
-            String normalImageUrl, String thumbnailUrl, boolean isBucketed, boolean isLiked,
-            long userId, long teamId) {
+                  int bucketCount, int commentsCount, String description, boolean isGif, String hiDpiImageUrl,
+                  String normalImageUrl, String thumbnailUrl, boolean isBucketed, boolean isLiked,
+                  Long userId, Long teamId) {
         this.id = id;
         this.title = title;
         this.creationDate = creationDate;
@@ -79,7 +79,7 @@ public class ShotDB {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -89,6 +89,14 @@ public class ShotDB {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return this.creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 
     public String getProjectUrl() {
@@ -179,34 +187,31 @@ public class ShotDB {
         this.isLiked = isLiked;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public long getTeamId() {
+    public Long getTeamId() {
         return this.teamId;
     }
 
-    public void setTeamId(long teamId) {
+    public void setTeamId(Long teamId) {
         this.teamId = teamId;
     }
 
-    public LocalDateTime getCreationDate() {
-        return this.creationDate;
-    }
+    @Generated(hash = 251390918)
+    private transient Long user__resolvedKey;
 
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    /** To-one relationship, resolved on first access. */
-    @Generated(hash = 1448983212)
+    /**
+     * To-one relationship, resolved on first access.
+     */
+    @Generated(hash = 1144150912)
     public UserDB getUser() {
-        long __key = this.userId;
+        Long __key = this.userId;
         if (user__resolvedKey == null || !user__resolvedKey.equals(__key)) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
@@ -222,24 +227,27 @@ public class ShotDB {
         return user;
     }
 
-    /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 649368207)
-    public void setUser(@NotNull UserDB user) {
-        if (user == null) {
-            throw new DaoException(
-                    "To-one property 'userId' has not-null constraint; cannot set to-one to null");
-        }
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
+    @Generated(hash = 711898738)
+    public void setUser(UserDB user) {
         synchronized (this) {
             this.user = user;
-            userId = user.getId();
+            userId = user == null ? null : user.getId();
             user__resolvedKey = userId;
         }
     }
 
-    /** To-one relationship, resolved on first access. */
-    @Generated(hash = 2077086292)
+    @Generated(hash = 1834174654)
+    private transient Long team__resolvedKey;
+
+    /**
+     * To-one relationship, resolved on first access.
+     */
+    @Generated(hash = 1111803104)
     public TeamDB getTeam() {
-        long __key = this.teamId;
+        Long __key = this.teamId;
         if (team__resolvedKey == null || !team__resolvedKey.equals(__key)) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
@@ -255,16 +263,14 @@ public class ShotDB {
         return team;
     }
 
-    /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 856798921)
-    public void setTeam(@NotNull TeamDB team) {
-        if (team == null) {
-            throw new DaoException(
-                    "To-one property 'teamId' has not-null constraint; cannot set to-one to null");
-        }
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
+    @Generated(hash = 1476213970)
+    public void setTeam(TeamDB team) {
         synchronized (this) {
             this.team = team;
-            teamId = team.getId();
+            teamId = team == null ? null : team.getId();
             team__resolvedKey = teamId;
         }
     }
@@ -305,11 +311,9 @@ public class ShotDB {
         myDao.update(this);
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 907843013)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
