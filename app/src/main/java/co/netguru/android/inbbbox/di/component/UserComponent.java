@@ -1,9 +1,7 @@
 package co.netguru.android.inbbbox.di.component;
 
 import co.netguru.android.inbbbox.di.UserScope;
-import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
 import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
-import co.netguru.android.inbbbox.di.module.ShotsModule;
 import co.netguru.android.inbbbox.di.module.UserModule;
 import dagger.Subcomponent;
 
@@ -18,9 +16,9 @@ public interface UserComponent {
         UserComponent build();
     }
 
-    ShotsComponent plus(ShotsModule shotsModule);
+    ShotsComponent getShotsComponent();
 
-    LikesFragmentComponent plus(LikesFragmentModule module);
+    LikesFragmentComponent getLikesFragmentComponent();
 
     ShotDetailsComponent plus(ShotsDetailsModule module);
 }

@@ -21,14 +21,10 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.di.component.FollowerDetailsFragmentComponent;
-import co.netguru.android.inbbbox.di.module.FollowerDetailsFragmentModule;
 import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.followers.details.adapter.FollowerDetailsAdapter;
@@ -42,8 +38,8 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
         FollowerDetailsContract.View, FollowerDetailsContract.Presenter>
         implements FollowerDetailsContract.View, UnFollowUserDialogFragment.OnUnFollowClickedListener {
 
-    private static final int GRID_VIEW_COLUMN_COUNT = 2;
     public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
+    private static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final String FOLLOWER_KEY = "follower_key";
     private static final String USER_KEY = "user_key";
     private static final int SHOTS_TO_LOAD_MORE = 10;
@@ -58,13 +54,10 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     @BindView(R.id.fragment_follower_details_recycler_view)
     RecyclerView recyclerView;
 
-    @Inject
-    FollowerDetailsAdapter adapter;
-
+    private FollowerDetailsAdapter adapter;
     private OnFollowedShotActionListener onUnFollowCompletedListener;
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
-    private FollowerDetailsFragmentComponent component;
 
     public static FollowerDetailsFragment newInstanceWithFollower(Follower follower) {
         final Bundle args = new Bundle();
@@ -93,9 +86,6 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
             Timber.e(e, "must implement OnFollowedShotActionListener");
             throw new InterfaceNotImplementedException(e, context.toString(), OnFollowedShotActionListener.class.getSimpleName());
         }
-        component = App.getAppComponent(getContext())
-                .plus(new FollowerDetailsFragmentModule(getPresenter()::showShotDetails));
-        component.inject(this);
     }
 
     @Nullable
@@ -133,7 +123,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     @NonNull
     @Override
     public FollowerDetailsContract.Presenter createPresenter() {
-        return component.getPresenter();
+        return App.getAppComponent(getContext()).plusFollowersDetailsFragmentComponent().getPresenter();
     }
 
     @NonNull
@@ -216,6 +206,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     private void initRecyclerView() {
+        adapter = new FollowerDetailsAdapter(getPresenter()::showShotDetails);
         gridLayoutManager = new GridLayoutManager(getContext(), GRID_VIEW_COLUMN_COUNT);
         linearLayoutManager = new LinearLayoutManager(getContext());
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {

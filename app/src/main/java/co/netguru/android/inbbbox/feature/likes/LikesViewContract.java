@@ -18,7 +18,7 @@ interface LikesViewContract {
 
         void showLoadingMoreLikesView();
 
-        void hideLoadingMoreBucketsView();
+        void hideLoadingMoreLikesView();
 
         void hideEmptyLikesInfo();
 

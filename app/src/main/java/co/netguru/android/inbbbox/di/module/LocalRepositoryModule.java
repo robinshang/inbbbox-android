@@ -15,7 +15,6 @@ import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
 import dagger.Module;
 import dagger.Provides;
 
-@Singleton
 @Module
 public class LocalRepositoryModule {
 
