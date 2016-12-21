@@ -123,4 +123,6 @@
             fab:fab_size="mini"/>
 
     </co.netguru.android.inbbbox.view.FogFloatingActionMenu>
+
+    <include layout="@layout/animation_loading" />
 </android.support.design.widget.CoordinatorLayout>
