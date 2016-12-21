@@ -17,9 +17,6 @@ import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
 
 import co.netguru.android.inbbbox.model.localrepository.database.DaoMaster;
 import co.netguru.android.inbbbox.model.localrepository.database.DaoSession;
-import co.netguru.android.inbbbox.model.localrepository.database.ShotDBDao;
-import co.netguru.android.inbbbox.model.localrepository.database.TeamDBDao;
-import co.netguru.android.inbbbox.model.localrepository.database.UserDBDao;
 import dagger.Module;
 import dagger.Provides;
 
@@ -86,23 +83,5 @@ public class LocalRepositoryModule {
     @Provides
     DaoSession provideDaoSession(Database database) {
         return new DaoMaster(database).newSession();
-    }
-
-    @Singleton
-    @Provides
-    ShotDBDao provideShotDBDao(DaoSession daoSession) {
-        return daoSession.getShotDBDao();
-    }
-
-    @Singleton
-    @Provides
-    UserDBDao provideUserDBDao(DaoSession daoSession) {
-        return daoSession.getUserDBDao();
-    }
-
-    @Singleton
-    @Provides
-    TeamDBDao provideTeamDBDao(DaoSession daoSession) {
-        return daoSession.getTeamDBDao();
     }
 }

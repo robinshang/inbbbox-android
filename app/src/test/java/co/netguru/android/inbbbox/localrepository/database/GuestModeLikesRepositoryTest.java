@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.localrepository.database;
 import org.greenrobot.greendao.query.QueryBuilder;
 import org.greenrobot.greendao.rx.RxDao;
 import org.greenrobot.greendao.rx.RxQuery;
+import org.greenrobot.greendao.rx.RxTransaction;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,19 +16,20 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
+import co.netguru.android.inbbbox.model.localrepository.database.DaoSession;
 import co.netguru.android.inbbbox.model.localrepository.database.ShotDB;
 import co.netguru.android.inbbbox.model.localrepository.database.ShotDBDao;
 import co.netguru.android.inbbbox.model.localrepository.database.TeamDB;
 import co.netguru.android.inbbbox.model.localrepository.database.TeamDBDao;
 import co.netguru.android.inbbbox.model.localrepository.database.UserDB;
 import co.netguru.android.inbbbox.model.localrepository.database.UserDBDao;
-import co.netguru.android.inbbbox.model.localrepository.database.mapper.ShotDBMapper;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -38,6 +40,8 @@ public class GuestModeLikesRepositoryTest {
     public TestRule rule = new RxSyncTestRule();
 
     @Mock
+    DaoSession daoSession;
+    @Mock
     ShotDBDao shotDBDao;
     @Mock
     UserDBDao userDBDao;
@@ -46,32 +50,28 @@ public class GuestModeLikesRepositoryTest {
     @Mock
     RxDao<ShotDB, Long> shotRxDao;
     @Mock
-    RxDao<UserDB, Long> userRxDao;
-    @Mock
-    RxDao<TeamDB, Long> teamRxDao;
-    @Mock
     QueryBuilder<ShotDB> shotDBQueryBuilder;
     @Mock
     RxQuery<ShotDB> shotDBRxQuery;
 
+    private RxTransaction rxTransaction;
+
     @InjectMocks
     GuestModeLikesRepository repository;
 
-    private final ShotDB shotDB = ShotDBMapper.fromShot(Statics.NOT_LIKED_SHOT);
-    private final UserDB userDB = new UserDB();
-    private final TeamDB teamDB = new TeamDB();
-
     @Before
     public void setUp() {
-        final ShotDB[] shotDBs = {shotDB};
-        final UserDB[] userDBs = {userDB};
-        final TeamDB[] teamDBs = {teamDB};
+        rxTransaction = new RxTransaction(daoSession);
+        when(daoSession.getShotDBDao()).thenReturn(shotDBDao);
+        when(daoSession.getUserDBDao()).thenReturn(userDBDao);
+        when(daoSession.getTeamDBDao()).thenReturn(teamDBDao);
         when(shotDBDao.rx()).thenReturn(shotRxDao);
-        when(shotRxDao.insertOrReplaceInTx(any(ShotDB.class))).thenReturn(Observable.just(shotDBs));
-        when(userDBDao.rx()).thenReturn(userRxDao);
-        when(userRxDao.insertOrReplaceInTx(any(UserDB.class))).thenReturn(Observable.just(userDBs));
-        when(teamDBDao.rx()).thenReturn(teamRxDao);
-        when(teamRxDao.insertOrReplaceInTx(any(TeamDB.class))).thenReturn(Observable.just(teamDBs));
+        when(daoSession.rxTx()).thenReturn(rxTransaction);
+        doAnswer(invocation -> {
+            final Runnable test = (Runnable) invocation.getArguments()[0];
+            test.run();
+            return null;
+        }).when(daoSession).runInTx(any());
     }
 
     @Test
@@ -81,8 +81,8 @@ public class GuestModeLikesRepositoryTest {
         //when
         repository.addLikedShot(Statics.NOT_LIKED_SHOT).subscribe(subscriber);
         //then
-        verify(shotDBDao).rx();
-        verify(shotRxDao).insertOrReplaceInTx(any(ShotDB.class));
+        verify(shotDBDao).insertOrReplace(any(ShotDB.class));
+
         subscriber.assertNoErrors();
     }
 
@@ -93,8 +93,7 @@ public class GuestModeLikesRepositoryTest {
         //when
         repository.addLikedShot(Statics.NOT_LIKED_SHOT).subscribe(subscriber);
         //then
-        verify(userDBDao).rx();
-        verify(userRxDao).insertOrReplaceInTx(any(UserDB.class));
+        verify(userDBDao).insertOrReplace(any(UserDB.class));
         subscriber.assertNoErrors();
     }
 
@@ -105,8 +104,7 @@ public class GuestModeLikesRepositoryTest {
         //when
         repository.addLikedShot(Statics.NOT_LIKED_SHOT).subscribe(subscriber);
         //then
-        verify(teamDBDao).rx();
-        verify(teamRxDao).insertOrReplaceInTx(any(TeamDB.class));
+        verify(teamDBDao).insertOrReplace(any(TeamDB.class));
         subscriber.assertNoErrors();
     }
 
