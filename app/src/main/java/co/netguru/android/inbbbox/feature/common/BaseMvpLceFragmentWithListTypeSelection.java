@@ -16,13 +16,13 @@ import co.netguru.android.inbbbox.R;
 public abstract class BaseMvpLceFragmentWithListTypeSelection<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
         extends BaseMvpViewStateFragment<CV, M, V, P> {
 
-    @BindDrawable(R.drawable.ic_listview)
+    @BindDrawable(R.drawable.ic_list_view)
     Drawable icListView;
-    @BindDrawable(R.drawable.ic_listview_active)
+    @BindDrawable(R.drawable.ic_list_view_active)
     Drawable icListViewActive;
-    @BindDrawable(R.drawable.ic_gridview)
+    @BindDrawable(R.drawable.ic_grid_view)
     Drawable icGridView;
-    @BindDrawable(R.drawable.ic_gridview_active)
+    @BindDrawable(R.drawable.ic_grid_view_active)
     Drawable icGridViewActive;
 
     private boolean isGridMode;

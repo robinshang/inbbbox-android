@@ -4,13 +4,13 @@
 
     <item
         android:id="@+id/action_grid_view"
-        android:icon="@drawable/ic_gridview"
+        android:icon="@drawable/ic_grid_view"
         android:title="@string/action_grid_view"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/action_list_view"
-        android:icon="@drawable/ic_listview"
+        android:icon="@drawable/ic_list_view"
         android:title="@string/action_list_view"
         app:showAsAction="ifRoom"/>
 </menu>
