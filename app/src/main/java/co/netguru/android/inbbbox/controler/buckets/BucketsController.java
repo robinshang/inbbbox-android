@@ -15,7 +15,7 @@ public interface BucketsController {
 
     Single<List<Bucket>> getCurrentUserBuckets(int pageNumber, int pageCount);
 
-    Completable addShotToBucket(long bucketId, long shotId);
+    Completable addShotToBucket(long bucketId, Shot shot);
 
     Single<List<BucketWithShots>> getUserBucketsWithShots(int pageNumber,
                                                           int pageCount, int shotsCount);

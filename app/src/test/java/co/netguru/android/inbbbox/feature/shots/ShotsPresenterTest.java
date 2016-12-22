@@ -192,7 +192,7 @@ public class ShotsPresenterTest {
     @Test
     public void whenBucketForShotChosen_thenAddToBucket() {
         //given
-        when(bucketsControllerMock.addShotToBucket(BUCKET.id(), LIKED_SHOT.id()))
+        when(bucketsControllerMock.addShotToBucket(BUCKET.id(), LIKED_SHOT))
                 .thenReturn(Completable.complete());
         //when
         presenter.addShotToBucket(BUCKET, LIKED_SHOT);
@@ -203,7 +203,7 @@ public class ShotsPresenterTest {
     @Test
     public void whenBucketForShotChosenAndErrorOccurs_thenShowApiError() {
         //given
-        when(bucketsControllerMock.addShotToBucket(BUCKET.id(), LIKED_SHOT.id()))
+        when(bucketsControllerMock.addShotToBucket(BUCKET.id(), LIKED_SHOT))
                 .thenReturn(Completable.error(new Throwable()));
         //when
         presenter.addShotToBucket(BUCKET, LIKED_SHOT);

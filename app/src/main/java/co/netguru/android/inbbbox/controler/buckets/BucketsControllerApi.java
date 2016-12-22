@@ -29,8 +29,8 @@ public class BucketsControllerApi implements BucketsController {
         return userApi.getUserBucketsList(pageNumber, pageCount);
     }
 
-    public Completable addShotToBucket(long bucketId, long shotId) {
-        return bucketApi.addShotToBucket(bucketId, shotId);
+    public Completable addShotToBucket(long bucketId, Shot shot) {
+        return bucketApi.addShotToBucket(bucketId, shot.id());
     }
 
     public Single<List<BucketWithShots>> getUserBucketsWithShots(int pageNumber, int pageCount, int shotsCount) {

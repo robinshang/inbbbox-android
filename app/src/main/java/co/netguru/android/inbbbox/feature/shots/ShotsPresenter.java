@@ -116,7 +116,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     @Override
     public void addShotToBucket(Bucket bucket, Shot shot) {
         subscriptions.add(
-                bucketsController.addShotToBucket(bucket.id(), shot.id())
+                bucketsController.addShotToBucket(bucket.id(), shot)
                         .compose(RxTransformerUtils.applyCompletableIoSchedulers())
                         .subscribe(
                                 getView()::showBucketAddSuccess,
