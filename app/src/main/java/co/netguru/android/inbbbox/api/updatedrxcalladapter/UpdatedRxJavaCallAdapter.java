@@ -69,7 +69,7 @@ public class UpdatedRxJavaCallAdapter extends CallAdapter.Factory {
                 final Call call = originalCall.clone();
 
                 // Attempt to cancel the call if it is still in-flight on unsubscription.
-                Subscription subscription = Subscriptions.create(() -> call.cancel());
+                Subscription subscription = Subscriptions.create(call::cancel);
                 subscriber.onSubscribe(subscription);
 
                 try {

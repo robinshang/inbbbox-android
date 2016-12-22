@@ -14,8 +14,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import co.netguru.android.inbbbox.R;
 
-public abstract class BaseMvpViewStateFragment<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
-        extends MvpLceViewStateFragment<CV, M, V, P> {
+public abstract class BaseMvpViewStateFragment<C extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
+        extends MvpLceViewStateFragment<C, M, V, P> {
 
     private Unbinder unbinder;
 

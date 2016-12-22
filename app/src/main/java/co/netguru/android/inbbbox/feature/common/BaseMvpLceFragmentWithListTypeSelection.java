@@ -13,8 +13,8 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import butterknife.BindDrawable;
 import co.netguru.android.inbbbox.R;
 
-public abstract class BaseMvpLceFragmentWithListTypeSelection<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
-        extends BaseMvpViewStateFragment<CV, M, V, P> {
+public abstract class BaseMvpLceFragmentWithListTypeSelection<C extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
+        extends BaseMvpViewStateFragment<C, M, V, P> {
 
     @BindDrawable(R.drawable.ic_list_view)
     Drawable icListView;

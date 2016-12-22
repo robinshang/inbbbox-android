@@ -15,6 +15,7 @@ public class RoundedCornersImageView extends ImageView {
     private final float defaultRadius = getContext().getResources().getDimension(R.dimen.shot_corner_radius);
     private float radius = defaultRadius;
     private boolean isBottomEdgeRoundingDisabled = false;
+    private Path clipPath;
 
     public RoundedCornersImageView(Context context) {
         super(context);
@@ -23,6 +24,7 @@ public class RoundedCornersImageView extends ImageView {
     public RoundedCornersImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        clipPath = new Path();
         handleAttrs(context, attrs);
     }
 
@@ -36,7 +38,7 @@ public class RoundedCornersImageView extends ImageView {
         int width = this.getWidth();
         int height = this.getHeight();
 
-        Path clipPath = new Path();
+        clipPath.reset();
         RectF rect = new RectF(0, 0, width, height);
         clipPath.addRoundRect(rect, radius, radius, Path.Direction.CW);
         if (isBottomEdgeRoundingDisabled) {
