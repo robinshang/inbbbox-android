@@ -79,7 +79,7 @@ public final class BucketsAdapter extends RecyclerView.Adapter<BaseBucketViewHol
         notifyDataSetChanged();
     }
 
-    public void removeBucketWithGivenId(long bucketId) {
+    public void removeBucketWithGivenIdIfExists(long bucketId) {
         for (int i = 0; i < bucketWithShotsList.size(); i++) {
             Bucket currentBucket = bucketWithShotsList.get(i).bucket();
             if (currentBucket.id() == bucketId) {

@@ -100,7 +100,7 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     public void deleteBucket() {
         bucketsController.deleteBucket(currentBucketId)
                 .compose(RxTransformerUtils.applyCompletableIoSchedulers())
-                .subscribe(()->getView().showRefreshedBucketsView(currentBucketId),
+                .subscribe(() -> getView().showRefreshedBucketsView(currentBucketId),
                         throwable -> handleError(throwable, "Error while deleting bucket"));
     }
 

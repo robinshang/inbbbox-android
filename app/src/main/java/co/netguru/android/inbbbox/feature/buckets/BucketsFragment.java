@@ -43,7 +43,6 @@ import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 import onactivityresult.ActivityResult;
 import onactivityresult.OnActivityResult;
-import timber.log.Timber;
 
 public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout,
         List<BucketWithShots>, BucketsFragmentContract.View, BucketsFragmentContract.Presenter>
@@ -116,7 +115,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
         if (deletedBucketId != Constants.UNDEFINED) {
             getPresenter().handleDeleteBucket(deletedBucketId);
         } else {
-            Timber.e("Bucket delete request was success, but no bucket id was passed.");
+            throw new IllegalArgumentException("Bucket delete request was successful, but no bucket id passed.");
         }
     }
 
@@ -230,7 +229,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
 
     @Override
     public void removeBucketFromList(long bucketId) {
-        adapter.removeBucketWithGivenId(bucketId);
+        adapter.removeBucketWithGivenIdIfExists(bucketId);
     }
 
     @Override
