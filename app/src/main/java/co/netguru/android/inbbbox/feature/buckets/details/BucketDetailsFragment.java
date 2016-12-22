@@ -113,6 +113,12 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
         initEmptyView();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        loadingMoreSnackbar = null;
+    }
+
     @NonNull
     @Override
     public BucketDetailsContract.Presenter createPresenter() {

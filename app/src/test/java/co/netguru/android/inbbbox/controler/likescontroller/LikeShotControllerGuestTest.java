@@ -13,7 +13,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.api.LikesApi;
-import co.netguru.android.inbbbox.localrepository.GuestModeRepository;
+import co.netguru.android.inbbbox.localrepository.database.GuestModeLikesRepository;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
@@ -35,7 +35,7 @@ public class LikeShotControllerGuestTest {
     public TestRule rule = new RxSyncTestRule();
 
     @Mock
-    GuestModeRepository guestModeRepositoryMock;
+    GuestModeLikesRepository guestModeLikesRepository;
 
     @Mock
     Shot shotMock;
@@ -51,13 +51,13 @@ public class LikeShotControllerGuestTest {
         when(shotMock.id()).thenReturn(EXAMPLE_SHOT_ID);
         when(likesApiMock.getLikedShots(anyInt(), anyInt())).thenReturn(Observable.empty());
 
-        when(guestModeRepositoryMock.addLikedShot(any(Shot.class)))
+        when(guestModeLikesRepository.addLikedShot(any(Shot.class)))
                 .thenReturn(Completable.complete());
-        when(guestModeRepositoryMock.getLikedShots())
+        when(guestModeLikesRepository.getLikedShots())
                 .thenReturn(Observable.just(Statics.SHOT_LIST));
-        when(guestModeRepositoryMock.removeLikedShot(any(Shot.class)))
+        when(guestModeLikesRepository.removeLikedShot(any(Shot.class)))
                 .thenReturn(Completable.complete());
-        when(guestModeRepositoryMock.isShotLiked(any(Shot.class)))
+        when(guestModeLikesRepository.isShotLiked(any(Shot.class)))
                 .thenReturn(Completable.complete());
     }
 
@@ -70,7 +70,7 @@ public class LikeShotControllerGuestTest {
                 .subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(guestModeRepositoryMock, times(1)).addLikedShot(shotMock);
+        verify(guestModeLikesRepository, times(1)).addLikedShot(shotMock);
     }
 
     @Test
@@ -81,7 +81,7 @@ public class LikeShotControllerGuestTest {
                 .subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(guestModeRepositoryMock, times(1)).removeLikedShot(shotMock);
+        verify(guestModeLikesRepository, times(1)).removeLikedShot(shotMock);
     }
 
     @Test
@@ -92,7 +92,7 @@ public class LikeShotControllerGuestTest {
                 .subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(guestModeRepositoryMock, times(1)).isShotLiked(shotMock);
+        verify(guestModeLikesRepository, times(1)).isShotLiked(shotMock);
     }
 
     @Test
@@ -103,6 +103,6 @@ public class LikeShotControllerGuestTest {
                 subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(guestModeRepositoryMock, times(1)).getLikedShots();
+        verify(guestModeLikesRepository, times(1)).getLikedShots();
     }
 }

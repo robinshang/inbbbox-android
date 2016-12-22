@@ -5,11 +5,11 @@ import co.netguru.android.inbbbox.controler.TokenParametersController;
 import dagger.Module;
 import dagger.Provides;
 
-@ActivityScope
 @Module
 public class LoginModule {
 
     @Provides
+    @ActivityScope
     TokenParametersController provideOauthUriProvider() {
         return new TokenParametersController();
     }

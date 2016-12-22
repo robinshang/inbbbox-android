@@ -6,12 +6,11 @@ import co.netguru.android.inbbbox.controler.likescontroller.LikeShotControllerAp
 import co.netguru.android.inbbbox.controler.likescontroller.LikeShotControllerGuest;
 import co.netguru.android.inbbbox.di.UserScope;
 import co.netguru.android.inbbbox.enumeration.UserModeType;
-import co.netguru.android.inbbbox.localrepository.GuestModeRepository;
+import co.netguru.android.inbbbox.localrepository.database.GuestModeLikesRepository;
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-@UserScope
 public class UserModule {
 
     private UserModeType mode;
@@ -23,10 +22,10 @@ public class UserModule {
 
     @Provides
     @UserScope
-    LikeShotController likeShotController(LikesApi likesApi, GuestModeRepository guestModeRepository) {
+    LikeShotController likeShotController(LikesApi likesApi, GuestModeLikesRepository guestModeLikesRepository) {
         LikeShotController likeShotControllerApi;
         if (mode == UserModeType.GUEST_USER_MODE) {
-            likeShotControllerApi = new LikeShotControllerGuest(guestModeRepository, likesApi);
+            likeShotControllerApi = new LikeShotControllerGuest(guestModeLikesRepository, likesApi);
         } else {
             likeShotControllerApi = new LikeShotControllerApi(likesApi);
         }

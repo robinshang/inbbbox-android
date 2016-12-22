@@ -79,7 +79,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
                     .compose(androidIO())
                     .doAfterTerminate(() -> {
                         getView().hideProgressBar();
-                        getView().hideLoadingMoreBucketsView();
+                        getView().hideLoadingMoreLikesView();
                     })
                     .subscribe(this::onGetMoreLikeShotListNext,
                             throwable -> handleError(throwable, "Error while getting more likes from server"));
@@ -87,8 +87,8 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     }
 
     @Override
-    public void showShotDetails(Shot shot) {
-        getView().openShowDetailsScreen(shot);
+    public void showShotDetails(Shot shot, List<Shot> allShots) {
+        getView().openShowDetailsScreen(shot, allShots);
     }
 
     @Override

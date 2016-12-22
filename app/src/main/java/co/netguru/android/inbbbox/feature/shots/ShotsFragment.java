@@ -23,16 +23,14 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.di.component.ShotsComponent;
-import co.netguru.android.inbbbox.di.module.ShotsModule;
 import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.common.BaseMvpViewStateFragment;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shots.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotSwipeListener;
@@ -49,9 +47,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         AddToBucketDialogFragment.BucketSelectListener {
 
     private static final int SHOTS_TO_LOAD_MORE = 5;
-
-    @Inject
-    ShotsAdapter adapter;
 
     @BindView(R.id.shots_recycler_view)
     AutoItemScrollRecyclerView shotsRecyclerView;
@@ -74,14 +69,52 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @BindView(R.id.loading_ball_shadow)
     ImageView ballShadowImageView;
 
-    private ShotsComponent component;
-    private ShotActionListener shotActionListener;
-
     private Animation shadowAnimation;
     private AnimationSet ballAnimation;
 
+    private ShotsAdapter adapter;
+    private ShotActionListener shotActionListener;
+
     public static ShotsFragment newInstance() {
         return new ShotsFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            shotActionListener = (ShotActionListener) context;
+        } catch (ClassCastException e) {
+            throw new InterfaceNotImplementedException(e, context.toString(), ShotActionListener.class.getSimpleName());
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_shots, container, false);
+    }
+
+    @NonNull
+    @Override
+    public ShotsContract.Presenter createPresenter() {
+        return App.getUserComponent(getContext()).getShotsComponent().getPresenter();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initRecycler();
+        initRefreshLayout();
+        initFabMenu();
+        initLoadingAnimation();
+    }
+
+    @NonNull
+    @Override
+    public LceViewState<List<Shot>, ShotsContract.View> createViewState() {
+        return new RetainingLceViewState<>();
     }
 
     @OnClick(R.id.fab_like_menu)
@@ -117,56 +150,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            shotActionListener = (ShotActionListener) context;
-        } catch (ClassCastException e) {
-            throw new InterfaceNotImplementedException(e, context.toString(), ShotActionListener.class.getSimpleName());
-        }
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initComponent();
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_shots, container, false);
-    }
-
-    private void initComponent() {
-        component = App.getUserComponent(getContext())
-                .plus(new ShotsModule(this));
-        component.inject(this);
-    }
-
-    @NonNull
-    @Override
-    public ShotsContract.Presenter createPresenter() {
-        return component.getPresenter();
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initRecycler();
-        initRefreshLayout();
-        initFabMenu();
-        initLoadingAnimation();
-    }
-
-    @NonNull
-    @Override
-    public LceViewState<List<Shot>, ShotsContract.View> createViewState() {
-        return new RetainingLceViewState<>();
-    }
-
-    @Override
     public List<Shot> getData() {
         return adapter.getData();
     }
@@ -196,6 +179,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     private void initRecycler() {
+        adapter = new ShotsAdapter(this);
         shotsRecyclerView.setAdapter(adapter);
         shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shotsRecyclerView.setHasFixedSize(true);
@@ -238,12 +222,21 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void showDetailsScreenInCommentMode(Shot selectedShot) {
-        shotActionListener.showShotDetails(selectedShot, true);
+        ShotDetailsRequest request = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.DEFAULT)
+                .isCommentModeEnabled(true)
+                .build();
+
+        shotActionListener.showShotDetails(selectedShot, adapter.getItems(), request);
     }
 
     @Override
     public void showShotDetails(Shot shot) {
-        shotActionListener.showShotDetails(shot, false);
+        ShotDetailsRequest request = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.DEFAULT)
+                .build();
+
+        shotActionListener.showShotDetails(shot, adapter.getItems(), request);
     }
 
     @Override
@@ -306,7 +299,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     public interface ShotActionListener {
         void shotLikeStatusChanged();
-
-        void showShotDetails(Shot shot, boolean inCommentMode);
+        void showShotDetails(Shot shot, List<Shot> nearbyShots, ShotDetailsRequest detailsRequest);
     }
 }
