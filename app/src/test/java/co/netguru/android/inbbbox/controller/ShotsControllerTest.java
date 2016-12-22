@@ -26,9 +26,9 @@ import rx.Observable;
 import rx.Single;
 import rx.observers.TestSubscriber;
 
-import static co.netguru.android.inbbbox.data.MockData.ITEM_COUNT;
-import static co.netguru.android.inbbbox.data.MockData.getFilteredMockedData;
-import static co.netguru.android.inbbbox.data.MockData.getFollowingMockedData;
+import static co.netguru.android.inbbbox.Statics.ITEM_COUNT;
+import static co.netguru.android.inbbbox.Statics.getFilteredMockedData;
+import static co.netguru.android.inbbbox.Statics.getFollowingMockedData;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
