@@ -4,6 +4,7 @@ import org.threeten.bp.ZonedDateTime;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import co.netguru.android.inbbbox.model.api.Bucket;
@@ -20,7 +21,9 @@ import co.netguru.android.inbbbox.model.ui.User;
 
 public final class Statics {
 
-    public static int ITEM_COUNT = 15;
+    public static final int ITEM_COUNT = 15;
+    private static final int COMMENTS_COUNT = 15;
+    private static final int SHOTS_COUNT = 10;
 
     private static List<ShotEntity> getFollowingMock(int count, String label) {
         List<ShotEntity> result = new ArrayList<>();
@@ -161,6 +164,14 @@ public final class Statics {
         return comments;
     }
 
+    public static List<Shot> generateShots() {
+        final List<Shot> shots = new LinkedList<>();
+        for (int i = 0; i < SHOTS_COUNT; i++) {
+            shots.add(LIKED_SHOT);
+        }
+        return shots;
+    }
+
     public static List<CommentEntity> generateCommentsEntity() {
         List<CommentEntity> comments = new ArrayList<>();
         for (int i = 0; i < COMMENTS_COUNT; i++) {
@@ -193,6 +204,4 @@ public final class Statics {
         }
         return result;
     }
-
-    private static final int COMMENTS_COUNT = 15;
 }
