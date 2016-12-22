@@ -16,8 +16,8 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.FollowersController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
+import co.netguru.android.inbbbox.controler.followers.FollowersControllerApi;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsContract;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsPresenter;
 import co.netguru.android.inbbbox.model.ui.Follower;
@@ -54,7 +54,7 @@ public class FollowerDetailsPresenterTest {
     ErrorController errorControllerMock;
 
     @Mock
-    FollowersController followersControllerMock;
+    FollowersControllerApi followersControllerApiMock;
 
     @Mock
     User userMock;
@@ -79,7 +79,7 @@ public class FollowerDetailsPresenterTest {
                 .request(new Request.Builder().url("http://localhost/").build())
                 .build();
         Response<Completable> response = Response.success(Completable.complete(), rawResponse);
-        when(followersControllerMock.checkIfUserIsFollowed(anyLong())).thenReturn(Observable.just(response));
+        when(followersControllerApiMock.checkIfUserIsFollowed(anyLong())).thenReturn(Observable.just(response));
     }
 
     @Test
@@ -102,7 +102,7 @@ public class FollowerDetailsPresenterTest {
 
         followerDetailsPresenter.userDataReceived(userMock);
 
-        verify(followersControllerMock, times(1))
+        verify(followersControllerApiMock, times(1))
                 .checkIfUserIsFollowed(eq(EXAMPLE_ID));
     }
 
@@ -126,7 +126,7 @@ public class FollowerDetailsPresenterTest {
 
         followerDetailsPresenter.followerDataReceived(followerMock);
 
-        verify(followersControllerMock, times(1))
+        verify(followersControllerApiMock, times(1))
                 .checkIfUserIsFollowed(eq(EXAMPLE_ID));
     }
 
