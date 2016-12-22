@@ -33,7 +33,7 @@ public interface BucketDetailsContract {
 
         void showRemoveBucketDialog(@NonNull String bucketName);
 
-        void showRefreshedBucketsView(long currentBucketId);
+        void showRefreshedBucketsView(long deletedBucketId);
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {

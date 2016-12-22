@@ -126,9 +126,10 @@ public class BucketDetailsPresenterTest {
         //given
         when(bucketsControllerMock.deleteBucket(anyLong())).thenReturn(Completable.complete());
         //when
+        presenter.handleBucketData(BUCKET_WITH_SHOTS, PER_PAGE);
         presenter.deleteBucket();
         //then
-        verify(view, times(1)).showRefreshedBucketsView(currentBucketId);
+        verify(view, times(1)).showRefreshedBucketsView(BUCKET_WITH_SHOTS.bucket().id());
 
     }
 }

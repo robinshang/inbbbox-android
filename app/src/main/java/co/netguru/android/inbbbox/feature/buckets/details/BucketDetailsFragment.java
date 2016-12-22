@@ -226,9 +226,9 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     }
 
     @Override
-    public void showRefreshedBucketsView(long currentBucketId) {
+    public void showRefreshedBucketsView(long deletedBucketId) {
         Intent resultIntent = new Intent();
-        resultIntent.putExtra(DELETED_BUCKET_ID_KEY, currentBucketId);
+        resultIntent.putExtra(DELETED_BUCKET_ID_KEY, deletedBucketId);
         getActivity().setResult(Activity.RESULT_OK, resultIntent);
         getActivity().finish();
     }
