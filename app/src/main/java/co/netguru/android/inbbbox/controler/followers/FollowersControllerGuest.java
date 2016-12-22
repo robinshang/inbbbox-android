@@ -41,6 +41,7 @@ public class FollowersControllerGuest implements FollowersController {
 
     @Override
     public Observable<Response<Completable>> checkIfUserIsFollowed(long id) {
+        // TODO: 22.12.2016 Ask database instead of dribbble API
         return null;
     }
 
