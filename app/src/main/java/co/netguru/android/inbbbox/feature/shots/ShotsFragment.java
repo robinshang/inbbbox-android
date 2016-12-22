@@ -281,6 +281,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void hideLoadingIndicator() {
+        swipeRefreshLayout.setRefreshing(false);
         loadingBallContainer.setVisibility(View.GONE);
         shotsRecyclerView.setVisibility(View.VISIBLE);
     }
