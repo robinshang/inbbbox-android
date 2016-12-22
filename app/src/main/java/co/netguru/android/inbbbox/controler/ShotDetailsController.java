@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.api.ShotsApi;
-import co.netguru.android.inbbbox.controler.likescontroller.LikeShotController;
+import co.netguru.android.inbbbox.controler.likes.LikeShotController;
 import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.Shot;

@@ -37,12 +37,12 @@ import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.buckets.details.adapter.BucketShotViewHolder;
 import co.netguru.android.inbbbox.feature.buckets.details.adapter.BucketShotsAdapter;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
-import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
-public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<ShotEntity>,
+public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
         BucketDetailsContract.View, BucketDetailsContract.Presenter>
         implements BucketDetailsContract.View, DeleteBucketDialogFragment.DeleteBucketDialogListener {
 
@@ -130,17 +130,17 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
 
     @NonNull
     @Override
-    public LceViewState<List<ShotEntity>, BucketDetailsContract.View> createViewState() {
+    public LceViewState<List<Shot>, BucketDetailsContract.View> createViewState() {
         return new RetainingLceViewState<>();
     }
 
     @Override
-    public List<ShotEntity> getData() {
+    public List<Shot> getData() {
         return bucketShotsAdapter.getData();
     }
 
     @Override
-    public void setData(List<ShotEntity> data) {
+    public void setData(List<Shot> data) {
         bucketShotsAdapter.setNewShots(data);
     }
 
@@ -198,8 +198,8 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     }
 
     @Override
-    public void addShots(List<ShotEntity> shotEntities) {
-        bucketShotsAdapter.addNewShots(shotEntities);
+    public void addShots(List<Shot> shots) {
+        bucketShotsAdapter.addNewShots(shots);
     }
 
     @Override

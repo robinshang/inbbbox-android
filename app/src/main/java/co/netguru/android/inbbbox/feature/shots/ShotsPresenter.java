@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.controler.BucketsController;
 import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.likescontroller.LikeShotController;
+import co.netguru.android.inbbbox.controler.likes.LikeShotController;
 import co.netguru.android.inbbbox.controler.ShotsController;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;

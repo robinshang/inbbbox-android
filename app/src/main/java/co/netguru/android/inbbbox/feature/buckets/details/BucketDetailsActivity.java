@@ -21,7 +21,6 @@ import co.netguru.android.inbbbox.feature.common.BaseActivity;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsType;
-import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
@@ -74,7 +73,7 @@ public class BucketDetailsActivity extends BaseActivity
     }
 
     @Override
-    public void onShotClick(ShotEntity shotEntity) {
+    public void onShotClick(Shot shot) {
         BucketDetailsFragment bucketDetailsFragment =
                 (BucketDetailsFragment) getSupportFragmentManager().findFragmentByTag(BucketDetailsFragment.TAG);
         BucketWithShots bucketWithShots = getIntent().getParcelableExtra(BUCKET_WITH_SHOTS_KEY);
@@ -84,10 +83,8 @@ public class BucketDetailsActivity extends BaseActivity
                 .id(bucketWithShots.bucket().id())
                 .build();
 
-        List<Shot> allShots = Shot.createList(bucketDetailsFragment.getData());
-
-        final Fragment fragment = ShotDetailsFragment.newInstance(
-                Shot.create(shotEntity), allShots, request);
+        final Fragment fragment = ShotDetailsFragment.newInstance(shot,
+                bucketDetailsFragment.getData(), request);
         showBottomSheet(fragment, ShotDetailsFragment.TAG);
     }
 

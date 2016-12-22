@@ -16,7 +16,7 @@ import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controler.BucketsController;
 import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.ShotsController;
-import co.netguru.android.inbbbox.controler.likescontroller.LikeShotControllerApi;
+import co.netguru.android.inbbbox.controler.likes.LikeShotControllerApi;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;

@@ -11,8 +11,8 @@ import javax.inject.Singleton;
 import co.netguru.android.inbbbox.api.BucketApi;
 import co.netguru.android.inbbbox.api.UserApi;
 import co.netguru.android.inbbbox.model.api.Bucket;
-import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
@@ -41,14 +41,14 @@ public class BucketsController {
     public Single<List<BucketWithShots>> getUserBucketsWithShots(int pageNumber, int pageCount, int shotsCount) {
         return userApi.getUserBucketsList(pageNumber, pageCount)
                 .flatMapObservable(Observable::from)
-                .flatMap(bucket -> bucketApi.getBucketShotsList(bucket.id(), FIRST_PAGE_NUMBER, shotsCount).toObservable(),
+                .flatMap(bucket -> getShotsListObservableFromBucket(bucket.id(), FIRST_PAGE_NUMBER, shotsCount),
                         BucketWithShots::create)
                 .toList()
                 .toSingle();
     }
 
-    public Single<List<ShotEntity>> getShotsListFromBucket(long bucketId, int pageNumber, int pageCount) {
-        return bucketApi.getBucketShotsList(bucketId, pageNumber, pageCount);
+    public Single<List<Shot>> getShotsListFromBucket(long bucketId, int pageNumber, int pageCount) {
+        return getShotsListObservableFromBucket(bucketId, pageNumber, pageCount).toSingle();
     }
 
     public Single<Bucket> createBucket(@NonNull String name, @Nullable String description) {
@@ -57,5 +57,12 @@ public class BucketsController {
 
     public Completable deleteBucket(long bucketId) {
         return bucketApi.deleteBucket(bucketId);
+    }
+
+    private Observable<List<Shot>> getShotsListObservableFromBucket(long bucketId, int pageNumber, int pageCount) {
+        return bucketApi.getBucketShotsList(bucketId, pageNumber, pageCount)
+                .flatMapObservable(Observable::from)
+                .map(Shot::create)
+                .toList();
     }
 }

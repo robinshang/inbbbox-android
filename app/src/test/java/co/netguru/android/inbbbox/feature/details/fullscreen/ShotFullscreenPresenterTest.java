@@ -17,7 +17,7 @@ import java.util.List;
 import co.netguru.android.inbbbox.controler.BucketsController;
 import co.netguru.android.inbbbox.controler.ShotsController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
-import co.netguru.android.inbbbox.controler.likescontroller.LikeShotController;
+import co.netguru.android.inbbbox.controler.likes.LikeShotController;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsType;
 import co.netguru.android.inbbbox.model.ui.Shot;
