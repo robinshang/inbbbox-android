@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.feature.buckets.details;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -47,8 +48,10 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
 
 
     public static final String TAG = BucketDetailsFragment.class.getSimpleName();
-    private static final int LAST_X_SHOTS_VISIBLE_TO_LOAD_MORE = 10;
 
+    public static final String DELETED_BUCKET_ID_KEY = "deleted_bucket_id_key";
+
+    private static final int LAST_X_SHOTS_VISIBLE_TO_LOAD_MORE = 10;
     private static final String BUCKET_WITH_SHOTS_ARG_KEY = "bucket_with_shots_arg_key";
     private static final String SHOTS_PER_PAGE_ARG_KEY = "shots_per_page_arg_key";
     private static final int SPAN_COUNT = 2;
@@ -223,8 +226,10 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     }
 
     @Override
-    public void showRefreshedBucketsView() {
-        getActivity().setResult(Activity.RESULT_OK);
+    public void showRefreshedBucketsView(long currentBucketId) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(DELETED_BUCKET_ID_KEY, currentBucketId);
+        getActivity().setResult(Activity.RESULT_OK, resultIntent);
         getActivity().finish();
     }
 

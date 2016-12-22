@@ -99,7 +99,8 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     @Override
     public void deleteBucket() {
         bucketsController.deleteBucket(currentBucketId)
-                .subscribe(getView()::showRefreshedBucketsView,
+                .compose(RxTransformerUtils.applyCompletableIoSchedulers())
+                .subscribe(()->getView().showRefreshedBucketsView(currentBucketId),
                         throwable -> handleError(throwable, "Error while deleting bucket"));
     }
 

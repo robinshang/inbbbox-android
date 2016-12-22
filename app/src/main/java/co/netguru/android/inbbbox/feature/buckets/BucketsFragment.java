@@ -29,11 +29,13 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.App;
+import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.buckets.adapter.BaseBucketViewHolder;
 import co.netguru.android.inbbbox.feature.buckets.adapter.BucketsAdapter;
 import co.netguru.android.inbbbox.feature.buckets.createbucket.CreateBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.buckets.details.BucketDetailsActivity;
+import co.netguru.android.inbbbox.feature.buckets.details.BucketDetailsFragment;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
@@ -107,8 +109,10 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
 
     @OnActivityResult(requestCode = BUCKET_DETAILS_VIEW_REQUEST_CODE,
             resultCodes = Activity.RESULT_OK)
-    public void onActivityResultBucketDeleted() {
-        refreshFragmentData();
+    public void onActivityResultBucketDeleted(Intent data) {
+        long deletedBucketId =
+                data.getLongExtra(BucketDetailsFragment.DELETED_BUCKET_ID_KEY, Constants.UNDEFINED);
+        getPresenter().handleDeleteBucket(deletedBucketId);
     }
 
     @Override
@@ -217,6 +221,11 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     @Override
     public void scrollToTop() {
         bucketsRecyclerView.smoothScrollToPosition(0);
+    }
+
+    @Override
+    public void removeBucketFromList(long bucketId) {
+        adapter.removeBucketWithGivenId(bucketId);
     }
 
     @Override

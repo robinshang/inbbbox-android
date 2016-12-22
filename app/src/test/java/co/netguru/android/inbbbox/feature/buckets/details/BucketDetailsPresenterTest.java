@@ -128,7 +128,7 @@ public class BucketDetailsPresenterTest {
         //when
         presenter.deleteBucket();
         //then
-        verify(view, times(1)).showRefreshedBucketsView();
+        verify(view, times(1)).showRefreshedBucketsView(currentBucketId);
 
     }
 }
