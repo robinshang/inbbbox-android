@@ -5,6 +5,7 @@ import co.netguru.android.inbbbox.model.api.FollowerEntity;
 import retrofit2.Response;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 
 public class FollowersControllerApi implements FollowersController {
@@ -32,7 +33,7 @@ public class FollowersControllerApi implements FollowersController {
     }
 
     @Override
-    public Observable<Response<Completable>> checkIfUserIsFollowed(long id) {
+    public Single<Response<Void>> checkIfUserIsFollowed(long id) {
         return followersApi.checkIfUserIsFollowed(id);
     }
 }

@@ -27,8 +27,8 @@ import co.netguru.android.testcommons.RxSyncTestRule;
 import okhttp3.Protocol;
 import okhttp3.Request;
 import retrofit2.Response;
-import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
@@ -78,8 +78,8 @@ public class FollowerDetailsPresenterTest {
                 .protocol(Protocol.HTTP_1_1)
                 .request(new Request.Builder().url("http://localhost/").build())
                 .build();
-        Response<Completable> response = Response.success(Completable.complete(), rawResponse);
-        when(followersControllerApiMock.checkIfUserIsFollowed(anyLong())).thenReturn(Observable.just(response));
+        Response<Void> response = Response.success(null, rawResponse);
+        when(followersControllerApiMock.checkIfUserIsFollowed(anyLong())).thenReturn(Single.just(response));
     }
 
     @Test
@@ -117,7 +117,7 @@ public class FollowerDetailsPresenterTest {
 
         followerDetailsPresenter.userDataReceived(exampleUser);
 
-        verify(viewMock, times(1)).setMenuIcon(anyBoolean());
+        verify(viewMock, times(1)).setFollowingMenuIcon(anyBoolean());
     }
 
     @Test
@@ -139,7 +139,7 @@ public class FollowerDetailsPresenterTest {
 
         followerDetailsPresenter.followerDataReceived(Follower.createFromUser(exampleUser, listOfShots));
 
-        verify(viewMock, times(1)).setMenuIcon(anyBoolean());
+        verify(viewMock, times(1)).setFollowingMenuIcon(anyBoolean());
     }
 
     @Test

@@ -29,7 +29,7 @@ public interface FollowerDetailsContract {
 
         void showFollowDialog(String username);
 
-        void setMenuIcon(boolean isFollowed);
+        void setFollowingMenuIcon(boolean isFollowed);
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {

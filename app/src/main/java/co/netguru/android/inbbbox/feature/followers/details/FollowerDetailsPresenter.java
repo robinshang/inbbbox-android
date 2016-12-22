@@ -13,6 +13,7 @@ import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;
+import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;
@@ -183,18 +184,18 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     private void checkIfUserIsFollowed(long userId) {
         final Subscription subscription = followersController.checkIfUserIsFollowed(userId)
-                .compose(androidIO())
-                .subscribe(response -> setMenuIcon(response.code()),
+                .compose(RxTransformerUtils.applySingleIoSchedulers())
+                .subscribe(response -> setFollowingMenuIcon(response.code()),
                         throwable -> handleError(throwable, "Error while checking if user is followed"));
         subscriptions.add(subscription);
     }
 
-    private void setMenuIcon(int code) {
+    private void setFollowingMenuIcon(int code) {
         if (code == CODE_USER_IS_FOLLOWED) {
-            getView().setMenuIcon(true);
+            getView().setFollowingMenuIcon(true);
 
         } else if (code == CODE_USER_IS_NOT_FOLLOWED) {
-            getView().setMenuIcon(false);
+            getView().setFollowingMenuIcon(false);
         }
     }
 

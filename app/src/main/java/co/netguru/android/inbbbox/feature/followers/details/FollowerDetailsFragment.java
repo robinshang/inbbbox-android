@@ -111,7 +111,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     @Override
-    public void setMenuIcon(boolean isFollowed) {
+    public void setFollowingMenuIcon(boolean isFollowed) {
         unfollowMenuItem.setVisible(isFollowed);
         followMenuItem.setVisible(!isFollowed);
     }
