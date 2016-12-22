@@ -1,12 +1,11 @@
 package co.netguru.android.inbbbox.controler.followers;
 
+import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.model.api.FollowerEntity;
-import retrofit2.Response;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
-
 
 public class FollowersControllerApi implements FollowersController {
 
@@ -33,7 +32,20 @@ public class FollowersControllerApi implements FollowersController {
     }
 
     @Override
-    public Single<Response<Void>> checkIfUserIsFollowed(long id) {
-        return followersApi.checkIfUserIsFollowed(id);
+    public Single<Boolean> isUserFollowed(long id) {
+        return followersApi.checkIfUserIsFollowed(id)
+                .map(response -> isUserFollowedDependingOnCode(response.code()));
+    }
+
+    private boolean isUserFollowedDependingOnCode(int code) {
+        boolean userIsFollowed = false;
+        if (code == Constants.ApiCodes.CODE_USER_IS_FOLLOWED) {
+            userIsFollowed = true;
+
+        } else if (code == Constants.ApiCodes.CODE_USER_IS_NOT_FOLLOWED) {
+            userIsFollowed = false;
+        }
+
+        return userIsFollowed;
     }
 }

@@ -8,12 +8,11 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.followers.FollowersController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
+import co.netguru.android.inbbbox.controler.followers.FollowersController;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;
-import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;
@@ -22,14 +21,13 @@ import timber.log.Timber;
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
 import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletableIoSchedulers;
+import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applySingleIoSchedulers;
 
 @FragmentScope
 public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<FollowerDetailsContract.View>
         implements FollowerDetailsContract.Presenter {
 
     private static final int SHOT_PAGE_COUNT = 30;
-    private static final int CODE_USER_IS_FOLLOWED = 204;
-    private static final int CODE_USER_IS_NOT_FOLLOWED = 404;
 
     private final UserShotsController userShotsController;
     private final FollowersController followersController;
@@ -183,20 +181,14 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     }
 
     private void checkIfUserIsFollowed(long userId) {
-        final Subscription subscription = followersController.checkIfUserIsFollowed(userId)
-                .compose(RxTransformerUtils.applySingleIoSchedulers())
-                .subscribe(response -> setFollowingMenuIcon(response.code()),
+        followersController.isUserFollowed(userId)
+                .compose(applySingleIoSchedulers())
+                .subscribe(this::setFollowingMenuIcon,
                         throwable -> handleError(throwable, "Error while checking if user is followed"));
-        subscriptions.add(subscription);
     }
 
-    private void setFollowingMenuIcon(int code) {
-        if (code == CODE_USER_IS_FOLLOWED) {
-            getView().setFollowingMenuIcon(true);
-
-        } else if (code == CODE_USER_IS_NOT_FOLLOWED) {
-            getView().setFollowingMenuIcon(false);
-        }
+    private void setFollowingMenuIcon(boolean isFollowed) {
+        getView().setFollowingMenuIcon(isFollowed);
     }
 
 }

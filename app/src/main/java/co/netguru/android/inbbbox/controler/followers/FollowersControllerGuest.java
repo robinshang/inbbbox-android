@@ -5,7 +5,6 @@ import java.util.List;
 import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.localrepository.database.GuestModeFollowersRepository;
 import co.netguru.android.inbbbox.model.api.FollowerEntity;
-import retrofit2.Response;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
@@ -40,9 +39,9 @@ public class FollowersControllerGuest implements FollowersController {
     }
 
     @Override
-    public Single<Response<Void>> checkIfUserIsFollowed(long id) {
+    public Single<Boolean> isUserFollowed(long id) {
         // TODO: 22.12.2016 Ask database instead of dribbble API
-        return Single.just(Response.success(null));
+        return Single.just(false);
     }
 
     private Observable<List<FollowerEntity>> getFollowersFromApi(int pageNumber, int pageCount) {
