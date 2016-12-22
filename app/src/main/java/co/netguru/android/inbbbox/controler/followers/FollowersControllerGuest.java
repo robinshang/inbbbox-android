@@ -35,7 +35,6 @@ public class FollowersControllerGuest implements FollowersController {
     @Override
     public Completable followUser(long id) {
         // TODO: 22.12.2016 Refactor adding follower to db
-//        return guestModeFollowersRepository.addFollower(id);
         return Completable.complete();
     }
 
