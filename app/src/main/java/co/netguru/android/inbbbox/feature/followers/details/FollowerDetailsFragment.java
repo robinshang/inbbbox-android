@@ -23,8 +23,6 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
