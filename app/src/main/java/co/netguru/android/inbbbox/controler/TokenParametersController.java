@@ -19,6 +19,7 @@ public class TokenParametersController {
 
     @Inject
     public TokenParametersController() {
+        //no-op
     }
 
     public Observable<Pair<String, UUID>> getOauthAuthorizeUrlAndUuidPair() {

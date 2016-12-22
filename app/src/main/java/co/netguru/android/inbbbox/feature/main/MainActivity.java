@@ -145,12 +145,10 @@ public class MainActivity
         super.onNewIntent(intent);
 
         RequestType requestType = (RequestType) intent.getSerializableExtra(REQUEST_EXTRA);
-        switch (requestType) {
-            case REFRESH_FOLLOWER_LIST:
-                pagerAdapter.refreshFragment(TabItemType.FOLLOWERS);
-                break;
-            default:
-                throw new IllegalStateException("Intent should contains REQUEST_EXTRA");
+        if (requestType == RequestType.REFRESH_FOLLOWER_LIST) {
+            pagerAdapter.refreshFragment(TabItemType.FOLLOWERS);
+        } else {
+            throw new IllegalStateException("Intent should contains REQUEST_EXTRA");
         }
     }
 
@@ -392,6 +390,8 @@ public class MainActivity
                 case R.id.drawer_item_logout:
                     getPresenter().performLogout();
                     break;
+                default:
+                    return false;
             }
             return true;
         });

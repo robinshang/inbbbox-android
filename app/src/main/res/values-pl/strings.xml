@@ -94,4 +94,7 @@
     <string name="guest_label">Gość?</string>
     <string name="guest_button_text">Używaj jako gość</string>
     <string name="or_loging_with_guest">albo</string>
+
+    <string name="empty_bucket_item_description">Obrazek pustego kontenera.</string>
+
 </resources>

@@ -51,6 +51,7 @@ public class TimePickerDialogFragment extends DialogFragment {
                 getArguments().getInt(START_MINUTE), false);
     }
 
+    @FunctionalInterface
     public interface OnTimePickedListener {
 
         void timePicked(int hour, int minute);
