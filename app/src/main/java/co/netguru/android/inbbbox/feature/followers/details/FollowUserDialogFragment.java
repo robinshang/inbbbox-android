@@ -37,7 +37,7 @@ public class FollowUserDialogFragment extends DialogFragment {
                         getArguments().getString(USERNAME_KEY)))
                 .setPositiveButton(R.string.action_follow, (dialog, which) ->
                         onFollowClickedListener.onFollowClicked())
-                .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(R.string.action_cancel, null)
                 .create();
     }
 
