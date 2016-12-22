@@ -3,7 +3,7 @@ package co.netguru.android.inbbbox.di.module;
 import java.util.List;
 
 import co.netguru.android.commons.di.FragmentScope;
-import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.controler.buckets.BucketsController;
 import co.netguru.android.inbbbox.controler.ShotsController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.controler.likes.LikeShotController;

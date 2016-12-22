@@ -128,7 +128,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     @NonNull
     @Override
     public BucketsFragmentContract.Presenter createPresenter() {
-        return App.getAppComponent(getContext()).plusBucketsFragmentComponent().getPresenter();
+        return App.getUserComponent(getContext()).plusBucketsFragmentComponent().getPresenter();
     }
 
     @NonNull

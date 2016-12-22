@@ -1,12 +1,9 @@
-package co.netguru.android.inbbbox.controler;
+package co.netguru.android.inbbbox.controler.buckets;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.api.BucketApi;
 import co.netguru.android.inbbbox.api.UserApi;
@@ -17,15 +14,13 @@ import rx.Completable;
 import rx.Observable;
 import rx.Single;
 
-@Singleton
-public class BucketsController {
+public class BucketsControllerApi implements BucketsController {
 
     private static final int FIRST_PAGE_NUMBER = 1;
     private final UserApi userApi;
     private final BucketApi bucketApi;
 
-    @Inject
-    BucketsController(UserApi userApi, BucketApi bucketApi) {
+    public BucketsControllerApi(UserApi userApi, BucketApi bucketApi) {
         this.userApi = userApi;
         this.bucketApi = bucketApi;
     }

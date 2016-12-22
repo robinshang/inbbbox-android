@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.controler.buckets.BucketsController;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;

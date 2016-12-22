@@ -125,7 +125,7 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     @NonNull
     @Override
     public BucketDetailsContract.Presenter createPresenter() {
-        return App.getAppComponent(getContext()).plusBucketDetailsComponent().getPresenter();
+        return App.getUserComponent(getContext()).plusBucketDetailsComponent().getPresenter();
     }
 
     @NonNull

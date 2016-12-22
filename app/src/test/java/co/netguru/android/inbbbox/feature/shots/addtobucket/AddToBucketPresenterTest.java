@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.controler.buckets.BucketsController;
 import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.event.BucketCreatedEvent;
 import co.netguru.android.inbbbox.event.RxBus;

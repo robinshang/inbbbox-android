@@ -22,6 +22,14 @@ public interface UserComponent {
 
     FollowerDetailsFragmentComponent plusFollowersDetailsFragmentComponent();
 
+    BucketsFragmentComponent plusBucketsFragmentComponent();
+
+    BucketsDetailsComponent plusBucketDetailsComponent();
+
+    AddToBucketComponent plusAddToBucketComponent();
+
+    CreateBucketComponent plusCreateBucketComponent();
+
     @Subcomponent.Builder
     interface Builder {
         UserComponent.Builder userModule(UserModule userModule);
