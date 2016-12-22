@@ -17,12 +17,7 @@
 #}
 
 -dontskipnonpubliclibraryclassmembers
--keepattributes LineNumberTable,SourceFile,Signature,*Annotation*,Exceptions,InnerClasses
-
-# Keep native methods
--keepclassmembers class * {
-    native <methods>;
-}
+-keepattributes LineNumberTable,SourceFile
 
 # remove log call
 -assumenosideeffects class android.util.Log {
