@@ -43,6 +43,7 @@ import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 import onactivityresult.ActivityResult;
 import onactivityresult.OnActivityResult;
+import timber.log.Timber;
 
 public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout,
         List<BucketWithShots>, BucketsFragmentContract.View, BucketsFragmentContract.Presenter>
@@ -112,7 +113,11 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     public void onActivityResultBucketDeleted(Intent data) {
         long deletedBucketId =
                 data.getLongExtra(BucketDetailsFragment.DELETED_BUCKET_ID_KEY, Constants.UNDEFINED);
-        getPresenter().handleDeleteBucket(deletedBucketId);
+        if (deletedBucketId != Constants.UNDEFINED) {
+            getPresenter().handleDeleteBucket(deletedBucketId);
+        } else {
+            Timber.e("Bucket delete request was success, but no bucket id was passed.");
+        }
     }
 
     @Override
