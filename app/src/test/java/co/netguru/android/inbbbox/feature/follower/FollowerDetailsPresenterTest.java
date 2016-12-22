@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.followers;
+package co.netguru.android.inbbbox.feature.follower;
 
 import org.junit.Assert;
 import org.junit.Before;

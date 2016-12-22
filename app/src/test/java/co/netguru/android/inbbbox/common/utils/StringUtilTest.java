@@ -1,9 +1,7 @@
-package co.netguru.android.inbbbox.utils;
+package co.netguru.android.inbbbox.common.utils;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import co.netguru.android.inbbbox.common.utils.StringUtil;
 
 public class StringUtilTest {
     @Test

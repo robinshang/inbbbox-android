@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.shots.addtobucket;
+package co.netguru.android.inbbbox.feature.shot.addtobucket;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,8 +16,6 @@ import co.netguru.android.inbbbox.controller.BucketsController;
 import co.netguru.android.inbbbox.controller.ErrorController;
 import co.netguru.android.inbbbox.event.events.BucketCreatedEvent;
 import co.netguru.android.inbbbox.event.RxBus;
-import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketContract;
-import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketPresenter;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;

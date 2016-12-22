@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.buckets.createbucket;
+package co.netguru.android.inbbbox.feature.bucket.createbucket;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -13,8 +13,6 @@ import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controller.BucketsController;
 import co.netguru.android.inbbbox.event.events.BucketCreatedEvent;
 import co.netguru.android.inbbbox.event.RxBus;
-import co.netguru.android.inbbbox.feature.bucket.createbucket.CreateBucketContract;
-import co.netguru.android.inbbbox.feature.bucket.createbucket.CreateBucketPresenter;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Single;
 

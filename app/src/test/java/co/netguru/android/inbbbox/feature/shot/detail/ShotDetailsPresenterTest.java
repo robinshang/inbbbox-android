@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.details;
+package co.netguru.android.inbbbox.feature.shot.detail;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -21,8 +21,6 @@ import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controller.ErrorController;
 import co.netguru.android.inbbbox.controller.ShotDetailsController;
 import co.netguru.android.inbbbox.controller.UserShotsController;
-import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsContract;
-import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsPresenter;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
 import co.netguru.android.inbbbox.model.ui.Shot;

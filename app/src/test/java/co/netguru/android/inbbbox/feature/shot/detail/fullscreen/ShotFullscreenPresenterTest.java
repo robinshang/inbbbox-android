@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.details.fullscreen;
+package co.netguru.android.inbbbox.feature.shot.detail.fullscreen;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -20,8 +20,6 @@ import co.netguru.android.inbbbox.controller.UserShotsController;
 import co.netguru.android.inbbbox.controller.likescontroller.LikeShotController;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
-import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullScreenPresenter;
-import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenContract;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
