@@ -25,6 +25,7 @@ public abstract class LoadMoreScrollListener extends RecyclerView.OnScrollListen
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
         final LinearLayoutManager linearLayoutManager = getLayoutManager(recyclerView);
+
         final int totalItemCount = linearLayoutManager.getItemCount();
         final int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
 

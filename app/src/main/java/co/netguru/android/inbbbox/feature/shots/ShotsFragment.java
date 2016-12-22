@@ -25,6 +25,8 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.common.BaseMvpViewStateFragment;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shots.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotSwipeListener;
@@ -202,12 +204,21 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void showDetailsScreenInCommentMode(Shot selectedShot) {
-        shotActionListener.showShotDetails(selectedShot, true);
+        ShotDetailsRequest request = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.DEFAULT)
+                .isCommentModeEnabled(true)
+                .build();
+
+        shotActionListener.showShotDetails(selectedShot, adapter.getItems(), request);
     }
 
     @Override
     public void showShotDetails(Shot shot) {
-        shotActionListener.showShotDetails(shot, false);
+        ShotDetailsRequest request = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.DEFAULT)
+                .build();
+
+        shotActionListener.showShotDetails(shot, adapter.getItems(), request);
     }
 
     @Override
@@ -252,7 +263,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     public interface ShotActionListener {
         void shotLikeStatusChanged();
-
-        void showShotDetails(Shot shot, boolean inCommentMode);
+        void showShotDetails(Shot shot, List<Shot> nearbyShots, ShotDetailsRequest detailsRequest);
     }
 }
