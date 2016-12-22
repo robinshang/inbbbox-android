@@ -29,8 +29,7 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.di.component.FollowerDetailsFragmentComponent;
-import co.netguru.android.inbbbox.di.module.FollowerDetailsFragmentModule;
+import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.followers.details.adapter.FollowerDetailsAdapter;
 import co.netguru.android.inbbbox.model.ui.Follower;
@@ -45,8 +44,8 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
         UnFollowUserDialogFragment.OnUnFollowClickedListener,
         FollowUserDialogFragment.OnFollowClickedListener {
 
-    private static final int GRID_VIEW_COLUMN_COUNT = 2;
     public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
+    private static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final String FOLLOWER_KEY = "follower_key";
     private static final String USER_KEY = "user_key";
     private static final int SHOTS_TO_LOAD_MORE = 10;
@@ -64,13 +63,10 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     @BindView(R.id.fragment_follower_details_recycler_view)
     RecyclerView recyclerView;
 
-    @Inject
-    FollowerDetailsAdapter adapter;
-
     private OnFollowedShotActionListener onChangeFollowingStatusCompletedListener;
+    private FollowerDetailsAdapter adapter;
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
-    private FollowerDetailsFragmentComponent component;
 
     public static FollowerDetailsFragment newInstanceWithFollower(Follower follower) {
         final Bundle args = new Bundle();
@@ -97,12 +93,8 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
             onChangeFollowingStatusCompletedListener = (OnFollowedShotActionListener) context;
         } catch (ClassCastException e) {
             Timber.e(e, "must implement OnFollowedShotActionListener");
-            throw new ClassCastException(context.toString()
-                    + " must implement OnFollowedShotActionListener");
+            throw new InterfaceNotImplementedException(e, context.toString(), OnFollowedShotActionListener.class.getSimpleName());
         }
-        component = App.getAppComponent(getContext())
-                .plus(new FollowerDetailsFragmentModule(shot -> getPresenter().showShotDetails(shot)));
-        component.inject(this);
     }
 
     @Nullable
@@ -156,7 +148,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     @NonNull
     @Override
     public FollowerDetailsContract.Presenter createPresenter() {
-        return component.getPresenter();
+        return App.getUserComponent(getContext()).plusFollowersDetailsFragmentComponent().getPresenter();
     }
 
     @NonNull
@@ -207,8 +199,8 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     @Override
-    public void openShotDetailsScreen(Shot shot) {
-        onChangeFollowingStatusCompletedListener.showShotDetails(shot);
+    public void openShotDetailsScreen(Shot shot, List<Shot> allShots, long userId) {
+        onChangeFollowingStatusCompletedListener.showShotDetails(shot, allShots, userId);
     }
 
     @Override
@@ -251,6 +243,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     private void initRecyclerView() {
+        adapter = new FollowerDetailsAdapter(getPresenter()::showShotDetails);
         gridLayoutManager = new GridLayoutManager(getContext(), GRID_VIEW_COLUMN_COUNT);
         linearLayoutManager = new LinearLayoutManager(getContext());
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -273,7 +266,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     public interface OnFollowedShotActionListener {
-        void showShotDetails(Shot shot);
+        void showShotDetails(Shot shot, List<Shot> allShots, long userId);
 
         void onFollowingStatusChangeCompleted();
     }

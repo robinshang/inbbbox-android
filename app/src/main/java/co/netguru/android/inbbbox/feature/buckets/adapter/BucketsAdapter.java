@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 
 public final class BucketsAdapter extends RecyclerView.Adapter<BaseBucketViewHolder> {
@@ -76,5 +77,16 @@ public final class BucketsAdapter extends RecyclerView.Adapter<BaseBucketViewHol
     public void setGridMode(boolean isGridMode) {
         this.isGridMode = isGridMode;
         notifyDataSetChanged();
+    }
+
+    public void removeBucketWithGivenIdIfExists(long bucketId) {
+        for (int i = 0; i < bucketWithShotsList.size(); i++) {
+            Bucket currentBucket = bucketWithShotsList.get(i).bucket();
+            if (currentBucket.id() == bucketId) {
+                bucketWithShotsList.remove(i);
+                notifyItemRemoved(i);
+                return;
+            }
+        }
     }
 }

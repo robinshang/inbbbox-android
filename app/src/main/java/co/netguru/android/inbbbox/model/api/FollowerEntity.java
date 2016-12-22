@@ -5,13 +5,18 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
+import org.threeten.bp.LocalDateTime;
+
+import co.netguru.android.inbbbox.model.localrepository.database.FollowerEntityDB;
+
 @AutoValue
 public abstract class FollowerEntity {
 
     public abstract long id();
 
+    // TODO: 22.12.2016 Should be changed to ZonedDateTime
     @SerializedName("created_at")
-    public abstract String createdAt();
+    public abstract LocalDateTime createdAt();
 
     @SerializedName("followee")
     public abstract UserEntity user();
@@ -24,12 +29,20 @@ public abstract class FollowerEntity {
         return new AutoValue_FollowerEntity.Builder();
     }
 
+    public static FollowerEntity fromDB(FollowerEntityDB followerEntityDB) {
+        return FollowerEntity.builder()
+                .id(followerEntityDB.getId())
+                .createdAt(followerEntityDB.getCreatedAt())
+                .user(UserEntity.fromDB(followerEntityDB.getUser()))
+                .build();
+    }
+
     @AutoValue.Builder
     public abstract static class Builder {
 
         public abstract Builder id(long id);
 
-        public abstract Builder createdAt(String createdAt);
+        public abstract Builder createdAt(LocalDateTime createdAt);
 
         public abstract Builder user(UserEntity user);
 

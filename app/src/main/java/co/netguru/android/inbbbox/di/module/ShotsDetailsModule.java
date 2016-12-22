@@ -3,30 +3,18 @@ package co.netguru.android.inbbbox.di.module;
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.api.ShotsApi;
 import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.LikeShotController;
+import co.netguru.android.inbbbox.controler.likescontroller.LikeShotController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
 import co.netguru.android.inbbbox.controler.UserController;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsPresenter;
-import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
-import co.netguru.android.inbbbox.feature.details.recycler.ShotDetailsAdapter;
 import dagger.Module;
 import dagger.Provides;
 
-@FragmentScope
 @Module
 public class ShotsDetailsModule {
-    private final DetailsViewActionCallback callback;
-
-    public ShotsDetailsModule(DetailsViewActionCallback callback) {
-        this.callback = callback;
-    }
 
     @Provides
-    ShotDetailsAdapter provideAdapter() {
-        return new ShotDetailsAdapter(callback);
-    }
-
-    @Provides
+    @FragmentScope
     ShotDetailsController provideShotDetailsController(LikeShotController likeShotController,
                                                        ShotsApi shotsApi,
                                                        UserController userController) {
@@ -34,6 +22,7 @@ public class ShotsDetailsModule {
     }
 
     @Provides
+    @FragmentScope
     ShotDetailsPresenter provideShotDetailsPresenter(ShotDetailsController shotDetailsController,
                                                      ErrorController errorController) {
         return new ShotDetailsPresenter(shotDetailsController, errorController);

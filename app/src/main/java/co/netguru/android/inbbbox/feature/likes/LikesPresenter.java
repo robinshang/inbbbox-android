@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.LikeShotController;
+import co.netguru.android.inbbbox.controler.likescontroller.LikeShotController;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.Subscription;
@@ -79,7 +79,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
                     .compose(androidIO())
                     .doAfterTerminate(() -> {
                         getView().hideProgressBar();
-                        getView().hideLoadingMoreBucketsView();
+                        getView().hideLoadingMoreLikesView();
                     })
                     .subscribe(this::onGetMoreLikeShotListNext,
                             throwable -> handleError(throwable, "Error while getting more likes from server"));
@@ -87,8 +87,8 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     }
 
     @Override
-    public void showShotDetails(Shot shot) {
-        getView().openShowDetailsScreen(shot);
+    public void showShotDetails(Shot shot, List<Shot> allShots) {
+        getView().openShowDetailsScreen(shot, allShots);
     }
 
     @Override

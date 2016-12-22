@@ -124,6 +124,11 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     }
 
     @Override
+    public void handleDeleteBucket(long deletedBucketId) {
+        getView().removeBucketFromList(deletedBucketId);
+    }
+
+    @Override
     public void handleError(Throwable throwable, String errorText) {
         Timber.d(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));

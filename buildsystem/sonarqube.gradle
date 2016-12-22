@@ -53,7 +53,6 @@ sonarqube {
         property "sonar.host.url", "https://sonar.devguru.co:443" //https - port 443
 
         //project config - directories
-        property "sonar.java.source", "1.7"
         property "sonar.sources", sonarConfig.sources
         property "sonar.binaries", "build/intermediates/classes/${sonarCurFlavor}/${sonarCurBuildType}"
         property "sonar.java.binaries", "build/intermediates/classes/${sonarCurFlavor}/${sonarCurBuildType}"

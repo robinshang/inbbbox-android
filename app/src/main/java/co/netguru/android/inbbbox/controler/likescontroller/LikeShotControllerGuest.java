@@ -3,8 +3,7 @@ package co.netguru.android.inbbbox.controler.likescontroller;
 import java.util.List;
 
 import co.netguru.android.inbbbox.api.LikesApi;
-import co.netguru.android.inbbbox.controler.LikeShotController;
-import co.netguru.android.inbbbox.localrepository.GuestModeRepository;
+import co.netguru.android.inbbbox.localrepository.database.GuestModeLikesRepository;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
 import rx.Observable;
@@ -12,19 +11,19 @@ import timber.log.Timber;
 
 public class LikeShotControllerGuest implements LikeShotController {
 
-    private final GuestModeRepository guestModeRepository;
+    private final GuestModeLikesRepository guestModeLikesRepository;
     private final LikesApi likesApi;
 
-    public LikeShotControllerGuest(GuestModeRepository guestModeRepository,
+    public LikeShotControllerGuest(GuestModeLikesRepository guestModeLikesRepository,
                                    LikesApi likesApi) {
-        this.guestModeRepository = guestModeRepository;
+        this.guestModeLikesRepository = guestModeLikesRepository;
         this.likesApi = likesApi;
     }
 
     @Override
     public Completable isShotLiked(Shot shot) {
         Timber.d("checking is shot liked...");
-        return guestModeRepository.isShotLiked(shot)
+        return guestModeLikesRepository.isShotLiked(shot)
                 .doOnCompleted(() -> Timber.d("Shot is liked"))
                 .doOnError(throwable -> Timber.d("Shot is not liked"));
     }
@@ -32,13 +31,13 @@ public class LikeShotControllerGuest implements LikeShotController {
     @Override
     public Completable likeShot(Shot shot) {
         Timber.d("Performing local like action");
-        return guestModeRepository.addLikedShot(shot);
+        return guestModeLikesRepository.addLikedShot(shot);
     }
 
     @Override
     public Completable unLikeShot(Shot shot) {
         Timber.d("Performing local unLike action");
-        return guestModeRepository.removeLikedShot(shot);
+        return guestModeLikesRepository.removeLikedShot(shot);
     }
 
     @Override
@@ -62,6 +61,6 @@ public class LikeShotControllerGuest implements LikeShotController {
 
     private Observable<List<Shot>> getCachedLikedShot() {
         Timber.d("getting liked shots from cache");
-        return guestModeRepository.getLikedShots();
+        return guestModeLikesRepository.getLikedShots();
     }
 }

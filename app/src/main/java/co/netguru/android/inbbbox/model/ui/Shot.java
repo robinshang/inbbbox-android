@@ -9,7 +9,11 @@ import com.google.gson.TypeAdapter;
 
 import org.threeten.bp.LocalDateTime;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import co.netguru.android.inbbbox.model.api.ShotEntity;
+import co.netguru.android.inbbbox.model.localrepository.database.ShotDB;
 
 @AutoValue
 public abstract class Shot implements Parcelable, ShotImage {
@@ -77,6 +81,26 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .isBucketed(shot.isBucketed());
     }
 
+    public static Shot fromDB(ShotDB shotDB) {
+        return Shot.builder()
+                .id(shotDB.getId())
+                .author(shotDB.getUser() != null ? User.fromDB(shotDB.getUser()) : null)
+                .title(shotDB.getTitle())
+                .creationDate(shotDB.getCreationDate())
+                .description(shotDB.getDescription())
+                .bucketCount(shotDB.getBucketCount())
+                .likesCount(shotDB.getLikesCount())
+                .team(shotDB.getTeam() != null ? Team.fromDB(shotDB.getTeam()) : null)
+                .isGif(shotDB.getIsGif())
+                .isLiked(shotDB.getIsLiked())
+                .isBucketed(shotDB.getIsBucketed())
+                .hiDpiImageUrl(shotDB.getHiDpiImageUrl())
+                .normalImageUrl(shotDB.getNormalImageUrl())
+                .thumbnailUrl(shotDB.getThumbnailUrl())
+                .commentsCount(shotDB.getCommentsCount())
+                .build();
+    }
+
     @AutoValue.Builder
     public abstract static class Builder {
         public abstract Shot.Builder id(long id);
@@ -140,5 +164,13 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .thumbnailUrl(shotEntity.image().thumbnailUrl())
                 .commentsCount(shotEntity.commentsCount())
                 .build();
+    }
+
+    public static List<Shot> createList(List<ShotEntity> shotEntityList) {
+        List<Shot> shots = new ArrayList<>();
+        for(ShotEntity shotEntity : shotEntityList) {
+            shots.add(Shot.create(shotEntity));
+        }
+        return shots;
     }
 }

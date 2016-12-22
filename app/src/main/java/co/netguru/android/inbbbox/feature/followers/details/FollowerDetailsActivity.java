@@ -10,11 +10,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
 import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.common.BaseActivity;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -73,13 +77,17 @@ public class FollowerDetailsActivity extends BaseActivity
 
     @Override
     public void onFollowingStatusChangeCompleted() {
-        MainActivity.startActivityWithRequest(this, MainActivity.RequestType.REFRESH_FOLLOWER_LIST);
+        MainActivity.startActivityWithRequest(this, MainActivity.REQUEST_REFRESH_FOLLOWER_LIST);
         finish();
     }
 
     @Override
-    public void showShotDetails(Shot shot) {
-        final Fragment fragment = ShotDetailsFragment.newInstance(shot);
+    public void showShotDetails(Shot shot, List<Shot> allShots, long userId) {
+        ShotDetailsRequest detailsRequest = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.USER)
+                .id(userId)
+                .build();
+        final Fragment fragment = ShotDetailsFragment.newInstance(shot, allShots, detailsRequest);
         showBottomSheet(fragment, ShotDetailsFragment.TAG);
     }
 

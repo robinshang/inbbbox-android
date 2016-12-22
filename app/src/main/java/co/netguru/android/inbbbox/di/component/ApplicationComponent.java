@@ -8,8 +8,6 @@ import co.netguru.android.inbbbox.controler.notification.NotificationAlarmReceiv
 import co.netguru.android.inbbbox.di.module.ApiModule;
 import co.netguru.android.inbbbox.di.module.ApplicationModule;
 import co.netguru.android.inbbbox.di.module.ConfigurationModule;
-import co.netguru.android.inbbbox.di.module.FollowerDetailsFragmentModule;
-import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
 import co.netguru.android.inbbbox.di.module.LocalRepositoryModule;
 import co.netguru.android.inbbbox.di.module.LoginModule;
 import co.netguru.android.inbbbox.event.RxBus;
@@ -37,11 +35,7 @@ public interface ApplicationComponent extends BaseComponent {
 
     SplashScreenComponent plusSplashScreenComponent();
 
-    FollowersFragmentComponent plus(FollowersFragmentModule module);
-
-    FollowerDetailsFragmentComponent plus(FollowerDetailsFragmentModule module);
-
-    BucketsFragmentComponent inject();
+    BucketsFragmentComponent plusBucketsFragmentComponent();
 
     BucketsDetailsComponent plusBucketDetailsComponent();
 

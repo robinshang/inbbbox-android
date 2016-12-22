@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.followers;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,8 +28,6 @@ import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.di.component.FollowersFragmentComponent;
-import co.netguru.android.inbbbox.di.module.FollowersFragmentModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.followers.adapter.BaseFollowersViewHolder;
 import co.netguru.android.inbbbox.feature.followers.adapter.FollowersAdapter;
@@ -66,23 +63,13 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     @BindView(R.id.loadingView)
     ProgressBar progressBar;
 
-    private final FollowersAdapter adapter = new FollowersAdapter(this);
-
     private Snackbar loadingMoreSnackbar;
-    private FollowersFragmentComponent component;
+    private FollowersAdapter adapter;
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
 
     public static FollowersFragment newInstance() {
         return new FollowersFragment();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        component = App.getAppComponent(getContext())
-                .plus(new FollowersFragmentModule());
-        component.inject(this);
     }
 
     @Nullable
@@ -101,6 +88,12 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        loadingMoreSnackbar = null;
+    }
+
+    @Override
     protected void changeGridMode(boolean isGridMode) {
         adapter.setGridMode(isGridMode);
         recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
@@ -109,12 +102,12 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     @NonNull
     @Override
     public FollowersContract.Presenter createPresenter() {
-        return component.getPresenter();
+        return App.getUserComponent(getContext()).plusFollowersFragmentComponent().getPresenter();
     }
 
     @NonNull
     @Override
-    public LceViewState<List<Follower> ,FollowersContract.View> createViewState() {
+    public LceViewState<List<Follower>, FollowersContract.View> createViewState() {
         return new RetainingLceViewState<>();
     }
 
@@ -191,6 +184,8 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     }
 
     private void initRecyclerView() {
+        adapter = new FollowersAdapter(follower ->
+                FollowerDetailsActivity.startActivity(getContext(), follower));
         gridLayoutManager = new GridLayoutManager(getContext(), GRID_VIEW_COLUMN_COUNT);
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setHasFixedSize(true);
@@ -202,6 +197,7 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
             }
         });
     }
+
     private void initRefreshLayout() {
         swipeRefreshLayout.setColorSchemeColors(accentColor);
         swipeRefreshLayout.setOnRefreshListener(getPresenter()::getFollowedUsersFromServer);

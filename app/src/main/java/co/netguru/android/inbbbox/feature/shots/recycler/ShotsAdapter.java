@@ -53,6 +53,10 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
         notifyDataSetChanged();
     }
 
+    public List<Shot> getItems() {
+        return items;
+    }
+
     public void addMoreItems(List<Shot> items) {
         final int currentSize = this.items.size();
         this.items.addAll(items);
