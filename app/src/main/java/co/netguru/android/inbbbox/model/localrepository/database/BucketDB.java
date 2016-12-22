@@ -17,8 +17,8 @@ import org.greenrobot.greendao.DaoException;
 @Entity
 public class BucketDB {
 
-    @Id
-    private long id;
+    @Id(autoincrement = true)
+    private Long id;
     private String name;
     private String description;
     private int shotsCount;
@@ -41,8 +41,8 @@ public class BucketDB {
     @Generated(hash = 270209034)
     private transient BucketDBDao myDao;
 
-    @Generated(hash = 121170088)
-    public BucketDB(long id, String name, String description, int shotsCount, LocalDateTime createdAt) {
+    @Generated(hash = 1831703667)
+    public BucketDB(Long id, String name, String description, int shotsCount, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -54,11 +54,11 @@ public class BucketDB {
     public BucketDB() {
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

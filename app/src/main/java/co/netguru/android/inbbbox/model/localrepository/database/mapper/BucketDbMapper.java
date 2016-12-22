@@ -10,8 +10,7 @@ public class BucketDbMapper {
         throw new AssertionError();
     }
 
-    // TODO: 22.12.2016 Set unique id
     public static BucketDB createNewBucket(String name, String description) {
-        return new BucketDB(1, name, description, 0, LocalDateTime.now());
+        return new BucketDB(null, name, description, 0, LocalDateTime.now());
     }
 }
