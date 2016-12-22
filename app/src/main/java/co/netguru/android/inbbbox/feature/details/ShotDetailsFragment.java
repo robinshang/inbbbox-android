@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindDimen;
@@ -45,8 +46,9 @@ public class ShotDetailsFragment
         implements ShotDetailsContract.View, DetailsViewActionCallback {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
+    private static final String ARG_ALL_SHOTS = "arg:all_shots";
     private static final String ARG_SHOT = "arg:shot";
-    private static final String ARG_IS_COMMENT_MODE_ENABLED = "arg:comment_mode_state";
+    private static final String ARG_SHOT_DETAIL_REQUEST = "arg:detail_request";
     private static final int SLIDE_IN_DURATION = 500;
 
     @BindView(R.id.shot_details_recyclerView)
@@ -77,14 +79,16 @@ public class ShotDetailsFragment
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
 
-    public static ShotDetailsFragment newInstance(Shot shot) {
-        return newInstance(shot, false);
-    }
-
-    public static ShotDetailsFragment newInstance(Shot shot, boolean isCommentModeEnabled) {
+    public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots,
+                                                  ShotDetailsRequest detailsRequest) {
         Bundle args = new Bundle();
         args.putParcelable(ARG_SHOT, shot);
-        args.putBoolean(ARG_IS_COMMENT_MODE_ENABLED, isCommentModeEnabled);
+        args.putParcelable(ARG_SHOT_DETAIL_REQUEST, detailsRequest);
+        if (allShots instanceof ArrayList) {
+            args.putParcelableArrayList(ARG_ALL_SHOTS, (ArrayList<Shot>) allShots);
+        } else {
+            args.putParcelableArrayList(ARG_ALL_SHOTS, new ArrayList<Shot>(allShots));
+        }
         ShotDetailsFragment fragment = new ShotDetailsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -125,7 +129,8 @@ public class ShotDetailsFragment
 
     @OnClick(R.id.parallax_image_view)
     void onShotImageClick() {
-        getPresenter().onShotImageClick();
+        List<Shot> shots = getArguments().getParcelableArrayList(ARG_ALL_SHOTS);
+        getPresenter().onShotImageClick(shots);
     }
 
     @Override
@@ -154,7 +159,7 @@ public class ShotDetailsFragment
 
     @Override
     public boolean getCommentModeInitialState() {
-        return getArguments().getBoolean(ARG_IS_COMMENT_MODE_ENABLED);
+        return ((ShotDetailsRequest) getArguments().getParcelable(ARG_SHOT_DETAIL_REQUEST)).isCommentModeEnabled();
     }
 
     @Override
@@ -334,13 +339,14 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void showMessageOnServerError(String errorText) {
-        Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
+    public void openShotFullscreen(Shot shot, List<Shot> allShots) {
+        ShotDetailsRequest detailsRequest = getArguments().getParcelable(ARG_SHOT_DETAIL_REQUEST);
+        ShotFullscreenActivity.startActivity(getContext(), shot, allShots, detailsRequest);
     }
 
     @Override
-    public void openShotFullscreen(Shot shot) {
-        ShotFullscreenActivity.startActivity(getContext(), shot);
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {

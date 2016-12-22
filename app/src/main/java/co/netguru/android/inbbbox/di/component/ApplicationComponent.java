@@ -35,10 +35,6 @@ public interface ApplicationComponent extends BaseComponent {
 
     SplashScreenComponent plusSplashScreenComponent();
 
-    FollowersFragmentComponent plusFollowersFragmentComponent();
-
-    FollowerDetailsFragmentComponent plusFollowersDetailsFragmentComponent();
-
     BucketsFragmentComponent plusBucketsFragmentComponent();
 
     BucketsDetailsComponent plusBucketDetailsComponent();

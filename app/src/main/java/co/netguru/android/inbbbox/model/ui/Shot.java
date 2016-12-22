@@ -9,6 +9,9 @@ import com.google.gson.TypeAdapter;
 
 import org.threeten.bp.LocalDateTime;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.localrepository.database.ShotDB;
 
@@ -161,5 +164,13 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .thumbnailUrl(shotEntity.image().thumbnailUrl())
                 .commentsCount(shotEntity.commentsCount())
                 .build();
+    }
+
+    public static List<Shot> createList(List<ShotEntity> shotEntityList) {
+        List<Shot> shots = new ArrayList<>();
+        for(ShotEntity shotEntity : shotEntityList) {
+            shots.add(Shot.create(shotEntity));
+        }
+        return shots;
     }
 }

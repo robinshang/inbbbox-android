@@ -31,15 +31,18 @@ import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.view.ShotClickListener;
 
 public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
-        LikesViewContract.View, LikesViewContract.Presenter> implements RefreshableFragment, LikesViewContract.View {
+        LikesViewContract.View, LikesViewContract.Presenter> implements RefreshableFragment, LikesViewContract.View, ShotClickListener {
 
     private static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final int LIKES_TO_LOAD_MORE = 10;
@@ -183,8 +186,12 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     @Override
-    public void openShowDetailsScreen(Shot shot) {
-        shotActionListener.showShotDetails(shot, false);
+    public void openShowDetailsScreen(Shot shot, List<Shot> shotList) {
+        ShotDetailsRequest request = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.LIKES)
+                .build();
+
+        shotActionListener.showShotDetails(shot, shotList, request);
     }
 
     @Override
@@ -210,7 +217,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     private void initRecyclerView() {
-        likesAdapter = new LikesAdapter(getPresenter()::showShotDetails);
+        likesAdapter = new LikesAdapter(this);
         linearLayoutManager = new LinearLayoutManager(getContext());
         gridLayoutManager = new GridLayoutManager(getContext(), GRID_VIEW_COLUMN_COUNT);
         recyclerView.setHasFixedSize(true);
@@ -221,5 +228,10 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
                 presenter.getMoreLikesFromServer();
             }
         });
+    }
+
+    @Override
+    public void onShotClick(Shot shot) {
+        getPresenter().showShotDetails(shot, likesAdapter.getData());
     }
 }

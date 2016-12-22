@@ -135,15 +135,15 @@ public class ShotDetailsPresenter
     }
 
     @Override
+    public void onShotImageClick(List<Shot> allShots) {
+        getView().openShotFullscreen(shot, allShots);
+    }
+
+    @Override
     public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
         getView().disableEditorProgressMode();
-    }
-
-    @Override
-    public void onShotImageClick() {
-        getView().openShotFullscreen(shot);
     }
 
     private void initializeView() {

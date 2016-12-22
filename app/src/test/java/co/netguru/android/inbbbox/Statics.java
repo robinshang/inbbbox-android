@@ -8,6 +8,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.CommentEntity;
+import co.netguru.android.inbbbox.model.api.FollowerEntity;
 import co.netguru.android.inbbbox.model.api.Image;
 import co.netguru.android.inbbbox.model.api.Links;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
@@ -101,6 +102,12 @@ public final class Statics {
             .hiDpiImageUrl("")
             .normalImageUrl("")
             .thumbnailUrl("")
+            .build();
+
+    public static final FollowerEntity FOLLOWER_ENTITY = FollowerEntity.builder()
+            .id(1)
+            .createdAt(LocalDateTime.now())
+            .user(USER_ENTITY)
             .build();
 
     public static final List<Comment> COMMENTS = generateComments();

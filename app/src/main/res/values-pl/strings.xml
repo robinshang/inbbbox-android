@@ -94,7 +94,12 @@
     <string name="guest_label">Gość?</string>
     <string name="guest_button_text">Używaj jako gość</string>
     <string name="or_loging_with_guest">albo</string>
+    <string name="loading">Ładowanie</string>
+    <string name="add_to_bucket_fragment_create_new_bucket">Utwórz nową kolekcję</string>
 
-    <string name="empty_bucket_item_description">Obrazek pustego kontenera.</string>
+    <string name="empty_bucket_item_description">Obrazek braku projektu w kolekcji.</string>
+    <string name="animated_load_ball_description">Animacja skaczącej piłeczki oznaczająca ładowanie.</string>
+    <string name="back_arrow_description">Obrazek strzałki powrotu.</string>
+    <string name="fullscreen_shot_description">Pełnoekranowy projekt.</string>
 
 </resources>
