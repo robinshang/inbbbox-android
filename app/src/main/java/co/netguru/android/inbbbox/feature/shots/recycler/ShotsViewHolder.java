@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;

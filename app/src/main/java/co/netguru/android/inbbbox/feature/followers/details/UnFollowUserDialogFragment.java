@@ -41,6 +41,7 @@ public class UnFollowUserDialogFragment extends DialogFragment {
                 .create();
     }
 
+    @FunctionalInterface
     public interface OnUnFollowClickedListener {
 
         void onUnFollowClicked();

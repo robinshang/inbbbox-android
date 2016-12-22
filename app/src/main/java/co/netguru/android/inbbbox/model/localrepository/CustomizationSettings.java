@@ -6,7 +6,7 @@ public class CustomizationSettings{
     private boolean nightMode;
 
     public CustomizationSettings() {
-
+        //no-op
     }
 
     public CustomizationSettings(boolean showDetails, boolean nightMode) {

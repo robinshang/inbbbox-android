@@ -15,6 +15,7 @@
         android:layout_height="@dimen/fullscreen_arrow_size"
         android:src="@drawable/ic_arrow_back_white_24dp"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/back_arrow_description"
         />
 
 </FrameLayout>

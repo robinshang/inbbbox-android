@@ -19,7 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_ball" />
+        android:src="@drawable/ic_ball"
+        android:contentDescription="@string/animated_load_ball_description"/>
 
     <TextView
         android:layout_width="wrap_content"

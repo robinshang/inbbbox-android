@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
+
 import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindString;
@@ -273,7 +274,8 @@ public class MainActivity
     }
 
     @Override
-    public void showShotDetails(Shot shot, List<Shot> allShots, ShotDetailsRequest detailsRequest) {
+    public void showShotDetails(Shot shot, List<Shot> allShots, ShotDetailsRequest
+            detailsRequest) {
         showBottomSheet(ShotDetailsFragment.newInstance(shot, allShots, detailsRequest), ShotDetailsFragment.TAG);
     }
 
@@ -390,6 +392,8 @@ public class MainActivity
                 case R.id.drawer_item_logout:
                     getPresenter().performLogout();
                     break;
+                default:
+                    return false;
             }
             return true;
         });
