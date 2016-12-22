@@ -33,6 +33,8 @@ public interface BucketsFragmentContract {
         void addNewBucketWithShotsOnTop(BucketWithShots bucketWithShots);
 
         void scrollToTop();
+
+        void removeBucketFromList(long bucketId);
     }
 
     interface Presenter extends MvpPresenter<BucketsFragmentContract.View>, ErrorPresenter {
@@ -46,5 +48,7 @@ public interface BucketsFragmentContract {
         void handleCreateBucket();
 
         void checkEmptyData(List<BucketWithShots> data);
+
+        void handleDeleteBucket(long deletedBucketId);
     }
 }
