@@ -16,13 +16,10 @@
 #   public *;
 #}
 
-# base option from *App Dev Note*
--optimizationpasses 5
+-verbose
 -dontusemixedcaseclassnames
 -dontskipnonpubliclibraryclasses
 -dontskipnonpubliclibraryclassmembers
--dontpreverify
--optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 -keepattributes LineNumberTable,SourceFile,Signature,*Annotation*,Exceptions,InnerClasses
 
 # Keep native methods
