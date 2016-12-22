@@ -15,8 +15,6 @@ public class FollowUserDialogFragment extends DialogFragment {
     private static final String USERNAME_KEY = "usernameKey";
     private static final int TARGET_FRAGMENT_REQUEST_CODE = 201;
 
-    private FollowUserDialogFragment.OnFollowClickedListener onFollowClickedListener;
-
     public static <T extends Fragment & FollowUserDialogFragment.OnFollowClickedListener>
     FollowUserDialogFragment newInstance(T targetFragment, String username) {
         final Bundle args = new Bundle();
@@ -31,7 +29,8 @@ public class FollowUserDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        onFollowClickedListener = (FollowUserDialogFragment.OnFollowClickedListener) getTargetFragment();
+        OnFollowClickedListener onFollowClickedListener =
+                (FollowUserDialogFragment.OnFollowClickedListener) getTargetFragment();
         return new AlertDialog.Builder(getContext(), R.style.AlertDialog)
                 .setMessage(getContext().getString(R.string.fragment_follow_details_dialog_text,
                         getArguments().getString(USERNAME_KEY)))
