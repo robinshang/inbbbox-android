@@ -32,31 +32,13 @@ public final class Constants {
     public static class API {
         public static final String DRIBBLE_BASE_URL = "https://api.dribbble.com/v1/";
         public static final String SHOTS_KEY_LIST = "list";
-        public static final String SHOTS_KEY_TIME_FRAME = "timeframe";
         public static final String SHOTS_KEY_SORT = "sort";
         public static final String SHOTS_KEY_DATE = "creationDate";
         public static final String LIST_PARAM_DEBUTS_PARAM = "debuts";
         public static final String LIST_PARAM_SORT_RECENT_PARAM = "recent";
-        public static final String LIST_PARAM_SORT_VIEWS_PARAM = "views";
 
         private API() {
             throw new AssertionError();
         }
-    }
-
-    public enum HttpErrorCodes {
-        ;
-        public static final int HTTP_TOO_MANY_REQUESTS_429 = 429;
-        public static final int HTTP_FORBIDDEN_403 = 403;
-        public static final int HTTP_UNAUTHORIZED_401 = 401;
-    }
-
-    public static class Animations {
-        public static final long FOG_ANIM_DURATION = 200;
-
-        private Animations() {
-            throw new AssertionError();
-        }
-
     }
 }

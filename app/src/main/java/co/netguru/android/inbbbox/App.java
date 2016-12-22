@@ -10,8 +10,8 @@ import co.netguru.android.inbbbox.di.component.ApplicationComponent;
 import co.netguru.android.inbbbox.di.component.DaggerApplicationComponent;
 import co.netguru.android.inbbbox.di.component.UserComponent;
 import co.netguru.android.inbbbox.di.module.ApplicationModule;
-import co.netguru.android.inbbbox.di.module.UserModule;
-import co.netguru.android.inbbbox.enumeration.UserModeType;
+import co.netguru.android.inbbbox.di.module.usermodule.UserModule;
+import co.netguru.android.inbbbox.di.module.usermodule.UserModeType;
 
 public class App extends Application {
 

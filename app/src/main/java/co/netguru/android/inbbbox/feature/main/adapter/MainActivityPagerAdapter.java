@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
-import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.feature.buckets.BucketsFragment;
 import co.netguru.android.inbbbox.feature.followers.FollowersFragment;
 import co.netguru.android.inbbbox.feature.likes.LikesFragment;

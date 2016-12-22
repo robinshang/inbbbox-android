@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.di.module;
+package co.netguru.android.inbbbox.di.module.usermodule;
 
 import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.api.LikesApi;
@@ -9,7 +9,6 @@ import co.netguru.android.inbbbox.controler.likescontroller.LikeShotController;
 import co.netguru.android.inbbbox.controler.likescontroller.LikeShotControllerApi;
 import co.netguru.android.inbbbox.controler.likescontroller.LikeShotControllerGuest;
 import co.netguru.android.inbbbox.di.UserScope;
-import co.netguru.android.inbbbox.enumeration.UserModeType;
 import co.netguru.android.inbbbox.localrepository.database.GuestModeFollowersRepository;
 import co.netguru.android.inbbbox.localrepository.database.GuestModeLikesRepository;
 import dagger.Module;

@@ -11,7 +11,7 @@ import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.TokenParametersController;
 import co.netguru.android.inbbbox.controler.UserController;
-import co.netguru.android.inbbbox.enumeration.UserModeType;
+import co.netguru.android.inbbbox.di.module.usermodule.UserModeType;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 

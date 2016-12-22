@@ -9,7 +9,7 @@ import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.di.component.SplashScreenComponent;
-import co.netguru.android.inbbbox.enumeration.UserModeType;
+import co.netguru.android.inbbbox.di.module.usermodule.UserModeType;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 

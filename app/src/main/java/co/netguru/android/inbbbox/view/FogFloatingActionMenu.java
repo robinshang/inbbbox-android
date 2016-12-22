@@ -9,9 +9,11 @@ import android.view.animation.AccelerateInterpolator;
 import com.github.clans.fab.FloatingActionMenu;
 
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.Constants;
 
 public class FogFloatingActionMenu extends FloatingActionMenu {
+
+    private static final long FOG_ANIM_DURATION = 200;
+
     private View fogView;
 
     public FogFloatingActionMenu(Context context) {
@@ -58,7 +60,7 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
             fogView
                     .animate()
                     .alpha(0)
-                    .setDuration(Constants.Animations.FOG_ANIM_DURATION)
+                    .setDuration(FOG_ANIM_DURATION)
                     .setInterpolator(new AccelerateInterpolator())
                     .withEndAction(() -> fogView.setVisibility(View.GONE));
         }
@@ -69,7 +71,7 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
             fogView
                     .animate()
                     .alpha(1)
-                    .setDuration(Constants.Animations.FOG_ANIM_DURATION)
+                    .setDuration(FOG_ANIM_DURATION)
                     .setInterpolator(new AccelerateInterpolator())
                     .withStartAction(() -> fogView.setVisibility(View.VISIBLE));
         }
