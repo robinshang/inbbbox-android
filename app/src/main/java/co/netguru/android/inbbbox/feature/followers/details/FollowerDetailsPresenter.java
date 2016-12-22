@@ -157,7 +157,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     public void followUser() {
         followUserSubscription = followersController.followUser(follower.id())
                 .compose(applyCompletableIoSchedulers())
-                .subscribe(() -> checkIfUserIsFollowed(follower.id()),
+                .subscribe(() -> setFollowingMenuIcon(true),
                         throwable -> handleError(throwable, "Error while follow user"));
     }
 
