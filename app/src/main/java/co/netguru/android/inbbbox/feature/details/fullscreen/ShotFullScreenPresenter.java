@@ -29,12 +29,11 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
     private final LikeShotController likedShotsController;
     private final BucketsController bucketsController;
     private final UserShotsController userShotsController;
-
-    private int currentPage;
-    private boolean hasMore = true;
     private final ShotDetailsRequest detailsRequest;
     private final Shot shot;
     private final List<Shot> allShots;
+    private int currentPage;
+    private boolean hasMore = true;
 
     @Inject
     public ShotFullScreenPresenter(ShotsController shotsController, LikeShotController likedShotsController,
@@ -80,7 +79,7 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
                     requestMoreObservable = bucketsController.getShotsListFromBucket(detailsRequest.id(), currentPage, SHOTS_PER_PAGE)
                             .toObservable()
                             .flatMap(Observable::from)
-                            .map(shotEntity -> Shot.create(shotEntity))
+                            .map(Shot::create)
                             .toList();
                     break;
                 case USER:

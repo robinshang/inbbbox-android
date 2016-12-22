@@ -25,7 +25,6 @@ import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
-import timber.log.Timber;
 
 public class ShotFullscreenFragment extends
         BaseMvpFragment<ShotFullscreenContract.View, ShotFullscreenContract.Presenter> implements

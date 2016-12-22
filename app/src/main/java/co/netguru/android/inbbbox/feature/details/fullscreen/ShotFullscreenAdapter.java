@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.model.ui.Shot;
 
