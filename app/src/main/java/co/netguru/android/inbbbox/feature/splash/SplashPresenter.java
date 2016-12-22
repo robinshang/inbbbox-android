@@ -4,17 +4,17 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.SettingsController;
-import co.netguru.android.inbbbox.controler.TokenController;
-import co.netguru.android.inbbbox.controler.UserController;
+import co.netguru.android.inbbbox.controller.ErrorController;
+import co.netguru.android.inbbbox.controller.SettingsController;
+import co.netguru.android.inbbbox.controller.TokenController;
+import co.netguru.android.inbbbox.controller.UserController;
 import co.netguru.android.inbbbox.model.localrepository.CustomizationSettings;
 import rx.Single;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
-import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applySingleIoSchedulers;
+import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applySingleIoSchedulers;
 
 public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.View>
         implements SplashContract.Presenter {

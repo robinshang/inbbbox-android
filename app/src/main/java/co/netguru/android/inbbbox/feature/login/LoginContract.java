@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
-import co.netguru.android.inbbbox.di.module.usermodule.UserModeType;
+import co.netguru.android.inbbbox.app.usermodule.UserModeType;
 import co.netguru.android.inbbbox.feature.common.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.common.HttpErrorView;
 

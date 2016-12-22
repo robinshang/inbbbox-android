@@ -16,10 +16,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.UUID;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.TokenController;
-import co.netguru.android.inbbbox.controler.TokenParametersController;
-import co.netguru.android.inbbbox.controler.UserController;
+import co.netguru.android.inbbbox.controller.ErrorController;
+import co.netguru.android.inbbbox.controller.TokenController;
+import co.netguru.android.inbbbox.controller.TokenParametersController;
+import co.netguru.android.inbbbox.controller.UserController;
 import co.netguru.android.inbbbox.model.api.Token;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;

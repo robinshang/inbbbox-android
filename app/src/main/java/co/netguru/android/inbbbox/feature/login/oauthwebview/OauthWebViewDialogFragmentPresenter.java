@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.BuildConfig;
 import co.netguru.android.inbbbox.Constants;
-import co.netguru.android.inbbbox.utils.StringUtils;
+import co.netguru.android.inbbbox.common.utils.StringUtil;
 
 public class OauthWebViewDialogFragmentPresenter extends MvpNullObjectBasePresenter<OauthWebViewDialogFragmentContract.View>
         implements OauthWebViewDialogFragmentContract.Presenter {
@@ -39,7 +39,7 @@ public class OauthWebViewDialogFragmentPresenter extends MvpNullObjectBasePresen
 
     private void handleRedirectUri(Uri uri) {
         String oauthErrorMessage = uri.getQueryParameter(Constants.OAUTH.ERROR_KEY);
-        if (!StringUtils.isBlank(oauthErrorMessage)) {
+        if (!StringUtil.isBlank(oauthErrorMessage)) {
             getView().finishWithError(oauthErrorMessage);
         } else {
             handleRedirectUriWithoutError(uri);
@@ -57,7 +57,7 @@ public class OauthWebViewDialogFragmentPresenter extends MvpNullObjectBasePresen
 
     private void handleUriWithProperStateKey(Uri uri) {
         String receivedCode = uri.getQueryParameter(Constants.OAUTH.CODE_KEY);
-        if (!StringUtils.isBlank(receivedCode)) {
+        if (!StringUtil.isBlank(receivedCode)) {
             getView().finishWithCodeReturn(receivedCode);
         } else {
             getView().finishWithUnknownError();

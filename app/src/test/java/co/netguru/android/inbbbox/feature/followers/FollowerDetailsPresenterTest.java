@@ -15,10 +15,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.UserShotsController;
-import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsContract;
-import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsPresenter;
+import co.netguru.android.inbbbox.controller.ErrorController;
+import co.netguru.android.inbbbox.controller.UserShotsController;
+import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsContract;
+import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsPresenter;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;

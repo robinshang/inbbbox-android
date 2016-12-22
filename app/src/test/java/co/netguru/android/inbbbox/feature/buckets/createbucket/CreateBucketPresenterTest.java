@@ -10,9 +10,11 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.controler.BucketsController;
-import co.netguru.android.inbbbox.event.BucketCreatedEvent;
+import co.netguru.android.inbbbox.controller.BucketsController;
+import co.netguru.android.inbbbox.event.events.BucketCreatedEvent;
 import co.netguru.android.inbbbox.event.RxBus;
+import co.netguru.android.inbbbox.feature.bucket.createbucket.CreateBucketContract;
+import co.netguru.android.inbbbox.feature.bucket.createbucket.CreateBucketPresenter;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Single;
 

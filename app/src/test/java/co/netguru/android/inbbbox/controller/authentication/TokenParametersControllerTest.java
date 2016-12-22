@@ -17,7 +17,7 @@ import java.util.UUID;
 
 import co.netguru.android.inbbbox.BuildConfig;
 import co.netguru.android.inbbbox.Constants;
-import co.netguru.android.inbbbox.controler.TokenParametersController;
+import co.netguru.android.inbbbox.controller.TokenParametersController;
 import co.netguru.android.inbbbox.model.api.Token;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.observers.TestSubscriber;

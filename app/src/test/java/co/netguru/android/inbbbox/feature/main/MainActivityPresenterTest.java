@@ -11,12 +11,12 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.controler.LogoutController;
-import co.netguru.android.inbbbox.controler.SettingsController;
-import co.netguru.android.inbbbox.controler.TokenParametersController;
-import co.netguru.android.inbbbox.controler.UserController;
-import co.netguru.android.inbbbox.controler.notification.NotificationController;
-import co.netguru.android.inbbbox.controler.notification.NotificationScheduler;
+import co.netguru.android.inbbbox.controller.LogoutController;
+import co.netguru.android.inbbbox.controller.SettingsController;
+import co.netguru.android.inbbbox.controller.TokenParametersController;
+import co.netguru.android.inbbbox.controller.UserController;
+import co.netguru.android.inbbbox.controller.notification.NotificationController;
+import co.netguru.android.inbbbox.controller.notification.NotificationScheduler;
 import co.netguru.android.inbbbox.model.localrepository.NotificationSettings;
 import co.netguru.android.inbbbox.model.localrepository.Settings;
 import co.netguru.android.inbbbox.model.ui.User;

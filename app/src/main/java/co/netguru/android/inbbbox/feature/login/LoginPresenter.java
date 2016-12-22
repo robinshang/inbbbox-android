@@ -7,11 +7,11 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.TokenController;
-import co.netguru.android.inbbbox.controler.TokenParametersController;
-import co.netguru.android.inbbbox.controler.UserController;
-import co.netguru.android.inbbbox.di.module.usermodule.UserModeType;
+import co.netguru.android.inbbbox.controller.ErrorController;
+import co.netguru.android.inbbbox.controller.TokenController;
+import co.netguru.android.inbbbox.controller.TokenParametersController;
+import co.netguru.android.inbbbox.controller.UserController;
+import co.netguru.android.inbbbox.app.usermodule.UserModeType;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 

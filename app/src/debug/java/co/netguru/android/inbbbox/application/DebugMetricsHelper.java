@@ -15,7 +15,7 @@ import com.squareup.leakcanary.LeakCanary;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.App;
+import co.netguru.android.inbbbox.app.App;
 import timber.log.Timber;
 
 /**

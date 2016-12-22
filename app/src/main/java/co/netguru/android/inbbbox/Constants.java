@@ -8,7 +8,7 @@ public final class Constants {
         throw new AssertionError();
     }
 
-    public static class OAUTH {
+    public static final class OAUTH {
         public static final String BASE_URL = "https://dribbble.com/";
         public static final String SIGN_UP_ENDPOINT = "signup";
         public static final String OAUTH_AUTHORIZE_ENDPOINT = "oauth/authorize";
@@ -29,7 +29,7 @@ public final class Constants {
         }
     }
 
-    public static class API {
+    public static final class API {
         public static final String DRIBBLE_BASE_URL = "https://api.dribbble.com/v1/";
         public static final String SHOTS_KEY_LIST = "list";
         public static final String SHOTS_KEY_SORT = "sort";

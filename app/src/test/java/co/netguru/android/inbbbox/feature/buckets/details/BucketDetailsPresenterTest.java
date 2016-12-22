@@ -13,7 +13,10 @@ import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.api.MockShotsApi;
+import co.netguru.android.inbbbox.controller.BucketsController;
+import co.netguru.android.inbbbox.feature.bucket.detail.BucketDetailsContract;
+import co.netguru.android.inbbbox.feature.bucket.detail.BucketDetailsPresenter;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.testcommons.RxSyncTestRule;

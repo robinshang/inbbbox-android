@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.model.api.UserEntity;
-import co.netguru.android.inbbbox.utils.StringUtils;
+import co.netguru.android.inbbbox.common.utils.StringUtil;
 import rx.Completable;
 import rx.Single;
 
@@ -45,7 +45,7 @@ public class UserPrefsRepository {
     public Single<UserEntity> getUser() {
         return Single.fromCallable(() -> {
             String userJson = sharedPreferences.getString(USER_KEY, null);
-            if (StringUtils.isBlank(userJson)) {
+            if (StringUtil.isBlank(userJson)) {
                 throw new UserNotFoundException("UserEntity was not found in shared preferences");
             } else {
                 return gson.fromJson(userJson, UserEntity.class);

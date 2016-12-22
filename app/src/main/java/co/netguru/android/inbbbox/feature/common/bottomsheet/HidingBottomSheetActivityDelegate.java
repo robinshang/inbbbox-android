@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 
-import co.netguru.android.inbbbox.utils.InputUtils;
+import co.netguru.android.inbbbox.common.utils.InputUtil;
 
 public class HidingBottomSheetActivityDelegate implements HidingBottomSheetBearer {
 
@@ -60,7 +60,7 @@ public class HidingBottomSheetActivityDelegate implements HidingBottomSheetBeare
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    InputUtils.hideKeyboard(bottomSheetActivityCallback.getApplicationContext(), bottomSheetView);
+                    InputUtil.hideKeyboard(bottomSheetActivityCallback.getApplicationContext(), bottomSheetView);
                     removeFragmentFromBottomSheetView();
                 }
             }

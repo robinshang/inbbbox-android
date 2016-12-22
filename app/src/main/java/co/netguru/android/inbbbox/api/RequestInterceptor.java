@@ -5,9 +5,9 @@ import java.net.HttpURLConnection;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.LogoutController;
-import co.netguru.android.inbbbox.event.CriticalLogoutEvent;
+import co.netguru.android.inbbbox.controller.ErrorController;
+import co.netguru.android.inbbbox.controller.LogoutController;
+import co.netguru.android.inbbbox.event.events.CriticalLogoutEvent;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
 import co.netguru.android.inbbbox.model.api.Token;

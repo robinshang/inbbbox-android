@@ -18,9 +18,11 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.ShotDetailsController;
-import co.netguru.android.inbbbox.controler.UserShotsController;
+import co.netguru.android.inbbbox.controller.ErrorController;
+import co.netguru.android.inbbbox.controller.ShotDetailsController;
+import co.netguru.android.inbbbox.controller.UserShotsController;
+import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsContract;
+import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsPresenter;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.CommentLoadMoreState;
 import co.netguru.android.inbbbox.model.ui.Shot;

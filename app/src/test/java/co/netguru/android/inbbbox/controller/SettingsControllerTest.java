@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import co.netguru.android.inbbbox.controler.SettingsController;
 import co.netguru.android.inbbbox.localrepository.SettingsPrefsRepository;
 import co.netguru.android.inbbbox.model.localrepository.CustomizationSettings;
 import co.netguru.android.inbbbox.model.localrepository.NotificationSettings;

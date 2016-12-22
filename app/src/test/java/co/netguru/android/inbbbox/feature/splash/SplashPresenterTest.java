@@ -10,9 +10,9 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.TokenController;
-import co.netguru.android.inbbbox.controler.UserController;
+import co.netguru.android.inbbbox.controller.ErrorController;
+import co.netguru.android.inbbbox.controller.TokenController;
+import co.netguru.android.inbbbox.controller.UserController;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.Single;

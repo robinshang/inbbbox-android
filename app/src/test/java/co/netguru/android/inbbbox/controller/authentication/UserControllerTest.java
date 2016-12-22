@@ -10,7 +10,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.api.UserApi;
-import co.netguru.android.inbbbox.controler.UserController;
+import co.netguru.android.inbbbox.controller.UserController;
 import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
 import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.testcommons.RxSyncTestRule;

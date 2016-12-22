@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.netguru.android.inbbbox.api.ShotsApi;
-import co.netguru.android.inbbbox.controler.SettingsController;
-import co.netguru.android.inbbbox.controler.ShotsController;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.localrepository.StreamSourceSettings;
 import co.netguru.android.inbbbox.model.ui.Shot;
