@@ -10,6 +10,8 @@ import com.google.gson.annotations.SerializedName;
 
 import org.threeten.bp.LocalDateTime;
 
+import co.netguru.android.inbbbox.model.localrepository.database.UserEntityDB;
+
 @AutoValue
 public abstract class UserEntity implements Parcelable {
 
@@ -111,6 +113,40 @@ public abstract class UserEntity implements Parcelable {
 
     public static TypeAdapter<UserEntity> typeAdapter(Gson gson) {
         return new AutoValue_UserEntity.GsonTypeAdapter(gson);
+    }
+
+    public static UserEntity fromDB(UserEntityDB user) {
+        return UserEntity.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .username(user.getUsername())
+                .htmlUrl(user.getHtmlUrl())
+                .avatarUrl(user.getAvatarUrl())
+                .bio(user.getBio())
+                .location(user.getLocation())
+                .links(Links.create(user.getLinksWeb(), user.getLinksTwitter()))
+                .bucketsCount(user.getBucketsCount())
+                .commentsReceivedCount(user.getCommentsReceivedCount())
+                .followersCount(user.getFollowersCount())
+                .followingsCount(user.getFollowingsCount())
+                .likesCount(user.getLikesCount())
+                .likesReceivedCount(user.getLikesReceivedCount())
+                .projectsCount(user.getProjectsCount())
+                .reboundsReceivedCount(user.getReboundsReceivedCount())
+                .shotsCount(user.getShotsCount())
+                .teamsCount(user.getTeamsCount())
+                .canUploadShot(user.getCanUploadShot())
+                .type(user.getType())
+                .pro(user.getPro())
+                .bucketsUrl(user.getBucketsUrl())
+                .followersUrl(user.getFollowersUrl())
+                .followingUrl(user.getFollowingUrl())
+                .likesUrl(user.getLikesUrl())
+                .shotsUrl(user.getShotsUrl())
+                .teamsUrl(user.getTeamsUrl())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
+                .build();
     }
 
     @AutoValue.Builder

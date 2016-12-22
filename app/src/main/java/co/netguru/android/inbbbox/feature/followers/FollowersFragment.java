@@ -102,7 +102,7 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     @NonNull
     @Override
     public FollowersContract.Presenter createPresenter() {
-        return App.getAppComponent(getContext()).plusFollowersFragmentComponent().getPresenter();
+        return App.getUserComponent(getContext()).plusFollowersFragmentComponent().getPresenter();
     }
 
     @NonNull

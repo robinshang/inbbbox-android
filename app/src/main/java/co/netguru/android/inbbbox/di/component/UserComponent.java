@@ -18,6 +18,10 @@ public interface UserComponent {
 
     ShotFullscreenComponent plus(ShotFullscreenModule module);
 
+    FollowersFragmentComponent plusFollowersFragmentComponent();
+
+    FollowerDetailsFragmentComponent plusFollowersDetailsFragmentComponent();
+
     @Subcomponent.Builder
     interface Builder {
         UserComponent.Builder userModule(UserModule userModule);
