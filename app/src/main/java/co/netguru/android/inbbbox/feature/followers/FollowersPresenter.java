@@ -67,7 +67,6 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
             pageNumber = 1;
             loadNextBucketSubscription.unsubscribe();
             refreshSubscription = followersController.getFollowedUsers(pageNumber, FOLLOWERS_PAGE_COUNT)
-                    .doOnSubscribe(() -> pageNumber = 1)
                     .flatMap(follower -> followersShotController.getFollowedUserWithShots(follower,
                             FOLLOWERS_SHOT_PAGE_NUMBER, FOLLOWERS_SHOT_PAGE_COUNT))
                     .toList()

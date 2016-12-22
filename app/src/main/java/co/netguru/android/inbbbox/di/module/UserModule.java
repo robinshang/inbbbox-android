@@ -11,7 +11,7 @@ import co.netguru.android.inbbbox.controler.likescontroller.LikeShotControllerGu
 import co.netguru.android.inbbbox.di.UserScope;
 import co.netguru.android.inbbbox.enumeration.UserModeType;
 
-import co.netguru.android.inbbbox.localrepository.GuestModeFollowersRepository;
+import co.netguru.android.inbbbox.localrepository.database.GuestModeFollowersRepository;
 import co.netguru.android.inbbbox.localrepository.database.GuestModeLikesRepository;
 
 import dagger.Module;

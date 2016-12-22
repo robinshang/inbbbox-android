@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
+import co.netguru.android.inbbbox.model.localrepository.database.FollowerDB;
+
 @AutoValue
 public abstract class FollowerEntity {
 
@@ -22,6 +24,14 @@ public abstract class FollowerEntity {
 
     public static Builder builder() {
         return new AutoValue_FollowerEntity.Builder();
+    }
+
+    public static FollowerEntity fromDB(FollowerDB followerDB) {
+        return FollowerEntity.builder()
+                .id(followerDB.getId())
+                .createdAt(followerDB.getCreatedAt())
+                .user(UserEntity.fromDB(followerDB.getUser()))
+                .build();
     }
 
     @AutoValue.Builder

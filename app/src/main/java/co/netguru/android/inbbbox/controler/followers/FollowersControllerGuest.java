@@ -3,7 +3,7 @@ package co.netguru.android.inbbbox.controler.followers;
 import java.util.List;
 
 import co.netguru.android.inbbbox.api.FollowersApi;
-import co.netguru.android.inbbbox.localrepository.GuestModeFollowersRepository;
+import co.netguru.android.inbbbox.localrepository.database.GuestModeFollowersRepository;
 import co.netguru.android.inbbbox.model.api.FollowerEntity;
 import rx.Completable;
 import rx.Observable;
