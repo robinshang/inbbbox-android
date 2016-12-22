@@ -12,6 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
@@ -19,15 +23,14 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.di.component.ShotsComponent;
-import co.netguru.android.inbbbox.di.module.ShotsModule;
+import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.common.BaseMvpViewStateFragment;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shots.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shots.recycler.ShotSwipeListener;
@@ -35,6 +38,7 @@ import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView;
+import co.netguru.android.inbbbox.view.BallInterpolator;
 import co.netguru.android.inbbbox.view.FogFloatingActionMenu;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
@@ -43,9 +47,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         AddToBucketDialogFragment.BucketSelectListener {
 
     private static final int SHOTS_TO_LOAD_MORE = 5;
-
-    @Inject
-    ShotsAdapter adapter;
 
     @BindView(R.id.shots_recycler_view)
     AutoItemScrollRecyclerView shotsRecyclerView;
@@ -59,8 +60,62 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @BindView(R.id.container_fog_view)
     View fogContainerView;
 
-    private ShotsComponent component;
+    @BindView(R.id.loading_ball_container)
+    View loadingBallContainer;
+
+    @BindView(R.id.loading_ball)
+    ImageView ballImageView;
+
+    @BindView(R.id.loading_ball_shadow)
+    ImageView ballShadowImageView;
+
+    private Animation shadowAnimation;
+    private AnimationSet ballAnimation;
+
+    private ShotsAdapter adapter;
     private ShotActionListener shotActionListener;
+
+    public static ShotsFragment newInstance() {
+        return new ShotsFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            shotActionListener = (ShotActionListener) context;
+        } catch (ClassCastException e) {
+            throw new InterfaceNotImplementedException(e, context.toString(), ShotActionListener.class.getSimpleName());
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_shots, container, false);
+    }
+
+    @NonNull
+    @Override
+    public ShotsContract.Presenter createPresenter() {
+        return App.getUserComponent(getContext()).getShotsComponent().getPresenter();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initRecycler();
+        initRefreshLayout();
+        initFabMenu();
+        initLoadingAnimation();
+    }
+
+    @NonNull
+    @Override
+    public LceViewState<List<Shot>, ShotsContract.View> createViewState() {
+        return new RetainingLceViewState<>();
+    }
 
     @OnClick(R.id.fab_like_menu)
     void onLikeFabClick() {
@@ -94,60 +149,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         Toast.makeText(getContext(), "Follow", Toast.LENGTH_SHORT).show();
     }
 
-    public static ShotsFragment newInstance() {
-        return new ShotsFragment();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            shotActionListener = (ShotActionListener) context;
-        } catch (ClassCastException e) {
-            throw new RuntimeException(context.toString()
-                    + " must implement ShotActionListener", e);
-        }
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initComponent();
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_shots, container, false);
-    }
-
-    private void initComponent() {
-        component = App.getUserComponent(getContext())
-                .plus(new ShotsModule(this));
-        component.inject(this);
-    }
-
-    @NonNull
-    @Override
-    public ShotsContract.Presenter createPresenter() {
-        return component.getPresenter();
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initRecycler();
-        initRefreshLayout();
-        initFabMenu();
-    }
-
-    @NonNull
-    @Override
-    public LceViewState<List<Shot>, ShotsContract.View> createViewState() {
-        return new RetainingLceViewState<>();
-    }
-
     @Override
     public List<Shot> getData() {
         return adapter.getData();
@@ -178,6 +179,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     private void initRecycler() {
+        adapter = new ShotsAdapter(this);
         shotsRecyclerView.setAdapter(adapter);
         shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shotsRecyclerView.setHasFixedSize(true);
@@ -220,12 +222,21 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void showDetailsScreenInCommentMode(Shot selectedShot) {
-        shotActionListener.showShotDetails(selectedShot, true);
+        ShotDetailsRequest request = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.DEFAULT)
+                .isCommentModeEnabled(true)
+                .build();
+
+        shotActionListener.showShotDetails(selectedShot, adapter.getItems(), request);
     }
 
     @Override
     public void showShotDetails(Shot shot) {
-        shotActionListener.showShotDetails(shot, false);
+        ShotDetailsRequest request = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.DEFAULT)
+                .build();
+
+        shotActionListener.showShotDetails(shot, adapter.getItems(), request);
     }
 
     @Override
@@ -255,12 +266,17 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void showLoadingIndicator() {
-        swipeRefreshLayout.setRefreshing(true);
+        shotsRecyclerView.setVisibility(View.INVISIBLE);
+        loadingBallContainer.setVisibility(View.VISIBLE);
+        ballImageView.post(() -> ballImageView.startAnimation(ballAnimation));
+        ballShadowImageView.post(() -> ballShadowImageView.startAnimation(shadowAnimation));
     }
 
     @Override
     public void hideLoadingIndicator() {
         swipeRefreshLayout.setRefreshing(false);
+        loadingBallContainer.setVisibility(View.GONE);
+        shotsRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -268,9 +284,21 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         Snackbar.make(shotsRecyclerView, errorText, Snackbar.LENGTH_LONG).show();
     }
 
+    private void initLoadingAnimation() {
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.ball_animation_scale);
+        Animation translateAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.ball_animation_translate);
+        shadowAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.ball_shadow_animation);
+
+        scaleAnimation.setInterpolator(new BallInterpolator());
+        shadowAnimation.setInterpolator(new BallInterpolator());
+
+        ballAnimation = new AnimationSet(false);
+        ballAnimation.addAnimation(scaleAnimation);
+        ballAnimation.addAnimation(translateAnimation);
+    }
+
     public interface ShotActionListener {
         void shotLikeStatusChanged();
-
-        void showShotDetails(Shot shot, boolean inCommentMode);
+        void showShotDetails(Shot shot, List<Shot> nearbyShots, ShotDetailsRequest detailsRequest);
     }
 }

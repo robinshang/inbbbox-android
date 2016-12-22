@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.details.recycler.DetailsViewActionCallback;
 import timber.log.Timber;
 
@@ -32,6 +34,7 @@ public class RemoveCommentFragmentDialog extends DialogFragment {
         return fragmentDialog;
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.NoTitleDialog)
@@ -50,8 +53,7 @@ public class RemoveCommentFragmentDialog extends DialogFragment {
             callback = (DetailsViewActionCallback) getTargetFragment();
         } catch (ClassCastException e) {
             Timber.e(e.getMessage());
-            throw new ClassCastException(context.toString()
-                    + " must implement DetailsViewActionCallback");
+            throw new InterfaceNotImplementedException(e, getTargetFragment().getClass().getSimpleName(), DetailsViewActionCallback.class.getSimpleName());
         }
     }
 

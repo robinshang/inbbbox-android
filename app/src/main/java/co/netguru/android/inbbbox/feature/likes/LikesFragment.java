@@ -23,26 +23,26 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.di.component.LikesFragmentComponent;
-import co.netguru.android.inbbbox.di.module.LikesFragmentModule;
+import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.likes.adapter.LikesAdapter;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.view.ShotClickListener;
 
 public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
-        LikesViewContract.View, LikesViewContract.Presenter> implements RefreshableFragment, LikesViewContract.View {
+        LikesViewContract.View, LikesViewContract.Presenter> implements RefreshableFragment, LikesViewContract.View, ShotClickListener {
 
     private static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final int LIKES_TO_LOAD_MORE = 10;
@@ -67,11 +67,8 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     @BindView(R.id.loadingView)
     ProgressBar progressBar;
 
-    @Inject
-    LikesAdapter likesAdapter;
-
     private Snackbar loadingMoreSnackbar;
-    private LikesFragmentComponent component;
+    private LikesAdapter likesAdapter;
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
     private ShotsFragment.ShotActionListener shotActionListener;
@@ -80,22 +77,12 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         return new LikesFragment();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        component = App.getUserComponent(getContext())
-                .plus(new LikesFragmentModule(shots -> getPresenter().showShotDetails(shots)));
-        component.inject(this);
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
             shotActionListener = (ShotsFragment.ShotActionListener) context;
         } catch (ClassCastException e) {
-            throw new RuntimeException(context.toString()
-                    + " must implement ShotActionListener", e);
+            throw new InterfaceNotImplementedException(e, context.toString(), ShotsFragment.ShotActionListener.class.getSimpleName());
         }
     }
 
@@ -115,6 +102,12 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        loadingMoreSnackbar = null;
+    }
+
+    @Override
     protected void changeGridMode(boolean isGridMode) {
         likesAdapter.setGridMode(isGridMode);
         recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
@@ -123,7 +116,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     @NonNull
     @Override
     public LikesViewContract.Presenter createPresenter() {
-        return component.getPresenter();
+        return App.getUserComponent(getContext()).getLikesFragmentComponent().getPresenter();
     }
 
     @Override
@@ -167,7 +160,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     @Override
-    public void hideLoadingMoreBucketsView() {
+    public void hideLoadingMoreLikesView() {
         if (loadingMoreSnackbar != null) {
             loadingMoreSnackbar.dismiss();
         }
@@ -192,8 +185,12 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     @Override
-    public void openShowDetailsScreen(Shot shot) {
-        shotActionListener.showShotDetails(shot, false);
+    public void openShowDetailsScreen(Shot shot, List<Shot> shotList) {
+        ShotDetailsRequest request = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.LIKES)
+                .build();
+
+        shotActionListener.showShotDetails(shot, shotList, request);
     }
 
     @Override
@@ -207,7 +204,8 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     private void initEmptyView() {
-        emptyTextDrawable.setBounds(0, 0, emptyViewText.getLineHeight(), emptyViewText.getLineHeight());
+        int lineHeight = emptyViewText.getLineHeight();
+        emptyTextDrawable.setBounds(0, 0, lineHeight, lineHeight);
         emptyViewText.setText(TextFormatterUtil
                 .addDrawableToTextAtFirstSpace(emptyString, emptyTextDrawable), TextView.BufferType.SPANNABLE);
     }
@@ -218,6 +216,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     private void initRecyclerView() {
+        likesAdapter = new LikesAdapter(this);
         linearLayoutManager = new LinearLayoutManager(getContext());
         gridLayoutManager = new GridLayoutManager(getContext(), GRID_VIEW_COLUMN_COUNT);
         recyclerView.setHasFixedSize(true);
@@ -228,5 +227,10 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
                 presenter.getMoreLikesFromServer();
             }
         });
+    }
+
+    @Override
+    public void onShotClick(Shot shot) {
+        getPresenter().showShotDetails(shot, likesAdapter.getData());
     }
 }

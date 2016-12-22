@@ -29,14 +29,15 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.App;
+import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.buckets.adapter.BaseBucketViewHolder;
 import co.netguru.android.inbbbox.feature.buckets.adapter.BucketsAdapter;
 import co.netguru.android.inbbbox.feature.buckets.createbucket.CreateBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.buckets.details.BucketDetailsActivity;
+import co.netguru.android.inbbbox.feature.buckets.details.BucketDetailsFragment;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
-
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
@@ -47,8 +48,9 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
         List<BucketWithShots>, BucketsFragmentContract.View, BucketsFragmentContract.Presenter>
         implements RefreshableFragment, BucketsFragmentContract.View, BaseBucketViewHolder.BucketClickListener {
 
-
     private static final int BUCKET_DETAILS_VIEW_REQUEST_CODE = 1;
+    private static final int SPAN_COUNT = 2;
+    private static final int LAST_X_BUCKETS_VISIBLE_TO_LOAD_MORE = 5;
 
     @BindDrawable(R.drawable.ic_buckets_empty_state)
     Drawable emptyTextDrawable;
@@ -69,11 +71,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     @BindView(R.id.buckets_recycler_view)
     RecyclerView bucketsRecyclerView;
 
-    private static final int SPAN_COUNT = 2;
-    private static final int LAST_X_BUCKETS_VISIBLE_TO_LOAD_MORE = 5;
-
-    private final BucketsAdapter adapter = new BucketsAdapter(this);
-
+    private BucketsAdapter adapter;
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
     private Snackbar loadingMoreSnackbar;
@@ -99,14 +97,26 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        loadingMoreSnackbar = null;
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         ActivityResult.onResult(requestCode, resultCode, data).into(this);
     }
 
     @OnActivityResult(requestCode = BUCKET_DETAILS_VIEW_REQUEST_CODE,
             resultCodes = Activity.RESULT_OK)
-    public void onActivityResultBucketDeleted() {
-        refreshFragmentData();
+    public void onActivityResultBucketDeleted(Intent data) {
+        long deletedBucketId =
+                data.getLongExtra(BucketDetailsFragment.DELETED_BUCKET_ID_KEY, Constants.UNDEFINED);
+        if (deletedBucketId != Constants.UNDEFINED) {
+            getPresenter().handleDeleteBucket(deletedBucketId);
+        } else {
+            throw new IllegalArgumentException("Bucket delete request was successful, but no bucket id passed.");
+        }
     }
 
     @Override
@@ -118,7 +128,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     @NonNull
     @Override
     public BucketsFragmentContract.Presenter createPresenter() {
-        return App.getAppComponent(getContext()).inject().getPresenter();
+        return App.getAppComponent(getContext()).plusBucketsFragmentComponent().getPresenter();
     }
 
     @NonNull
@@ -218,6 +228,11 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     }
 
     @Override
+    public void removeBucketFromList(long bucketId) {
+        adapter.removeBucketWithGivenIdIfExists(bucketId);
+    }
+
+    @Override
     public void showMessageOnServerError(String errorText) {
         Snackbar.make(bucketsRecyclerView, errorText, Snackbar.LENGTH_LONG).show();
     }
@@ -239,6 +254,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     }
 
     private void initRecyclerView() {
+        adapter = new BucketsAdapter(this);
         linearLayoutManager = new LinearLayoutManager(getContext());
         gridLayoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
         bucketsRecyclerView.setHasFixedSize(true);

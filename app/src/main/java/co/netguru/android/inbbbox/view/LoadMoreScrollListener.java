@@ -25,6 +25,7 @@ public abstract class LoadMoreScrollListener extends RecyclerView.OnScrollListen
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
         final LinearLayoutManager linearLayoutManager = getLayoutManager(recyclerView);
+
         final int totalItemCount = linearLayoutManager.getItemCount();
         final int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
 
@@ -36,7 +37,7 @@ public abstract class LoadMoreScrollListener extends RecyclerView.OnScrollListen
 
     private LinearLayoutManager getLayoutManager(RecyclerView recyclerView) {
         if (!(recyclerView.getLayoutManager() instanceof LinearLayoutManager)) {
-            throw new RuntimeException("Layout manager should be instance of LinearLayoutManager");
+            throw new ClassCastException("Layout manager should be instance of LinearLayoutManager");
         }
         return (LinearLayoutManager) recyclerView.getLayoutManager();
     }

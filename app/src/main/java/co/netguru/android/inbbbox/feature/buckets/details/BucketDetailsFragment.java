@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.feature.buckets.details;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,6 +33,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.buckets.details.adapter.BucketShotViewHolder;
 import co.netguru.android.inbbbox.feature.buckets.details.adapter.BucketShotsAdapter;
 import co.netguru.android.inbbbox.feature.common.BaseMvpLceFragmentWithListTypeSelection;
@@ -41,13 +43,15 @@ import co.netguru.android.inbbbox.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<ShotEntity>,
-                BucketDetailsContract.View, BucketDetailsContract.Presenter>
+        BucketDetailsContract.View, BucketDetailsContract.Presenter>
         implements BucketDetailsContract.View, DeleteBucketDialogFragment.DeleteBucketDialogListener {
 
 
     public static final String TAG = BucketDetailsFragment.class.getSimpleName();
-    private static final int LAST_X_SHOTS_VISIBLE_TO_LOAD_MORE = 10;
 
+    public static final String DELETED_BUCKET_ID_KEY = "deleted_bucket_id_key";
+
+    private static final int LAST_X_SHOTS_VISIBLE_TO_LOAD_MORE = 10;
     private static final String BUCKET_WITH_SHOTS_ARG_KEY = "bucket_with_shots_arg_key";
     private static final String SHOTS_PER_PAGE_ARG_KEY = "shots_per_page_arg_key";
     private static final int SPAN_COUNT = 2;
@@ -94,8 +98,7 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
             shotInBucketClickListener =
                     (BucketShotViewHolder.OnShotInBucketClickListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement BucketDetailsFragmentActionListener");
+            throw new InterfaceNotImplementedException(e, context.toString(), BucketShotViewHolder.OnShotInBucketClickListener.class.getSimpleName());
         }
     }
 
@@ -111,6 +114,12 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
         setupRecyclerView();
         initRefreshLayout();
         initEmptyView();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        loadingMoreSnackbar = null;
     }
 
     @NonNull
@@ -217,8 +226,10 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     }
 
     @Override
-    public void showRefreshedBucketsView() {
-        getActivity().setResult(Activity.RESULT_OK);
+    public void showRefreshedBucketsView(long deletedBucketId) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(DELETED_BUCKET_ID_KEY, deletedBucketId);
+        getActivity().setResult(Activity.RESULT_OK, resultIntent);
         getActivity().finish();
     }
 

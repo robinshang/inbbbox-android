@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.FollowersController;
+import co.netguru.android.inbbbox.controler.followers.FollowersController;
 import co.netguru.android.inbbbox.controler.FollowersShotController;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
@@ -67,7 +67,6 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
             pageNumber = 1;
             loadNextBucketSubscription.unsubscribe();
             refreshSubscription = followersController.getFollowedUsers(pageNumber, FOLLOWERS_PAGE_COUNT)
-                    .doOnSubscribe(() -> pageNumber = 1)
                     .flatMap(follower -> followersShotController.getFollowedUserWithShots(follower,
                             FOLLOWERS_SHOT_PAGE_NUMBER, FOLLOWERS_SHOT_PAGE_COUNT))
                     .toList()

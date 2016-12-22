@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.controler;
+package co.netguru.android.inbbbox.controler.likescontroller;
 
 import java.util.List;
 

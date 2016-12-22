@@ -14,9 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindDimen;
 import butterknife.BindView;
@@ -24,7 +23,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.di.component.ShotDetailsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.details.fullscreen.ShotFullscreenActivity;
@@ -48,8 +46,9 @@ public class ShotDetailsFragment
         implements ShotDetailsContract.View, DetailsViewActionCallback {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
+    private static final String ARG_ALL_SHOTS = "arg:all_shots";
     private static final String ARG_SHOT = "arg:shot";
-    private static final String ARG_IS_COMMENT_MODE_ENABLED = "arg:comment_mode_state";
+    private static final String ARG_SHOT_DETAIL_REQUEST = "arg:detail_request";
     private static final int SLIDE_IN_DURATION = 500;
 
     @BindView(R.id.shot_details_recyclerView)
@@ -76,21 +75,20 @@ public class ShotDetailsFragment
     @BindDimen(R.dimen.shot_corner_radius)
     int radius;
 
-    @Inject
-    ShotDetailsAdapter adapter;
-
-    private ShotDetailsComponent component;
+    private ShotDetailsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
 
-    public static ShotDetailsFragment newInstance(Shot shot) {
-        return newInstance(shot, false);
-    }
-
-    public static ShotDetailsFragment newInstance(Shot shot, boolean isCommentModeEnabled) {
+    public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots,
+                                                  ShotDetailsRequest detailsRequest) {
         Bundle args = new Bundle();
         args.putParcelable(ARG_SHOT, shot);
-        args.putBoolean(ARG_IS_COMMENT_MODE_ENABLED, isCommentModeEnabled);
+        args.putParcelable(ARG_SHOT_DETAIL_REQUEST, detailsRequest);
+        if (allShots instanceof ArrayList) {
+            args.putParcelableArrayList(ARG_ALL_SHOTS, (ArrayList<Shot>) allShots);
+        } else {
+            args.putParcelableArrayList(ARG_ALL_SHOTS, new ArrayList<Shot>(allShots));
+        }
         ShotDetailsFragment fragment = new ShotDetailsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -99,7 +97,6 @@ public class ShotDetailsFragment
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        initComponent();
         return LayoutInflater
                 .from(getContext())
                 .inflate(R.layout.fragment_shot_details, container, false);
@@ -109,6 +106,7 @@ public class ShotDetailsFragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        adapter = new ShotDetailsAdapter(this);
         getPresenter().retrieveInitialData();
         getPresenter().downloadData();
     }
@@ -116,7 +114,7 @@ public class ShotDetailsFragment
     @NonNull
     @Override
     public ShotDetailsContract.Presenter createPresenter() {
-        return component.getPresenter();
+        return App.getUserComponent(getContext()).plus(new ShotsDetailsModule()).getPresenter();
     }
 
     @OnClick(R.id.comment_send_imageView)
@@ -128,10 +126,11 @@ public class ShotDetailsFragment
     void onCloseClick() {
         getPresenter().closeScreen();
     }
-    
+
     @OnClick(R.id.parallax_image_view)
     void onShotImageClick() {
-        getPresenter().onShotImageClick();
+        List<Shot> shots = getArguments().getParcelableArrayList(ARG_ALL_SHOTS);
+        getPresenter().onShotImageClick(shots);
     }
 
     @Override
@@ -160,7 +159,7 @@ public class ShotDetailsFragment
 
     @Override
     public boolean getCommentModeInitialState() {
-        return getArguments().getBoolean(ARG_IS_COMMENT_MODE_ENABLED);
+        return ((ShotDetailsRequest) getArguments().getParcelable(ARG_SHOT_DETAIL_REQUEST)).isCommentModeEnabled();
     }
 
     @Override
@@ -340,19 +339,14 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void showMessageOnServerError(String errorText) {
-        Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
+    public void openShotFullscreen(Shot shot, List<Shot> allShots) {
+        ShotDetailsRequest detailsRequest = getArguments().getParcelable(ARG_SHOT_DETAIL_REQUEST);
+        ShotFullscreenActivity.startActivity(getContext(), shot, allShots, detailsRequest);
     }
 
     @Override
-    public void openShotFullscreen(Shot shot) {
-        ShotFullscreenActivity.startActivity(getContext(), shot);
-    }
-
-    private void initComponent() {
-        component = App.getUserComponent(getContext())
-                .plus(new ShotsDetailsModule(this));
-        component.inject(this);
+    public void showMessageOnServerError(String errorText) {
+        Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {
