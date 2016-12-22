@@ -63,6 +63,7 @@ public class ShotDetailsPresenter
         subscriptions.add(
                 shotDetailsController
                         .performLikeAction(shot, newLikeState)
+                        .compose(applyCompletableIoSchedulers())
                         .subscribe(() -> updateLikeState(newLikeState),
                                 throwable -> handleError(throwable, "Error while performing like action"))
         );

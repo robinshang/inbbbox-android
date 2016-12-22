@@ -17,15 +17,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.di.component.ShotDetailsComponent;
 import co.netguru.android.inbbbox.di.module.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.common.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.details.fullscreen.ShotFullscreenActivity;
@@ -78,10 +75,7 @@ public class ShotDetailsFragment
     @BindDimen(R.dimen.shot_corner_radius)
     int radius;
 
-    @Inject
-    ShotDetailsAdapter adapter;
-
-    private ShotDetailsComponent component;
+    private ShotDetailsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
 
@@ -103,7 +97,6 @@ public class ShotDetailsFragment
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        initComponent();
         return LayoutInflater
                 .from(getContext())
                 .inflate(R.layout.fragment_shot_details, container, false);
@@ -113,6 +106,7 @@ public class ShotDetailsFragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        adapter = new ShotDetailsAdapter(this);
         getPresenter().retrieveInitialData();
         getPresenter().downloadData();
     }
@@ -120,7 +114,7 @@ public class ShotDetailsFragment
     @NonNull
     @Override
     public ShotDetailsContract.Presenter createPresenter() {
-        return component.getPresenter();
+        return App.getUserComponent(getContext()).plus(new ShotsDetailsModule()).getPresenter();
     }
 
     @OnClick(R.id.comment_send_imageView)
@@ -353,12 +347,6 @@ public class ShotDetailsFragment
     @Override
     public void showMessageOnServerError(String errorText) {
         Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
-    }
-
-    private void initComponent() {
-        component = App.getUserComponent(getContext())
-                .plus(new ShotsDetailsModule(this));
-        component.inject(this);
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {

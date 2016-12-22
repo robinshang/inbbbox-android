@@ -35,11 +35,11 @@ public class NotificationController {
 
     public Single<Boolean> rescheduleNotification() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return Single.just(false);
+            return Single.just(Boolean.FALSE);
         }
         return settingsController.getNotificationSettings()
                 .doOnSuccess(settings -> notificationScheduler.scheduleNotificationWhileIdle(settings.getHour(),
                         settings.getMinute()))
-                .flatMap(notificationSettings -> Single.just(true));
+                .flatMap(notificationSettings -> Single.just(Boolean.TRUE));
     }
 }

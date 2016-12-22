@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.netguru.android.inbbbox.model.api.ShotEntity;
+import co.netguru.android.inbbbox.model.localrepository.database.ShotDB;
 
 @AutoValue
 public abstract class Shot implements Parcelable, ShotImage {
@@ -78,6 +79,26 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .isLiked(shot.isLiked())
                 .commentsCount(shot.commentsCount())
                 .isBucketed(shot.isBucketed());
+    }
+
+    public static Shot fromDB(ShotDB shotDB) {
+        return Shot.builder()
+                .id(shotDB.getId())
+                .author(shotDB.getUser() != null ? User.fromDB(shotDB.getUser()) : null)
+                .title(shotDB.getTitle())
+                .creationDate(shotDB.getCreationDate())
+                .description(shotDB.getDescription())
+                .bucketCount(shotDB.getBucketCount())
+                .likesCount(shotDB.getLikesCount())
+                .team(shotDB.getTeam() != null ? Team.fromDB(shotDB.getTeam()) : null)
+                .isGif(shotDB.getIsGif())
+                .isLiked(shotDB.getIsLiked())
+                .isBucketed(shotDB.getIsBucketed())
+                .hiDpiImageUrl(shotDB.getHiDpiImageUrl())
+                .normalImageUrl(shotDB.getNormalImageUrl())
+                .thumbnailUrl(shotDB.getThumbnailUrl())
+                .commentsCount(shotDB.getCommentsCount())
+                .build();
     }
 
     @AutoValue.Builder

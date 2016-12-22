@@ -79,7 +79,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
                     .compose(androidIO())
                     .doAfterTerminate(() -> {
                         getView().hideProgressBar();
-                        getView().hideLoadingMoreBucketsView();
+                        getView().hideLoadingMoreLikesView();
                     })
                     .subscribe(this::onGetMoreLikeShotListNext,
                             throwable -> handleError(throwable, "Error while getting more likes from server"));
