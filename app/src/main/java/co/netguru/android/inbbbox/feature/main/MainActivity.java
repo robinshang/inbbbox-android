@@ -26,6 +26,7 @@ import android.widget.ToggleButton;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.util.List;
 import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindString;
@@ -36,6 +37,7 @@ import co.netguru.android.inbbbox.di.component.MainActivityComponent;
 import co.netguru.android.inbbbox.enumeration.TabItemType;
 import co.netguru.android.inbbbox.feature.common.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsFragment;
+import co.netguru.android.inbbbox.feature.details.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
 import co.netguru.android.inbbbox.feature.shots.ShotsFragment;
@@ -271,8 +273,8 @@ public class MainActivity
     }
 
     @Override
-    public void showShotDetails(Shot shot, boolean isCommentModeEnabled) {
-        showBottomSheet(ShotDetailsFragment.newInstance(shot, isCommentModeEnabled), ShotDetailsFragment.TAG);
+    public void showShotDetails(Shot shot, List<Shot> allShots, ShotDetailsRequest detailsRequest) {
+        showBottomSheet(ShotDetailsFragment.newInstance(shot, allShots, detailsRequest), ShotDetailsFragment.TAG);
     }
 
     @Override

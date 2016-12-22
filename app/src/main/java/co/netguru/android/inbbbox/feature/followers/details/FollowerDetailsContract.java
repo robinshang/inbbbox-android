@@ -23,7 +23,7 @@ public interface FollowerDetailsContract {
 
         void hideProgress();
 
-        void openShotDetailsScreen(Shot shot);
+        void openShotDetailsScreen(Shot shot, List<Shot> allShots, long userId);
 
         void showUnFollowDialog(String username);
     }
