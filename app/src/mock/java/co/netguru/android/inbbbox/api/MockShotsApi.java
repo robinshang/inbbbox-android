@@ -22,7 +22,7 @@ import rx.Single;
 
 public class MockShotsApi implements ShotsApi {
 
-    public static final int ITEM_COUNT = new Random().nextInt(1000);
+    private static final int ITEM_COUNT = new Random().nextInt(1000);
 
     @Override
     public Observable<List<ShotEntity>> getShotsByList(@Query(Constants.API.SHOTS_KEY_LIST) String list,
@@ -96,11 +96,11 @@ public class MockShotsApi implements ShotsApi {
         return result;
     }
 
-    public static List<ShotEntity> getFollowingMockedData() {
+    private static List<ShotEntity> getFollowingMockedData() {
         return getFollowingMock(ITEM_COUNT, "following");
     }
 
-    public static List<ShotEntity> getFilteredMockedData() {
+    private static List<ShotEntity> getFilteredMockedData() {
         return getFollowingMock(ITEM_COUNT, "filtered");
     }
 

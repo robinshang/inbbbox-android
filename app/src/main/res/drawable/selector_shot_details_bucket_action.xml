@@ -3,10 +3,10 @@
 
     <item android:drawable="@drawable/layer_list_details_bucket" android:state_activated="true"
           android:state_selected="true"/>
-    <item android:drawable="@drawable/ic_bucket_details_active" android:state_activated="true"/>
-    <item android:drawable="@drawable/layer_list_details_bucket" android:state_pressed="true"/>
-    <item android:drawable="@drawable/layer_list_details_bucket" android:state_selected="true"/>
     <item android:drawable="@drawable/layer_list_details_bucket" android:state_activated="true"
-          android:state_pressed="true"/>
+        android:state_pressed="true"/>
+    <item android:drawable="@drawable/ic_bucket_details_active" android:state_activated="true"/>
+    <item android:drawable="@drawable/layer_list_details_bucket" android:state_selected="true"/>
+    <item android:drawable="@drawable/layer_list_details_bucket" android:state_pressed="true"/>
     <item android:drawable="@drawable/ic_bucket_details"/>
 </selector>

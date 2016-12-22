@@ -77,6 +77,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         return new LikesFragment();
     }
 
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
