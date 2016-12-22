@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loading_ball_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="co.netguru.android.inbbbox.AnimationTest">
+
+    <ImageView
+        android:id="@+id/loading_ball_shadow"
+        android:layout_width="@dimen/loading_ball_shadow_size"
+        android:layout_height="@dimen/loading_ball_shadow_size"
+        android:layout_centerInParent="true"
+        android:paddingTop="@dimen/loading_ball_shadow_paddingTop"
+        android:src="@drawable/shadow_ball" />
+
+    <ImageView
+        android:id="@+id/loading_ball"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_ball" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loading_ball"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/loading_text_marginTop"
+        android:textColor="@color/accent"
+        android:text="@string/loading"
+        />
+</RelativeLayout>

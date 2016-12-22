@@ -12,6 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
@@ -34,6 +38,7 @@ import co.netguru.android.inbbbox.feature.shots.recycler.ShotsAdapter;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView;
+import co.netguru.android.inbbbox.view.BallInterpolator;
 import co.netguru.android.inbbbox.view.FogFloatingActionMenu;
 import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
@@ -54,6 +59,18 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @BindView(R.id.container_fog_view)
     View fogContainerView;
+
+    @BindView(R.id.loading_ball_container)
+    View loadingBallContainer;
+
+    @BindView(R.id.loading_ball)
+    ImageView ballImageView;
+
+    @BindView(R.id.loading_ball_shadow)
+    ImageView ballShadowImageView;
+
+    private Animation shadowAnimation;
+    private AnimationSet ballAnimation;
 
     private ShotsAdapter adapter;
     private ShotActionListener shotActionListener;
@@ -91,6 +108,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         initRecycler();
         initRefreshLayout();
         initFabMenu();
+        initLoadingAnimation();
     }
 
     @NonNull
@@ -248,17 +266,35 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void showLoadingIndicator() {
-        swipeRefreshLayout.setRefreshing(true);
+        shotsRecyclerView.setVisibility(View.INVISIBLE);
+        loadingBallContainer.setVisibility(View.VISIBLE);
+        ballImageView.post(() -> ballImageView.startAnimation(ballAnimation));
+        ballShadowImageView.post(() -> ballShadowImageView.startAnimation(shadowAnimation));
     }
 
     @Override
     public void hideLoadingIndicator() {
         swipeRefreshLayout.setRefreshing(false);
+        loadingBallContainer.setVisibility(View.GONE);
+        shotsRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showMessageOnServerError(String errorText) {
         Snackbar.make(shotsRecyclerView, errorText, Snackbar.LENGTH_LONG).show();
+    }
+
+    private void initLoadingAnimation() {
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.ball_animation_scale);
+        Animation translateAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.ball_animation_translate);
+        shadowAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.ball_shadow_animation);
+
+        scaleAnimation.setInterpolator(new BallInterpolator());
+        shadowAnimation.setInterpolator(new BallInterpolator());
+
+        ballAnimation = new AnimationSet(false);
+        ballAnimation.addAnimation(scaleAnimation);
+        ballAnimation.addAnimation(translateAnimation);
     }
 
     public interface ShotActionListener {
