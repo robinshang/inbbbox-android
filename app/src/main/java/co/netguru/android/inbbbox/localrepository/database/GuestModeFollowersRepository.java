@@ -5,7 +5,7 @@ import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.model.api.FollowerEntity;
 import co.netguru.android.inbbbox.model.localrepository.database.DaoSession;
-import co.netguru.android.inbbbox.model.localrepository.database.mapper.FollowerDBMapper;
+import co.netguru.android.inbbbox.model.localrepository.database.mapper.FollowerEntityDBMapper;
 import co.netguru.android.inbbbox.model.localrepository.database.mapper.UserEntityDBMapper;
 import rx.Completable;
 import rx.Observable;
@@ -23,19 +23,19 @@ public class GuestModeFollowersRepository {
 
     public Observable<FollowerEntity> getFollowers() {
         Timber.d("Getting followers from local repository");
-        return daoSession.getFollowerDBDao().queryBuilder().rx().oneByOne().map(FollowerEntity::fromDB);
+        return daoSession.getFollowerEntityDBDao().queryBuilder().rx().oneByOne().map(FollowerEntity::fromDB);
     }
 
     public Completable removeFollower(long id) {
         Timber.d("Removing follower from local repository");
-        return daoSession.getFollowerDBDao().rx().deleteByKey(id).toCompletable();
+        return daoSession.getFollowerEntityDBDao().rx().deleteByKey(id).toCompletable();
     }
 
     // TODO: 22.12.2016 Add follower when follow will be available
     public Completable addFollower(FollowerEntity followerEntity) {
         Timber.d("Adding follower to local repository");
         return daoSession.rxTx().run(() -> {
-            daoSession.getFollowerDBDao().insertOrReplace(FollowerDBMapper.fromFollowerEntity(followerEntity));
+            daoSession.getFollowerEntityDBDao().insertOrReplace(FollowerEntityDBMapper.fromFollowerEntity(followerEntity));
             daoSession.getUserEntityDBDao().insertOrReplace(UserEntityDBMapper.fromUserEntity(followerEntity.user()));
         }).toCompletable();
     }

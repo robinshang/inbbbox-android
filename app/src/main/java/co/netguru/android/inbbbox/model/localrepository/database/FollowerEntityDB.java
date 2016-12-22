@@ -1,17 +1,23 @@
 package co.netguru.android.inbbbox.model.localrepository.database;
 
+import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
+import org.threeten.bp.LocalDateTime;
+
+import co.netguru.android.inbbbox.model.localrepository.database.converter.LocalDateTimeConverter;
 
 @Entity
-public class FollowerDB {
+public class FollowerEntityDB {
 
     @Id
     private Long id;
-    private String createdAt;
+    // TODO: 22.12.2016 Change to ZonedDateTime
+    @Convert(converter = LocalDateTimeConverter.class, columnType = String.class)
+    private LocalDateTime createdAt;
     private Long userId;
     @ToOne(joinProperty = "userId")
     private UserEntityDB user;
@@ -25,18 +31,18 @@ public class FollowerDB {
     /**
      * Used for active entity operations.
      */
-    @Generated(hash = 369989469)
-    private transient FollowerDBDao myDao;
+    @Generated(hash = 979453088)
+    private transient FollowerEntityDBDao myDao;
 
-    @Generated(hash = 1367009454)
-    public FollowerDB(Long id, String createdAt, Long userId) {
+    @Generated(hash = 1828508989)
+    public FollowerEntityDB(Long id, LocalDateTime createdAt, Long userId) {
         this.id = id;
         this.createdAt = createdAt;
         this.userId = userId;
     }
 
-    @Generated(hash = 31077352)
-    public FollowerDB() {
+    @Generated(hash = 1853705126)
+    public FollowerEntityDB() {
     }
 
     public Long getId() {
@@ -47,11 +53,11 @@ public class FollowerDB {
         this.id = id;
     }
 
-    public String getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return this.createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -136,10 +142,9 @@ public class FollowerDB {
     }
 
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 696030261)
+    @Generated(hash = 1697135917)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getFollowerDBDao() : null;
+        myDao = daoSession != null ? daoSession.getFollowerEntityDBDao() : null;
     }
-
 }
