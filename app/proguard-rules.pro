@@ -16,9 +16,6 @@
 #   public *;
 #}
 
--verbose
--dontusemixedcaseclassnames
--dontskipnonpubliclibraryclasses
 -dontskipnonpubliclibraryclassmembers
 -keepattributes LineNumberTable,SourceFile,Signature,*Annotation*,Exceptions,InnerClasses
 
