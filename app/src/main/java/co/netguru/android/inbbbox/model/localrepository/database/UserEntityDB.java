@@ -15,7 +15,7 @@ import org.greenrobot.greendao.annotation.Generated;
 public class UserEntityDB {
 
     @Id
-    private Long id;
+    private long id;
     private String name;
     private String username;
     private String htmlUrl;
@@ -50,8 +50,8 @@ public class UserEntityDB {
     @Convert(converter = LocalDateTimeConverter.class, columnType = String.class)
     private LocalDateTime updatedAt;
 
-    @Generated(hash = 312415874)
-    public UserEntityDB(Long id, String name, String username, String htmlUrl, String avatarUrl,
+    @Generated(hash = 2118346286)
+    public UserEntityDB(long id, String name, String username, String htmlUrl, String avatarUrl,
                         String bio, String location, String linksWeb, String linksTwitter, int bucketsCount,
                         int commentsReceivedCount, int followersCount, int followingsCount, int likesCount,
                         int likesReceivedCount, int projectsCount, int reboundsReceivedCount, int shotsCount,
@@ -94,11 +94,11 @@ public class UserEntityDB {
     public UserEntityDB() {
     }
 
-    public Long getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

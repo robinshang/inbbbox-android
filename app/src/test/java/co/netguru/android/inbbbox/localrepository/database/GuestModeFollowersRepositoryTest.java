@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class GuestModeFollowersRepositoryTest {
 
-    private static final int FOLLOWER_ID = 1;
+    private static final long FOLLOWER_ID = 1;
 
     @Rule
     public TestRule rule = new RxSyncTestRule();

@@ -10,15 +10,17 @@ import org.threeten.bp.LocalDateTime;
 
 import co.netguru.android.inbbbox.model.localrepository.database.converter.LocalDateTimeConverter;
 
+import org.greenrobot.greendao.annotation.NotNull;
+
 @Entity
 public class FollowerEntityDB {
 
     @Id
-    private Long id;
+    private long id;
     // TODO: 22.12.2016 Change to ZonedDateTime
     @Convert(converter = LocalDateTimeConverter.class, columnType = String.class)
     private LocalDateTime createdAt;
-    private Long userId;
+    private long userId;
     @ToOne(joinProperty = "userId")
     private UserEntityDB user;
 
@@ -34,8 +36,8 @@ public class FollowerEntityDB {
     @Generated(hash = 979453088)
     private transient FollowerEntityDBDao myDao;
 
-    @Generated(hash = 1828508989)
-    public FollowerEntityDB(Long id, LocalDateTime createdAt, Long userId) {
+    @Generated(hash = 399049204)
+    public FollowerEntityDB(long id, LocalDateTime createdAt, long userId) {
         this.id = id;
         this.createdAt = createdAt;
         this.userId = userId;
@@ -45,11 +47,11 @@ public class FollowerEntityDB {
     public FollowerEntityDB() {
     }
 
-    public Long getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -61,11 +63,11 @@ public class FollowerEntityDB {
         this.createdAt = createdAt;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -75,9 +77,9 @@ public class FollowerEntityDB {
     /**
      * To-one relationship, resolved on first access.
      */
-    @Generated(hash = 2102936457)
+    @Generated(hash = 921178723)
     public UserEntityDB getUser() {
-        Long __key = this.userId;
+        long __key = this.userId;
         if (user__resolvedKey == null || !user__resolvedKey.equals(__key)) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
@@ -96,11 +98,15 @@ public class FollowerEntityDB {
     /**
      * called by internal mechanisms, do not call yourself.
      */
-    @Generated(hash = 587762033)
-    public void setUser(UserEntityDB user) {
+    @Generated(hash = 745770947)
+    public void setUser(@NotNull UserEntityDB user) {
+        if (user == null) {
+            throw new DaoException(
+                    "To-one property 'userId' has not-null constraint; cannot set to-one to null");
+        }
         synchronized (this) {
             this.user = user;
-            userId = user == null ? null : user.getId();
+            userId = user.getId();
             user__resolvedKey = userId;
         }
     }
@@ -147,4 +153,5 @@ public class FollowerEntityDB {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getFollowerEntityDBDao() : null;
     }
+
 }
