@@ -66,7 +66,23 @@ public class GuestModeBucketsRepository {
 
     public Completable removeBucket(long bucketId) {
         Timber.d("Removing bucket from local repository");
-        return daoSession.getBucketDBDao().rx().deleteByKey(bucketId).toCompletable();
+        return daoSession.rxTx().run(() -> {
+            final List<ShotDB> shots = daoSession.load(BucketDB.class, bucketId).getShots();
+            daoSession.getBucketDBDao().deleteByKey(bucketId);
+            removeShotsFromBucket(shots);
+        }).toCompletable();
+    }
+
+    private void removeShotsFromBucket(List<ShotDB> shots) {
+        for (ShotDB shot : shots) {
+            if (shot.getIsLiked()) {
+                Timber.d("Removing shot %s from bucket");
+                shot.setIsBucketed(false);
+                shot.update();
+            } else {
+                daoSession.delete(shot);
+            }
+        }
     }
 
     public Single<List<Shot>> getShotsListFromBucket(long bucketId) {
@@ -88,10 +104,17 @@ public class GuestModeBucketsRepository {
         final ShotDB shotToAdd = ShotDBMapper.fromShot(shot);
 
         return daoSession.rxTx().run(() -> {
-                    daoSession.insertOrReplace(new JoinBucketsWithShots(null, bucketDB.getId(), shotToAdd.getId()));
-                    daoSession.insertOrReplace(shotToAdd);
-                })
-                .map(aVoid -> bucketDB);
+            daoSession.insertOrReplace(new JoinBucketsWithShots(null, bucketDB.getId(), shotToAdd.getId()));
+            daoSession.insertOrReplace(shotToAdd);
+        })
+                .map(aVoid -> bucketDB)
+                .doOnCompleted(() -> updateShot(shotToAdd));
+    }
+
+    private void updateShot(ShotDB shotDB) {
+        shotDB.setIsBucketed(true);
+        shotDB.setBucketCount(shotDB.getBucketCount() + 1);
+        shotDB.update();
     }
 
     private void updateBucketShotsCount(BucketDB bucketDB) {
