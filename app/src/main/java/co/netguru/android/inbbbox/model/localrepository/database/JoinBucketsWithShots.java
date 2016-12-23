@@ -7,43 +7,36 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class JoinBucketsWithShots {
 
-    @Id
-    private long id;
+    @Id(autoincrement = true)
+    private Long id;
     private long bucketId;
     private long shotId;
-
-    @Generated(hash = 348993180)
-    public JoinBucketsWithShots(long id, long bucketId, long shotId) {
+    @Generated(hash = 1518059435)
+    public JoinBucketsWithShots(Long id, long bucketId, long shotId) {
         this.id = id;
         this.bucketId = bucketId;
         this.shotId = shotId;
     }
-
     @Generated(hash = 835510296)
     public JoinBucketsWithShots() {
     }
-
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
-
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
-
     public long getBucketId() {
         return this.bucketId;
     }
-
     public void setBucketId(long bucketId) {
         this.bucketId = bucketId;
     }
-
     public long getShotId() {
         return this.shotId;
     }
-
     public void setShotId(long shotId) {
         this.shotId = shotId;
     }
+
 }

@@ -38,7 +38,6 @@ public class BucketsControllerGuest implements BucketsController {
 
     @Override
     public Single<List<Shot>> getShotsListFromBucket(long bucketId, int pageNumber, int pageCount) {
-
         return Single.just(new ArrayList<>());
     }
 

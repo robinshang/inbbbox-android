@@ -16,6 +16,7 @@ import co.netguru.android.inbbbox.model.ui.User;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
+import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
 
@@ -36,6 +37,7 @@ public class ShotDetailsController {
     }
 
     public Observable<ShotDetailsState> getShotComments(Shot shot, int pageNumber) {
+        Timber.e(shot.toString());
         return Observable.zip(getCommentListWithAuthorState(Long.toString(shot.id()), pageNumber),
                 getLikeState(shot),
                 getBucketState(shot.id()),
