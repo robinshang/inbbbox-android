@@ -11,6 +11,7 @@ import javax.inject.Singleton;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.localrepository.database.DaoSession;
 import co.netguru.android.inbbbox.model.localrepository.database.mapper.BucketDbMapper;
+import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
 import rx.Single;
@@ -42,5 +43,12 @@ public class GuestModeBucketsRepository {
                 .insertOrReplace(BucketDbMapper.createNewBucket(name, description))
                 .map(Bucket::fromDB)
                 .toSingle();
+    }
+
+    public Single<List<BucketWithShots>> getUserBucketsWithShots() {
+        return daoSession.getBucketDBDao().queryBuilder().rx().oneByOne()
+                .map(bucketDB -> BucketWithShots.create(Bucket.fromDB(bucketDB),
+                        Shot.createListFromDB(bucketDB.getShots())))
+                .toList().toSingle();
     }
 }

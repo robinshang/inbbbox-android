@@ -166,10 +166,10 @@ public abstract class Shot implements Parcelable, ShotImage {
                 .build();
     }
 
-    public static List<Shot> createList(List<ShotEntity> shotEntityList) {
-        List<Shot> shots = new ArrayList<>();
-        for(ShotEntity shotEntity : shotEntityList) {
-            shots.add(Shot.create(shotEntity));
+    public static List<Shot> createListFromDB(List<ShotDB> shotDBList) {
+        final List<Shot> shots = new ArrayList<>();
+        for(ShotDB shotDB : shotDBList) {
+            shots.add(Shot.fromDB(shotDB));
         }
         return shots;
     }
