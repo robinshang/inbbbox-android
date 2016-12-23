@@ -3,7 +3,6 @@ package co.netguru.android.inbbbox.controler.buckets;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import co.netguru.android.inbbbox.localrepository.database.GuestModeBucketsRepository;
@@ -38,7 +37,7 @@ public class BucketsControllerGuest implements BucketsController {
 
     @Override
     public Single<List<Shot>> getShotsListFromBucket(long bucketId, int pageNumber, int pageCount) {
-        return Single.just(new ArrayList<>());
+        return guestModeBucketsRepository.getShotsListFromBucket(bucketId);
     }
 
     @Override
@@ -48,6 +47,6 @@ public class BucketsControllerGuest implements BucketsController {
 
     @Override
     public Completable deleteBucket(long bucketId) {
-        return Completable.complete();
+        return guestModeBucketsRepository.removeBucket(bucketId);
     }
 }

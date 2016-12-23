@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.localrepository.database.BucketDB;
+import co.netguru.android.inbbbox.model.localrepository.database.BucketDBDao;
 import co.netguru.android.inbbbox.model.localrepository.database.DaoSession;
 import co.netguru.android.inbbbox.model.localrepository.database.JoinBucketsWithShots;
 import co.netguru.android.inbbbox.model.localrepository.database.ShotDB;
@@ -63,6 +64,26 @@ public class GuestModeBucketsRepository {
                 .toList().toSingle();
     }
 
+    public Completable removeBucket(long bucketId) {
+        Timber.d("Removing bucket from local repository");
+        return daoSession.getBucketDBDao().rx().deleteByKey(bucketId).toCompletable();
+    }
+
+    public Single<List<Shot>> getShotsListFromBucket(long bucketId) {
+        Timber.d("Getting shots list from bucket local repository");
+        return daoSession.getBucketDBDao().queryBuilder()
+                .where(BucketDBDao.Properties.Id.eq(bucketId))
+                .rx()
+                .unique()
+                .flatMap(bucketDB -> {
+                    if (bucketDB == null) {
+                        return Observable.empty();
+                    }
+                    return Observable.just(Shot.createListFromDB(bucketDB.getShots()));
+                })
+                .toSingle();
+    }
+
     private Observable<BucketDB> addShotAndCreateRelation(BucketDB bucketDB, Shot shot) {
         final ShotDB shotToAdd = ShotDBMapper.fromShot(shot);
 
@@ -70,19 +91,11 @@ public class GuestModeBucketsRepository {
                     daoSession.insertOrReplace(new JoinBucketsWithShots(null, bucketDB.getId(), shotToAdd.getId()));
                     daoSession.insertOrReplace(shotToAdd);
                 })
-                .map(aVoid -> bucketDB)
-                .doOnCompleted(() -> updateAddedShot(shotToAdd));
+                .map(aVoid -> bucketDB);
     }
 
     private void updateBucketShotsCount(BucketDB bucketDB) {
         bucketDB.setShotsCount(bucketDB.getShotsCount() + 1);
         bucketDB.update();
-    }
-
-    // TODO: 23.12.2016 Check why shot isn't updated
-    private void updateAddedShot(ShotDB shotDB) {
-        shotDB.setBucketCount(shotDB.getBucketCount() + 1);
-        shotDB.setIsBucketed(true);
-        shotDB.update();
     }
 }
