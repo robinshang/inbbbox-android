@@ -44,33 +44,25 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <ImageView
+                android:id="@+id/iv_like_action"
+                style="@style/LongSwipeActionIcons"
+                android:layout_width="wrap_content"
+                android:contentDescription="@null"
+                android:src="@drawable/selector_like_swipe" />
+
+            <ImageView
+                android:layout_width="@dimen/shot_swipe_action_plus_size"
+                android:layout_height="@dimen/shot_swipe_action_plus_size"
                 android:layout_gravity="center"
-                android:orientation="horizontal">
+                android:contentDescription="@null"
+                android:src="@drawable/ic_plus" />
 
-                <ImageView
-                    android:id="@+id/iv_like_action"
-                    style="@style/LongSwipeActionIcons"
-                    android:layout_width="wrap_content"
-                    android:contentDescription="@null"
-                    android:src="@drawable/selector_like_swipe" />
-
-                <ImageView
-                    android:layout_width="@dimen/shot_swipe_action_plus_size"
-                    android:layout_height="@dimen/shot_swipe_action_plus_size"
-                    android:layout_gravity="center"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_plus" />
-
-                <ImageView
-                    android:id="@+id/iv_bucket_action"
-                    style="@style/LongSwipeActionIcons"
-                    android:contentDescription="@null"
-                    android:src="@drawable/selector_bucket_swipe" />
-            </LinearLayout>
-
+            <ImageView
+                android:id="@+id/iv_bucket_action"
+                style="@style/LongSwipeActionIcons"
+                android:contentDescription="@null"
+                android:src="@drawable/selector_bucket_swipe" />
         </LinearLayout>
 
         <RelativeLayout
