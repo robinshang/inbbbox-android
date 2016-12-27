@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
-import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 import co.netguru.android.inbbbox.model.localrepository.database.FollowerEntityDB;
 
@@ -14,9 +14,8 @@ public abstract class FollowerEntity {
 
     public abstract long id();
 
-    // TODO: 22.12.2016 Should be changed to ZonedDateTime
     @SerializedName("created_at")
-    public abstract LocalDateTime createdAt();
+    public abstract ZonedDateTime createdAt();
 
     @SerializedName("followee")
     public abstract UserEntity user();
@@ -42,7 +41,7 @@ public abstract class FollowerEntity {
 
         public abstract Builder id(long id);
 
-        public abstract Builder createdAt(LocalDateTime createdAt);
+        public abstract Builder createdAt(ZonedDateTime createdAt);
 
         public abstract Builder user(UserEntity user);
 

@@ -1,6 +1,6 @@
 package co.netguru.android.inbbbox;
 
-import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,13 +25,13 @@ public final class Statics {
             .bio("")
             .bucketsCount(1)
             .likesCount(2)
-            .updatedAt(LocalDateTime.now().minusDays(2))
-            .createdAt(LocalDateTime.now().minusDays(3))
+            .updatedAt(ZonedDateTime.now().minusDays(2))
+            .createdAt(ZonedDateTime.now().minusDays(3))
             .bucketsUrl("")
             .bio("")
             .canUploadShot(false)
             .commentsReceivedCount(1)
-            .createdAt(LocalDateTime.now())
+            .createdAt(ZonedDateTime.now())
             .followersCount(1)
             .followersUrl("")
             .followingsCount(1)
@@ -56,7 +56,7 @@ public final class Statics {
             .build();
 
     public static final Bucket BUCKET = Bucket.builder()
-            .createdAt(LocalDateTime.now())
+            .createdAt(ZonedDateTime.now())
             .description("")
             .id(1)
             .name("some bucket")
@@ -76,7 +76,7 @@ public final class Statics {
             .team(TEAM)
             .bucketCount(123)
             .likesCount(321)
-            .creationDate(LocalDateTime.now().minusDays(2))
+            .creationDate(ZonedDateTime.now().minusDays(2))
             .isGif(false)
             .isLiked(false)
             .isBucketed(false)
@@ -95,7 +95,7 @@ public final class Statics {
             .bucketCount(123)
             .likesCount(321)
             .commentsCount(3)
-            .creationDate(LocalDateTime.now().minusDays(2))
+            .creationDate(ZonedDateTime.now().minusDays(2))
             .isGif(false)
             .isLiked(true)
             .isBucketed(false)
@@ -106,7 +106,7 @@ public final class Statics {
 
     public static final FollowerEntity FOLLOWER_ENTITY = FollowerEntity.builder()
             .id(1)
-            .createdAt(LocalDateTime.now())
+            .createdAt(ZonedDateTime.now())
             .user(USER_ENTITY)
             .build();
 
@@ -120,7 +120,7 @@ public final class Statics {
                     .id(i)
                     .author("Author: " + i)
                     .authorAvatarUrl("")
-                    .date(LocalDateTime.now())
+                    .date(ZonedDateTime.now())
                     .text("text: " + i)
                     .isCurrentUserAuthor(false)
                     .build();
@@ -134,7 +134,7 @@ public final class Statics {
         for (int i = 0; i < COMMENTS_COUNT; i++) {
             CommentEntity comment = new CommentEntity();
             comment.setUser(USER_ENTITY);
-            comment.setCreatedAt(LocalDateTime.now());
+            comment.setCreatedAt(ZonedDateTime.now());
             comment.setBody("test");
             comments.add(comment);
         }
@@ -151,11 +151,11 @@ public final class Statics {
                             .id(i)
                             .title("test: " + i)
                             .image(image)
-                            .createdAt(LocalDateTime.now())
+                            .createdAt(ZonedDateTime.now())
                             .animated(false)
                             .likesCount(2)
                             .bucketsCount(3)
-                            .createdAt(LocalDateTime.now())
+                            .createdAt(ZonedDateTime.now())
                             .commentsCount(2)
                             .build());
         }

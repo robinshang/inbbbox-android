@@ -4,8 +4,6 @@ package co.netguru.android.inbbbox.api;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import org.threeten.bp.LocalDateTime;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,11 +49,11 @@ public class MockedBucketApi implements BucketApi {
                     .id(i)
                     .title("test")
                     .image(image)
-                    .createdAt(LocalDateTime.now())
+                    .createdAt(ZonedDateTime.now())
                     .animated(false)
                     .likesCount(2)
                     .bucketsCount(3)
-                    .createdAt(LocalDateTime.now())
+                    .createdAt(ZonedDateTime.now())
                     .commentsCount(3)
                     .build();
             shots.add(entity);
@@ -64,6 +62,6 @@ public class MockedBucketApi implements BucketApi {
     }
 
     private static Bucket getBucket() {
-        return Bucket.builder().createdAt(LocalDateTime.now()).description("").id(1).name("bucket").shotsCount(1).build();
+        return Bucket.builder().createdAt(ZonedDateTime.now()).description("").id(1).name("bucket").shotsCount(1).build();
     }
 }

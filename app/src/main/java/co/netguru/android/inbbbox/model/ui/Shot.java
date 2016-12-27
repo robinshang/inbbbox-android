@@ -7,7 +7,7 @@ import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
-import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public abstract class Shot implements Parcelable, ShotImage {
     @Nullable
     public abstract String title();
 
-    public abstract LocalDateTime creationDate();
+    public abstract ZonedDateTime creationDate();
 
     @Nullable
     public abstract String projectUrl();
@@ -115,7 +115,7 @@ public abstract class Shot implements Parcelable, ShotImage {
 
         public abstract Shot.Builder bucketCount(Integer bucketCount);
 
-        public abstract Shot.Builder creationDate(LocalDateTime localDateTime);
+        public abstract Shot.Builder creationDate(ZonedDateTime dateTime);
 
         public abstract Shot.Builder description(String description);
 

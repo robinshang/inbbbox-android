@@ -4,7 +4,7 @@ package co.netguru.android.inbbbox.feature.shots.addtobucket;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
-import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public interface AddToBucketContract {
 
         void showShotAuthor(String authorName);
 
-        void showShotCreationDate(LocalDateTime localDateTime);
+        void showShotCreationDate(ZonedDateTime dateTime);
 
         void showBucketListLoading();
 

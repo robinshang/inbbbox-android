@@ -4,7 +4,7 @@ import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
-import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 import co.netguru.android.inbbbox.model.api.CommentEntity;
 
@@ -17,7 +17,7 @@ public abstract class Comment {
 
     public abstract String authorAvatarUrl();
 
-    public abstract LocalDateTime date();
+    public abstract ZonedDateTime date();
 
     public abstract String text();
 
@@ -42,7 +42,7 @@ public abstract class Comment {
 
         public abstract Comment.Builder authorAvatarUrl(String authorAvatarUrl);
 
-        public abstract Comment.Builder date(LocalDateTime date);
+        public abstract Comment.Builder date(ZonedDateTime date);
 
         public abstract Comment.Builder text(String text);
 

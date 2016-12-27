@@ -2,7 +2,7 @@ package co.netguru.android.inbbbox.model.api;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 public class CommentEntity {
 
@@ -15,9 +15,9 @@ public class CommentEntity {
     @SerializedName("likes_url")
     private String likesUrl;
     @SerializedName("created_at")
-    private LocalDateTime createdAt;
+    private ZonedDateTime createdAt;
     @SerializedName("updated_at")
-    private LocalDateTime updatedAt;
+    private ZonedDateTime updatedAt;
     @SerializedName("user")
     private UserEntity user;
 
@@ -53,19 +53,19 @@ public class CommentEntity {
         this.likesUrl = likesUrl;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public ZonedDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public ZonedDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
