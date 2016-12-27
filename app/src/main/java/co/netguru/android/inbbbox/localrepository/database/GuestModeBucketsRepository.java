@@ -17,6 +17,7 @@ import co.netguru.android.inbbbox.model.localrepository.database.ShotDB;
 import co.netguru.android.inbbbox.model.localrepository.database.ShotDBDao;
 import co.netguru.android.inbbbox.model.localrepository.database.mapper.BucketDbMapper;
 import co.netguru.android.inbbbox.model.localrepository.database.mapper.ShotDBMapper;
+import co.netguru.android.inbbbox.model.localrepository.database.mapper.UserDBMapper;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
@@ -47,7 +48,7 @@ public class GuestModeBucketsRepository {
         return daoSession.getBucketDBDao().queryBuilder().rx().oneByOne()
                 .filter(bucketDB -> bucketDB.getId() == bucketId)
                 .flatMap(bucketDB -> addShotAndCreateRelation(bucketDB, shot))
-                .doOnNext(this::updateBucketShotsCount)
+                .doOnNext(this::increaseBucketShotsCount)
                 .toCompletable();
     }
 
@@ -101,18 +102,22 @@ public class GuestModeBucketsRepository {
     }
 
     private Observable<BucketDB> addShotAndCreateRelation(BucketDB bucketDB, Shot shot) {
-        final ShotDB shotToAdd = ShotDBMapper.fromShot(shot);
-
         return daoSession.rxTx().run(() -> {
+            insertUserIfExists(shot);
+            final ShotDB shotToAdd = createShotToAdd(shot);
             daoSession.insertOrReplace(new JoinBucketsWithShots(null, bucketDB.getId(), shotToAdd.getId()));
             daoSession.insertOrReplace(shotToAdd);
-        })
-                .map(aVoid -> bucketDB)
-                .doOnCompleted(() -> updateShot(shotToAdd));
+        }).map(aVoid -> bucketDB);
+    }
+
+    private void insertUserIfExists(Shot shot) {
+        if (shot.author() != null) {
+            daoSession.insertOrReplace(UserDBMapper.fromUser(shot.author()));
+        }
     }
 
     private void removeShotFromBucket(List<ShotDB> bucketedShots) {
-        for (ShotDB shot : bucketedShots) {
+        for (final ShotDB shot : bucketedShots) {
             shot.setBucketCount(shot.getBucketCount() - 1);
             if (shot.getBucketCount() == 0) {
                 shot.setIsBucketed(false);
@@ -121,13 +126,15 @@ public class GuestModeBucketsRepository {
         }
     }
 
-    private void updateShot(ShotDB shotDB) {
-        shotDB.setIsBucketed(true);
-        shotDB.setBucketCount(shotDB.getBucketCount() + 1);
-        shotDB.update();
+    private ShotDB createShotToAdd(Shot shot) {
+        final ShotDB shotToAdd = ShotDBMapper.fromShot(shot);
+        shotToAdd.setIsBucketed(true);
+        shotToAdd.setBucketCount(shotToAdd.getBucketCount() + 1);
+
+        return shotToAdd;
     }
 
-    private void updateBucketShotsCount(BucketDB bucketDB) {
+    private void increaseBucketShotsCount(BucketDB bucketDB) {
         bucketDB.setShotsCount(bucketDB.getShotsCount() + 1);
         bucketDB.update();
     }

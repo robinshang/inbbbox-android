@@ -102,14 +102,13 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot> {
     @Override
     public void bind(@NonNull Shot item) {
         this.item = item;
-        if (item.author() != null) {
-            showImage(item.author().avatarUrl());
-            showAuthorInfo(item.author().name());
-        }
         shotTitleTextView.setText(item.title());
+        showImage(item.author().avatarUrl());
+        showAuthorInfo(item.author().name());
         showTeamInfo(item.team());
         showInfo(item.projectUrl(), DateTimeFormatUtil.getShotDetailsDate(item.creationDate()));
         showCounters(item.likesCount(), item.bucketCount());
+
         isLiked = item.isLiked();
         isBucketed = item.isBucketed();
         updateActionsState();
