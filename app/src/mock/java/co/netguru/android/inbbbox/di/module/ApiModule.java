@@ -2,18 +2,18 @@ package co.netguru.android.inbbbox.di.module;
 
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.api.AuthorizeApi;
-import co.netguru.android.inbbbox.api.BucketApi;
-import co.netguru.android.inbbbox.api.FollowersApi;
-import co.netguru.android.inbbbox.api.LikesApi;
-import co.netguru.android.inbbbox.api.MockAuthorizeApi;
-import co.netguru.android.inbbbox.api.MockShotsApi;
-import co.netguru.android.inbbbox.api.MockedBucketApi;
-import co.netguru.android.inbbbox.api.MockedFollowersApi;
-import co.netguru.android.inbbbox.api.MockedLikesApi;
-import co.netguru.android.inbbbox.api.MockedUserApi;
-import co.netguru.android.inbbbox.api.ShotsApi;
-import co.netguru.android.inbbbox.api.UserApi;
+import co.netguru.android.inbbbox.data.MockAuthorizeApi;
+import co.netguru.android.inbbbox.data.MockShotsApi;
+import co.netguru.android.inbbbox.data.MockedBucketApi;
+import co.netguru.android.inbbbox.data.MockedFollowersApi;
+import co.netguru.android.inbbbox.data.MockedLikesApi;
+import co.netguru.android.inbbbox.data.MockedUserApi;
+import co.netguru.android.inbbbox.data.bucket.BucketApi;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.UserApi;
+import co.netguru.android.inbbbox.data.follower.FollowersApi;
+import co.netguru.android.inbbbox.data.like.LikesApi;
+import co.netguru.android.inbbbox.data.session.AuthorizeApi;
+import co.netguru.android.inbbbox.data.shot.ShotsApi;
 import dagger.Module;
 import dagger.Provides;
 

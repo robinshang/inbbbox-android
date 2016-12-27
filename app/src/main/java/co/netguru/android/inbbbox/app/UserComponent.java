@@ -1,15 +1,15 @@
 package co.netguru.android.inbbbox.app;
 
 import co.netguru.android.inbbbox.app.usermodule.UserScope;
-import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenModule;
-import co.netguru.android.inbbbox.feature.shot.detail.ShotsDetailsModule;
+import co.netguru.android.inbbbox.shot.detail.fullscreen.ShotFullscreenModule;
+import co.netguru.android.inbbbox.shot.detail.ShotsDetailsModule;
 import co.netguru.android.inbbbox.app.usermodule.UserModule;
-import co.netguru.android.inbbbox.feature.follower.FollowersFragmentComponent;
-import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsFragmentComponent;
-import co.netguru.android.inbbbox.feature.like.LikesFragmentComponent;
-import co.netguru.android.inbbbox.feature.shot.ShotsComponent;
-import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsComponent;
-import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenComponent;
+import co.netguru.android.inbbbox.follower.FollowersFragmentComponent;
+import co.netguru.android.inbbbox.follower.detail.FollowerDetailsFragmentComponent;
+import co.netguru.android.inbbbox.like.LikesFragmentComponent;
+import co.netguru.android.inbbbox.shot.ShotsComponent;
+import co.netguru.android.inbbbox.shot.detail.ShotDetailsComponent;
+import co.netguru.android.inbbbox.shot.detail.fullscreen.ShotFullscreenComponent;
 import dagger.Subcomponent;
 
 @UserScope

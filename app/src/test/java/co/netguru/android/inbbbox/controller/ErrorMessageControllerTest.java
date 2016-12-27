@@ -14,6 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.net.HttpURLConnection;
 
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.common.error.ErrorController;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import retrofit2.Response;

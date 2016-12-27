@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:context="co.netguru.android.inbbbox.feature.main.MainActivity">
+            tools:context=".main.MainActivity">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -25,7 +25,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@drawable/toolbar_center_background"/>
 
-            <co.netguru.android.inbbbox.view.NonSwipeableViewPager
+            <co.netguru.android.inbbbox.common.view.NonSwipeableViewPager
                 android:id="@+id/main_view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

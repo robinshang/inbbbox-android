@@ -10,7 +10,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.model.ui.ShotImage;
+import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
 import timber.log.Timber;
 
 public class ShotLoadingUtil {

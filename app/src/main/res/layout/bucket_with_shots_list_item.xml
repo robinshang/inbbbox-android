@@ -19,7 +19,7 @@
             android:layout_marginBottom="@dimen/margin_small"
             >
 
-            <co.netguru.android.inbbbox.view.RoundedCornersBucketFourImageView
+            <co.netguru.android.inbbbox.common.view.RoundedCornersBucketFourImageView
                 android:id="@+id/four_images_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

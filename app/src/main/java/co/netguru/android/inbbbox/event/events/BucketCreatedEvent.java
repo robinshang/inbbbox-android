@@ -1,7 +1,7 @@
 package co.netguru.android.inbbbox.event.events;
 
 import co.netguru.android.inbbbox.event.Event;
-import co.netguru.android.inbbbox.model.api.Bucket;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 
 public class BucketCreatedEvent implements Event {
 

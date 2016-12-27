@@ -9,10 +9,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.api.UserApi;
-import co.netguru.android.inbbbox.controller.UserController;
-import co.netguru.android.inbbbox.localrepository.UserPrefsRepository;
-import co.netguru.android.inbbbox.model.api.UserEntity;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.UserApi;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.CurrentUserPrefsRepository;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Observable;
@@ -33,7 +33,7 @@ public class UserControllerTest {
     UserApi userApiMock;
 
     @Mock
-    UserPrefsRepository userPrefsRepository;
+    CurrentUserPrefsRepository currentUserPrefsRepository;
 
     @InjectMocks
     UserController userController;
@@ -41,12 +41,12 @@ public class UserControllerTest {
     @Test
     public void whenSubscribeToGetUser_thenSaveUserInStorage() {
         when(userApiMock.getAuthenticatedUser()).thenReturn(Observable.just(Statics.USER_ENTITY));
-        when(userPrefsRepository.saveUser(any())).thenReturn(Completable.complete());
+        when(currentUserPrefsRepository.saveUser(any())).thenReturn(Completable.complete());
         TestSubscriber<UserEntity> testSubscriber = new TestSubscriber<>();
 
         userController.requestUser().subscribe(testSubscriber);
 
-        verify(userPrefsRepository, times(1)).saveUser(Statics.USER_ENTITY);
+        verify(currentUserPrefsRepository, times(1)).saveUser(Statics.USER_ENTITY);
 
         testSubscriber.assertValue(Statics.USER_ENTITY);
         testSubscriber.assertCompleted();

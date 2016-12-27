@@ -15,10 +15,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.netguru.android.inbbbox.api.ShotsApi;
-import co.netguru.android.inbbbox.model.api.ShotEntity;
-import co.netguru.android.inbbbox.model.localrepository.StreamSourceSettings;
-import co.netguru.android.inbbbox.model.ui.Shot;
+import co.netguru.android.inbbbox.data.settings.SettingsController;
+import co.netguru.android.inbbbox.data.shot.ShotsApi;
+import co.netguru.android.inbbbox.data.shot.ShotsController;
+import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
+import co.netguru.android.inbbbox.data.settings.model.StreamSourceSettings;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.Single;

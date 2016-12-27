@@ -1,15 +1,15 @@
 package co.netguru.android.inbbbox.app.usermodule;
 
-import co.netguru.android.inbbbox.api.FollowersApi;
-import co.netguru.android.inbbbox.api.LikesApi;
-import co.netguru.android.inbbbox.controller.followers.FollowersController;
-import co.netguru.android.inbbbox.controller.followers.FollowersControllerApi;
-import co.netguru.android.inbbbox.controller.followers.FollowersControllerGuest;
-import co.netguru.android.inbbbox.controller.likescontroller.LikeShotController;
-import co.netguru.android.inbbbox.controller.likescontroller.LikeShotControllerApi;
-import co.netguru.android.inbbbox.controller.likescontroller.LikeShotControllerGuest;
-import co.netguru.android.inbbbox.localrepository.database.GuestModeFollowersRepository;
-import co.netguru.android.inbbbox.localrepository.database.GuestModeLikesRepository;
+import co.netguru.android.inbbbox.data.follower.FollowersApi;
+import co.netguru.android.inbbbox.data.like.LikesApi;
+import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
+import co.netguru.android.inbbbox.data.follower.controllers.FollowersControllerApi;
+import co.netguru.android.inbbbox.data.follower.controllers.FollowersControllerGuest;
+import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
+import co.netguru.android.inbbbox.data.like.controllers.LikeShotControllerApi;
+import co.netguru.android.inbbbox.data.like.controllers.LikeShotControllerGuest;
+import co.netguru.android.inbbbox.data.follower.controllers.GuestModeFollowersRepository;
+import co.netguru.android.inbbbox.data.like.controllers.GuestModeLikesRepository;
 import dagger.Module;
 import dagger.Provides;
 

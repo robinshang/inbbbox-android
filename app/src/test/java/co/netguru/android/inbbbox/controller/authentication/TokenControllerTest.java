@@ -12,10 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import co.netguru.android.inbbbox.api.AuthorizeApi;
-import co.netguru.android.inbbbox.controller.TokenController;
-import co.netguru.android.inbbbox.localrepository.TokenPrefsRepository;
-import co.netguru.android.inbbbox.model.api.Token;
+import co.netguru.android.inbbbox.data.session.AuthorizeApi;
+import co.netguru.android.inbbbox.data.session.controllers.TokenController;
+import co.netguru.android.inbbbox.data.session.TokenPrefsRepository;
+import co.netguru.android.inbbbox.data.session.model.Token;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Observable;

@@ -7,11 +7,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import co.netguru.android.inbbbox.localrepository.SettingsPrefsRepository;
-import co.netguru.android.inbbbox.model.localrepository.CustomizationSettings;
-import co.netguru.android.inbbbox.model.localrepository.NotificationSettings;
-import co.netguru.android.inbbbox.model.localrepository.Settings;
-import co.netguru.android.inbbbox.model.localrepository.StreamSourceSettings;
+import co.netguru.android.inbbbox.data.settings.SettingsController;
+import co.netguru.android.inbbbox.data.settings.SettingsPrefsRepository;
+import co.netguru.android.inbbbox.data.settings.model.CustomizationSettings;
+import co.netguru.android.inbbbox.data.settings.model.NotificationSettings;
+import co.netguru.android.inbbbox.data.settings.model.Settings;
+import co.netguru.android.inbbbox.data.settings.model.StreamSourceSettings;
 import rx.Completable;
 import rx.Single;
 import rx.observers.TestSubscriber;
