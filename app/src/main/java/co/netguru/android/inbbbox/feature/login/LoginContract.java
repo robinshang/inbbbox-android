@@ -5,9 +5,9 @@ import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
-import co.netguru.android.inbbbox.app.usermodule.UserModeType;
-import co.netguru.android.inbbbox.common.base.ErrorPresenter;
-import co.netguru.android.inbbbox.common.base.HttpErrorView;
+import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
+import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
+import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
 
 public interface LoginContract {
     interface View extends MvpView, HttpErrorView {

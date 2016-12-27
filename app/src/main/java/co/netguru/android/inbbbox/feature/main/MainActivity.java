@@ -35,14 +35,14 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.main.adapter.TabItemType;
-import co.netguru.android.inbbbox.common.base.BaseMvpActivity;
+import co.netguru.android.inbbbox.feature.shared.base.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
 import co.netguru.android.inbbbox.feature.shot.ShotsFragment;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.common.view.NonSwipeableViewPager;
+import co.netguru.android.inbbbox.feature.shared.view.NonSwipeableViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static butterknife.ButterKnife.findById;

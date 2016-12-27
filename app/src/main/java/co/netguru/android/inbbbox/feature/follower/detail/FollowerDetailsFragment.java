@@ -26,12 +26,12 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
-import co.netguru.android.inbbbox.common.base.BaseMvpLceFragmentWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.follower.detail.adapter.FollowerDetailsAdapter;
 import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
-import co.netguru.android.inbbbox.common.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import timber.log.Timber;
 
 public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,

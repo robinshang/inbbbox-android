@@ -88,7 +88,7 @@
                 android:padding="@dimen/margin_default"
                 />
 
-            <co.netguru.android.inbbbox.common.view.AspectRatioImageView
+            <co.netguru.android.inbbbox.feature.shared.view.AspectRatioImageView
                 android:id="@+id/shot_preview_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

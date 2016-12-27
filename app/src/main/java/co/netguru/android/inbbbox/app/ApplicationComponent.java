@@ -3,8 +3,9 @@ package co.netguru.android.inbbbox.app;
 import javax.inject.Singleton;
 
 import co.netguru.android.commons.di.BaseComponent;
+import co.netguru.android.inbbbox.app.usercomponent.UserComponent;
 import co.netguru.android.inbbbox.application.DebugMetricsHelper;
-import co.netguru.android.inbbbox.notification.NotificationAlarmReceiver;
+import co.netguru.android.inbbbox.feature.remindernotification.NotificationAlarmReceiver;
 import co.netguru.android.inbbbox.di.module.ApiModule;
 import co.netguru.android.inbbbox.feature.login.LoginModule;
 import co.netguru.android.inbbbox.event.RxBus;

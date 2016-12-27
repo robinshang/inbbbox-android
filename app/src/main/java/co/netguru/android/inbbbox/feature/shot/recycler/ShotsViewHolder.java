@@ -8,12 +8,12 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.common.base.BaseViewHolder;
+import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
-import co.netguru.android.inbbbox.common.view.RoundedCornersImageView;
-import co.netguru.android.inbbbox.common.view.swipingpanel.ItemSwipeListener;
-import co.netguru.android.inbbbox.common.view.swipingpanel.LongSwipeLayout;
+import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersImageView;
+import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.ItemSwipeListener;
+import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout;
 
 class ShotsViewHolder extends BaseViewHolder<Shot>
         implements ItemSwipeListener {

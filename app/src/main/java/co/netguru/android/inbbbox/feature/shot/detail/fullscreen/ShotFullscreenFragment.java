@@ -18,11 +18,11 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.common.base.BaseMvpFragment;
+import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.common.view.AutoItemScrollRecyclerView;
-import co.netguru.android.inbbbox.common.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView;
+import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 
 public class ShotFullscreenFragment extends
         BaseMvpFragment<ShotFullscreenContract.View, ShotFullscreenContract.Presenter> implements

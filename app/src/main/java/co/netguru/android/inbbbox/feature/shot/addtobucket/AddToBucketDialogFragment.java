@@ -33,7 +33,7 @@ import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.bucket.createbucket.CreateBucketDialogFragment;
-import co.netguru.android.inbbbox.common.base.BaseMvpDialogFragment;
+import co.netguru.android.inbbbox.feature.shared.base.BaseMvpDialogFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenActivity;
@@ -43,8 +43,8 @@ import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
 import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
-import co.netguru.android.inbbbox.common.view.DividerItemDecorator;
-import co.netguru.android.inbbbox.common.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.shared.view.DividerItemDecorator;
+import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucketContract.View, AddToBucketContract.Presenter>

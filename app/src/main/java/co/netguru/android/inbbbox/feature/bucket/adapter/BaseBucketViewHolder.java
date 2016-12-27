@@ -11,10 +11,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.common.base.BaseViewHolder;
+import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
-import co.netguru.android.inbbbox.common.view.RoundedCornersBucketFourImageView;
+import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersBucketFourImageView;
 
 public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShots> {
 

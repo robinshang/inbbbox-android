@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.common.base.BaseMvpFragment;
+import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenActivity;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.ShotDetailsAdapter;
@@ -35,7 +35,7 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.common.utils.AnimationUtil;
 import co.netguru.android.inbbbox.common.utils.InputUtil;
 import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
-import co.netguru.android.inbbbox.common.view.RoundedCornersImageView;
+import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersImageView;
 
 
 public class ShotDetailsFragment

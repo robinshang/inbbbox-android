@@ -28,7 +28,7 @@ import butterknife.OnClick;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
-import co.netguru.android.inbbbox.common.base.BaseMvpViewStateFragment;
+import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
@@ -37,10 +37,10 @@ import co.netguru.android.inbbbox.feature.shot.recycler.ShotSwipeListener;
 import co.netguru.android.inbbbox.feature.shot.recycler.ShotsAdapter;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.common.view.AutoItemScrollRecyclerView;
-import co.netguru.android.inbbbox.common.view.BallInterpolator;
-import co.netguru.android.inbbbox.common.view.FogFloatingActionMenu;
-import co.netguru.android.inbbbox.common.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView;
+import co.netguru.android.inbbbox.feature.shared.view.BallInterpolator;
+import co.netguru.android.inbbbox.feature.shared.view.FogFloatingActionMenu;
+import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 
 public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
         ShotsContract.View, ShotsContract.Presenter> implements RefreshableFragment, ShotsContract.View, ShotSwipeListener,

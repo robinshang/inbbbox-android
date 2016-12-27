@@ -7,7 +7,7 @@
                 android:paddingRight="@dimen/margin_default"
                 android:paddingTop="@dimen/margin_default">
 
-    <co.netguru.android.inbbbox.common.view.RoundedCornersImageView
+    <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersImageView
         android:id="@+id/follower_details_item_image_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

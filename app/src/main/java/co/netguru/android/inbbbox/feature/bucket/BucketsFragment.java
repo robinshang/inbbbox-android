@@ -36,11 +36,11 @@ import co.netguru.android.inbbbox.feature.bucket.createbucket.CreateBucketDialog
 import co.netguru.android.inbbbox.feature.bucket.detail.BucketDetailsActivity;
 import co.netguru.android.inbbbox.feature.bucket.detail.BucketDetailsFragment;
 import co.netguru.android.inbbbox.feature.bucket.adapter.BucketsAdapter;
-import co.netguru.android.inbbbox.common.base.BaseMvpLceFragmentWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
-import co.netguru.android.inbbbox.common.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import onactivityresult.ActivityResult;
 import onactivityresult.OnActivityResult;
 

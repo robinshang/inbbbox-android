@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.common.view.ShotClickListener;
+import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 
 public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

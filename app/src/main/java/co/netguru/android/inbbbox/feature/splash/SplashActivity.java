@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 import co.netguru.android.inbbbox.app.App;
-import co.netguru.android.inbbbox.app.usermodule.UserModeType;
+import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 

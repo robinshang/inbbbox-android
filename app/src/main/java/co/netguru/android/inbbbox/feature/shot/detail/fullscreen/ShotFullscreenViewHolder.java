@@ -9,7 +9,7 @@ import com.bumptech.glide.request.target.Target;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.common.base.BaseViewHolder;
+import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
 import uk.co.senab.photoview.PhotoViewAttacher;

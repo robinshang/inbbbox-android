@@ -67,7 +67,7 @@
         android:layout_marginBottom="@dimen/margin_default"
         android:layout_marginEnd="@dimen/margin_default"
         android:src="@drawable/ic_fab_add"
-        app:layout_behavior="co.netguru.android.inbbbox.common.view.behavior.FloatingActionMenuAndButtonBehavior"
+        app:layout_behavior="co.netguru.android.inbbbox.feature.shared.view.behavior.FloatingActionMenuAndButtonBehavior"
         fab:fab_colorNormal="@color/white"
         fab:fab_colorRipple="@color/accent"
         fab:menu_fab_size="normal"/>

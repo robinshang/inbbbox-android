@@ -6,8 +6,9 @@ import android.content.Context;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
-import co.netguru.android.inbbbox.app.usermodule.UserModule;
-import co.netguru.android.inbbbox.app.usermodule.UserModeType;
+import co.netguru.android.inbbbox.app.usercomponent.UserComponent;
+import co.netguru.android.inbbbox.app.usercomponent.UserModule;
+import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
 
 public class App extends Application {
 

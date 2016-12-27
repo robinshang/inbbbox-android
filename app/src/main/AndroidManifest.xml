@@ -48,7 +48,7 @@
             android:name="net.hockeyapp.android.appIdentifier"
             android:value="${HOCKEYAPP_APP_ID}" />
 
-        <receiver android:name=".notification.NotificationAlarmReceiver" />
+        <receiver android:name=".feature.remindernotification.NotificationAlarmReceiver" />
     </application>
 
 </manifest>

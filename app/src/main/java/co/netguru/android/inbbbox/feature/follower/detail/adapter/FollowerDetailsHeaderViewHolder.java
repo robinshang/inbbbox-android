@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.common.base.BaseViewHolder;
+import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
 import de.hdodenhof.circleimageview.CircleImageView;
 
