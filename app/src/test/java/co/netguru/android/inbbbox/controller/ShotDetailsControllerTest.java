@@ -10,16 +10,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.api.ShotsApi;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
 import co.netguru.android.inbbbox.controler.UserController;
+import co.netguru.android.inbbbox.controler.buckets.BucketsController;
 import co.netguru.android.inbbbox.controler.likes.LikeShotControllerApi;
-import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.CommentEntity;
 import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.inbbbox.model.ui.Comment;
@@ -53,6 +51,9 @@ public class ShotDetailsControllerTest {
     LikeShotControllerApi likeShotControllerApiMock;
 
     @Mock
+    BucketsController bucketsController;
+
+    @Mock
     ShotDetailsState state;
 
     @Mock
@@ -73,7 +74,6 @@ public class ShotDetailsControllerTest {
     private List<CommentEntity> comments = Statics.generateCommentsEntity();
     private Long EXAMPLE_SHOT_ID = 1L;
     private Long EXAMPLE_USER_ID = 99L;
-    private int pageNumberExample = 1;
     private int examplePerPageValue = 10;
 
 
@@ -263,19 +263,11 @@ public class ShotDetailsControllerTest {
     }
 
     private void mockInBucketShotState() {
-        List<Bucket> buckets = new ArrayList<>();
-        Bucket currentUserBucket = Bucket.update(Statics.BUCKET)
-                .user(userEntityMock)
-                .build();
-        buckets.add(currentUserBucket);
-        when(shotApiMock.getBucketsList(EXAMPLE_SHOT_ID.toString()))
-                .thenReturn(Observable.just(buckets));
+        when(bucketsController.isShotBucketed(anyInt(), anyInt())).thenReturn(Completable.complete());
     }
 
     private void mockNotInBucketShotState() {
-        List<Bucket> buckets = Collections.emptyList();
-
-        when(shotApiMock.getBucketsList(EXAMPLE_SHOT_ID.toString()))
-                .thenReturn(Observable.just(buckets));
+        when(bucketsController.isShotBucketed(anyInt(), anyInt()))
+                .thenReturn(Completable.error(new Throwable()));
     }
 }

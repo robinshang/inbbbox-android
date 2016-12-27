@@ -41,6 +41,11 @@ public class MockedBucketApi implements BucketApi {
         return Completable.complete();
     }
 
+    @Override
+    public Single<List<Bucket>> getShotBucketsList(@Path("shotId") long shotId) {
+        return Single.fromCallable(ArrayList::new);
+    }
+
     private static List<ShotEntity> getMockShots() {
         ArrayList<ShotEntity> shots = new ArrayList<>();
         for (int i = 0; i < 10; i++) {

@@ -49,8 +49,12 @@ public class GuestModeLikesRepository {
     }
 
     public Completable removeLikedShot(Shot shot) {
-        return daoSession.getShotDBDao().rx()
-                .insertOrReplace(ShotDBMapper.fromShot(unlikeShot(shot))).toCompletable();
+        if (shot.isBucketed()) {
+            return daoSession.getShotDBDao().rx()
+                    .insertOrReplace(ShotDBMapper.fromShot(unlikeShot(shot))).toCompletable();
+        }
+
+        return daoSession.getShotDBDao().rx().deleteByKey(shot.id()).toCompletable();
     }
 
     public Completable isShotLiked(Shot shot) {
