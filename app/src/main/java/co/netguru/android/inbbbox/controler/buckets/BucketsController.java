@@ -26,4 +26,6 @@ public interface BucketsController {
     Single<Bucket> createBucket(@NonNull String name, @Nullable String description);
 
     Completable deleteBucket(long bucketId);
+
+    Completable isShotBucketed(long shotId, long userId);
 }

@@ -11,6 +11,7 @@ import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
 import rx.Single;
+import timber.log.Timber;
 
 public class BucketsControllerGuest implements BucketsController {
 
@@ -48,5 +49,12 @@ public class BucketsControllerGuest implements BucketsController {
     @Override
     public Completable deleteBucket(long bucketId) {
         return guestModeBucketsRepository.removeBucket(bucketId);
+    }
+
+    @Override
+    public Completable isShotBucketed(long shotId, long userId) {
+        return guestModeBucketsRepository.isShotBucketed(shotId)
+                .doOnCompleted(() -> Timber.d("Shot is bucketed"))
+                .doOnError(throwable -> Timber.d("Shot is not bucketed"));
     }
 }

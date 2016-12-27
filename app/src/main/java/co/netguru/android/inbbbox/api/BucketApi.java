@@ -17,6 +17,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Completable;
+import rx.Observable;
 import rx.Single;
 
 public interface BucketApi {
@@ -36,4 +37,6 @@ public interface BucketApi {
     @DELETE("buckets/{id}")
     Completable deleteBucket(@Path("id") long bucketId);
 
+    @GET("shots/{shotId}/buckets")
+    Single<List<Bucket>> getShotBucketsList(@Path("shotId") long shotId);
 }

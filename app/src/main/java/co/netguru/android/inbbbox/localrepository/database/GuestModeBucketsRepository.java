@@ -14,6 +14,7 @@ import co.netguru.android.inbbbox.model.localrepository.database.BucketDBDao;
 import co.netguru.android.inbbbox.model.localrepository.database.DaoSession;
 import co.netguru.android.inbbbox.model.localrepository.database.JoinBucketsWithShots;
 import co.netguru.android.inbbbox.model.localrepository.database.ShotDB;
+import co.netguru.android.inbbbox.model.localrepository.database.ShotDBDao;
 import co.netguru.android.inbbbox.model.localrepository.database.mapper.BucketDbMapper;
 import co.netguru.android.inbbbox.model.localrepository.database.mapper.ShotDBMapper;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
@@ -25,6 +26,8 @@ import timber.log.Timber;
 
 @Singleton
 public class GuestModeBucketsRepository {
+
+    private static final String SHOT_IS_NOT_BUCKETED_ERROR = "Shot is not bucketed!";
 
     private final DaoSession daoSession;
 
@@ -72,16 +75,6 @@ public class GuestModeBucketsRepository {
         }).toCompletable();
     }
 
-    private void removeShotFromBucket(List<ShotDB> bucketedShots) {
-        for (ShotDB shot : bucketedShots) {
-            shot.setBucketCount(shot.getBucketCount() - 1);
-            if (shot.getBucketCount() == 0) {
-                shot.setIsBucketed(false);
-            }
-            shot.update();
-        }
-    }
-
     public Single<List<Shot>> getShotsListFromBucket(long bucketId) {
         Timber.d("Getting shots list from bucket local repository");
         return daoSession.getBucketDBDao().queryBuilder()
@@ -97,6 +90,16 @@ public class GuestModeBucketsRepository {
                 .toSingle();
     }
 
+    public Completable isShotBucketed(long shotId) {
+        return daoSession.getShotDBDao().queryBuilder()
+                .where(ShotDBDao.Properties.Id.eq(shotId))
+                .rx()
+                .unique()
+                .flatMap(shot -> shot.getIsBucketed()
+                        ? Observable.empty() : Observable.error(new Throwable(SHOT_IS_NOT_BUCKETED_ERROR)))
+                .toCompletable();
+    }
+
     private Observable<BucketDB> addShotAndCreateRelation(BucketDB bucketDB, Shot shot) {
         final ShotDB shotToAdd = ShotDBMapper.fromShot(shot);
 
@@ -106,6 +109,16 @@ public class GuestModeBucketsRepository {
         })
                 .map(aVoid -> bucketDB)
                 .doOnCompleted(() -> updateShot(shotToAdd));
+    }
+
+    private void removeShotFromBucket(List<ShotDB> bucketedShots) {
+        for (ShotDB shot : bucketedShots) {
+            shot.setBucketCount(shot.getBucketCount() - 1);
+            if (shot.getBucketCount() == 0) {
+                shot.setIsBucketed(false);
+            }
+            shot.update();
+        }
     }
 
     private void updateShot(ShotDB shotDB) {

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.api.ShotsApi;
+import co.netguru.android.inbbbox.controler.buckets.BucketsController;
 import co.netguru.android.inbbbox.controler.likes.LikeShotController;
 import co.netguru.android.inbbbox.model.api.UserEntity;
 import co.netguru.android.inbbbox.model.ui.Comment;
@@ -23,15 +24,16 @@ public class ShotDetailsController {
 
     private static final int COMMENTS_PER_PAGE = 10;
     private final LikeShotController likeShotController;
+    private final BucketsController bucketsController;
     private final UserController userController;
     private final ShotsApi shotsApi;
 
     @Inject
-    public ShotDetailsController(LikeShotController likeShotController,
-                                 ShotsApi shotsApi,
-                                 UserController userController) {
-        this.shotsApi = shotsApi;
+    public ShotDetailsController(LikeShotController likeShotController, BucketsController bucketsController,
+                                 ShotsApi shotsApi, UserController userController) {
         this.likeShotController = likeShotController;
+        this.bucketsController = bucketsController;
+        this.shotsApi = shotsApi;
         this.userController = userController;
     }
 
@@ -86,9 +88,9 @@ public class ShotDetailsController {
     }
 
     private Observable<Boolean> getBucketState(long shotId) {
-        return Observable.zip(getCurrentBuckets(shotId),
-                getCurrentUserId().toObservable(),
-                List::contains)
+        return getCurrentUserId()
+                .flatMapCompletable(userId -> bucketsController.isShotBucketed(shotId, userId))
+                .andThen(Observable.just(Boolean.TRUE))
                 .onErrorResumeNext(Observable.just(Boolean.FALSE));
     }
 
@@ -96,15 +98,6 @@ public class ShotDetailsController {
         return userController.getUserFromCache()
                 .map(User::id)
                 .onErrorResumeNext(throwable -> Single.just((long) Constants.UNDEFINED));
-    }
-
-    private Observable<List<Long>> getCurrentBuckets(Long shotId) {
-        return shotsApi.getBucketsList(shotId.toString())
-                .compose(fromListObservable())
-                .map(bucket -> bucket.user() != null
-                        ? bucket.user().id()
-                        : (long) Constants.UNDEFINED)
-                .toList();
     }
 
     private Observable<List<Comment>> getCommentListWithAuthorState(String shotId, int pageNumber) {
