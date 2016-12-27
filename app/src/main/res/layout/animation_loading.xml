@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/loading_ball_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="co.netguru.android.inbbbox.AnimationTest">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/loading_ball_shadow"
@@ -19,8 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_ball"
-        android:contentDescription="@string/animated_load_ball_description"/>
+        android:contentDescription="@string/animated_load_ball_description"
+        android:src="@drawable/ic_ball" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -28,7 +26,6 @@
         android:layout_below="@id/loading_ball"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/loading_text_marginTop"
-        android:textColor="@color/accent"
         android:text="@string/loading"
-        />
+        android:textColor="@color/accent" />
 </RelativeLayout>
