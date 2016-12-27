@@ -26,15 +26,15 @@ import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
-import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
+import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
+import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
 import co.netguru.android.inbbbox.feature.follower.adapter.BaseFollowersViewHolder;
 import co.netguru.android.inbbbox.feature.follower.adapter.FollowersAdapter;
 import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
-import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
+import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 
 public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Follower>, FollowersContract.View, FollowersContract.Presenter>

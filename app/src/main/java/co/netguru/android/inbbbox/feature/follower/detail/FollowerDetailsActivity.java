@@ -15,14 +15,14 @@ import java.util.List;
 import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseActivity;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
-import co.netguru.android.inbbbox.feature.main.MainActivity;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 
 public class FollowerDetailsActivity extends BaseActivity
         implements FollowerDetailsFragment.OnFollowedShotActionListener {

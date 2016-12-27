@@ -4,11 +4,11 @@ import java.util.List;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.data.bucket.BucketsController;
+import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
-import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
-import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import dagger.Module;
 import dagger.Provides;
 

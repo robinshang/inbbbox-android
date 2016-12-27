@@ -7,11 +7,11 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.Constants;
-import co.netguru.android.inbbbox.data.settings.SettingsController;
-import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
-import co.netguru.android.inbbbox.data.settings.model.StreamSourceSettings;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
+import co.netguru.android.inbbbox.data.settings.SettingsController;
+import co.netguru.android.inbbbox.data.settings.model.StreamSourceSettings;
+import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Observable;
 
 import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;

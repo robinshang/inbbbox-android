@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.BaseActivity;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
 public class ShotFullscreenActivity extends BaseActivity {
 

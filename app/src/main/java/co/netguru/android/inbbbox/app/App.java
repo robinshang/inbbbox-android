@@ -1,4 +1,3 @@
-
 package co.netguru.android.inbbbox.app;
 
 import android.app.Application;
@@ -7,8 +6,8 @@ import android.content.Context;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import co.netguru.android.inbbbox.app.usercomponent.UserComponent;
-import co.netguru.android.inbbbox.app.usercomponent.UserModule;
 import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
+import co.netguru.android.inbbbox.app.usercomponent.UserModule;
 
 public class App extends Application {
 

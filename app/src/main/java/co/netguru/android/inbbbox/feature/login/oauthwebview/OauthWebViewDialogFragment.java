@@ -16,8 +16,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import butterknife.BindView;
-import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpDialogFragment;
 import timber.log.Timber;

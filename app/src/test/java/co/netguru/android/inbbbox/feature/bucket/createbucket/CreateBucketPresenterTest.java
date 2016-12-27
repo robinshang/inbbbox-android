@@ -11,8 +11,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.data.bucket.BucketsController;
-import co.netguru.android.inbbbox.event.events.BucketCreatedEvent;
 import co.netguru.android.inbbbox.event.RxBus;
+import co.netguru.android.inbbbox.event.events.BucketCreatedEvent;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Single;
 
@@ -61,7 +61,7 @@ public class CreateBucketPresenterTest {
         verify(view, times(1)).hideProgressView();
         verify(view, times(1)).close();
         verify(view, never()).showErrorEmptyBucket();
-        verify(rxBus,times(1)).send(any(BucketCreatedEvent.class));
+        verify(rxBus, times(1)).send(any(BucketCreatedEvent.class));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class CreateBucketPresenterTest {
         verify(view, never()).showProgressView();
         verify(view, never()).hideProgressView();
         verify(view, never()).close();
-        verify(rxBus,never()).send(any(BucketCreatedEvent.class));
+        verify(rxBus, never()).send(any(BucketCreatedEvent.class));
         verify(view, times(1)).showErrorEmptyBucket();
     }
 

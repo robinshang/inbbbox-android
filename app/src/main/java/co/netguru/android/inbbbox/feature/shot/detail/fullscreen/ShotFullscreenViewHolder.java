@@ -9,9 +9,9 @@ import com.bumptech.glide.request.target.Target;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 class ShotFullscreenViewHolder extends BaseViewHolder<Shot> {

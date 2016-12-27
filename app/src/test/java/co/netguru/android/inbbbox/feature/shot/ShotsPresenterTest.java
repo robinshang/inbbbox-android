@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.data.bucket.BucketsController;
 import co.netguru.android.inbbbox.common.error.ErrorController;
-import co.netguru.android.inbbbox.data.shot.ShotsController;
+import co.netguru.android.inbbbox.data.bucket.BucketsController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotControllerApi;
+import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;

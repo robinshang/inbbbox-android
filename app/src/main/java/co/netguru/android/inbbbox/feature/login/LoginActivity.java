@@ -15,13 +15,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.netguru.android.commons.di.WithComponent;
-import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
+import co.netguru.android.inbbbox.common.utils.AnimationUtil;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewDialogFragment;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewListener;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
-import co.netguru.android.inbbbox.common.utils.AnimationUtil;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
         implements LoginContract.View, WithComponent<LoginComponent>,

@@ -7,16 +7,16 @@ import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
-import co.netguru.android.inbbbox.data.shot.model.api.CommentEntity;
-import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
-import co.netguru.android.inbbbox.data.shot.model.api.Image;
 import co.netguru.android.inbbbox.data.dribbbleuser.Links;
-import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
-import co.netguru.android.inbbbox.feature.shot.detail.Comment;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
+import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
+import co.netguru.android.inbbbox.data.shot.model.api.CommentEntity;
+import co.netguru.android.inbbbox.data.shot.model.api.Image;
+import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.feature.shot.detail.Comment;
 
 public final class Statics {
 

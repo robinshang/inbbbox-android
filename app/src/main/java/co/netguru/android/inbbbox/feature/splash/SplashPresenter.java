@@ -5,9 +5,9 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.common.error.ErrorController;
-import co.netguru.android.inbbbox.data.settings.SettingsController;
-import co.netguru.android.inbbbox.data.session.controllers.TokenController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
+import co.netguru.android.inbbbox.data.session.controllers.TokenController;
+import co.netguru.android.inbbbox.data.settings.SettingsController;
 import co.netguru.android.inbbbox.data.settings.model.CustomizationSettings;
 import rx.Single;
 import rx.subscriptions.CompositeSubscription;

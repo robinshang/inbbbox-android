@@ -6,9 +6,9 @@ import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.UserDB;
+import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
 
 @AutoValue
 public abstract class User implements Parcelable {

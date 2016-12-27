@@ -8,11 +8,11 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
-import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
-import co.netguru.android.inbbbox.data.shot.UserShotsController;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
+import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
+import co.netguru.android.inbbbox.data.shot.UserShotsController;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;

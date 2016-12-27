@@ -2,10 +2,10 @@ package co.netguru.android.inbbbox.data.session.controllers;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.data.session.CookieCacheManager;
-import co.netguru.android.inbbbox.data.settings.SettingsPrefsRepository;
-import co.netguru.android.inbbbox.data.session.TokenPrefsRepository;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.CurrentUserPrefsRepository;
+import co.netguru.android.inbbbox.data.session.CookieCacheManager;
+import co.netguru.android.inbbbox.data.session.TokenPrefsRepository;
+import co.netguru.android.inbbbox.data.settings.SettingsPrefsRepository;
 import rx.Completable;
 
 public class LogoutController {

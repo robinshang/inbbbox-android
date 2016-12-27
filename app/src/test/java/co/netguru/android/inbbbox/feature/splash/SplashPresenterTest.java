@@ -11,8 +11,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.common.error.ErrorController;
-import co.netguru.android.inbbbox.data.session.controllers.TokenController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
+import co.netguru.android.inbbbox.data.session.controllers.TokenController;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.Single;

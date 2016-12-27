@@ -7,9 +7,9 @@ import com.google.auto.value.AutoValue;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 
 @AutoValue
 public abstract class Follower implements Parcelable {

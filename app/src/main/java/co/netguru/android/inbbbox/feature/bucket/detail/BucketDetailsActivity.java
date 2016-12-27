@@ -16,14 +16,14 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
+import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.bucket.detail.adapter.BucketShotViewHolder;
 import co.netguru.android.inbbbox.feature.shared.base.BaseActivity;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
-import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
-import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
 public class BucketDetailsActivity extends BaseActivity
         implements BucketShotViewHolder.OnShotInBucketClickListener {

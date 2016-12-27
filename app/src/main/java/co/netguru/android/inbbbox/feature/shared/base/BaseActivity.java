@@ -14,13 +14,13 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.netguru.android.commons.rx.RxTransformers;
-import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.event.events.CriticalLogoutEvent;
+import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.shared.base.bottomsheet.BottomSheetActivityCallback;
 import co.netguru.android.inbbbox.feature.shared.base.bottomsheet.HidingBottomSheetActivityDelegate;
 import co.netguru.android.inbbbox.feature.shared.base.bottomsheet.HidingBottomSheetBearer;
-import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import rx.Subscription;
 
 public abstract class BaseActivity extends AppCompatActivity

@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class StringUtilTest {
     @Test
-    public void isBlankTest(){
+    public void isBlankTest() {
         //blank char sequences
         Assert.assertTrue(StringUtil.isBlank(null));
         Assert.assertTrue(StringUtil.isBlank(""));

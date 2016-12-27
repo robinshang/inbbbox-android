@@ -1,8 +1,6 @@
 package co.netguru.android.inbbbox.feature.main;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.inbbbox.feature.main.MainActivity;
-import co.netguru.android.inbbbox.feature.main.MainActivityPresenter;
 import dagger.Subcomponent;
 
 @ActivityScope

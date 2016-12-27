@@ -1,15 +1,15 @@
 package co.netguru.android.inbbbox.app.usercomponent;
 
 import co.netguru.android.inbbbox.data.follower.FollowersApi;
-import co.netguru.android.inbbbox.data.like.LikesApi;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersControllerApi;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersControllerGuest;
+import co.netguru.android.inbbbox.data.follower.controllers.GuestModeFollowersRepository;
+import co.netguru.android.inbbbox.data.like.LikesApi;
+import co.netguru.android.inbbbox.data.like.controllers.GuestModeLikesRepository;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotControllerApi;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotControllerGuest;
-import co.netguru.android.inbbbox.data.follower.controllers.GuestModeFollowersRepository;
-import co.netguru.android.inbbbox.data.like.controllers.GuestModeLikesRepository;
 import dagger.Module;
 import dagger.Provides;
 

@@ -12,8 +12,8 @@ import org.threeten.bp.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
 import co.netguru.android.inbbbox.data.shot.model.db.ShotDB;
 
@@ -170,7 +170,7 @@ public abstract class Shot implements Parcelable, ShotImage {
 
     public static List<Shot> createList(List<ShotEntity> shotEntityList) {
         List<Shot> shots = new ArrayList<>();
-        for(ShotEntity shotEntity : shotEntityList) {
+        for (ShotEntity shotEntity : shotEntityList) {
             shots.add(Shot.create(shotEntity));
         }
         return shots;

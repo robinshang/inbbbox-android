@@ -7,9 +7,9 @@ import android.widget.ImageView;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
-import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
 import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
+import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
+import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 
 public class BucketShotViewHolder extends BaseViewHolder<ShotEntity> {
 

@@ -8,9 +8,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shot.detail.Comment;
 import co.netguru.android.inbbbox.feature.shot.detail.CommentLoadMoreState;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
 public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHolder> {
 

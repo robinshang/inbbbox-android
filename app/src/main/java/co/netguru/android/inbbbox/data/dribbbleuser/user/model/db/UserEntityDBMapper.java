@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.data.dribbbleuser.user.model.db;
 
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.UserEntityDB;
 
 public class UserEntityDBMapper {
 

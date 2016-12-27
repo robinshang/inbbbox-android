@@ -14,9 +14,9 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
+import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
 class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot> {
 

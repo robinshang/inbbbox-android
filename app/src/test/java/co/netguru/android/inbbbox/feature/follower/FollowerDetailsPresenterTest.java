@@ -16,12 +16,12 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsContract;
 import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsPresenter;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 

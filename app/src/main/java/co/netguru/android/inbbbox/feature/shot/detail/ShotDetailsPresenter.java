@@ -8,8 +8,8 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.error.ErrorController;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.common.utils.StringUtil;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 

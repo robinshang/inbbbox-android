@@ -8,16 +8,16 @@ import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
-import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersImageView;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
+import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
+import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersImageView;
 
 public class FollowerDetailsGridViewHolder extends BaseViewHolder<Shot> {
 
     private final ShotClickListener shotClickListener;
-    
+
     @BindDimen(R.dimen.shot_corner_radius)
     float radius;
 

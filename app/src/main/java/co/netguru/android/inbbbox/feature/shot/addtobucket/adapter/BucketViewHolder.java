@@ -9,8 +9,8 @@ import android.widget.TextView;
 import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
+import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 
 public class BucketViewHolder extends BaseViewHolder<Bucket> {
 

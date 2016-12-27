@@ -1,8 +1,6 @@
 package co.netguru.android.inbbbox.feature.splash;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.inbbbox.feature.splash.SplashActivity;
-import co.netguru.android.inbbbox.feature.splash.SplashPresenter;
 import dagger.Subcomponent;
 
 @ActivityScope

@@ -10,8 +10,8 @@ import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
 import co.netguru.android.inbbbox.common.utils.StringUtil;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
 import rx.Completable;
 import rx.Single;
 

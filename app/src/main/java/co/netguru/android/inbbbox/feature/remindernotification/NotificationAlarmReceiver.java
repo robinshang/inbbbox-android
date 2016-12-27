@@ -10,8 +10,8 @@ import android.support.v7.app.NotificationCompat;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;

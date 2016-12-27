@@ -14,8 +14,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.feature.shot.detail.Comment;
 import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
+import co.netguru.android.inbbbox.feature.shot.detail.Comment;
 
 import static co.netguru.android.inbbbox.common.utils.StringUtil.PARAGRAPH_TAG_END;
 import static co.netguru.android.inbbbox.common.utils.StringUtil.PARAGRAPH_TAG_START;

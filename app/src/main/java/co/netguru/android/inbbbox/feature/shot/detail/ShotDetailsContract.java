@@ -7,10 +7,10 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
-import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
+import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
+import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
 
 public interface ShotDetailsContract {
 

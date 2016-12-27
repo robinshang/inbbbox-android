@@ -13,7 +13,7 @@ public abstract class ShotDetailsState {
 
     public abstract List<Comment> comments();
 
-    public static ShotDetailsState.Builder builder(){
+    public static ShotDetailsState.Builder builder() {
         return new AutoValue_ShotDetailsState.Builder();
     }
 
@@ -30,7 +30,7 @@ public abstract class ShotDetailsState {
 
     public static ShotDetailsState create(boolean isLiked,
                                           boolean isBucketed,
-                                          List<Comment> comments){
+                                          List<Comment> comments) {
         return ShotDetailsState.builder()
                 .isLiked(isLiked)
                 .isBucketed(isBucketed)

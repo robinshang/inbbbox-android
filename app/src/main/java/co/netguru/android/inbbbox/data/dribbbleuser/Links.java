@@ -22,6 +22,7 @@ public abstract class Links implements Parcelable {
     public static Links create(String web, String twitter) {
         return new AutoValue_Links(web, twitter);
     }
+
     public static TypeAdapter<Links> typeAdapter(Gson gson) {
         return new AutoValue_Links.GsonTypeAdapter(gson);
     }

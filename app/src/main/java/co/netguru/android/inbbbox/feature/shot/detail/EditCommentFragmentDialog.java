@@ -17,8 +17,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
-import co.netguru.android.inbbbox.feature.shot.detail.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.common.utils.StringUtil;
+import co.netguru.android.inbbbox.feature.shot.detail.recycler.DetailsViewActionCallback;
 import timber.log.Timber;
 
 public class EditCommentFragmentDialog extends DialogFragment {

@@ -3,11 +3,11 @@ package co.netguru.android.inbbbox.data.follower.controllers;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.data.shot.ShotsApi;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
 import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
+import co.netguru.android.inbbbox.data.shot.ShotsApi;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import rx.Observable;
 
 @Singleton

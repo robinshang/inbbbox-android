@@ -1,6 +1,6 @@
 package co.netguru.android.inbbbox.data.settings.model;
 
-public class CustomizationSettings{
+public class CustomizationSettings {
 
     private boolean showDetails;
     private boolean nightMode;

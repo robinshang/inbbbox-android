@@ -10,8 +10,8 @@ import com.google.gson.annotations.SerializedName;
 
 import org.threeten.bp.ZonedDateTime;
 
-import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamEntity;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
 
 @AutoValue
 public abstract class ShotEntity implements Parcelable {

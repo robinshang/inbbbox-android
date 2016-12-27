@@ -31,15 +31,15 @@ import java.util.List;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
-import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
+import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
+import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
+import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
 import co.netguru.android.inbbbox.feature.bucket.detail.adapter.BucketShotViewHolder;
 import co.netguru.android.inbbbox.feature.bucket.detail.adapter.BucketShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
-import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
-import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
-import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 
 public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<ShotEntity>,

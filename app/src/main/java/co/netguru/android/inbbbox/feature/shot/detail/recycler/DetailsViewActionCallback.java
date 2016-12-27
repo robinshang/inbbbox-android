@@ -1,8 +1,8 @@
 package co.netguru.android.inbbbox.feature.shot.detail.recycler;
 
-import co.netguru.android.inbbbox.feature.shot.detail.Comment;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.feature.shot.detail.Comment;
 
 public interface DetailsViewActionCallback {
 

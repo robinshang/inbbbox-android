@@ -6,12 +6,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.Constants;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
-import co.netguru.android.inbbbox.data.shot.ShotsApi;
-import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
+import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
+import co.netguru.android.inbbbox.data.shot.ShotsApi;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;

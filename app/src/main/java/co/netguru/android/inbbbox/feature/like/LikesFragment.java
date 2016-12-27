@@ -27,19 +27,19 @@ import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
-import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
-import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
-import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
-import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
+import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.like.adapter.LikesAdapter;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
-import co.netguru.android.inbbbox.feature.shot.ShotsFragment;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
-import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
+import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.shot.ShotsFragment;
+import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
+import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
 
 public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
         LikesViewContract.View, LikesViewContract.Presenter> implements RefreshableFragment, LikesViewContract.View, ShotClickListener {

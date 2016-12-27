@@ -4,10 +4,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.BuildConfig;
+import co.netguru.android.inbbbox.common.utils.StringUtil;
 import co.netguru.android.inbbbox.data.session.AuthorizeApi;
 import co.netguru.android.inbbbox.data.session.TokenPrefsRepository;
 import co.netguru.android.inbbbox.data.session.model.Token;
-import co.netguru.android.inbbbox.common.utils.StringUtil;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;

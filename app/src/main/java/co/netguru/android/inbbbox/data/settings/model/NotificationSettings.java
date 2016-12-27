@@ -2,7 +2,7 @@ package co.netguru.android.inbbbox.data.settings.model;
 
 import org.threeten.bp.LocalTime;
 
-public class NotificationSettings{
+public class NotificationSettings {
 
     private boolean enabled;
     private int hour;

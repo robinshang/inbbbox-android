@@ -8,10 +8,10 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.data.dribbbleuser.user.UserApi;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
-import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.UserApi;
+import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;

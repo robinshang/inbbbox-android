@@ -12,8 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import butterknife.BindView;
-import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpDialogFragment;
 
 public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBucketContract.View, CreateBucketContract.Presenter>
@@ -63,7 +63,7 @@ public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBuck
     }
 
     @Override
-    public void hideErrorMessages(){
+    public void hideErrorMessages() {
         nameTextInputLayout.setErrorEnabled(false);
     }
 

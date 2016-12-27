@@ -14,8 +14,8 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.data.bucket.BucketsController;
-import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
+import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Single;

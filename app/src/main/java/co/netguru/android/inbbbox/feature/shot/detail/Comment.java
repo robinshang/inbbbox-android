@@ -46,7 +46,7 @@ public abstract class Comment {
 
         public abstract Comment.Builder text(String text);
 
-        public abstract Comment.Builder  isCurrentUserAuthor(Boolean isCurrentUserAuthor);
+        public abstract Comment.Builder isCurrentUserAuthor(Boolean isCurrentUserAuthor);
 
         public abstract Comment build();
     }
