@@ -5,8 +5,8 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.data.like.LikesApi;
 import co.netguru.android.inbbbox.data.like.model.LikedShotEntity;
-import co.netguru.android.inbbbox.shot.model.Image;
-import co.netguru.android.inbbbox.shot.model.ShotEntity;
+import co.netguru.android.inbbbox.feature.shot.model.Image;
+import co.netguru.android.inbbbox.feature.shot.model.ShotEntity;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Completable;

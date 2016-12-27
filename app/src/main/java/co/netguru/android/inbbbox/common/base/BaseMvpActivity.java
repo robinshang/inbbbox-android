@@ -23,7 +23,7 @@ import co.netguru.android.inbbbox.event.events.CriticalLogoutEvent;
 import co.netguru.android.inbbbox.common.base.bottomsheet.BottomSheetActivityCallback;
 import co.netguru.android.inbbbox.common.base.bottomsheet.HidingBottomSheetActivityDelegate;
 import co.netguru.android.inbbbox.common.base.bottomsheet.HidingBottomSheetBearer;
-import co.netguru.android.inbbbox.login.LoginActivity;
+import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import rx.Subscription;
 
 public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<V>>

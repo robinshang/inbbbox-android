@@ -6,16 +6,16 @@ import co.netguru.android.commons.di.BaseComponent;
 import co.netguru.android.inbbbox.application.DebugMetricsHelper;
 import co.netguru.android.inbbbox.notification.NotificationAlarmReceiver;
 import co.netguru.android.inbbbox.di.module.ApiModule;
-import co.netguru.android.inbbbox.login.LoginModule;
+import co.netguru.android.inbbbox.feature.login.LoginModule;
 import co.netguru.android.inbbbox.event.RxBus;
-import co.netguru.android.inbbbox.bucket.BucketsFragmentComponent;
-import co.netguru.android.inbbbox.bucket.createbucket.CreateBucketComponent;
-import co.netguru.android.inbbbox.bucket.detail.BucketsDetailsComponent;
-import co.netguru.android.inbbbox.login.LoginComponent;
-import co.netguru.android.inbbbox.login.oauthwebview.OauthWebViewDialogFragmentComponent;
-import co.netguru.android.inbbbox.main.MainActivityComponent;
-import co.netguru.android.inbbbox.shot.addtobucket.AddToBucketComponent;
-import co.netguru.android.inbbbox.splash.SplashScreenComponent;
+import co.netguru.android.inbbbox.feature.bucket.BucketsFragmentComponent;
+import co.netguru.android.inbbbox.feature.bucket.createbucket.CreateBucketComponent;
+import co.netguru.android.inbbbox.feature.bucket.detail.BucketsDetailsComponent;
+import co.netguru.android.inbbbox.feature.login.LoginComponent;
+import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewDialogFragmentComponent;
+import co.netguru.android.inbbbox.feature.main.MainActivityComponent;
+import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketComponent;
+import co.netguru.android.inbbbox.feature.splash.SplashScreenComponent;
 import dagger.Component;
 
 @Singleton

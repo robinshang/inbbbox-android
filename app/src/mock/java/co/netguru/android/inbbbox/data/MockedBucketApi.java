@@ -9,8 +9,8 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.data.bucket.BucketApi;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
-import co.netguru.android.inbbbox.shot.model.Image;
-import co.netguru.android.inbbbox.shot.model.ShotEntity;
+import co.netguru.android.inbbbox.feature.shot.model.Image;
+import co.netguru.android.inbbbox.feature.shot.model.ShotEntity;
 import retrofit2.http.Field;
 import retrofit2.http.Path;
 import retrofit2.http.Query;

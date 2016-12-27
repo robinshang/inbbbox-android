@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".feature.login.LoginActivity"
             android:autoRemoveFromRecents="true"
             android:launchMode="singleTask"
             android:noHistory="true"
@@ -21,7 +21,7 @@
             tools:ignore="UnusedAttribute" />
 
         <activity
-            android:name=".splash.SplashActivity"
+            android:name=".feature.splash.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,16 +31,16 @@
         </activity>
 
         <activity
-            android:name=".main.MainActivity"
+            android:name=".feature.main.MainActivity"
             android:launchMode="singleTop"
             tools:ignore="UnusedAttribute" />
 
-        <activity android:name=".follower.detail.FollowerDetailsActivity" />
+        <activity android:name=".feature.follower.detail.FollowerDetailsActivity" />
 
-        <activity android:name=".bucket.detail.BucketDetailsActivity" />
+        <activity android:name=".feature.bucket.detail.BucketDetailsActivity" />
 
         <activity
-            android:name=".shot.detail.fullscreen.ShotFullscreenActivity"
+            android:name=".feature.shot.detail.fullscreen.ShotFullscreenActivity"
             android:theme="@style/AppThemeGallery"
             />
 
