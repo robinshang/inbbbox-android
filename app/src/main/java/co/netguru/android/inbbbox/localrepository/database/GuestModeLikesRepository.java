@@ -74,6 +74,7 @@ public class GuestModeLikesRepository {
     private Shot likeShot(Shot shot) {
         return Shot.update(shot)
                 .likesCount(shot.likesCount() + 1)
+                .isLiked(true)
                 .build();
     }
 
