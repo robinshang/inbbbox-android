@@ -309,8 +309,8 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     private void showLoadingIndicatorInternal() {
         shotsRecyclerView.setVisibility(View.INVISIBLE);
         loadingBallContainer.setVisibility(View.VISIBLE);
-        ballImageView.startAnimation(ballAnimation);
-        ballShadowImageView.startAnimation(shadowAnimation);
+        ballImageView.post(() -> ballImageView.startAnimation(ballAnimation));
+        ballShadowImageView.post(() -> ballShadowImageView.startAnimation(shadowAnimation));
     }
 
     public interface ShotActionListener {
