@@ -30,6 +30,7 @@ import rx.observers.TestSubscriber;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -122,14 +123,28 @@ public class GuestModeLikesRepositoryTest {
     }
 
     @Test
-    public void shouldDeleteFromDBWhenRemovingLikedShot() {
+    public void shouldDeleteFromDBWhenRemovingNotBucketedShot() {
         //given
         final TestSubscriber subscriber = new TestSubscriber();
         when(shotRxDao.deleteByKey(any())).thenReturn(Observable.empty());
         //when
-        repository.removeLikedShot(Statics.NOT_LIKED_SHOT).subscribe(subscriber);
+        repository.removeLikedShot(Statics.LIKED_SHOT_NOT_BUCKETED).subscribe(subscriber);
         //then
         verify(shotRxDao).deleteByKey(any());
+        verify(shotRxDao, never()).insertOrReplace(any());
+        subscriber.assertNoErrors();
+    }
+
+    @Test
+    public void shouldInsertUpdatedShotToDBWhenRemovingBucketedShot() {
+        //given
+        final TestSubscriber subscriber = new TestSubscriber();
+        when(shotRxDao.insertOrReplace(any())).thenReturn(Observable.empty());
+        //when
+        repository.removeLikedShot(Statics.LIKED_SHOT_BUCKETED).subscribe(subscriber);
+        //then
+        verify(shotRxDao, never()).deleteByKey(any());
+        verify(shotRxDao).insertOrReplace(any());
         subscriber.assertNoErrors();
     }
 
@@ -140,7 +155,7 @@ public class GuestModeLikesRepositoryTest {
         final Throwable throwable = new Throwable();
         when(shotRxDao.deleteByKey(any())).thenReturn(Observable.error(throwable));
         //when
-        repository.removeLikedShot(Statics.NOT_LIKED_SHOT).subscribe(subscriber);
+        repository.removeLikedShot(Statics.LIKED_SHOT_NOT_BUCKETED).subscribe(subscriber);
         //then
         subscriber.assertError(throwable);
     }

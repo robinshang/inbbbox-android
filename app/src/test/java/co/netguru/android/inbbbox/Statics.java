@@ -121,7 +121,7 @@ public final class Statics {
             .thumbnailUrl("")
             .build();
 
-    public static final Shot LIKED_SHOT = Shot.builder()
+    public static final Shot LIKED_SHOT_NOT_BUCKETED = Shot.builder()
             .id(1)
             .author(User.create(USER_ENTITY))
             .title("title")
@@ -134,6 +134,24 @@ public final class Statics {
             .isGif(false)
             .isLiked(true)
             .isBucketed(false)
+            .hiDpiImageUrl("")
+            .normalImageUrl("")
+            .thumbnailUrl("")
+            .build();
+
+    public static final Shot LIKED_SHOT_BUCKETED = Shot.builder()
+            .id(1)
+            .author(User.create(USER_ENTITY))
+            .title("title")
+            .description("description")
+            .team(TEAM)
+            .bucketCount(123)
+            .likesCount(321)
+            .commentsCount(3)
+            .creationDate(LocalDateTime.now().minusDays(2))
+            .isGif(false)
+            .isLiked(true)
+            .isBucketed(true)
             .hiDpiImageUrl("")
             .normalImageUrl("")
             .thumbnailUrl("")
@@ -167,7 +185,7 @@ public final class Statics {
     public static List<Shot> generateShots() {
         final List<Shot> shots = new LinkedList<>();
         for (int i = 0; i < SHOTS_COUNT; i++) {
-            shots.add(LIKED_SHOT);
+            shots.add(LIKED_SHOT_NOT_BUCKETED);
         }
         return shots;
     }
