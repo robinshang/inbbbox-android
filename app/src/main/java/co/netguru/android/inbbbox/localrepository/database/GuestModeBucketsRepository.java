@@ -29,7 +29,7 @@ public class GuestModeBucketsRepository {
     private final DaoSession daoSession;
 
     @Inject
-    public GuestModeBucketsRepository(DaoSession daoSession) {
+    GuestModeBucketsRepository(DaoSession daoSession) {
         this.daoSession = daoSession;
     }
 
@@ -67,21 +67,18 @@ public class GuestModeBucketsRepository {
     public Completable removeBucket(long bucketId) {
         Timber.d("Removing bucket from local repository");
         return daoSession.rxTx().run(() -> {
-            final List<ShotDB> shots = daoSession.load(BucketDB.class, bucketId).getShots();
+            removeShotFromBucket(daoSession.load(BucketDB.class, bucketId).getShots());
             daoSession.getBucketDBDao().deleteByKey(bucketId);
-            removeShotsFromBucket(shots);
         }).toCompletable();
     }
 
-    private void removeShotsFromBucket(List<ShotDB> shots) {
-        for (ShotDB shot : shots) {
-            if (shot.getIsLiked()) {
-                Timber.d("Removing shot %s from bucket");
+    private void removeShotFromBucket(List<ShotDB> bucketedShots) {
+        for (ShotDB shot : bucketedShots) {
+            shot.setBucketCount(shot.getBucketCount() - 1);
+            if (shot.getBucketCount() == 0) {
                 shot.setIsBucketed(false);
-                shot.update();
-            } else {
-                daoSession.delete(shot);
             }
+            shot.update();
         }
     }
 

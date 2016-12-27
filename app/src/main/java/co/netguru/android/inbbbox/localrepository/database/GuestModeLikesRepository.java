@@ -32,7 +32,7 @@ public class GuestModeLikesRepository {
     public Completable addLikedShot(@NonNull Shot shot) {
         return daoSession.rxTx()
                 .run(() -> {
-                    daoSession.getShotDBDao().insertOrReplace(ShotDBMapper.fromShot(increaseShotLikesCount(shot)));
+                    daoSession.getShotDBDao().insertOrReplace(ShotDBMapper.fromShot(likeShot(shot)));
                     daoSession.getUserDBDao().insertOrReplace(UserDBMapper.fromUser(shot.author()));
                     if (shot.team() != null) {
                         daoSession.getTeamDBDao().insertOrReplace(TeamDBMapper.fromTeam(shot.team()));
@@ -49,9 +49,6 @@ public class GuestModeLikesRepository {
     }
 
     public Completable removeLikedShot(Shot shot) {
-        if (!shot.isBucketed()) {
-            return daoSession.getShotDBDao().rx().deleteByKey(shot.id()).toCompletable();
-        }
         return daoSession.getShotDBDao().rx()
                 .insertOrReplace(ShotDBMapper.fromShot(unlikeShot(shot))).toCompletable();
     }
@@ -70,7 +67,7 @@ public class GuestModeLikesRepository {
                 .toCompletable();
     }
 
-    private Shot increaseShotLikesCount(Shot shot) {
+    private Shot likeShot(Shot shot) {
         return Shot.update(shot)
                 .likesCount(shot.likesCount() + 1)
                 .build();
