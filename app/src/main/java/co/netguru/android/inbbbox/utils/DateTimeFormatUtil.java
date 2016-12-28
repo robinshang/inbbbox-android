@@ -4,9 +4,9 @@ import android.content.Context;
 
 import org.threeten.bp.Duration;
 import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import co.netguru.android.inbbbox.R;
@@ -39,12 +39,12 @@ public final class DateTimeFormatUtil {
     }
 
     public static String getCurrentDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN).withZone(ZoneId.systemDefault());
-        return LocalDate.now().format(formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
+        return ZonedDateTime.now().format(formatter);
     }
 
     public static long getSecondsFromTime(int hour, int minute) {
-        return LocalDateTime.of(getDate(hour, minute), getLocalTime(hour, minute)).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        return ZonedDateTime.of(getDate(hour, minute), getLocalTime(hour, minute), ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
     private static LocalDate getDate(int hour, int minute) {
@@ -58,9 +58,9 @@ public final class DateTimeFormatUtil {
         return LocalTime.of(hour, minute, 0);
     }
 
-    public static String getTimeLabel(Context context, LocalDateTime dateTime) {
+    public static String getTimeLabel(Context context, ZonedDateTime dateTime) {
         String label;
-        LocalDateTime now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        ZonedDateTime now = ZonedDateTime.now();
         Duration duration = Duration.between(dateTime, now);
 
         if (duration.getSeconds() <= DateTimeFormatUtil.SEC) {
@@ -106,14 +106,13 @@ public final class DateTimeFormatUtil {
         return label;
     }
 
-    public static String getMonthShortDayAndYearFormattedDate(LocalDateTime localDateTime) {
-        return localDateTime.format(DateTimeFormatter.ofPattern(MONTH_SHORT_DAY_AND_YEAR_FORMAT));
+    public static String getMonthShortDayAndYearFormattedDate(ZonedDateTime dateTime) {
+        return dateTime.format(DateTimeFormatter.ofPattern(MONTH_SHORT_DAY_AND_YEAR_FORMAT));
     }
 
-    public static String getShotDetailsDate(LocalDateTime date) {
+    public static String getShotDetailsDate(ZonedDateTime date) {
         DateTimeFormatter formatter = DateTimeFormatter
-                .ofPattern(SHOT_DETAILS_FORMAT)
-                .withZone(ZoneId.systemDefault());
+                .ofPattern(SHOT_DETAILS_FORMAT);
         return date.format(formatter);
     }
 }

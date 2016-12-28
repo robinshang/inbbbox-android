@@ -3,7 +3,7 @@ package co.netguru.android.inbbbox.di.module;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 import javax.inject.Singleton;
 
@@ -30,7 +30,7 @@ public class ConfigurationModule {
     Gson provideGson() {
         return new GsonBuilder()
                 .registerTypeAdapterFactory(AutoGsonAdapterFactory.create())
-                .registerTypeAdapter(LocalDateTime.class, new DateTimeConverter())
+                .registerTypeAdapter(ZonedDateTime.class, new DateTimeConverter())
                 .create();
     }
 

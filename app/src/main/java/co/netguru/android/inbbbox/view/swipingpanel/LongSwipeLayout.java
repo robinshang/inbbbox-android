@@ -11,13 +11,10 @@ import timber.log.Timber;
 public class LongSwipeLayout extends SwipeLayout {
 
     private static final long AUTO_CLOSE_DELAY = 300;
-    private static final float LONG_SWIPE_TRIGGERING_THRESHOLD = 400;
     private static final int LONG_SWIPE_ACTIVATION_TOLERANCE = 80;
     private static final int RIGHT_SWIPE_ACTIVATION_TOLERANCE = 80;
 
-    private float offsetX;
     private boolean wasChecked = false;
-    private boolean isNormalSwipeScope;
     private boolean wasFirstElementWidthCollected = false;
     private boolean isLongSwipeTriggered;
     private boolean isRightSwipeTriggered;
@@ -77,19 +74,13 @@ public class LongSwipeLayout extends SwipeLayout {
         int swipingLimit = getLimitForLeftSwipe();
 
         if (-getSurfaceView().getLeft() < swipingLimit / 3 && !wasChecked && !isNormalSwipeTriggered) {
-            offsetX = event.getRawX();
             wasChecked = true;
             isNormalSwipeTriggered = true;
-            isNormalSwipeScope = true;
             isLongSwipeTriggered = false;
         }
 
         if (-getSurfaceView().getLeft() > swipingLimit / 3) {
             isNormalSwipeTriggered = false;
-        }
-
-        if (event.getRawX() - offsetX > LONG_SWIPE_TRIGGERING_THRESHOLD) {
-            isNormalSwipeScope = false;
         }
 
         if (-getSurfaceView().getLeft() < swipingLimit + LONG_SWIPE_ACTIVATION_TOLERANCE) {
@@ -101,7 +92,6 @@ public class LongSwipeLayout extends SwipeLayout {
 
         if (-getSurfaceView().getLeft() > swipingLimit / 3) {
             isNormalSwipeTriggered = false;
-            isNormalSwipeScope = false;
             wasChecked = false;
         }
 
@@ -122,7 +112,6 @@ public class LongSwipeLayout extends SwipeLayout {
 
     private void initSwipeActionHandling() {
         wasChecked = false;
-        isNormalSwipeScope = false;
         isNormalSwipeTriggered = false;
         isLongSwipeTriggered = false;
         getElementWidth();

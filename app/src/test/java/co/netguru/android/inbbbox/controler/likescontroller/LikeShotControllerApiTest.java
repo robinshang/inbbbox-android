@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +68,7 @@ public class LikeShotControllerApiTest {
         expectedItems = new ArrayList<>();
         expectedItems.add(entity);
         when(shotEntityMock.image()).thenReturn(imageMock);
-        when(shotEntityMock.createdAt()).thenReturn(LocalDateTime.now());
+        when(shotEntityMock.createdAt()).thenReturn(ZonedDateTime.now());
         when(likesApiMock.getLikedShots(PAGE_NUMBER, PAGE_COUNT))
                 .thenReturn(Observable.just(expectedItems));
         when(shotMock.id()).thenReturn(EXAMPLE_ID);

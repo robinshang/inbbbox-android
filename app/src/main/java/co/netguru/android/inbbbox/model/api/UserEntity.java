@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
-import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 import co.netguru.android.inbbbox.model.localrepository.database.UserEntityDB;
 
@@ -102,10 +102,10 @@ public abstract class UserEntity implements Parcelable {
     public abstract String teamsUrl();
 
     @SerializedName("created_at")
-    public abstract LocalDateTime createdAt();
+    public abstract ZonedDateTime createdAt();
 
     @SerializedName("updated_at")
-    public abstract LocalDateTime updatedAt();
+    public abstract ZonedDateTime updatedAt();
 
     public static Builder builder() {
         return new AutoValue_UserEntity.Builder();
@@ -205,9 +205,9 @@ public abstract class UserEntity implements Parcelable {
 
         public abstract Builder teamsUrl(String teamsUrl);
 
-        public abstract Builder createdAt(LocalDateTime createdAt);
+        public abstract Builder createdAt(ZonedDateTime createdAt);
 
-        public abstract Builder updatedAt(LocalDateTime updatedAt);
+        public abstract Builder updatedAt(ZonedDateTime updatedAt);
 
         public abstract UserEntity build();
     }

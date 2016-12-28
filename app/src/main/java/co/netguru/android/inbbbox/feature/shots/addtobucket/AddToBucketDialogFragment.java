@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 import java.util.Collections;
 import java.util.List;
@@ -186,8 +186,8 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     }
 
     @Override
-    public void showShotCreationDate(LocalDateTime localDateTime) {
-        inAndDateTextView.setText(getFormattedDate(localDateTime));
+    public void showShotCreationDate(ZonedDateTime dateTime) {
+        inAndDateTextView.setText(getFormattedDate(dateTime));
     }
 
     @Override
@@ -295,7 +295,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
         window.setLayout(window.getAttributes().width, Math.round(size.y * heightPercentage));
     }
 
-    private String getFormattedDate(LocalDateTime creationDate) {
+    private String getFormattedDate(ZonedDateTime creationDate) {
         return String.format(shotCreatedOnString,
                 DateTimeFormatUtil.getMonthShortDayAndYearFormattedDate(creationDate));
     }
