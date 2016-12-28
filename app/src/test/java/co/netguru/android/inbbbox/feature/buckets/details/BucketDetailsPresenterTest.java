@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.api.MockShotsApi;
 import co.netguru.android.inbbbox.controler.BucketsController;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
@@ -23,6 +22,7 @@ import rx.Single;
 import rx.observers.TestSubscriber;
 import rx.subscriptions.Subscriptions;
 
+import static co.netguru.android.inbbbox.Statics.getFollowingMockedData;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
@@ -47,7 +47,7 @@ public class BucketDetailsPresenterTest {
     @InjectMocks
     BucketDetailsPresenter presenter;
 
-    private static final List<ShotEntity> shotEntities = MockShotsApi.getFollowingMockedData();
+    private static final List<ShotEntity> shotEntities = getFollowingMockedData();
     private static final BucketWithShots BUCKET_WITH_SHOTS = BucketWithShots.create(Statics.BUCKET, shotEntities);
     private static final int PER_PAGE = BUCKET_WITH_SHOTS.shots().size();
 
@@ -73,7 +73,7 @@ public class BucketDetailsPresenterTest {
     @Test
     public void whenNewDataPassedWithNotEmptyListOfShots_thenSetupViewProperly() throws Exception {
         //given
-        List<ShotEntity> shotEntities = MockShotsApi.getFollowingMockedData();
+        List<ShotEntity> shotEntities = getFollowingMockedData();
         BucketWithShots bucketWithShots = BucketWithShots.create(Statics.BUCKET, shotEntities);
         final int perPage = 30;
         //when

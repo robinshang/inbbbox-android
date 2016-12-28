@@ -50,8 +50,8 @@ android {
             minifyEnabled true
             shrinkResources false
             useProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'),
-                    'proguard-rules.pro', 'proguard-rules-test.pro'
+            setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro',
+                              'proguard-rules-test.pro'])
 
             manifestPlaceholders = [HOCKEYAPP_APP_ID: secrets.hockeyAppId]
             buildConfigField 'String', 'HOCKEY_APP_ID', '"' + secrets.hockeyAppId + '"'
@@ -62,7 +62,7 @@ android {
             shrinkResources true
             zipAlignEnabled true
             useProguard true
-            proguardFiles 'proguard-rules.pro'
+            setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
 
             manifestPlaceholders = [HOCKEYAPP_APP_ID: secrets.hockeyAppIdProd]
             buildConfigField 'String', 'HOCKEY_APP_ID', '"' + secrets.hockeyAppIdProd + '"'

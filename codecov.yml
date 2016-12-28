@@ -16,44 +16,26 @@ coverage:
         flags:
           - unit
 
-      instrumentation:
-        target: auto
-        threshold: 1%
-        flag: instrumentation
-        flags:
-          - instrumentation
     patch:
       unit:
+        target: 0
         flag: unit
         flags:
           - unit
-
-      instrumentation:
-        flag: instrumentation
-        flags:
-          - instrumentation
 
     changes:
       unit:
+        target: 0
         flag: unit
         flags:
           - unit
 
-      instrumentation:
-        flag: instrumentation
-        flags:
-          - instrumentation
-
   ignore:
     - mock/*
-    - production/*
-    - androidTest/*
-    - androidTestMock/*
-    - androidTestProduction/*
+    - debug/*
 
 comment:
   layout: "header, diff, changes, sunburst, uncovered"
   behavior: default
   flags:
     - unit
-    - instrumentation
