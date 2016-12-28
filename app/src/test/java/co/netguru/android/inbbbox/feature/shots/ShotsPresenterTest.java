@@ -80,7 +80,7 @@ public class ShotsPresenterTest {
     @Test
     public void whenDataLoadedCalled_thenRequestDataFromProvider() {
 
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
         verify(shotsControllerMock, times(1)).getShots(SHOT_PAGE, SHOT_PAGE_COUNT);
     }
@@ -89,7 +89,7 @@ public class ShotsPresenterTest {
     public void whenDataLoadedCorrectly_thenHideLoadingIndicator() {
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.just(new ArrayList<>()));
 
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
         verify(viewMock, times(1)).hideLoadingIndicator();
     }
@@ -99,7 +99,7 @@ public class ShotsPresenterTest {
         List<Shot> expectedShots = new ArrayList<>();
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.just(expectedShots));
 
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
         verify(viewMock, times(1)).setData(expectedShots);
     }
@@ -107,7 +107,7 @@ public class ShotsPresenterTest {
     @Test
     public void whenShotNotLikedAndLikeActionCalled_thenCallLikeShotMethod() {
         when(likeShotControllerApiMock.likeShot(NOT_LIKED_SHOT)).thenReturn(Completable.complete());
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
         presenter.likeShot(NOT_LIKED_SHOT);
 
@@ -117,7 +117,7 @@ public class ShotsPresenterTest {
     @Test
     public void whenShotLiked_thenChangeShotStatus() {
         when(likeShotControllerApiMock.likeShot(any(Shot.class))).thenReturn(Completable.complete());
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
         Shot expectedShot = Shot.update(Statics.LIKED_SHOT)
                 .id(NOT_LIKED_SHOT.id())
                 .isLiked(true)
@@ -136,7 +136,7 @@ public class ShotsPresenterTest {
     public void whenShotLikedAndLikeActionCalled_thenDoNotCallLikeShotMethod() {
         when(likeShotControllerApiMock.likeShot(any(Shot.class))).thenReturn(Completable.complete());
 
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
         presenter.likeShot(LIKED_SHOT);
 
@@ -150,7 +150,7 @@ public class ShotsPresenterTest {
         Exception exampleException = new Exception(message);
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.error(exampleException));
 
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
         verify(viewMock, times(1)).hideLoadingIndicator();
     }
@@ -162,7 +162,7 @@ public class ShotsPresenterTest {
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.error(exampleException));
         when(errorControllerMock.getThrowableMessage(exampleException)).thenCallRealMethod();
 
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
         verify(viewMock, times(1)).showMessageOnServerError(message);
     }
@@ -174,7 +174,7 @@ public class ShotsPresenterTest {
         when(likeShotControllerApiMock.likeShot(any(Shot.class))).thenReturn(Completable.error(exampleException));
         when(errorControllerMock.getThrowableMessage(exampleException)).thenCallRealMethod();
 
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
         presenter.likeShot(NOT_LIKED_SHOT);
 
