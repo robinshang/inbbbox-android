@@ -29,10 +29,10 @@ class ShotDetailsLoadMoreViewHolder extends ShotDetailsViewHolder<CommentLoadMor
     String loadMoreLabel;
 
     @BindColor(R.color.shotDetailsBackground)
-    int lightGrayBackground;
+    int shotDetailsBackground;
 
-    @BindColor(R.color.secondaryWindowBackground)
-    int whiteyBackground;
+    @BindColor(R.color.windowBackground)
+    int windowBackground;
 
     private CommentLoadMoreState loadMoreState;
 
@@ -71,10 +71,10 @@ class ShotDetailsLoadMoreViewHolder extends ShotDetailsViewHolder<CommentLoadMor
 
         if (!loadMoreState.isWaitingForUpdate() && loadMoreState.isLoadMoreActive()) {
             loadMoreTextView.setText(loadMoreLabel);
-            loadMoreContainer.setBackgroundColor(lightGrayBackground);
+            loadMoreContainer.setBackgroundColor(shotDetailsBackground);
         } else {
             loadMoreTextView.setText("");
-            loadMoreContainer.setBackgroundColor(whiteyBackground);
+            loadMoreContainer.setBackgroundColor(windowBackground);
         }
     }
 }

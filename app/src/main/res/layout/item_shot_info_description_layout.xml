@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="@dimen/details_comment_divider_padding_bottom"
-    android:background="@color/secondaryWindowBackground">
+    android:background="@color/windowBackground">
 
     <FrameLayout
         style="@style/ShotDetailsSectionContainer"
