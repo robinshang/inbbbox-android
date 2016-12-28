@@ -223,9 +223,9 @@ public class GuestModeBucketsRepositoryTest {
     }
 
     @Test
-    public void shouldEmitNoValuesWhenShotIsBucketed() {
+    public void shouldEmitTrueWhenShotIsBucketed() {
         //given
-        final TestSubscriber<List<Shot>> subscriber = new TestSubscriber<>();
+        final TestSubscriber<Boolean> subscriber = new TestSubscriber<>();
         when(shotDBDao.queryBuilder()).thenReturn(shotDBQueryBuilder);
         when(shotDBQueryBuilder.where(any())).thenReturn(shotDBQueryBuilder);
         when(shotDBQueryBuilder.rx()).thenReturn(shotDBRxQuery);
@@ -233,14 +233,14 @@ public class GuestModeBucketsRepositoryTest {
         //when
         repository.isShotBucketed(BUCKET_ID).subscribe(subscriber);
         //then
-        subscriber.assertNoValues();
+        subscriber.assertValue(Boolean.TRUE);
         subscriber.assertNoErrors();
     }
 
     @Test
-    public void shouldEmitErrorWhenShotIsNotBucketed() {
+    public void shouldEmitFalseWhenShotIsNotBucketed() {
         //given
-        final TestSubscriber<List<Shot>> subscriber = new TestSubscriber<>();
+        final TestSubscriber<Boolean> subscriber = new TestSubscriber<>();
         when(shotDBDao.queryBuilder()).thenReturn(shotDBQueryBuilder);
         when(shotDBQueryBuilder.where(any())).thenReturn(shotDBQueryBuilder);
         when(shotDBQueryBuilder.rx()).thenReturn(shotDBRxQuery);
@@ -248,6 +248,7 @@ public class GuestModeBucketsRepositoryTest {
         //when
         repository.isShotBucketed(BUCKET_ID).subscribe(subscriber);
         //then
-        subscriber.assertError(Throwable.class);
+        subscriber.assertValue(Boolean.FALSE);
+        subscriber.assertNoErrors();
     }
 }

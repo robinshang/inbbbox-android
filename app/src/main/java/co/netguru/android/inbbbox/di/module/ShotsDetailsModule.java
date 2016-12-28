@@ -17,8 +17,8 @@ public class ShotsDetailsModule {
     @Provides
     @FragmentScope
     ShotDetailsController provideShotDetailsController(LikeShotController likeShotController,
-                                                       BucketsController bucketsController, ShotsApi shotsApi,
-                                                       UserController userController) {
+                                                       BucketsController bucketsController,
+                                                       ShotsApi shotsApi, UserController userController) {
         return new ShotDetailsController(likeShotController, bucketsController, shotsApi, userController);
     }
 

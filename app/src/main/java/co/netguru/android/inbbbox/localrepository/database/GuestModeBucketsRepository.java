@@ -28,8 +28,6 @@ import timber.log.Timber;
 @Singleton
 public class GuestModeBucketsRepository {
 
-    private static final String SHOT_IS_NOT_BUCKETED_ERROR = "Shot is not bucketed!";
-
     private final DaoSession daoSession;
 
     @Inject
@@ -91,15 +89,14 @@ public class GuestModeBucketsRepository {
                 .toSingle();
     }
 
-    public Completable isShotBucketed(long shotId) {
+    public Single<Boolean> isShotBucketed(long shotId) {
         Timber.d("Checking if shot is bucketed");
         return daoSession.getShotDBDao().queryBuilder()
                 .where(ShotDBDao.Properties.Id.eq(shotId))
                 .rx()
                 .unique()
-                .flatMap(shot -> shot.getIsBucketed()
-                        ? Observable.empty() : Observable.error(new Throwable(SHOT_IS_NOT_BUCKETED_ERROR)))
-                .toCompletable();
+                .map(ShotDB::getIsBucketed)
+                .toSingle();
     }
 
     private Observable<BucketDB> addShotAndCreateRelation(BucketDB bucketDB, Shot shot) {

@@ -18,7 +18,6 @@ import rx.Single;
 public class BucketsControllerApi implements BucketsController {
 
     private static final int FIRST_PAGE_NUMBER = 1;
-    private static final String SHOT_IS_NOT_BUCKETED_ERROR = "Shot is not bucketed!";
     private final UserApi userApi;
     private final BucketApi bucketApi;
 
@@ -63,15 +62,13 @@ public class BucketsControllerApi implements BucketsController {
     }
 
     @Override
-    public Completable isShotBucketed(long shotId, long userId) {
+    public Single<Boolean> isShotBucketed(long shotId, long userId) {
         return bucketApi.getShotBucketsList(shotId)
                 .flatMapObservable(Observable::from)
                 .map(bucket -> bucket.user() != null ? bucket.user().id() : Constants.UNDEFINED)
                 .toList()
-                .flatMap(userList -> userList.contains(userId)
-                        ? Observable.empty() : Observable.error(new Throwable(SHOT_IS_NOT_BUCKETED_ERROR)))
-                .toCompletable();
-
+                .map(userList -> userList.contains(userId))
+                .toSingle();
     }
 
     private Observable<List<Shot>> getShotsListObservableFromBucket(long bucketId, int pageNumber, int pageCount) {

@@ -263,11 +263,11 @@ public class ShotDetailsControllerTest {
     }
 
     private void mockInBucketShotState() {
-        when(bucketsController.isShotBucketed(anyInt(), anyInt())).thenReturn(Completable.complete());
+        when(bucketsController.isShotBucketed(anyInt(), anyInt())).thenReturn(Single.just(Boolean.TRUE));
     }
 
     private void mockNotInBucketShotState() {
         when(bucketsController.isShotBucketed(anyInt(), anyInt()))
-                .thenReturn(Completable.error(new Throwable()));
+                .thenReturn(Single.just(Boolean.FALSE));
     }
 }
