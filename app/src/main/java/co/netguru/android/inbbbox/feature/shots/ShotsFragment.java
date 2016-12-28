@@ -45,7 +45,7 @@ import co.netguru.android.inbbbox.view.LoadMoreScrollListener;
 
 public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
         ShotsContract.View, ShotsContract.Presenter> implements RefreshableFragment, ShotsContract.View, ShotSwipeListener,
-        AddToBucketDialogFragment.BucketSelectListener {
+        AddToBucketDialogFragment.BucketSelectListener, ViewTreeObserver.OnWindowFocusChangeListener {
 
     private static final int SHOTS_TO_LOAD_MORE = 5;
 
@@ -270,21 +270,15 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         if (swipeToRefresh) {
             showLoadingIndicatorInternal();
         } else {
-            ballImageView.getViewTreeObserver().addOnWindowFocusChangeListener(
-                    new ViewTreeObserver.OnWindowFocusChangeListener() {
-                        @Override
-                        public void onWindowFocusChanged(boolean hasFocus) {
-                            ballImageView.getViewTreeObserver().removeOnWindowFocusChangeListener(this);
-                            showLoadingIndicatorInternal();
-                        }
-                    });
+            ballImageView.getViewTreeObserver().addOnWindowFocusChangeListener(this);
         }
     }
 
     @Override
     public void hideLoadingIndicator() {
+        ballImageView.getViewTreeObserver().removeOnWindowFocusChangeListener(this);
         swipeRefreshLayout.setRefreshing(false);
-        loadingBallContainer.setVisibility(View.GONE);
+        loadingBallContainer.post(() -> loadingBallContainer.setVisibility(View.GONE));
         shotsRecyclerView.setVisibility(View.VISIBLE);
     }
 
@@ -311,6 +305,12 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         loadingBallContainer.setVisibility(View.VISIBLE);
         ballImageView.post(() -> ballImageView.startAnimation(ballAnimation));
         ballShadowImageView.post(() -> ballShadowImageView.startAnimation(shadowAnimation));
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        ballImageView.getViewTreeObserver().removeOnWindowFocusChangeListener(this);
+        showLoadingIndicatorInternal();
     }
 
     public interface ShotActionListener {
