@@ -14,6 +14,7 @@ import co.netguru.android.inbbbox.model.api.Image;
 import co.netguru.android.inbbbox.model.api.Links;
 import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.api.UserEntity;
+import co.netguru.android.inbbbox.model.localrepository.database.BucketDB;
 import co.netguru.android.inbbbox.model.ui.Comment;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.Team;
@@ -121,18 +122,53 @@ public final class Statics {
             .thumbnailUrl("")
             .build();
 
+    public static final Shot NOT_LIKED_SHOT_WITHOUT_AUTHOR = Shot.builder()
+            .id(1)
+            .title("title")
+            .description("description")
+            .team(TEAM)
+            .bucketCount(123)
+            .likesCount(321)
+            .creationDate(LocalDateTime.now().minusDays(2))
+            .isGif(false)
+            .isLiked(false)
+            .isBucketed(false)
+            .hiDpiImageUrl("")
+            .commentsCount(3)
+            .normalImageUrl("")
+            .thumbnailUrl("")
+            .build();
+
     public static final Shot LIKED_SHOT_NOT_BUCKETED = Shot.builder()
             .id(1)
             .author(User.create(USER_ENTITY))
             .title("title")
             .description("description")
             .team(TEAM)
-            .bucketCount(123)
+            .bucketCount(1)
             .likesCount(321)
             .commentsCount(3)
             .creationDate(ZonedDateTime.now().minusDays(2))
             .isGif(false)
             .isLiked(true)
+            .isBucketed(false)
+            .hiDpiImageUrl("")
+            .normalImageUrl("")
+            .thumbnailUrl("")
+            .build();
+
+    public static final Shot NOT_LIKED_SHOT_NOT_BUCKETED = Shot.builder()
+            .id(1)
+            .author(User.create(USER_ENTITY))
+            .title("title")
+            .description("description")
+            .team(TEAM)
+            .bucketCount(1)
+            .likesCount(0)
+            .commentsCount(3)
+            .creationDate(LocalDateTime.now().minusDays(2))
+            .isGif(false)
+            .isLiked(false)
             .isBucketed(false)
             .hiDpiImageUrl("")
             .normalImageUrl("")
@@ -162,6 +198,8 @@ public final class Statics {
             .createdAt(ZonedDateTime.now())
             .user(USER_ENTITY)
             .build();
+
+    public static final BucketDB BUCKET_DB = new BucketDB(1L, "test", "test", 2, LocalDateTime.now());
 
     public static final List<Comment> COMMENTS = generateComments();
     public static final List<Shot> SHOT_LIST = Collections.emptyList();

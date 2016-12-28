@@ -22,7 +22,6 @@ import rx.Single;
 import rx.observers.TestSubscriber;
 import rx.subscriptions.Subscriptions;
 
-import static co.netguru.android.inbbbox.Statics.getFollowingMockedData;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
