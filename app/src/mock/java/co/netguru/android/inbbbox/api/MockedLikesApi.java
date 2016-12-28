@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.api;
 
-import org.threeten.bp.LocalDateTime;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,12 +23,12 @@ public class MockedLikesApi implements LikesApi {
                         .id(1)
                         .title("test")
                         .image(Image.builder().build())
-                        .createdAt(LocalDateTime.now())
+                        .createdAt(ZonedDateTime.now())
                         .animated(false)
                         .likesCount(2)
                         .bucketsCount(3)
                         .commentsCount(2)
-                        .createdAt(LocalDateTime.now())
+                        .createdAt(ZonedDateTime.now())
                         .build()
                 ).build());
     }
