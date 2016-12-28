@@ -16,9 +16,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.data.dribbbleuser.team.DaoSession;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamDB;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamDBDao;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.DaoSession;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.UserDB;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.UserDBDao;
 import co.netguru.android.inbbbox.data.shot.model.db.ShotDB;

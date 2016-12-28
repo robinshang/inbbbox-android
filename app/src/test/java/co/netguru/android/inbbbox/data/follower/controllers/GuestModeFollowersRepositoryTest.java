@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.data.dribbbleuser.team.DaoSession;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.DaoSession;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.UserEntityDB;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.UserEntityDBDao;
 import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;

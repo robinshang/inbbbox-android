@@ -3,7 +3,7 @@ package co.netguru.android.inbbbox.data.follower.controllers;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.data.dribbbleuser.team.DaoSession;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.DaoSession;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.UserEntityDBMapper;
 import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
 import co.netguru.android.inbbbox.data.follower.model.db.FollowerEntityDBMapper;

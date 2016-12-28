@@ -7,8 +7,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.data.dribbbleuser.team.DaoSession;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamDBMapper;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.DaoSession;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.UserDBMapper;
 import co.netguru.android.inbbbox.data.shot.model.db.ShotDBDao;
 import co.netguru.android.inbbbox.data.shot.model.db.ShotDBMapper;
