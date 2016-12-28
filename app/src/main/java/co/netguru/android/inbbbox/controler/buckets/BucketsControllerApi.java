@@ -14,7 +14,6 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
-import timber.log.Timber;
 
 public class BucketsControllerApi implements BucketsController {
 

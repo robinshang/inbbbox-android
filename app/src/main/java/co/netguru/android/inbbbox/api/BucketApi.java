@@ -17,7 +17,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Completable;
-import rx.Observable;
 import rx.Single;
 
 public interface BucketApi {
