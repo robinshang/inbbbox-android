@@ -71,7 +71,7 @@ public class GuestModeBucketsRepository {
     public Completable removeBucket(long bucketId) {
         Timber.d("Removing bucket from local repository");
         return daoSession.rxTx().run(() -> {
-            removeShotFromBucket(daoSession.load(BucketDB.class, bucketId).getShots());
+            removeShotsFromBucket(daoSession.load(BucketDB.class, bucketId).getShots());
             daoSession.getBucketDBDao().deleteByKey(bucketId);
         }).toCompletable();
     }
@@ -92,6 +92,7 @@ public class GuestModeBucketsRepository {
     }
 
     public Completable isShotBucketed(long shotId) {
+        Timber.d("Checking if shot is bucketed");
         return daoSession.getShotDBDao().queryBuilder()
                 .where(ShotDBDao.Properties.Id.eq(shotId))
                 .rx()
@@ -116,11 +117,15 @@ public class GuestModeBucketsRepository {
         }
     }
 
-    private void removeShotFromBucket(List<ShotDB> bucketedShots) {
+    private void removeShotsFromBucket(List<ShotDB> bucketedShots) {
         for (final ShotDB shot : bucketedShots) {
             shot.setBucketCount(shot.getBucketCount() - 1);
             if (shot.getBucketCount() == 0) {
                 shot.setIsBucketed(false);
+
+                if (!shot.getIsLiked()) {
+                    daoSession.getShotDBDao().deleteByKey(shot.getId());
+                }
             }
             shot.update();
         }
