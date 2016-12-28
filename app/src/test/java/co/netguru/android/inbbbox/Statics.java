@@ -129,7 +129,7 @@ public final class Statics {
             .team(TEAM)
             .bucketCount(123)
             .likesCount(321)
-            .creationDate(LocalDateTime.now().minusDays(2))
+            .creationDate(ZonedDateTime.now().minusDays(2))
             .isGif(false)
             .isLiked(false)
             .isBucketed(false)
@@ -166,7 +166,7 @@ public final class Statics {
             .bucketCount(1)
             .likesCount(0)
             .commentsCount(3)
-            .creationDate(LocalDateTime.now().minusDays(2))
+            .creationDate(ZonedDateTime.now().minusDays(2))
             .isGif(false)
             .isLiked(false)
             .isBucketed(false)
@@ -184,7 +184,7 @@ public final class Statics {
             .bucketCount(123)
             .likesCount(321)
             .commentsCount(3)
-            .creationDate(LocalDateTime.now().minusDays(2))
+            .creationDate(ZonedDateTime.now().minusDays(2))
             .isGif(false)
             .isLiked(true)
             .isBucketed(true)
@@ -199,7 +199,7 @@ public final class Statics {
             .user(USER_ENTITY)
             .build();
 
-    public static final BucketDB BUCKET_DB = new BucketDB(1L, "test", "test", 2, LocalDateTime.now());
+    public static final BucketDB BUCKET_DB = new BucketDB(1L, "test", "test", 2, ZonedDateTime.now());
 
     public static final List<Comment> COMMENTS = generateComments();
     public static final List<Shot> SHOT_LIST = Collections.emptyList();

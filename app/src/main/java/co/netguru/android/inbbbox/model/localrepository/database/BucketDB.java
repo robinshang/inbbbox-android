@@ -5,14 +5,14 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.JoinEntity;
 import org.greenrobot.greendao.annotation.ToMany;
-import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.model.localrepository.database.converter.LocalDateTimeConverter;
+import co.netguru.android.inbbbox.model.localrepository.database.converter.ZonedDateTimeConverter;
 
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
+import org.threeten.bp.ZonedDateTime;
 
 @Entity
 public class BucketDB {
@@ -22,9 +22,8 @@ public class BucketDB {
     private String name;
     private String description;
     private int shotsCount;
-    // TODO: 22.12.2016 Change to ZonedDateTime
-    @Convert(converter = LocalDateTimeConverter.class, columnType = String.class)
-    private LocalDateTime createdAt;
+    @Convert(converter = ZonedDateTimeConverter.class, columnType = String.class)
+    private ZonedDateTime createdAt;
     @ToMany
     @JoinEntity(entity = JoinBucketsWithShots.class, sourceProperty = "bucketId", targetProperty = "shotId")
     private List<ShotDB> shots;
@@ -41,8 +40,8 @@ public class BucketDB {
     @Generated(hash = 270209034)
     private transient BucketDBDao myDao;
 
-    @Generated(hash = 1831703667)
-    public BucketDB(Long id, String name, String description, int shotsCount, LocalDateTime createdAt) {
+    @Generated(hash = 1374994603)
+    public BucketDB(Long id, String name, String description, int shotsCount, ZonedDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -86,11 +85,11 @@ public class BucketDB {
         this.shotsCount = shotsCount;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public ZonedDateTime getCreatedAt() {
         return this.createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -160,7 +159,9 @@ public class BucketDB {
         myDao.update(this);
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 1346736713)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
