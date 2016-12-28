@@ -5,22 +5,22 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
 @Entity
-public class JoinBucketsWithShots {
+public class JoinShotsWithBuckets {
 
     @Id(autoincrement = true)
     private Long id;
-    private long bucketId;
     private long shotId;
+    private long bucketId;
 
-    @Generated(hash = 1518059435)
-    public JoinBucketsWithShots(Long id, long bucketId, long shotId) {
+    @Generated(hash = 1442967674)
+    public JoinShotsWithBuckets(Long id, long shotId, long bucketId) {
         this.id = id;
-        this.bucketId = bucketId;
         this.shotId = shotId;
+        this.bucketId = bucketId;
     }
 
-    @Generated(hash = 835510296)
-    public JoinBucketsWithShots() {
+    @Generated(hash = 1333144005)
+    public JoinShotsWithBuckets() {
     }
 
     public Long getId() {
@@ -31,14 +31,6 @@ public class JoinBucketsWithShots {
         this.id = id;
     }
 
-    public long getBucketId() {
-        return this.bucketId;
-    }
-
-    public void setBucketId(long bucketId) {
-        this.bucketId = bucketId;
-    }
-
     public long getShotId() {
         return this.shotId;
     }
@@ -47,4 +39,11 @@ public class JoinBucketsWithShots {
         this.shotId = shotId;
     }
 
+    public long getBucketId() {
+        return this.bucketId;
+    }
+
+    public void setBucketId(long bucketId) {
+        this.bucketId = bucketId;
+    }
 }

@@ -10,30 +10,26 @@ import javax.inject.Singleton;
 import co.netguru.android.inbbbox.model.localrepository.database.DaoSession;
 import co.netguru.android.inbbbox.model.localrepository.database.ShotDB;
 import co.netguru.android.inbbbox.model.localrepository.database.ShotDBDao;
-import co.netguru.android.inbbbox.model.localrepository.database.mapper.ShotDBMapper;
 import co.netguru.android.inbbbox.model.localrepository.database.mapper.TeamDBMapper;
-import co.netguru.android.inbbbox.model.localrepository.database.mapper.UserDBMapper;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
 import rx.Observable;
 
 @Singleton
-public class GuestModeLikesRepository {
+public class GuestModeLikesRepository extends BaseGuestModeRepository {
 
     private static final String SHOT_IS_NOT_LIKED_ERROR = "Shot is not liked";
 
-    private final DaoSession daoSession;
-
     @Inject
     GuestModeLikesRepository(DaoSession daoSession) {
-        this.daoSession = daoSession;
+        super(daoSession);
     }
 
     public Completable addLikedShot(@NonNull Shot shot) {
         return daoSession.rxTx()
                 .run(() -> {
-                    daoSession.getShotDBDao().insertOrReplace(ShotDBMapper.fromShot(likeShot(shot)));
-                    daoSession.getUserDBDao().insertOrReplace(UserDBMapper.fromUser(shot.author()));
+                    daoSession.getShotDBDao().insertOrReplace(likeShot(shot));
+                    insertUserIfExists(shot);
                     if (shot.team() != null) {
                         daoSession.getTeamDBDao().insertOrReplace(TeamDBMapper.fromTeam(shot.team()));
                     }
@@ -51,7 +47,7 @@ public class GuestModeLikesRepository {
     public Completable removeLikedShot(Shot shot) {
         if (shot.isBucketed()) {
             return daoSession.getShotDBDao().rx()
-                    .insertOrReplace(ShotDBMapper.fromShot(unlikeShot(shot))).toCompletable();
+                    .insertOrReplace(unlikeShot(shot)).toCompletable();
         }
 
         return daoSession.getShotDBDao().rx().deleteByKey(shot.id()).toCompletable();
@@ -71,17 +67,19 @@ public class GuestModeLikesRepository {
                 .toCompletable();
     }
 
-    private Shot likeShot(Shot shot) {
-        return Shot.update(shot)
-                .likesCount(shot.likesCount() + 1)
-                .isLiked(true)
-                .build();
+    private ShotDB likeShot(Shot shot) {
+        final ShotDB shotDB = getNewOrExistingShot(shot);
+        shotDB.setLikesCount(shotDB.getLikesCount() + 1);
+        shotDB.setIsLiked(true);
+
+        return shotDB;
     }
 
-    private Shot unlikeShot(Shot shot) {
-        return Shot.update(shot)
-                .likesCount(shot.likesCount() - 1)
-                .isLiked(false)
-                .build();
+    private ShotDB unlikeShot(Shot shot) {
+        final ShotDB shotDB = getNewOrExistingShot(shot);
+        shotDB.setLikesCount(shotDB.getLikesCount() - 1);
+        shotDB.setIsLiked(false);
+
+        return shotDB;
     }
 }

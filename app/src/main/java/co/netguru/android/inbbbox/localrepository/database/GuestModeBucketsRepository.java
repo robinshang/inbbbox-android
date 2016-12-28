@@ -13,11 +13,10 @@ import co.netguru.android.inbbbox.model.localrepository.database.BucketDB;
 import co.netguru.android.inbbbox.model.localrepository.database.BucketDBDao;
 import co.netguru.android.inbbbox.model.localrepository.database.DaoSession;
 import co.netguru.android.inbbbox.model.localrepository.database.JoinBucketsWithShots;
+import co.netguru.android.inbbbox.model.localrepository.database.JoinShotsWithBuckets;
 import co.netguru.android.inbbbox.model.localrepository.database.ShotDB;
 import co.netguru.android.inbbbox.model.localrepository.database.ShotDBDao;
 import co.netguru.android.inbbbox.model.localrepository.database.mapper.BucketDbMapper;
-import co.netguru.android.inbbbox.model.localrepository.database.mapper.ShotDBMapper;
-import co.netguru.android.inbbbox.model.localrepository.database.mapper.UserDBMapper;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
@@ -26,13 +25,11 @@ import rx.Single;
 import timber.log.Timber;
 
 @Singleton
-public class GuestModeBucketsRepository {
-
-    private final DaoSession daoSession;
+public class GuestModeBucketsRepository extends BaseGuestModeRepository {
 
     @Inject
     GuestModeBucketsRepository(DaoSession daoSession) {
-        this.daoSession = daoSession;
+        super(daoSession);
     }
 
     public Single<List<Bucket>> getUserBuckets() {
@@ -43,8 +40,10 @@ public class GuestModeBucketsRepository {
 
     public Completable addShotToBucket(long bucketId, Shot shot) {
         Timber.d("Adding shot to bucket from local repository");
-        return daoSession.getBucketDBDao().queryBuilder().rx().oneByOne()
-                .filter(bucketDB -> bucketDB.getId() == bucketId)
+        return daoSession.getBucketDBDao().queryBuilder()
+                .where(BucketDBDao.Properties.Id.eq(bucketId))
+                .rx()
+                .unique()
                 .flatMap(bucketDB -> addShotAndCreateRelation(bucketDB, shot))
                 .doOnNext(this::increaseBucketShotsCount)
                 .toCompletable();
@@ -69,8 +68,9 @@ public class GuestModeBucketsRepository {
     public Completable removeBucket(long bucketId) {
         Timber.d("Removing bucket from local repository");
         return daoSession.rxTx().run(() -> {
-            removeShotsFromBucket(daoSession.load(BucketDB.class, bucketId).getShots());
-            daoSession.getBucketDBDao().deleteByKey(bucketId);
+            final BucketDB bucketDB = daoSession.load(BucketDB.class, bucketId);
+            removeShotsFromBucket(bucketDB.getShots(), bucketId);
+            bucketDB.delete();
         }).toCompletable();
     }
 
@@ -95,7 +95,7 @@ public class GuestModeBucketsRepository {
                 .where(ShotDBDao.Properties.Id.eq(shotId))
                 .rx()
                 .unique()
-                .map(ShotDB::getIsBucketed)
+                .map(shotDB -> !(shotDB == null || !shotDB.getIsBucketed()))
                 .toSingle();
     }
 
@@ -104,32 +104,38 @@ public class GuestModeBucketsRepository {
             insertUserIfExists(shot);
             final ShotDB shotToAdd = createShotToAdd(shot);
             daoSession.insertOrReplace(new JoinBucketsWithShots(null, bucketDB.getId(), shotToAdd.getId()));
+            daoSession.insertOrReplace(new JoinShotsWithBuckets(null, shotToAdd.getId(), bucketDB.getId()));
             daoSession.insertOrReplace(shotToAdd);
         }).map(aVoid -> bucketDB);
     }
 
-    private void insertUserIfExists(Shot shot) {
-        if (shot.author() != null) {
-            daoSession.insertOrReplace(UserDBMapper.fromUser(shot.author()));
-        }
-    }
-
-    private void removeShotsFromBucket(List<ShotDB> bucketedShots) {
+    private void removeShotsFromBucket(List<ShotDB> bucketedShots, long bucketId) {
         for (final ShotDB shot : bucketedShots) {
             shot.setBucketCount(shot.getBucketCount() - 1);
-            if (shot.getBucketCount() == 0) {
+            removeBucketFromShot(shot, bucketId);
+
+            if (shot.getBuckets().size() == 0) {
                 shot.setIsBucketed(false);
 
                 if (!shot.getIsLiked()) {
-                    daoSession.getShotDBDao().deleteByKey(shot.getId());
+                    shot.delete();
                 }
             }
             shot.update();
         }
     }
 
+    private void removeBucketFromShot(ShotDB shot, long bucketId) {
+        for (final BucketDB bucket : shot.getBuckets()) {
+            if (bucket.getId() == bucketId) {
+                shot.getBuckets().remove(bucket);
+                break;
+            }
+        }
+    }
+
     private ShotDB createShotToAdd(Shot shot) {
-        final ShotDB shotToAdd = ShotDBMapper.fromShot(shot);
+        final ShotDB shotToAdd = getNewOrExistingShot(shot);
         shotToAdd.setIsBucketed(true);
         shotToAdd.setBucketCount(shotToAdd.getBucketCount() + 1);
 
