@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.model.localrepository.database.converter;
+package co.netguru.android.inbbbox.data.db.converters;
 
 import org.greenrobot.greendao.converter.PropertyConverter;
 import org.threeten.bp.ZonedDateTime;

@@ -1,15 +1,14 @@
-package co.netguru.android.inbbbox.model.localrepository.database;
+package co.netguru.android.inbbbox.data.db;
 
 import android.support.annotation.Nullable;
 
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
-
-import co.netguru.android.inbbbox.model.localrepository.database.converter.ZonedDateTimeConverter;
-
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 import org.threeten.bp.ZonedDateTime;
+
+import co.netguru.android.inbbbox.data.db.converters.ZonedDateTimeConverter;
 
 @Entity
 public class UserEntityDB {
@@ -51,11 +50,11 @@ public class UserEntityDB {
 
     @Generated(hash = 1459562272)
     public UserEntityDB(long id, String name, String username, String htmlUrl, String avatarUrl, String bio,
-            String location, String linksWeb, String linksTwitter, int bucketsCount, int commentsReceivedCount,
-            int followersCount, int followingsCount, int likesCount, int likesReceivedCount, int projectsCount,
-            int reboundsReceivedCount, int shotsCount, int teamsCount, boolean canUploadShot, String type, boolean pro,
-            String bucketsUrl, String followersUrl, String followingUrl, String likesUrl, String shotsUrl, String teamsUrl,
-            ZonedDateTime createdAt, ZonedDateTime updatedAt) {
+                        String location, String linksWeb, String linksTwitter, int bucketsCount, int commentsReceivedCount,
+                        int followersCount, int followingsCount, int likesCount, int likesReceivedCount, int projectsCount,
+                        int reboundsReceivedCount, int shotsCount, int teamsCount, boolean canUploadShot, String type, boolean pro,
+                        String bucketsUrl, String followersUrl, String followingUrl, String likesUrl, String shotsUrl, String teamsUrl,
+                        ZonedDateTime createdAt, ZonedDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.username = username;

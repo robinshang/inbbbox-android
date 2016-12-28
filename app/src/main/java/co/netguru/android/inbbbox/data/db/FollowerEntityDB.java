@@ -1,16 +1,15 @@
-package co.netguru.android.inbbbox.model.localrepository.database;
+package co.netguru.android.inbbbox.data.db;
 
+import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.DaoException;
-
-import co.netguru.android.inbbbox.model.localrepository.database.converter.ZonedDateTimeConverter;
-
+import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.annotation.ToOne;
 import org.threeten.bp.ZonedDateTime;
+
+import co.netguru.android.inbbbox.data.db.converters.ZonedDateTimeConverter;
 
 @Entity
 public class FollowerEntityDB {

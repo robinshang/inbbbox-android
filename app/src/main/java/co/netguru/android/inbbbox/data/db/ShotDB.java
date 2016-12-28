@@ -1,15 +1,14 @@
-package co.netguru.android.inbbbox.model.localrepository.database;
-
-import org.greenrobot.greendao.annotation.Convert;
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.ToOne;
-
-import co.netguru.android.inbbbox.model.localrepository.database.converter.ZonedDateTimeConverter;
+package co.netguru.android.inbbbox.data.db;
 
 import org.greenrobot.greendao.DaoException;
+import org.greenrobot.greendao.annotation.Convert;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.ToOne;
 import org.threeten.bp.ZonedDateTime;
+
+import co.netguru.android.inbbbox.data.db.converters.ZonedDateTimeConverter;
 
 @Entity
 public class ShotDB {
@@ -50,9 +49,9 @@ public class ShotDB {
 
     @Generated(hash = 1054056122)
     public ShotDB(Long id, String title, ZonedDateTime creationDate, String projectUrl, int likesCount,
-            int bucketCount, int commentsCount, String description, boolean isGif, String hiDpiImageUrl,
-            String normalImageUrl, String thumbnailUrl, boolean isBucketed, boolean isLiked, Long userId,
-            Long teamId) {
+                  int bucketCount, int commentsCount, String description, boolean isGif, String hiDpiImageUrl,
+                  String normalImageUrl, String thumbnailUrl, boolean isBucketed, boolean isLiked, Long userId,
+                  Long teamId) {
         this.id = id;
         this.title = title;
         this.creationDate = creationDate;
@@ -311,7 +310,9 @@ public class ShotDB {
         myDao.update(this);
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 907843013)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
