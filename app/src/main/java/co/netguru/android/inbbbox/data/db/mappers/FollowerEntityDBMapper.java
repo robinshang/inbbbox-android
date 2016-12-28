@@ -1,5 +1,6 @@
-package co.netguru.android.inbbbox.data.follower.model.db;
+package co.netguru.android.inbbbox.data.db.mappers;
 
+import co.netguru.android.inbbbox.data.db.FollowerEntityDB;
 import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
 
 public class FollowerEntityDBMapper {

@@ -14,12 +14,12 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.DaoSession;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.UserEntityDB;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.UserEntityDBDao;
+import co.netguru.android.inbbbox.data.db.DaoSession;
+import co.netguru.android.inbbbox.data.db.FollowerEntityDB;
+import co.netguru.android.inbbbox.data.db.FollowerEntityDBDao;
+import co.netguru.android.inbbbox.data.db.UserEntityDB;
+import co.netguru.android.inbbbox.data.db.UserEntityDBDao;
 import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
-import co.netguru.android.inbbbox.data.follower.model.db.FollowerEntityDB;
-import co.netguru.android.inbbbox.data.follower.model.db.FollowerEntityDBDao;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.observers.TestSubscriber;

@@ -11,9 +11,9 @@ import org.greenrobot.greendao.database.Database;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import co.netguru.android.inbbbox.data.db.DaoMaster;
+import co.netguru.android.inbbbox.data.db.DaoSession;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.CurrentUserPrefsRepository;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.DaoMaster;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.DaoSession;
 import co.netguru.android.inbbbox.data.session.TokenPrefsRepository;
 import co.netguru.android.inbbbox.data.settings.SettingsPrefsRepository;
 import dagger.Module;

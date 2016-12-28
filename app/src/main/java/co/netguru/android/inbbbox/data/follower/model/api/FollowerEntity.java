@@ -7,8 +7,8 @@ import com.google.gson.annotations.SerializedName;
 
 import org.threeten.bp.ZonedDateTime;
 
+import co.netguru.android.inbbbox.data.db.FollowerEntityDB;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
-import co.netguru.android.inbbbox.data.follower.model.db.FollowerEntityDB;
 
 @AutoValue
 public abstract class FollowerEntity {

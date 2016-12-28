@@ -1,5 +1,6 @@
-package co.netguru.android.inbbbox.data.dribbbleuser.user.model.db;
+package co.netguru.android.inbbbox.data.db.mappers;
 
+import co.netguru.android.inbbbox.data.db.UserDB;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 
 public class UserDBMapper {

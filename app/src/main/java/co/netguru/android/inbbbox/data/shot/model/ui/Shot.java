@@ -12,10 +12,10 @@ import org.threeten.bp.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.netguru.android.inbbbox.data.db.ShotDB;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
-import co.netguru.android.inbbbox.data.shot.model.db.ShotDB;
 
 @AutoValue
 public abstract class Shot implements Parcelable, ShotImage {

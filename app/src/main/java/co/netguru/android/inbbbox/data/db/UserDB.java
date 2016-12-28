@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.data.dribbbleuser.user.model.db;
+package co.netguru.android.inbbbox.data.db;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;

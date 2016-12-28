@@ -1,4 +1,7 @@
-package co.netguru.android.inbbbox.data.dribbbleuser.team;
+package co.netguru.android.inbbbox.data.db.mappers;
+
+import co.netguru.android.inbbbox.data.db.TeamDB;
+import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 
 public class TeamDBMapper {
 

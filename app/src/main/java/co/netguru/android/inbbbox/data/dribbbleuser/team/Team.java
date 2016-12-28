@@ -6,6 +6,8 @@ import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
+import co.netguru.android.inbbbox.data.db.TeamDB;
+
 @AutoValue
 public abstract class Team implements Parcelable {
 

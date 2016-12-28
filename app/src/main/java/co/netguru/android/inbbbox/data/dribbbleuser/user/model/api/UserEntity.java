@@ -10,8 +10,8 @@ import com.google.gson.annotations.SerializedName;
 
 import org.threeten.bp.ZonedDateTime;
 
+import co.netguru.android.inbbbox.data.db.UserEntityDB;
 import co.netguru.android.inbbbox.data.dribbbleuser.Links;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.model.db.UserEntityDB;
 
 @AutoValue
 public abstract class UserEntity implements Parcelable {

@@ -1,5 +1,6 @@
-package co.netguru.android.inbbbox.data.shot.model.db;
+package co.netguru.android.inbbbox.data.db.mappers;
 
+import co.netguru.android.inbbbox.data.db.ShotDB;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
 public class ShotDBMapper {
