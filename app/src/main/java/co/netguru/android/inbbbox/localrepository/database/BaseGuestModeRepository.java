@@ -29,7 +29,7 @@ abstract class BaseGuestModeRepository {
 
     protected void insertUserIfExists(Shot shot) {
         if (shot.author() != null) {
-            daoSession.insertOrReplace(UserDBMapper.fromUser(shot.author()));
+            daoSession.getUserDBDao().insertOrReplace(UserDBMapper.fromUser(shot.author()));
         }
     }
 }

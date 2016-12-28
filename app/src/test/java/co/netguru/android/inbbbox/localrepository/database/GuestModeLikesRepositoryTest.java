@@ -68,6 +68,8 @@ public class GuestModeLikesRepositoryTest {
         when(daoSession.getTeamDBDao()).thenReturn(teamDBDao);
         when(shotDBDao.rx()).thenReturn(shotRxDao);
         when(daoSession.rxTx()).thenReturn(rxTransaction);
+        when(shotDBDao.queryBuilder()).thenReturn(shotDBQueryBuilder);
+        when(shotDBQueryBuilder.where(any())).thenReturn(shotDBQueryBuilder);
         doAnswer(invocation -> {
             final Runnable test = (Runnable) invocation.getArguments()[0];
             test.run();
