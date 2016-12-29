@@ -33,15 +33,12 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     private final FollowersController followersController;
     private final ErrorController errorController;
     private final CompositeSubscription subscriptions;
-
     @NonNull
     private Subscription loadMoreShotsSubscription;
+
     @NonNull
     private Subscription refreshShotsSubscription;
-    @NonNull
-    private Subscription unfollowUserSubscription;
-    @NonNull
-    private Subscription followUserSubscription;
+
     private Follower follower;
     private boolean hasMore = true;
     private int pageNumber = 1;
@@ -55,8 +52,6 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         subscriptions = new CompositeSubscription();
         refreshShotsSubscription = Subscriptions.unsubscribed();
         loadMoreShotsSubscription = Subscriptions.unsubscribed();
-        unfollowUserSubscription = Subscriptions.unsubscribed();
-        followUserSubscription = Subscriptions.unsubscribed();
     }
 
     @Override
@@ -65,8 +60,6 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         if (!retainInstance) {
             loadMoreShotsSubscription.unsubscribe();
             refreshShotsSubscription.unsubscribe();
-            unfollowUserSubscription.unsubscribe();
-            followUserSubscription.unsubscribe();
         }
     }
 
@@ -129,10 +122,11 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     @Override
     public void unFollowUser() {
-        unfollowUserSubscription = followersController.unFollowUser(follower.id())
-                .compose(applyCompletableIoSchedulers())
-                .subscribe(getView()::showFollowersList,
-                        throwable -> handleError(throwable, "Error while unFollow user"));
+        subscriptions.add(
+                followersController.unFollowUser(follower.id())
+                        .compose(applyCompletableIoSchedulers())
+                        .subscribe(getView()::showFollowersList,
+                                throwable -> handleError(throwable, "Error while unFollow user")));
     }
 
     @Override
@@ -155,10 +149,11 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     @Override
     public void followUser() {
-        followUserSubscription = followersController.followUser(follower.id())
-                .compose(applyCompletableIoSchedulers())
-                .subscribe(() -> setFollowingMenuIcon(true),
-                        throwable -> handleError(throwable, "Error while follow user"));
+        subscriptions.add(
+                followersController.followUser(follower.id())
+                        .compose(applyCompletableIoSchedulers())
+                        .subscribe(() -> setFollowingMenuIcon(true),
+                                throwable -> handleError(throwable, "Error while follow user")));
     }
 
     private void downloadUserShots(User user) {
@@ -181,10 +176,11 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     }
 
     private void checkIfUserIsFollowed(long userId) {
-        followersController.isUserFollowed(userId)
-                .compose(applySingleIoSchedulers())
-                .subscribe(this::setFollowingMenuIcon,
-                        throwable -> handleError(throwable, "Error while checking if user is followed"));
+        subscriptions.add(
+                followersController.isUserFollowed(userId)
+                        .compose(applySingleIoSchedulers())
+                        .subscribe(this::setFollowingMenuIcon,
+                                throwable -> handleError(throwable, "Error while checking if user is followed")));
     }
 
     private void setFollowingMenuIcon(boolean isFollowed) {

@@ -1,8 +1,8 @@
 package co.netguru.android.inbbbox.controler.followers;
 
-import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.model.api.FollowerEntity;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
@@ -10,6 +10,9 @@ import rx.Single;
 public class FollowersControllerApi implements FollowersController {
 
     private final FollowersApi followersApi;
+
+    private static final int CODE_USER_IS_FOLLOWED = 204;
+    private static final int CODE_USER_IS_NOT_FOLLOWED = 404;
 
     public FollowersControllerApi(FollowersApi followersApi) {
         this.followersApi = followersApi;
@@ -32,20 +35,17 @@ public class FollowersControllerApi implements FollowersController {
     }
 
     @Override
-    public Single<Boolean> isUserFollowed(long id) {
-        return followersApi.checkIfUserIsFollowed(id)
-                .map(response -> isUserFollowedDependingOnCode(response.code()));
-    }
-
-    private boolean isUserFollowedDependingOnCode(int code) {
-        boolean userIsFollowed = false;
-        if (code == Constants.ApiCodes.CODE_USER_IS_FOLLOWED) {
-            userIsFollowed = true;
-
-        } else if (code == Constants.ApiCodes.CODE_USER_IS_NOT_FOLLOWED) {
-            userIsFollowed = false;
-        }
-
-        return userIsFollowed;
+    public Single<Boolean> isUserFollowed(long userId) {
+        return followersApi.checkIfUserIsFollowed(userId)
+                .flatMap(voidResponse -> {
+                    switch (voidResponse.code()) {
+                        case CODE_USER_IS_FOLLOWED:
+                            return Single.just(true);
+                        case CODE_USER_IS_NOT_FOLLOWED:
+                            return Single.just(false);
+                        default:
+                            return Single.error(new HttpException(voidResponse));
+                    }
+                });
     }
 }

@@ -16,20 +16,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
 import co.netguru.android.inbbbox.controler.followers.FollowersController;
-import co.netguru.android.inbbbox.controler.followers.FollowersControllerApi;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsContract;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsPresenter;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.testcommons.RxSyncTestRule;
-import okhttp3.Protocol;
-import okhttp3.Request;
-import retrofit2.Response;
 import rx.Observable;
 import rx.Single;
 import rx.plugins.RxJavaHooks;
@@ -59,13 +54,7 @@ public class FollowerDetailsPresenterTest {
     ErrorController errorControllerMock;
 
     @Mock
-    FollowersControllerApi followersControllerApiMock;
-
-    @Mock
     FollowersController followersControllerMock;
-
-    @Mock
-    FollowersApi followersApiMock;
 
     @Mock
     User userMock;
@@ -85,14 +74,6 @@ public class FollowerDetailsPresenterTest {
         when(errorControllerMock.getThrowableMessage(any(Throwable.class))).thenCallRealMethod();
 
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
-
-        okhttp3.Response rawResponse = new okhttp3.Response.Builder()
-                .code(204)
-                .protocol(Protocol.HTTP_1_1)
-                .request(new Request.Builder().url("http://localhost/").build())
-                .build();
-        Response<Void> response = Response.success(null, rawResponse);
-        when(followersApiMock.checkIfUserIsFollowed(anyLong())).thenReturn(Single.just(response));
 
         when(followersControllerMock.isUserFollowed(anyLong())).thenReturn(Single.just(true));
     }
@@ -117,7 +98,7 @@ public class FollowerDetailsPresenterTest {
 
         followerDetailsPresenter.userDataReceived(userMock);
 
-        verify(followersControllerApiMock, times(1))
+        verify(followersControllerMock, times(1))
                 .isUserFollowed(eq(EXAMPLE_ID));
     }
 
@@ -141,7 +122,7 @@ public class FollowerDetailsPresenterTest {
 
         followerDetailsPresenter.followerDataReceived(followerMock);
 
-        verify(followersControllerApiMock, times(1))
+        verify(followersControllerMock, times(1))
                 .isUserFollowed(eq(EXAMPLE_ID));
     }
 

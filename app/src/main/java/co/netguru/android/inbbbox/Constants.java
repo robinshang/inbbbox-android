@@ -51,12 +51,6 @@ public final class Constants {
         public static final int HTTP_UNAUTHORIZED_401 = 401;
     }
 
-    public enum ApiCodes {
-        ;
-        public static final int CODE_USER_IS_FOLLOWED = 204;
-        public static final int CODE_USER_IS_NOT_FOLLOWED = 404;
-    }
-
     public static class Animations {
         public static final long FOG_ANIM_DURATION = 200;
 
