@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
-import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 @AutoValue
 public abstract class ShotEntity implements Parcelable {
@@ -33,7 +33,7 @@ public abstract class ShotEntity implements Parcelable {
     public abstract int bucketsCount();
 
     @SerializedName("created_at")
-    public abstract LocalDateTime createdAt();
+    public abstract ZonedDateTime createdAt();
 
     @SerializedName("comments_count")
     public abstract int commentsCount();
@@ -73,7 +73,7 @@ public abstract class ShotEntity implements Parcelable {
 
         public abstract Builder commentsCount(int commentsCount);
 
-        public abstract Builder createdAt(LocalDateTime createdAt);
+        public abstract Builder createdAt(ZonedDateTime createdAt);
 
         public abstract Builder animated(boolean animated);
 

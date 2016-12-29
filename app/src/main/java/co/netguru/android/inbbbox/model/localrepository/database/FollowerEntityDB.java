@@ -7,18 +7,18 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToOne;
-import org.threeten.bp.LocalDateTime;
 
-import co.netguru.android.inbbbox.model.localrepository.database.converter.LocalDateTimeConverter;
+import co.netguru.android.inbbbox.model.localrepository.database.converter.ZonedDateTimeConverter;
+
+import org.threeten.bp.ZonedDateTime;
 
 @Entity
 public class FollowerEntityDB {
 
     @Id
     private long id;
-    // TODO: 22.12.2016 Change to ZonedDateTime
-    @Convert(converter = LocalDateTimeConverter.class, columnType = String.class)
-    private LocalDateTime createdAt;
+    @Convert(converter = ZonedDateTimeConverter.class, columnType = String.class)
+    private ZonedDateTime createdAt;
     private long userId;
     @ToOne(joinProperty = "userId")
     private UserEntityDB user;
@@ -35,8 +35,8 @@ public class FollowerEntityDB {
     @Generated(hash = 979453088)
     private transient FollowerEntityDBDao myDao;
 
-    @Generated(hash = 399049204)
-    public FollowerEntityDB(long id, LocalDateTime createdAt, long userId) {
+    @Generated(hash = 2020176733)
+    public FollowerEntityDB(long id, ZonedDateTime createdAt, long userId) {
         this.id = id;
         this.createdAt = createdAt;
         this.userId = userId;
@@ -54,11 +54,11 @@ public class FollowerEntityDB {
         this.id = id;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public ZonedDateTime getCreatedAt() {
         return this.createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
     }
 

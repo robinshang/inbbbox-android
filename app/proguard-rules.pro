@@ -16,19 +16,8 @@
 #   public *;
 #}
 
-# base option from *App Dev Note*
--optimizationpasses 5
--dontusemixedcaseclassnames
--dontskipnonpubliclibraryclasses
 -dontskipnonpubliclibraryclassmembers
--dontpreverify
--optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
--keepattributes LineNumberTable,SourceFile,Signature,*Annotation*,Exceptions,InnerClasses
-
-# Keep native methods
--keepclassmembers class * {
-    native <methods>;
-}
+-keepattributes LineNumberTable,SourceFile
 
 # remove log call
 -assumenosideeffects class android.util.Log {

@@ -1,6 +1,6 @@
 package co.netguru.android.inbbbox.api;
 
-import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,11 +85,11 @@ public class MockShotsApi implements ShotsApi {
                             .id(i)
                             .title(label + i)
                             .image(image)
-                            .createdAt(LocalDateTime.now())
+                            .createdAt(ZonedDateTime.now())
                             .animated(false)
                             .likesCount(2)
                             .bucketsCount(3)
-                            .createdAt(LocalDateTime.now())
+                            .createdAt(ZonedDateTime.now())
                             .commentsCount(2)
                             .build());
         }

@@ -11,7 +11,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 import java.util.Collections;
 import java.util.List;
@@ -80,7 +80,7 @@ public class ShotDetailsPresenterTest {
         shotDetailsPresenter.attachView(viewMock);
         when(shotMock.id()).thenReturn(EXAMPLE_ID);
         when(shotMock.author()).thenReturn(User.create(Statics.USER_ENTITY));
-        when(shotMock.creationDate()).thenReturn(LocalDateTime.now());
+        when(shotMock.creationDate()).thenReturn(ZonedDateTime.now());
         when(viewMock.getShotInitialData()).thenReturn(shotMock);
         when(errorControllerMock.getThrowableMessage(any(Throwable.class))).thenCallRealMethod();
         shotDetailsPresenter.retrieveInitialData();

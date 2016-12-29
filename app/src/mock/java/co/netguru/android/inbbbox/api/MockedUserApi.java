@@ -1,8 +1,5 @@
 package co.netguru.android.inbbbox.api;
 
-
-import org.threeten.bp.LocalDateTime;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,19 +18,19 @@ public class MockedUserApi implements UserApi {
 
     static {
         MOCKED_USER = UserEntity.builder().avatarUrl("").bio("").bucketsCount(1).bucketsUrl("")
-                .bio("").canUploadShot(false).commentsReceivedCount(1).createdAt(LocalDateTime.now()).followersCount(1)
+                .bio("").canUploadShot(false).commentsReceivedCount(1).createdAt(ZonedDateTime.now()).followersCount(1)
                 .followersUrl("").followingsCount(1).followingUrl("").htmlUrl("").id(1).likesCount(1).likesReceivedCount(1)
                 .likesUrl("").links(Links.create("", "")).location("").name("").pro(true).projectsCount(1).reboundsReceivedCount(1)
-                .shotsCount(1).shotsUrl("").teamsCount(1).teamsUrl("").username("").updatedAt(LocalDateTime.now()).type("").build();
+                .shotsCount(1).shotsUrl("").teamsCount(1).teamsUrl("").username("").updatedAt(ZonedDateTime.now()).type("").build();
 
         mockedUserBuckets = Arrays.asList(
-                Bucket.builder().createdAt(LocalDateTime.now())
+                Bucket.builder().createdAt(ZonedDateTime.now())
                         .description("")
                         .id(1)
                         .name("name1")
                         .shotsCount(10)
                         .build(),
-                Bucket.builder().createdAt(LocalDateTime.now())
+                Bucket.builder().createdAt(ZonedDateTime.now())
                         .description("")
                         .id(2)
                         .name("name2")

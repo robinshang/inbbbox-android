@@ -75,11 +75,11 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     }
 
     @Override
-    public void getShotsFromServer() {
+    public void getShotsFromServer(boolean pullToRefresh) {
         if (refreshSubscription.isUnsubscribed()) {
             loadMoreSubscription.unsubscribe();
             pageNumber = FIRST_PAGE;
-            getView().showLoadingIndicator();
+            getView().showLoadingIndicator(pullToRefresh);
             refreshSubscription = shotsController.getShots(pageNumber, SHOTS_PER_PAGE)
                     .compose(androidIO())
                     .subscribe(shotList -> {

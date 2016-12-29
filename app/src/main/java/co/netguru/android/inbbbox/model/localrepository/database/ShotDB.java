@@ -6,9 +6,9 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToOne;
-import org.threeten.bp.LocalDateTime;
 
-import co.netguru.android.inbbbox.model.localrepository.database.converter.LocalDateTimeConverter;
+import co.netguru.android.inbbbox.model.localrepository.database.converter.ZonedDateTimeConverter;
+import org.threeten.bp.ZonedDateTime;
 
 @Entity
 public class ShotDB {
@@ -16,9 +16,8 @@ public class ShotDB {
     @Id
     private Long id;
     private String title;
-    // TODO: 21.12.2016 change to ZonedDateTime
-    @Convert(converter = LocalDateTimeConverter.class, columnType = String.class)
-    private LocalDateTime creationDate;
+    @Convert(converter = ZonedDateTimeConverter.class, columnType = String.class)
+    private ZonedDateTime creationDate;
     private String projectUrl;
     private int likesCount;
     private int bucketCount;
@@ -48,11 +47,11 @@ public class ShotDB {
     @Generated(hash = 163997700)
     private transient ShotDBDao myDao;
 
-    @Generated(hash = 1611337159)
-    public ShotDB(Long id, String title, LocalDateTime creationDate, String projectUrl, int likesCount,
-                  int bucketCount, int commentsCount, String description, boolean isGif, String hiDpiImageUrl,
-                  String normalImageUrl, String thumbnailUrl, boolean isBucketed, boolean isLiked,
-                  Long userId, Long teamId) {
+    @Generated(hash = 1054056122)
+    public ShotDB(Long id, String title, ZonedDateTime creationDate, String projectUrl, int likesCount,
+            int bucketCount, int commentsCount, String description, boolean isGif, String hiDpiImageUrl,
+            String normalImageUrl, String thumbnailUrl, boolean isBucketed, boolean isLiked, Long userId,
+            Long teamId) {
         this.id = id;
         this.title = title;
         this.creationDate = creationDate;
@@ -91,11 +90,11 @@ public class ShotDB {
         this.title = title;
     }
 
-    public LocalDateTime getCreationDate() {
+    public ZonedDateTime getCreationDate() {
         return this.creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(ZonedDateTime creationDate) {
         this.creationDate = creationDate;
     }
 

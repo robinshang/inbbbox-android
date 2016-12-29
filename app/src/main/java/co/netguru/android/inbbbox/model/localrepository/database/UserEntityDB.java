@@ -6,9 +6,9 @@ import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
-import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
-import co.netguru.android.inbbbox.model.localrepository.database.converter.LocalDateTimeConverter;
+import co.netguru.android.inbbbox.model.localrepository.database.converter.ZonedDateTimeConverter;
 
 @Entity
 public class UserEntityDB {
@@ -43,20 +43,18 @@ public class UserEntityDB {
     private String likesUrl;
     private String shotsUrl;
     private String teamsUrl;
-    // TODO: 22.12.2016 Change to ZonedDateTime
-    @Convert(converter = LocalDateTimeConverter.class, columnType = String.class)
-    private LocalDateTime createdAt;
-    @Convert(converter = LocalDateTimeConverter.class, columnType = String.class)
-    private LocalDateTime updatedAt;
+    @Convert(converter = ZonedDateTimeConverter.class, columnType = String.class)
+    private ZonedDateTime createdAt;
+    @Convert(converter = ZonedDateTimeConverter.class, columnType = String.class)
+    private ZonedDateTime updatedAt;
 
-    @Generated(hash = 2118346286)
-    public UserEntityDB(long id, String name, String username, String htmlUrl, String avatarUrl,
-                        String bio, String location, String linksWeb, String linksTwitter, int bucketsCount,
-                        int commentsReceivedCount, int followersCount, int followingsCount, int likesCount,
-                        int likesReceivedCount, int projectsCount, int reboundsReceivedCount, int shotsCount,
-                        int teamsCount, boolean canUploadShot, String type, boolean pro, String bucketsUrl,
-                        String followersUrl, String followingUrl, String likesUrl, String shotsUrl, String teamsUrl,
-                        LocalDateTime createdAt, LocalDateTime updatedAt) {
+    @Generated(hash = 1459562272)
+    public UserEntityDB(long id, String name, String username, String htmlUrl, String avatarUrl, String bio,
+            String location, String linksWeb, String linksTwitter, int bucketsCount, int commentsReceivedCount,
+            int followersCount, int followingsCount, int likesCount, int likesReceivedCount, int projectsCount,
+            int reboundsReceivedCount, int shotsCount, int teamsCount, boolean canUploadShot, String type, boolean pro,
+            String bucketsUrl, String followersUrl, String followingUrl, String likesUrl, String shotsUrl, String teamsUrl,
+            ZonedDateTime createdAt, ZonedDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -317,19 +315,19 @@ public class UserEntityDB {
         this.teamsUrl = teamsUrl;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public ZonedDateTime getCreatedAt() {
         return this.createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public ZonedDateTime getUpdatedAt() {
         return this.updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 }
