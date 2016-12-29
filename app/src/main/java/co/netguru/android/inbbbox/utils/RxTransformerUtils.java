@@ -20,6 +20,11 @@ public class RxTransformerUtils {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public static <T> Single.Transformer<T, T> applySingleComputationSchedulers() {
+        return observable -> observable.subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     public static Completable.Transformer applyCompletableIoSchedulers() {
         return completable -> completable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -42,5 +47,9 @@ public class RxTransformerUtils {
                 );
     }
 
+    public static <T> Observable.Transformer<T, T> androidComputation() {
+        return observable -> observable.subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
 }

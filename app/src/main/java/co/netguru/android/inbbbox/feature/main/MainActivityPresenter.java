@@ -27,6 +27,7 @@ import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
+import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applySingleComputationSchedulers;
 import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applySingleIoSchedulers;
 
 @ActivityScope
@@ -139,7 +140,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
             return;
         }
         final Subscription subscription = notificationController.scheduleNotification()
-                .compose(applySingleIoSchedulers())
+                .compose(applySingleComputationSchedulers())
                 .subscribe(this::onScheduleNotificationNext, this::onScheduleNotificationError);
 
         subscriptions.add(subscription);
@@ -199,7 +200,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     public void onTimePicked(int hour, int minute) {
         subscriptions.add(settingsController.changeNotificationTime(hour, minute)
                 .andThen(notificationController.scheduleNotification())
-                .compose(applySingleIoSchedulers())
+                .compose(applySingleComputationSchedulers())
                 .subscribe(notificationSettings ->
                                 getView().showNotificationTime(DateTimeFormatUtil.getFormattedTime(hour, minute)),
                         this::onScheduleNotificationError));
@@ -271,7 +272,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private void checkNotificationSchedule(NotificationSettings settings) {
         if (settings.isEnabled()) {
             notificationController.scheduleNotification()
-                    .compose(applySingleIoSchedulers())
+                    .compose(applySingleComputationSchedulers())
                     .subscribe(this::onScheduleNotificationNext, this::onScheduleNotificationError);
         }
     }
