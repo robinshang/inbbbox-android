@@ -115,6 +115,7 @@
     <dimen name="loading_ball_shadow_size">64dp</dimen>
     <dimen name="loading_ball_shadow_paddingTop">16dp</dimen>
     <dimen name="loading_text_marginTop">16dp</dimen>
+    <dimen name="shot_load_more_text_padding_bottom">2dp</dimen>
 
     <fraction name="four_images_view_percentage">50%</fraction>
     <fraction name="big_dialog_height_width_percentage">90%</fraction>
