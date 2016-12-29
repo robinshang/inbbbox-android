@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.followers;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -15,8 +16,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
+import co.netguru.android.inbbbox.api.FollowersApi;
 import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
+import co.netguru.android.inbbbox.controler.followers.FollowersController;
 import co.netguru.android.inbbbox.controler.followers.FollowersControllerApi;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsContract;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsPresenter;
@@ -29,6 +32,8 @@ import okhttp3.Request;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Single;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
@@ -57,6 +62,12 @@ public class FollowerDetailsPresenterTest {
     FollowersControllerApi followersControllerApiMock;
 
     @Mock
+    FollowersController followersControllerMock;
+
+    @Mock
+    FollowersApi followersApiMock;
+
+    @Mock
     User userMock;
 
     @Mock
@@ -73,13 +84,17 @@ public class FollowerDetailsPresenterTest {
         followerDetailsPresenter.attachView(viewMock);
         when(errorControllerMock.getThrowableMessage(any(Throwable.class))).thenCallRealMethod();
 
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+
         okhttp3.Response rawResponse = new okhttp3.Response.Builder()
                 .code(204)
                 .protocol(Protocol.HTTP_1_1)
                 .request(new Request.Builder().url("http://localhost/").build())
                 .build();
         Response<Void> response = Response.success(null, rawResponse);
-        when(followersControllerApiMock.checkIfUserIsFollowed(anyLong())).thenReturn(Single.just(response));
+        when(followersApiMock.checkIfUserIsFollowed(anyLong())).thenReturn(Single.just(response));
+
+        when(followersControllerMock.isUserFollowed(anyLong())).thenReturn(Single.just(true));
     }
 
     @Test
@@ -103,7 +118,7 @@ public class FollowerDetailsPresenterTest {
         followerDetailsPresenter.userDataReceived(userMock);
 
         verify(followersControllerApiMock, times(1))
-                .checkIfUserIsFollowed(eq(EXAMPLE_ID));
+                .isUserFollowed(eq(EXAMPLE_ID));
     }
 
     @Test
@@ -127,7 +142,7 @@ public class FollowerDetailsPresenterTest {
         followerDetailsPresenter.followerDataReceived(followerMock);
 
         verify(followersControllerApiMock, times(1))
-                .checkIfUserIsFollowed(eq(EXAMPLE_ID));
+                .isUserFollowed(eq(EXAMPLE_ID));
     }
 
     @Test
@@ -169,5 +184,10 @@ public class FollowerDetailsPresenterTest {
         followerDetailsPresenter.userDataReceived(exampleUser);
 
         verify(viewMock, times(1)).showMessageOnServerError(message);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        RxJavaHooks.reset();
     }
 }
