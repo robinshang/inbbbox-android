@@ -69,7 +69,7 @@ public class GuestModeBucketsRepository extends BaseGuestModeRepository {
         Timber.d("Removing bucket from local repository");
         return daoSession.rxTx().run(() -> {
             final BucketDB bucketDB = daoSession.load(BucketDB.class, bucketId);
-            updateBucketShots(bucketDB.getShots(), bucketId);
+            removeShotsFromBuckets(bucketDB.getShots(), bucketId);
             bucketDB.delete();
         }).toCompletable();
     }
@@ -108,7 +108,7 @@ public class GuestModeBucketsRepository extends BaseGuestModeRepository {
         }).map(aVoid -> bucketDB);
     }
 
-    private void updateBucketShots(List<ShotDB> bucketedShots, long bucketId) {
+    private void removeShotsFromBuckets(List<ShotDB> bucketedShots, long bucketId) {
         removeBucketShotsRelations(bucketId);
         for (final ShotDB shot : bucketedShots) {
             shot.setBucketCount(shot.getBucketCount() - 1);
