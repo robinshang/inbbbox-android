@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Random;
 
 import co.netguru.android.inbbbox.Constants;
-import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.api.CommentEntity;
 import co.netguru.android.inbbbox.model.api.Image;
 import co.netguru.android.inbbbox.model.api.ShotEntity;

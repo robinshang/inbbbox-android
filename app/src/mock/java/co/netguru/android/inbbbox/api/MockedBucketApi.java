@@ -4,6 +4,8 @@ package co.netguru.android.inbbbox.api;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import org.threeten.bp.ZonedDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 

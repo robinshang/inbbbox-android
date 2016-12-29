@@ -21,10 +21,11 @@ import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.localrepository.database.BucketDB;
 import co.netguru.android.inbbbox.model.localrepository.database.BucketDBDao;
 import co.netguru.android.inbbbox.model.localrepository.database.DaoSession;
+import co.netguru.android.inbbbox.model.localrepository.database.JoinBucketsWithShots;
+import co.netguru.android.inbbbox.model.localrepository.database.JoinBucketsWithShotsDao;
 import co.netguru.android.inbbbox.model.localrepository.database.ShotDB;
 import co.netguru.android.inbbbox.model.localrepository.database.ShotDBDao;
 import co.netguru.android.inbbbox.model.localrepository.database.UserDBDao;
-import co.netguru.android.inbbbox.model.localrepository.database.mapper.ShotDBMapper;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
@@ -34,7 +35,6 @@ import rx.observers.TestSubscriber;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -57,9 +57,13 @@ public class GuestModeBucketsRepositoryTest {
     @Mock
     UserDBDao userDBDao;
     @Mock
+    JoinBucketsWithShotsDao joinBucketsWithShotsDao;
+    @Mock
     QueryBuilder<ShotDB> shotDBQueryBuilder;
     @Mock
     QueryBuilder<BucketDB> bucketDBQueryBuilder;
+    @Mock
+    QueryBuilder<JoinBucketsWithShots> joinBucketsWithShotsQueryBuilder;
     @Mock
     RxQuery<BucketDB> bucketDBRxQuery;
     @Mock
@@ -82,6 +86,7 @@ public class GuestModeBucketsRepositoryTest {
         when(daoSession.getShotDBDao()).thenReturn(shotDBDao);
         when(daoSession.getBucketDBDao()).thenReturn(bucketDBDao);
         when(daoSession.getUserDBDao()).thenReturn(userDBDao);
+        when(daoSession.getJoinBucketsWithShotsDao()).thenReturn(joinBucketsWithShotsDao);
         when(daoSession.rxTx()).thenReturn(rxTransaction);
         when(bucketDBDao.rx()).thenReturn(bucketDBRxDao);
         when(shotDBDao.queryBuilder()).thenReturn(shotDBQueryBuilder);
@@ -156,7 +161,7 @@ public class GuestModeBucketsRepositoryTest {
         //when
         repository.createBucket(BUCKET_NAME, BUCKET_DESCRIPTION).subscribe(subscriber);
         //then
-        verify(bucketDBRxDao, times(1)).insertOrReplace(any());
+        verify(bucketDBRxDao).insertOrReplace(any());
         subscriber.assertNoErrors();
     }
 
@@ -178,6 +183,9 @@ public class GuestModeBucketsRepositoryTest {
         //given
         final TestSubscriber subscriber = new TestSubscriber<>();
         when(daoSession.load(any(), any())).thenReturn(bucketDB);
+        when(joinBucketsWithShotsDao.queryBuilder()).thenReturn(joinBucketsWithShotsQueryBuilder);
+        when(joinBucketsWithShotsQueryBuilder.where(any())).thenReturn(joinBucketsWithShotsQueryBuilder);
+        when(joinBucketsWithShotsQueryBuilder.list()).thenReturn(new LinkedList<>());
         when(bucketDB.getShots()).thenReturn(new LinkedList<>());
         //when
         repository.removeBucket(BUCKET_ID).subscribe(subscriber);
@@ -193,6 +201,9 @@ public class GuestModeBucketsRepositoryTest {
         final List<ShotDB> mockedList = getListWithMockedShot(false);
         when(daoSession.load(any(), any())).thenReturn(bucketDB);
         when(bucketDB.getShots()).thenReturn(mockedList);
+        when(joinBucketsWithShotsDao.queryBuilder()).thenReturn(joinBucketsWithShotsQueryBuilder);
+        when(joinBucketsWithShotsQueryBuilder.where(any())).thenReturn(joinBucketsWithShotsQueryBuilder);
+        when(joinBucketsWithShotsQueryBuilder.list()).thenReturn(new LinkedList<>());
         //when
         repository.removeBucket(BUCKET_ID).subscribe(subscriber);
         //then
@@ -230,10 +241,14 @@ public class GuestModeBucketsRepositoryTest {
     public void shouldEmitTrueWhenShotIsBucketed() {
         //given
         final TestSubscriber<Boolean> subscriber = new TestSubscriber<>();
+        final List<BucketDB> mockList = new LinkedList<>();
+        mockList.add(Statics.BUCKET_DB);
         when(shotDBDao.queryBuilder()).thenReturn(shotDBQueryBuilder);
         when(shotDBQueryBuilder.where(any())).thenReturn(shotDBQueryBuilder);
         when(shotDBQueryBuilder.rx()).thenReturn(shotDBRxQuery);
-        when(shotDBRxQuery.unique()).thenReturn(Observable.just(ShotDBMapper.fromShot(Statics.LIKED_SHOT_BUCKETED)));
+        when(shotDB.getBuckets()).thenReturn(mockList);
+
+        when(shotDBRxQuery.unique()).thenReturn(Observable.just(shotDB));
         //when
         repository.isShotBucketed(BUCKET_ID).subscribe(subscriber);
         //then
@@ -248,7 +263,8 @@ public class GuestModeBucketsRepositoryTest {
         when(shotDBDao.queryBuilder()).thenReturn(shotDBQueryBuilder);
         when(shotDBQueryBuilder.where(any())).thenReturn(shotDBQueryBuilder);
         when(shotDBQueryBuilder.rx()).thenReturn(shotDBRxQuery);
-        when(shotDBRxQuery.unique()).thenReturn(Observable.just(ShotDBMapper.fromShot(Statics.LIKED_SHOT_NOT_BUCKETED)));
+        when(shotDBRxQuery.unique()).thenReturn(Observable.just(shotDB));
+        when(shotDB.getBuckets()).thenReturn(new LinkedList<>());
         //when
         repository.isShotBucketed(BUCKET_ID).subscribe(subscriber);
         //then
@@ -260,6 +276,7 @@ public class GuestModeBucketsRepositoryTest {
         final List<ShotDB> mockedList = new LinkedList<>();
         mockedList.add(shotDB);
         when(shotDB.getIsLiked()).thenReturn(isLiked);
+        when(shotDB.getBuckets()).thenReturn(new LinkedList<>());
         return mockedList;
     }
 }
