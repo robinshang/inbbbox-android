@@ -16,6 +16,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.App;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.event.CriticalLogoutEvent;
@@ -23,7 +24,6 @@ import co.netguru.android.inbbbox.feature.common.bottomsheet.BottomSheetActivity
 import co.netguru.android.inbbbox.feature.common.bottomsheet.HidingBottomSheetActivityDelegate;
 import co.netguru.android.inbbbox.feature.common.bottomsheet.HidingBottomSheetBearer;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
-import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.Subscription;
 
 public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<V>>
@@ -70,7 +70,7 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
         super.onResume();
         criticalLogoutSubscription = App.getAppComponent(this).rxBus()
                 .getEvents(CriticalLogoutEvent.class)
-                .compose(RxTransformerUtils.androidComputation())
+                .compose(RxTransformers.androidIO())
                 .subscribe(this::handleUnauthorisedEvent);
     }
 

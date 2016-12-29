@@ -138,7 +138,7 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
 
     private void setupRxBus() {
         busSubscription = rxBus.getEvents(BucketCreatedEvent.class)
-                .compose(RxTransformerUtils.androidComputation())
+                .compose(RxTransformers.androidIO())
                 .subscribe(bucketCreatedEvent -> {
                     getView().addNewBucketOnTop(bucketCreatedEvent.getBucket());
                     getView().showBucketsList();
