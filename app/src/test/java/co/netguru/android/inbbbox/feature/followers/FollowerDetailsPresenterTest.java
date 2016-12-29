@@ -105,7 +105,7 @@ public class FollowerDetailsPresenterTest {
     @Test
     public void whenUserReceivedAndCheckedIfIsFollowed_thenSetMenuIcon() {
         User exampleUser = User.create(Statics.USER_ENTITY);
-        List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT, Statics.NOT_LIKED_SHOT);
+        List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT_BUCKETED, Statics.NOT_LIKED_SHOT);
 
         when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
                 .thenReturn(Observable.just(listOfShots));
@@ -129,7 +129,7 @@ public class FollowerDetailsPresenterTest {
     @Test
     public void whenFollowerReceivedAndCheckedIfIsFollowed_thenSetMenuIcon() {
         User exampleUser = User.create(Statics.USER_ENTITY);
-        List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT, Statics.NOT_LIKED_SHOT);
+        List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT_BUCKETED, Statics.NOT_LIKED_SHOT);
 
         when(followerMock.id()).thenReturn(EXAMPLE_ID);
 
@@ -141,7 +141,7 @@ public class FollowerDetailsPresenterTest {
     @Test
     public void whenUserReceivedAndUserDataDownloadComplete_thenCreateAndShowFollower() {
         User exampleUser = User.create(Statics.USER_ENTITY);
-        List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT, Statics.NOT_LIKED_SHOT);
+        List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT_NOT_BUCKETED, Statics.NOT_LIKED_SHOT);
         when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
                 .thenReturn(Observable.just(listOfShots));
         ArgumentCaptor<Follower> argumentCaptor = ArgumentCaptor.forClass(Follower.class);

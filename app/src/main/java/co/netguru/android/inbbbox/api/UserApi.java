@@ -16,7 +16,4 @@ public interface UserApi {
 
     @GET("user/buckets")
     Single<List<Bucket>> getUserBucketsList(@Query("page") int pageNumber, @Query("per_page") int pageCount);
-
-    @GET("user/buckets")
-    Single<List<Bucket>> getUserBucketsList();
 }

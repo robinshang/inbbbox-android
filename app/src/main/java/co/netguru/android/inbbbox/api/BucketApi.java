@@ -36,4 +36,6 @@ public interface BucketApi {
     @DELETE("buckets/{id}")
     Completable deleteBucket(@Path("id") long bucketId);
 
+    @GET("shots/{shotId}/buckets")
+    Single<List<Bucket>> getShotBucketsList(@Path("shotId") long shotId);
 }

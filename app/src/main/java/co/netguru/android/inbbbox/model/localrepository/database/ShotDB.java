@@ -5,10 +5,14 @@ import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.JoinEntity;
+import org.greenrobot.greendao.annotation.ToMany;
 import org.greenrobot.greendao.annotation.ToOne;
+import org.threeten.bp.ZonedDateTime;
+
+import java.util.List;
 
 import co.netguru.android.inbbbox.model.localrepository.database.converter.ZonedDateTimeConverter;
-import org.threeten.bp.ZonedDateTime;
 
 @Entity
 public class ShotDB {
@@ -35,12 +39,16 @@ public class ShotDB {
     private UserDB user;
     @ToOne(joinProperty = "teamId")
     private TeamDB team;
+    @ToMany
+    @JoinEntity(entity = JoinBucketsWithShots.class, sourceProperty = "shotId", targetProperty = "bucketId")
+    private List<BucketDB> buckets;
 
     /**
      * Used to resolve relations
      */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
+
     /**
      * Used for active entity operations.
      */
@@ -49,9 +57,9 @@ public class ShotDB {
 
     @Generated(hash = 1054056122)
     public ShotDB(Long id, String title, ZonedDateTime creationDate, String projectUrl, int likesCount,
-            int bucketCount, int commentsCount, String description, boolean isGif, String hiDpiImageUrl,
-            String normalImageUrl, String thumbnailUrl, boolean isBucketed, boolean isLiked, Long userId,
-            Long teamId) {
+                  int bucketCount, int commentsCount, String description, boolean isGif, String hiDpiImageUrl,
+                  String normalImageUrl, String thumbnailUrl, boolean isBucketed, boolean isLiked, Long userId,
+                  Long teamId) {
         this.id = id;
         this.title = title;
         this.creationDate = creationDate;
@@ -275,6 +283,36 @@ public class ShotDB {
     }
 
     /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 2138704532)
+    public List<BucketDB> getBuckets() {
+        if (buckets == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            BucketDBDao targetDao = daoSession.getBucketDBDao();
+            List<BucketDB> bucketsNew = targetDao._queryShotDB_Buckets(id);
+            synchronized (this) {
+                if (buckets == null) {
+                    buckets = bucketsNew;
+                }
+            }
+        }
+        return buckets;
+    }
+
+    /**
+     * Resets a to-many relationship, making the next get call to query for a fresh result.
+     */
+    @Generated(hash = 1841458249)
+    public synchronized void resetBuckets() {
+        buckets = null;
+    }
+
+    /**
      * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
      * Entity must attached to an entity context.
      */
@@ -316,4 +354,5 @@ public class ShotDB {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getShotDBDao() : null;
     }
+
 }

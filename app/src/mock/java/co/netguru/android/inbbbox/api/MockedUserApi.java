@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.api;
 
+import org.threeten.bp.ZonedDateTime;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,11 +48,6 @@ public class MockedUserApi implements UserApi {
 
     @Override
     public Single<List<Bucket>> getUserBucketsList(@Query("page") int pageNumber, @Query("per_page") int pageCount) {
-        return Single.fromCallable(() -> new ArrayList<>(mockedUserBuckets));
-    }
-
-    @Override
-    public Single<List<Bucket>> getUserBucketsList() {
         return Single.fromCallable(() -> new ArrayList<>(mockedUserBuckets));
     }
 }

@@ -6,9 +6,9 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.controler.buckets.BucketsController;
 import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.likescontroller.LikeShotController;
+import co.netguru.android.inbbbox.controler.likes.LikeShotController;
 import co.netguru.android.inbbbox.controler.ShotsController;
 import co.netguru.android.inbbbox.model.api.Bucket;
 import co.netguru.android.inbbbox.model.ui.Shot;
@@ -116,7 +116,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     @Override
     public void addShotToBucket(Bucket bucket, Shot shot) {
         subscriptions.add(
-                bucketsController.addShotToBucket(bucket.id(), shot.id())
+                bucketsController.addShotToBucket(bucket.id(), shot)
                         .compose(RxTransformerUtils.applyCompletableIoSchedulers())
                         .subscribe(
                                 getView()::showBucketAddSuccess,

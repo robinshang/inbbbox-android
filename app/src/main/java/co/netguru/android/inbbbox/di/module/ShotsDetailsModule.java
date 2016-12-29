@@ -3,7 +3,8 @@ package co.netguru.android.inbbbox.di.module;
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.api.ShotsApi;
 import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.likescontroller.LikeShotController;
+import co.netguru.android.inbbbox.controler.buckets.BucketsController;
+import co.netguru.android.inbbbox.controler.likes.LikeShotController;
 import co.netguru.android.inbbbox.controler.ShotDetailsController;
 import co.netguru.android.inbbbox.controler.UserController;
 import co.netguru.android.inbbbox.feature.details.ShotDetailsPresenter;
@@ -16,9 +17,9 @@ public class ShotsDetailsModule {
     @Provides
     @FragmentScope
     ShotDetailsController provideShotDetailsController(LikeShotController likeShotController,
-                                                       ShotsApi shotsApi,
-                                                       UserController userController) {
-        return new ShotDetailsController(likeShotController, shotsApi, userController);
+                                                       BucketsController bucketsController,
+                                                       ShotsApi shotsApi, UserController userController) {
+        return new ShotDetailsController(likeShotController, bucketsController, shotsApi, userController);
     }
 
     @Provides

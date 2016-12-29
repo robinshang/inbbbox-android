@@ -12,13 +12,11 @@ import rx.Observable;
 import timber.log.Timber;
 
 @Singleton
-public class GuestModeFollowersRepository {
-
-    private final DaoSession daoSession;
+public class GuestModeFollowersRepository extends BaseGuestModeRepository {
 
     @Inject
     GuestModeFollowersRepository(DaoSession daoSession) {
-        this.daoSession = daoSession;
+        super(daoSession);
     }
 
     public Observable<FollowerEntity> getFollowers() {
