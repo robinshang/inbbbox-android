@@ -60,6 +60,6 @@ class ShotDetailsLoadMoreViewHolder extends ShotDetailsViewHolder<CommentLoadMor
     }
 
     private boolean canLoadMoreComments() {
-        return (!loadMoreState.isWaitingForUpdate() && loadMoreState.isLoadMoreActive());
+        return !loadMoreState.isWaitingForUpdate() && loadMoreState.isLoadMoreActive();
     }
 }
