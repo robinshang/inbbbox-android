@@ -1,29 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/load_more_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/shotDetailsBackground"
-                android:paddingBottom="@dimen/details_comment_footer_padding_bottom">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/windowBackground"
+    android:paddingBottom="@dimen/details_comment_footer_padding_bottom">
 
-    <TextView
-        android:id="@+id/shot_details_load_more_textView"
-        style="@style/LoadMoreText"
+    <FrameLayout
+        android:id="@+id/load_more_text_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/selector_load_more"
-        android:paddingBottom="@dimen/margin_default"
-        android:paddingLeft="@dimen/margin_default"
-        android:paddingRight="@dimen/margin_default"/>
+        android:background="@color/shotDetailsBackground"
+        android:paddingBottom="@dimen/shot_load_more_text_padding_bottom">
+
+        <TextView
+            android:id="@+id/shot_details_load_more_textView"
+            style="@style/LoadMoreText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/selector_load_more"
+            android:paddingBottom="@dimen/margin_default"
+            android:paddingLeft="@dimen/margin_default"
+            android:paddingRight="@dimen/margin_default"
+            android:text="@string/load_more_label" />
+    </FrameLayout>
 
     <ProgressBar
         android:id="@+id/load_more_progressBar"
         android:layout_width="@dimen/details_comment_load_more_progress_size"
         android:layout_height="@dimen/details_comment_load_more_progress_size"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        android:indeterminate="true"/>
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="gone" />
 
-</RelativeLayout>
+</FrameLayout>

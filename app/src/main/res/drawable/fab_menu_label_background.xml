@@ -14,7 +14,7 @@
         android:bottom="1dp">
         <shape>
             <corners android:radius="24dp"/>
-            <solid android:color="@color/windowBackground"/>
+            <solid android:color="@color/secondaryWindowBackground"/>
         </shape>
     </item>
 </layer-list>

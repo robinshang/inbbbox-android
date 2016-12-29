@@ -3,7 +3,7 @@
               android:id="@+id/comment_action_menu"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@color/secondaryWindowBackground"
+              android:background="@color/windowBackground"
               android:layout_marginTop="@dimen/details_comment_action_margin"
               android:layout_marginBottom="@dimen/details_comment_action_margin"
               android:gravity="center"

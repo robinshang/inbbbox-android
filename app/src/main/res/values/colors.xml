@@ -8,7 +8,8 @@
     <color name="tabBackground">#FFFFFF</color>
     <color name="textColor">#000000</color>
 
-    <color name="disabledGray">#A4B4BC</color>
+    <color name="disabledGray">#80FFFFFF</color>
+    <color name="materialButtonColorPressed">#f8f8f8f8</color>
 
     <color name="white">#FFFFFF</color>
     <color name="transparentWhite">#00000000</color>
@@ -27,7 +28,6 @@
     <color name="actionButtonLabelColor">#95a5ae</color>
 
     <color name="textGrey">#6D6D72</color>
-    <color name="dividerColor">#DFE0E2</color>
 
     <color name="semiBlack">#8C000000</color>
 </resources>
