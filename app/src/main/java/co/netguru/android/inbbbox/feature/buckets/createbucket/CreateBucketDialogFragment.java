@@ -54,7 +54,7 @@ public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBuck
     @NonNull
     @Override
     public CreateBucketContract.Presenter createPresenter() {
-        return App.getAppComponent(getContext()).plusCreateBucketComponent().getPresenter();
+        return App.getUserComponent(getContext()).plusCreateBucketComponent().getPresenter();
     }
 
     @Override

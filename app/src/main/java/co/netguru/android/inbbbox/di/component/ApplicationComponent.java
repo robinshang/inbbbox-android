@@ -35,14 +35,6 @@ public interface ApplicationComponent extends BaseComponent {
 
     SplashScreenComponent plusSplashScreenComponent();
 
-    BucketsFragmentComponent plusBucketsFragmentComponent();
-
-    BucketsDetailsComponent plusBucketDetailsComponent();
-
-    AddToBucketComponent plusAddToBucketComponent();
-
-    CreateBucketComponent plusCreateBucketComponent();
-
     RxBus rxBus();
 
     void inject(NotificationAlarmReceiver receiver);

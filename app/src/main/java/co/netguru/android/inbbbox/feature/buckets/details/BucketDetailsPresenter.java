@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.feature.buckets.details;
 
 
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
@@ -12,11 +13,11 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.commons.rx.RxTransformers;
-import co.netguru.android.inbbbox.controler.BucketsController;
+import co.netguru.android.inbbbox.controler.buckets.BucketsController;
 import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.model.api.Bucket;
-import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.Subscription;
 import rx.subscriptions.Subscriptions;
@@ -28,6 +29,13 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
 
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
 
+    @VisibleForTesting
+    @NonNull
+    Subscription refreshShotsSubscription;
+    @VisibleForTesting
+    @NonNull
+    Subscription loadNextShotsSubscription;
+
     private final BucketsController bucketsController;
     private final ErrorController errorController;
 
@@ -38,13 +46,8 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     private long currentBucketId;
     private String currentBucketName;
 
-    @NonNull
-    protected Subscription refreshShotsSubscription;
-    @NonNull
-    protected Subscription loadNextShotsSubscription;
-
     @Inject
-    public BucketDetailsPresenter(BucketsController bucketsController, ErrorController errorController) {
+    BucketDetailsPresenter(BucketsController bucketsController, ErrorController errorController) {
         this.bucketsController = bucketsController;
         this.errorController = errorController;
         refreshShotsSubscription = Subscriptions.unsubscribed();
@@ -64,9 +67,9 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         Bucket bucket = bucketWithShots.bucket();
         currentBucketId = bucket.id();
         currentBucketName = bucket.name();
-        List<ShotEntity> shotEntities = bucketWithShots.shots();
+        List<Shot> shots = bucketWithShots.shots();
         getView().setFragmentTitle(bucket.name());
-        handleNewShots(shotEntities);
+        handleNewShots(shots);
     }
 
     @Override
@@ -83,7 +86,7 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     }
 
     @Override
-    public void checkDataEmpty(List<ShotEntity> data) {
+    public void checkDataEmpty(List<Shot> data) {
         if (data.isEmpty()) {
             getView().showEmptyView();
         } else {
@@ -115,9 +118,9 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
                                     SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS, getView()::showLoadingMoreShotsView))
                             .compose(RxTransformers.androidIO())
                             .doAfterTerminate(getView()::hideLoadingMoreShotsView)
-                            .subscribe(shotEntities -> {
-                                getView().addShots(shotEntities);
-                                canLoadMore = shotEntities.size() == shotsPerPage;
+                            .subscribe(shots -> {
+                                getView().addShots(shots);
+                                canLoadMore = shots.size() == shotsPerPage;
                             }, throwable -> handleError(throwable, "Error while loading new shots from bucket"));
         }
     }
@@ -128,9 +131,9 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
-    private void handleNewShots(List<ShotEntity> shotEntities) {
-        canLoadMore = shotEntities.size() == shotsPerPage;
-        getView().setData(shotEntities);
+    private void handleNewShots(List<Shot> shots) {
+        canLoadMore = shots.size() == shotsPerPage;
+        getView().setData(shots);
         getView().showContent();
     }
 }

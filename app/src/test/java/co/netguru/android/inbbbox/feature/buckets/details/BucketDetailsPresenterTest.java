@@ -13,16 +13,15 @@ import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.controler.BucketsController;
-import co.netguru.android.inbbbox.model.api.ShotEntity;
+import co.netguru.android.inbbbox.controler.buckets.BucketsController;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
+import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Single;
 import rx.observers.TestSubscriber;
 import rx.subscriptions.Subscriptions;
 
-import static co.netguru.android.inbbbox.Statics.getFollowingMockedData;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
@@ -35,6 +34,10 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class BucketDetailsPresenterTest {
 
+    private static final List<Shot> shots = Statics.generateShots();
+    private static final BucketWithShots BUCKET_WITH_SHOTS = BucketWithShots.create(Statics.BUCKET, shots);
+    private static final int PER_PAGE = BUCKET_WITH_SHOTS.shots().size();
+
     @Rule
     public TestRule rule = new RxSyncTestRule();
 
@@ -46,10 +49,6 @@ public class BucketDetailsPresenterTest {
 
     @InjectMocks
     BucketDetailsPresenter presenter;
-
-    private static final List<ShotEntity> shotEntities = getFollowingMockedData();
-    private static final BucketWithShots BUCKET_WITH_SHOTS = BucketWithShots.create(Statics.BUCKET, shotEntities);
-    private static final int PER_PAGE = BUCKET_WITH_SHOTS.shots().size();
 
     @Before
     public void setUp() throws Exception {
@@ -73,14 +72,13 @@ public class BucketDetailsPresenterTest {
     @Test
     public void whenNewDataPassedWithNotEmptyListOfShots_thenSetupViewProperly() throws Exception {
         //given
-        List<ShotEntity> shotEntities = getFollowingMockedData();
-        BucketWithShots bucketWithShots = BucketWithShots.create(Statics.BUCKET, shotEntities);
+        BucketWithShots bucketWithShots = BucketWithShots.create(Statics.BUCKET, shots);
         final int perPage = 30;
         //when
         presenter.handleBucketData(bucketWithShots, perPage);
         //then
         verify(view, times(1)).setFragmentTitle(bucketWithShots.bucket().name());
-        verify(view, times(1)).setData(shotEntities);
+        verify(view, times(1)).setData(shots);
         verify(view, never()).showEmptyView();
     }
 
@@ -92,7 +90,7 @@ public class BucketDetailsPresenterTest {
         presenter.handleBucketData(bucketWIthNoShots, PER_PAGE);
         //then
         verify(view, times(1)).setFragmentTitle(BUCKET_WITH_SHOTS.bucket().name());
-        verify(view, never()).setData(shotEntities);
+        verify(view, never()).setData(shots);
         verify(view, times(1)).showContent();
     }
 
@@ -103,7 +101,7 @@ public class BucketDetailsPresenterTest {
         presenter.refreshShotsSubscription = Subscriptions.unsubscribed();
         presenter.loadNextShotsSubscription = loadNextShotsSubscription;
         when(bucketsControllerMock.getShotsListFromBucket(anyLong(), anyInt(), anyInt()))
-                .thenReturn(Single.just(shotEntities));
+                .thenReturn(Single.just(shots));
         //when
         presenter.refreshShots();
         //then

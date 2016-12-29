@@ -11,11 +11,11 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.feature.common.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.common.HttpErrorView;
-import co.netguru.android.inbbbox.model.api.ShotEntity;
 import co.netguru.android.inbbbox.model.ui.BucketWithShots;
+import co.netguru.android.inbbbox.model.ui.Shot;
 
 public interface BucketDetailsContract {
-    interface View extends MvpView, HttpErrorView, MvpLceView<List<ShotEntity>> {
+    interface View extends MvpView, HttpErrorView, MvpLceView<List<Shot>> {
 
         void setFragmentTitle(String string);
 
@@ -23,7 +23,7 @@ public interface BucketDetailsContract {
 
         void hideLoadingMoreShotsView();
 
-        void addShots(List<ShotEntity> shotEntities);
+        void addShots(List<Shot> shots);
 
         void showEmptyView();
 
@@ -44,7 +44,7 @@ public interface BucketDetailsContract {
 
         void refreshShots();
 
-        void checkDataEmpty(List<ShotEntity> data);
+        void checkDataEmpty(List<Shot> data);
 
         void onDeleteBucketClick();
 

@@ -8,31 +8,28 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.model.localrepository.database.DaoSession;
+import co.netguru.android.inbbbox.model.localrepository.database.ShotDB;
 import co.netguru.android.inbbbox.model.localrepository.database.ShotDBDao;
-import co.netguru.android.inbbbox.model.localrepository.database.mapper.ShotDBMapper;
 import co.netguru.android.inbbbox.model.localrepository.database.mapper.TeamDBMapper;
-import co.netguru.android.inbbbox.model.localrepository.database.mapper.UserDBMapper;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import rx.Completable;
 import rx.Observable;
 
 @Singleton
-public class GuestModeLikesRepository {
+public class GuestModeLikesRepository extends BaseGuestModeRepository {
 
     private static final String SHOT_IS_NOT_LIKED_ERROR = "Shot is not liked";
 
-    private final DaoSession daoSession;
-
     @Inject
     GuestModeLikesRepository(DaoSession daoSession) {
-        this.daoSession = daoSession;
+        super(daoSession);
     }
 
     public Completable addLikedShot(@NonNull Shot shot) {
         return daoSession.rxTx()
                 .run(() -> {
-                    daoSession.getShotDBDao().insertOrReplace(ShotDBMapper.fromShot(shot));
-                    daoSession.getUserDBDao().insertOrReplace(UserDBMapper.fromUser(shot.author()));
+                    daoSession.getShotDBDao().insertOrReplace(likeShot(shot));
+                    insertUserIfExists(shot);
                     if (shot.team() != null) {
                         daoSession.getTeamDBDao().insertOrReplace(TeamDBMapper.fromTeam(shot.team()));
                     }
@@ -41,10 +38,20 @@ public class GuestModeLikesRepository {
     }
 
     public Observable<List<Shot>> getLikedShots() {
-        return daoSession.getShotDBDao().queryBuilder().rx().oneByOne().map(Shot::fromDB).toList();
+        return daoSession.getShotDBDao().queryBuilder()
+                .where(ShotDBDao.Properties.IsLiked.eq(Boolean.TRUE))
+                .rx()
+                .oneByOne()
+                .map(Shot::fromDB)
+                .toList();
     }
 
     public Completable removeLikedShot(Shot shot) {
+        if (shot.isBucketed()) {
+            return daoSession.getShotDBDao().rx()
+                    .insertOrReplace(unlikeShot(shot)).toCompletable();
+        }
+
         return daoSession.getShotDBDao().rx().deleteByKey(shot.id()).toCompletable();
     }
 
@@ -54,11 +61,27 @@ public class GuestModeLikesRepository {
                 .rx()
                 .unique()
                 .flatMap(shotDB -> {
-                    if (shotDB == null) {
+                    if (shotDB == null || !shotDB.getIsLiked()) {
                         return Observable.error(new Throwable(SHOT_IS_NOT_LIKED_ERROR));
                     }
                     return Observable.empty();
                 })
                 .toCompletable();
+    }
+
+    private ShotDB likeShot(Shot shot) {
+        final ShotDB shotDB = getNewOrExistingShot(shot);
+        shotDB.setLikesCount(shotDB.getLikesCount() + 1);
+        shotDB.setIsLiked(true);
+
+        return shotDB;
+    }
+
+    private ShotDB unlikeShot(Shot shot) {
+        final ShotDB shotDB = getNewOrExistingShot(shot);
+        shotDB.setLikesCount(shotDB.getLikesCount() - 1);
+        shotDB.setIsLiked(false);
+
+        return shotDB;
     }
 }

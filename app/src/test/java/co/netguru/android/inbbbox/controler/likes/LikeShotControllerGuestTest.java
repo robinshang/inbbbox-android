@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.controler.likescontroller;
+package co.netguru.android.inbbbox.controler.likes;
 
 import org.junit.Before;
 import org.junit.Rule;
