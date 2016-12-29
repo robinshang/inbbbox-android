@@ -13,7 +13,7 @@ import co.netguru.android.inbbbox.model.localrepository.database.BucketDB;
 import co.netguru.android.inbbbox.model.localrepository.database.BucketDBDao;
 import co.netguru.android.inbbbox.model.localrepository.database.DaoSession;
 import co.netguru.android.inbbbox.model.localrepository.database.JoinBucketsWithShots;
-import co.netguru.android.inbbbox.model.localrepository.database.JoinShotsWithBuckets;
+import co.netguru.android.inbbbox.model.localrepository.database.JoinBucketsWithShotsDao;
 import co.netguru.android.inbbbox.model.localrepository.database.ShotDB;
 import co.netguru.android.inbbbox.model.localrepository.database.ShotDBDao;
 import co.netguru.android.inbbbox.model.localrepository.database.mapper.BucketDbMapper;
@@ -69,7 +69,7 @@ public class GuestModeBucketsRepository extends BaseGuestModeRepository {
         Timber.d("Removing bucket from local repository");
         return daoSession.rxTx().run(() -> {
             final BucketDB bucketDB = daoSession.load(BucketDB.class, bucketId);
-            removeShotsFromBucket(bucketDB.getShots(), bucketId);
+            updateBucketShots(bucketDB.getShots(), bucketId);
             bucketDB.delete();
         }).toCompletable();
     }
@@ -95,7 +95,7 @@ public class GuestModeBucketsRepository extends BaseGuestModeRepository {
                 .where(ShotDBDao.Properties.Id.eq(shotId))
                 .rx()
                 .unique()
-                .map(shotDB -> !(shotDB == null || !shotDB.getIsBucketed()))
+                .map(shotDB -> !(shotDB == null || shotDB.getBuckets().isEmpty()))
                 .toSingle();
     }
 
@@ -104,39 +104,33 @@ public class GuestModeBucketsRepository extends BaseGuestModeRepository {
             insertUserIfExists(shot);
             final ShotDB shotToAdd = createShotToAdd(shot);
             daoSession.insertOrReplace(new JoinBucketsWithShots(null, bucketDB.getId(), shotToAdd.getId()));
-            daoSession.insertOrReplace(new JoinShotsWithBuckets(null, shotToAdd.getId(), bucketDB.getId()));
             daoSession.insertOrReplace(shotToAdd);
         }).map(aVoid -> bucketDB);
     }
 
-    private void removeShotsFromBucket(List<ShotDB> bucketedShots, long bucketId) {
+    private void updateBucketShots(List<ShotDB> bucketedShots, long bucketId) {
+        removeBucketShotsRelations(bucketId);
         for (final ShotDB shot : bucketedShots) {
             shot.setBucketCount(shot.getBucketCount() - 1);
-            removeBucketFromShot(shot, bucketId);
-
-            if (shot.getBuckets().size() == 0) {
-                shot.setIsBucketed(false);
-
-                if (!shot.getIsLiked()) {
-                    shot.delete();
-                }
-            }
             shot.update();
+            if (shot.getBuckets().isEmpty() && !shot.getIsLiked()) {
+                shot.delete();
+            }
         }
     }
 
-    private void removeBucketFromShot(ShotDB shot, long bucketId) {
-        for (final BucketDB bucket : shot.getBuckets()) {
-            if (bucket.getId() == bucketId) {
-                shot.getBuckets().remove(bucket);
-                break;
-            }
+    private void removeBucketShotsRelations(long bucketId) {
+        final List<JoinBucketsWithShots> bucketWithShots = daoSession.getJoinBucketsWithShotsDao()
+                .queryBuilder()
+                .where(JoinBucketsWithShotsDao.Properties.BucketId.eq(bucketId))
+                .list();
+        for (final JoinBucketsWithShots bucketWithShot : bucketWithShots) {
+            daoSession.delete(bucketWithShot);
         }
     }
 
     private ShotDB createShotToAdd(Shot shot) {
         final ShotDB shotToAdd = getNewOrExistingShot(shot);
-        shotToAdd.setIsBucketed(true);
         shotToAdd.setBucketCount(shotToAdd.getBucketCount() + 1);
 
         return shotToAdd;

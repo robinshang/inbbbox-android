@@ -66,8 +66,7 @@ public class BucketsControllerApi implements BucketsController {
         return bucketApi.getShotBucketsList(shotId)
                 .flatMapObservable(Observable::from)
                 .map(bucket -> bucket.user() != null ? bucket.user().id() : Constants.UNDEFINED)
-                .toList()
-                .map(userList -> userList.contains(userId))
+                .contains(userId)
                 .toSingle();
     }
 

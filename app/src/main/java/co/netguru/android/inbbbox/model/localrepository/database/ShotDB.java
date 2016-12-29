@@ -41,7 +41,7 @@ public class ShotDB {
     @ToOne(joinProperty = "teamId")
     private TeamDB team;
     @ToMany
-    @JoinEntity(entity = JoinShotsWithBuckets.class, sourceProperty = "shotId", targetProperty = "bucketId")
+    @JoinEntity(entity = JoinBucketsWithShots.class, sourceProperty = "shotId", targetProperty = "bucketId")
     private List<BucketDB> buckets;
 
     /**
@@ -58,9 +58,9 @@ public class ShotDB {
 
     @Generated(hash = 1054056122)
     public ShotDB(Long id, String title, ZonedDateTime creationDate, String projectUrl, int likesCount,
-            int bucketCount, int commentsCount, String description, boolean isGif, String hiDpiImageUrl,
-            String normalImageUrl, String thumbnailUrl, boolean isBucketed, boolean isLiked, Long userId,
-            Long teamId) {
+                  int bucketCount, int commentsCount, String description, boolean isGif, String hiDpiImageUrl,
+                  String normalImageUrl, String thumbnailUrl, boolean isBucketed, boolean isLiked, Long userId,
+                  Long teamId) {
         this.id = id;
         this.title = title;
         this.creationDate = creationDate;
@@ -349,7 +349,9 @@ public class ShotDB {
         myDao.update(this);
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 907843013)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;

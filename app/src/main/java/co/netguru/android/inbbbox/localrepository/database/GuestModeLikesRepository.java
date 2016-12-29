@@ -38,8 +38,10 @@ public class GuestModeLikesRepository extends BaseGuestModeRepository {
     }
 
     public Observable<List<Shot>> getLikedShots() {
-        return daoSession.getShotDBDao().queryBuilder().rx().oneByOne()
-                .filter(ShotDB::getIsLiked)
+        return daoSession.getShotDBDao().queryBuilder()
+                .where(ShotDBDao.Properties.IsLiked.eq(Boolean.TRUE))
+                .rx()
+                .oneByOne()
                 .map(Shot::fromDB)
                 .toList();
     }
