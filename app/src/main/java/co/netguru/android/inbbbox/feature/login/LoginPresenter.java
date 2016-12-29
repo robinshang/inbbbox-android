@@ -12,6 +12,7 @@ import co.netguru.android.inbbbox.controler.TokenController;
 import co.netguru.android.inbbbox.controler.TokenParametersController;
 import co.netguru.android.inbbbox.controler.UserController;
 import co.netguru.android.inbbbox.enumeration.UserModeType;
+import co.netguru.android.inbbbox.utils.RxTransformerUtils;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -54,7 +55,7 @@ public final class LoginPresenter
         getView().disableLoginButton();
         compositeSubscription.add(
                 tokenParametersController.getOauthAuthorizeUrlAndUuidPair()
-                        .compose(androidIO())
+                        .compose(RxTransformerUtils.androidComputation())
                         .subscribe(
                                 urlUUIDPair -> getView()
                                         .openAuthWebViewFragment(urlUUIDPair.first,
