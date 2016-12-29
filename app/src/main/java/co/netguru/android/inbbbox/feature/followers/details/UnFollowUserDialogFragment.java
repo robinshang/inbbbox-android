@@ -33,7 +33,7 @@ public class UnFollowUserDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         onUnFollowClickedListener = (OnUnFollowClickedListener) getTargetFragment();
         return new AlertDialog.Builder(getContext(), R.style.AlertDialog)
-                .setMessage(getContext().getString(R.string.fragment_follower_details_dialog_text,
+                .setMessage(getContext().getString(R.string.fragment_unfollow_details_dialog_text,
                         getArguments().getString(USERNAME_KEY)))
                 .setPositiveButton(R.string.action_unfollow, (dialog, which) ->
                         onUnFollowClickedListener.onUnFollowClicked())

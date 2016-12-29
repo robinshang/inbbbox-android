@@ -12,6 +12,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +38,9 @@ import timber.log.Timber;
 
 public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
         FollowerDetailsContract.View, FollowerDetailsContract.Presenter>
-        implements FollowerDetailsContract.View, UnFollowUserDialogFragment.OnUnFollowClickedListener {
+        implements FollowerDetailsContract.View,
+        UnFollowUserDialogFragment.OnUnFollowClickedListener,
+        FollowUserDialogFragment.OnFollowClickedListener {
 
     public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
     private static final int GRID_VIEW_COLUMN_COUNT = 2;
@@ -46,6 +50,9 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     private static final int RECYCLER_VIEW_HEADER_POSITION = 0;
     private static final int RECYCLER_VIEW_ITEM_SPAN_SIZE = 1;
 
+    private MenuItem followMenuItem;
+    private MenuItem unfollowMenuItem;
+
     @BindColor(R.color.accent)
     int accentColor;
 
@@ -54,8 +61,8 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     @BindView(R.id.fragment_follower_details_recycler_view)
     RecyclerView recyclerView;
 
+    private OnFollowedShotActionListener onChangeFollowingStatusCompletedListener;
     private FollowerDetailsAdapter adapter;
-    private OnFollowedShotActionListener onUnFollowCompletedListener;
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
 
@@ -81,7 +88,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            onUnFollowCompletedListener = (OnFollowedShotActionListener) context;
+            onChangeFollowingStatusCompletedListener = (OnFollowedShotActionListener) context;
         } catch (ClassCastException e) {
             Timber.e(e, "must implement OnFollowedShotActionListener");
             throw new InterfaceNotImplementedException(e, context.toString(), OnFollowedShotActionListener.class.getSimpleName());
@@ -104,10 +111,26 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     @Override
+    public void setFollowingMenuIcon(boolean isFollowed) {
+        unfollowMenuItem.setVisible(isFollowed);
+        followMenuItem.setVisible(!isFollowed);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        followMenuItem = menu.findItem(R.id.action_follow);
+        unfollowMenuItem = menu.findItem(R.id.action_unfollow);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_unfollow:
                 getPresenter().onUnFollowClick();
+                return true;
+            case R.id.action_follow:
+                getPresenter().onFollowClick();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -165,7 +188,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
 
     @Override
     public void showFollowersList() {
-        onUnFollowCompletedListener.unFollowCompleted();
+        onChangeFollowingStatusCompletedListener.onFollowingStatusChangeCompleted();
     }
 
     @Override
@@ -175,7 +198,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
 
     @Override
     public void openShotDetailsScreen(Shot shot, List<Shot> allShots, long userId) {
-        onUnFollowCompletedListener.showShotDetails(shot, allShots, userId);
+        onChangeFollowingStatusCompletedListener.showShotDetails(shot, allShots, userId);
     }
 
     @Override
@@ -186,6 +209,13 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     @Override
+    public void showFollowDialog(String username) {
+        FollowUserDialogFragment
+                .newInstance(this, username)
+                .show(getFragmentManager(), FollowUserDialogFragment.TAG);
+    }
+
+    @Override
     public void showMessageOnServerError(String errorText) {
         Snackbar.make(recyclerView, errorText, Snackbar.LENGTH_SHORT).show();
     }
@@ -193,6 +223,11 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     @Override
     public void onUnFollowClicked() {
         getPresenter().unFollowUser();
+    }
+
+    @Override
+    public void onFollowClicked() {
+        getPresenter().followUser();
     }
 
     private void getFollowerData() {
@@ -231,6 +266,6 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     public interface OnFollowedShotActionListener {
         void showShotDetails(Shot shot, List<Shot> allShots, long userId);
 
-        void unFollowCompleted();
+        void onFollowingStatusChangeCompleted();
     }
 }

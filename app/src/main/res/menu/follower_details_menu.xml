@@ -6,5 +6,13 @@
         android:icon="@drawable/ic_unfollow"
         android:title="@string/action_follow"
         app:showAsAction="ifRoom"
-        android:orderInCategory="0"/>
+        android:orderInCategory="0"
+        android:visible="false"/>
+
+    <item android:id="@+id/action_follow"
+        android:icon="@drawable/ic_follow"
+        android:title="@string/action_follow"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="0"
+        android:visible="false"/>
 </menu>

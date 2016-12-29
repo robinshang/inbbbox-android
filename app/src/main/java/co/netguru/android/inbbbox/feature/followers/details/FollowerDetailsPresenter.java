@@ -8,8 +8,8 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.followers.FollowersController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
+import co.netguru.android.inbbbox.controler.followers.FollowersController;
 import co.netguru.android.inbbbox.model.ui.Follower;
 import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;
@@ -21,6 +21,7 @@ import timber.log.Timber;
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 import static co.netguru.android.commons.rx.RxTransformers.fromListObservable;
 import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applyCompletableIoSchedulers;
+import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applySingleIoSchedulers;
 
 @FragmentScope
 public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<FollowerDetailsContract.View>
@@ -32,13 +33,12 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     private final FollowersController followersController;
     private final ErrorController errorController;
     private final CompositeSubscription subscriptions;
-
     @NonNull
     private Subscription loadMoreShotsSubscription;
+
     @NonNull
     private Subscription refreshShotsSubscription;
-    @NonNull
-    private Subscription unfollowUserSubscription;
+
     private Follower follower;
     private boolean hasMore = true;
     private int pageNumber = 1;
@@ -52,7 +52,6 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         subscriptions = new CompositeSubscription();
         refreshShotsSubscription = Subscriptions.unsubscribed();
         loadMoreShotsSubscription = Subscriptions.unsubscribed();
-        unfollowUserSubscription = Subscriptions.unsubscribed();
     }
 
     @Override
@@ -61,7 +60,6 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         if (!retainInstance) {
             loadMoreShotsSubscription.unsubscribe();
             refreshShotsSubscription.unsubscribe();
-            unfollowUserSubscription.unsubscribe();
         }
     }
 
@@ -70,8 +68,8 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         Timber.d("Received follower : %s", follower);
         if (follower != null) {
             this.follower = follower;
-            getView().showFollowerData(follower);
-            getView().showContent();
+            checkIfUserIsFollowed(follower.id());
+            showFollower(follower);
         }
     }
 
@@ -96,6 +94,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         Timber.d("Received user : %s", user);
         if (user != null) {
             downloadUserShots(user);
+            checkIfUserIsFollowed(user.id());
         }
     }
 
@@ -123,10 +122,11 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     @Override
     public void unFollowUser() {
-        unfollowUserSubscription = followersController.unFollowUser(follower.id())
-                .compose(applyCompletableIoSchedulers())
-                .subscribe(getView()::showFollowersList,
-                        throwable -> handleError(throwable, "Error while unFollow user"));
+        subscriptions.add(
+                followersController.unFollowUser(follower.id())
+                        .compose(applyCompletableIoSchedulers())
+                        .subscribe(getView()::showFollowersList,
+                                throwable -> handleError(throwable, "Error while unFollow user")));
     }
 
     @Override
@@ -140,6 +140,20 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
+    }
+
+    @Override
+    public void onFollowClick() {
+        getView().showFollowDialog(follower.name());
+    }
+
+    @Override
+    public void followUser() {
+        subscriptions.add(
+                followersController.followUser(follower.id())
+                        .compose(applyCompletableIoSchedulers())
+                        .subscribe(() -> setFollowingMenuIcon(true),
+                                throwable -> handleError(throwable, "Error while follow user")));
     }
 
     private void downloadUserShots(User user) {
@@ -158,5 +172,19 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     private void showFollower(Follower follower) {
         this.follower = follower;
         getView().showFollowerData(follower);
+        getView().showContent();
     }
+
+    private void checkIfUserIsFollowed(long userId) {
+        subscriptions.add(
+                followersController.isUserFollowed(userId)
+                        .compose(applySingleIoSchedulers())
+                        .subscribe(this::setFollowingMenuIcon,
+                                throwable -> handleError(throwable, "Error while checking if user is followed")));
+    }
+
+    private void setFollowingMenuIcon(boolean isFollowed) {
+        getView().setFollowingMenuIcon(isFollowed);
+    }
+
 }

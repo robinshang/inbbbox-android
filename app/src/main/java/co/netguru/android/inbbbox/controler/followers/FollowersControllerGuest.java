@@ -7,6 +7,7 @@ import co.netguru.android.inbbbox.localrepository.database.GuestModeFollowersRep
 import co.netguru.android.inbbbox.model.api.FollowerEntity;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 public class FollowersControllerGuest implements FollowersController {
 
@@ -29,6 +30,18 @@ public class FollowersControllerGuest implements FollowersController {
     @Override
     public Completable unFollowUser(long id) {
         return guestModeFollowersRepository.removeFollower(id);
+    }
+
+    @Override
+    public Completable followUser(long id) {
+        // TODO: 22.12.2016 Refactor adding follower to db
+        return Completable.complete();
+    }
+
+    @Override
+    public Single<Boolean> isUserFollowed(long id) {
+        // TODO: 22.12.2016 Ask database instead of dribbble API
+        return Single.just(false);
     }
 
     private Observable<List<FollowerEntity>> getFollowersFromApi(int pageNumber, int pageCount) {

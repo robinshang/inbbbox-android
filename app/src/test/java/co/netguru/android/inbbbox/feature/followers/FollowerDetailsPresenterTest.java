@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.followers;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,6 +18,7 @@ import java.util.List;
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.controler.ErrorController;
 import co.netguru.android.inbbbox.controler.UserShotsController;
+import co.netguru.android.inbbbox.controler.followers.FollowersController;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsContract;
 import co.netguru.android.inbbbox.feature.followers.details.FollowerDetailsPresenter;
 import co.netguru.android.inbbbox.model.ui.Follower;
@@ -24,8 +26,12 @@ import co.netguru.android.inbbbox.model.ui.Shot;
 import co.netguru.android.inbbbox.model.ui.User;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
+import rx.Single;
+import rx.plugins.RxJavaHooks;
+import rx.schedulers.Schedulers;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
@@ -48,7 +54,13 @@ public class FollowerDetailsPresenterTest {
     ErrorController errorControllerMock;
 
     @Mock
+    FollowersController followersControllerMock;
+
+    @Mock
     User userMock;
+
+    @Mock
+    Follower followerMock;
 
     @InjectMocks
     FollowerDetailsPresenter followerDetailsPresenter;
@@ -60,6 +72,10 @@ public class FollowerDetailsPresenterTest {
     public void setUp() {
         followerDetailsPresenter.attachView(viewMock);
         when(errorControllerMock.getThrowableMessage(any(Throwable.class))).thenCallRealMethod();
+
+        RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
+
+        when(followersControllerMock.isUserFollowed(anyLong())).thenReturn(Single.just(true));
     }
 
     @Test
@@ -72,6 +88,54 @@ public class FollowerDetailsPresenterTest {
 
         verify(userShotsControllerMock, times(1))
                 .getUserShotsList(eq(EXAMPLE_ID), anyInt(), anyInt());
+    }
+
+    @Test
+    public void whenUserReceived_thenCheckIfIsFollowed() {
+        when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
+                .thenReturn(Observable.empty());
+        when(userMock.id()).thenReturn(EXAMPLE_ID);
+
+        followerDetailsPresenter.userDataReceived(userMock);
+
+        verify(followersControllerMock, times(1))
+                .isUserFollowed(eq(EXAMPLE_ID));
+    }
+
+    @Test
+    public void whenUserReceivedAndCheckedIfIsFollowed_thenSetMenuIcon() {
+        User exampleUser = User.create(Statics.USER_ENTITY);
+        List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT_BUCKETED, Statics.NOT_LIKED_SHOT);
+
+        when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
+                .thenReturn(Observable.just(listOfShots));
+        when(userMock.id()).thenReturn(EXAMPLE_ID);
+
+        followerDetailsPresenter.userDataReceived(exampleUser);
+
+        verify(viewMock, times(1)).setFollowingMenuIcon(anyBoolean());
+    }
+
+    @Test
+    public void whenFollowerReceived_thenCheckIfIsFollowed() {
+        when(followerMock.id()).thenReturn(EXAMPLE_ID);
+
+        followerDetailsPresenter.followerDataReceived(followerMock);
+
+        verify(followersControllerMock, times(1))
+                .isUserFollowed(eq(EXAMPLE_ID));
+    }
+
+    @Test
+    public void whenFollowerReceivedAndCheckedIfIsFollowed_thenSetMenuIcon() {
+        User exampleUser = User.create(Statics.USER_ENTITY);
+        List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT_BUCKETED, Statics.NOT_LIKED_SHOT);
+
+        when(followerMock.id()).thenReturn(EXAMPLE_ID);
+
+        followerDetailsPresenter.followerDataReceived(Follower.createFromUser(exampleUser, listOfShots));
+
+        verify(viewMock, times(1)).setFollowingMenuIcon(anyBoolean());
     }
 
     @Test
@@ -101,5 +165,10 @@ public class FollowerDetailsPresenterTest {
         followerDetailsPresenter.userDataReceived(exampleUser);
 
         verify(viewMock, times(1)).showMessageOnServerError(message);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        RxJavaHooks.reset();
     }
 }

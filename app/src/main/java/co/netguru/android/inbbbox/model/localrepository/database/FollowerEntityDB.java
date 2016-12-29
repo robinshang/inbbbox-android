@@ -1,15 +1,15 @@
 package co.netguru.android.inbbbox.model.localrepository.database;
 
+import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.DaoException;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.annotation.ToOne;
 
 import co.netguru.android.inbbbox.model.localrepository.database.converter.ZonedDateTimeConverter;
 
-import org.greenrobot.greendao.annotation.NotNull;
 import org.threeten.bp.ZonedDateTime;
 
 @Entity
