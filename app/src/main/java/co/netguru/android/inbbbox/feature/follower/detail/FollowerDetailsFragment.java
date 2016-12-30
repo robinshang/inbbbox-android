@@ -31,7 +31,6 @@ import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedExcep
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.follower.detail.adapter.FollowerDetailsAdapter;
-import co.netguru.android.inbbbox.feature.followers.details.FollowUserDialogFragment;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import timber.log.Timber;
