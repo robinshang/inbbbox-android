@@ -149,7 +149,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         if (user.shotList() == null) {
             downloadUserShots(user);
         } else {
-            showFollower(follower);
+            showFollower(user);
         }
     }
 

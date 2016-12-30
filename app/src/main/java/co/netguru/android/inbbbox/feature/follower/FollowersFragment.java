@@ -184,8 +184,7 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     }
 
     private void initRecyclerView() {
-        adapter = new FollowersAdapter(follower ->
-                FollowerDetailsActivity.startActivity(getContext(), follower));
+        adapter = new FollowersAdapter(this);
         gridLayoutManager = new GridLayoutManager(getContext(), GRID_VIEW_COLUMN_COUNT);
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setHasFixedSize(true);
