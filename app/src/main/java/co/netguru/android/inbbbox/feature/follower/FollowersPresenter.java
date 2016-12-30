@@ -14,7 +14,6 @@ import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
-import co.netguru.android.inbbbox.data.follower.controllers.FollowersShotController;
 import rx.Subscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
@@ -27,11 +26,9 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
 
     private static final int FOLLOWERS_PAGE_COUNT = 15;
     private static final int FOLLOWERS_SHOT_PAGE_COUNT = 30;
-    private static final int FOLLOWERS_SHOT_PAGE_NUMBER = 1;
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
 
     private final FollowersController followersController;
-    private final FollowersShotController followersShotController;
     private final ErrorController errorController;
 
     @NonNull
@@ -43,10 +40,8 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     private int pageNumber = 1;
 
     @Inject
-    FollowersPresenter(FollowersController followersController, FollowersShotController followersShotController,
-                       ErrorController errorController) {
+    FollowersPresenter(FollowersController followersController, ErrorController errorController) {
         this.followersController = followersController;
-        this.followersShotController = followersShotController;
         this.errorController = errorController;
         refreshSubscription = Subscriptions.unsubscribed();
         loadNextBucketSubscription = Subscriptions.unsubscribed();
@@ -66,9 +61,8 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
         if (refreshSubscription.isUnsubscribed()) {
             pageNumber = 1;
             loadNextBucketSubscription.unsubscribe();
-            refreshSubscription = followersController.getFollowedUsers(pageNumber, FOLLOWERS_PAGE_COUNT)
-                    .flatMap(follower -> followersShotController.getFollowedUserWithShots(follower,
-                            FOLLOWERS_SHOT_PAGE_NUMBER, FOLLOWERS_SHOT_PAGE_COUNT))
+            refreshSubscription = followersController.getFollowedUsers(pageNumber,
+                    FOLLOWERS_PAGE_COUNT, FOLLOWERS_SHOT_PAGE_COUNT)
                     .toList()
                     .compose(androidIO())
                     .doAfterTerminate(getView()::hideProgressBars)
@@ -81,12 +75,11 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     public void getMoreFollowedUsersFromServer() {
         if (hasMore && refreshSubscription.isUnsubscribed() && loadNextBucketSubscription.isUnsubscribed()) {
             pageNumber++;
-            loadNextBucketSubscription = followersController.getFollowedUsers(pageNumber, FOLLOWERS_PAGE_COUNT)
+            loadNextBucketSubscription = followersController.getFollowedUsers(pageNumber,
+                    FOLLOWERS_PAGE_COUNT, FOLLOWERS_SHOT_PAGE_COUNT)
                     .compose(RxTransformerUtil.executeRunnableIfObservableDidntEmitUntilGivenTime(
                             SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
                             getView()::showLoadingMoreFollowersView))
-                    .flatMap(follower -> followersShotController.getFollowedUserWithShots(follower,
-                            FOLLOWERS_SHOT_PAGE_NUMBER, FOLLOWERS_SHOT_PAGE_COUNT))
                     .toList()
                     .compose(androidIO())
                     .doAfterTerminate(() -> {
