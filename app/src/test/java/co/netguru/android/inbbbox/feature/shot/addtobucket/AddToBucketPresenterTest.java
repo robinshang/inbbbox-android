@@ -13,7 +13,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.common.error.ErrorController;
-import co.netguru.android.inbbbox.data.bucket.BucketsController;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -56,7 +56,7 @@ public class AddToBucketPresenterTest {
     public void whenShotWithTeamIsHandled_thenSetupView() {
         setupWithEmptyRxBus();
         //given
-        Shot shotWithTeam = Shot.update(Statics.LIKED_SHOT)
+        Shot shotWithTeam = Shot.update(Statics.LIKED_SHOT_NOT_BUCKETED)
                 .author(User.create(Statics.USER_ENTITY))
                 .team(Statics.TEAM)
                 .build();
@@ -75,7 +75,7 @@ public class AddToBucketPresenterTest {
     public void whenShotWithoutTeamIsHandled_thenSetupView() {
         setupWithEmptyRxBus();
         //given
-        Shot shotWithoutTeam = Shot.update(Statics.LIKED_SHOT)
+        Shot shotWithoutTeam = Shot.update(Statics.LIKED_SHOT_NOT_BUCKETED)
                 .author(User.create(Statics.USER_ENTITY))
                 .team(null)
                 .build();
@@ -130,11 +130,11 @@ public class AddToBucketPresenterTest {
     public void whenBucketSelected_thenPassResult() {
         setupWithEmptyRxBus();
         //given
-        presenter.handleShot(Statics.LIKED_SHOT);
+        presenter.handleShot(Statics.LIKED_SHOT_NOT_BUCKETED);
         //when
         presenter.handleBucketClick(Statics.BUCKET);
         //then
-        verify(viewMock).passResultAndCloseFragment(Statics.BUCKET, Statics.LIKED_SHOT);
+        verify(viewMock).passResultAndCloseFragment(Statics.BUCKET, Statics.LIKED_SHOT_NOT_BUCKETED);
     }
 
     @Test

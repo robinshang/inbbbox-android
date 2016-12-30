@@ -5,7 +5,7 @@ import co.netguru.android.inbbbox.data.session.model.Token;
 import retrofit2.http.Field;
 import rx.Observable;
 
-public class MockAuthorizeApi implements AuthorizeApi {
+public class MockedAuthorizeApi implements AuthorizeApi {
 
     private static final Token MOCKED_TOKEN = new Token("", "", "");
 

@@ -4,7 +4,7 @@
     style="@style/ShotCommentSectionContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/secondaryWindowBackground"
+    android:background="@color/windowBackground"
     android:orientation="vertical">
 
     <de.hdodenhof.circleimageview.CircleImageView

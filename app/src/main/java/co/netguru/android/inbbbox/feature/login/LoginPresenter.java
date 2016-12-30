@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
 import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
 import co.netguru.android.inbbbox.data.session.controllers.TokenController;
 import co.netguru.android.inbbbox.data.session.controllers.TokenParametersController;
@@ -54,7 +55,7 @@ public final class LoginPresenter
         getView().disableLoginButton();
         compositeSubscription.add(
                 tokenParametersController.getOauthAuthorizeUrlAndUuidPair()
-                        .compose(androidIO())
+                        .compose(RxTransformerUtil.androidComputation())
                         .subscribe(
                                 urlUUIDPair -> getView()
                                         .openAuthWebViewFragment(urlUUIDPair.first,

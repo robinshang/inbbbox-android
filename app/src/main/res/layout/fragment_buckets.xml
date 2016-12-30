@@ -68,9 +68,10 @@
         android:layout_marginEnd="@dimen/margin_default"
         android:src="@drawable/ic_fab_add"
         app:layout_behavior="co.netguru.android.inbbbox.feature.shared.view.behavior.FloatingActionMenuAndButtonBehavior"
-        fab:fab_colorNormal="@color/white"
+        fab:fab_colorNormal="@color/secondaryWindowBackground"
         fab:fab_colorRipple="@color/accent"
-        fab:menu_fab_size="normal"/>
+        fab:fab_colorPressed="@color/materialButtonColorPressed"
+        fab:menu_fab_size="normal" />
 
     <TextView
         android:id="@+id/errorView"

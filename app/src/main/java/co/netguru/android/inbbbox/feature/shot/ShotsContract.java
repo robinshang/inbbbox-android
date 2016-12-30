@@ -17,7 +17,7 @@ interface ShotsContract {
 
         void showMoreItems(List<Shot> items);
 
-        void showLoadingIndicator();
+        void showLoadingIndicator(boolean pullToRefresh);
 
         void hideLoadingIndicator();
 
@@ -38,7 +38,7 @@ interface ShotsContract {
 
         void likeShot(Shot shot);
 
-        void getShotsFromServer();
+        void getShotsFromServer(boolean pullToRefresh);
 
         void getMoreShotsFromServer();
 

@@ -4,11 +4,10 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import butterknife.BindColor;
-import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
@@ -16,23 +15,12 @@ import co.netguru.android.inbbbox.feature.shot.detail.CommentLoadMoreState;
 
 class ShotDetailsLoadMoreViewHolder extends ShotDetailsViewHolder<CommentLoadMoreState> {
 
-    @BindView(R.id.shot_details_load_more_textView)
-    TextView loadMoreTextView;
-
     @BindView(R.id.load_more_progressBar)
     ProgressBar loadMoreProgressBar;
-
-    @BindView(R.id.load_more_container)
-    View loadMoreContainer;
-
-    @BindString(R.string.load_more_label)
-    String loadMoreLabel;
-
-    @BindColor(R.color.shotDetailsBackground)
-    int lightGrayBackground;
-
-    @BindColor(R.color.secondaryWindowBackground)
-    int whiteyBackground;
+    @BindView(R.id.load_more_text_container)
+    FrameLayout loadMoreTextContainer;
+    @BindView(R.id.shot_details_load_more_textView)
+    TextView loadMoreTextView;
 
     private CommentLoadMoreState loadMoreState;
 
@@ -68,13 +56,10 @@ class ShotDetailsLoadMoreViewHolder extends ShotDetailsViewHolder<CommentLoadMor
         loadMoreTextView
                 .setActivated(loadMoreState.isLoadMoreActive());
         loadMoreTextView.setClickable(loadMoreState.isLoadMoreActive());
+        loadMoreTextContainer.setVisibility(canLoadMoreComments() ? View.VISIBLE : View.GONE);
+    }
 
-        if (!loadMoreState.isWaitingForUpdate() && loadMoreState.isLoadMoreActive()) {
-            loadMoreTextView.setText(loadMoreLabel);
-            loadMoreContainer.setBackgroundColor(lightGrayBackground);
-        } else {
-            loadMoreTextView.setText("");
-            loadMoreContainer.setBackgroundColor(whiteyBackground);
-        }
+    private boolean canLoadMoreComments() {
+        return !loadMoreState.isWaitingForUpdate() && loadMoreState.isLoadMoreActive();
     }
 }

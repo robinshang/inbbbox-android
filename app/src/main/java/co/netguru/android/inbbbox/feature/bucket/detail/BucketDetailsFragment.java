@@ -36,13 +36,14 @@ import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
-import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.bucket.detail.adapter.BucketShotViewHolder;
 import co.netguru.android.inbbbox.feature.bucket.detail.adapter.BucketShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 
-public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<ShotEntity>,
+
+public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
         BucketDetailsContract.View, BucketDetailsContract.Presenter>
         implements BucketDetailsContract.View, DeleteBucketDialogFragment.DeleteBucketDialogListener {
 
@@ -125,22 +126,22 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     @NonNull
     @Override
     public BucketDetailsContract.Presenter createPresenter() {
-        return App.getAppComponent(getContext()).plusBucketDetailsComponent().getPresenter();
+        return App.getUserComponent(getContext()).plusBucketDetailsComponent().getPresenter();
     }
 
     @NonNull
     @Override
-    public LceViewState<List<ShotEntity>, BucketDetailsContract.View> createViewState() {
+    public LceViewState<List<Shot>, BucketDetailsContract.View> createViewState() {
         return new RetainingLceViewState<>();
     }
 
     @Override
-    public List<ShotEntity> getData() {
+    public List<Shot> getData() {
         return bucketShotsAdapter.getData();
     }
 
     @Override
-    public void setData(List<ShotEntity> data) {
+    public void setData(List<Shot> data) {
         bucketShotsAdapter.setNewShots(data);
     }
 
@@ -198,8 +199,8 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     }
 
     @Override
-    public void addShots(List<ShotEntity> shotEntities) {
-        bucketShotsAdapter.addNewShots(shotEntities);
+    public void addShots(List<Shot> shots) {
+        bucketShotsAdapter.addNewShots(shots);
     }
 
     @Override

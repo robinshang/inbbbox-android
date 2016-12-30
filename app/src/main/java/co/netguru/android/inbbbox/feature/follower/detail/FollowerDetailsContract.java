@@ -26,6 +26,10 @@ public interface FollowerDetailsContract {
         void openShotDetailsScreen(Shot shot, List<Shot> allShots, long userId);
 
         void showUnFollowDialog(String username);
+
+        void showFollowDialog(String username);
+
+        void setFollowingMenuIcon(boolean isFollowed);
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -42,5 +46,9 @@ public interface FollowerDetailsContract {
         void unFollowUser();
 
         void showShotDetails(Shot shot);
+
+        void onFollowClick();
+
+        void followUser();
     }
 }

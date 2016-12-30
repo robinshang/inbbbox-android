@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
-import co.netguru.android.inbbbox.data.bucket.BucketsController;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.shot.ShotsController;
@@ -75,11 +75,11 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     }
 
     @Override
-    public void getShotsFromServer() {
+    public void getShotsFromServer(boolean pullToRefresh) {
         if (refreshSubscription.isUnsubscribed()) {
             loadMoreSubscription.unsubscribe();
             pageNumber = FIRST_PAGE;
-            getView().showLoadingIndicator();
+            getView().showLoadingIndicator(pullToRefresh);
             refreshSubscription = shotsController.getShots(pageNumber, SHOTS_PER_PAGE)
                     .compose(androidIO())
                     .subscribe(shotList -> {
@@ -116,7 +116,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     @Override
     public void addShotToBucket(Bucket bucket, Shot shot) {
         subscriptions.add(
-                bucketsController.addShotToBucket(bucket.id(), shot.id())
+                bucketsController.addShotToBucket(bucket.id(), shot)
                         .compose(RxTransformerUtil.applyCompletableIoSchedulers())
                         .subscribe(
                                 getView()::showBucketAddSuccess,

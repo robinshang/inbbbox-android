@@ -46,7 +46,7 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
     }
 
     private void animateMenuButtonClose() {
-        setMenuButtonColorNormal(ContextCompat.getColor(getContext(), R.color.white));
+        setMenuButtonColorNormal(ContextCompat.getColor(getContext(), R.color.secondaryWindowBackground));
         getMenuIconView().setImageResource(R.drawable.ic_fab_open);
     }
 

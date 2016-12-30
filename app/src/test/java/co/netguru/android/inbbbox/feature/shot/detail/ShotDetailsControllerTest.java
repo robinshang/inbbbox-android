@@ -10,12 +10,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
-import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
@@ -50,6 +48,9 @@ public class ShotDetailsControllerTest {
     LikeShotControllerApi likeShotControllerApiMock;
 
     @Mock
+    BucketsController bucketsController;
+
+    @Mock
     ShotDetailsState state;
 
     @Mock
@@ -70,7 +71,6 @@ public class ShotDetailsControllerTest {
     private List<CommentEntity> comments = Statics.generateCommentsEntity();
     private Long EXAMPLE_SHOT_ID = 1L;
     private Long EXAMPLE_USER_ID = 99L;
-    private int pageNumberExample = 1;
     private int examplePerPageValue = 10;
 
 
@@ -260,19 +260,11 @@ public class ShotDetailsControllerTest {
     }
 
     private void mockInBucketShotState() {
-        List<Bucket> buckets = new ArrayList<>();
-        Bucket currentUserBucket = Bucket.update(Statics.BUCKET)
-                .user(userEntityMock)
-                .build();
-        buckets.add(currentUserBucket);
-        when(shotApiMock.getBucketsList(EXAMPLE_SHOT_ID.toString()))
-                .thenReturn(Observable.just(buckets));
+        when(bucketsController.isShotBucketed(anyInt(), anyInt())).thenReturn(Single.just(Boolean.TRUE));
     }
 
     private void mockNotInBucketShotState() {
-        List<Bucket> buckets = Collections.emptyList();
-
-        when(shotApiMock.getBucketsList(EXAMPLE_SHOT_ID.toString()))
-                .thenReturn(Observable.just(buckets));
+        when(bucketsController.isShotBucketed(anyInt(), anyInt()))
+                .thenReturn(Single.just(Boolean.FALSE));
     }
 }

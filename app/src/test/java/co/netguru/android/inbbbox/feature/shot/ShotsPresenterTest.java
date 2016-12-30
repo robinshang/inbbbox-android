@@ -14,7 +14,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.common.error.ErrorController;
-import co.netguru.android.inbbbox.data.bucket.BucketsController;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotControllerApi;
 import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -23,7 +23,7 @@ import rx.Completable;
 import rx.Observable;
 
 import static co.netguru.android.inbbbox.Statics.BUCKET;
-import static co.netguru.android.inbbbox.Statics.LIKED_SHOT;
+import static co.netguru.android.inbbbox.Statics.LIKED_SHOT_NOT_BUCKETED;
 import static co.netguru.android.inbbbox.Statics.NOT_LIKED_SHOT;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -70,7 +70,7 @@ public class ShotsPresenterTest {
     public void setUp() {
         presenter.attachView(viewMock);
 
-        Shot exampleShot = Statics.LIKED_SHOT;
+        Shot exampleShot = Statics.LIKED_SHOT_NOT_BUCKETED;
         shotsList.add(exampleShot);
 
         when(shotMock.id()).thenReturn(EXAMPLE_ID);
@@ -80,7 +80,7 @@ public class ShotsPresenterTest {
     @Test
     public void whenDataLoadedCalled_thenRequestDataFromProvider() {
 
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
         verify(shotsControllerMock, times(1)).getShots(SHOT_PAGE, SHOT_PAGE_COUNT);
     }
@@ -89,7 +89,7 @@ public class ShotsPresenterTest {
     public void whenDataLoadedCorrectly_thenHideLoadingIndicator() {
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.just(new ArrayList<>()));
 
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
         verify(viewMock, times(1)).hideLoadingIndicator();
     }
@@ -99,7 +99,7 @@ public class ShotsPresenterTest {
         List<Shot> expectedShots = new ArrayList<>();
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.just(expectedShots));
 
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
         verify(viewMock, times(1)).setData(expectedShots);
     }
@@ -107,7 +107,7 @@ public class ShotsPresenterTest {
     @Test
     public void whenShotNotLikedAndLikeActionCalled_thenCallLikeShotMethod() {
         when(likeShotControllerApiMock.likeShot(NOT_LIKED_SHOT)).thenReturn(Completable.complete());
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
         presenter.likeShot(NOT_LIKED_SHOT);
 
@@ -117,8 +117,8 @@ public class ShotsPresenterTest {
     @Test
     public void whenShotLiked_thenChangeShotStatus() {
         when(likeShotControllerApiMock.likeShot(any(Shot.class))).thenReturn(Completable.complete());
-        presenter.getShotsFromServer();
-        Shot expectedShot = Shot.update(Statics.LIKED_SHOT)
+        presenter.getShotsFromServer(false);
+        Shot expectedShot = Shot.update(Statics.LIKED_SHOT_NOT_BUCKETED)
                 .id(NOT_LIKED_SHOT.id())
                 .isLiked(true)
                 .creationDate(NOT_LIKED_SHOT.creationDate())
@@ -136,9 +136,9 @@ public class ShotsPresenterTest {
     public void whenShotLikedAndLikeActionCalled_thenDoNotCallLikeShotMethod() {
         when(likeShotControllerApiMock.likeShot(any(Shot.class))).thenReturn(Completable.complete());
 
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
-        presenter.likeShot(LIKED_SHOT);
+        presenter.likeShot(LIKED_SHOT_NOT_BUCKETED);
 
         verify(likeShotControllerApiMock, never()).likeShot(shotMock);
     }
@@ -150,7 +150,7 @@ public class ShotsPresenterTest {
         Exception exampleException = new Exception(message);
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.error(exampleException));
 
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
         verify(viewMock, times(1)).hideLoadingIndicator();
     }
@@ -162,7 +162,7 @@ public class ShotsPresenterTest {
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.error(exampleException));
         when(errorControllerMock.getThrowableMessage(exampleException)).thenCallRealMethod();
 
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
         verify(viewMock, times(1)).showMessageOnServerError(message);
     }
@@ -174,7 +174,7 @@ public class ShotsPresenterTest {
         when(likeShotControllerApiMock.likeShot(any(Shot.class))).thenReturn(Completable.error(exampleException));
         when(errorControllerMock.getThrowableMessage(exampleException)).thenCallRealMethod();
 
-        presenter.getShotsFromServer();
+        presenter.getShotsFromServer(false);
 
         presenter.likeShot(NOT_LIKED_SHOT);
 
@@ -184,18 +184,18 @@ public class ShotsPresenterTest {
     @Test
     public void whenShotChosenToBeAddedToBucket_thenShowBucketChooser() {
         //when
-        presenter.handleAddShotToBucket(LIKED_SHOT);
+        presenter.handleAddShotToBucket(LIKED_SHOT_NOT_BUCKETED);
         //then
-        verify(viewMock, times(1)).showBucketChoosing(LIKED_SHOT);
+        verify(viewMock, times(1)).showBucketChoosing(LIKED_SHOT_NOT_BUCKETED);
     }
 
     @Test
     public void whenBucketForShotChosen_thenAddToBucket() {
         //given
-        when(bucketsControllerMock.addShotToBucket(BUCKET.id(), LIKED_SHOT.id()))
+        when(bucketsControllerMock.addShotToBucket(BUCKET.id(), LIKED_SHOT_NOT_BUCKETED))
                 .thenReturn(Completable.complete());
         //when
-        presenter.addShotToBucket(BUCKET, LIKED_SHOT);
+        presenter.addShotToBucket(BUCKET, LIKED_SHOT_NOT_BUCKETED);
         //then
         verify(viewMock, only()).showBucketAddSuccess();
     }
@@ -203,10 +203,10 @@ public class ShotsPresenterTest {
     @Test
     public void whenBucketForShotChosenAndErrorOccurs_thenShowApiError() {
         //given
-        when(bucketsControllerMock.addShotToBucket(BUCKET.id(), LIKED_SHOT.id()))
+        when(bucketsControllerMock.addShotToBucket(BUCKET.id(), LIKED_SHOT_NOT_BUCKETED))
                 .thenReturn(Completable.error(new Throwable()));
         //when
-        presenter.addShotToBucket(BUCKET, LIKED_SHOT);
+        presenter.addShotToBucket(BUCKET, LIKED_SHOT_NOT_BUCKETED);
         //then
         verify(viewMock, times(1)).showMessageOnServerError(anyString());
     }

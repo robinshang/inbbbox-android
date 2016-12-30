@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.bucket.BucketsController;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;

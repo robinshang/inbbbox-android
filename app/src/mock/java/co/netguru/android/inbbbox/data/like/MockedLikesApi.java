@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.data.like;
 
+import org.threeten.bp.ZonedDateTime;
+
 import java.util.LinkedList;
 import java.util.List;
 

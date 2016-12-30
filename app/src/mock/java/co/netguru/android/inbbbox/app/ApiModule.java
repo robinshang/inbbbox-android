@@ -11,8 +11,8 @@ import co.netguru.android.inbbbox.data.follower.MockedFollowersApi;
 import co.netguru.android.inbbbox.data.like.LikesApi;
 import co.netguru.android.inbbbox.data.like.MockedLikesApi;
 import co.netguru.android.inbbbox.data.session.AuthorizeApi;
-import co.netguru.android.inbbbox.data.session.MockAuthorizeApi;
-import co.netguru.android.inbbbox.data.shot.MockShotsApi;
+import co.netguru.android.inbbbox.data.session.MockedAuthorizeApi;
+import co.netguru.android.inbbbox.data.shot.MockedShotsApi;
 import co.netguru.android.inbbbox.data.shot.ShotsApi;
 import dagger.Module;
 import dagger.Provides;
@@ -23,7 +23,7 @@ public class ApiModule {
 
     @Provides
     AuthorizeApi provideAuthorizeApi() {
-        return new MockAuthorizeApi();
+        return new MockedAuthorizeApi();
     }
 
     @Provides
@@ -33,7 +33,7 @@ public class ApiModule {
 
     @Provides
     ShotsApi provideShotsApi() {
-        return new MockShotsApi();
+        return new MockedShotsApi();
     }
 
     @Provides

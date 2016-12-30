@@ -7,7 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
-import co.netguru.android.inbbbox.data.bucket.BucketsController;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
@@ -77,10 +77,7 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
                     break;
                 case BUCKET:
                     requestMoreObservable = bucketsController.getShotsListFromBucket(detailsRequest.id(), currentPage, SHOTS_PER_PAGE)
-                            .toObservable()
-                            .flatMap(Observable::from)
-                            .map(Shot::create)
-                            .toList();
+                            .toObservable();
                     break;
                 case USER:
                     requestMoreObservable = userShotsController.getUserShotsList(detailsRequest.id(), currentPage, SHOTS_PER_PAGE);

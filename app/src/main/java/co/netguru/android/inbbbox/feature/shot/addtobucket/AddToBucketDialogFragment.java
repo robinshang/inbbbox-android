@@ -123,7 +123,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     @NonNull
     @Override
     public AddToBucketContract.Presenter createPresenter() {
-        return App.getAppComponent(getContext()).plusAddToBucketComponent().getPresenter();
+        return App.getUserComponent(getContext()).plusAddToBucketComponent().getPresenter();
     }
 
     @OnClick(R.id.close_image)

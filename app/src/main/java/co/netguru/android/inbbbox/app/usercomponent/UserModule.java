@@ -1,5 +1,11 @@
 package co.netguru.android.inbbbox.app.usercomponent;
 
+import co.netguru.android.inbbbox.data.bucket.BucketApi;
+import co.netguru.android.inbbbox.data.bucket.GuestModeBucketsRepository;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsControllerApi;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsControllerGuest;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.UserApi;
 import co.netguru.android.inbbbox.data.follower.FollowersApi;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersControllerApi;
@@ -44,5 +50,16 @@ public class UserModule {
         }
 
         return new FollowersControllerApi(followersApi);
+    }
+
+    @UserScope
+    @Provides
+    BucketsController provideBucketsController(UserApi userApi, BucketApi bucketApi,
+                                               GuestModeBucketsRepository guestModeBucketsRepository) {
+        if (mode == UserModeType.GUEST_USER_MODE) {
+            return new BucketsControllerGuest(guestModeBucketsRepository);
+        }
+
+        return new BucketsControllerApi(userApi, bucketApi);
     }
 }

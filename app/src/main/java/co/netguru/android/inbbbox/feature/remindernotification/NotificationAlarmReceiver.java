@@ -33,7 +33,7 @@ public class NotificationAlarmReceiver extends BroadcastReceiver {
 
         notificationManager.notify(NOTIFICATION_ID, getNotification(context));
         notificationController.rescheduleNotification()
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .subscribe(status -> Timber.d("Notification rescheduled : %s", status),
                         throwable -> Timber.e(throwable, "Error while rescheduling notification"));
     }

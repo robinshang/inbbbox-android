@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.threeten.bp.ZonedDateTime;
 
+import co.netguru.android.inbbbox.data.db.BucketDB;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
 
 @AutoValue
@@ -43,7 +44,7 @@ public abstract class Bucket implements Parcelable {
         return new AutoValue_Bucket.Builder();
     }
 
-    public static Bucket.Builder update(Bucket bucket) {
+    public static Builder update(Bucket bucket) {
         return Bucket.builder()
                 .createdAt(bucket.createdAt())
                 .description(bucket.description())
@@ -51,6 +52,16 @@ public abstract class Bucket implements Parcelable {
                 .shotsCount(bucket.shotsCount())
                 .name(bucket.name())
                 .user(bucket.user());
+    }
+
+    public static Bucket fromDB(BucketDB bucketDB) {
+        return Bucket.builder()
+                .id(bucketDB.getId())
+                .name(bucketDB.getName())
+                .description(bucketDB.getDescription())
+                .shotsCount(bucketDB.getShotsCount())
+                .createdAt(bucketDB.getCreatedAt())
+                .build();
     }
 
     @AutoValue.Builder

@@ -4,6 +4,8 @@ package co.netguru.android.inbbbox.data.bucket;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import org.threeten.bp.ZonedDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,11 @@ public class MockedBucketApi implements BucketApi {
     @Override
     public Completable deleteBucket(@Field("id") long bucketId) {
         return Completable.complete();
+    }
+
+    @Override
+    public Single<List<Bucket>> getShotBucketsList(@Path("shotId") long shotId) {
+        return Single.fromCallable(ArrayList::new);
     }
 
     private static List<ShotEntity> getMockShots() {

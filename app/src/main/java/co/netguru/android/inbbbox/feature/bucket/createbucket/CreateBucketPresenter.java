@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.common.utils.StringUtil;
-import co.netguru.android.inbbbox.data.bucket.BucketsController;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.BucketCreatedEvent;
 import rx.Subscription;

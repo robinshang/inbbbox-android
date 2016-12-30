@@ -3,7 +3,6 @@ package co.netguru.android.inbbbox.data.shot;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Constants.API;
-import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.api.CommentEntity;
 import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
 import retrofit2.http.DELETE;
@@ -41,9 +40,6 @@ public interface ShotsApi {
             @Path("shotId") String shotId,
             @Query("page") int pageNumber,
             @Query("per_page") int commentsPerPage);
-
-    @GET("shots/{shotId}/buckets")
-    Observable<List<Bucket>> getBucketsList(@Path("shotId") String shotId);
 
     @FormUrlEncoded
     @POST("shots/{shotId}/comments")

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Random;
 
 import co.netguru.android.inbbbox.Constants;
-import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.api.CommentEntity;
 import co.netguru.android.inbbbox.data.shot.model.api.Image;
 import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
@@ -20,7 +19,7 @@ import rx.Completable;
 import rx.Observable;
 import rx.Single;
 
-public class MockShotsApi implements ShotsApi {
+public class MockedShotsApi implements ShotsApi {
 
     private static final int ITEM_COUNT = new Random().nextInt(1000);
 
@@ -52,11 +51,6 @@ public class MockShotsApi implements ShotsApi {
 
     @Override
     public Observable<List<CommentEntity>> getShotComments(@Path("shotId") String shotId, int pageNumber, int commentsPerPage) {
-        return Observable.just(Collections.emptyList());
-    }
-
-    @Override
-    public Observable<List<Bucket>> getBucketsList(String shotId) {
         return Observable.just(Collections.emptyList());
     }
 

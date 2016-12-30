@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.data.follower.controllers;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import co.netguru.android.inbbbox.data.BaseGuestModeRepository;
 import co.netguru.android.inbbbox.data.db.DaoSession;
 import co.netguru.android.inbbbox.data.db.mappers.FollowerEntityDBMapper;
 import co.netguru.android.inbbbox.data.db.mappers.UserEntityDBMapper;
@@ -12,13 +13,11 @@ import rx.Observable;
 import timber.log.Timber;
 
 @Singleton
-public class GuestModeFollowersRepository {
-
-    private final DaoSession daoSession;
+public class GuestModeFollowersRepository extends BaseGuestModeRepository {
 
     @Inject
     GuestModeFollowersRepository(DaoSession daoSession) {
-        this.daoSession = daoSession;
+        super(daoSession);
     }
 
     public Observable<FollowerEntity> getFollowers() {

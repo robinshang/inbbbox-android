@@ -12,9 +12,10 @@ import java.util.List;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
-import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersBucketFourImageView;
+
 
 public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShots> {
 
@@ -29,7 +30,7 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
 
     private BucketWithShots bucketWithShots;
 
-    public BaseBucketViewHolder(View view, BucketClickListener bucketClickListener) {
+    BaseBucketViewHolder(View view, BucketClickListener bucketClickListener) {
         super(view);
         itemView.setOnClickListener(v -> bucketClickListener.onBucketClick(bucketWithShots));
     }
@@ -37,7 +38,7 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
     @Override
     public void bind(BucketWithShots item) {
         this.bucketWithShots = item;
-        List<ShotEntity> shots = bucketWithShots.shots();
+        List<Shot> shots = bucketWithShots.shots();
         if (shots.isEmpty()) {
             showEmptyView();
         } else {
@@ -62,11 +63,11 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
         fourImagesView.setVisibility(View.GONE);
     }
 
-    private void handleNotEmptyShotsList(List<ShotEntity> shots) {
+    private void handleNotEmptyShotsList(List<Shot> shots) {
         emptyView.setVisibility(View.GONE);
         fourImagesView.setVisibility(View.VISIBLE);
         if (shots.size() < 4) {
-            showOnlyOneImage(shots.get(0).image().normalImageUrl());
+            showOnlyOneImage(shots.get(0).normalImageUrl());
         } else {
             showFourFirstImages(shots);
         }
@@ -77,12 +78,12 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
         loadImageInto(fourImagesView.getTopImageView(), url);
     }
 
-    private void showFourFirstImages(List<ShotEntity> shots) {
+    private void showFourFirstImages(List<Shot> shots) {
         fourImagesView.showBottomImages(true);
-        loadImageInto(fourImagesView.getTopImageView(), shots.get(0).image().normalImageUrl());
-        loadImageInto(fourImagesView.getBottomFirstImage(), shots.get(1).image().normalImageUrl());
-        loadImageInto(fourImagesView.getBottomSecondImage(), shots.get(2).image().normalImageUrl());
-        loadImageInto(fourImagesView.getBottomThirdImage(), shots.get(3).image().normalImageUrl());
+        loadImageInto(fourImagesView.getTopImageView(), shots.get(0).normalImageUrl());
+        loadImageInto(fourImagesView.getBottomFirstImage(), shots.get(1).normalImageUrl());
+        loadImageInto(fourImagesView.getBottomSecondImage(), shots.get(2).normalImageUrl());
+        loadImageInto(fourImagesView.getBottomThirdImage(), shots.get(3).normalImageUrl());
     }
 
     @FunctionalInterface

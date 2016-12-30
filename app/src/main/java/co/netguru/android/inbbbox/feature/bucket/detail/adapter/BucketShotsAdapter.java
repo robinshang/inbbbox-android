@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
 public class BucketShotsAdapter extends RecyclerView.Adapter<BucketShotViewHolder> {
 
@@ -19,12 +19,12 @@ public class BucketShotsAdapter extends RecyclerView.Adapter<BucketShotViewHolde
     private final BucketShotViewHolder.OnShotInBucketClickListener onShotInBucketClickListener;
 
     @NonNull
-    private List<ShotEntity> shotEntityList;
+    private List<Shot> shotList;
     private boolean isGridMode;
 
     public BucketShotsAdapter(@NonNull BucketShotViewHolder.OnShotInBucketClickListener onShotInBucketClickListener) {
         this.onShotInBucketClickListener = onShotInBucketClickListener;
-        shotEntityList = Collections.emptyList();
+        shotList = Collections.emptyList();
     }
 
     @Override
@@ -34,26 +34,26 @@ public class BucketShotsAdapter extends RecyclerView.Adapter<BucketShotViewHolde
 
     @Override
     public void onBindViewHolder(BucketShotViewHolder holder, int position) {
-        holder.bind(shotEntityList.get(position));
+        holder.bind(shotList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return shotEntityList.size();
+        return shotList.size();
     }
 
-    public List<ShotEntity> getData() {
-        return shotEntityList;
+    public List<Shot> getData() {
+        return shotList;
     }
 
-    public void setNewShots(List<ShotEntity> shotsToSet) {
-        shotEntityList = shotsToSet;
+    public void setNewShots(List<Shot> shotsToSet) {
+        shotList = shotsToSet;
         notifyDataSetChanged();
     }
 
-    public void addNewShots(Collection<ShotEntity> shotsToAdd) {
-        int oldSize = this.shotEntityList.size();
-        this.shotEntityList.addAll(shotsToAdd);
+    public void addNewShots(Collection<Shot> shotsToAdd) {
+        int oldSize = this.shotList.size();
+        this.shotList.addAll(shotsToAdd);
         notifyItemRangeInserted(oldSize, shotsToAdd.size() + 1);
     }
 

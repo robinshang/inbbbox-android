@@ -76,7 +76,7 @@ public class FollowerDetailsActivity extends BaseActivity
     }
 
     @Override
-    public void unFollowCompleted() {
+    public void onFollowingStatusChangeCompleted() {
         MainActivity.startActivityWithRequest(this, MainActivity.REQUEST_REFRESH_FOLLOWER_LIST);
         finish();
     }
