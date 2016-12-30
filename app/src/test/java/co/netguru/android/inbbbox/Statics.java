@@ -7,18 +7,18 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import co.netguru.android.inbbbox.model.api.Bucket;
-import co.netguru.android.inbbbox.model.api.CommentEntity;
-import co.netguru.android.inbbbox.model.api.FollowerEntity;
-import co.netguru.android.inbbbox.model.api.Image;
-import co.netguru.android.inbbbox.model.api.Links;
-import co.netguru.android.inbbbox.model.api.ShotEntity;
-import co.netguru.android.inbbbox.model.api.UserEntity;
-import co.netguru.android.inbbbox.model.localrepository.database.BucketDB;
-import co.netguru.android.inbbbox.model.ui.Comment;
-import co.netguru.android.inbbbox.model.ui.Shot;
-import co.netguru.android.inbbbox.model.ui.Team;
-import co.netguru.android.inbbbox.model.ui.User;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
+import co.netguru.android.inbbbox.data.db.BucketDB;
+import co.netguru.android.inbbbox.data.dribbbleuser.Links;
+import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
+import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
+import co.netguru.android.inbbbox.data.shot.model.api.CommentEntity;
+import co.netguru.android.inbbbox.data.shot.model.api.Image;
+import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.feature.shot.detail.Comment;
 
 public final class Statics {
 

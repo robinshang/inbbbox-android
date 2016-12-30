@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.exceptions.InterfaceNotImplementedException;
+import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
 import timber.log.Timber;
 
 public class TimePickerDialogFragment extends DialogFragment {

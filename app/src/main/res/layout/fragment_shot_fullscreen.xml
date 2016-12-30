@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
-    <co.netguru.android.inbbbox.view.AutoItemScrollRecyclerView
+    <co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView
         android:id="@+id/shot_fullscreen_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

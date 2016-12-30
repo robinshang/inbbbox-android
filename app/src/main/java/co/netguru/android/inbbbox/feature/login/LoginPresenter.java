@@ -7,12 +7,12 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.TokenController;
-import co.netguru.android.inbbbox.controler.TokenParametersController;
-import co.netguru.android.inbbbox.controler.UserController;
-import co.netguru.android.inbbbox.enumeration.UserModeType;
-import co.netguru.android.inbbbox.utils.RxTransformerUtils;
+import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
+import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
+import co.netguru.android.inbbbox.data.session.controllers.TokenController;
+import co.netguru.android.inbbbox.data.session.controllers.TokenParametersController;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -55,7 +55,7 @@ public final class LoginPresenter
         getView().disableLoginButton();
         compositeSubscription.add(
                 tokenParametersController.getOauthAuthorizeUrlAndUuidPair()
-                        .compose(RxTransformerUtils.androidComputation())
+                        .compose(RxTransformerUtil.androidComputation())
                         .subscribe(
                                 urlUUIDPair -> getView()
                                         .openAuthWebViewFragment(urlUUIDPair.first,

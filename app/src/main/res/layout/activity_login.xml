@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="@dimen/margin_default"
-            tools:context="co.netguru.android.inbbbox.feature.login.LoginActivity">
+            tools:context=".feature.login.LoginActivity">
 
             <ImageView
                 android:id="@+id/login_logo_ball"

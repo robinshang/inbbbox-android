@@ -8,27 +8,27 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.controler.ErrorController;
-import co.netguru.android.inbbbox.controler.LogoutController;
-import co.netguru.android.inbbbox.controler.SettingsController;
-import co.netguru.android.inbbbox.controler.TokenParametersController;
-import co.netguru.android.inbbbox.controler.UserController;
-import co.netguru.android.inbbbox.controler.notification.NotificationController;
-import co.netguru.android.inbbbox.controler.notification.NotificationScheduler;
+import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
+import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
+import co.netguru.android.inbbbox.data.session.controllers.LogoutController;
+import co.netguru.android.inbbbox.data.session.controllers.TokenParametersController;
+import co.netguru.android.inbbbox.data.settings.SettingsController;
+import co.netguru.android.inbbbox.data.settings.model.CustomizationSettings;
+import co.netguru.android.inbbbox.data.settings.model.NotificationSettings;
+import co.netguru.android.inbbbox.data.settings.model.Settings;
+import co.netguru.android.inbbbox.data.settings.model.StreamSourceSettings;
 import co.netguru.android.inbbbox.feature.main.MainViewContract.Presenter;
-import co.netguru.android.inbbbox.model.localrepository.CustomizationSettings;
-import co.netguru.android.inbbbox.model.localrepository.NotificationSettings;
-import co.netguru.android.inbbbox.model.localrepository.Settings;
-import co.netguru.android.inbbbox.model.localrepository.StreamSourceSettings;
-import co.netguru.android.inbbbox.model.ui.User;
-import co.netguru.android.inbbbox.utils.DateTimeFormatUtil;
-import co.netguru.android.inbbbox.utils.RxTransformerUtils;
+import co.netguru.android.inbbbox.feature.remindernotification.NotificationController;
+import co.netguru.android.inbbbox.feature.remindernotification.NotificationScheduler;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
-import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applySingleComputationSchedulers;
-import static co.netguru.android.inbbbox.utils.RxTransformerUtils.applySingleIoSchedulers;
+import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applySingleComputationSchedulers;
+import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applySingleIoSchedulers;
 
 @ActivityScope
 public final class MainActivityPresenter extends MvpNullObjectBasePresenter<MainViewContract.View>
@@ -173,7 +173,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     @Override
     public void customizationStatusChanged(boolean isDetails) {
         final Subscription subscription = settingsController.changeShotsDetailsStatus(isDetails)
-                .compose(RxTransformerUtils.applyCompletableIoSchedulers())
+                .compose(RxTransformerUtil.applyCompletableIoSchedulers())
                 .subscribe(() -> Timber.d("Customization settings changed"),
                         throwable -> handleError(throwable, "Error while changing customization settings"));
         subscriptions.add(subscription);
@@ -182,7 +182,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     @Override
     public void nightModeChanged(boolean isNightMode) {
         final Subscription subscription = settingsController.changeNightMode(isNightMode)
-                .compose(RxTransformerUtils.applyCompletableIoSchedulers())
+                .compose(RxTransformerUtil.applyCompletableIoSchedulers())
                 .subscribe(() -> {
                     Timber.d("Customization settings changed");
                     getView().changeNightMode(isNightMode);
@@ -234,7 +234,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     private void changeStreamSourceStatus() {
         final Subscription subscription = settingsController.changeStreamSourceSettings(isFollowing, isNew, isPopular, isDebut)
-                .compose(RxTransformerUtils.applyCompletableIoSchedulers())
+                .compose(RxTransformerUtil.applyCompletableIoSchedulers())
                 .subscribe(() -> {
                             Timber.d("Stream source settings changed");
                             getView().refreshShotsView();
@@ -250,7 +250,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     private void saveNotificationStatus(boolean status) {
         final Subscription subscription = settingsController.changeNotificationStatus(status)
-                .compose(RxTransformerUtils.applyCompletableIoSchedulers())
+                .compose(RxTransformerUtil.applyCompletableIoSchedulers())
                 .subscribe(() -> Timber.d("New notification status saved"),
                         throwable -> Timber.e(throwable, "Error while saving notification status"));
         subscriptions.add(subscription);

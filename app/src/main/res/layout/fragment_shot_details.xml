@@ -23,7 +23,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <co.netguru.android.inbbbox.view.RoundedCornersImageView
+            <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersImageView
                 android:id="@+id/parallax_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/details_parallax_image_view_height"

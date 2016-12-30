@@ -3,8 +3,8 @@ package co.netguru.android.inbbbox.feature.splash;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
-import co.netguru.android.inbbbox.feature.common.ErrorPresenter;
-import co.netguru.android.inbbbox.feature.common.HttpErrorView;
+import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
+import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
 
 interface SplashContract {
 
