@@ -9,6 +9,7 @@ import com.google.gson.TypeAdapter;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.data.db.FollowerDB;
 import co.netguru.android.inbbbox.data.db.UserDB;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -78,6 +79,16 @@ public abstract class User implements Parcelable {
                 .avatarUrl(userDB.getAvatarUrl())
                 .username(userDB.getUsername())
                 .shotsCount(userDB.getShotsCount())
+                .build();
+    }
+
+    public static User fromFollowerDB(FollowerDB followerDB) {
+        return User.builder()
+                .id(followerDB.getUser().getId())
+                .name(followerDB.getUser().getName())
+                .avatarUrl(followerDB.getUser().getAvatarUrl())
+                .username(followerDB.getUser().getUsername())
+                .shotsCount(followerDB.getUser().getShotsCount())
                 .build();
     }
 

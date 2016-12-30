@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.data.follower.controllers;
 
-import java.util.List;
-
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.FollowersApi;
 import rx.Completable;
@@ -9,6 +7,8 @@ import rx.Observable;
 import rx.Single;
 
 public class FollowersControllerGuest implements FollowersController {
+
+    private static final int FIRST_PAGE = 1;
 
     private final GuestModeFollowersRepository guestModeFollowersRepository;
     private final FollowersApi followersApi;
@@ -19,16 +19,13 @@ public class FollowersControllerGuest implements FollowersController {
         this.followersApi = followersApi;
     }
 
-//    @Override
-//    public Observable<User> getFollowedUsers(int pageNumber, int pageCount) {
-//        return getFollowersFromApi(pageNumber, pageCount)
-//                .flatMap(Observable::from)
-//                .mergeWith(guestModeFollowersRepository.getFollowers());
-//    }
-
     @Override
     public Observable<User> getFollowedUsers(int pageNumber, int pageCount, int followerShotPageCount) {
-        return Observable.empty();
+        if (pageNumber == FIRST_PAGE) {
+            return guestModeFollowersRepository.getFollowers()
+                    .mergeWith(getFollowersFromApi(FIRST_PAGE, pageCount));
+        }
+        return getFollowersFromApi(pageNumber, pageCount);
     }
 
     @Override
@@ -38,7 +35,7 @@ public class FollowersControllerGuest implements FollowersController {
 
     @Override
     public Completable followUser(User follower) {
-        return Completable.complete();
+        return guestModeFollowersRepository.addFollower(follower);
     }
 
     @Override
@@ -46,10 +43,9 @@ public class FollowersControllerGuest implements FollowersController {
         return guestModeFollowersRepository.isUserFollowed(id);
     }
 
-    private Observable<List<User>> getFollowersFromApi(int pageNumber, int pageCount) {
+    private Observable<User> getFollowersFromApi(int pageNumber, int pageCount) {
         return followersApi.getFollowedUsers(pageNumber, pageCount)
                 .flatMap(Observable::from)
-                .map(followerEntity -> User.create(followerEntity.user(), null))
-                .toList();
+                .map(followerEntity -> User.create(followerEntity.user(), null));
     }
 }

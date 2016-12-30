@@ -66,9 +66,17 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     public void userDataReceived(User user) {
         Timber.d("Received user : %s", user);
         if (user != null) {
-            checkIfUserIsFollowed(user.id());
             showUserData(user);
         }
+    }
+
+    @Override
+    public void checkIfUserIsFollowed(User follower) {
+        subscriptions.add(
+                followersController.isUserFollowed(follower.id())
+                        .compose(applySingleIoSchedulers())
+                        .subscribe(this::setFollowingMenuIcon,
+                                throwable -> handleError(throwable, "Error while checking if user is followed")));
     }
 
     @Override
@@ -170,14 +178,6 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         this.follower = follower;
         getView().showFollowerData(follower);
         getView().showContent();
-    }
-
-    private void checkIfUserIsFollowed(long userId) {
-        subscriptions.add(
-                followersController.isUserFollowed(userId)
-                        .compose(applySingleIoSchedulers())
-                        .subscribe(this::setFollowingMenuIcon,
-                                throwable -> handleError(throwable, "Error while checking if user is followed")));
     }
 
     private void setFollowingMenuIcon(boolean isFollowed) {

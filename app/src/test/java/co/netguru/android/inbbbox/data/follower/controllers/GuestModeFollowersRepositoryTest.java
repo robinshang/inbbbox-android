@@ -15,7 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.data.db.DaoSession;
-import co.netguru.android.inbbbox.data.db.FollowerEntityDB;
+import co.netguru.android.inbbbox.data.db.FollowerDB;
 import co.netguru.android.inbbbox.data.db.FollowerEntityDBDao;
 import co.netguru.android.inbbbox.data.db.UserEntityDB;
 import co.netguru.android.inbbbox.data.db.UserEntityDBDao;
@@ -44,11 +44,11 @@ public class GuestModeFollowersRepositoryTest {
     @Mock
     UserEntityDBDao userEntityDBDao;
     @Mock
-    RxDao<FollowerEntityDB, Long> followerRxDao;
+    RxDao<FollowerDB, Long> followerRxDao;
     @Mock
-    QueryBuilder<FollowerEntityDB> followerDBQueryBuilder;
+    QueryBuilder<FollowerDB> followerDBQueryBuilder;
     @Mock
-    RxQuery<FollowerEntityDB> followerDBRxQuery;
+    RxQuery<FollowerDB> followerDBRxQuery;
 
     @InjectMocks
     GuestModeFollowersRepository repository;
@@ -113,7 +113,7 @@ public class GuestModeFollowersRepositoryTest {
         //when
         repository.addFollower(Statics.FOLLOWER_ENTITY).subscribe(subscriber);
         //then
-        verify(followerEntityDBDao).insertOrReplace(any(FollowerEntityDB.class));
+        verify(followerEntityDBDao).insertOrReplace(any(FollowerDB.class));
         subscriber.assertNoErrors();
     }
 

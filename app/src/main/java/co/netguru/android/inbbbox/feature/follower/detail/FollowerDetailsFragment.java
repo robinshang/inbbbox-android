@@ -108,7 +108,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
         super.onCreateOptionsMenu(menu, inflater);
         followMenuItem = menu.findItem(R.id.action_follow);
         unFollowMenuItem = menu.findItem(R.id.action_unfollow);
-        getPresenter().userDataReceived(getArguments().getParcelable(USER_KEY));
+        getPresenter().checkIfUserIsFollowed(getArguments().getParcelable(USER_KEY));
     }
 
     @Override
@@ -150,12 +150,13 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
 
     @Override
     public void setData(List<Shot> data) {
+        adapter.setFollower(getArguments().getParcelable(USER_KEY));
         adapter.setUserShots(data);
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        /* Follower data is loaded in onCreateOptionsMenu() */
+        getPresenter().userDataReceived(getArguments().getParcelable(USER_KEY));
     }
 
     @Override

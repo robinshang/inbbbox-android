@@ -107,13 +107,13 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     }
 
     private void onGetFollowersNext(List<User> followersList) {
-        hasMore = followersList.size() == FOLLOWERS_PAGE_COUNT;
+        hasMore = followersList.size() >= FOLLOWERS_PAGE_COUNT;
         getView().setData(followersList);
         getView().showContent();
     }
 
     private void onGetMoreFollowersNext(List<User> followersList) {
-        hasMore = followersList.size() == FOLLOWERS_PAGE_COUNT;
+        hasMore = followersList.size() >= FOLLOWERS_PAGE_COUNT;
         getView().showMoreFollowedUsers(followersList);
     }
 }

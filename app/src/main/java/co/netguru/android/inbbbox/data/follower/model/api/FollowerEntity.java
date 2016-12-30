@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName;
 
 import org.threeten.bp.ZonedDateTime;
 
-import co.netguru.android.inbbbox.data.db.FollowerEntityDB;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
 
 @AutoValue
@@ -27,14 +26,6 @@ public abstract class FollowerEntity {
 
     public static Builder builder() {
         return new AutoValue_FollowerEntity.Builder();
-    }
-
-    public static FollowerEntity fromDB(FollowerEntityDB followerEntityDB) {
-        return FollowerEntity.builder()
-                .id(followerEntityDB.getId())
-                .createdAt(followerEntityDB.getCreatedAt())
-                .user(UserEntity.fromDB(followerEntityDB.getUser()))
-                .build();
     }
 
     @AutoValue.Builder

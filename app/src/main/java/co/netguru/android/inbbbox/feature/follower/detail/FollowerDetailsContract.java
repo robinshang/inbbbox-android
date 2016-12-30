@@ -35,6 +35,8 @@ public interface FollowerDetailsContract {
 
         void userDataReceived(User user);
 
+        void checkIfUserIsFollowed(User follower);
+
         void refreshUserShots();
 
         void getMoreUserShotsFromServer();

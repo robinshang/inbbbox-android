@@ -18,7 +18,6 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_GRID = 1;
     private static final int TYPE_LIST = 2;
-
     private static final int HEADER_POSITION = 0;
 
     private final ShotClickListener shotClickListener;
@@ -93,6 +92,10 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             this.shotList = follower.shotList();
             notifyDataSetChanged();
         }
+    }
+
+    public void setFollower(User follower) {
+        this.follower = follower;
     }
 
     public void setUserShots(List<Shot> shotList) {
