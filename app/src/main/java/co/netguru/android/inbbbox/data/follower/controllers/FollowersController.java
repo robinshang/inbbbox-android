@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.data.follower.controllers;
 
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
 import rx.Completable;
 import rx.Observable;
@@ -11,7 +12,7 @@ public interface FollowersController {
 
     Completable unFollowUser(long id);
 
-    Completable followUser(long id);
+    Completable followUser(User follower);
 
     Single<Boolean> isUserFollowed(long id);
 }

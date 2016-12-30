@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.data.follower.controllers;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.FollowersApi;
 import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
 import rx.Completable;
@@ -32,15 +33,13 @@ public class FollowersControllerGuest implements FollowersController {
     }
 
     @Override
-    public Completable followUser(long id) {
-        // TODO: 22.12.2016 Refactor adding follower to db
+    public Completable followUser(User follower) {
         return Completable.complete();
     }
 
     @Override
     public Single<Boolean> isUserFollowed(long id) {
-        // TODO: 22.12.2016 Ask database instead of dribbble API
-        return Single.just(false);
+        return guestModeFollowersRepository.isUserFollowed(id);
     }
 
     private Observable<List<FollowerEntity>> getFollowersFromApi(int pageNumber, int pageCount) {

@@ -139,7 +139,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     @Override
     public void followUser() {
         subscriptions.add(
-                followersController.followUser(follower.id())
+                followersController.followUser(follower)
                         .compose(applyCompletableIoSchedulers())
                         .subscribe(() -> setFollowingMenuIcon(true),
                                 throwable -> handleError(throwable, "Error while follow user")));

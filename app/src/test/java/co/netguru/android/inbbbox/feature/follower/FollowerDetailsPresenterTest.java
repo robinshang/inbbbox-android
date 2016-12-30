@@ -76,10 +76,11 @@ public class FollowerDetailsPresenterTest {
     }
 
     @Test
-    public void whenUserReceived_thenDownloadUserUsingUserController() {
+    public void whenUserWithoutShotsReceived_thenDownloadUserUsingUserController() {
         when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
                 .thenReturn(Observable.empty());
         when(userMock.id()).thenReturn(EXAMPLE_ID);
+        when(userMock.shotList()).thenReturn(null);
 
         followerDetailsPresenter.userDataReceived(userMock);
 
@@ -114,25 +115,13 @@ public class FollowerDetailsPresenterTest {
     }
 
     @Test
-    public void whenFollowerReceived_thenCheckIfIsFollowed() {
+    public void whenUserWithShotsReceived_thenCheckIfIsFollowed() {
         when(followerMock.id()).thenReturn(EXAMPLE_ID);
 
-        followerDetailsPresenter.followerDataReceived(followerMock);
+        followerDetailsPresenter.userDataReceived(followerMock);
 
         verify(followersControllerMock, times(1))
                 .isUserFollowed(eq(EXAMPLE_ID));
-    }
-
-    @Test
-    public void whenFollowerReceivedAndCheckedIfIsFollowed_thenSetMenuIcon() {
-        User exampleUser = User.create(Statics.USER_ENTITY, null);
-        List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT_BUCKETED, Statics.NOT_LIKED_SHOT);
-
-        when(followerMock.id()).thenReturn(EXAMPLE_ID);
-
-        followerDetailsPresenter.followerDataReceived(User.updateUserShots(exampleUser, listOfShots));
-
-        verify(viewMock, times(1)).setFollowingMenuIcon(anyBoolean());
     }
 
     //ERRORS

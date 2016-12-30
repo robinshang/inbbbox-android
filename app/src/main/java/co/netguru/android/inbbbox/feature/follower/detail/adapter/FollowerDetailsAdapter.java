@@ -89,8 +89,10 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public void setFollowerAdapterData(User follower) {
         this.follower = follower;
-        this.shotList = follower.shotList();
-        notifyDataSetChanged();
+        if (follower.shotList() != null) {
+            this.shotList = follower.shotList();
+            notifyDataSetChanged();
+        }
     }
 
     public void setUserShots(List<Shot> shotList) {

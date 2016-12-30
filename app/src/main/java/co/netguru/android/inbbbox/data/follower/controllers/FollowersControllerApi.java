@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.data.follower.controllers;
 
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.FollowersApi;
 import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
 import retrofit2.adapter.rxjava.HttpException;
@@ -30,8 +31,8 @@ public class FollowersControllerApi implements FollowersController {
     }
 
     @Override
-    public Completable followUser(long id) {
-        return followersApi.followUser(id);
+    public Completable followUser(User follower) {
+        return followersApi.followUser(follower.id());
     }
 
     @Override

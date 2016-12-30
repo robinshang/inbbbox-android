@@ -5,11 +5,13 @@ import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.data.BaseGuestModeRepository;
 import co.netguru.android.inbbbox.data.db.DaoSession;
+import co.netguru.android.inbbbox.data.db.FollowerEntityDBDao;
 import co.netguru.android.inbbbox.data.db.mappers.FollowerEntityDBMapper;
 import co.netguru.android.inbbbox.data.db.mappers.UserEntityDBMapper;
 import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import timber.log.Timber;
 
 @Singleton
@@ -37,5 +39,15 @@ public class GuestModeFollowersRepository extends BaseGuestModeRepository {
             daoSession.getFollowerEntityDBDao().insertOrReplace(FollowerEntityDBMapper.fromFollowerEntity(followerEntity));
             daoSession.getUserEntityDBDao().insertOrReplace(UserEntityDBMapper.fromUserEntity(followerEntity.user()));
         }).toCompletable();
+    }
+
+    public Single<Boolean> isUserFollowed(long id) {
+        Timber.d("Checking if user is follower");
+        return daoSession.getFollowerEntityDBDao().queryBuilder()
+                .where(FollowerEntityDBDao.Properties.Id.eq(id))
+                .rx()
+                .unique()
+                .map(followerEntityDB -> followerEntityDB != null)
+                .toSingle();
     }
 }
