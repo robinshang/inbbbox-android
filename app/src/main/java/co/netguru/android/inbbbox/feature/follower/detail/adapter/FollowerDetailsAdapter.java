@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 
@@ -25,7 +25,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @NonNull
     private List<Shot> shotList;
-    private Follower follower;
+    private User follower;
     private boolean isGridMode;
 
     @Inject
@@ -87,7 +87,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return shotList;
     }
 
-    public void setFollowerAdapterData(Follower follower) {
+    public void setFollowerAdapterData(User follower) {
         this.follower = follower;
         this.shotList = follower.shotList();
         notifyDataSetChanged();

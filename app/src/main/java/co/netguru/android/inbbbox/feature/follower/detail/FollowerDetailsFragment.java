@@ -29,7 +29,6 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.follower.detail.adapter.FollowerDetailsAdapter;
 import co.netguru.android.inbbbox.feature.followers.details.FollowUserDialogFragment;
@@ -66,15 +65,6 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     private FollowerDetailsAdapter adapter;
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
-
-    public static FollowerDetailsFragment newInstanceWithFollower(Follower follower) {
-        final Bundle args = new Bundle();
-        args.putParcelable(FOLLOWER_KEY, follower);
-
-        final FollowerDetailsFragment fragment = new FollowerDetailsFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public static FollowerDetailsFragment newInstanceWithUser(User user) {
         final Bundle args = new Bundle();
@@ -173,7 +163,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     @Override
-    public void showFollowerData(Follower follower) {
+    public void showFollowerData(User follower) {
         adapter.setFollowerAdapterData(follower);
 
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
@@ -232,7 +222,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     private void getFollowerData() {
-        final Follower follower = getArguments().getParcelable(FOLLOWER_KEY);
+        final User follower = getArguments().getParcelable(FOLLOWER_KEY);
         getPresenter().followerDataReceived(follower);
     }
 

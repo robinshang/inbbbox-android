@@ -106,7 +106,7 @@ public final class Statics {
 
     public static final Shot NOT_LIKED_SHOT = Shot.builder()
             .id(1)
-            .author(User.create(USER_ENTITY))
+            .author(User.create(USER_ENTITY, null))
             .title("title")
             .description("description")
             .team(TEAM)
@@ -141,7 +141,7 @@ public final class Statics {
 
     public static final Shot LIKED_SHOT_NOT_BUCKETED = Shot.builder()
             .id(1)
-            .author(User.create(USER_ENTITY))
+            .author(User.create(USER_ENTITY, null))
             .title("title")
             .description("description")
             .team(TEAM)
@@ -159,7 +159,7 @@ public final class Statics {
 
     public static final Shot NOT_LIKED_SHOT_NOT_BUCKETED = Shot.builder()
             .id(1)
-            .author(User.create(USER_ENTITY))
+            .author(User.create(USER_ENTITY, null))
             .title("title")
             .description("description")
             .team(TEAM)
@@ -177,7 +177,7 @@ public final class Statics {
 
     public static final Shot LIKED_SHOT_BUCKETED = Shot.builder()
             .id(1)
-            .author(User.create(USER_ENTITY))
+            .author(User.create(USER_ENTITY, null))
             .title("title")
             .description("description")
             .team(TEAM)
@@ -204,7 +204,7 @@ public final class Statics {
     public static final List<Comment> COMMENTS = generateComments();
     public static final List<Shot> SHOT_LIST = Collections.emptyList();
 
-    public static List<Comment> generateComments() {
+    private static List<Comment> generateComments() {
         List<Comment> comments = new ArrayList<>();
         for (int i = 0; i < COMMENTS_COUNT; i++) {
             Comment comment = Comment.builder()

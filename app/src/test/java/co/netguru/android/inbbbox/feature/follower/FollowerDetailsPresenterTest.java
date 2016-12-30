@@ -1,13 +1,11 @@
 package co.netguru.android.inbbbox.feature.follower;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -19,7 +17,6 @@ import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsContract;
@@ -60,7 +57,7 @@ public class FollowerDetailsPresenterTest {
     User userMock;
 
     @Mock
-    Follower followerMock;
+    User followerMock;
 
     @InjectMocks
     FollowerDetailsPresenter followerDetailsPresenter;
@@ -104,7 +101,7 @@ public class FollowerDetailsPresenterTest {
 
     @Test
     public void whenUserReceivedAndCheckedIfIsFollowed_thenSetMenuIcon() {
-        User exampleUser = User.create(Statics.USER_ENTITY);
+        User exampleUser = User.create(Statics.USER_ENTITY, null);
         List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT_BUCKETED, Statics.NOT_LIKED_SHOT);
 
         when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
@@ -128,29 +125,14 @@ public class FollowerDetailsPresenterTest {
 
     @Test
     public void whenFollowerReceivedAndCheckedIfIsFollowed_thenSetMenuIcon() {
-        User exampleUser = User.create(Statics.USER_ENTITY);
+        User exampleUser = User.create(Statics.USER_ENTITY, null);
         List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT_BUCKETED, Statics.NOT_LIKED_SHOT);
 
         when(followerMock.id()).thenReturn(EXAMPLE_ID);
 
-        followerDetailsPresenter.followerDataReceived(Follower.createFromUser(exampleUser, listOfShots));
+        followerDetailsPresenter.followerDataReceived(User.updateUserShots(exampleUser, listOfShots));
 
         verify(viewMock, times(1)).setFollowingMenuIcon(anyBoolean());
-    }
-
-    @Test
-    public void whenUserReceivedAndUserDataDownloadComplete_thenCreateAndShowFollower() {
-        User exampleUser = User.create(Statics.USER_ENTITY);
-        List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT_NOT_BUCKETED, Statics.NOT_LIKED_SHOT);
-        when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
-                .thenReturn(Observable.just(listOfShots));
-        ArgumentCaptor<Follower> argumentCaptor = ArgumentCaptor.forClass(Follower.class);
-
-        followerDetailsPresenter.userDataReceived(exampleUser);
-
-        verify(viewMock, times(1)).showFollowerData(argumentCaptor.capture());
-        Assert.assertEquals(EXAMPLE_ID, argumentCaptor.getValue().id());
-        Assert.assertEquals(listOfShots, argumentCaptor.getValue().shotList());
     }
 
     //ERRORS
@@ -158,7 +140,7 @@ public class FollowerDetailsPresenterTest {
     public void whenUserReceivedAndUserDataDownloadFailed_thenShowError() {
         String message = "test";
         Throwable throwable = new Throwable(message);
-        User exampleUser = User.create(Statics.USER_ENTITY);
+        User exampleUser = User.create(Statics.USER_ENTITY, null);
         when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
                 .thenReturn(Observable.error(throwable));
 

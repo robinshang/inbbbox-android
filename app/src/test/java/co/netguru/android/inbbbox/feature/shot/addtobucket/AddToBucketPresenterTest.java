@@ -57,7 +57,7 @@ public class AddToBucketPresenterTest {
         setupWithEmptyRxBus();
         //given
         Shot shotWithTeam = Shot.update(Statics.LIKED_SHOT_NOT_BUCKETED)
-                .author(User.create(Statics.USER_ENTITY))
+                .author(User.create(Statics.USER_ENTITY, null))
                 .team(Statics.TEAM)
                 .build();
         //when
@@ -76,7 +76,7 @@ public class AddToBucketPresenterTest {
         setupWithEmptyRxBus();
         //given
         Shot shotWithoutTeam = Shot.update(Statics.LIKED_SHOT_NOT_BUCKETED)
-                .author(User.create(Statics.USER_ENTITY))
+                .author(User.create(Statics.USER_ENTITY, null))
                 .team(null)
                 .build();
         presenter.handleShot(shotWithoutTeam);

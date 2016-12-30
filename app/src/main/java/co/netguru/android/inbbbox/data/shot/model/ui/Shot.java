@@ -151,7 +151,7 @@ public abstract class Shot implements Parcelable, ShotImage {
     public static Shot create(ShotEntity shotEntity) {
         return Shot.builder()
                 .id(shotEntity.id())
-                .author(shotEntity.user() != null ? User.create(shotEntity.user()) : null)
+                .author(shotEntity.user() != null ? User.create(shotEntity.user(), null) : null)
                 .title(shotEntity.title())
                 .creationDate(shotEntity.createdAt())
                 .description(shotEntity.description())

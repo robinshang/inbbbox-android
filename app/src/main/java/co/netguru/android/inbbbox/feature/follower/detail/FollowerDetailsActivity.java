@@ -16,7 +16,6 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseActivity;
@@ -27,7 +26,6 @@ import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
 public class FollowerDetailsActivity extends BaseActivity
         implements FollowerDetailsFragment.OnFollowedShotActionListener {
 
-    private static final String FOLLOWER_KEY = "follower_key";
     private static final String USER_KEY = "user_key";
 
     @BindView(R.id.toolbar)
@@ -35,12 +33,6 @@ public class FollowerDetailsActivity extends BaseActivity
 
     @BindColor(R.color.white)
     int colorWhite;
-
-    public static void startActivity(Context context, Follower follower) {
-        final Intent intent = new Intent(context, FollowerDetailsActivity.class);
-        intent.putExtra(FOLLOWER_KEY, follower);
-        context.startActivity(intent);
-    }
 
     public static void startActivity(Context context, User user) {
         final Intent intent = new Intent(context, FollowerDetailsActivity.class);
@@ -101,21 +93,6 @@ public class FollowerDetailsActivity extends BaseActivity
     }
 
     private void instantiateFragment() {
-        if (getIntent().getParcelableExtra(FOLLOWER_KEY) != null) {
-            instantiateFragmentWithFollower();
-
-        } else if (getIntent().getParcelableExtra(USER_KEY) != null) {
-            instantiateFragmentWithUser();
-        }
-    }
-
-    private void instantiateFragmentWithFollower() {
-        replaceFragment(R.id.follower_details_fragment_container,
-                FollowerDetailsFragment.newInstanceWithFollower(getIntent().getParcelableExtra(FOLLOWER_KEY)),
-                FollowerDetailsFragment.TAG).commit();
-    }
-
-    private void instantiateFragmentWithUser() {
         replaceFragment(R.id.follower_details_fragment_container,
                 FollowerDetailsFragment.newInstanceWithUser(getIntent().getParcelableExtra(USER_KEY)),
                 FollowerDetailsFragment.TAG).commit();

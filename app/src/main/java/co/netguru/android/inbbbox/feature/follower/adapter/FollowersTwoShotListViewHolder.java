@@ -4,7 +4,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
 public class FollowersTwoShotListViewHolder extends BaseFollowersViewHolder {
@@ -14,7 +14,7 @@ public class FollowersTwoShotListViewHolder extends BaseFollowersViewHolder {
     }
 
     @Override
-    public void bind(Follower item) {
+    public void bind(User item) {
         super.bind(item);
         final Shot shot1 = item.shotList().get(FIRST_SHOT);
         final Shot shot2 = item.shotList().get(SECOND_SHOT);

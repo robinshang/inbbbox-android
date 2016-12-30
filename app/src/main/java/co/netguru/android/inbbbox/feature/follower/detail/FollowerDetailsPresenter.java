@@ -10,7 +10,6 @@ import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Subscription;
@@ -39,7 +38,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     @NonNull
     private Subscription refreshShotsSubscription;
 
-    private Follower follower;
+    private User follower;
     private boolean hasMore = true;
     private int pageNumber = 1;
 
@@ -64,7 +63,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     }
 
     @Override
-    public void followerDataReceived(Follower follower) {
+    public void followerDataReceived(User follower) {
         Timber.d("Received follower : %s", follower);
         if (follower != null) {
             this.follower = follower;
@@ -105,7 +104,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
             loadMoreShotsSubscription = userShotsController.getUserShotsList(follower.id(),
                     pageNumber, SHOT_PAGE_COUNT)
                     .compose(fromListObservable())
-                    .map(shot -> Shot.update(shot).author(User.createFromFollower(follower)).build())
+                    .map(shot -> Shot.update(shot).author(follower).build())
                     .toList()
                     .compose(androidIO())
                     .subscribe(shotList -> {
@@ -163,13 +162,13 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
                 .compose(fromListObservable())
                 .map(shot -> Shot.update(shot).author(user).build())
                 .toList()
-                .map(list -> Follower.createFromUser(user, list))
+                .map(list -> User.updateUserShots(user, list))
                 .subscribe(this::showFollower,
                         throwable -> handleError(throwable, "Error while getting user shots list"));
         subscriptions.add(subscription);
     }
 
-    private void showFollower(Follower follower) {
+    private void showFollower(User follower) {
         this.follower = follower;
         getView().showFollowerData(follower);
         getView().showContent();

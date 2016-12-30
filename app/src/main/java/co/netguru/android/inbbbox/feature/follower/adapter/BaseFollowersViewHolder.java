@@ -12,13 +12,13 @@ import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersFourImagesView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
+public abstract class BaseFollowersViewHolder extends BaseViewHolder<User> {
 
     protected static final int FIRST_SHOT = 0;
     protected static final int SECOND_SHOT = 1;
@@ -39,7 +39,7 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
     @BindView(R.id.follower_item_shots_count)
     TextView shotsCount;
 
-    private Follower currentFollower;
+    private User currentFollower;
 
     BaseFollowersViewHolder(View view, @NonNull OnFollowerClickListener onFollowerClickListener) {
         super(view);
@@ -47,7 +47,7 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
     }
 
     @Override
-    public void bind(Follower item) {
+    public void bind(User item) {
         this.currentFollower = item;
         fourImagesView.setRadius(radius);
         userName.setText(item.name());
@@ -80,6 +80,6 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
 
     @FunctionalInterface
     public interface OnFollowerClickListener {
-        void onClick(Follower follower);
+        void onClick(User follower);
     }
 }
