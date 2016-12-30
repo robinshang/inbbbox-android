@@ -32,7 +32,6 @@ public interface FollowerDetailsContract {
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
-        void followerDataReceived(User follower);
 
         void userDataReceived(User user);
 

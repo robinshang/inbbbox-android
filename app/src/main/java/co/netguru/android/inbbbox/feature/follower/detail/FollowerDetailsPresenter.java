@@ -63,12 +63,11 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     }
 
     @Override
-    public void followerDataReceived(User follower) {
-        Timber.d("Received follower : %s", follower);
-        if (follower != null) {
-            this.follower = follower;
-            checkIfUserIsFollowed(follower.id());
-            showFollower(follower);
+    public void userDataReceived(User user) {
+        Timber.d("Received user : %s", user);
+        if (user != null) {
+            checkIfUserIsFollowed(user.id());
+            showUserData(user);
         }
     }
 
@@ -85,15 +84,6 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
                         hasMore = shotList.size() == SHOT_PAGE_COUNT;
                         getView().setData(shotList);
                     }, throwable -> handleError(throwable, "Error while refreshing user shots"));
-        }
-    }
-
-    @Override
-    public void userDataReceived(User user) {
-        Timber.d("Received user : %s", user);
-        if (user != null) {
-            downloadUserShots(user);
-            checkIfUserIsFollowed(user.id());
         }
     }
 
@@ -155,6 +145,14 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
                                 throwable -> handleError(throwable, "Error while follow user")));
     }
 
+    private void showUserData(User user) {
+        if (user.shotList() == null) {
+            downloadUserShots(user);
+        } else {
+            showFollower(follower);
+        }
+    }
+
     private void downloadUserShots(User user) {
         final Subscription subscription = userShotsController.getUserShotsList(user.id(),
                 pageNumber, SHOT_PAGE_COUNT)
@@ -185,5 +183,4 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     private void setFollowingMenuIcon(boolean isFollowed) {
         getView().setFollowingMenuIcon(isFollowed);
     }
-
 }

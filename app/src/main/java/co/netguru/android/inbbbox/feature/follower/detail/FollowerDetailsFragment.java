@@ -43,14 +43,13 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
 
     public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
     private static final int GRID_VIEW_COLUMN_COUNT = 2;
-    private static final String FOLLOWER_KEY = "follower_key";
     private static final String USER_KEY = "user_key";
     private static final int SHOTS_TO_LOAD_MORE = 10;
     private static final int RECYCLER_VIEW_HEADER_POSITION = 0;
     private static final int RECYCLER_VIEW_ITEM_SPAN_SIZE = 1;
 
     private MenuItem followMenuItem;
-    private MenuItem unfollowMenuItem;
+    private MenuItem unFollowMenuItem;
 
     @BindColor(R.color.accent)
     int accentColor;
@@ -96,13 +95,11 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
         super.onViewCreated(view, savedInstanceState);
         initRefreshLayout();
         initRecyclerView();
-        getPresenter().followerDataReceived(getArguments().getParcelable(FOLLOWER_KEY));
-        getPresenter().userDataReceived(getArguments().getParcelable(USER_KEY));
     }
 
     @Override
     public void setFollowingMenuIcon(boolean isFollowed) {
-        unfollowMenuItem.setVisible(isFollowed);
+        unFollowMenuItem.setVisible(isFollowed);
         followMenuItem.setVisible(!isFollowed);
     }
 
@@ -110,7 +107,8 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         followMenuItem = menu.findItem(R.id.action_follow);
-        unfollowMenuItem = menu.findItem(R.id.action_unfollow);
+        unFollowMenuItem = menu.findItem(R.id.action_unfollow);
+        getPresenter().userDataReceived(getArguments().getParcelable(USER_KEY));
     }
 
     @Override
@@ -152,13 +150,12 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
 
     @Override
     public void setData(List<Shot> data) {
-        getFollowerData();
         adapter.setUserShots(data);
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        getFollowerData();
+        /* Follower data is loaded in onCreateOptionsMenu() */
     }
 
     @Override
@@ -218,11 +215,6 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     @Override
     public void onFollowClicked() {
         getPresenter().followUser();
-    }
-
-    private void getFollowerData() {
-        final User follower = getArguments().getParcelable(FOLLOWER_KEY);
-        getPresenter().followerDataReceived(follower);
     }
 
     private void initRefreshLayout() {

@@ -40,6 +40,7 @@ public class FollowUserDialogFragment extends DialogFragment {
                 .create();
     }
 
+    @FunctionalInterface
     public interface OnFollowClickedListener {
 
         void onFollowClicked();
