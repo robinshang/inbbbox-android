@@ -12,8 +12,7 @@ public class FollowerDB {
 
     @Id
     private long id;
-    private long userId;
-    @ToOne(joinProperty = "userId")
+    @ToOne(joinProperty = "id")
     private UserDB user;
 
     /**
@@ -21,17 +20,16 @@ public class FollowerDB {
      */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
-
+    
     /**
      * Used for active entity operations.
      */
     @Generated(hash = 369989469)
     private transient FollowerDBDao myDao;
 
-    @Generated(hash = 1867666151)
-    public FollowerDB(long id, long userId) {
+    @Generated(hash = 1761388569)
+    public FollowerDB(long id) {
         this.id = id;
-        this.userId = userId;
     }
 
     @Generated(hash = 31077352)
@@ -46,23 +44,15 @@ public class FollowerDB {
         this.id = id;
     }
 
-    public long getUserId() {
-        return this.userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
     @Generated(hash = 251390918)
     private transient Long user__resolvedKey;
 
     /**
      * To-one relationship, resolved on first access.
      */
-    @Generated(hash = 1448983212)
+    @Generated(hash = 1502582492)
     public UserDB getUser() {
-        long __key = this.userId;
+        long __key = this.id;
         if (user__resolvedKey == null || !user__resolvedKey.equals(__key)) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
@@ -81,16 +71,16 @@ public class FollowerDB {
     /**
      * called by internal mechanisms, do not call yourself.
      */
-    @Generated(hash = 649368207)
+    @Generated(hash = 1785816592)
     public void setUser(@NotNull UserDB user) {
         if (user == null) {
             throw new DaoException(
-                    "To-one property 'userId' has not-null constraint; cannot set to-one to null");
+                    "To-one property 'id' has not-null constraint; cannot set to-one to null");
         }
         synchronized (this) {
             this.user = user;
-            userId = user.getId();
-            user__resolvedKey = userId;
+            id = user.getId();
+            user__resolvedKey = id;
         }
     }
 
@@ -130,12 +120,11 @@ public class FollowerDB {
         myDao.update(this);
     }
 
-    /**
-     * called by internal mechanisms, do not call yourself.
-     */
+    /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 696030261)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getFollowerDBDao() : null;
     }
+
 }

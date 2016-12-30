@@ -10,6 +10,6 @@ public class FollowerDBMapper {
     }
 
     public static FollowerDB fromUser(User follower) {
-        return new FollowerDB(follower.id(), follower.id());
+        return new FollowerDB(follower.id());
     }
 }
