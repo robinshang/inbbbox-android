@@ -199,6 +199,14 @@ public final class Statics {
             .user(USER_ENTITY)
             .build();
 
+    public static final User USER = User.builder()
+            .id(1)
+            .name("name")
+            .avatarUrl("")
+            .username("username")
+            .shotsCount(0)
+            .build();
+
     public static final BucketDB BUCKET_DB = new BucketDB(1L, "test", "test", 2, ZonedDateTime.now());
 
     public static final List<Comment> COMMENTS = generateComments();
