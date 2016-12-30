@@ -1,62 +1,65 @@
 package co.netguru.android.inbbbox.data.db;
 
 import org.greenrobot.greendao.DaoException;
-import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToOne;
-import org.threeten.bp.ZonedDateTime;
-
-import co.netguru.android.inbbbox.data.db.converters.ZonedDateTimeConverter;
 
 @Entity
 public class FollowerDB {
 
     @Id
     private long id;
-    @Convert(converter = ZonedDateTimeConverter.class, columnType = String.class)
-    private ZonedDateTime createdAt;
     private long userId;
     @ToOne(joinProperty = "userId")
     private UserDB user;
-    /** Used to resolve relations */
+
+    /**
+     * Used to resolve relations
+     */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
-    /** Used for active entity operations. */
+
+    /**
+     * Used for active entity operations.
+     */
     @Generated(hash = 369989469)
     private transient FollowerDBDao myDao;
-    @Generated(hash = 125922504)
-    public FollowerDB(long id, ZonedDateTime createdAt, long userId) {
+
+    @Generated(hash = 1867666151)
+    public FollowerDB(long id, long userId) {
         this.id = id;
-        this.createdAt = createdAt;
         this.userId = userId;
     }
+
     @Generated(hash = 31077352)
     public FollowerDB() {
     }
+
     public long getId() {
         return this.id;
     }
+
     public void setId(long id) {
         this.id = id;
     }
-    public ZonedDateTime getCreatedAt() {
-        return this.createdAt;
-    }
-    public void setCreatedAt(ZonedDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+
     public long getUserId() {
         return this.userId;
     }
+
     public void setUserId(long userId) {
         this.userId = userId;
     }
+
     @Generated(hash = 251390918)
     private transient Long user__resolvedKey;
-    /** To-one relationship, resolved on first access. */
+
+    /**
+     * To-one relationship, resolved on first access.
+     */
     @Generated(hash = 1448983212)
     public UserDB getUser() {
         long __key = this.userId;
@@ -74,7 +77,10 @@ public class FollowerDB {
         }
         return user;
     }
-    /** called by internal mechanisms, do not call yourself. */
+
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 649368207)
     public void setUser(@NotNull UserDB user) {
         if (user == null) {
@@ -87,6 +93,7 @@ public class FollowerDB {
             user__resolvedKey = userId;
         }
     }
+
     /**
      * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
      * Entity must attached to an entity context.
@@ -98,6 +105,7 @@ public class FollowerDB {
         }
         myDao.delete(this);
     }
+
     /**
      * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
      * Entity must attached to an entity context.
@@ -109,6 +117,7 @@ public class FollowerDB {
         }
         myDao.refresh(this);
     }
+
     /**
      * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
      * Entity must attached to an entity context.
@@ -120,7 +129,10 @@ public class FollowerDB {
         }
         myDao.update(this);
     }
-    /** called by internal mechanisms, do not call yourself. */
+
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 696030261)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
