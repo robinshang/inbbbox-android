@@ -98,10 +98,10 @@ public class BucketImageView extends FrameLayout {
                 post(() -> {
                     currentImage = (currentImage + 1) % IMAGES;
 
-                    animateToBig(imageViews.get(currentImage), ANIMATION_LENGTH);
-                    animateToPosition(imageViews.get((currentImage + 1) % IMAGES), 1, 0, ANIMATION_LENGTH);
-                    animateToPosition(imageViews.get((currentImage + 2) % IMAGES), 2, 1, ANIMATION_LENGTH);
-                    animateFromBig(imageViews.get((currentImage + 3) % IMAGES), ANIMATION_LENGTH);
+                    animateImageMatrixFromFirstSmallToBig(imageViews.get(currentImage), ANIMATION_LENGTH);
+                    animateImageMatrixToMoveTowardsFirst(imageViews.get((currentImage + 1) % IMAGES), 1, 0, ANIMATION_LENGTH);
+                    animateImageMatrixToMoveTowardsFirst(imageViews.get((currentImage + 2) % IMAGES), 2, 1, ANIMATION_LENGTH);
+                    animateImageMatrixFromBigtoLastSmall(imageViews.get((currentImage + 3) % IMAGES), ANIMATION_LENGTH);
                 });
             }
         }, delay, delay);
@@ -121,15 +121,14 @@ public class BucketImageView extends FrameLayout {
                 imageView.setVisibility(View.VISIBLE);
             }
 
-            animateToBig(imageViews.get(currentImage), 0);
-            animateToPosition(imageViews.get((currentImage + 1) % IMAGES), 1, 0, 0);
-            animateToPosition(imageViews.get((currentImage + 2) % IMAGES), 2, 1, 0);
-            animateFromBig(imageViews.get((currentImage + 3) % IMAGES), 0);
+            animateImageMatrixFromFirstSmallToBig(imageViews.get(currentImage), 0);
+            animateImageMatrixToMoveTowardsFirst(imageViews.get((currentImage + 1) % IMAGES), 1, 0, 0);
+            animateImageMatrixToMoveTowardsFirst(imageViews.get((currentImage + 2) % IMAGES), 2, 1, 0);
+            animateImageMatrixFromBigtoLastSmall(imageViews.get((currentImage + 3) % IMAGES), 0);
         });
     }
 
-    // animates matrix of selected image view to become big picture
-    private void animateToBig(ImageView imageView, int duration) {
+    private void animateImageMatrixFromFirstSmallToBig(ImageView imageView, int duration) {
         imageView.bringToFront();
         Matrix matrix = imageView.getMatrix();
 
@@ -155,7 +154,7 @@ public class BucketImageView extends FrameLayout {
     }
 
     // animates matrix of selected image view to become last small picture
-    private void animateFromBig(ImageView imageView, int duration) {
+    private void animateImageMatrixFromBigtoLastSmall(ImageView imageView, int duration) {
         Matrix matrix = imageView.getMatrix();
 
         float drawableWidth = imageView.getDrawable().getIntrinsicWidth();
@@ -189,8 +188,8 @@ public class BucketImageView extends FrameLayout {
         animator.start();
     }
 
-    // animates small picture to move towards first position
-    private void animateToPosition(ImageView imageView, int fromPosition, int toPosition, int duration) {
+    private void animateImageMatrixToMoveTowardsFirst(ImageView imageView, int fromPosition,
+                                                      int toPosition, int duration) {
         Matrix matrix = imageView.getMatrix();
 
         float drawableWidth = imageView.getDrawable().getIntrinsicWidth();

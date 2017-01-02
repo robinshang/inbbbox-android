@@ -75,7 +75,7 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
         Glide.with(itemView.getContext())
                 .load(url)
                 .centerCrop()
-                .listener(this)
+                .animate(android.R.anim.fade_in)
                 .into(imageView);
     }
 
