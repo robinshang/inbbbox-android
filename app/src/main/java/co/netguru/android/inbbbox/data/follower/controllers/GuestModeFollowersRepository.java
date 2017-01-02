@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.data.follower.controllers;
 
-import java.util.Objects;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -55,7 +53,7 @@ public class GuestModeFollowersRepository extends BaseGuestModeRepository {
                 .where(FollowerDBDao.Properties.Id.eq(id))
                 .rx()
                 .unique()
-                .map(Objects::nonNull)
+                .map(followerDB -> followerDB != null)
                 .toSingle();
     }
 }
