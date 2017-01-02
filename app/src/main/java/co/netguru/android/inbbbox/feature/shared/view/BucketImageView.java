@@ -31,7 +31,7 @@ public class BucketImageView extends FrameLayout {
 
     public static final int IMAGES = 4;
     public static final float BIG_IMAGE_HEIGHT_FACTOR = 0.75f;
-    public static final float SMALL_IMAGE_WIDTH_FACTOR = (1f / (IMAGES - 1));
+    public static final float SMALL_IMAGE_WIDTH_FACTOR = 1f / (IMAGES - 1);
 
     public static final int ANIMATE_EVERY_MILLISECONDS_MIN = 3000;
     public static final int ANIMATE_EVERY_MILLISECONDS_MAX = 6000;
@@ -86,7 +86,9 @@ public class BucketImageView extends FrameLayout {
     }
 
     public void startAnimation() {
-        if (timer != null) return;
+        if (timer != null) {
+            return;
+        }
         initGrid();
 
         int delay = ANIMATE_EVERY_MILLISECONDS_MIN +
@@ -94,6 +96,8 @@ public class BucketImageView extends FrameLayout {
 
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
             public void run() {
                 post(() -> {
                     currentImage = (currentImage + 1) % IMAGES;
@@ -140,7 +144,7 @@ public class BucketImageView extends FrameLayout {
         ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
         animator.setInterpolator(new DecelerateInterpolator());
         animator.setDuration(duration);
-        animator.addUpdateListener((animation -> {
+        animator.addUpdateListener(animation -> {
             float value = (Float) animation.getAnimatedValue();
 
             float scaleValue = SMALL_IMAGE_WIDTH_FACTOR + value * (1 - SMALL_IMAGE_WIDTH_FACTOR);
@@ -149,7 +153,7 @@ public class BucketImageView extends FrameLayout {
             matrix.postTranslate(0, translationY);
 
             imageView.setImageMatrix(matrix);
-        }));
+        });
         animator.start();
     }
 
@@ -173,7 +177,7 @@ public class BucketImageView extends FrameLayout {
         ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
         animator.setInterpolator(new DecelerateInterpolator());
         animator.setDuration(duration);
-        animator.addUpdateListener((animation -> {
+        animator.addUpdateListener(animation -> {
             float value = (Float) animation.getAnimatedValue();
 
             float scale = toScale + (fromScale - toScale) * (1 - value);
@@ -183,7 +187,7 @@ public class BucketImageView extends FrameLayout {
             matrix.postTranslate(translationX, translationY);
 
             imageView.setImageMatrix(matrix);
-        }));
+        });
         animator.start();
     }
 
@@ -201,7 +205,7 @@ public class BucketImageView extends FrameLayout {
         ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
         animator.setInterpolator(new DecelerateInterpolator());
         animator.setDuration(duration);
-        animator.addUpdateListener((animation -> {
+        animator.addUpdateListener(animation -> {
             float value = (Float) animation.getAnimatedValue();
 
             float translationX = toX + (fromX - toX) * (1 - value);
@@ -210,7 +214,7 @@ public class BucketImageView extends FrameLayout {
             matrix.postTranslate(translationX, translationY);
 
             imageView.setImageMatrix(matrix);
-        }));
+        });
         animator.start();
     }
 

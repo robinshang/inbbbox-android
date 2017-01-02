@@ -8,6 +8,7 @@
         android:id="@+id/bucket_four_images_image1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:contentDescription="@string/shot"
         android:scaleType="matrix"
         android:visibility="invisible" />
 
@@ -15,6 +16,7 @@
         android:id="@+id/bucket_four_images_image2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:contentDescription="@string/shot"
         android:scaleType="matrix"
         android:visibility="invisible" />
 
@@ -22,6 +24,7 @@
         android:id="@+id/bucket_four_images_image3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:contentDescription="@string/shot"
         android:scaleType="matrix"
         android:visibility="invisible" />
 
@@ -29,6 +32,7 @@
         android:id="@+id/bucket_four_images_image4"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:contentDescription="@string/shot"
         android:scaleType="matrix"
         android:visibility="invisible" />
 </FrameLayout>
