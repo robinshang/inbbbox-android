@@ -153,7 +153,6 @@ public class BucketImageView extends FrameLayout {
         animator.start();
     }
 
-    // animates matrix of selected image view to become last small picture
     private void animateImageMatrixFromBigtoLastSmall(ImageView imageView, int duration) {
         Matrix matrix = imageView.getMatrix();
 
