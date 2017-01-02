@@ -38,8 +38,8 @@ public class FollowersControllerApi implements FollowersController {
     }
 
     @Override
-    public Completable followUser(User follower) {
-        return followersApi.followUser(follower.id());
+    public Completable followUser(User user) {
+        return followersApi.followUser(user.id());
     }
 
     @Override

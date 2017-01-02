@@ -123,7 +123,7 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
 
     @Override
     public void setData(List<UserWithShots> data) {
-        adapter.setFollowersList(data);
+        adapter.setUserWithShotsList(data);
     }
 
     @Override
@@ -133,8 +133,8 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     }
 
     @Override
-    public void showMoreFollowedUsers(List<UserWithShots> followerList) {
-        adapter.addMoreFollowers(followerList);
+    public void showMoreFollowedUsers(List<UserWithShots> userWithShotsList) {
+        adapter.addMoreFollowers(userWithShotsList);
     }
 
     @Override

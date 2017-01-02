@@ -39,16 +39,16 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<UserWithSho
     @BindView(R.id.follower_item_shots_count)
     TextView shotsCount;
 
-    private UserWithShots currentFollower;
+    private UserWithShots currentuserWithShots;
 
     BaseFollowersViewHolder(View view, @NonNull OnFollowerClickListener onFollowerClickListener) {
         super(view);
-        view.setOnClickListener(v -> onFollowerClickListener.onClick(currentFollower));
+        view.setOnClickListener(v -> onFollowerClickListener.onClick(currentuserWithShots));
     }
 
     @Override
     public void bind(UserWithShots item) {
-        this.currentFollower = item;
+        this.currentuserWithShots = item;
         fourImagesView.setRadius(radius);
         userName.setText(item.user().name());
         shotsCount.setText(getShotCountString(item.user().shotsCount()));
@@ -80,6 +80,6 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<UserWithSho
 
     @FunctionalInterface
     public interface OnFollowerClickListener {
-        void onClick(UserWithShots follower);
+        void onClick(UserWithShots userWithShots);
     }
 }

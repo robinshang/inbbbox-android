@@ -150,7 +150,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
 
     @Override
     public void setData(List<Shot> data) {
-        adapter.setFollower(getArguments().getParcelable(USER_KEY));
+        adapter.setUserWithShots(getArguments().getParcelable(USER_KEY));
         adapter.setUserShots(data);
     }
 
@@ -160,12 +160,12 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     @Override
-    public void showFollowerData(UserWithShots follower) {
-        adapter.setFollowerAdapterData(follower);
+    public void showFollowerData(UserWithShots userWithShots) {
+        adapter.setFollowerAdapterData(userWithShots);
 
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(follower.user().name());
+            actionBar.setTitle(userWithShots.user().name());
         }
     }
 

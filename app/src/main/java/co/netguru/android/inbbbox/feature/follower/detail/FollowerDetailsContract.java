@@ -33,9 +33,9 @@ public interface FollowerDetailsContract {
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
 
-        void userDataReceived(UserWithShots follower);
+        void userDataReceived(UserWithShots userWithShots);
 
-        void checkIfUserIsFollowed(UserWithShots follower);
+        void checkIfUserIsFollowed(UserWithShots userWithShots);
 
         void refreshUserShots();
 

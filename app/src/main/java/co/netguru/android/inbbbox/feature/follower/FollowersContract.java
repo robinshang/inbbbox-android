@@ -14,7 +14,7 @@ interface FollowersContract {
 
     interface View extends MvpView, HttpErrorView, MvpLceView<List<UserWithShots>> {
 
-        void showMoreFollowedUsers(List<UserWithShots> followerList);
+        void showMoreFollowedUsers(List<UserWithShots> userWithShotsList);
 
         void hideLoadingMoreBucketsView();
 

@@ -35,8 +35,8 @@ public class FollowersControllerGuest implements FollowersController {
     }
 
     @Override
-    public Completable followUser(User follower) {
-        return guestModeFollowersRepository.addFollower(follower);
+    public Completable followUser(User user) {
+        return guestModeFollowersRepository.addFollower(user);
     }
 
     @Override

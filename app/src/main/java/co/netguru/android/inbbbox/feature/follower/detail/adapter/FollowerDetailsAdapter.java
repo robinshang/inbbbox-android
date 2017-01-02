@@ -24,7 +24,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @NonNull
     private List<Shot> shotList;
-    private UserWithShots follower;
+    private UserWithShots userWithShots;
     private boolean isGridMode;
 
     @Inject
@@ -51,7 +51,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case TYPE_HEADER:
-                ((FollowerDetailsHeaderViewHolder) holder).bind(follower.user());
+                ((FollowerDetailsHeaderViewHolder) holder).bind(userWithShots.user());
                 break;
             case TYPE_GRID:
                 ((FollowerDetailsGridViewHolder) holder).bind(shotList.get(getShotListPosition(position)));
@@ -74,7 +74,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        return follower != null ? shotList.size() + 1 : shotList.size();
+        return userWithShots != null ? shotList.size() + 1 : shotList.size();
     }
 
     public void setGridMode(boolean isGridMode) {
@@ -86,16 +86,16 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return shotList;
     }
 
-    public void setFollowerAdapterData(UserWithShots follower) {
-        this.follower = follower;
-        if (follower.shotList() != null) {
-            this.shotList = follower.shotList();
+    public void setFollowerAdapterData(UserWithShots userWithShots) {
+        this.userWithShots = userWithShots;
+        if (userWithShots.shotList() != null) {
+            this.shotList = userWithShots.shotList();
             notifyDataSetChanged();
         }
     }
 
-    public void setFollower(UserWithShots follower) {
-        this.follower = follower;
+    public void setUserWithShots(UserWithShots userWithShots) {
+        this.userWithShots = userWithShots;
     }
 
     public void setUserShots(List<Shot> shotList) {
@@ -110,6 +110,6 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     private int getShotListPosition(int position) {
-        return follower != null ? position - 1 : position;
+        return userWithShots != null ? position - 1 : position;
     }
 }

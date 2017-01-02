@@ -23,13 +23,13 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
     private static final int TYPE_FOUR_SHOT_GRID = 9;
 
     private final BaseFollowersViewHolder.OnFollowerClickListener onFollowerClickListener;
-    private List<UserWithShots> followersList;
+    private List<UserWithShots> userWithShotsList;
 
     private boolean isGridMode;
 
     public FollowersAdapter(BaseFollowersViewHolder.OnFollowerClickListener onFollowerClickListener) {
         this.onFollowerClickListener = onFollowerClickListener;
-        followersList = Collections.emptyList();
+        userWithShotsList = Collections.emptyList();
     }
 
     @Override
@@ -62,23 +62,23 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
 
     @Override
     public void onBindViewHolder(BaseFollowersViewHolder holder, int position) {
-        holder.bind(followersList.get(position));
+        holder.bind(userWithShotsList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return followersList.size();
+        return userWithShotsList.size();
     }
 
-    public void setFollowersList(List<UserWithShots> followersList) {
-        this.followersList = followersList;
+    public void setUserWithShotsList(List<UserWithShots> userWithShotsList) {
+        this.userWithShotsList = userWithShotsList;
         notifyDataSetChanged();
     }
 
-    public void addMoreFollowers(List<UserWithShots> followersList) {
-        final int currentSize = this.followersList.size();
-        this.followersList.addAll(followersList);
-        notifyItemRangeChanged(currentSize - 1, followersList.size());
+    public void addMoreFollowers(List<UserWithShots> userWithShotsList) {
+        final int currentSize = this.userWithShotsList.size();
+        this.userWithShotsList.addAll(userWithShotsList);
+        notifyItemRangeChanged(currentSize - 1, userWithShotsList.size());
     }
 
     public void setGridMode(boolean isGridMode) {
@@ -87,12 +87,12 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
     }
 
     public List<UserWithShots> getData() {
-        return followersList;
+        return userWithShotsList;
     }
 
     @Override
     public int getItemViewType(int position) {
-        final List<Shot> shotList = followersList.get(position).shotList();
+        final List<Shot> shotList = userWithShotsList.get(position).shotList();
         if (shotList == null || shotList.isEmpty()) {
             return isGridMode ? TYPE_EMPTY_GRID : TYPE_EMPTY_LIST;
         }

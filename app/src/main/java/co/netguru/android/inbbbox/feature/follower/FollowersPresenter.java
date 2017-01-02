@@ -106,14 +106,14 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
-    private void onGetFollowersNext(List<UserWithShots> followersList) {
-        hasMore = followersList.size() >= FOLLOWERS_PAGE_COUNT;
-        getView().setData(followersList);
+    private void onGetFollowersNext(List<UserWithShots> userWithShotsList) {
+        hasMore = userWithShotsList.size() >= FOLLOWERS_PAGE_COUNT;
+        getView().setData(userWithShotsList);
         getView().showContent();
     }
 
-    private void onGetMoreFollowersNext(List<UserWithShots> followersList) {
-        hasMore = followersList.size() >= FOLLOWERS_PAGE_COUNT;
-        getView().showMoreFollowedUsers(followersList);
+    private void onGetMoreFollowersNext(List<UserWithShots> userWithShotsList) {
+        hasMore = userWithShotsList.size() >= FOLLOWERS_PAGE_COUNT;
+        getView().showMoreFollowedUsers(userWithShotsList);
     }
 }

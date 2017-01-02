@@ -12,7 +12,7 @@ public interface FollowersController {
 
     Completable unFollowUser(long id);
 
-    Completable followUser(User follower);
+    Completable followUser(User user);
 
     Single<Boolean> isUserFollowed(long id);
 }

@@ -50,7 +50,7 @@ public class GuestModeFollowersRepository extends BaseGuestModeRepository {
     }
 
     public Single<Boolean> isUserFollowed(long id) {
-        Timber.d("Checking if user is follower");
+        Timber.d("Checking if user is followed");
         return daoSession.getFollowerDBDao().queryBuilder()
                 .where(FollowerDBDao.Properties.Id.eq(id))
                 .rx()
