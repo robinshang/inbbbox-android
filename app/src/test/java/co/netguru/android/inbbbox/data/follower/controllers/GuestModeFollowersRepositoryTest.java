@@ -15,11 +15,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.data.db.DaoSession;
-import co.netguru.android.inbbbox.data.db.FollowerEntityDB;
-import co.netguru.android.inbbbox.data.db.FollowerEntityDBDao;
-import co.netguru.android.inbbbox.data.db.UserEntityDB;
-import co.netguru.android.inbbbox.data.db.UserEntityDBDao;
+import co.netguru.android.inbbbox.data.db.FollowerDB;
+import co.netguru.android.inbbbox.data.db.FollowerDBDao;
+import co.netguru.android.inbbbox.data.db.UserDB;
+import co.netguru.android.inbbbox.data.db.UserDBDao;
 import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.observers.TestSubscriber;
@@ -40,15 +41,15 @@ public class GuestModeFollowersRepositoryTest {
     @Mock
     DaoSession daoSession;
     @Mock
-    FollowerEntityDBDao followerEntityDBDao;
+    FollowerDBDao followerDBDao;
     @Mock
-    UserEntityDBDao userEntityDBDao;
+    UserDBDao userDBDao;
     @Mock
-    RxDao<FollowerEntityDB, Long> followerRxDao;
+    RxDao<FollowerDB, Long> followerRxDao;
     @Mock
-    QueryBuilder<FollowerEntityDB> followerDBQueryBuilder;
+    QueryBuilder<FollowerDB> followerDBQueryBuilder;
     @Mock
-    RxQuery<FollowerEntityDB> followerDBRxQuery;
+    RxQuery<FollowerDB> followerDBRxQuery;
 
     @InjectMocks
     GuestModeFollowersRepository repository;
@@ -58,9 +59,9 @@ public class GuestModeFollowersRepositoryTest {
     @Before
     public void setUp() {
         rxTransaction = new RxTransaction(daoSession);
-        when(daoSession.getFollowerEntityDBDao()).thenReturn(followerEntityDBDao);
-        when(daoSession.getUserEntityDBDao()).thenReturn(userEntityDBDao);
-        when(followerEntityDBDao.rx()).thenReturn(followerRxDao);
+        when(daoSession.getFollowerDBDao()).thenReturn(followerDBDao);
+        when(daoSession.getUserDBDao()).thenReturn(userDBDao);
+        when(followerDBDao.rx()).thenReturn(followerRxDao);
         when(daoSession.rxTx()).thenReturn(rxTransaction);
         doAnswer(invocation -> {
             final Runnable test = (Runnable) invocation.getArguments()[0];
@@ -72,14 +73,14 @@ public class GuestModeFollowersRepositoryTest {
     @Test
     public void shouldQueryDBWhenGettingFollowers() {
         //given
-        final TestSubscriber<FollowerEntity> subscriber = new TestSubscriber<>();
-        when(followerEntityDBDao.queryBuilder()).thenReturn(followerDBQueryBuilder);
+        final TestSubscriber<UserWithShots> subscriber = new TestSubscriber<>();
+        when(followerDBDao.queryBuilder()).thenReturn(followerDBQueryBuilder);
         when(followerDBQueryBuilder.rx()).thenReturn(followerDBRxQuery);
         when(followerDBRxQuery.oneByOne()).thenReturn(Observable.empty());
         //when
         repository.getFollowers().subscribe(subscriber);
         //then
-        verify(followerEntityDBDao).queryBuilder();
+        verify(followerDBDao).queryBuilder();
         subscriber.assertNoErrors();
     }
 
@@ -111,20 +112,20 @@ public class GuestModeFollowersRepositoryTest {
         //given
         final TestSubscriber<FollowerEntity> subscriber = new TestSubscriber<>();
         //when
-        repository.addFollower(Statics.FOLLOWER_ENTITY).subscribe(subscriber);
+        repository.addFollower(Statics.USER).subscribe(subscriber);
         //then
-        verify(followerEntityDBDao).insertOrReplace(any(FollowerEntityDB.class));
+        verify(followerDBDao).insertOrReplace(any(FollowerDB.class));
         subscriber.assertNoErrors();
     }
 
     @Test
-    public void shouldInsertUserEntityIntoDBWhenAddingFollower() {
+    public void shouldInsertUserIntoDBWhenAddingFollower() {
         //given
         final TestSubscriber<FollowerEntity> subscriber = new TestSubscriber<>();
         //when
-        repository.addFollower(Statics.FOLLOWER_ENTITY).subscribe(subscriber);
+        repository.addFollower(Statics.USER).subscribe(subscriber);
         //then
-        verify(userEntityDBDao).insertOrReplace(any(UserEntityDB.class));
+        verify(userDBDao).insertOrReplace(any(UserDB.class));
         subscriber.assertNoErrors();
     }
 }

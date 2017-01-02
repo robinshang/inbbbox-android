@@ -1,14 +1,15 @@
 package co.netguru.android.inbbbox.data.follower.controllers;
 
-import java.util.List;
-
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.FollowersApi;
-import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
 
 public class FollowersControllerGuest implements FollowersController {
+
+    private static final int FIRST_PAGE = 1;
 
     private final GuestModeFollowersRepository guestModeFollowersRepository;
     private final FollowersApi followersApi;
@@ -20,10 +21,12 @@ public class FollowersControllerGuest implements FollowersController {
     }
 
     @Override
-    public Observable<FollowerEntity> getFollowedUsers(int pageNumber, int pageCount) {
-        return getFollowersFromApi(pageNumber, pageCount)
-                .flatMap(Observable::from)
-                .mergeWith(guestModeFollowersRepository.getFollowers());
+    public Observable<UserWithShots> getFollowedUsers(int pageNumber, int pageCount, int followerShotPageCount) {
+        if (pageNumber == FIRST_PAGE) {
+            return guestModeFollowersRepository.getFollowers()
+                    .mergeWith(getFollowersFromApi(FIRST_PAGE, pageCount));
+        }
+        return getFollowersFromApi(pageNumber, pageCount);
     }
 
     @Override
@@ -32,18 +35,18 @@ public class FollowersControllerGuest implements FollowersController {
     }
 
     @Override
-    public Completable followUser(long id) {
-        // TODO: 22.12.2016 Refactor adding follower to db
-        return Completable.complete();
+    public Completable followUser(User user) {
+        return guestModeFollowersRepository.addFollower(user);
     }
 
     @Override
     public Single<Boolean> isUserFollowed(long id) {
-        // TODO: 22.12.2016 Ask database instead of dribbble API
-        return Single.just(false);
+        return guestModeFollowersRepository.isUserFollowed(id);
     }
 
-    private Observable<List<FollowerEntity>> getFollowersFromApi(int pageNumber, int pageCount) {
-        return followersApi.getFollowedUsers(pageNumber, pageCount);
+    private Observable<UserWithShots> getFollowersFromApi(int pageNumber, int pageCount) {
+        return followersApi.getFollowedUsers(pageNumber, pageCount)
+                .flatMap(Observable::from)
+                .map(followerEntity -> UserWithShots.create(User.create(followerEntity.user()), null));
     }
 }

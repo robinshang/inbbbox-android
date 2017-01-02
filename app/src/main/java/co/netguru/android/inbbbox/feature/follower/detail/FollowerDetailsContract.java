@@ -6,8 +6,7 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
@@ -15,7 +14,7 @@ import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
 public interface FollowerDetailsContract {
 
     interface View extends MvpView, HttpErrorView, MvpLceView<List<Shot>> {
-        void showFollowerData(Follower follower);
+        void showFollowerData(UserWithShots follower);
 
         void showMoreUserShots(List<Shot> shotList);
 
@@ -33,9 +32,10 @@ public interface FollowerDetailsContract {
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
-        void followerDataReceived(Follower follower);
 
-        void userDataReceived(User user);
+        void userDataReceived(UserWithShots userWithShots);
+
+        void checkIfUserIsFollowed(UserWithShots userWithShots);
 
         void refreshUserShots();
 

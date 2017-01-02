@@ -28,11 +28,9 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.follower.detail.adapter.FollowerDetailsAdapter;
-import co.netguru.android.inbbbox.feature.followers.details.FollowUserDialogFragment;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import timber.log.Timber;
@@ -45,14 +43,13 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
 
     public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
     private static final int GRID_VIEW_COLUMN_COUNT = 2;
-    private static final String FOLLOWER_KEY = "follower_key";
     private static final String USER_KEY = "user_key";
     private static final int SHOTS_TO_LOAD_MORE = 10;
     private static final int RECYCLER_VIEW_HEADER_POSITION = 0;
     private static final int RECYCLER_VIEW_ITEM_SPAN_SIZE = 1;
 
     private MenuItem followMenuItem;
-    private MenuItem unfollowMenuItem;
+    private MenuItem unFollowMenuItem;
 
     @BindColor(R.color.accent)
     int accentColor;
@@ -67,18 +64,9 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
 
-    public static FollowerDetailsFragment newInstanceWithFollower(Follower follower) {
+    public static FollowerDetailsFragment newInstance(UserWithShots follower) {
         final Bundle args = new Bundle();
-        args.putParcelable(FOLLOWER_KEY, follower);
-
-        final FollowerDetailsFragment fragment = new FollowerDetailsFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static FollowerDetailsFragment newInstanceWithUser(User user) {
-        final Bundle args = new Bundle();
-        args.putParcelable(USER_KEY, user);
+        args.putParcelable(USER_KEY, follower);
 
         final FollowerDetailsFragment fragment = new FollowerDetailsFragment();
         fragment.setArguments(args);
@@ -107,13 +95,11 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
         super.onViewCreated(view, savedInstanceState);
         initRefreshLayout();
         initRecyclerView();
-        getPresenter().followerDataReceived(getArguments().getParcelable(FOLLOWER_KEY));
-        getPresenter().userDataReceived(getArguments().getParcelable(USER_KEY));
     }
 
     @Override
     public void setFollowingMenuIcon(boolean isFollowed) {
-        unfollowMenuItem.setVisible(isFollowed);
+        unFollowMenuItem.setVisible(isFollowed);
         followMenuItem.setVisible(!isFollowed);
     }
 
@@ -121,7 +107,8 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         followMenuItem = menu.findItem(R.id.action_follow);
-        unfollowMenuItem = menu.findItem(R.id.action_unfollow);
+        unFollowMenuItem = menu.findItem(R.id.action_unfollow);
+        getPresenter().checkIfUserIsFollowed(getArguments().getParcelable(USER_KEY));
     }
 
     @Override
@@ -163,22 +150,22 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
 
     @Override
     public void setData(List<Shot> data) {
-        getFollowerData();
+        adapter.setUserWithShots(getArguments().getParcelable(USER_KEY));
         adapter.setUserShots(data);
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        getFollowerData();
+        getPresenter().userDataReceived(getArguments().getParcelable(USER_KEY));
     }
 
     @Override
-    public void showFollowerData(Follower follower) {
-        adapter.setFollowerAdapterData(follower);
+    public void showFollowerData(UserWithShots userWithShots) {
+        adapter.setFollowerAdapterData(userWithShots);
 
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(follower.name());
+            actionBar.setTitle(userWithShots.user().name());
         }
     }
 
@@ -229,11 +216,6 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     @Override
     public void onFollowClicked() {
         getPresenter().followUser();
-    }
-
-    private void getFollowerData() {
-        final Follower follower = getArguments().getParcelable(FOLLOWER_KEY);
-        getPresenter().followerDataReceived(follower);
     }
 
     private void initRefreshLayout() {

@@ -1,48 +1,39 @@
 package co.netguru.android.inbbbox.data.db;
 
 import org.greenrobot.greendao.DaoException;
-import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToOne;
-import org.threeten.bp.ZonedDateTime;
-
-import co.netguru.android.inbbbox.data.db.converters.ZonedDateTimeConverter;
 
 @Entity
-public class FollowerEntityDB {
+public class FollowerDB {
 
     @Id
     private long id;
-    @Convert(converter = ZonedDateTimeConverter.class, columnType = String.class)
-    private ZonedDateTime createdAt;
-    private long userId;
-    @ToOne(joinProperty = "userId")
-    private UserEntityDB user;
+    @ToOne(joinProperty = "id")
+    private UserDB user;
 
     /**
      * Used to resolve relations
      */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
-
+    
     /**
      * Used for active entity operations.
      */
-    @Generated(hash = 979453088)
-    private transient FollowerEntityDBDao myDao;
+    @Generated(hash = 369989469)
+    private transient FollowerDBDao myDao;
 
-    @Generated(hash = 2020176733)
-    public FollowerEntityDB(long id, ZonedDateTime createdAt, long userId) {
+    @Generated(hash = 1761388569)
+    public FollowerDB(long id) {
         this.id = id;
-        this.createdAt = createdAt;
-        this.userId = userId;
     }
 
-    @Generated(hash = 1853705126)
-    public FollowerEntityDB() {
+    @Generated(hash = 31077352)
+    public FollowerDB() {
     }
 
     public long getId() {
@@ -53,38 +44,22 @@ public class FollowerEntityDB {
         this.id = id;
     }
 
-    public ZonedDateTime getCreatedAt() {
-        return this.createdAt;
-    }
-
-    public void setCreatedAt(ZonedDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public long getUserId() {
-        return this.userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
     @Generated(hash = 251390918)
     private transient Long user__resolvedKey;
 
     /**
      * To-one relationship, resolved on first access.
      */
-    @Generated(hash = 921178723)
-    public UserEntityDB getUser() {
-        long __key = this.userId;
+    @Generated(hash = 1502582492)
+    public UserDB getUser() {
+        long __key = this.id;
         if (user__resolvedKey == null || !user__resolvedKey.equals(__key)) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            UserEntityDBDao targetDao = daoSession.getUserEntityDBDao();
-            UserEntityDB userNew = targetDao.load(__key);
+            UserDBDao targetDao = daoSession.getUserDBDao();
+            UserDB userNew = targetDao.load(__key);
             synchronized (this) {
                 user = userNew;
                 user__resolvedKey = __key;
@@ -96,16 +71,16 @@ public class FollowerEntityDB {
     /**
      * called by internal mechanisms, do not call yourself.
      */
-    @Generated(hash = 745770947)
-    public void setUser(@NotNull UserEntityDB user) {
+    @Generated(hash = 1785816592)
+    public void setUser(@NotNull UserDB user) {
         if (user == null) {
             throw new DaoException(
-                    "To-one property 'userId' has not-null constraint; cannot set to-one to null");
+                    "To-one property 'id' has not-null constraint; cannot set to-one to null");
         }
         synchronized (this) {
             this.user = user;
-            userId = user.getId();
-            user__resolvedKey = userId;
+            id = user.getId();
+            user__resolvedKey = id;
         }
     }
 
@@ -146,10 +121,10 @@ public class FollowerEntityDB {
     }
 
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 1697135917)
+    @Generated(hash = 696030261)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getFollowerEntityDBDao() : null;
+        myDao = daoSession != null ? daoSession.getFollowerDBDao() : null;
     }
 
 }
