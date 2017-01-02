@@ -19,11 +19,16 @@
             android:layout_marginBottom="@dimen/margin_small"
             >
 
-            <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersBucketFourImageView
+            <co.netguru.android.inbbbox.feature.shared.view.BucketImageView
                 android:id="@+id/four_images_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />
+
+            <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersImageView
+                android:id="@+id/one_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <ImageView
                 android:id="@+id/empty_view"
@@ -33,7 +38,6 @@
                 android:src="@drawable/logo_ball"
                 android:tint="@color/lightGray"
                 android:contentDescription="@string/empty_bucket_item_description" />
-
         </FrameLayout>
 
         <TextView
