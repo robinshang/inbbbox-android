@@ -12,8 +12,8 @@ import javax.inject.Inject;
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import rx.Subscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
@@ -92,7 +92,7 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     }
 
     @Override
-    public void checkDataEmpty(List<User> data) {
+    public void checkDataEmpty(List<UserWithShots> data) {
         if (data.isEmpty()) {
             getView().showEmptyLikesInfo();
         } else {
@@ -106,13 +106,13 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
-    private void onGetFollowersNext(List<User> followersList) {
+    private void onGetFollowersNext(List<UserWithShots> followersList) {
         hasMore = followersList.size() >= FOLLOWERS_PAGE_COUNT;
         getView().setData(followersList);
         getView().showContent();
     }
 
-    private void onGetMoreFollowersNext(List<User> followersList) {
+    private void onGetMoreFollowersNext(List<UserWithShots> followersList) {
         hasMore = followersList.size() >= FOLLOWERS_PAGE_COUNT;
         getView().showMoreFollowedUsers(followersList);
     }

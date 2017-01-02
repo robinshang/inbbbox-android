@@ -15,7 +15,7 @@ import java.util.List;
 import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseActivity;
@@ -34,7 +34,7 @@ public class FollowerDetailsActivity extends BaseActivity
     @BindColor(R.color.white)
     int colorWhite;
 
-    public static void startActivity(Context context, User user) {
+    public static void startActivity(Context context, UserWithShots user) {
         final Intent intent = new Intent(context, FollowerDetailsActivity.class);
         intent.putExtra(USER_KEY, user);
         context.startActivity(intent);
@@ -94,7 +94,7 @@ public class FollowerDetailsActivity extends BaseActivity
 
     private void instantiateFragment() {
         replaceFragment(R.id.follower_details_fragment_container,
-                FollowerDetailsFragment.newInstanceWithUser(getIntent().getParcelableExtra(USER_KEY)),
+                FollowerDetailsFragment.newInstance(getIntent().getParcelableExtra(USER_KEY)),
                 FollowerDetailsFragment.TAG).commit();
     }
 }

@@ -19,8 +19,8 @@ import co.netguru.android.inbbbox.data.db.FollowerDB;
 import co.netguru.android.inbbbox.data.db.FollowerDBDao;
 import co.netguru.android.inbbbox.data.db.UserDB;
 import co.netguru.android.inbbbox.data.db.UserDBDao;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.observers.TestSubscriber;
@@ -73,7 +73,7 @@ public class GuestModeFollowersRepositoryTest {
     @Test
     public void shouldQueryDBWhenGettingFollowers() {
         //given
-        final TestSubscriber<User> subscriber = new TestSubscriber<>();
+        final TestSubscriber<UserWithShots> subscriber = new TestSubscriber<>();
         when(followerDBDao.queryBuilder()).thenReturn(followerDBQueryBuilder);
         when(followerDBQueryBuilder.rx()).thenReturn(followerDBRxQuery);
         when(followerDBRxQuery.oneByOne()).thenReturn(Observable.empty());

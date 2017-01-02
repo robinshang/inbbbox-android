@@ -28,6 +28,7 @@ import co.netguru.android.inbbbox.common.utils.InputUtil;
 import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
 import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsActivity;
@@ -36,7 +37,6 @@ import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersImageView;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenActivity;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.ShotDetailsAdapter;
-
 
 public class ShotDetailsFragment
         extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
@@ -84,7 +84,7 @@ public class ShotDetailsFragment
         if (allShots instanceof ArrayList) {
             args.putParcelableArrayList(ARG_ALL_SHOTS, (ArrayList<Shot>) allShots);
         } else {
-            args.putParcelableArrayList(ARG_ALL_SHOTS, new ArrayList<Shot>(allShots));
+            args.putParcelableArrayList(ARG_ALL_SHOTS, new ArrayList<>(allShots));
         }
         ShotDetailsFragment fragment = new ShotDetailsFragment();
         fragment.setArguments(args);
@@ -200,7 +200,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onUserSelected(User user) {
-        FollowerDetailsActivity.startActivity(getContext(), user);
+        FollowerDetailsActivity.startActivity(getContext(), UserWithShots.create(user, null));
     }
 
     @Override

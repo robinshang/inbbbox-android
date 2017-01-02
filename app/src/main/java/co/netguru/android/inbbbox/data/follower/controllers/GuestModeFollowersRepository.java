@@ -9,6 +9,7 @@ import co.netguru.android.inbbbox.data.db.FollowerDBDao;
 import co.netguru.android.inbbbox.data.db.mappers.FollowerDBMapper;
 import co.netguru.android.inbbbox.data.db.mappers.UserDBMapper;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
@@ -22,12 +23,12 @@ public class GuestModeFollowersRepository extends BaseGuestModeRepository {
         super(daoSession);
     }
 
-    public Observable<User> getFollowers() {
+    public Observable<UserWithShots> getFollowers() {
         Timber.d("Getting followers from local repository");
         return daoSession.getFollowerDBDao().queryBuilder()
                 .rx()
                 .oneByOne()
-                .map(User::fromFollowerDB);
+                .map(UserWithShots::fromFollowerDB);
     }
 
     public Completable removeFollower(long id) {

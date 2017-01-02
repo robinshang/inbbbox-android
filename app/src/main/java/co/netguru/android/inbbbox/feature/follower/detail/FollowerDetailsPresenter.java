@@ -10,6 +10,7 @@ import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Subscription;
@@ -38,7 +39,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     @NonNull
     private Subscription refreshShotsSubscription;
 
-    private User follower;
+    private UserWithShots follower;
     private boolean hasMore = true;
     private int pageNumber = 1;
 
@@ -63,17 +64,17 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     }
 
     @Override
-    public void userDataReceived(User user) {
-        Timber.d("Received user : %s", user);
-        if (user != null) {
-            showUserData(user);
+    public void userDataReceived(UserWithShots follower) {
+        Timber.d("Received user : %s", follower);
+        if (follower != null) {
+            showUserData(follower);
         }
     }
 
     @Override
-    public void checkIfUserIsFollowed(User follower) {
+    public void checkIfUserIsFollowed(UserWithShots follower) {
         subscriptions.add(
-                followersController.isUserFollowed(follower.id())
+                followersController.isUserFollowed(follower.user().id())
                         .compose(applySingleIoSchedulers())
                         .subscribe(this::setFollowingMenuIcon,
                                 throwable -> handleError(throwable, "Error while checking if user is followed")));
@@ -84,7 +85,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         if (refreshShotsSubscription.isUnsubscribed()) {
             loadMoreShotsSubscription.unsubscribe();
             pageNumber = 1;
-            loadMoreShotsSubscription = userShotsController.getUserShotsList(follower.id(),
+            loadMoreShotsSubscription = userShotsController.getUserShotsList(follower.user().id(),
                     pageNumber, SHOT_PAGE_COUNT)
                     .compose(androidIO())
                     .doAfterTerminate(getView()::hideProgress)
@@ -99,10 +100,10 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     public void getMoreUserShotsFromServer() {
         if (hasMore && refreshShotsSubscription.isUnsubscribed() && loadMoreShotsSubscription.isUnsubscribed()) {
             pageNumber++;
-            loadMoreShotsSubscription = userShotsController.getUserShotsList(follower.id(),
+            loadMoreShotsSubscription = userShotsController.getUserShotsList(follower.user().id(),
                     pageNumber, SHOT_PAGE_COUNT)
                     .compose(fromListObservable())
-                    .map(shot -> Shot.update(shot).author(follower).build())
+                    .map(shot -> Shot.update(shot).author(follower.user()).build())
                     .toList()
                     .compose(androidIO())
                     .subscribe(shotList -> {
@@ -114,13 +115,13 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     @Override
     public void onUnFollowClick() {
-        getView().showUnFollowDialog(follower.name());
+        getView().showUnFollowDialog(follower.user().name());
     }
 
     @Override
     public void unFollowUser() {
         subscriptions.add(
-                followersController.unFollowUser(follower.id())
+                followersController.unFollowUser(follower.user().id())
                         .compose(applyCompletableIoSchedulers())
                         .subscribe(getView()::showFollowersList,
                                 throwable -> handleError(throwable, "Error while unFollow user")));
@@ -129,7 +130,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
     @Override
     public void showShotDetails(Shot shot) {
         if (follower != null) {
-            getView().openShotDetailsScreen(shot, follower.shotList(), follower.id());
+            getView().openShotDetailsScreen(shot, follower.shotList(), follower.user().id());
         }
     }
 
@@ -141,23 +142,23 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
 
     @Override
     public void onFollowClick() {
-        getView().showFollowDialog(follower.name());
+        getView().showFollowDialog(follower.user().name());
     }
 
     @Override
     public void followUser() {
         subscriptions.add(
-                followersController.followUser(follower)
+                followersController.followUser(follower.user())
                         .compose(applyCompletableIoSchedulers())
                         .subscribe(() -> setFollowingMenuIcon(true),
                                 throwable -> handleError(throwable, "Error while follow user")));
     }
 
-    private void showUserData(User user) {
-        if (user.shotList() == null) {
-            downloadUserShots(user);
+    private void showUserData(UserWithShots follower) {
+        if (follower.shotList() == null) {
+            downloadUserShots(follower.user());
         } else {
-            showFollower(user);
+            showFollower(follower);
         }
     }
 
@@ -168,13 +169,13 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
                 .compose(fromListObservable())
                 .map(shot -> Shot.update(shot).author(user).build())
                 .toList()
-                .map(list -> User.updateUserShots(user, list))
+                .map(list -> UserWithShots.create(user, list))
                 .subscribe(this::showFollower,
                         throwable -> handleError(throwable, "Error while getting user shots list"));
         subscriptions.add(subscription);
     }
 
-    private void showFollower(User follower) {
+    private void showFollower(UserWithShots follower) {
         this.follower = follower;
         getView().showFollowerData(follower);
         getView().showContent();

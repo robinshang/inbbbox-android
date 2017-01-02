@@ -28,7 +28,7 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.follower.detail.adapter.FollowerDetailsAdapter;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
@@ -64,9 +64,9 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
 
-    public static FollowerDetailsFragment newInstanceWithUser(User user) {
+    public static FollowerDetailsFragment newInstance(UserWithShots follower) {
         final Bundle args = new Bundle();
-        args.putParcelable(USER_KEY, user);
+        args.putParcelable(USER_KEY, follower);
 
         final FollowerDetailsFragment fragment = new FollowerDetailsFragment();
         fragment.setArguments(args);
@@ -160,12 +160,12 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     @Override
-    public void showFollowerData(User follower) {
+    public void showFollowerData(UserWithShots follower) {
         adapter.setFollowerAdapterData(follower);
 
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(follower.name());
+            actionBar.setTitle(follower.user().name());
         }
     }
 

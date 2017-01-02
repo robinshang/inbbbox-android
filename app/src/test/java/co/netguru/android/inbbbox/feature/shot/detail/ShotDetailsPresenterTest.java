@@ -75,7 +75,7 @@ public class ShotDetailsPresenterTest {
     public void setUp() {
         shotDetailsPresenter.attachView(viewMock);
         when(shotMock.id()).thenReturn(EXAMPLE_ID);
-        when(shotMock.author()).thenReturn(User.create(Statics.USER_ENTITY, null));
+        when(shotMock.author()).thenReturn(User.create(Statics.USER_ENTITY));
         when(shotMock.creationDate()).thenReturn(ZonedDateTime.now());
         when(viewMock.getShotInitialData()).thenReturn(shotMock);
         when(errorControllerMock.getThrowableMessage(any(Throwable.class))).thenCallRealMethod();

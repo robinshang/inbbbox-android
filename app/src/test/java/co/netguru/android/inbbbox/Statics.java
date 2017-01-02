@@ -106,7 +106,7 @@ public final class Statics {
 
     public static final Shot NOT_LIKED_SHOT = Shot.builder()
             .id(1)
-            .author(User.create(USER_ENTITY, null))
+            .author(User.create(USER_ENTITY))
             .title("title")
             .description("description")
             .team(TEAM)
@@ -141,7 +141,7 @@ public final class Statics {
 
     public static final Shot LIKED_SHOT_NOT_BUCKETED = Shot.builder()
             .id(1)
-            .author(User.create(USER_ENTITY, null))
+            .author(User.create(USER_ENTITY))
             .title("title")
             .description("description")
             .team(TEAM)
@@ -159,7 +159,7 @@ public final class Statics {
 
     public static final Shot NOT_LIKED_SHOT_NOT_BUCKETED = Shot.builder()
             .id(1)
-            .author(User.create(USER_ENTITY, null))
+            .author(User.create(USER_ENTITY))
             .title("title")
             .description("description")
             .team(TEAM)
@@ -177,7 +177,7 @@ public final class Statics {
 
     public static final Shot LIKED_SHOT_BUCKETED = Shot.builder()
             .id(1)
-            .author(User.create(USER_ENTITY, null))
+            .author(User.create(USER_ENTITY))
             .title("title")
             .description("description")
             .team(TEAM)

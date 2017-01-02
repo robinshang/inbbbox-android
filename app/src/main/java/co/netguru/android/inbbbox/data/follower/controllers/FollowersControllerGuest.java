@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.data.follower.controllers;
 
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.FollowersApi;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
@@ -20,7 +21,7 @@ public class FollowersControllerGuest implements FollowersController {
     }
 
     @Override
-    public Observable<User> getFollowedUsers(int pageNumber, int pageCount, int followerShotPageCount) {
+    public Observable<UserWithShots> getFollowedUsers(int pageNumber, int pageCount, int followerShotPageCount) {
         if (pageNumber == FIRST_PAGE) {
             return guestModeFollowersRepository.getFollowers()
                     .mergeWith(getFollowersFromApi(FIRST_PAGE, pageCount));
@@ -43,9 +44,9 @@ public class FollowersControllerGuest implements FollowersController {
         return guestModeFollowersRepository.isUserFollowed(id);
     }
 
-    private Observable<User> getFollowersFromApi(int pageNumber, int pageCount) {
+    private Observable<UserWithShots> getFollowersFromApi(int pageNumber, int pageCount) {
         return followersApi.getFollowedUsers(pageNumber, pageCount)
                 .flatMap(Observable::from)
-                .map(followerEntity -> User.create(followerEntity.user(), null));
+                .map(followerEntity -> UserWithShots.create(User.create(followerEntity.user()), null));
     }
 }

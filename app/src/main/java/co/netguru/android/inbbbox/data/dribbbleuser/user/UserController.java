@@ -32,7 +32,7 @@ public class UserController {
     public Single<User> getUserFromCache() {
         return currentUserPrefsRepository
                 .getUser()
-                .map(user -> User.create(user, null));
+                .map(User::create);
     }
 
     public Completable enableGuestMode() {

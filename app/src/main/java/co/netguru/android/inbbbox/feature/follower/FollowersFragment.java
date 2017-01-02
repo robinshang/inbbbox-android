@@ -30,6 +30,7 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.feature.follower.adapter.BaseFollowersViewHolder;
 import co.netguru.android.inbbbox.feature.follower.adapter.FollowersAdapter;
 import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsActivity;
@@ -37,7 +38,7 @@ import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 
-public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<User>, FollowersContract.View, FollowersContract.Presenter>
+public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<UserWithShots>, FollowersContract.View, FollowersContract.Presenter>
         implements RefreshableFragment, FollowersContract.View, BaseFollowersViewHolder.OnFollowerClickListener {
 
     private static final int GRID_VIEW_COLUMN_COUNT = 2;
@@ -107,12 +108,12 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
 
     @NonNull
     @Override
-    public LceViewState<List<User>, FollowersContract.View> createViewState() {
+    public LceViewState<List<UserWithShots>, FollowersContract.View> createViewState() {
         return new RetainingLceViewState<>();
     }
 
     @Override
-    public List<User> getData() {
+    public List<UserWithShots> getData() {
         return adapter.getData();
     }
 
@@ -122,7 +123,7 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     }
 
     @Override
-    public void setData(List<User> data) {
+    public void setData(List<UserWithShots> data) {
         adapter.setFollowersList(data);
     }
 
@@ -133,7 +134,7 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     }
 
     @Override
-    public void showMoreFollowedUsers(List<User> followerList) {
+    public void showMoreFollowedUsers(List<UserWithShots> followerList) {
         adapter.addMoreFollowers(followerList);
     }
 
@@ -204,7 +205,7 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
 
 
     @Override
-    public void onClick(User follower) {
+    public void onClick(UserWithShots follower) {
         FollowerDetailsActivity.startActivity(getContext(), follower);
     }
 

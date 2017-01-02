@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import java.util.Collections;
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
 public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHolder> {
@@ -23,7 +23,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
     private static final int TYPE_FOUR_SHOT_GRID = 9;
 
     private final BaseFollowersViewHolder.OnFollowerClickListener onFollowerClickListener;
-    private List<User> followersList;
+    private List<UserWithShots> followersList;
 
     private boolean isGridMode;
 
@@ -70,12 +70,12 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
         return followersList.size();
     }
 
-    public void setFollowersList(List<User> followersList) {
+    public void setFollowersList(List<UserWithShots> followersList) {
         this.followersList = followersList;
         notifyDataSetChanged();
     }
 
-    public void addMoreFollowers(List<User> followersList) {
+    public void addMoreFollowers(List<UserWithShots> followersList) {
         final int currentSize = this.followersList.size();
         this.followersList.addAll(followersList);
         notifyItemRangeChanged(currentSize - 1, followersList.size());
@@ -86,7 +86,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
         notifyDataSetChanged();
     }
 
-    public List<User> getData() {
+    public List<UserWithShots> getData() {
         return followersList;
     }
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 
@@ -24,7 +24,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @NonNull
     private List<Shot> shotList;
-    private User follower;
+    private UserWithShots follower;
     private boolean isGridMode;
 
     @Inject
@@ -51,7 +51,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case TYPE_HEADER:
-                ((FollowerDetailsHeaderViewHolder) holder).bind(follower);
+                ((FollowerDetailsHeaderViewHolder) holder).bind(follower.user());
                 break;
             case TYPE_GRID:
                 ((FollowerDetailsGridViewHolder) holder).bind(shotList.get(getShotListPosition(position)));
@@ -86,7 +86,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return shotList;
     }
 
-    public void setFollowerAdapterData(User follower) {
+    public void setFollowerAdapterData(UserWithShots follower) {
         this.follower = follower;
         if (follower.shotList() != null) {
             this.shotList = follower.shotList();
@@ -94,7 +94,7 @@ public class FollowerDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
     }
 
-    public void setFollower(User follower) {
+    public void setFollower(UserWithShots follower) {
         this.follower = follower;
     }
 
