@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:foreground="?selectableItemBackground">
 
     <RelativeLayout
@@ -15,7 +15,7 @@
         <FrameLayout
             android:id="@+id/bucket_image_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/bucket_list_shots_height"
+            android:layout_height="@dimen/shot_height_list"
             android:layout_marginBottom="@dimen/margin_small"
             >
 

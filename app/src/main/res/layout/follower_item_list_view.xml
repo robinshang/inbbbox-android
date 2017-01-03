@@ -5,10 +5,10 @@
     android:orientation="vertical"
     android:padding="@dimen/margin_default">
 
-    <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersFourImagesView
+    <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersFourImageView
         android:id="@+id/four_image_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/follower_list_shot_height"
+        android:layout_height="@dimen/shot_height_list"
         android:layout_gravity="center" />
 
     <LinearLayout
