@@ -20,7 +20,7 @@ public class LikesListViewHolder extends BaseViewHolder<Shot> {
     private Shot item;
 
     LikesListViewHolder(ViewGroup parent, ShotClickListener likeClickListener) {
-        super(LayoutInflater.from(parent.getContext()).inflate(R.layout.like_item_view, parent, false));
+        super(LayoutInflater.from(parent.getContext()).inflate(R.layout.like_item, parent, false));
         this.likeClickListener = likeClickListener;
     }
 

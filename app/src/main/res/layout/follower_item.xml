@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:padding="@dimen/margin_default">
 
     <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersFourImageView
         android:id="@+id/four_image_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/follower_grid_shot_height"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        app:layout_aspectRatio="133%"
+        app:layout_widthPercent="100%" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/four_image_view"
         android:orientation="horizontal"
         android:paddingTop="@dimen/follower_list_text_padding_top">
 
@@ -47,4 +48,4 @@
                 android:textAllCaps="false" />
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</android.support.percent.PercentRelativeLayout>

@@ -22,7 +22,7 @@ public class FollowerDetailsListViewHolder extends BaseViewHolder<Shot> {
 
     FollowerDetailsListViewHolder(ViewGroup parent, ShotClickListener shotClickListener) {
         super(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.follower_detail_item_view, parent, false));
+                .inflate(R.layout.follower_detail_item, parent, false));
         this.shotClickListener = shotClickListener;
     }
 
