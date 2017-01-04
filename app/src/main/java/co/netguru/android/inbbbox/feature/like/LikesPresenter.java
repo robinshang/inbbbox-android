@@ -10,10 +10,13 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
+import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.event.RxBus;
+import co.netguru.android.inbbbox.event.events.ShotLikedEvent;
 import rx.Subscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
@@ -29,21 +32,30 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
 
     private final LikeShotController likedShotsController;
     private final ErrorController errorController;
+    private final RxBus rxBus;
 
     @NonNull
     private Subscription refreshSubscription;
     @NonNull
     private Subscription loadMoreLikesSubscription;
+    private Subscription busSubscription;
 
     private boolean hasMore = true;
     private int pageNumber = 1;
 
     @Inject
-    LikesPresenter(LikeShotController likedShotsController, ErrorController errorController) {
+    LikesPresenter(LikeShotController likedShotsController, ErrorController errorController, RxBus rxBus) {
         this.likedShotsController = likedShotsController;
         this.errorController = errorController;
+        this.rxBus = rxBus;
         refreshSubscription = Subscriptions.unsubscribed();
         loadMoreLikesSubscription = Subscriptions.unsubscribed();
+    }
+
+    @Override
+    public void attachView(LikesViewContract.View view) {
+        super.attachView(view);
+        setupRxBus();
     }
 
     @Override
@@ -52,6 +64,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
         if (!retainInstance) {
             refreshSubscription.unsubscribe();
             loadMoreLikesSubscription.unsubscribe();
+            busSubscription.unsubscribe();
         }
     }
 
@@ -116,5 +129,17 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     private void onGetMoreLikeShotListNext(List<Shot> likedShotList) {
         hasMore = likedShotList.size() == PAGE_COUNT;
         getView().showMoreLikes(likedShotList);
+    }
+
+    private void setupRxBus() {
+        busSubscription = rxBus.getEvents(ShotLikedEvent.class)
+                .compose(RxTransformers.androidIO())
+                .subscribe(shotLikedEvent -> {
+                    if(shotLikedEvent.getNewShotLikeState() == true) {
+                        getView().showLikeAtTop(shotLikedEvent.getShot());
+                    } else {
+                        getView().removeShotFromLikes(shotLikedEvent.getShot());
+                    }
+                });
     }
 }

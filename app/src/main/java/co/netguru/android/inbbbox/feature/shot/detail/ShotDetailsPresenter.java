@@ -10,6 +10,8 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.StringUtil;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.event.RxBus;
+import co.netguru.android.inbbbox.event.events.ShotLikedEvent;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -23,6 +25,7 @@ public class ShotDetailsPresenter
 
     private final ShotDetailsController shotDetailsController;
     private final ErrorController errorController;
+    private final RxBus rxBus;
     private final CompositeSubscription subscriptions;
     private boolean isCommentModeInit;
     private Shot shot;
@@ -33,9 +36,10 @@ public class ShotDetailsPresenter
 
     @Inject
     public ShotDetailsPresenter(ShotDetailsController shotDetailsController,
-                                ErrorController errorController) {
+                                ErrorController errorController, RxBus rxBus) {
         this.shotDetailsController = shotDetailsController;
         this.errorController = errorController;
+        this.rxBus = rxBus;
         this.subscriptions = new CompositeSubscription();
         this.commentLoadMoreState = new CommentLoadMoreState();
     }
@@ -187,6 +191,7 @@ public class ShotDetailsPresenter
                 .isLiked(newLikeState)
                 .build();
         showShotDetails(shot);
+        rxBus.send(new ShotLikedEvent(shot, newLikeState));
     }
 
     private void handleDetailsStates(ShotDetailsState state) {
