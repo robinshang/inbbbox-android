@@ -8,7 +8,7 @@
         </attr>
     </declare-styleable>
     <declare-styleable name="RoundedCornersView">
-        <attr name="roundedCornersBackgroundColor" format="color"/>
-        <attr name="roundingBottomCornersEnabled" format="boolean"/>
+        <attr name="roundedCornersBackgroundColor" format="color|reference"/>
+        <attr name="roundingBottomCornersEnabled" format="boolean|reference"/>
     </declare-styleable>
 </resources>
