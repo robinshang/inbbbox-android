@@ -47,7 +47,7 @@ public class UserModule {
     FollowersController provideFollowersController(FollowersApi followersApi, ShotsApi shotsApi,
                                                    GuestModeFollowersRepository guestModeFollowersRepository) {
         if (mode == UserModeType.GUEST_USER_MODE) {
-            return new FollowersControllerGuest(guestModeFollowersRepository, followersApi);
+            return new FollowersControllerGuest(guestModeFollowersRepository, followersApi, shotsApi);
         }
 
         return new FollowersControllerApi(followersApi, shotsApi);
