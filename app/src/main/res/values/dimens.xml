@@ -37,15 +37,10 @@
     <dimen name="fragment_like_empty_view_logo_size">140dp</dimen>
     <dimen name="fragment_like_empty_view_text_margin_top">48dp</dimen>
 
-    <dimen name="follower_list_shot_height">250dp</dimen>
-    <dimen name="follower_grid_shot_height">130dp</dimen>
     <dimen name="follower_list_text_padding_top">8dp</dimen>
     <dimen name="follower_list_user_photo_size">20dp</dimen>
-    <dimen name="follower_list_user_name_padding_start">6dp</dimen>
     <dimen name="follower_grid_text_padding_top">8dp</dimen>
 
-    <dimen name="bucket_list_shots_height">300dp</dimen>
-    <dimen name="bucket_grid_shots_height">150dp</dimen>
     <dimen name="fragment_bucket_empty_view_logo_size">140dp</dimen>
 
     <dimen name="follower_detail_header_item_height">100dp</dimen>
@@ -63,15 +58,13 @@
     <dimen name="gif_label_side_padding">6dp</dimen>
 
     <dimen name="shots_label_radius">24dp</dimen>
+    <dimen name="shot_corner_radius">8dp</dimen>
+    <dimen name="shot_details_top_padding">32dp</dimen>
+    <dimen name="shot_background_padding">-1dp</dimen>
 
     <dimen name="fragment_add_to_bucket_close_button_width_height">32dp</dimen>
     <dimen name="fragment_add_to_bucket_top_shadow_width_height">40dp</dimen>
     <dimen name="fragment_add_to_bucket_avatar_height_width">40dp</dimen>
-
-    <dimen name="shot_corner_radius">8dp</dimen>
-    <dimen name="shot_details_top_padding">32dp</dimen>
-
-    <dimen name="shot_background_padding">-1dp</dimen>
 
     <dimen name="details_user_avatar_size">48dp</dimen>
     <dimen name="details_user_avatar_margin">16dp</dimen>

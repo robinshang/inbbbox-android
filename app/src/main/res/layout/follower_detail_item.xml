@@ -2,11 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?selectableItemBackground"
     android:padding="@dimen/margin_default">
 
     <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
-        android:id="@+id/bucket_shot_item_view"
+        android:id="@+id/follower_details_item_image_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />

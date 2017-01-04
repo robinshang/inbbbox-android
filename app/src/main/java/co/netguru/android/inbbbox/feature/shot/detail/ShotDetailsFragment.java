@@ -17,7 +17,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,7 +32,7 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
 import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
-import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersImageView;
+import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenActivity;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.ShotDetailsAdapter;
@@ -52,7 +51,7 @@ public class ShotDetailsFragment
     RecyclerView shotRecyclerView;
 
     @BindView(R.id.parallax_image_view)
-    RoundedCornersImageView parallaxImageView;
+    RoundedCornersShotImageView parallaxImageView;
 
     @BindView(R.id.comment_input_panel)
     View shotCommentInputPanel;
@@ -68,9 +67,6 @@ public class ShotDetailsFragment
 
     @BindView(R.id.comment_send_imageView)
     View sendButton;
-
-    @BindDimen(R.dimen.shot_corner_radius)
-    int radius;
 
     private ShotDetailsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
@@ -241,9 +237,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showMainImage(ShotImage shotImage) {
-        parallaxImageView.setRadius(radius);
-        parallaxImageView.disableRadiusForBottomEdge(true);
-        ShotLoadingUtil.loadMainViewShot(getContext(), parallaxImageView, shotImage);
+        ShotLoadingUtil.loadMainViewShot(getContext(), parallaxImageView.getImageView(), shotImage);
     }
 
     @Override

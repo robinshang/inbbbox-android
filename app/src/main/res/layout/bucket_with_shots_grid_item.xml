@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -12,29 +12,26 @@
         android:orientation="vertical"
         android:padding="@dimen/margin_default">
 
-        <FrameLayout
+        <android.support.percent.PercentFrameLayout
             android:id="@+id/bucket_image_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/bucket_grid_shots_height"
-            android:layout_marginBottom="@dimen/margin_small"
-            >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_small">
 
             <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersBucketFourImageView
                 android:id="@+id/four_images_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
+                app:layout_aspectRatio="133%"
+                app:layout_widthPercent="100%" />
 
             <ImageView
                 android:id="@+id/empty_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:contentDescription="@string/empty_bucket_item_description"
                 android:scaleType="centerInside"
                 android:src="@drawable/logo_ball"
                 android:tint="@color/lightGray"
-                android:contentDescription="@string/empty_bucket_item_description" />
-
-        </FrameLayout>
+                app:layout_aspectRatio="133%"
+                app:layout_widthPercent="100%" />
+        </android.support.percent.PercentFrameLayout>
 
         <TextView
             android:id="@+id/bucket_name_text_view"
@@ -46,7 +43,7 @@
             android:layout_below="@id/bucket_image_layout"
             android:ellipsize="end"
             android:lines="1"
-            tools:text="UI Mobile Apps"/>
+            tools:text="UI Mobile Apps" />
 
         <TextView
             android:id="@+id/bucket_shots_count_text_view"
@@ -55,6 +52,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/bucket_name_text_view"
             android:gravity="center_vertical"
-            tools:text="7 shots"/>
+            tools:text="7 shots" />
     </RelativeLayout>
 </FrameLayout>

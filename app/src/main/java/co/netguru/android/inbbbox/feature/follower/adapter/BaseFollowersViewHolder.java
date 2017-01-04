@@ -15,7 +15,7 @@ import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
-import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersFourImagesView;
+import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersFourImageView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public abstract class BaseFollowersViewHolder extends BaseViewHolder<UserWithShots> {
@@ -31,7 +31,7 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<UserWithSho
     float radius;
 
     @BindView(R.id.four_image_view)
-    RoundedCornersFourImagesView fourImagesView;
+    RoundedCornersFourImageView fourImagesView;
     @BindView(R.id.follower_item_user_photo)
     CircleImageView userPhoto;
     @BindView(R.id.follower_item_username)
@@ -39,27 +39,26 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<UserWithSho
     @BindView(R.id.follower_item_shots_count)
     TextView shotsCount;
 
-    private UserWithShots currentuserWithShots;
+    private UserWithShots currentUserWithShots;
 
     BaseFollowersViewHolder(View view, @NonNull OnFollowerClickListener onFollowerClickListener) {
         super(view);
-        view.setOnClickListener(v -> onFollowerClickListener.onClick(currentuserWithShots));
+        view.setOnClickListener(v -> onFollowerClickListener.onClick(currentUserWithShots));
     }
 
     @Override
     public void bind(UserWithShots item) {
-        this.currentuserWithShots = item;
-        fourImagesView.setRadius(radius);
+        this.currentUserWithShots = item;
         userName.setText(item.user().name());
         shotsCount.setText(getShotCountString(item.user().shotsCount()));
         loadUserPhoto(item.user().avatarUrl());
     }
 
     protected void loadShotImages(Shot leftTopShot, Shot rightTopShot, Shot leftBottomShot, Shot rightBottomShot) {
-        loadImageInto(fourImagesView.getTopLeftImageView(), leftTopShot);
-        loadImageInto(fourImagesView.getTopRightImageView(), rightTopShot);
-        loadImageInto(fourImagesView.getBottomLeftImageView(), leftBottomShot);
-        loadImageInto(fourImagesView.getBottomRightImageView(), rightBottomShot);
+        loadImageInto(fourImagesView.getTopLeftImage(), leftTopShot);
+        loadImageInto(fourImagesView.getTopRightImage(), rightTopShot);
+        loadImageInto(fourImagesView.getBottomLeftImage(), leftBottomShot);
+        loadImageInto(fourImagesView.getBottomRightImage(), rightBottomShot);
     }
 
     private void loadImageInto(ImageView imageView, Shot shot) {
