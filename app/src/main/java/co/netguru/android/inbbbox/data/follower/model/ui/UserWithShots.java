@@ -7,7 +7,6 @@ import com.google.auto.value.AutoValue;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.db.FollowerDB;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
@@ -21,9 +20,5 @@ public abstract class UserWithShots implements Parcelable {
 
     public static UserWithShots create(User user, List<Shot> shotList) {
         return new AutoValue_UserWithShots(user, shotList);
-    }
-
-    public static UserWithShots fromFollowerDB(FollowerDB followerDB) {
-        return UserWithShots.create(User.fromDB(followerDB.getUser()), null);
     }
 }
