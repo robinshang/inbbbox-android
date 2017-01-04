@@ -18,14 +18,14 @@ import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.feature.shared.view.BucketImageView;
-import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersImageView;
+import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 
 public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShots> implements RequestListener<String, GlideDrawable> {
 
     @BindView(R.id.four_images_view)
     BucketImageView bucketImageView;
     @BindView(R.id.one_image_view)
-    RoundedCornersImageView bucketOneImageView;
+    RoundedCornersShotImageView bucketOneImageView;
     @BindView(R.id.bucket_shots_count_text_view)
     TextView bucketShotsCountTextView;
     @BindView(R.id.bucket_name_text_view)
@@ -96,16 +96,16 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
         emptyView.setVisibility(View.GONE);
         bucketImageView.setVisibility(View.VISIBLE);
         if (shots.size() < 4) {
-            showOnlyOneImage(shots.get(0).normalImageUrl());
+            showOnlyOneImage(shots.get(0));
         } else {
             showFourFirstImages(shots);
         }
     }
 
-    private void showOnlyOneImage(String url) {
+    private void showOnlyOneImage(Shot shot) {
         bucketImageView.setVisibility(View.GONE);
         bucketOneImageView.setVisibility(View.VISIBLE);
-        loadImageInto(bucketOneImageView, url);
+        bucketOneImageView.loadShot(shot);
     }
 
     private void showFourFirstImages(List<Shot> shots) {

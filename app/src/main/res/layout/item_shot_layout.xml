@@ -2,23 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/shot_item_internal_padding"
-    android:paddingRight="@dimen/shot_item_internal_padding">
+    android:padding="@dimen/shot_item_internal_padding">
 
-    <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersImageView
-        android:id="@+id/iv_background"
+    <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:adjustViewBounds="true"
-        android:src="@drawable/shot_item_swipe_bottom_background" />
+        android:background="@color/accent" />
 
     <co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout
         android:id="@+id/long_swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center">
+        android:layout_centerInParent="true">
         <!-- Bottom View Start-->
         <LinearLayout
             android:id="@+id/bottom_right_wrapper"
@@ -65,27 +61,12 @@
                 android:src="@drawable/selector_bucket_swipe" />
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
 
-            <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersImageView
-                android:id="@+id/iv_shot_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:padding="@dimen/shot_background_padding"
-                android:src="@drawable/shot_placeholder" />
-
-            <TextView
-                android:id="@+id/gif_label_textView"
-                style="@style/GifLabel"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:visibility="gone" />
-
-        </RelativeLayout>
+        <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
+            android:id="@+id/iv_shot_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/shot_background_padding" />
         <!-- Surface View End -->
     </co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout>
 </RelativeLayout>

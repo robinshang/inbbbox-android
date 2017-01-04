@@ -23,16 +23,17 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersImageView
+            <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
                 android:id="@+id/parallax_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/details_parallax_image_view_height"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center_horizontal|top"
                 android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/shape_rounded_top_corners"
-                app:layout_collapseMode="parallax"/>
+                android:background="@drawable/shape_rounded_top_corners"
+                app:layout_collapseMode="parallax"
+                app:roundingBottomCornersEnabled="false"
+                app:roundedCornersBackgroundColor="@color/primary"/>
 
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
