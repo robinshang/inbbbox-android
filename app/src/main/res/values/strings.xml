@@ -133,4 +133,5 @@
     <string name="animated_load_ball_description">Animation of bouncing ball indicating loading progress.</string>
     <string name="back_arrow_description">Back arrow image.</string>
     <string name="fullscreen_shot_description">Fullscreen shot image.</string>
+    <string name="shot">Shot</string>
 </resources>
