@@ -8,8 +8,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:adjustViewBounds="true"
-        app:aspectRatio="0.75"
-        app:dominantMeasurement="height"/>
+        app:aspectRatio="1.33" />
 
     <TextView
         android:id="@+id/gif_label_textView"
