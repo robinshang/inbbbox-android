@@ -295,6 +295,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         isNew = streamSourceSettings.isNewToday();
         isPopular = streamSourceSettings.isPopularToday();
         isDebut = streamSourceSettings.isDebut();
+        
         setStreamSourcesInView(streamSourceSettings);
     }
 
@@ -303,7 +304,6 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         getView().changeNewStatus(streamSourceSettings.isNewToday());
         getView().changePopularStatus(streamSourceSettings.isPopularToday());
         getView().changeDebutsStatus(streamSourceSettings.isDebut());
-
     }
 
     private void setCustomizationSettings(CustomizationSettings settings) {
