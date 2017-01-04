@@ -8,7 +8,6 @@ import com.google.gson.TypeAdapter;
 
 import co.netguru.android.inbbbox.data.db.UserDB;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
 
 @AutoValue
 public abstract class User implements Parcelable {
@@ -63,15 +62,5 @@ public abstract class User implements Parcelable {
 
     public static TypeAdapter<User> typeAdapter(Gson gson) {
         return new AutoValue_User.GsonTypeAdapter(gson);
-    }
-
-    public static User createFromFollower(Follower follower) {
-        return User.builder()
-                .id(follower.id())
-                .name(follower.name())
-                .username(follower.username())
-                .avatarUrl(follower.avatarUrl())
-                .shotsCount(follower.shotsCount())
-                .build();
     }
 }

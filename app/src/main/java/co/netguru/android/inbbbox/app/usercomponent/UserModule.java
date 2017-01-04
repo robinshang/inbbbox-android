@@ -16,6 +16,7 @@ import co.netguru.android.inbbbox.data.like.controllers.GuestModeLikesRepository
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotControllerApi;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotControllerGuest;
+import co.netguru.android.inbbbox.data.shot.ShotsApi;
 import dagger.Module;
 import dagger.Provides;
 
@@ -43,13 +44,13 @@ public class UserModule {
 
     @UserScope
     @Provides
-    FollowersController provideFollowersController(FollowersApi followersApi,
+    FollowersController provideFollowersController(FollowersApi followersApi, ShotsApi shotsApi,
                                                    GuestModeFollowersRepository guestModeFollowersRepository) {
         if (mode == UserModeType.GUEST_USER_MODE) {
             return new FollowersControllerGuest(guestModeFollowersRepository, followersApi);
         }
 
-        return new FollowersControllerApi(followersApi);
+        return new FollowersControllerApi(followersApi, shotsApi);
     }
 
     @UserScope

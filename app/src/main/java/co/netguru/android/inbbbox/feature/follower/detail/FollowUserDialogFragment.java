@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.followers.details;
+package co.netguru.android.inbbbox.feature.follower.detail;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -40,6 +40,7 @@ public class FollowUserDialogFragment extends DialogFragment {
                 .create();
     }
 
+    @FunctionalInterface
     public interface OnFollowClickedListener {
 
         void onFollowClicked();

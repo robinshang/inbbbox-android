@@ -1,27 +1,23 @@
 package co.netguru.android.inbbbox.feature.follower;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.LinkedList;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsContract;
 import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsPresenter;
 import co.netguru.android.testcommons.RxSyncTestRule;
@@ -31,11 +27,9 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -60,7 +54,7 @@ public class FollowerDetailsPresenterTest {
     User userMock;
 
     @Mock
-    Follower followerMock;
+    UserWithShots followerMock;
 
     @InjectMocks
     FollowerDetailsPresenter followerDetailsPresenter;
@@ -72,6 +66,7 @@ public class FollowerDetailsPresenterTest {
     public void setUp() {
         followerDetailsPresenter.attachView(viewMock);
         when(errorControllerMock.getThrowableMessage(any(Throwable.class))).thenCallRealMethod();
+        when(followerMock.user()).thenReturn(userMock);
 
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
 
@@ -79,78 +74,46 @@ public class FollowerDetailsPresenterTest {
     }
 
     @Test
-    public void whenUserReceived_thenDownloadUserUsingUserController() {
+    public void whenUserWithoutShotsReceived_thenDownloadUserUsingUserController() {
         when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
                 .thenReturn(Observable.empty());
         when(userMock.id()).thenReturn(EXAMPLE_ID);
+        when(followerMock.shotList()).thenReturn(null);
 
-        followerDetailsPresenter.userDataReceived(userMock);
+        followerDetailsPresenter.userDataReceived(followerMock);
 
-        verify(userShotsControllerMock, times(1))
-                .getUserShotsList(eq(EXAMPLE_ID), anyInt(), anyInt());
+        verify(userShotsControllerMock).getUserShotsList(eq(EXAMPLE_ID), anyInt(), anyInt());
     }
 
     @Test
-    public void whenUserReceived_thenCheckIfIsFollowed() {
-        when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
-                .thenReturn(Observable.empty());
-        when(userMock.id()).thenReturn(EXAMPLE_ID);
-
-        followerDetailsPresenter.userDataReceived(userMock);
-
-        verify(followersControllerMock, times(1))
-                .isUserFollowed(eq(EXAMPLE_ID));
+    public void shouldShowUserDataWhenUserWithShotsReceived() {
+        //given
+        when(followerMock.shotList()).thenReturn(new LinkedList<>());
+        //when
+        followerDetailsPresenter.userDataReceived(followerMock);
+        //then
+        verify(viewMock).showFollowerData(any());
+        verify(viewMock).showContent();
     }
 
     @Test
-    public void whenUserReceivedAndCheckedIfIsFollowed_thenSetMenuIcon() {
-        User exampleUser = User.create(Statics.USER_ENTITY);
-        List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT_BUCKETED, Statics.NOT_LIKED_SHOT);
-
-        when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
-                .thenReturn(Observable.just(listOfShots));
-        when(userMock.id()).thenReturn(EXAMPLE_ID);
-
-        followerDetailsPresenter.userDataReceived(exampleUser);
-
-        verify(viewMock, times(1)).setFollowingMenuIcon(anyBoolean());
+    public void shouldCallSetFollowingMenuIconWithTrueWhenUserIsFollowed() {
+        //given
+        when(followersControllerMock.isUserFollowed(anyInt())).thenReturn(Single.just(Boolean.TRUE));
+        //when
+        followerDetailsPresenter.checkIfUserIsFollowed(UserWithShots.create(Statics.USER, null));
+        //then
+        verify(viewMock).setFollowingMenuIcon(Boolean.TRUE);
     }
 
     @Test
-    public void whenFollowerReceived_thenCheckIfIsFollowed() {
-        when(followerMock.id()).thenReturn(EXAMPLE_ID);
-
-        followerDetailsPresenter.followerDataReceived(followerMock);
-
-        verify(followersControllerMock, times(1))
-                .isUserFollowed(eq(EXAMPLE_ID));
-    }
-
-    @Test
-    public void whenFollowerReceivedAndCheckedIfIsFollowed_thenSetMenuIcon() {
-        User exampleUser = User.create(Statics.USER_ENTITY);
-        List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT_BUCKETED, Statics.NOT_LIKED_SHOT);
-
-        when(followerMock.id()).thenReturn(EXAMPLE_ID);
-
-        followerDetailsPresenter.followerDataReceived(Follower.createFromUser(exampleUser, listOfShots));
-
-        verify(viewMock, times(1)).setFollowingMenuIcon(anyBoolean());
-    }
-
-    @Test
-    public void whenUserReceivedAndUserDataDownloadComplete_thenCreateAndShowFollower() {
-        User exampleUser = User.create(Statics.USER_ENTITY);
-        List<Shot> listOfShots = Arrays.asList(Statics.LIKED_SHOT_NOT_BUCKETED, Statics.NOT_LIKED_SHOT);
-        when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
-                .thenReturn(Observable.just(listOfShots));
-        ArgumentCaptor<Follower> argumentCaptor = ArgumentCaptor.forClass(Follower.class);
-
-        followerDetailsPresenter.userDataReceived(exampleUser);
-
-        verify(viewMock, times(1)).showFollowerData(argumentCaptor.capture());
-        Assert.assertEquals(EXAMPLE_ID, argumentCaptor.getValue().id());
-        Assert.assertEquals(listOfShots, argumentCaptor.getValue().shotList());
+    public void shouldCallSetFollowingMenuIconWithFalseWhenUserIsNotFollowed() {
+        //given
+        when(followersControllerMock.isUserFollowed(anyInt())).thenReturn(Single.just(Boolean.FALSE));
+        //when
+        followerDetailsPresenter.checkIfUserIsFollowed(UserWithShots.create(Statics.USER, null));
+        //then
+        verify(viewMock).setFollowingMenuIcon(Boolean.FALSE);
     }
 
     //ERRORS
@@ -158,13 +121,13 @@ public class FollowerDetailsPresenterTest {
     public void whenUserReceivedAndUserDataDownloadFailed_thenShowError() {
         String message = "test";
         Throwable throwable = new Throwable(message);
-        User exampleUser = User.create(Statics.USER_ENTITY);
+        UserWithShots exampleUser = UserWithShots.create(Statics.USER, null);
         when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
                 .thenReturn(Observable.error(throwable));
 
         followerDetailsPresenter.userDataReceived(exampleUser);
 
-        verify(viewMock, times(1)).showMessageOnServerError(message);
+        verify(viewMock).showMessageOnServerError(message);
     }
 
     @After

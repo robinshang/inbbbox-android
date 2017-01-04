@@ -6,15 +6,15 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
 
 interface FollowersContract {
 
-    interface View extends MvpView, HttpErrorView, MvpLceView<List<Follower>> {
+    interface View extends MvpView, HttpErrorView, MvpLceView<List<UserWithShots>> {
 
-        void showMoreFollowedUsers(List<Follower> followerList);
+        void showMoreFollowedUsers(List<UserWithShots> userWithShotsList);
 
         void hideLoadingMoreBucketsView();
 
@@ -33,6 +33,6 @@ interface FollowersContract {
 
         void getMoreFollowedUsersFromServer();
 
-        void checkDataEmpty(List<Follower> data);
+        void checkDataEmpty(List<UserWithShots> data);
     }
 }
