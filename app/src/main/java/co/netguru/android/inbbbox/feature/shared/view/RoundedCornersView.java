@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -32,6 +33,7 @@ public abstract class RoundedCornersView extends FrameLayout {
     private boolean isRoundingBottomCornersEnabled;
     private Bitmap maskBitmap;
     private Paint maskPaint;
+    private Paint cornersMaskPaint;
 
     public RoundedCornersView(Context context) {
         super(context);
@@ -70,11 +72,9 @@ public abstract class RoundedCornersView extends FrameLayout {
     private Bitmap createMask(int width, int height) {
         final Bitmap mask = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(mask);
-        final Paint cornersMaskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        cornersMaskPaint.setColor(roundedCornersBackgroundColor);
-        canvas.drawRect(0, 0, width, height, cornersMaskPaint);
-        cornersMaskPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        mask.eraseColor(Color.TRANSPARENT);
+        canvas.drawColor(roundedCornersBackgroundColor);
         canvas.drawRoundRect(new RectF(0, 0, width, height), radius, radius, cornersMaskPaint);
 
         if (!isRoundingBottomCornersEnabled) {
@@ -97,6 +97,8 @@ public abstract class RoundedCornersView extends FrameLayout {
         LayoutInflater.from(getContext()).inflate(getLayoutResource(), this);
         ButterKnife.bind(this);
         maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        cornersMaskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        cornersMaskPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 
         setWillNotDraw(false);
     }
