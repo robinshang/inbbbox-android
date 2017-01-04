@@ -1,12 +1,14 @@
 package co.netguru.android.inbbbox.feature.shared.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.support.annotation.ColorInt;
 import android.support.annotation.LayoutRes;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -23,8 +25,11 @@ public abstract class RoundedCornersView extends FrameLayout {
     float radius;
 
     @BindColor(R.color.windowBackground)
-    int backgroundColor;
+    int defaultRoundedCornersBackground;
 
+    @ColorInt
+    private int roundedCornersBackgroundColor;
+    private boolean isRoundingBottomCornersEnabled;
     private Bitmap maskBitmap;
     private Paint maskPaint;
 
@@ -36,11 +41,13 @@ public abstract class RoundedCornersView extends FrameLayout {
     public RoundedCornersView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
+        handleAttrs(context, attrs);
     }
 
     public RoundedCornersView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
+        handleAttrs(context, attrs);
     }
 
     @Override
@@ -65,12 +72,25 @@ public abstract class RoundedCornersView extends FrameLayout {
         final Canvas canvas = new Canvas(mask);
         final Paint cornersMaskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        cornersMaskPaint.setColor(backgroundColor);
+        cornersMaskPaint.setColor(roundedCornersBackgroundColor);
         canvas.drawRect(0, 0, width, height, cornersMaskPaint);
         cornersMaskPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         canvas.drawRoundRect(new RectF(0, 0, width, height), radius, radius, cornersMaskPaint);
 
+        if (!isRoundingBottomCornersEnabled) {
+            canvas.drawRect(0, height - radius, width, height, cornersMaskPaint);
+        }
+
         return mask;
+    }
+
+    private void handleAttrs(Context context, AttributeSet attrs) {
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RoundedCornersView);
+        roundedCornersBackgroundColor = a.getColor(R.styleable.RoundedCornersView_roundedCornersBackgroundColor,
+                defaultRoundedCornersBackground);
+        isRoundingBottomCornersEnabled = a.getBoolean(R.styleable.RoundedCornersView_roundingBottomCornersEnabled,
+                true);
+        a.recycle();
     }
 
     private void init() {

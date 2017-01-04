@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.feature.shared.view;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -33,6 +34,10 @@ public class RoundedCornersShotImageView extends RoundedCornersView {
     @Override
     protected int getLayoutResource() {
         return R.layout.rounded_corners_shot_image_view;
+    }
+
+    public ImageView getImageView() {
+        return shotImageView;
     }
 
     public void loadShot(Shot shot) {
