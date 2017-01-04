@@ -265,7 +265,9 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
 
         for (int i = firstVisibleItem; i <= lastVisibleItem; i++) {
             BaseBucketViewHolder viewHolder = (BaseBucketViewHolder) bucketsRecyclerView.findViewHolderForAdapterPosition(i);
-            viewHolder.onPause();
+            if(viewHolder != null) {
+                viewHolder.onPause();
+            }
         }
     }
 

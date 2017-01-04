@@ -1,13 +1,13 @@
 package co.netguru.android.inbbbox.feature.shot.detail;
 
 import android.os.Parcelable;
-
 import com.google.auto.value.AutoValue;
 
 @AutoValue
 public abstract class ShotDetailsRequest implements Parcelable {
 
-    public abstract ShotDetailsType detailsType();
+    @ShotDetailsType.DetailsType
+    public abstract int detailsType();
 
     public abstract long id();
 
@@ -15,7 +15,8 @@ public abstract class ShotDetailsRequest implements Parcelable {
 
     @AutoValue.Builder
     public abstract static class Builder {
-        public abstract Builder detailsType(ShotDetailsType detailsType);
+
+        public abstract Builder detailsType(@ShotDetailsType.DetailsType int detailsType);
 
         public abstract Builder id(long id);
 

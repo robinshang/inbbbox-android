@@ -13,6 +13,7 @@ import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
+import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -69,17 +70,17 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
             Observable<List<Shot>> requestMoreObservable;
 
             switch (detailsRequest.detailsType()) {
-                case DEFAULT:
+                case ShotDetailsType.DEFAULT:
                     requestMoreObservable = shotsController.getShots(currentPage, SHOTS_PER_PAGE);
                     break;
-                case LIKES:
+                case ShotDetailsType.LIKES:
                     requestMoreObservable = likedShotsController.getLikedShots(currentPage, SHOTS_PER_PAGE);
                     break;
-                case BUCKET:
+                case ShotDetailsType.BUCKET:
                     requestMoreObservable = bucketsController.getShotsListFromBucket(detailsRequest.id(), currentPage, SHOTS_PER_PAGE)
                             .toObservable();
                     break;
-                case USER:
+                case ShotDetailsType.USER:
                     requestMoreObservable = userShotsController.getUserShotsList(detailsRequest.id(), currentPage, SHOTS_PER_PAGE);
                     break;
                 default:
