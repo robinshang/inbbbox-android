@@ -295,10 +295,10 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         isNew = streamSourceSettings.isNewToday();
         isPopular = streamSourceSettings.isPopularToday();
         isDebut = streamSourceSettings.isDebut();
-        setStremSourcesInView(streamSourceSettings);
+        setStreamSourcesInView(streamSourceSettings);
     }
 
-    private void setStremSourcesInView(StreamSourceSettings streamSourceSettings) {
+    private void setStreamSourcesInView(StreamSourceSettings streamSourceSettings) {
         getView().changeFollowingStatus(streamSourceSettings.isFollowing());
         getView().changeNewStatus(streamSourceSettings.isNewToday());
         getView().changePopularStatus(streamSourceSettings.isPopularToday());
