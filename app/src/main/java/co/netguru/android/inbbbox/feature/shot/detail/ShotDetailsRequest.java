@@ -20,7 +20,8 @@ public abstract class ShotDetailsRequest implements Parcelable {
 
     @AutoValue.Builder
     public abstract static class Builder {
-        public abstract Builder detailsType(int detailsType);
+
+        public abstract Builder detailsType(@ShotDetailsType.DetailsType int detailsType);
 
         public abstract Builder id(long id);
 
