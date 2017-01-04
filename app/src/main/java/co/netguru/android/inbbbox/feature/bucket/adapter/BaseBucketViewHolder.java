@@ -57,6 +57,14 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
         bucketShotsCountTextView.setText(String.format(shotsString, shotsCount));
     }
 
+    public void onPause() {
+        bucketImageView.onPause();
+    }
+
+    public void onResume() {
+        bucketImageView.onResume();
+    }
+
     private void loadCroppedImageInto(ImageView imageView, String url) {
         imageView.post(() -> {
             Glide.clear(imageView);

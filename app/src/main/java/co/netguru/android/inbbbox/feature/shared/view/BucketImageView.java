@@ -87,10 +87,26 @@ public class BucketImageView extends FrameLayout {
 
     public void startAnimation() {
         if (timer != null) {
-            return;
+            timer.cancel();
         }
-        initGrid();
 
+        initGrid();
+        scheduleTimer();
+    }
+
+    public void onPause() {
+        if (timer != null) {
+            timer.cancel();
+        }
+    }
+
+    public void onResume() {
+        if (timer != null) {
+            scheduleTimer();
+        }
+    }
+
+    private void scheduleTimer() {
         int delay = ANIMATE_EVERY_MILLISECONDS_MIN +
                 new Random().nextInt(ANIMATE_EVERY_MILLISECONDS_MAX - ANIMATE_EVERY_MILLISECONDS_MIN);
 
@@ -167,7 +183,7 @@ public class BucketImageView extends FrameLayout {
         float fromX = 0;
         // animate to last position (there are only IMAGES-1 images in lower row,
         // so the index of the last one is IMAGES-2)
-        float toX = (IMAGES-2) * smallImageWidth();
+        float toX = (IMAGES - 2) * smallImageWidth();
         float fromY = 0;
         float toY = viewHeight - (scaleFactor * drawableHeight);
 

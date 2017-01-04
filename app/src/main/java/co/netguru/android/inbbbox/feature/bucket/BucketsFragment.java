@@ -253,6 +253,40 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
         getPresenter().loadBucketsWithShots();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        int firstVisibleItem = bucketsRecyclerView.getLayoutManager() == gridLayoutManager ?
+                gridLayoutManager.findFirstVisibleItemPosition() : linearLayoutManager.findFirstVisibleItemPosition();
+
+        int lastVisibleItem = bucketsRecyclerView.getLayoutManager() == gridLayoutManager ?
+                gridLayoutManager.findLastVisibleItemPosition() : linearLayoutManager.findLastVisibleItemPosition();
+
+        for (int i = firstVisibleItem; i <= lastVisibleItem; i++) {
+            BaseBucketViewHolder viewHolder = (BaseBucketViewHolder) bucketsRecyclerView.findViewHolderForAdapterPosition(i);
+            viewHolder.onPause();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        int firstVisibleItem = bucketsRecyclerView.getLayoutManager() == gridLayoutManager ?
+                gridLayoutManager.findFirstVisibleItemPosition() : linearLayoutManager.findFirstVisibleItemPosition();
+
+        int lastVisibleItem = bucketsRecyclerView.getLayoutManager() == gridLayoutManager ?
+                gridLayoutManager.findLastVisibleItemPosition() : linearLayoutManager.findLastVisibleItemPosition();
+
+        for (int i = firstVisibleItem; i <= lastVisibleItem; i++) {
+            BaseBucketViewHolder viewHolder = (BaseBucketViewHolder) bucketsRecyclerView.findViewHolderForAdapterPosition(i);
+            if (viewHolder != null) {
+                viewHolder.onResume();
+            }
+        }
+    }
+
     private void initRecyclerView() {
         adapter = new BucketsAdapter(this);
         linearLayoutManager = new LinearLayoutManager(getContext());
