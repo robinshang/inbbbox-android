@@ -74,6 +74,22 @@ public class LikesAdapter extends RecyclerView.Adapter<BaseViewHolder<Shot>> {
         notifyItemRangeChanged(currentSize - 1, likeList.size());
     }
 
+    public void addLikeOnTop(Shot likedShot) {
+        this.likeList.add(0, likedShot);
+        notifyItemRangeChanged(0, 1);
+    }
+
+    public void removeLike(Shot unlikedShot) {
+        for (int i = 0; i < likeList.size(); i++) {
+            Shot shot = likeList.get(i);
+            if (shot.id() == unlikedShot.id()) {
+                likeList.remove(i);
+                notifyItemRemoved(i);
+                break;
+            }
+        }
+    }
+
     public void setGridMode(boolean isGridMode) {
         this.isGridMode = isGridMode;
         notifyDataSetChanged();
