@@ -9,7 +9,6 @@ import co.netguru.android.inbbbox.data.shot.ShotsApi;
 import co.netguru.android.inbbbox.event.RxBus;
 import dagger.Module;
 import dagger.Provides;
-import retrofit2.http.HEAD;
 
 @Module
 public class ShotsDetailsModule {
