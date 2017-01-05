@@ -19,6 +19,7 @@ import java.util.List;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -27,6 +28,8 @@ import rx.Completable;
 import rx.Observable;
 import rx.Single;
 
+import static co.netguru.android.inbbbox.Statics.BUCKET;
+import static co.netguru.android.inbbbox.Statics.LIKED_SHOT_NOT_BUCKETED;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
@@ -65,6 +68,9 @@ public class ShotDetailsPresenterTest {
 
     @Mock
     User userMock;
+
+    @Mock
+    BucketsController bucketsControllerMock;
 
     @InjectMocks
     ShotDetailsPresenter shotDetailsPresenter;
@@ -585,6 +591,28 @@ public class ShotDetailsPresenterTest {
     public void whenOnShotImageClicked_thenShowFullscreen() {
         shotDetailsPresenter.onShotImageClick(Collections.emptyList());
         verify(viewMock, times(1)).openShotFullscreen(any(Shot.class), any(List.class));
+    }
+
+    @Test
+    public void whenBucketForShotChosen_thenAddToBucket() {
+        //given
+        when(bucketsControllerMock.addShotToBucket(BUCKET.id(), LIKED_SHOT_NOT_BUCKETED))
+                .thenReturn(Completable.complete());
+        //when
+        shotDetailsPresenter.addShotToBucket(BUCKET, LIKED_SHOT_NOT_BUCKETED);
+        //then
+        verify(viewMock, times(1)).showBucketAddSuccess();
+    }
+
+    @Test
+    public void whenBucketForShotChosenAndErrorOccurs_thenShowApiError() {
+        //given
+        when(bucketsControllerMock.addShotToBucket(BUCKET.id(), LIKED_SHOT_NOT_BUCKETED))
+                .thenReturn(Completable.error(new Throwable()));
+        //when
+        shotDetailsPresenter.addShotToBucket(BUCKET, LIKED_SHOT_NOT_BUCKETED);
+        //then
+        verify(viewMock, times(1)).showMessageOnServerError(anyString());
     }
 
     @After

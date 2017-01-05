@@ -8,10 +8,14 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.common.utils.StringUtil;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.ShotLikedEvent;
+import retrofit2.http.HEAD;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -26,6 +30,7 @@ public class ShotDetailsPresenter
     private final ShotDetailsController shotDetailsController;
     private final ErrorController errorController;
     private final RxBus rxBus;
+    private final BucketsController bucketsController;
     private final CompositeSubscription subscriptions;
     private boolean isCommentModeInit;
     private Shot shot;
@@ -36,9 +41,11 @@ public class ShotDetailsPresenter
 
     @Inject
     public ShotDetailsPresenter(ShotDetailsController shotDetailsController,
-                                ErrorController errorController, RxBus rxBus) {
+                                ErrorController errorController, RxBus rxBus,
+                                BucketsController bucketsController) {
         this.shotDetailsController = shotDetailsController;
         this.errorController = errorController;
+        this.bucketsController = bucketsController;
         this.rxBus = rxBus;
         this.subscriptions = new CompositeSubscription();
         this.commentLoadMoreState = new CommentLoadMoreState();
@@ -144,6 +151,17 @@ public class ShotDetailsPresenter
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
         getView().disableEditorProgressMode();
+    }
+
+    @Override
+    public void addShotToBucket(Bucket bucket, Shot shot) {
+        subscriptions.add(
+                bucketsController.addShotToBucket(bucket.id(), shot)
+                        .compose(RxTransformerUtil.applyCompletableIoSchedulers())
+                        .subscribe(
+                                getView()::showBucketAddSuccess,
+                                throwable -> handleError(throwable, "Error while adding shot to bucket"))
+        );
     }
 
     private void initializeView() {
