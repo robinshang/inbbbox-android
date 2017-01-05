@@ -23,8 +23,9 @@ public class ShotsDetailsModule {
     @Provides
     @FragmentScope
     ShotDetailsPresenter provideShotDetailsPresenter(ShotDetailsController shotDetailsController,
-                                                     ErrorController errorController) {
-        return new ShotDetailsPresenter(shotDetailsController, errorController);
+                                                     ErrorController errorController,
+                                                     BucketsController bucketsController) {
+        return new ShotDetailsPresenter(shotDetailsController, errorController, bucketsController);
     }
 }
 
