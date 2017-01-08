@@ -21,6 +21,8 @@ public abstract class User implements Parcelable {
 
     public abstract int shotsCount();
 
+    public abstract String type();
+
     public static User.Builder builder() {
         return new AutoValue_User.Builder();
     }
@@ -37,6 +39,8 @@ public abstract class User implements Parcelable {
 
         public abstract User.Builder shotsCount(int shotsCount);
 
+        public abstract User.Builder type(String type);
+
         public abstract User build();
     }
 
@@ -47,6 +51,7 @@ public abstract class User implements Parcelable {
                 .avatarUrl(entity.avatarUrl())
                 .username(entity.username())
                 .shotsCount(entity.shotsCount())
+                .type(entity.type())
                 .build();
     }
 
