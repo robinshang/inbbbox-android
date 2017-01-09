@@ -213,6 +213,11 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
         getPresenter().followUser();
     }
 
+    @Override
+    public void unfollowUserCompleted() {
+        onChangeFollowingStatusCompletedListener.unfollowActionCompleted();
+    }
+
     private void initRefreshLayout() {
         swipeRefreshLayout.setColorSchemeColors(accentColor);
         swipeRefreshLayout.setOnRefreshListener(getPresenter()::refreshUserShots);
@@ -243,5 +248,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
 
     public interface OnFollowedShotActionListener {
         void showShotDetails(Shot shot, List<Shot> allShots, long userId);
+
+        void unfollowActionCompleted();
     }
 }

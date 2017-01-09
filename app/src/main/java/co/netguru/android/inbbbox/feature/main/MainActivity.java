@@ -53,6 +53,8 @@ public class MainActivity
         ShotsFragment.ShotActionListener,
         TimePickerDialogFragment.OnTimePickedListener {
 
+    public static final int REQUEST_REFRESH_FOLLOWER_LIST = 101;
+    private static final int REQUEST_DEFAULT = 0;
     private static final String REQUEST_EXTRA = "requestExtra";
     private static final String TOGGLE_BUTTON_STATE = "toggleButtonState";
 
@@ -98,6 +100,13 @@ public class MainActivity
         context.startActivity(intent);
     }
 
+    public static void startActivityWithRequest(Context context, int requestCode) {
+        final Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(REQUEST_EXTRA, requestCode);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         initComponent();
@@ -129,6 +138,20 @@ public class MainActivity
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        switch (intent.getIntExtra(REQUEST_EXTRA, REQUEST_DEFAULT)) {
+            case REQUEST_REFRESH_FOLLOWER_LIST:
+                pagerAdapter.refreshFragment(TabItemType.FOLLOWERS);
+                selectTab(tabLayout.getTabAt(TabItemType.FOLLOWERS.getPosition()));
+                break;
+            default:
+                throw new IllegalStateException("Intent should contains REQUEST_EXTRA");
+        }
     }
 
     @Override
