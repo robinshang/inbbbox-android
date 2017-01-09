@@ -153,6 +153,16 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     @Override
+    public void showLikeAtTop(Shot likedShot) {
+        likesAdapter.addLikeOnTop(likedShot);
+    }
+
+    @Override
+    public void removeShotFromLikes(Shot unlikedShot) {
+        likesAdapter.removeLike(unlikedShot);
+    }
+
+    @Override
     public void showLoadingMoreLikesView() {
         if (loadingMoreSnackbar == null && getView() != null) {
             loadingMoreSnackbar = Snackbar.make(getView(), R.string.loading_more_likes, Snackbar.LENGTH_INDEFINITE);
