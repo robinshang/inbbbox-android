@@ -123,7 +123,7 @@ public class FollowerDetailsPresenter extends MvpNullObjectBasePresenter<Followe
         subscriptions.add(
                 followersController.unFollowUser(userWithShots.user().id())
                         .compose(applyCompletableIoSchedulers())
-                        .subscribe(getView()::showFollowersList,
+                        .subscribe(() -> setFollowingMenuIcon(false),
                                 throwable -> handleError(throwable, "Error while unFollow user")));
     }
 

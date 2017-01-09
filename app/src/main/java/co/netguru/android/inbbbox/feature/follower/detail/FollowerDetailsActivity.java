@@ -17,7 +17,6 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseActivity;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
@@ -65,12 +64,6 @@ public class FollowerDetailsActivity extends BaseActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onFollowingStatusChangeCompleted() {
-        MainActivity.startActivityWithRequest(this, MainActivity.REQUEST_REFRESH_FOLLOWER_LIST);
-        finish();
     }
 
     @Override

@@ -18,8 +18,6 @@ public interface FollowerDetailsContract {
 
         void showMoreUserShots(List<Shot> shotList);
 
-        void showFollowersList();
-
         void hideProgress();
 
         void openShotDetailsScreen(Shot shot, List<Shot> allShots, long userId);

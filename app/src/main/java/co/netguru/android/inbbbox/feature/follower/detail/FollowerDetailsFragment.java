@@ -175,11 +175,6 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     @Override
-    public void showFollowersList() {
-        onChangeFollowingStatusCompletedListener.onFollowingStatusChangeCompleted();
-    }
-
-    @Override
     public void hideProgress() {
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -248,7 +243,5 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
 
     public interface OnFollowedShotActionListener {
         void showShotDetails(Shot shot, List<Shot> allShots, long userId);
-
-        void onFollowingStatusChangeCompleted();
     }
 }
