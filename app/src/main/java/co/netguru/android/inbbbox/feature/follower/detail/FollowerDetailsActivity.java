@@ -34,6 +34,8 @@ public class FollowerDetailsActivity extends BaseActivity
     @BindColor(R.color.white)
     int colorWhite;
 
+    private boolean shouldRefreshFollowers;
+
     public static void startActivity(Context context, UserWithShots user) {
         final Intent intent = new Intent(context, FollowerDetailsActivity.class);
         intent.putExtra(USER_KEY, user);
@@ -48,6 +50,7 @@ public class FollowerDetailsActivity extends BaseActivity
         if (savedInstanceState == null) {
             instantiateFragment();
         }
+        shouldRefreshFollowers = false;
     }
 
     @Override
@@ -68,12 +71,6 @@ public class FollowerDetailsActivity extends BaseActivity
     }
 
     @Override
-    public void onFollowingStatusChangeCompleted() {
-        MainActivity.startActivityWithRequest(this, MainActivity.REQUEST_REFRESH_FOLLOWER_LIST);
-        finish();
-    }
-
-    @Override
     public void showShotDetails(Shot shot, List<Shot> allShots, long userId) {
         ShotDetailsRequest detailsRequest = ShotDetailsRequest.builder()
                 .detailsType(ShotDetailsType.USER)
@@ -81,6 +78,22 @@ public class FollowerDetailsActivity extends BaseActivity
                 .build();
         final Fragment fragment = ShotDetailsFragment.newInstance(shot, allShots, detailsRequest);
         showBottomSheet(fragment, ShotDetailsFragment.TAG);
+    }
+
+    @Override
+    public void unfollowActionCompleted() {
+        shouldRefreshFollowers = true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (shouldRefreshFollowers) {
+            MainActivity.startActivityWithRequest(this, MainActivity.REQUEST_REFRESH_FOLLOWER_LIST);
+            shouldRefreshFollowers = false;
+            finish();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void initializeToolbar() {
