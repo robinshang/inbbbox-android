@@ -28,7 +28,7 @@ public interface FollowerDetailsContract {
 
         void setFollowingMenuIcon(boolean isFollowed);
 
-        void unfollowUserCompleted();
+        void onUnfollowUserCompleted();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
