@@ -9,7 +9,7 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
 public class FollowersTwoShotListViewHolder extends BaseFollowersViewHolder {
 
-    FollowersTwoShotListViewHolder(ViewGroup parent, OnFollowerClickListener onFollowerClickListener) {
+    public FollowersTwoShotListViewHolder(ViewGroup parent, OnFollowerClickListener onFollowerClickListener) {
         super(LayoutInflater.from(parent.getContext()).inflate(R.layout.follower_list_item, parent, false), onFollowerClickListener);
     }
 

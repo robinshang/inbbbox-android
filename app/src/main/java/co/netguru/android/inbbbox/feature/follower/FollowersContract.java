@@ -25,6 +25,10 @@ interface FollowersContract {
         void showLoadingMoreFollowersView();
 
         void hideProgressBars();
+
+        void openSingleUserDetails(UserWithShots followedUser);
+
+        void openTeamDetails(UserWithShots followedUser);
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -34,5 +38,7 @@ interface FollowersContract {
         void getMoreFollowedUsersFromServer();
 
         void checkDataEmpty(List<UserWithShots> data);
+
+        void onFollowedUserSelect(UserWithShots followedUser);
     }
 }

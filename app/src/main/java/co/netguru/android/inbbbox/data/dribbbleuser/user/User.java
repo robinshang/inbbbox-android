@@ -11,6 +11,10 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
 
 @AutoValue
 public abstract class User implements Parcelable {
+
+    public static final String TYPE_SINGLE_USER = "Player";
+    public static final String TYPE_TEAM = "Team";
+
     public abstract long id();
 
     public abstract String name();

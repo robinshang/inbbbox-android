@@ -22,12 +22,12 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
     private static final int TYPE_FOUR_SHOT_LIST = 8;
     private static final int TYPE_FOUR_SHOT_GRID = 9;
 
-    private final BaseFollowersViewHolder.OnFollowerClickListener onFollowerClickListener;
+    private final OnFollowerClickListener onFollowerClickListener;
     private List<UserWithShots> userWithShotsList;
 
     private boolean isGridMode;
 
-    public FollowersAdapter(BaseFollowersViewHolder.OnFollowerClickListener onFollowerClickListener) {
+    public FollowersAdapter(OnFollowerClickListener onFollowerClickListener) {
         this.onFollowerClickListener = onFollowerClickListener;
         userWithShotsList = Collections.emptyList();
     }
