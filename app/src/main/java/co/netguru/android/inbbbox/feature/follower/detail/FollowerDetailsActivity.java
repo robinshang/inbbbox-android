@@ -90,7 +90,7 @@ public class FollowerDetailsActivity extends BaseActivity
         if (shouldRefreshFollowers) {
             MainActivity.startActivityWithRequest(this, MainActivity.REQUEST_REFRESH_FOLLOWER_LIST);
             shouldRefreshFollowers = false;
-
+            finish();
         } else {
             super.onBackPressed();
         }
