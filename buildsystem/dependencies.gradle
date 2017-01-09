@@ -41,7 +41,6 @@ ext {
             gson                    : "com.google.code.gson:gson:$gsonVersion",
             hockeyApp               : "net.hockeyapp.android:HockeySDK:4.1.2",
             icepick                 : "frankiesardo:icepick:3.2.0",
-            kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
             leakCanary              : "com.squareup.leakcanary:leakcanary-android:1.5",
             mediaRouter             : "com.android.support:mediarouter-v7:$supportLibraryVersion",
             mosby                   : "com.hannesdorfmann.mosby:mvp:$mosbyVersion",
