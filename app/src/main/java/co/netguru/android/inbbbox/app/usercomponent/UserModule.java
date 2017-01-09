@@ -70,7 +70,7 @@ public class UserModule {
 
     @UserScope
     @Provides
-    TeamController provideTeamController(TeamApi teamApi, UserShotsController userShotsController) {
-        return new TeamControllerApi(teamApi, userShotsController);
+    TeamController provideTeamController(TeamApi teamApi) {
+        return new TeamControllerApi(teamApi);
     }
 }
