@@ -215,6 +215,7 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
 
     @Override
     public void unfollowUserCompleted() {
+        setFollowingMenuIcon(false);
         onChangeFollowingStatusCompletedListener.unfollowActionCompleted();
     }
 
