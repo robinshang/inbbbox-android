@@ -75,7 +75,7 @@ public class TeamDetailsPresenter extends MvpNullObjectBasePresenter<TeamDetails
             pageNumber = 1;
 
             refreshSubscription = teamController.getTeamMembers(team.user().id(), pageNumber,
-                    USERS_PAGE_COUNT, SHOTS_PER_USER)
+                    USERS_PAGE_COUNT)
                     .flatMapObservable(Observable::from)
                     .flatMap(user -> userShotsController.getUserShotsList(user.id(), 1, SHOTS_PER_USER)
                             .flatMap(Observable::from)
@@ -101,7 +101,7 @@ public class TeamDetailsPresenter extends MvpNullObjectBasePresenter<TeamDetails
             pageNumber++;
             loadNextUsersSubscription =
                     teamController.getTeamMembers(team.user().id(), pageNumber,
-                            USERS_PAGE_COUNT, SHOTS_PER_USER)
+                            USERS_PAGE_COUNT)
                             .flatMapObservable(Observable::from)
                             .flatMap(user -> userShotsController.getUserShotsList(user.id(), 1, SHOTS_PER_USER)
                                     .flatMap(Observable::from)

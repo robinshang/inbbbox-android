@@ -7,5 +7,5 @@ import rx.Single;
 
 public interface TeamController {
     Single<List<User>> getTeamMembers(long teamId, int pageNumber,
-                                      int pageCount, int shotsPerUser);
+                                      int pageCount);
 }

@@ -21,7 +21,7 @@ public final class TeamControllerApi implements TeamController {
 
     @Override
     public Single<List<User>> getTeamMembers(long teamId, int pageNumber,
-                                             int pageCount, int shotsPerUser) {
+                                             int pageCount) {
         return teamApi.getTeamMembers(teamId, pageNumber, pageCount)
                 .flatMapObservable(Observable::from)
                 .map(User::create)
