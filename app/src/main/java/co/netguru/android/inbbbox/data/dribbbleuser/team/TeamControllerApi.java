@@ -19,6 +19,7 @@ public class TeamControllerApi implements TeamController {
         this.teamApi = teamApi;
     }
 
+    @Override
     public Single<List<User>> getTeamMembers(long teamId, int pageNumber,
                                              int pageCount, int shotsPerUser) {
         return teamApi.getTeamMembers(teamId, pageNumber, pageCount)

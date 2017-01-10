@@ -57,19 +57,12 @@ public class TeamDetailsPresenter extends MvpNullObjectBasePresenter<TeamDetails
     }
 
     @Override
-    public void attachView(TeamDetailsContract.View view) {
-        super.attachView(view);
-    }
-
-    @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
         if (!retainInstance) {
             refreshSubscription.unsubscribe();
             loadNextUsersSubscription.unsubscribe();
-            if (subscriptions != null) {
-                subscriptions.clear();
-            }
+            subscriptions.clear();
         }
     }
 
@@ -88,7 +81,7 @@ public class TeamDetailsPresenter extends MvpNullObjectBasePresenter<TeamDetails
                 .toList()
                 .toSingle()
                 .compose(RxTransformerUtil.applySingleIoSchedulers())
-                .doAfterTerminate(() -> getView().hideProgressBars())
+                .doAfterTerminate(getView()::hideProgressBars)
                 .subscribe(users -> {
                             hasMore = users.size() >= USERS_PAGE_COUNT;
                             getView().setData(users);
@@ -113,7 +106,7 @@ public class TeamDetailsPresenter extends MvpNullObjectBasePresenter<TeamDetails
                             .toList()
                             .toSingle()
                             .compose(RxTransformerUtil.applySingleIoSchedulers())
-                            .doAfterTerminate(() -> getView().hideProgressBars())
+                            .doAfterTerminate(getView()::hideProgressBars)
                             .subscribe(users -> {
                                 hasMore = users.size() >= USERS_PAGE_COUNT;
                                 getView().showMoreUsers(users);

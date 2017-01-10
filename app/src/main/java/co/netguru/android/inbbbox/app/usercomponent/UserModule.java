@@ -20,7 +20,6 @@ import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotControllerApi;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotControllerGuest;
 import co.netguru.android.inbbbox.data.shot.ShotsApi;
-import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import dagger.Module;
 import dagger.Provides;
 

@@ -30,7 +30,6 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
-import co.netguru.android.inbbbox.feature.follower.adapter.BaseFollowersViewHolder;
 import co.netguru.android.inbbbox.feature.follower.adapter.FollowersAdapter;
 import co.netguru.android.inbbbox.feature.follower.adapter.OnFollowerClickListener;
 import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsActivity;
@@ -38,7 +37,6 @@ import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import co.netguru.android.inbbbox.feature.team.TeamDetailsActivity;
-import timber.log.Timber;
 
 public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<UserWithShots>, FollowersContract.View, FollowersContract.Presenter>
         implements RefreshableFragment, FollowersContract.View, OnFollowerClickListener {
@@ -120,13 +118,13 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     }
 
     @Override
-    public void loadData(boolean pullToRefresh) {
-        getPresenter().getFollowedUsersFromServer();
+    public void setData(List<UserWithShots> data) {
+        adapter.setUserWithShotsList(data);
     }
 
     @Override
-    public void setData(List<UserWithShots> data) {
-        adapter.setUserWithShotsList(data);
+    public void loadData(boolean pullToRefresh) {
+        getPresenter().getFollowedUsersFromServer();
     }
 
     @Override
