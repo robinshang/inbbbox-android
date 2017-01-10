@@ -84,7 +84,7 @@ public class TeamDetailsPresenter extends MvpNullObjectBasePresenter<TeamDetails
                             .subscribeOn(Schedulers.io()), UserWithShots::create)
                     .toList()
                     .toSingle()
-                    .compose(RxTransformerUtil.applySingleIoSchedulers())
+                    .compose(applySingleIoSchedulers())
                     .doAfterTerminate(getView()::hideProgressBars)
                     .subscribe(users -> {
                                 hasMore = users.size() >= USERS_PAGE_COUNT;
@@ -110,7 +110,7 @@ public class TeamDetailsPresenter extends MvpNullObjectBasePresenter<TeamDetails
                                     .subscribeOn(Schedulers.io()), UserWithShots::create)
                             .toList()
                             .toSingle()
-                            .compose(RxTransformerUtil.applySingleIoSchedulers())
+                            .compose(applySingleIoSchedulers())
                             .doAfterTerminate(getView()::hideProgressBars)
                             .subscribe(users -> {
                                 hasMore = users.size() >= USERS_PAGE_COUNT;
