@@ -11,8 +11,8 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.feature.follower.adapter.BaseFollowersViewHolder;
-import co.netguru.android.inbbbox.feature.follower.adapter.FollowersListViewHolder;
 import co.netguru.android.inbbbox.feature.follower.adapter.FollowersGridViewHolder;
+import co.netguru.android.inbbbox.feature.follower.adapter.FollowersListViewHolder;
 import co.netguru.android.inbbbox.feature.follower.adapter.OnFollowerClickListener;
 
 public class TeamDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -80,17 +80,15 @@ public class TeamDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        switch (getItemViewType(position)) {
-            case TYPE_HEADER:
-                ((TeamDetailsHeaderViewHolder) holder).bind(team.user());
-                break;
-            case TYPE_LIST:
-            case TYPE_GRID:
-                ((BaseFollowersViewHolder) holder).bind(teamMembersList.get(getListPosition(position)));
-                break;
-            default:
-                throw new IllegalArgumentException("There is no item type for " +
-                        "holder on this position : " + getListPosition(position));
+        int viewType = getItemViewType(position);
+
+        if (viewType == TYPE_HEADER) {
+            ((TeamDetailsHeaderViewHolder) holder).bind(team.user());
+        } else if (viewType == TYPE_LIST || viewType == TYPE_GRID) {
+            ((BaseFollowersViewHolder) holder).bind(teamMembersList.get(getListPosition(position)));
+        } else {
+            throw new IllegalArgumentException("There is no item type for " +
+                    "holder on this position : " + getListPosition(position));
         }
     }
 

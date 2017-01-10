@@ -37,7 +37,7 @@ public class TeamDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection
         implements TeamDetailsContract.View, UnFollowUserDialogFragment.OnUnFollowClickedListener {
 
     public static final String TAG = FollowerDetailsFragment.class.getSimpleName();
-    private static final String USER_TEAM = "user_key";
+    private static final String KEY_TEAM = "key_team";
     private static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final int USERS_TO_LOAD_MORE = 5;
     private static final int RECYCLER_VIEW_HEADER_POSITION = 0;
@@ -60,7 +60,7 @@ public class TeamDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection
 
     public static TeamDetailsFragment newInstance(UserWithShots team) {
         final Bundle args = new Bundle();
-        args.putParcelable(USER_TEAM, team);
+        args.putParcelable(KEY_TEAM, team);
 
         final TeamDetailsFragment fragment = new TeamDetailsFragment();
         fragment.setArguments(args);
@@ -98,7 +98,7 @@ public class TeamDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection
 
     @Override
     public void setData(List<UserWithShots> data) {
-        adapter.setTeam(getArguments().getParcelable(USER_TEAM));
+        adapter.setTeam(getArguments().getParcelable(KEY_TEAM));
         adapter.setTeamMembers(data);
     }
 
@@ -109,7 +109,7 @@ public class TeamDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        getPresenter().loadTeamData(getArguments().getParcelable(USER_TEAM));
+        getPresenter().loadTeamData(getArguments().getParcelable(KEY_TEAM));
     }
 
     @Override
@@ -117,7 +117,7 @@ public class TeamDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection
         super.onCreateOptionsMenu(menu, inflater);
         followMenuItem = menu.findItem(R.id.action_follow);
         unFollowMenuItem = menu.findItem(R.id.action_unfollow);
-        getPresenter().checkIfTeamIsFollowed(getArguments().getParcelable(USER_TEAM));
+        getPresenter().checkIfTeamIsFollowed(getArguments().getParcelable(KEY_TEAM));
     }
 
     @Override
@@ -171,7 +171,7 @@ public class TeamDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection
     private void initRefreshLayout() {
         swipeRefreshLayout.setColorSchemeColors(accentColor);
         swipeRefreshLayout.setOnRefreshListener(
-                () -> getPresenter().loadTeamData(getArguments().getParcelable(USER_TEAM)));
+                () -> getPresenter().loadTeamData(getArguments().getParcelable(KEY_TEAM)));
     }
 
     private void initRecyclerView() {

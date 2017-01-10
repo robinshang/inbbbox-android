@@ -70,24 +70,29 @@ public class TeamDetailsPresenter extends MvpNullObjectBasePresenter<TeamDetails
     public void loadTeamData(UserWithShots team) {
         this.team = team;
 
-        refreshSubscription = teamController.getTeamMembers(team.user().id(), pageNumber,
-                USERS_PAGE_COUNT, SHOTS_PER_USER)
-                .flatMapObservable(Observable::from)
-                .flatMap(user -> userShotsController.getUserShotsList(user.id(), 1, SHOTS_PER_USER)
-                        .flatMap(Observable::from)
-                        .map(shot -> Shot.update(shot).author(user).build())
-                        .toList()
-                        .subscribeOn(Schedulers.io()), UserWithShots::create)
-                .toList()
-                .toSingle()
-                .compose(RxTransformerUtil.applySingleIoSchedulers())
-                .doAfterTerminate(getView()::hideProgressBars)
-                .subscribe(users -> {
-                            hasMore = users.size() >= USERS_PAGE_COUNT;
-                            getView().setData(users);
-                            getView().showContent();
-                        },
-                        throwable -> handleError(throwable, "Error while loading team members"));
+        if (refreshSubscription.isUnsubscribed()) {
+            loadNextUsersSubscription.unsubscribe();
+            pageNumber = 1;
+
+            refreshSubscription = teamController.getTeamMembers(team.user().id(), pageNumber,
+                    USERS_PAGE_COUNT, SHOTS_PER_USER)
+                    .flatMapObservable(Observable::from)
+                    .flatMap(user -> userShotsController.getUserShotsList(user.id(), 1, SHOTS_PER_USER)
+                            .flatMap(Observable::from)
+                            .map(shot -> Shot.update(shot).author(user).build())
+                            .toList()
+                            .subscribeOn(Schedulers.io()), UserWithShots::create)
+                    .toList()
+                    .toSingle()
+                    .compose(RxTransformerUtil.applySingleIoSchedulers())
+                    .doAfterTerminate(getView()::hideProgressBars)
+                    .subscribe(users -> {
+                                hasMore = users.size() >= USERS_PAGE_COUNT;
+                                getView().setData(users);
+                                getView().showContent();
+                            },
+                            throwable -> handleError(throwable, "Error while loading team members"));
+        }
     }
 
     @Override
