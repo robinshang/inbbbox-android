@@ -11,33 +11,17 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.feature.follower.adapter.BaseFollowersViewHolder;
-import co.netguru.android.inbbbox.feature.follower.adapter.FollowersEmptyShotGridViewHolder;
-import co.netguru.android.inbbbox.feature.follower.adapter.FollowersEmptyShotListViewHolder;
-import co.netguru.android.inbbbox.feature.follower.adapter.FollowersFourShotGridViewHolder;
-import co.netguru.android.inbbbox.feature.follower.adapter.FollowersFourShotListViewHolder;
-import co.netguru.android.inbbbox.feature.follower.adapter.FollowersOneShotGridViewHolder;
-import co.netguru.android.inbbbox.feature.follower.adapter.FollowersOneShotListViewHolder;
-import co.netguru.android.inbbbox.feature.follower.adapter.FollowersThreeShotGridViewHolder;
-import co.netguru.android.inbbbox.feature.follower.adapter.FollowersThreeShotListViewHolder;
-import co.netguru.android.inbbbox.feature.follower.adapter.FollowersTwoShotGridViewHolder;
-import co.netguru.android.inbbbox.feature.follower.adapter.FollowersTwoShotListViewHolder;
+import co.netguru.android.inbbbox.feature.follower.adapter.FollowersListViewHolder;
+import co.netguru.android.inbbbox.feature.follower.adapter.FollowersGridViewHolder;
 import co.netguru.android.inbbbox.feature.follower.adapter.OnFollowerClickListener;
 
 public class TeamDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int HEADER_POSITION = 0;
 
-    private static final int TYPE_EMPTY_LIST = 0;
-    private static final int TYPE_EMPTY_GRID = 1;
-    private static final int TYPE_ONE_SHOT_LIST = 2;
-    private static final int TYPE_ONE_SHOT_GRID = 3;
-    private static final int TYPE_TWO_SHOT_LIST = 4;
-    private static final int TYPE_TWO_SHOT_GRID = 5;
-    private static final int TYPE_THREE_SHOT_LIST = 6;
-    private static final int TYPE_THREE_SHOT_GRID = 7;
-    private static final int TYPE_FOUR_SHOT_LIST = 8;
-    private static final int TYPE_FOUR_SHOT_GRID = 9;
-    private static final int TYPE_HEADER = 10;
+    private static final int TYPE_LIST = 0;
+    private static final int TYPE_GRID = 1;
+    private static final int TYPE_HEADER = 2;
 
     private final OnFollowerClickListener userClickListener;
 
@@ -85,26 +69,10 @@ public class TeamDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         switch (viewType) {
             case TYPE_HEADER:
                 return new TeamDetailsHeaderViewHolder(parent);
-            case TYPE_EMPTY_GRID:
-                return new FollowersEmptyShotGridViewHolder(parent, userClickListener);
-            case TYPE_EMPTY_LIST:
-                return new FollowersEmptyShotListViewHolder(parent, userClickListener);
-            case TYPE_ONE_SHOT_GRID:
-                return new FollowersOneShotGridViewHolder(parent, userClickListener);
-            case TYPE_ONE_SHOT_LIST:
-                return new FollowersOneShotListViewHolder(parent, userClickListener);
-            case TYPE_TWO_SHOT_GRID:
-                return new FollowersTwoShotGridViewHolder(parent, userClickListener);
-            case TYPE_TWO_SHOT_LIST:
-                return new FollowersTwoShotListViewHolder(parent, userClickListener);
-            case TYPE_THREE_SHOT_GRID:
-                return new FollowersThreeShotGridViewHolder(parent, userClickListener);
-            case TYPE_THREE_SHOT_LIST:
-                return new FollowersThreeShotListViewHolder(parent, userClickListener);
-            case TYPE_FOUR_SHOT_GRID:
-                return new FollowersFourShotGridViewHolder(parent, userClickListener);
-            case TYPE_FOUR_SHOT_LIST:
-                return new FollowersFourShotListViewHolder(parent, userClickListener);
+            case TYPE_LIST:
+                return new FollowersListViewHolder(parent, userClickListener);
+            case TYPE_GRID:
+                return new FollowersGridViewHolder(parent, userClickListener);
             default:
                 throw new IllegalArgumentException("Cannot create view holder for type : " + viewType);
         }
@@ -116,16 +84,8 @@ public class TeamDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case TYPE_HEADER:
                 ((TeamDetailsHeaderViewHolder) holder).bind(team.user());
                 break;
-            case TYPE_EMPTY_GRID:
-            case TYPE_EMPTY_LIST:
-            case TYPE_ONE_SHOT_GRID:
-            case TYPE_ONE_SHOT_LIST:
-            case TYPE_TWO_SHOT_GRID:
-            case TYPE_TWO_SHOT_LIST:
-            case TYPE_THREE_SHOT_GRID:
-            case TYPE_THREE_SHOT_LIST:
-            case TYPE_FOUR_SHOT_GRID:
-            case TYPE_FOUR_SHOT_LIST:
+            case TYPE_LIST:
+            case TYPE_GRID:
                 ((BaseFollowersViewHolder) holder).bind(teamMembersList.get(getListPosition(position)));
                 break;
             default:
@@ -140,20 +100,7 @@ public class TeamDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return TYPE_HEADER;
         }
 
-        if (teamMembersList == null || teamMembersList.isEmpty()) {
-            return isGridMode ? TYPE_EMPTY_GRID : TYPE_EMPTY_LIST;
-        }
-
-        switch (teamMembersList.get(getListPosition(position)).shotList().size()) {
-            case 1:
-                return isGridMode ? TYPE_ONE_SHOT_GRID : TYPE_ONE_SHOT_LIST;
-            case 2:
-                return isGridMode ? TYPE_TWO_SHOT_GRID : TYPE_TWO_SHOT_LIST;
-            case 3:
-                return isGridMode ? TYPE_THREE_SHOT_GRID : TYPE_THREE_SHOT_LIST;
-            default:
-                return isGridMode ? TYPE_FOUR_SHOT_GRID : TYPE_FOUR_SHOT_LIST;
-        }
+        return isGridMode ? TYPE_GRID : TYPE_LIST;
     }
 
     @Override

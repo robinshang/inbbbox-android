@@ -10,7 +10,7 @@ import rx.Observable;
 import rx.Single;
 
 @Singleton
-public class TeamControllerApi implements TeamController {
+public final class TeamControllerApi implements TeamController {
 
     private TeamApi teamApi;
 
