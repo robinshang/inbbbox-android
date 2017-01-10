@@ -13,6 +13,7 @@ import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamController;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Observable;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
@@ -79,9 +80,11 @@ public class TeamDetailsPresenter extends MvpNullObjectBasePresenter<TeamDetails
         refreshSubscription = teamController.getTeamMembers(team.user().id(), pageNumber,
                 USERS_PAGE_COUNT, SHOTS_PER_USER)
                 .flatMapObservable(Observable::from)
-                .flatMap(userEntity -> userShotsController.getUserShotsList(userEntity.id(), 1, SHOTS_PER_USER)
-                                .subscribeOn(Schedulers.io()),
-                        UserWithShots::create)
+                .flatMap(user -> userShotsController.getUserShotsList(user.id(), 1, SHOTS_PER_USER)
+                        .flatMap(Observable::from)
+                        .map(shot -> Shot.update(shot).author(user).build())
+                        .toList()
+                        .subscribeOn(Schedulers.io()), UserWithShots::create)
                 .toList()
                 .toSingle()
                 .compose(RxTransformerUtil.applySingleIoSchedulers())
@@ -102,9 +105,11 @@ public class TeamDetailsPresenter extends MvpNullObjectBasePresenter<TeamDetails
                     teamController.getTeamMembers(team.user().id(), pageNumber,
                             USERS_PAGE_COUNT, SHOTS_PER_USER)
                             .flatMapObservable(Observable::from)
-                            .flatMap(userEntity -> userShotsController.getUserShotsList(userEntity.id(), 1, SHOTS_PER_USER)
-                                            .subscribeOn(Schedulers.io()),
-                                    UserWithShots::create)
+                            .flatMap(user -> userShotsController.getUserShotsList(user.id(), 1, SHOTS_PER_USER)
+                                    .flatMap(Observable::from)
+                                    .map(shot -> Shot.update(shot).author(user).build())
+                                    .toList()
+                                    .subscribeOn(Schedulers.io()), UserWithShots::create)
                             .toList()
                             .toSingle()
                             .compose(RxTransformerUtil.applySingleIoSchedulers())
