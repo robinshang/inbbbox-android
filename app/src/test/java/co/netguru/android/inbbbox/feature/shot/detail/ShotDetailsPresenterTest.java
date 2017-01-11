@@ -70,11 +70,10 @@ public class ShotDetailsPresenterTest {
     User userMock;
 
     @Mock
-<<<<<<< HEAD
     List<Shot> shotsMock;
-=======
+
+    @Mock
     BucketsController bucketsControllerMock;
->>>>>>> master
 
     @InjectMocks
     ShotDetailsPresenter shotDetailsPresenter;
