@@ -175,11 +175,6 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     }
 
     @Override
-    public void showFollowersList() {
-        onChangeFollowingStatusCompletedListener.onFollowingStatusChangeCompleted();
-    }
-
-    @Override
     public void hideProgress() {
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -218,6 +213,12 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
         getPresenter().followUser();
     }
 
+    @Override
+    public void onUnfollowUserCompleted() {
+        setFollowingMenuIcon(false);
+        onChangeFollowingStatusCompletedListener.unfollowActionCompleted();
+    }
+
     private void initRefreshLayout() {
         swipeRefreshLayout.setColorSchemeColors(accentColor);
         swipeRefreshLayout.setOnRefreshListener(getPresenter()::refreshUserShots);
@@ -249,6 +250,6 @@ public class FollowerDetailsFragment extends BaseMvpLceFragmentWithListTypeSelec
     public interface OnFollowedShotActionListener {
         void showShotDetails(Shot shot, List<Shot> allShots, long userId);
 
-        void onFollowingStatusChangeCompleted();
+        void unfollowActionCompleted();
     }
 }

@@ -18,8 +18,6 @@ public interface FollowerDetailsContract {
 
         void showMoreUserShots(List<Shot> shotList);
 
-        void showFollowersList();
-
         void hideProgress();
 
         void openShotDetailsScreen(Shot shot, List<Shot> allShots, long userId);
@@ -29,6 +27,8 @@ public interface FollowerDetailsContract {
         void showFollowDialog(String username);
 
         void setFollowingMenuIcon(boolean isFollowed);
+
+        void onUnfollowUserCompleted();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {

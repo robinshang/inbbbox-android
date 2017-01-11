@@ -11,9 +11,7 @@ apply from: '../buildsystem/sonarqube.gradle'
 apply from: '../buildsystem/jacocoTasks.gradle'
 
 ext {
-
     secrets = [
-            hockeyAppId          : keyProperty("HockeyAppAppIdDev"),
             hockeyAppIdProd      : keyProperty("HockeyAppAppIdProd"),
             dribbbleClientKey    : keyProperty("DribbbleClientKey"),
             dribbbleClientSecret : keyProperty("DribbbleClientSecret"),
@@ -33,8 +31,6 @@ android {
         versionCode isBitrise ? Integer.parseInt(bitrise.io.buildNumber) : 1
         versionName "0.1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
         buildConfigField 'String', 'DRIBBBLE_CLIENT_KEY', '"' + secrets.dribbbleClientKey + '"'
         buildConfigField 'String', 'DRIBBBLE_CLIENT_SECRET', '"' + secrets.dribbbleClientSecret + '"'
         buildConfigField 'String', 'DRIBBBLE_CLIENT_TOKEN', '"' + secrets.dribbbleClientToken + '"'
@@ -45,16 +41,12 @@ android {
         debug {
             versionNameSuffix "-DEBUG"
             applicationIdSuffix ".debug"
-            testCoverageEnabled true
             debuggable true
             minifyEnabled true
             shrinkResources false
             useProguard false
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro',
                               'proguard-rules-test.pro'])
-
-            manifestPlaceholders = [HOCKEYAPP_APP_ID: secrets.hockeyAppId]
-            buildConfigField 'String', 'HOCKEY_APP_ID', '"' + secrets.hockeyAppId + '"'
         }
         release {
             debuggable false
@@ -65,17 +57,13 @@ android {
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
 
             manifestPlaceholders = [HOCKEYAPP_APP_ID: secrets.hockeyAppIdProd]
-            buildConfigField 'String', 'HOCKEY_APP_ID', '"' + secrets.hockeyAppIdProd + '"'
         }
     }
 
     productFlavors {
         mock {
-            versionNameSuffix "-SNAPSHOT" // if plugin v. >= 2.2
+            versionNameSuffix "-MOCK"
             applicationIdSuffix ".mock"
-
-            // put your secrets in the BuildConfig.java class, for example:
-            // buildConfigField 'String', 'HOCKEY_APP_ID', "\"${secrets.hockeyAppId}\""
         }
         production {
 
@@ -130,10 +118,6 @@ android {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
     }
 
     todo {
