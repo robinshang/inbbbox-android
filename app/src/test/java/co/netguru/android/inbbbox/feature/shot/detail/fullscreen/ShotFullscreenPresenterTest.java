@@ -101,7 +101,7 @@ public class ShotFullscreenPresenterTest {
 
         presenter.attachView(viewMock);
 
-        verify(viewMock, times(1)).previewShots(shotMock, shotList);
+        verify(viewMock, times(1)).previewShots(shotMock, shotList, 0);
     }
 
     @Test
