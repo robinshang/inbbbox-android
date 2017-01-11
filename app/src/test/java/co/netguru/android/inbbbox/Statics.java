@@ -205,6 +205,7 @@ public final class Statics {
             .avatarUrl("")
             .username("username")
             .shotsCount(0)
+            .type("Player")
             .build();
 
     public static final BucketDB BUCKET_DB = new BucketDB(1L, "test", "test", 2, ZonedDateTime.now());

@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import rx.Subscription;
@@ -97,6 +98,15 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
             getView().showEmptyLikesInfo();
         } else {
             getView().hideEmptyLikesInfo();
+        }
+    }
+
+    @Override
+    public void onFollowedUserSelect(UserWithShots followedUser) {
+        if(followedUser.user().type().equals(User.TYPE_SINGLE_USER)) {
+            getView().openSingleUserDetails(followedUser);
+        } else if(followedUser.user().type().equals(User.TYPE_TEAM)) {
+            getView().openTeamDetails(followedUser);
         }
     }
 
