@@ -25,6 +25,7 @@ import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.utils.AnimationUtil;
 import co.netguru.android.inbbbox.common.utils.InputUtil;
 import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
@@ -33,13 +34,14 @@ import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
 import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
+import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenActivity;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.ShotDetailsAdapter;
 
 public class ShotDetailsFragment
         extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
-        implements ShotDetailsContract.View, DetailsViewActionCallback {
+        implements ShotDetailsContract.View, DetailsViewActionCallback, AddToBucketDialogFragment.BucketSelectListener {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_ALL_SHOTS = "arg:all_shots";
@@ -207,8 +209,12 @@ public class ShotDetailsFragment
 
     @Override
     public void onShotBucket(long shotId, boolean isLikedBucket) {
-        // TODO: 15.11.2016 not in scope of this task
-        Toast.makeText(getContext(), "bucket: " + isLikedBucket, Toast.LENGTH_SHORT).show();
+        Shot shot = getArguments().getParcelable(ARG_SHOT);
+        if (shot != null) {
+            AddToBucketDialogFragment
+                    .newInstance(this, shot)
+                    .show(getFragmentManager(), RemoveCommentFragmentDialog.TAG);
+        }
     }
 
     @Override
@@ -339,6 +345,16 @@ public class ShotDetailsFragment
     @Override
     public void showMessageOnServerError(String errorText) {
         Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onBucketForShotSelect(Bucket bucket, Shot shot) {
+        getPresenter().addShotToBucket(bucket, shot);
+    }
+
+    @Override
+    public void showBucketAddSuccess() {
+        showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {

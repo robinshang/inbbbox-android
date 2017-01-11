@@ -103,6 +103,7 @@ public class MainActivity
     public static void startActivityWithRequest(Context context, int requestCode) {
         final Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra(REQUEST_EXTRA, requestCode);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
     }
 
@@ -146,6 +147,7 @@ public class MainActivity
         switch (intent.getIntExtra(REQUEST_EXTRA, REQUEST_DEFAULT)) {
             case REQUEST_REFRESH_FOLLOWER_LIST:
                 pagerAdapter.refreshFragment(TabItemType.FOLLOWERS);
+                selectTab(tabLayout.getTabAt(TabItemType.FOLLOWERS.getPosition()));
                 break;
             default:
                 throw new IllegalStateException("Intent should contains REQUEST_EXTRA");

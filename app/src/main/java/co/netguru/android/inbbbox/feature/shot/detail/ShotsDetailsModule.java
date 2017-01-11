@@ -9,6 +9,7 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.shot.ShotsApi;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.event.RxBus;
 import dagger.Module;
 import dagger.Provides;
 
@@ -32,8 +33,11 @@ public class ShotsDetailsModule {
     @Provides
     @FragmentScope
     ShotDetailsPresenter provideShotDetailsPresenter(ShotDetailsController shotDetailsController,
-                                                     ErrorController errorController) {
-        return new ShotDetailsPresenter(shotDetailsController, errorController, allShots);
+                                                     ErrorController errorController,
+                                                     RxBus rxBus,
+                                                     BucketsController bucketsController) {
+        return new ShotDetailsPresenter(shotDetailsController, errorController, allShots,
+                rxBus, bucketsController);
+
     }
 }
-

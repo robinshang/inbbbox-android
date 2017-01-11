@@ -16,6 +16,10 @@ interface LikesViewContract {
 
         void showMoreLikes(List<Shot> likedShotList);
 
+        void showLikeAtTop(Shot likedShot);
+
+        void removeShotFromLikes(Shot unlikedShot);
+
         void showLoadingMoreLikesView();
 
         void hideLoadingMoreLikesView();
