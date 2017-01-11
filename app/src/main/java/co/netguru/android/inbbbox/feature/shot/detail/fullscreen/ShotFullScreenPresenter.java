@@ -56,7 +56,13 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
             currentPage = allShots.size() / SHOTS_PER_PAGE;
             hasMore = allShots.size() % SHOTS_PER_PAGE == 0;
 
-            getView().previewShots(shot, allShots);
+            for (int i = 0; i < allShots.size(); i++) {
+                Shot s = allShots.get(i);
+                if (shot.id() == s.id()) {
+                    getView().previewShots(shot, allShots, i);
+                    break;
+                }
+            }
         } else {
             getView().previewSingleShot(shot);
         }

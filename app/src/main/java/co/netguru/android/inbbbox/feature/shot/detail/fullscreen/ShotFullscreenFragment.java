@@ -91,8 +91,8 @@ public class ShotFullscreenFragment extends
     }
 
     @Override
-    public void previewShots(Shot shot, List<Shot> allShots) {
-        this.currentShotIndex = allShots.indexOf(shot);
+    public void previewShots(Shot shot, List<Shot> allShots, int shotIndex) {
+        this.currentShotIndex = shotIndex;
         adapter.setItems(allShots);
     }
 
