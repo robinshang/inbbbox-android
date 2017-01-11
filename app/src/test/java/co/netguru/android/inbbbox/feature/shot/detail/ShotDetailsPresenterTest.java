@@ -70,6 +70,9 @@ public class ShotDetailsPresenterTest {
     User userMock;
 
     @Mock
+    List<Shot> shotsMock;
+
+    @Mock
     BucketsController bucketsControllerMock;
 
     @InjectMocks
@@ -589,8 +592,8 @@ public class ShotDetailsPresenterTest {
 
     @Test
     public void whenOnShotImageClicked_thenShowFullscreen() {
-        shotDetailsPresenter.onShotImageClick(Collections.emptyList());
-        verify(viewMock, times(1)).openShotFullscreen(any(Shot.class), any(List.class));
+        shotDetailsPresenter.onShotImageClick();
+        verify(viewMock, times(1)).openShotFullscreen(any(List.class), anyInt());
     }
 
     @Test

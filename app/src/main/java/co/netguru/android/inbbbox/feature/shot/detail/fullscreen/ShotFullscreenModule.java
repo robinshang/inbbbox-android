@@ -15,12 +15,13 @@ import dagger.Provides;
 @Module
 public class ShotFullscreenModule {
 
-    private final Shot shot;
     private final List<Shot> allShots;
+    private final int previewShotIndex;
     private final ShotDetailsRequest shotDetailsRequest;
 
-    public ShotFullscreenModule(Shot shot, List<Shot> allShots, ShotDetailsRequest shotDetailsRequest) {
-        this.shot = shot;
+    public ShotFullscreenModule(List<Shot> allShots, int previewShotIndex,
+                                ShotDetailsRequest shotDetailsRequest) {
+        this.previewShotIndex = previewShotIndex;
         this.allShots = allShots;
         this.shotDetailsRequest = shotDetailsRequest;
     }
@@ -38,6 +39,6 @@ public class ShotFullscreenModule {
                                                         BucketsController bucketsController,
                                                         UserShotsController userShotsController) {
         return new ShotFullScreenPresenter(shotsController, likeShotController, bucketsController,
-                userShotsController, shot, allShots, shotDetailsRequest);
+                userShotsController, allShots, previewShotIndex, shotDetailsRequest);
     }
 }

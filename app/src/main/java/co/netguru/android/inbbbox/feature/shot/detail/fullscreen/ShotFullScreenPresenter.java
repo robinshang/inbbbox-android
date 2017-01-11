@@ -31,21 +31,21 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
     private final BucketsController bucketsController;
     private final UserShotsController userShotsController;
     private final ShotDetailsRequest detailsRequest;
-    private final Shot shot;
     private final List<Shot> allShots;
+    private final int previewShotIndex;
     private int currentPage;
     private boolean hasMore = true;
 
     @Inject
     public ShotFullScreenPresenter(ShotsController shotsController, LikeShotController likedShotsController,
                                    BucketsController bucketsController, UserShotsController userShotsController,
-                                   Shot shot, List<Shot> allShots, ShotDetailsRequest shotDetailsRequest) {
+                                   List<Shot> allShots, int previewShotIndex, ShotDetailsRequest shotDetailsRequest) {
         this.shotsController = shotsController;
         this.likedShotsController = likedShotsController;
         this.bucketsController = bucketsController;
         this.userShotsController = userShotsController;
         this.detailsRequest = shotDetailsRequest;
-        this.shot = shot;
+        this.previewShotIndex = previewShotIndex;
         this.allShots = allShots;
     }
 
@@ -53,13 +53,11 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
     public void attachView(ShotFullscreenContract.View view) {
         super.attachView(view);
 
-        if (allShots != null && !allShots.isEmpty()) {
-            currentPage = allShots.size() / SHOTS_PER_PAGE;
-            hasMore = allShots.size() % SHOTS_PER_PAGE == 0;
+        currentPage = allShots.size() / SHOTS_PER_PAGE;
+        hasMore = allShots.size() % SHOTS_PER_PAGE == 0;
 
-            getView().previewShots(shot, allShots);
-        } else {
-            getView().previewSingleShot(shot);
+        if(allShots.size() > 0) {
+            getView().previewShots(allShots, previewShotIndex);
         }
     }
 
