@@ -66,6 +66,9 @@ public class ShotDetailsPresenterTest {
     @Mock
     User userMock;
 
+    @Mock
+    List<Shot> shotsMock;
+
     @InjectMocks
     ShotDetailsPresenter shotDetailsPresenter;
 
@@ -583,8 +586,8 @@ public class ShotDetailsPresenterTest {
 
     @Test
     public void whenOnShotImageClicked_thenShowFullscreen() {
-        shotDetailsPresenter.onShotImageClick(Collections.emptyList());
-        verify(viewMock, times(1)).openShotFullscreen(any(Shot.class), any(List.class));
+        shotDetailsPresenter.onShotImageClick();
+        verify(viewMock, times(1)).openShotFullscreen(any(List.class), anyInt());
     }
 
     @After

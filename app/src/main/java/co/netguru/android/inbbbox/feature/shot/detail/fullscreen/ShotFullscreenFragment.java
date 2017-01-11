@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,7 +30,7 @@ public class ShotFullscreenFragment extends
         ShotFullscreenContract.View {
 
     public static final String TAG = ShotFullscreenFragment.class.getSimpleName();
-    public static final String KEY_SHOT = "key:shot";
+    public static final String KEY_PREVIEW_SHOT_INDEX = "key:preview_shot_index";
     public static final String KEY_ALL_SHOTS = "key:all_shots";
     public static final String KEY_DETAILS_REQUEST = "key:details_request";
     private static final int SHOTS_TO_LOAD_MORE = 5;
@@ -44,9 +45,10 @@ public class ShotFullscreenFragment extends
 
     private int currentShotIndex;
 
-    public static ShotFullscreenFragment newInstance(Shot shot, List<Shot> allShots, ShotDetailsRequest detailsRequest) {
+    public static ShotFullscreenFragment newInstance(List<Shot> allShots, int previewShotIndex,
+                                                     ShotDetailsRequest detailsRequest) {
         Bundle args = new Bundle();
-        args.putParcelable(KEY_SHOT, shot);
+        args.putInt(KEY_PREVIEW_SHOT_INDEX, previewShotIndex);
         args.putParcelable(KEY_DETAILS_REQUEST, detailsRequest);
 
         if (allShots instanceof ArrayList) {
@@ -91,14 +93,9 @@ public class ShotFullscreenFragment extends
     }
 
     @Override
-    public void previewShots(Shot shot, List<Shot> allShots, int shotIndex) {
-        this.currentShotIndex = shotIndex;
+    public void previewShots(List<Shot> allShots, int previewShotIndex) {
+        this.currentShotIndex = previewShotIndex;
         adapter.setItems(allShots);
-    }
-
-    @Override
-    public void previewSingleShot(Shot shot) {
-        adapter.setItems(Arrays.asList(shot));
     }
 
     @Override
@@ -125,12 +122,12 @@ public class ShotFullscreenFragment extends
     }
 
     private void initComponent() {
-        Shot shot = getArguments().getParcelable(KEY_SHOT);
-        List<Shot> allShots = getArguments().getParcelableArrayList(KEY_ALL_SHOTS);
+        int previewShotIndex = getArguments().getInt(KEY_PREVIEW_SHOT_INDEX);
+        List<Shot> shots = getArguments().getParcelableArrayList(KEY_ALL_SHOTS);
         ShotDetailsRequest detailsRequest = getArguments().getParcelable(KEY_DETAILS_REQUEST);
 
         component = App.getUserComponent(getContext())
-                .plus(new ShotFullscreenModule(shot, allShots, detailsRequest));
+                .plus(new ShotFullscreenModule(shots, previewShotIndex, detailsRequest));
         component.inject(this);
     }
 }

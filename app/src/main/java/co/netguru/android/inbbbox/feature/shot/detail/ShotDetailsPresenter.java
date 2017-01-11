@@ -26,6 +26,7 @@ public class ShotDetailsPresenter
     private final CompositeSubscription subscriptions;
     private boolean isCommentModeInit;
     private Shot shot;
+    private List<Shot> allShots;
     private Comment commentInEditor;
     private CommentLoadMoreState commentLoadMoreState;
     private int pageNumber = 1;
@@ -33,11 +34,12 @@ public class ShotDetailsPresenter
 
     @Inject
     public ShotDetailsPresenter(ShotDetailsController shotDetailsController,
-                                ErrorController errorController) {
+                                ErrorController errorController, List<Shot> allShots) {
         this.shotDetailsController = shotDetailsController;
         this.errorController = errorController;
         this.subscriptions = new CompositeSubscription();
         this.commentLoadMoreState = new CommentLoadMoreState();
+        this.allShots = allShots;
     }
 
     @Override
@@ -131,8 +133,8 @@ public class ShotDetailsPresenter
     }
 
     @Override
-    public void onShotImageClick(List<Shot> allShots) {
-        getView().openShotFullscreen(shot, allShots);
+    public void onShotImageClick() {
+        getView().openShotFullscreen(allShots, allShots.indexOf(shot));
     }
 
     @Override
@@ -183,9 +185,11 @@ public class ShotDetailsPresenter
     }
 
     private void updateLikeState(boolean newLikeState) {
+        int index = allShots.indexOf(shot);
         shot = Shot.update(shot)
                 .isLiked(newLikeState)
                 .build();
+        allShots.set(index, shot);
         showShotDetails(shot);
     }
 
@@ -226,10 +230,12 @@ public class ShotDetailsPresenter
 
     private void updateShotDetails(boolean liked, boolean bucketed) {
         if (shot.isLiked() != liked || shot.isBucketed() != bucketed) {
+            int index = allShots.indexOf(shot);
             shot = Shot.update(shot)
                     .isLiked(liked)
                     .isBucketed(bucketed)
                     .build();
+            allShots.set(index, shot);
             showShotDetails(shot);
         }
     }

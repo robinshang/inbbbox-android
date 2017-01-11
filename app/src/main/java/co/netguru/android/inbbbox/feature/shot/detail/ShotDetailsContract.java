@@ -68,7 +68,7 @@ public interface ShotDetailsContract {
 
         void disableEditorProgressMode();
 
-        void openShotFullscreen(Shot shot, List<Shot> allShots);
+        void openShotFullscreen(List<Shot> allShots, int previewShotIndex);
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -93,6 +93,6 @@ public interface ShotDetailsContract {
 
         void getMoreComments();
 
-        void onShotImageClick(List<Shot> allShots);
+        void onShotImageClick();
     }
 }

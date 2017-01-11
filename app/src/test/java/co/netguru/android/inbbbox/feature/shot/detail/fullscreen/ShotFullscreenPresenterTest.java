@@ -5,12 +5,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,17 +28,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-
 public class ShotFullscreenPresenterTest {
 
     private static final int SHOT_PAGE_COUNT = 15;
     private static final int SHOT_PAGE_2 = 2;
+    private static final int EXAMPLE_PREVIEW_SHOT_INDEX = 0;
 
     @Rule
     public TestRule rule = new RxSyncTestRule();
-
-    @InjectMocks
-    ShotFullScreenPresenter shotFullScreenPresenter;
 
     @Mock
     ShotFullscreenContract.View viewMock;
@@ -66,6 +61,8 @@ public class ShotFullscreenPresenterTest {
 
     List<Shot> expectedShots = Collections.emptyList();
 
+    List<Shot> allShots;
+
     ShotDetailsRequest defaultRequest = ShotDetailsRequest.builder()
             .detailsType(ShotDetailsType.DEFAULT)
             .build();
@@ -81,58 +78,52 @@ public class ShotFullscreenPresenterTest {
         for (int i = 0; i < SHOT_PAGE_COUNT / 2; i++) {
             shotsHalfPage.add(shotMock);
         }
+
+        allShots = new ArrayList<>();
+        allShots.add(shotMock);
     }
 
     @Test
-    public void whenViewCreatedWithSingleShot_thenPreviewSingleShot() {
+    public void whenViewCreated_thenPreviewShots() {
         ShotFullScreenPresenter presenter = new ShotFullScreenPresenter(shotsController, likeShotController,
-                bucketsController, userShotsController, shotMock, Collections.emptyList(), defaultRequest);
+                bucketsController, userShotsController, allShots, EXAMPLE_PREVIEW_SHOT_INDEX, defaultRequest);
 
         presenter.attachView(viewMock);
 
-        verify(viewMock, times(1)).previewSingleShot(shotMock);
-    }
-
-    @Test
-    public void whenViewCreatedWithSingleShot_thenPreviewShots() {
-        List<Shot> shotList = Arrays.asList(shotMock);
-        ShotFullScreenPresenter presenter = new ShotFullScreenPresenter(shotsController, likeShotController,
-                bucketsController, userShotsController, shotMock, shotList, defaultRequest);
-
-        presenter.attachView(viewMock);
-
-        verify(viewMock, times(1)).previewShots(shotMock, shotList, 0);
+        verify(viewMock, times(1)).previewShots(allShots, EXAMPLE_PREVIEW_SHOT_INDEX);
     }
 
     @Test
     public void whenInitialShotsWereFullPageAndRequestedMore_thenShowMoreItems() {
-        ShotFullScreenPresenter presenter = new ShotFullScreenPresenter(shotsController, likeShotController,
-                bucketsController, userShotsController, shotMock, shotsFullPage, defaultRequest);
-        presenter.attachView(viewMock);
+        ShotFullScreenPresenter fullPagePresenter = new ShotFullScreenPresenter(shotsController, likeShotController,
+                bucketsController, userShotsController, shotsFullPage, EXAMPLE_PREVIEW_SHOT_INDEX, defaultRequest);
+        fullPagePresenter.attachView(viewMock);
         when(shotsController.getShots(SHOT_PAGE_2, SHOT_PAGE_COUNT)).thenReturn(Observable.just(expectedShots));
 
-        presenter.onRequestMoreData();
+        fullPagePresenter.onRequestMoreData();
 
         verify(viewMock, times(1)).showMoreItems(expectedShots);
     }
 
     @Test
     public void whenInitialShotsWereNotFullPageAndRequestedMore_thenDoNotShowMoreItems() {
-        ShotFullScreenPresenter presenter = new ShotFullScreenPresenter(shotsController, likeShotController,
-                bucketsController, userShotsController, shotMock, shotsHalfPage, defaultRequest);
-        presenter.attachView(viewMock);
+        ShotFullScreenPresenter halfPagePresenter = new ShotFullScreenPresenter(shotsController, likeShotController,
+                bucketsController, userShotsController, shotsHalfPage, EXAMPLE_PREVIEW_SHOT_INDEX, defaultRequest);
+        halfPagePresenter.attachView(viewMock);
         when(shotsController.getShots(SHOT_PAGE_2, SHOT_PAGE_COUNT)).thenReturn(Observable.just(expectedShots));
 
-        presenter.onRequestMoreData();
+        halfPagePresenter.onRequestMoreData();
 
         verify(viewMock, never()).showMoreItems(expectedShots);
     }
 
     @Test
     public void whenBackArrowPressed_thenCloseView() {
-        shotFullScreenPresenter.attachView(viewMock);
+        ShotFullScreenPresenter presenter = new ShotFullScreenPresenter(shotsController, likeShotController,
+                bucketsController, userShotsController, allShots, EXAMPLE_PREVIEW_SHOT_INDEX, defaultRequest);
 
-        shotFullScreenPresenter.onBackArrowPressed();
+        presenter.attachView(viewMock);
+        presenter.onBackArrowPressed();
 
         verify(viewMock, times(1)).close();
     }
