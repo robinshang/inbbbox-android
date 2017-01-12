@@ -114,7 +114,7 @@ public class RemoveFromBucketDialogFragment extends BaseMvpDialogFragment<Remove
         heightPercentage = getResources().getFraction(R.fraction.big_dialog_height_width_percentage, 1, 1);
         setupRecyclerView();
         getPresenter().handleShot(getArguments().getParcelable(SHOT_ARG_KEY));
-        getPresenter().loadAvailableBuckets();
+        getPresenter().loadBucketsForShot();
     }
 
     @Override

@@ -48,7 +48,7 @@ public interface RemoveFromBucketContract {
 
         void handleShot(Shot shot);
 
-        void loadAvailableBuckets();
+        void loadBucketsForShot();
 
         void loadMoreBuckets();
 

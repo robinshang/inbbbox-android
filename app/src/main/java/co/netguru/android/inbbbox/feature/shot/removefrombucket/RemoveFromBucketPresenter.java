@@ -4,9 +4,13 @@ import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
+import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -27,7 +31,6 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
     private Subscription refreshSubscription;
     @NonNull
     private Subscription loadNextBucketsSubscription;
-    private Subscription busSubscription;
 
     private Shot shot;
     private int pageNumber = 1;
@@ -44,7 +47,6 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
-        busSubscription.unsubscribe();
         refreshSubscription.unsubscribe();
         loadNextBucketsSubscription.unsubscribe();
     }
@@ -64,13 +66,37 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
     }
 
     @Override
-    public void loadAvailableBuckets() {
-
+    public void loadBucketsForShot() {
+        if (refreshSubscription.isUnsubscribed()) {
+            loadNextBucketsSubscription.unsubscribe();
+            pageNumber = 1;
+            refreshSubscription = bucketsController.getListBucketsForShot(shot.id())
+                    .doOnSubscribe(getView()::showBucketListLoading)
+                    .compose(RxTransformerUtil.applySingleIoSchedulers())
+                    .doAfterTerminate(getView()::hideProgressBar)
+                    .subscribe(buckets -> {
+                        apiHasMoreBuckets = buckets.size() == BUCKETS_PER_PAGE_COUNT;
+                        getView().setBucketsList(buckets);
+                        getView().showBucketsList();
+                    }, throwable -> handleError(throwable, "Error occurred while requesting buckets"));
+        }
     }
 
     @Override
     public void loadMoreBuckets() {
-
+        if (apiHasMoreBuckets && refreshSubscription.isUnsubscribed() && loadNextBucketsSubscription.isUnsubscribed()) {
+            pageNumber++;
+            loadNextBucketsSubscription = bucketsController.getListBucketsForShot(shot.id())
+                    .toObservable()
+                    .compose(RxTransformerUtil.executeRunnableIfObservableDidntEmitUntilGivenTime(
+                            SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
+                            getView()::showBucketListLoadingMore))
+                    .compose(RxTransformers.androidIO())
+                    .subscribe(buckets -> {
+                        apiHasMoreBuckets = buckets.size() == BUCKETS_PER_PAGE_COUNT;
+                        getView().showMoreBuckets(buckets);
+                    }, throwable -> handleError(throwable, "Error occurred while requesting more buckets"));
+        }
     }
 
     @Override
