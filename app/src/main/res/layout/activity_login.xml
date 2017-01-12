@@ -5,7 +5,7 @@
     android:background="@drawable/bcg_intro"
     android:fillViewport="true"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="@dimen/margin_default">
 
     <ImageView
         android:id="@+id/login_logo_ball"
@@ -96,7 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/margin_default"
         android:layout_marginEnd="@dimen/margin_default"
         android:layout_marginStart="@dimen/margin_default"
         android:layout_marginTop="@dimen/margin_default"
