@@ -53,6 +53,11 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
     }
 
     @Override
+    public void attachView(RemoveFromBucketContract.View view) {
+        super.attachView(view);
+    }
+
+    @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
         refreshSubscription.unsubscribe();

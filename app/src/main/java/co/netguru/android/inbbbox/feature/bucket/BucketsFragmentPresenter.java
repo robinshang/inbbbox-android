@@ -17,6 +17,7 @@ import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.BucketCreatedEvent;
+import co.netguru.android.inbbbox.event.events.ShotRemovedFromBucketEvent;
 import rx.Subscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
@@ -39,7 +40,8 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     private Subscription refreshSubscription;
     @NonNull
     private Subscription loadNextBucketSubscription;
-    private Subscription busSubscription;
+    private Subscription bucketCreatedBusSubscription;
+    private Subscription shotRemovedBusSubscription;
 
     @Inject
     BucketsFragmentPresenter(BucketsController bucketsController, RxBus rxBus, ErrorController errorController) {
@@ -53,7 +55,8 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
-        busSubscription.unsubscribe();
+        bucketCreatedBusSubscription.unsubscribe();
+        shotRemovedBusSubscription.unsubscribe();
         if (!retainInstance) {
             refreshSubscription.unsubscribe();
             loadNextBucketSubscription.unsubscribe();
@@ -63,7 +66,8 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     @Override
     public void attachView(BucketsFragmentContract.View view) {
         super.attachView(view);
-        setupRxBus();
+        setupBucketCreatedRxBus();
+        setupShotRemovedRxBus();
     }
 
     @Override
@@ -134,14 +138,22 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
-    private void setupRxBus() {
-        busSubscription = rxBus.getEvents(BucketCreatedEvent.class)
+    private void setupBucketCreatedRxBus() {
+        bucketCreatedBusSubscription = rxBus.getEvents(BucketCreatedEvent.class)
                 .compose(RxTransformers.androidIO())
                 .subscribe(bucketCreatedEvent -> {
                     BucketWithShots bucketWithShots = BucketWithShots.create(bucketCreatedEvent.getBucket(),
                             Collections.emptyList());
                     getView().addNewBucketWithShotsOnTop(bucketWithShots);
                     getView().scrollToTop();
+                });
+    }
+
+    private void setupShotRemovedRxBus() {
+        shotRemovedBusSubscription = rxBus.getEvents(ShotRemovedFromBucketEvent.class)
+                .compose(RxTransformers.androidIO())
+                .subscribe(bucketCreatedEvent -> {
+                   loadBucketsWithShots();
                 });
     }
 }
