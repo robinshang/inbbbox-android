@@ -60,4 +60,10 @@ public class BucketsControllerGuest implements BucketsController {
         // TODO 12.01.2017 Not in scope of task
         return null;
     }
+
+    @Override
+    public Completable removeShotFromBucket(long bucketId, Shot shot) {
+        // TODO 12.01.2017 Not in scope of task
+        return null;
+    }
 }

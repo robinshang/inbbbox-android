@@ -72,6 +72,8 @@ public interface ShotDetailsContract {
         void openShotFullscreen(Shot shot, List<Shot> allShots);
 
         void showBucketAddSuccess();
+
+        void showShotRemoveFromBucketSuccess();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -99,5 +101,7 @@ public interface ShotDetailsContract {
         void onShotImageClick(List<Shot> allShots);
 
         void addShotToBucket(Bucket bucket, Shot shot);
+
+        void removeShotFromBuckets(List<Bucket> list, Shot shot);
     }
 }

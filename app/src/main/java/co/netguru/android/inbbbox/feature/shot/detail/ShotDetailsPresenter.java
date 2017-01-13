@@ -15,7 +15,6 @@ import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.ShotLikedEvent;
-import retrofit2.http.HEAD;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -162,6 +161,19 @@ public class ShotDetailsPresenter
                                 getView()::showBucketAddSuccess,
                                 throwable -> handleError(throwable, "Error while adding shot to bucket"))
         );
+    }
+
+    @Override
+    public void removeShotFromBuckets(List<Bucket> list, Shot shot) {
+        for (Bucket bucket: list) {
+            subscriptions.add(
+                    bucketsController.removeShotFromBucket(bucket.id(), shot)
+                            .compose(RxTransformerUtil.applyCompletableIoSchedulers())
+                            .subscribe(
+                                    getView()::showShotRemoveFromBucketSuccess,
+                                    throwable -> handleError(throwable, "Error while removing shot from bucket"))
+            );
+        }
     }
 
     private void initializeView() {

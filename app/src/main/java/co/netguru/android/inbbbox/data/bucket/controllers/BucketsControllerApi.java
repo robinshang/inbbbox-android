@@ -81,6 +81,11 @@ public class BucketsControllerApi implements BucketsController {
                 .flatMap(currentUserId -> getUserBucketsListForShot(currentUserId, shotId));
     }
 
+    @Override
+    public Completable removeShotFromBucket(long bucketId, Shot shot) {
+        return bucketApi.removeShotFromBucket(bucketId, shot.id());
+    }
+
     private Observable<List<Shot>> getShotsListObservableFromBucket(long bucketId, int pageNumber, int pageCount) {
         return bucketApi.getBucketShotsList(bucketId, pageNumber, pageCount)
                 .flatMapObservable(Observable::from)

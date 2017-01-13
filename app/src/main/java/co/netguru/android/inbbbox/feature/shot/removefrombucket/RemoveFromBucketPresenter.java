@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -31,10 +33,14 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
     private Subscription refreshSubscription;
     @NonNull
     private Subscription loadNextBucketsSubscription;
+    @NonNull
+    private Subscription removeFromBucketSubscription;
 
     private Shot shot;
     private int pageNumber = 1;
     private boolean apiHasMoreBuckets = true;
+
+    private List<Bucket> bucketsToRemoveFromList = new ArrayList<>();
 
     @Inject
     RemoveFromBucketPresenter(BucketsController bucketsController, ErrorController errorController) {
@@ -42,6 +48,8 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
         this.errorController = errorController;
         refreshSubscription = Subscriptions.unsubscribed();
         loadNextBucketsSubscription = Subscriptions.unsubscribed();
+        removeFromBucketSubscription = Subscriptions.unsubscribed();
+        bucketsToRemoveFromList = new ArrayList<>();
     }
 
     @Override
@@ -49,6 +57,7 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
         super.detachView(retainInstance);
         refreshSubscription.unsubscribe();
         loadNextBucketsSubscription.unsubscribe();
+        removeFromBucketSubscription.unsubscribe();
     }
 
     @Override
@@ -100,11 +109,6 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
     }
 
     @Override
-    public void handleBucketClick(Bucket bucket) {
-        getView().passResultAndCloseFragment(bucket, shot);
-    }
-
-    @Override
     public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
@@ -113,6 +117,27 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
     @Override
     public void onOpenShotFullscreen() {
         getView().openShotFullscreen(shot);
+    }
+
+    @Override
+    public void handleCheckboxClick(Bucket bucket, boolean isChecked) {
+        if (isChecked) {
+            bucketsToRemoveFromList.add(bucket);
+        } else {
+            removeBucketFromList(bucket);
+        }
+    }
+
+    @Override
+    public void removeShotFromBuckets() {
+        getView().passResultAndCloseFragment(bucketsToRemoveFromList, shot);
+    }
+
+    private void removeBucketFromList(Bucket bucketToRemove) {
+        for (int i = 0; i < bucketsToRemoveFromList.size(); i++) {
+            if (bucketsToRemoveFromList.get(i).id() == bucketToRemove.id())
+                bucketsToRemoveFromList.remove(i);
+        }
     }
 
 }

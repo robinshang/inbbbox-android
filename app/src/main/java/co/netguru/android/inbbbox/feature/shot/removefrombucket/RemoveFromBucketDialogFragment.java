@@ -22,7 +22,6 @@ import com.bumptech.glide.Glide;
 
 import org.threeten.bp.ZonedDateTime;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,7 +39,6 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpDialogFragment;
 import co.netguru.android.inbbbox.feature.shared.view.DividerItemDecorator;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
-import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenActivity;
@@ -85,8 +83,6 @@ public class RemoveFromBucketDialogFragment extends BaseMvpDialogFragment<Remove
     String shotCreatedByString;
     @BindString(R.string.fragment_add_to_bucket_shot_created_for)
     String shotCreatedForString;
-
-    List<Bucket> bucketToRemoveFrom = new ArrayList<>();
 
     private final BucketsAdapterRemoveFromBucket bucketsAdapter = new BucketsAdapterRemoveFromBucket(this);
 
@@ -141,7 +137,7 @@ public class RemoveFromBucketDialogFragment extends BaseMvpDialogFragment<Remove
 
     @OnClick(R.id.remove_from_bucket_button)
     void onRemoveFromBucketButtonClick() {
-        // TODO
+        getPresenter().removeShotFromBuckets();
     }
 
     @Override
@@ -206,14 +202,14 @@ public class RemoveFromBucketDialogFragment extends BaseMvpDialogFragment<Remove
     }
 
     @Override
-    public void passResultAndCloseFragment(Bucket bucket, Shot shot) {
+    public void passResultAndCloseFragment(List<Bucket> list, Shot shot) {
         Fragment targetFragment = getTargetFragment();
         try {
-            AddToBucketDialogFragment.BucketSelectListener listener = (AddToBucketDialogFragment.BucketSelectListener) targetFragment;
-            listener.onBucketForShotSelect(bucket, shot);
+            RemoveFromBucketDialogFragment.BucketSelectListener listener = (RemoveFromBucketDialogFragment.BucketSelectListener) targetFragment;
+            listener.onBucketToRemoveFromForShotSelect(list, shot);
             dismiss();
         } catch (ClassCastException e) {
-            throw new InterfaceNotImplementedException(e, targetFragment.getClass().getSimpleName(), AddToBucketDialogFragment.BucketSelectListener.class.getSimpleName());
+            throw new InterfaceNotImplementedException(e, targetFragment.getClass().getSimpleName(), RemoveFromBucketDialogFragment.BucketSelectListener.class.getSimpleName());
         }
     }
 
@@ -278,7 +274,13 @@ public class RemoveFromBucketDialogFragment extends BaseMvpDialogFragment<Remove
     }
 
     @Override
-    public void onCheckboxChange(Bucket bucket) {
-        bucketToRemoveFrom.add(bucket);
+    public void onCheckboxChange(Bucket bucket, boolean isChecked) {
+        getPresenter().handleCheckboxClick(bucket, isChecked);
+    }
+
+    @FunctionalInterface
+    public interface BucketSelectListener {
+
+        void onBucketToRemoveFromForShotSelect(List<Bucket> list, Shot shot);
     }
 }

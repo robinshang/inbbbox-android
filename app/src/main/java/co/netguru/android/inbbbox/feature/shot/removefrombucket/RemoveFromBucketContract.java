@@ -33,7 +33,7 @@ public interface RemoveFromBucketContract {
 
         void hideProgressBar();
 
-        void passResultAndCloseFragment(Bucket bucket, Shot shot);
+        void passResultAndCloseFragment(List<Bucket> list, Shot shot);
 
         void openShotFullscreen(Shot shot);
 
@@ -52,8 +52,10 @@ public interface RemoveFromBucketContract {
 
         void loadMoreBuckets();
 
-        void handleBucketClick(Bucket bucket);
-
         void onOpenShotFullscreen();
+
+        void handleCheckboxClick(Bucket bucket, boolean isChecked);
+
+        void removeShotFromBuckets();
     }
 }

@@ -38,10 +38,12 @@ import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFrag
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenActivity;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.ShotDetailsAdapter;
+import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucketDialogFragment;
 
 public class ShotDetailsFragment
         extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
-        implements ShotDetailsContract.View, DetailsViewActionCallback, AddToBucketDialogFragment.BucketSelectListener {
+        implements ShotDetailsContract.View, DetailsViewActionCallback,
+        AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_ALL_SHOTS = "arg:all_shots";
@@ -356,6 +358,11 @@ public class ShotDetailsFragment
         showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
     }
 
+    @Override
+    public void showShotRemoveFromBucketSuccess() {
+        showTextOnSnackbar(R.string.shots_fragment_remove_shot_from_bucket_success);
+    }
+
     private RecyclerView.OnScrollListener createScrollListener() {
         return new RecyclerView.OnScrollListener() {
             @Override
@@ -371,5 +378,10 @@ public class ShotDetailsFragment
         if (isInputPanelShowingEnabled && adapter.isInputVisibilityPermitted(lastVisibleIndex)) {
             showInputIfHidden();
         }
+    }
+
+    @Override
+    public void onBucketToRemoveFromForShotSelect(List<Bucket> list, Shot shot) {
+        getPresenter().removeShotFromBuckets(list, shot);
     }
 }

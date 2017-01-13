@@ -3,7 +3,6 @@ package co.netguru.android.inbbbox.feature.shot.removefrombucket.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -29,10 +28,11 @@ public class BucketViewHolderRemoveFromBucket extends BaseViewHolder<Bucket> {
     String shotsCountString;
 
     private Bucket currentBucket;
+    private CheckboxChangeListener checkboxChangeListener;
 
     public BucketViewHolderRemoveFromBucket(ViewGroup parent, @NonNull CheckboxChangeListener checkboxChangeListener) {
         super(LayoutInflater.from(parent.getContext()).inflate(R.layout.checkbox_bucket_list_item, parent, false));
-        itemView.setOnClickListener(v -> checkboxChangeListener.onCheckboxChange(currentBucket));
+        this.checkboxChangeListener = checkboxChangeListener;
     }
 
     @Override
@@ -40,16 +40,14 @@ public class BucketViewHolderRemoveFromBucket extends BaseViewHolder<Bucket> {
         currentBucket = item;
         bucketNameText.setText(currentBucket.name());
         shotsCountText.setText(String.format(shotsCountString, currentBucket.shotsCount()));
-        checkboxLinearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bucketCheckbox.setChecked(!bucketCheckbox.isChecked());
-            }
+        checkboxLinearLayout.setOnClickListener(view -> {
+                    bucketCheckbox.setChecked(!bucketCheckbox.isChecked());
+                    checkboxChangeListener.onCheckboxChange(currentBucket, bucketCheckbox.isChecked());
         });
     }
 
     @FunctionalInterface
     public interface CheckboxChangeListener {
-        void onCheckboxChange(Bucket bucket);
+        void onCheckboxChange(Bucket bucket, boolean isChecked);
     }
 }
