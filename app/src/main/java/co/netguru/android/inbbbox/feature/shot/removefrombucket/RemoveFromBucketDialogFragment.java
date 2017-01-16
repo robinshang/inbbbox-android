@@ -22,7 +22,6 @@ import com.bumptech.glide.Glide;
 
 import org.threeten.bp.ZonedDateTime;
 
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindColor;
@@ -216,10 +215,10 @@ public class RemoveFromBucketDialogFragment extends BaseMvpDialogFragment<Remove
     @Override
     public void openShotFullscreen(Shot shot) {
         ShotDetailsRequest request = ShotDetailsRequest.builder()
-                .detailsType(ShotDetailsType.ADD_TO_BUCKET)
+                .detailsType(ShotDetailsType.REMOVE_FROM_BUCKET)
                 .build();
 
-        ShotFullscreenActivity.startActivity(getContext(), shot, Collections.emptyList(), request);
+        ShotFullscreenActivity.startActivitySingleShot(getContext(), shot, request);
     }
 
     @Override
