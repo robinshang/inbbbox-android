@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/checkbox_linear_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/margin_default"
+    android:paddingRight="@dimen/margin_default">
+
+    <CheckBox
+        android:id="@+id/bucket_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:clickable="false"/>
+
+    <TextView
+        android:id="@+id/bucket_name_text_view"
+        style="@style/Font14.Pink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/margin_default"
+        android:paddingTop="@dimen/margin_default"
+        tools:text="UI Mobile Apps" />
+
+    <TextView
+        android:id="@+id/shots_count_text_view"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end|center"
+        android:layout_weight="1"
+        tools:text="7 shots"/>
+
+</LinearLayout>

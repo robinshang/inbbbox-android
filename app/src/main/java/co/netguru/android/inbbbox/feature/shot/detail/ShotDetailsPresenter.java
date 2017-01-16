@@ -15,6 +15,8 @@ import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.ShotLikedEvent;
+import co.netguru.android.inbbbox.event.events.ShotRemovedFromBucketEvent;
+
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -165,6 +167,18 @@ public class ShotDetailsPresenter
         );
     }
 
+    @Override
+    public void removeShotFromBuckets(List<Bucket> list, Shot shot) {
+        for (Bucket bucket: list) {
+            subscriptions.add(
+                    bucketsController.removeShotFromBucket(bucket.id(), shot)
+                            .compose(RxTransformerUtil.applyCompletableIoSchedulers())
+                            .subscribe(() -> handleShotRemovedFromBucket(shot),
+                                    throwable -> handleError(throwable, "Error while removing shot from bucket"))
+            );
+        }
+    }
+
     private void initializeView() {
         getView().showMainImage(shot);
         getView().updateLoadMoreState(commentLoadMoreState);
@@ -272,5 +286,10 @@ public class ShotDetailsPresenter
         getView().dismissCommentEditor();
         getView().updateComment(commentInEditor, comment);
         getView().showInfo(R.string.comment_update_complete);
+    }
+
+    private void handleShotRemovedFromBucket(Shot shot) {
+        rxBus.send(new ShotRemovedFromBucketEvent(shot));
+        getView().showShotRemoveFromBucketSuccess();
     }
 }

@@ -31,6 +31,8 @@ interface ShotsContract {
 
         void showBucketAddSuccess();
 
+        void showShotRemoveFromBucketSuccess();
+
         void showDetailsScreenInCommentMode(Shot selectedShot);
     }
 
@@ -49,5 +51,7 @@ interface ShotsContract {
         void showShotDetails(Shot shot);
 
         void showCommentInput(Shot selectedShot);
+
+        void removeShotFromBuckets(List<Bucket> list, Shot shot);
     }
 }

@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.common.error.ErrorController;
@@ -140,6 +142,19 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         Timber.e(throwable, errorText);
         getView().hideLoadingIndicator();
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
+    }
+
+    @Override
+    public void removeShotFromBuckets(List<Bucket> list, Shot shot) {
+        for (Bucket bucket: list) {
+            subscriptions.add(
+                    bucketsController.removeShotFromBucket(bucket.id(), shot)
+                            .compose(RxTransformerUtil.applyCompletableIoSchedulers())
+                            .subscribe(
+                                    getView()::showShotRemoveFromBucketSuccess,
+                                    throwable -> handleError(throwable, "Error while removing shot from bucket"))
+            );
+        }
     }
 
     private void onShotLikeCompleted(Shot shot) {
