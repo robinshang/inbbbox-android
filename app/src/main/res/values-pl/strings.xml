@@ -100,5 +100,7 @@
     <string name="animated_load_ball_description">Animacja skaczącej piłeczki oznaczająca ładowanie.</string>
     <string name="back_arrow_description">Obrazek strzałki powrotu.</string>
     <string name="fullscreen_shot_description">Pełnoekranowy projekt.</string>
+    <string name="error_server">Coś poszło nie tak podczas pobierania danych. Spróbuj ponownie</string>
+    <string name="refresh">Odśwież</string>
 
 </resources>
