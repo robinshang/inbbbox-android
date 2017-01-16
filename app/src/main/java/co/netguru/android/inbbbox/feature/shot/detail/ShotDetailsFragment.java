@@ -210,12 +210,18 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void onShotBucket(long shotId, boolean isLikedBucket) {
+    public void onShotBucket(long shotId, boolean isInBucket) {
         Shot shot = getArguments().getParcelable(ARG_SHOT);
         if (shot != null) {
-            AddToBucketDialogFragment
-                    .newInstance(this, shot)
-                    .show(getFragmentManager(), RemoveCommentFragmentDialog.TAG);
+
+            if (isInBucket)
+                RemoveFromBucketDialogFragment
+                        .newInstance(this, shot)
+                        .show(getFragmentManager(), RemoveFromBucketDialogFragment.TAG);
+            else
+                AddToBucketDialogFragment
+                        .newInstance(this, shot)
+                        .show(getFragmentManager(), AddToBucketDialogFragment.TAG);
         }
     }
 
