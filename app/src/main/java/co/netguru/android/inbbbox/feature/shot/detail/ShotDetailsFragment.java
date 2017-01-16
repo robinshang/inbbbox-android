@@ -111,7 +111,9 @@ public class ShotDetailsFragment
     @NonNull
     @Override
     public ShotDetailsContract.Presenter createPresenter() {
-        return App.getUserComponent(getContext()).plus(new ShotsDetailsModule()).getPresenter();
+        List<Shot> shots = getArguments().getParcelableArrayList(ARG_ALL_SHOTS);
+
+        return App.getUserComponent(getContext()).plus(new ShotsDetailsModule(shots)).getPresenter();
     }
 
     @OnClick(R.id.comment_send_imageView)
@@ -126,8 +128,7 @@ public class ShotDetailsFragment
 
     @OnClick(R.id.parallax_image_view)
     void onShotImageClick() {
-        List<Shot> shots = getArguments().getParcelableArrayList(ARG_ALL_SHOTS);
-        getPresenter().onShotImageClick(shots);
+        getPresenter().onShotImageClick();
     }
 
     @Override
@@ -338,9 +339,9 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void openShotFullscreen(Shot shot, List<Shot> allShots) {
+    public void openShotFullscreen(List<Shot> allShots, int previewShotIndex) {
         ShotDetailsRequest detailsRequest = getArguments().getParcelable(ARG_SHOT_DETAIL_REQUEST);
-        ShotFullscreenActivity.startActivity(getContext(), shot, allShots, detailsRequest);
+        ShotFullscreenActivity.startActivity(getContext(), allShots, previewShotIndex, detailsRequest);
     }
 
     @Override

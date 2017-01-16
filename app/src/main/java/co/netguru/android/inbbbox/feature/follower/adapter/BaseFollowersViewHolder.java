@@ -76,9 +76,4 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<UserWithSho
                 .animate(android.R.anim.fade_in)
                 .into(userPhoto);
     }
-
-    @FunctionalInterface
-    public interface OnFollowerClickListener {
-        void onClick(UserWithShots userWithShots);
-    }
 }

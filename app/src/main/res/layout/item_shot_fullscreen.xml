@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <uk.co.senab.photoview.PhotoView
         android:id="@+id/shot_fullscreen_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
