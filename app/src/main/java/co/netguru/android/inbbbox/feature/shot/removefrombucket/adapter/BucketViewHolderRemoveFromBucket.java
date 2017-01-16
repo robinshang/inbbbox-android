@@ -27,7 +27,6 @@ public class BucketViewHolderRemoveFromBucket extends BaseViewHolder<Bucket> {
     @BindString(R.string.fragment_add_to_bucket_shots)
     String shotsCountString;
 
-    private Bucket currentBucket;
     private CheckboxChangeListener checkboxChangeListener;
 
     public BucketViewHolderRemoveFromBucket(ViewGroup parent, @NonNull CheckboxChangeListener checkboxChangeListener) {
@@ -37,12 +36,11 @@ public class BucketViewHolderRemoveFromBucket extends BaseViewHolder<Bucket> {
 
     @Override
     public void bind(Bucket item) {
-        currentBucket = item;
-        bucketNameText.setText(currentBucket.name());
-        shotsCountText.setText(String.format(shotsCountString, currentBucket.shotsCount()));
+        bucketNameText.setText(item.name());
+        shotsCountText.setText(String.format(shotsCountString, item.shotsCount()));
         checkboxLinearLayout.setOnClickListener(view -> {
                     bucketCheckbox.setChecked(!bucketCheckbox.isChecked());
-                    checkboxChangeListener.onCheckboxChange(currentBucket, bucketCheckbox.isChecked());
+                    checkboxChangeListener.onCheckboxChange(item, bucketCheckbox.isChecked());
         });
     }
 

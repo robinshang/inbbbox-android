@@ -152,8 +152,6 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     private void setupShotRemovedRxBus() {
         shotRemovedBusSubscription = rxBus.getEvents(ShotRemovedFromBucketEvent.class)
                 .compose(RxTransformers.androidIO())
-                .subscribe(bucketCreatedEvent -> {
-                   loadBucketsWithShots();
-                });
+                .subscribe(bucketCreatedEvent -> loadBucketsWithShots());
     }
 }

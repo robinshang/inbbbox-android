@@ -154,8 +154,6 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     private void setupRxBus() {
         busSubscription = rxBus.getEvents(ShotRemovedFromBucketEvent.class)
                 .compose(RxTransformers.androidIO())
-                .subscribe(shotRemovedEvent -> {
-                    refreshShots();
-                });
+                .subscribe(shotRemovedEvent -> refreshShots());
     }
 }
