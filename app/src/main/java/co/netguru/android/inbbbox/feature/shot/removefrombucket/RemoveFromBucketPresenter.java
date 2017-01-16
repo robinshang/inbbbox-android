@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
@@ -20,6 +21,7 @@ import rx.Subscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
+@FragmentScope
 public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<RemoveFromBucketContract.View>
         implements RemoveFromBucketContract.Presenter {
 
@@ -40,7 +42,7 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
     private int pageNumber = 1;
     private boolean apiHasMoreBuckets = true;
 
-    private List<Bucket> bucketsToRemoveFromList = new ArrayList<>();
+    private List<Bucket> bucketsToRemoveFromList;
 
     @Inject
     RemoveFromBucketPresenter(BucketsController bucketsController, ErrorController errorController) {
