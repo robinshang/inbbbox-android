@@ -161,8 +161,7 @@ public class ShotDetailsPresenter
         subscriptions.add(
                 bucketsController.addShotToBucket(bucket.id(), shot)
                         .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                        .subscribe(
-                                getView()::showBucketAddSuccess,
+                        .subscribe(() -> updateShotAndShowAddToBucketSuccess(shot),
                                 throwable -> handleError(throwable, "Error while adding shot to bucket"))
         );
     }
@@ -289,7 +288,13 @@ public class ShotDetailsPresenter
     }
 
     private void handleShotRemovedFromBucket(Shot shot) {
+        Shot.update(shot).isBucketed(false).build();
         rxBus.send(new ShotRemovedFromBucketEvent(shot));
         getView().showShotRemoveFromBucketSuccess();
+    }
+
+    private void updateShotAndShowAddToBucketSuccess(Shot shot) {
+        Shot.update(shot).isBucketed(true).build();
+        getView().showBucketAddSuccess();
     }
 }

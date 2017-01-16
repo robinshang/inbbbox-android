@@ -120,8 +120,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         subscriptions.add(
                 bucketsController.addShotToBucket(bucket.id(), shot)
                         .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                        .subscribe(
-                                getView()::showBucketAddSuccess,
+                        .subscribe(() -> updateShotAndShowAddToBucketSuccess(shot),
                                 throwable -> handleError(throwable, "Error while adding shot to bucket"))
         );
     }
@@ -150,8 +149,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
             subscriptions.add(
                     bucketsController.removeShotFromBucket(bucket.id(), shot)
                             .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                            .subscribe(
-                                    getView()::showShotRemoveFromBucketSuccess,
+                            .subscribe(() -> updateShotAndShowRemoveFromBucketSuccess(shot),
                                     throwable -> handleError(throwable, "Error while removing shot from bucket"))
             );
         }
@@ -166,5 +164,15 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         return Shot.update(shot)
                 .isLiked(true)
                 .build();
+    }
+
+    private void updateShotAndShowAddToBucketSuccess(Shot shot) {
+        Shot.update(shot).isBucketed(true).build();
+        getView().showBucketAddSuccess();
+    }
+
+    private void updateShotAndShowRemoveFromBucketSuccess(Shot shot) {
+        Shot.update(shot).isBucketed(false).build();
+        getView().showShotRemoveFromBucketSuccess();
     }
 }
