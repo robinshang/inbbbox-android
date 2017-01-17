@@ -3,10 +3,12 @@ package co.netguru.android.inbbbox.common.error;
 import android.content.res.Resources;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.R;
 import retrofit2.adapter.rxjava.HttpException;
 
+@Singleton
 public class ErrorController {
 
     private final Resources resources;

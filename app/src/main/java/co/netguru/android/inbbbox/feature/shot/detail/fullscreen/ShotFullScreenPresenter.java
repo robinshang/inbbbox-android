@@ -37,9 +37,9 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
     private boolean hasMore = true;
 
     @Inject
-    public ShotFullScreenPresenter(ShotsController shotsController, LikeShotController likedShotsController,
-                                   BucketsController bucketsController, UserShotsController userShotsController,
-                                   List<Shot> allShots, int previewShotIndex, ShotDetailsRequest shotDetailsRequest) {
+    ShotFullScreenPresenter(ShotsController shotsController, LikeShotController likedShotsController,
+                            BucketsController bucketsController, UserShotsController userShotsController,
+                            List<Shot> allShots, int previewShotIndex, ShotDetailsRequest shotDetailsRequest) {
         this.shotsController = shotsController;
         this.likedShotsController = likedShotsController;
         this.bucketsController = bucketsController;
