@@ -12,6 +12,7 @@ import com.nshmura.strictmodenotifier.StrictModeNotifier;
 import com.squareup.leakcanary.LeakCanary;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import timber.log.Timber;
 
@@ -33,14 +34,15 @@ import timber.log.Timber;
  * </ul>
  * <p>
  */
-public class DebugMetricsHelper {
+@Singleton
+class DebugMetricsHelper {
 
     @Inject
-    public DebugMetricsHelper() {
+    DebugMetricsHelper() {
         //DI
     }
 
-    public void init(Context context) {
+    void init(Context context) {
         // AndroidDevMetrics
         AndroidDevMetrics.initWith(context);
 
