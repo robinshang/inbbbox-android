@@ -17,8 +17,11 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.feature.shot.detail.BucketedStatusChangeEmitter;
+import co.netguru.android.inbbbox.feature.shot.detail.BucketedStatusChangeListener;
 
-class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot> {
+public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot>
+        implements BucketedStatusChangeListener {
 
     @BindView(R.id.details_user_imageView)
     ImageView userAvatarImageView;
@@ -63,11 +66,13 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot> {
     @Nullable
     private Shot item;
 
-    ShotDetailsUserInfoViewHolder(ViewGroup parent, DetailsViewActionCallback actionCallback) {
+    ShotDetailsUserInfoViewHolder(ViewGroup parent, DetailsViewActionCallback actionCallback,
+                                  BucketedStatusChangeEmitter bucketedStatusChangeEmitter) {
         super(LayoutInflater
                         .from(parent.getContext())
                         .inflate(R.layout.item_shot_info_user_info_layout, parent, false),
                 actionCallback);
+        bucketedStatusChangeEmitter.setListener(this);
     }
 
     @OnClick(R.id.details_likes_imageView)
@@ -79,7 +84,6 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot> {
 
     @OnClick(R.id.details_bucket_imageView)
     void onBucketClick() {
-        isBucketed = !isBucketed;
         actionCallbackListener.onShotBucket(item.id());
         updateActionsState();
     }
@@ -110,8 +114,12 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot> {
         showCounters(item.likesCount(), item.bucketCount());
 
         isLiked = item.isLiked();
-        isBucketed = item.isBucketed();
         updateActionsState();
+    }
+
+    @Override
+    public void onBucketedStatusChanged(boolean isInBucket) {
+        this.isBucketed = isInBucket;
     }
 
     private void showTeamInfo(Team team) {
