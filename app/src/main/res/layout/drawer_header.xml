@@ -41,8 +41,8 @@
             android:layout_marginEnd="@dimen/drawer_arrow_margin_end"
             android:background="@android:color/transparent"
             android:button="@drawable/drawer_toggle_button"
-            android:textOff="@string/empty_string"
-            android:textOn="@string/empty_string"/>
+            android:textOff=""
+            android:textOn=""/>
     </FrameLayout>
 
     <TextView

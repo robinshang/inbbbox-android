@@ -13,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.threeten.bp.ZonedDateTime;
 
-import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.R;

@@ -54,6 +54,10 @@ public class ShotDB {
      */
     @Generated(hash = 163997700)
     private transient ShotDBDao myDao;
+    @Generated(hash = 251390918)
+    private transient Long user__resolvedKey;
+    @Generated(hash = 1834174654)
+    private transient Long team__resolvedKey;
 
     @Generated(hash = 1054056122)
     public ShotDB(Long id, String title, ZonedDateTime creationDate, String projectUrl, int likesCount,
@@ -210,9 +214,6 @@ public class ShotDB {
         this.teamId = teamId;
     }
 
-    @Generated(hash = 251390918)
-    private transient Long user__resolvedKey;
-
     /**
      * To-one relationship, resolved on first access.
      */
@@ -245,9 +246,6 @@ public class ShotDB {
             user__resolvedKey = userId;
         }
     }
-
-    @Generated(hash = 1834174654)
-    private transient Long team__resolvedKey;
 
     /**
      * To-one relationship, resolved on first access.

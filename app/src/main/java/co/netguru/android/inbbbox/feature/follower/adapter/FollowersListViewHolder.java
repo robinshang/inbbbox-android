@@ -17,7 +17,7 @@ public class FollowersListViewHolder extends BaseFollowersViewHolder {
     public void bind(UserWithShots item) {
         super.bind(item);
 
-        if(item.shotList().size() > 0) {
+        if (!item.shotList().isEmpty()) {
             Shot[] shots = new Shot[4];
             for (int i = 0; i < 4; i++) {
                 shots[i] = item.shotList().get(i % item.shotList().size());

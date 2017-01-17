@@ -27,6 +27,9 @@ public class FollowerDB {
     @Generated(hash = 369989469)
     private transient FollowerDBDao myDao;
 
+    @Generated(hash = 251390918)
+    private transient Long user__resolvedKey;
+
     @Generated(hash = 1761388569)
     public FollowerDB(long id) {
         this.id = id;
@@ -43,9 +46,6 @@ public class FollowerDB {
     public void setId(long id) {
         this.id = id;
     }
-
-    @Generated(hash = 251390918)
-    private transient Long user__resolvedKey;
 
     /**
      * To-one relationship, resolved on first access.
