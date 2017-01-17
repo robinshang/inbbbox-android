@@ -17,9 +17,10 @@ public abstract class UserWithShots implements Parcelable {
 
     public abstract User user();
 
+    @Nullable
     public abstract List<Shot> shotList();
 
     public static UserWithShots create(@NonNull User user, @Nullable List<Shot> shotList) {
-        return new AutoValue_UserWithShots(user, shotList != null ? shotList : Collections.emptyList());
+        return new AutoValue_UserWithShots(user, shotList);
     }
 }
