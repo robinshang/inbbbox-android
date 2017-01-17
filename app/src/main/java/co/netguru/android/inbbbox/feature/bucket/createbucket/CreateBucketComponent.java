@@ -6,6 +6,7 @@ import dagger.Subcomponent;
 @FragmentScope
 @Subcomponent
 public interface CreateBucketComponent {
+
     void inject(CreateBucketDialogFragment dialogFragment);
 
     CreateBucketPresenter getPresenter();

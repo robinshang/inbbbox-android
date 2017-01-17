@@ -42,10 +42,12 @@ import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.shot.recycler.ShotSwipeListener;
 import co.netguru.android.inbbbox.feature.shot.recycler.ShotsAdapter;
+import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucketDialogFragment;
 
 public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
         ShotsContract.View, ShotsContract.Presenter> implements RefreshableFragment, ShotsContract.View, ShotSwipeListener,
-        AddToBucketDialogFragment.BucketSelectListener, ViewTreeObserver.OnWindowFocusChangeListener {
+        AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener,
+        ViewTreeObserver.OnWindowFocusChangeListener {
 
     private static final int SHOTS_TO_LOAD_MORE = 5;
 
@@ -222,6 +224,11 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     @Override
+    public void showShotRemoveFromBucketSuccess() {
+        showTextOnSnackbar(R.string.shots_fragment_remove_shot_from_bucket_success);
+    }
+
+    @Override
     public void showDetailsScreenInCommentMode(Shot selectedShot) {
         ShotDetailsRequest request = ShotDetailsRequest.builder()
                 .detailsType(ShotDetailsType.DEFAULT)
@@ -311,6 +318,11 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     public void onWindowFocusChanged(boolean hasFocus) {
         ballImageView.getViewTreeObserver().removeOnWindowFocusChangeListener(this);
         showLoadingIndicatorInternal();
+    }
+
+    @Override
+    public void onBucketToRemoveFromForShotSelect(List<Bucket> list, Shot shot) {
+        getPresenter().removeShotFromBuckets(list, shot);
     }
 
     public interface ShotActionListener {

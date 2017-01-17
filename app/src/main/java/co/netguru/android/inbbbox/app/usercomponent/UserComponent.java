@@ -12,7 +12,9 @@ import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsComponent;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenComponent;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenModule;
+import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucketComponent;
 import co.netguru.android.inbbbox.feature.team.TeamDetailsFragmentComponent;
+
 import dagger.Subcomponent;
 
 @UserScope
@@ -36,6 +38,8 @@ public interface UserComponent {
     BucketsDetailsComponent plusBucketDetailsComponent();
 
     AddToBucketComponent plusAddToBucketComponent();
+
+    RemoveFromBucketComponent plusRemoveFromBucketComponent();
 
     CreateBucketComponent plusCreateBucketComponent();
 

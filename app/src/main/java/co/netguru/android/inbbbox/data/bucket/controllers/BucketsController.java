@@ -28,4 +28,8 @@ public interface BucketsController {
     Completable deleteBucket(long bucketId);
 
     Single<Boolean> isShotBucketed(long shotId, long userId);
+
+    Single<List<Bucket>> getListBucketsForShot(long shotId);
+
+    Completable removeShotFromBucket(long bucketId, Shot shot);
 }

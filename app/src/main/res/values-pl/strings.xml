@@ -102,5 +102,9 @@
     <string name="fullscreen_shot_description">Pełnoekranowy projekt.</string>
     <string name="error_server">Coś poszło nie tak podczas pobierania danych. Spróbuj ponownie</string>
     <string name="refresh">Odśwież</string>
+    <string name="fragment_remove_from_bucket_title">Usuń z kolekcji</string>
+    <string name="remove_from_bucket_fragment_remove">Usuń projekt z powyższych kolekcji</string>
+    <string name="shots_fragment_remove_shot_from_bucket_success">Projekt usunięty z kolekcji</string>
+>>>>>>> master
 
 </resources>

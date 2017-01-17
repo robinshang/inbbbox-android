@@ -11,12 +11,13 @@ public final class ShotDetailsType {
     public static final int LIKES = 2;
     public static final int BUCKET = 3;
     public static final int USER = 4;
+    public static final int REMOVE_FROM_BUCKET = 5;
 
     private ShotDetailsType() {}
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({ShotDetailsType.DEFAULT, ShotDetailsType.ADD_TO_BUCKET, ShotDetailsType.LIKES,
-            ShotDetailsType.BUCKET, ShotDetailsType.USER})
+            ShotDetailsType.BUCKET, ShotDetailsType.USER, ShotDetailsType.REMOVE_FROM_BUCKET})
     public @interface  DetailsType {}
 
 }
