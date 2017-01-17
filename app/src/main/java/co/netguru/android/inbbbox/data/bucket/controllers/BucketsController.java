@@ -27,7 +27,7 @@ public interface BucketsController {
 
     Completable deleteBucket(long bucketId);
 
-    Single<Boolean> isShotBucketed(long shotId, long userId);
+    Single<Boolean> isShotBucketed(long shotId);
 
     Single<List<Bucket>> getListBucketsForShot(long shotId);
 

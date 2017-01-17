@@ -67,12 +67,9 @@ public class BucketsControllerApi implements BucketsController {
     }
 
     @Override
-    public Single<Boolean> isShotBucketed(long shotId, long userId) {
-        return bucketApi.getShotBucketsList(shotId)
-                .flatMapObservable(Observable::from)
-                .map(bucket -> bucket.user() != null ? bucket.user().id() : Constants.UNDEFINED)
-                .contains(userId)
-                .toSingle();
+    public Single<Boolean> isShotBucketed(long shotId) {
+        return getCurrentUserId()
+                .flatMap(currentUserId -> checkIfShotIsInUserBuckets(shotId, currentUserId));
     }
 
     @Override
@@ -107,5 +104,13 @@ public class BucketsControllerApi implements BucketsController {
                 .map(User::create)
                 .map(User::id)
                 .onErrorResumeNext(throwable -> Single.just((long) Constants.UNDEFINED));
+    }
+
+    private Single<Boolean> checkIfShotIsInUserBuckets(long shotId, long userId) {
+        return bucketApi.getShotBucketsList(shotId)
+                .flatMapObservable(Observable::from)
+                .map(bucket -> bucket.user() != null ? bucket.user().id() : Constants.UNDEFINED)
+                .contains(userId)
+                .toSingle();
     }
 }
