@@ -120,6 +120,7 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot>
     @Override
     public void onBucketedStatusChanged(boolean isInBucket) {
         this.isBucketed = isInBucket;
+        updateActionsState();
     }
 
     private void showTeamInfo(Team team) {
