@@ -80,7 +80,7 @@ class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot> {
     @OnClick(R.id.details_bucket_imageView)
     void onBucketClick() {
         isBucketed = !isBucketed;
-        actionCallbackListener.onShotBucket(item.id(), isBucketed);
+        actionCallbackListener.onShotBucket(item.id());
         updateActionsState();
     }
 

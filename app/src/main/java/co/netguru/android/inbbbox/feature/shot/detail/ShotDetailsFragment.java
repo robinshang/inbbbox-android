@@ -75,6 +75,7 @@ public class ShotDetailsFragment
     private ShotDetailsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
+    private boolean isInBucket;
 
     public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots,
                                                   ShotDetailsRequest detailsRequest) {
@@ -210,7 +211,7 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void onShotBucket(long shotId, boolean isInBucket) {
+    public void onShotBucket(long shotId) {
         Shot shot = getArguments().getParcelable(ARG_SHOT);
         if (shot != null) {
 
@@ -368,6 +369,11 @@ public class ShotDetailsFragment
     @Override
     public void showShotRemoveFromBucketSuccess() {
         showTextOnSnackbar(R.string.shots_fragment_remove_shot_from_bucket_success);
+    }
+
+    @Override
+    public void updateBucketedStatus(boolean isBucketed) {
+        this.isInBucket = isBucketed;
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {
