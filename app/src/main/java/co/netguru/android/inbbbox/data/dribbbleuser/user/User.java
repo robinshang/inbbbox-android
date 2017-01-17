@@ -66,6 +66,7 @@ public abstract class User implements Parcelable {
                 .avatarUrl(userDB.getAvatarUrl())
                 .username(userDB.getUsername())
                 .shotsCount(userDB.getShotsCount())
+                .type(userDB.getType())
                 .build();
     }
 
