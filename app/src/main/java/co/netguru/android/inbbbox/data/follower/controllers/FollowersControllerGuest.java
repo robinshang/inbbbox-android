@@ -22,10 +22,9 @@ public class FollowersControllerGuest extends BaseFollowersController implements
     public Observable<UserWithShots> getFollowedUsers(int pageNumber, int pageCount, int followerShotPageCount) {
         if (pageNumber == FIRST_PAGE) {
             return guestModeFollowersRepository.getFollowersWithoutShots()
-                    .flatMap(user -> getFollowerWithShots(user, followerShotPageCount))
-                    .mergeWith(getFollowersFromApi(FIRST_PAGE, pageCount, followerShotPageCount));
+                    .flatMap(user -> getFollowerWithShots(user, followerShotPageCount));
         }
-        return getFollowersFromApi(pageNumber, pageCount, followerShotPageCount);
+        return Observable.empty();
     }
 
     @Override
