@@ -13,15 +13,17 @@ public class UserDB {
     private String avatarUrl;
     private String username;
     private int shotsCount;
+    private String type;
 
-    @Generated(hash = 1788000037)
+    @Generated(hash = 1852646248)
     public UserDB(Long id, String name, String avatarUrl, String username,
-                  int shotsCount) {
+            int shotsCount, String type) {
         this.id = id;
         this.name = name;
         this.avatarUrl = avatarUrl;
         this.username = username;
         this.shotsCount = shotsCount;
+        this.type = type;
     }
 
     @Generated(hash = 1312299826)
@@ -66,6 +68,14 @@ public class UserDB {
 
     public void setShotsCount(int shotsCount) {
         this.shotsCount = shotsCount;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
 }
