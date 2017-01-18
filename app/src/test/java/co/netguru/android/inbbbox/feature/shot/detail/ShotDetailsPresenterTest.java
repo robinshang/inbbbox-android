@@ -22,6 +22,7 @@ import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Observable;
@@ -74,6 +75,9 @@ public class ShotDetailsPresenterTest {
     @Mock
     BucketsController bucketsControllerMock;
 
+    @Mock
+    RxBus rxBusMock;
+
     @InjectMocks
     ShotDetailsPresenter shotDetailsPresenter;
 
@@ -82,6 +86,8 @@ public class ShotDetailsPresenterTest {
     @Before
     public void setUp() {
         shotDetailsPresenter.attachView(viewMock);
+        when(bucketsControllerMock.isShotBucketed(anyLong())).thenReturn(Single.just(true));
+        when(rxBusMock.getEvents(any())).thenReturn(Observable.empty());
         when(shotMock.id()).thenReturn(EXAMPLE_ID);
         when(shotMock.author()).thenReturn(User.create(Statics.USER_ENTITY));
         when(shotMock.creationDate()).thenReturn(ZonedDateTime.now());

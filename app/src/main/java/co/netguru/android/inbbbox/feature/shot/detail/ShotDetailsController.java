@@ -88,7 +88,7 @@ public class ShotDetailsController {
 
     private Observable<Boolean> getBucketState(long shotId) {
         return getCurrentUserId()
-                .flatMap(userId -> bucketsController.isShotBucketed(shotId, userId))
+                .flatMap(userId -> bucketsController.isShotBucketed(shotId))
                 .toObservable();
     }
 

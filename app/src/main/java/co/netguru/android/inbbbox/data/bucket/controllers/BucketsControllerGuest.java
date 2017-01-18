@@ -51,7 +51,7 @@ public class BucketsControllerGuest implements BucketsController {
     }
 
     @Override
-    public Single<Boolean> isShotBucketed(long shotId, long userId) {
+    public Single<Boolean> isShotBucketed(long shotId) {
         return guestModeBucketsRepository.isShotBucketed(shotId);
     }
 

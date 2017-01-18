@@ -122,8 +122,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         subscriptions.add(
                 bucketsController.addShotToBucket(bucket.id(), shot)
                         .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                        .subscribe(
-                                getView()::showBucketAddSuccess,
+                        .subscribe(getView()::showBucketAddSuccess,
                                 throwable -> handleError(throwable, "Error while adding shot to bucket"))
         );
     }
@@ -152,8 +151,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
             subscriptions.add(
                     bucketsController.removeShotFromBucket(bucket.id(), shot)
                             .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                            .subscribe(
-                                    getView()::showShotRemoveFromBucketSuccess,
+                            .subscribe(getView()::showShotRemoveFromBucketSuccess,
                                     throwable -> handleError(throwable, "Error while removing shot from bucket"))
             );
         }
