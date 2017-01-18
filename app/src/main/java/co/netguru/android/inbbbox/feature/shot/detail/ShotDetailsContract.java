@@ -105,5 +105,7 @@ public interface ShotDetailsContract {
         void addShotToBucket(Bucket bucket, Shot shot);
 
         void removeShotFromBuckets(List<Bucket> list, Shot shot);
+
+        void checkIfShotIsBucketed(Shot shot);
     }
 }

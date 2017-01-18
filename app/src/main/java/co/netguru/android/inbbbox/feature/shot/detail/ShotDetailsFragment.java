@@ -109,6 +109,7 @@ public class ShotDetailsFragment
         adapter = new ShotDetailsAdapter(this, this);
         getPresenter().retrieveInitialData();
         getPresenter().downloadData();
+        getPresenter().checkIfShotIsBucketed(getArguments().getParcelable(ARG_SHOT));
     }
 
     @NonNull

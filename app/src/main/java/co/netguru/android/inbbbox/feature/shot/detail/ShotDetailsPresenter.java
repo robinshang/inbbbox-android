@@ -82,7 +82,6 @@ public class ShotDetailsPresenter
     @Override
     public void retrieveInitialData() {
         this.shot = getView().getShotInitialData();
-        checkIfShotIsBucketed(shot);
         this.isCommentModeInit = getView().getCommentModeInitialState();
     }
 
@@ -177,6 +176,16 @@ public class ShotDetailsPresenter
                                     throwable -> handleError(throwable, "Error while removing shot from bucket"))
             );
         }
+    }
+
+    @Override
+    public void checkIfShotIsBucketed(Shot shot) {
+        bucketsController.isShotBucketed(shot.id())
+                .compose(applySingleIoSchedulers())
+                .subscribe(this::updateShot,
+                        throwable -> Timber
+                                .e(throwable, "Error while checking shot bucket state"));
+
     }
 
     private void initializeView() {
@@ -286,15 +295,6 @@ public class ShotDetailsPresenter
         getView().dismissCommentEditor();
         getView().updateComment(commentInEditor, comment);
         getView().showInfo(R.string.comment_update_complete);
-    }
-
-    private void checkIfShotIsBucketed(Shot shot) {
-        bucketsController.isShotBucketed(shot.id())
-                .compose(applySingleIoSchedulers())
-                .subscribe(this::updateShot,
-                        throwable -> Timber
-                                .e(throwable, "Error while checking shot bucket state"));
-
     }
 
     private void updateShot(boolean isBucketed) {
