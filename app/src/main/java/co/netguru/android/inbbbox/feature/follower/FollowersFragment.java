@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
@@ -220,6 +219,6 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        Toast.makeText(getActivity(), errorText, Toast.LENGTH_LONG).show();
+        Snackbar.make(recyclerView, errorText, Snackbar.LENGTH_LONG).show();
     }
 }

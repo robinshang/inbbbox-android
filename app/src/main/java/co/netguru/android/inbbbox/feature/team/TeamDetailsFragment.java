@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.feature.team;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
@@ -147,7 +147,7 @@ public class TeamDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection
 
     @Override
     public void showMessageOnServerError(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        Snackbar.make(recyclerView, message, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

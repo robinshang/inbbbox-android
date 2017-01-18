@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +23,6 @@ import com.bumptech.glide.Glide;
 
 import org.threeten.bp.ZonedDateTime;
 
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindColor;
@@ -267,7 +267,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
+        Snackbar.make(bucketsRecyclerView, errorText, Snackbar.LENGTH_LONG).show();
     }
 
     private void setupRecyclerView() {
