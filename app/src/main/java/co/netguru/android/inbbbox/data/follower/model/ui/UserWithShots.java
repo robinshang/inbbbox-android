@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.data.follower.model.ui;
 
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
@@ -18,7 +19,7 @@ public abstract class UserWithShots implements Parcelable {
     @Nullable
     public abstract List<Shot> shotList();
 
-    public static UserWithShots create(User user, List<Shot> shotList) {
+    public static UserWithShots create(@NonNull User user, @Nullable List<Shot> shotList) {
         return new AutoValue_UserWithShots(user, shotList);
     }
 }

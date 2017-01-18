@@ -22,7 +22,6 @@ import com.bumptech.glide.Glide;
 
 import org.threeten.bp.ZonedDateTime;
 
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindColor;

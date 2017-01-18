@@ -56,7 +56,7 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
         currentPage = allShots.size() / SHOTS_PER_PAGE;
         hasMore = allShots.size() % SHOTS_PER_PAGE == 0;
 
-        if(allShots.size() > 0) {
+        if (!allShots.isEmpty()) {
             getView().previewShots(allShots, previewShotIndex);
         }
     }
@@ -76,7 +76,7 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
                     break;
                 case ShotDetailsType.BUCKET:
                     requestMoreObservable = bucketsController.getShotsListFromBucket(detailsRequest.id(), currentPage, SHOTS_PER_PAGE)
-                            .toObservable();
+                                                    .toObservable();
                     break;
                 case ShotDetailsType.USER:
                     requestMoreObservable = userShotsController.getUserShotsList(detailsRequest.id(), currentPage, SHOTS_PER_PAGE);

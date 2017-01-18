@@ -8,7 +8,6 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
-import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamController;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
@@ -45,9 +44,9 @@ public class TeamDetailsPresenter extends MvpNullObjectBasePresenter<TeamDetails
     private UserWithShots team;
 
     @Inject
-    public TeamDetailsPresenter(TeamController teamController,
-                                FollowersController followersController, ErrorController errorController,
-                                UserShotsController userShotsController) {
+    TeamDetailsPresenter(TeamController teamController,
+                         FollowersController followersController, ErrorController errorController,
+                         UserShotsController userShotsController) {
         this.teamController = teamController;
         this.followersController = followersController;
         this.errorController = errorController;
