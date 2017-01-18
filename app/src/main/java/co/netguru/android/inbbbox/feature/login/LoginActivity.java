@@ -4,10 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
@@ -38,6 +39,9 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @BindView(R.id.btn_guest)
     Button guestButton;
+
+    @BindView(R.id.login_relative_layout)
+    RelativeLayout loginRelativeLayout;
 
     @OnClick(R.id.btn_login)
     void onLoginClick() {
@@ -99,12 +103,12 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @Override
     public void showInvalidOauthUrlError() {
-        Toast.makeText(this, R.string.invalid_outh_url, Toast.LENGTH_LONG).show();
+        showMessageOnSnackBar(getResources().getString(R.string.invalid_outh_url));
     }
 
     @Override
     public void showWrongKeyError() {
-        Toast.makeText(this, R.string.wrong_oauth_state_key, Toast.LENGTH_LONG).show();
+        showMessageOnSnackBar(getResources().getString(R.string.wrong_oauth_state_key));
     }
 
     @Override
@@ -161,6 +165,10 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        Toast.makeText(this, errorText, Toast.LENGTH_LONG).show();
+        showMessageOnSnackBar(errorText);
+    }
+
+    private void showMessageOnSnackBar(String message) {
+        Snackbar.make(loginRelativeLayout, message, Snackbar.LENGTH_LONG).show();
     }
 }

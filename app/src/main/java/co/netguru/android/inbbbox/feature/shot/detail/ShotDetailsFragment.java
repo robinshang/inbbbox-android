@@ -300,10 +300,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showInfo(@StringRes int messageResId) {
-        Toast.makeText(getContext(),
-                getString(messageResId),
-                Toast.LENGTH_SHORT)
-                .show();
+        showMessageOnSnackbar(getResources().getString(messageResId));
     }
 
     @Override
@@ -347,7 +344,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        Snackbar.make(shotRecyclerView, errorText, Snackbar.LENGTH_LONG).show();
+        showMessageOnSnackbar(errorText);
     }
 
     @Override
@@ -380,6 +377,10 @@ public class ShotDetailsFragment
         if (isInputPanelShowingEnabled && adapter.isInputVisibilityPermitted(lastVisibleIndex)) {
             showInputIfHidden();
         }
+    }
+
+    private void showMessageOnSnackbar(String message) {
+        Snackbar.make(shotRecyclerView, message, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

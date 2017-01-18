@@ -17,7 +17,6 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -236,7 +235,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @Override
     public void showBucketListLoadingMore() {
-        Toast.makeText(getContext(), R.string.loading_more_buckets, Toast.LENGTH_SHORT).show();
+        showMessageOnSnackBar(getResources().getString( R.string.loading_more_buckets));
     }
 
     @Override
@@ -267,7 +266,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        Snackbar.make(bucketsRecyclerView, errorText, Snackbar.LENGTH_LONG).show();
+        showMessageOnSnackBar(errorText);
     }
 
     private void setupRecyclerView() {
@@ -281,6 +280,10 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
                         getPresenter().loadMoreBuckets();
                     }
                 });
+    }
+
+    private void showMessageOnSnackBar(String message) {
+        Snackbar.make(bucketsRecyclerView, message, Snackbar.LENGTH_LONG).show();
     }
 
     /**

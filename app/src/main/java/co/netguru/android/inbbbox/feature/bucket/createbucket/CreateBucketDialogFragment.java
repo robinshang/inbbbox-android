@@ -4,12 +4,12 @@ package co.netguru.android.inbbbox.feature.bucket.createbucket;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
@@ -90,7 +90,9 @@ public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBuck
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        Toast.makeText(getActivity(), errorText, Toast.LENGTH_LONG).show();
+        if (getView() != null) {
+            Snackbar.make(getView(), errorText, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     private void setupDialogButtons(Dialog dialog) {
