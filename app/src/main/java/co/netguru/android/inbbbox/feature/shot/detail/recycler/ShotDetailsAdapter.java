@@ -126,8 +126,6 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     }
 
     private Comment getComment(int position) {
-        return (!comments.isEmpty() && position > STATIC_ITEMS_COUNT - 1 && position < getItemCount() - 1) ?
-                comments.get(position - ShotDetailsAdapter.STATIC_ITEMS_COUNT)
-                : null;
+        return comments.get(position - ShotDetailsAdapter.STATIC_ITEMS_COUNT);
     }
 }

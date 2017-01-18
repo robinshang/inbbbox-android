@@ -39,9 +39,9 @@ public class FollowersControllerApi extends BaseFollowersController implements F
                 .flatMap(voidResponse -> {
                     switch (voidResponse.code()) {
                         case CODE_USER_IS_FOLLOWED:
-                            return Single.just(true);
+                            return Single.just(Boolean.TRUE);
                         case CODE_USER_IS_NOT_FOLLOWED:
-                            return Single.just(false);
+                            return Single.just(Boolean.FALSE);
                         default:
                             return Single.error(new HttpException(voidResponse));
                     }
