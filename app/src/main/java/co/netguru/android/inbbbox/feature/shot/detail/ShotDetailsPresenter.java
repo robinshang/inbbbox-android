@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
@@ -24,6 +25,7 @@ import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applyCompletableIoSchedulers;
 import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applySingleIoSchedulers;
 
+@FragmentScope
 public class ShotDetailsPresenter
         extends MvpNullObjectBasePresenter<ShotDetailsContract.View>
         implements ShotDetailsContract.Presenter {
@@ -42,9 +44,9 @@ public class ShotDetailsPresenter
     private int commentsCounter = 0;
 
     @Inject
-    public ShotDetailsPresenter(ShotDetailsController shotDetailsController,
-                                ErrorController errorController, List<Shot> allShots, RxBus rxBus,
-                                BucketsController bucketsController) {
+    ShotDetailsPresenter(ShotDetailsController shotDetailsController,
+                         ErrorController errorController, List<Shot> allShots, RxBus rxBus,
+                         BucketsController bucketsController) {
         this.shotDetailsController = shotDetailsController;
         this.errorController = errorController;
         this.bucketsController = bucketsController;

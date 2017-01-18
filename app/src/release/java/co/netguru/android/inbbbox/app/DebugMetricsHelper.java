@@ -5,6 +5,7 @@ import android.content.Context;
 import net.hockeyapp.android.CrashManager;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Helper class that initializes a set of debugging tools
@@ -24,14 +25,15 @@ import javax.inject.Inject;
  * </ul>
  * <p>
  */
-public class DebugMetricsHelper {
+@Singleton
+class DebugMetricsHelper {
 
     @Inject
-    public DebugMetricsHelper() {
+    DebugMetricsHelper() {
         //DI
     }
 
-    public void init(Context context) {
+    void init(Context context) {
         CrashManager.register(context);
     }
 
