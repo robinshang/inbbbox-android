@@ -17,7 +17,6 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.ShotLikedEvent;
 import co.netguru.android.inbbbox.event.events.ShotRemovedFromBucketEvent;
-
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -42,6 +41,7 @@ public class ShotDetailsPresenter
     private CommentLoadMoreState commentLoadMoreState;
     private int pageNumber = 1;
     private int commentsCounter = 0;
+    private boolean isInBucket;
 
     @Inject
     ShotDetailsPresenter(ShotDetailsController shotDetailsController,
@@ -190,6 +190,16 @@ public class ShotDetailsPresenter
 
     }
 
+    @Override
+    public void onShotBucketClicked(Shot shot) {
+        if (shot != null) {
+            if (isInBucket)
+                getView().showRemoveShotFromBucketView(shot);
+            else
+                getView().showAddShotToBucketView(shot);
+        }
+    }
+
     private void initializeView() {
         getView().showMainImage(shot);
         getView().updateLoadMoreState(commentLoadMoreState);
@@ -301,6 +311,7 @@ public class ShotDetailsPresenter
 
     private void updateShot(boolean isBucketed) {
         this.shot = Shot.update(shot).isBucketed(isBucketed).build();
+        this.isInBucket = isBucketed;
         getView().updateBucketedStatus(isBucketed);
     }
 

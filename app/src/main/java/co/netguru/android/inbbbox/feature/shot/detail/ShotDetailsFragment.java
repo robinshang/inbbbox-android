@@ -76,7 +76,6 @@ public class ShotDetailsFragment
     private ShotDetailsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
-    private boolean isInBucket;
     private BucketedStatusChangeListener listener;
 
     public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots,
@@ -215,18 +214,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onShotBucket(long shotId) {
-        Shot shot = getArguments().getParcelable(ARG_SHOT);
-        if (shot != null) {
-
-            if (isInBucket)
-                RemoveFromBucketDialogFragment
-                        .newInstance(this, shot)
-                        .show(getFragmentManager(), RemoveFromBucketDialogFragment.TAG);
-            else
-                AddToBucketDialogFragment
-                        .newInstance(this, shot)
-                        .show(getFragmentManager(), AddToBucketDialogFragment.TAG);
-        }
+        getPresenter().onShotBucketClicked(getArguments().getParcelable(ARG_SHOT));
     }
 
     @Override
@@ -376,8 +364,21 @@ public class ShotDetailsFragment
 
     @Override
     public void updateBucketedStatus(boolean isBucketed) {
-        this.isInBucket = isBucketed;
         listener.onBucketedStatusChanged(isBucketed);
+    }
+
+    @Override
+    public void showAddShotToBucketView(Shot shot) {
+        AddToBucketDialogFragment
+                .newInstance(this, shot)
+                .show(getFragmentManager(), AddToBucketDialogFragment.TAG);
+    }
+
+    @Override
+    public void showRemoveShotFromBucketView(Shot shot) {
+        RemoveFromBucketDialogFragment
+                .newInstance(this, shot)
+                .show(getFragmentManager(), RemoveFromBucketDialogFragment.TAG);
     }
 
     @Override
