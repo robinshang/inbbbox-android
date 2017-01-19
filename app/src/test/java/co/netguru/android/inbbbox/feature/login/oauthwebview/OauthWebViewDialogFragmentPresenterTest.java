@@ -58,7 +58,7 @@ public class OauthWebViewDialogFragmentPresenterTest {
     public void whenProperRedirectReceived_thenFinnishWithCodeReturn() {
         //given
         presenter.handleData("someUrl", STATE_KEY_CODE);
-        when(uriMock.toString()).thenReturn(BuildConfig.DRIBBBLE_OAUTH_REDIRECT);
+        when(uriMock.getScheme()).thenReturn(BuildConfig.DRIBBBLE_OAUTH_REDIRECT);
         when(uriMock.getQueryParameter(Constants.OAUTH.STATE_KEY)).thenReturn(STATE_KEY_CODE);
         when(uriMock.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(CODE);
         //when
@@ -71,7 +71,7 @@ public class OauthWebViewDialogFragmentPresenterTest {
     public void whenRedirectProperButStateKeyNotMatching_thenFinnishWithWrongStateKey() {
         //given
         presenter.handleData("someUrl", STATE_KEY_CODE);
-        when(uriMock.toString()).thenReturn(BuildConfig.DRIBBBLE_OAUTH_REDIRECT);
+        when(uriMock.getScheme()).thenReturn(BuildConfig.DRIBBBLE_OAUTH_REDIRECT);
         when(uriMock.getQueryParameter(Constants.OAUTH.STATE_KEY)).thenReturn("wrong code");
         when(uriMock.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(CODE);
         //when
@@ -85,7 +85,7 @@ public class OauthWebViewDialogFragmentPresenterTest {
         //given
         presenter.handleData("someUrl", STATE_KEY_CODE);
         String someError = "error";
-        when(uriMock.toString()).thenReturn(BuildConfig.DRIBBBLE_OAUTH_REDIRECT);
+        when(uriMock.getScheme()).thenReturn(BuildConfig.DRIBBBLE_OAUTH_REDIRECT);
         when(uriMock.getQueryParameter(Constants.OAUTH.ERROR_KEY)).thenReturn(someError);
         //when
         presenter.shouldOverrideUrlLoading(uriMock);
@@ -97,7 +97,7 @@ public class OauthWebViewDialogFragmentPresenterTest {
     public void whenRedirectProperButCodeIsEmpty_thenFinnishWithUnknownError() {
         //given
         presenter.handleData("someUrl", STATE_KEY_CODE);
-        when(uriMock.toString()).thenReturn(BuildConfig.DRIBBBLE_OAUTH_REDIRECT);
+        when(uriMock.getScheme()).thenReturn(BuildConfig.DRIBBBLE_OAUTH_REDIRECT);
         when(uriMock.getQueryParameter(Constants.OAUTH.STATE_KEY)).thenReturn(STATE_KEY_CODE);
         when(uriMock.getQueryParameter(Constants.OAUTH.CODE_KEY)).thenReturn(null);
         //when
@@ -110,7 +110,7 @@ public class OauthWebViewDialogFragmentPresenterTest {
     public void whenUriIsNotRedirect_thenJustReturnFalse() {
         //given
         presenter.handleData("someUrl", STATE_KEY_CODE);
-        when(uriMock.toString()).thenReturn("wrong redirect");
+        when(uriMock.getScheme()).thenReturn("wrong redirect");
         //when
         boolean result = presenter.shouldOverrideUrlLoading(uriMock);
         //then

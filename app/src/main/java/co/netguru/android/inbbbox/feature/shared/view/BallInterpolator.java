@@ -6,9 +6,9 @@ import android.view.animation.Interpolator;
 public class BallInterpolator implements Interpolator {
 
     @Override
-    public float getInterpolation(float t) {
+    public float getInterpolation(final float t) {
         float tension = 4;
-        t = 1 - t;
-        return t * t * ((tension + 1) * t - tension);
+        float factor = 1 - t;
+        return factor * factor * ((tension + 1) * factor - tension);
     }
 }

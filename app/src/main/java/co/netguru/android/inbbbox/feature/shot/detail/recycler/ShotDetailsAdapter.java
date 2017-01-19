@@ -9,6 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.feature.shot.detail.BucketedStatusChangeEmitter;
 import co.netguru.android.inbbbox.feature.shot.detail.Comment;
 import co.netguru.android.inbbbox.feature.shot.detail.CommentLoadMoreState;
 
@@ -21,13 +22,15 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     private static final int STATIC_ITEMS_COUNT = 2;
 
     private final DetailsViewActionCallback actionCallback;
+    private final BucketedStatusChangeEmitter bucketedStatusChangeEmitter;
     private Shot details;
     private List<Comment> comments;
     private CommentLoadMoreState loadMoreState;
 
     @Inject
-    public ShotDetailsAdapter(DetailsViewActionCallback actionCallback) {
+    public ShotDetailsAdapter(DetailsViewActionCallback actionCallback, BucketedStatusChangeEmitter bucketedStatusChangeEmitter) {
         this.actionCallback = actionCallback;
+        this.bucketedStatusChangeEmitter = bucketedStatusChangeEmitter;
         comments = new ArrayList<>();
         this.loadMoreState = new CommentLoadMoreState();
     }
@@ -37,7 +40,7 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
         ShotDetailsViewHolder viewHolder;
         switch (viewType) {
             case USER_INFO_VIEW_TYPE:
-                viewHolder = new ShotDetailsUserInfoViewHolder(parent, actionCallback);
+                viewHolder = new ShotDetailsUserInfoViewHolder(parent, actionCallback, bucketedStatusChangeEmitter);
                 break;
             case DESCRIPTION_VIEW_TYPE:
                 viewHolder = new ShotDetailsDescriptionViewHolder(parent, actionCallback);
@@ -123,8 +126,6 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
     }
 
     private Comment getComment(int position) {
-        return (!comments.isEmpty() && position > STATIC_ITEMS_COUNT - 1 && position < getItemCount() - 1) ?
-                comments.get(position - ShotDetailsAdapter.STATIC_ITEMS_COUNT)
-                : null;
+        return comments.get(position - ShotDetailsAdapter.STATIC_ITEMS_COUNT);
     }
 }

@@ -54,7 +54,7 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<UserWithSho
         loadUserPhoto(item.user().avatarUrl());
     }
 
-    protected void loadShotImages(Shot leftTopShot, Shot rightTopShot, Shot leftBottomShot, Shot rightBottomShot) {
+    void loadShotImages(Shot leftTopShot, Shot rightTopShot, Shot leftBottomShot, Shot rightBottomShot) {
         loadImageInto(fourImagesView.getTopLeftImage(), leftTopShot);
         loadImageInto(fourImagesView.getTopRightImage(), rightTopShot);
         loadImageInto(fourImagesView.getBottomLeftImage(), leftBottomShot);

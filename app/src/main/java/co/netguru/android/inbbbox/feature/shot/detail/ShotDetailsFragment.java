@@ -44,7 +44,8 @@ import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucket
 public class ShotDetailsFragment
         extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
         implements ShotDetailsContract.View, DetailsViewActionCallback,
-        AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener {
+        AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener,
+        BucketedStatusChangeEmitter {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_ALL_SHOTS = "arg:all_shots";
@@ -76,6 +77,7 @@ public class ShotDetailsFragment
     private ShotDetailsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
+    private BucketedStatusChangeListener listener;
 
     public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots,
                                                   ShotDetailsRequest detailsRequest) {
@@ -104,9 +106,10 @@ public class ShotDetailsFragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        adapter = new ShotDetailsAdapter(this);
+        adapter = new ShotDetailsAdapter(this, this);
         getPresenter().retrieveInitialData();
         getPresenter().downloadData();
+        getPresenter().checkIfShotIsBucketed(getArguments().getParcelable(ARG_SHOT));
     }
 
     @NonNull
@@ -211,13 +214,8 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void onShotBucket(long shotId, boolean isLikedBucket) {
-        Shot shot = getArguments().getParcelable(ARG_SHOT);
-        if (shot != null) {
-            AddToBucketDialogFragment
-                    .newInstance(this, shot)
-                    .show(getFragmentManager(), RemoveCommentFragmentDialog.TAG);
-        }
+    public void onShotBucket(long shotId) {
+        getPresenter().onShotBucketClicked(getArguments().getParcelable(ARG_SHOT));
     }
 
     @Override
@@ -360,6 +358,30 @@ public class ShotDetailsFragment
     @Override
     public void showShotRemoveFromBucketSuccess() {
         showTextOnSnackbar(R.string.shots_fragment_remove_shot_from_bucket_success);
+    }
+
+    @Override
+    public void updateBucketedStatus(boolean isBucketed) {
+        listener.onBucketedStatusChanged(isBucketed);
+    }
+
+    @Override
+    public void showAddShotToBucketView(Shot shot) {
+        AddToBucketDialogFragment
+                .newInstance(this, shot)
+                .show(getFragmentManager(), AddToBucketDialogFragment.TAG);
+    }
+
+    @Override
+    public void showRemoveShotFromBucketView(Shot shot) {
+        RemoveFromBucketDialogFragment
+                .newInstance(this, shot)
+                .show(getFragmentManager(), RemoveFromBucketDialogFragment.TAG);
+    }
+
+    @Override
+    public void setListener(BucketedStatusChangeListener listener) {
+        this.listener = listener;
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {
