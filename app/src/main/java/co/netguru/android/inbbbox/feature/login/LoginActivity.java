@@ -29,6 +29,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         OauthWebViewListener {
 
     private static final int SLIDE_IN_DURATION = 300;
+    private static final String MESSAGE_KEY = "message_key";
     private LoginComponent component;
 
     @BindView(R.id.btn_login)
@@ -63,8 +64,9 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         context.startActivity(intent);
     }
 
-    public static void startActivityClearTask(Context context) {
+    public static void startActivityClearTaskWithMessage(Context context, String message) {
         final Intent intent = new Intent(context, LoginActivity.class);
+        intent.putExtra(MESSAGE_KEY, message);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
@@ -76,6 +78,10 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        if (getIntent().getStringExtra(MESSAGE_KEY) != null) {
+            showMessageOnSnackBar(getIntent().getStringExtra(MESSAGE_KEY));
+        }
     }
 
     private void initComponent() {

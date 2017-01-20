@@ -107,8 +107,7 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     private void handleUnauthorisedEvent(CriticalLogoutEvent object) {
-        Snackbar.make(contentView, object.getReason(), Snackbar.LENGTH_LONG).show();
-        LoginActivity.startActivityClearTask(this);
+        LoginActivity.startActivityClearTaskWithMessage(this, object.getReason());
         finish();
     }
 }
