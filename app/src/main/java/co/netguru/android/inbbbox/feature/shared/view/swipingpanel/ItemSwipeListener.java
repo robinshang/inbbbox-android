@@ -12,4 +12,6 @@ public interface ItemSwipeListener {
     void onLeftLongSwipeActivate(boolean isActive);
 
     void onRightSwipeActivate(boolean isActive);
+
+    void onLeftSwipeProgress();
 }
