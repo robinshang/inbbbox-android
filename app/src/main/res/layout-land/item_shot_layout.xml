@@ -49,6 +49,7 @@
                 android:src="@drawable/selector_like_swipe" />
 
             <ImageView
+                android:id="@+id/iv_plus_image"
                 android:layout_width="@dimen/shot_swipe_action_plus_size"
                 android:layout_height="@dimen/shot_swipe_action_plus_size"
                 android:layout_gravity="center"
