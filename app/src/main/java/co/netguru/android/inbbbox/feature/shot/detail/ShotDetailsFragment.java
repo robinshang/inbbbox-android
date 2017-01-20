@@ -297,10 +297,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showInfo(@StringRes int messageResId) {
-        Toast.makeText(getContext(),
-                getString(messageResId),
-                Toast.LENGTH_SHORT)
-                .show();
+        showTextOnSnackbar(getResources().getString(messageResId));
     }
 
     @Override
@@ -344,7 +341,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
+        showTextOnSnackbar(errorText);
     }
 
     @Override

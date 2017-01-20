@@ -3,12 +3,10 @@ package co.netguru.android.inbbbox.feature.shared.base;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
@@ -96,8 +94,8 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
         return ft;
     }
 
-    protected void showTextOnSnackbar(@StringRes int stringRes) {
-        Snackbar.make(contentView, stringRes, Snackbar.LENGTH_LONG).show();
+    protected void showTextOnSnackbar(String text) {
+        Snackbar.make(contentView, text, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -111,8 +109,7 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
     }
 
     private void handleUnauthorisedEvent(CriticalLogoutEvent object) {
-        Toast.makeText(this, object.getReason(), Toast.LENGTH_SHORT).show();
-        LoginActivity.startActivityClearTask(this);
+        LoginActivity.startActivityClearTaskWithMessage(this, object.getReason());
         finish();
     }
 }

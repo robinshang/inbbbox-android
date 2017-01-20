@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
@@ -147,7 +146,7 @@ public class TeamDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection
 
     @Override
     public void showMessageOnServerError(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        showTextOnSnackbar(message);
     }
 
     @Override

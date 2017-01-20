@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -108,8 +107,7 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     private void handleUnauthorisedEvent(CriticalLogoutEvent object) {
-        Toast.makeText(this, object.getReason(), Toast.LENGTH_SHORT).show();
-        LoginActivity.startActivityClearTask(this);
+        LoginActivity.startActivityClearTaskWithMessage(this, object.getReason());
         finish();
     }
 }

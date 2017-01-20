@@ -20,7 +20,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
@@ -154,7 +153,7 @@ public class MainActivity
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        Toast.makeText(this, errorText, Toast.LENGTH_SHORT).show();
+        showTextOnSnackbar(errorText);
     }
 
     @NonNull
@@ -269,7 +268,7 @@ public class MainActivity
 
     @Override
     public void showMessage(@StringRes int message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        showTextOnSnackbar(getResources().getString(message));
     }
 
     @Override
