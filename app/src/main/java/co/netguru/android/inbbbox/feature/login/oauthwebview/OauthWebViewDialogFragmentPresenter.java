@@ -29,8 +29,7 @@ public class OauthWebViewDialogFragmentPresenter extends MvpNullObjectBasePresen
 
     @Override
     public boolean shouldOverrideUrlLoading(Uri uri) {
-        String url = uri.toString();
-        if (url.startsWith(BuildConfig.DRIBBBLE_OAUTH_REDIRECT)) {
+        if (BuildConfig.DRIBBBLE_OAUTH_REDIRECT.equals(uri.getScheme())) {
             handleRedirectUri(uri);
             return true;
         }

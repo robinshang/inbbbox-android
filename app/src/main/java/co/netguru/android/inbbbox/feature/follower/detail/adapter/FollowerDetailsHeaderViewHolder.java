@@ -7,11 +7,11 @@ import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class FollowerDetailsHeaderViewHolder extends BaseViewHolder<Follower> {
+public class FollowerDetailsHeaderViewHolder extends BaseViewHolder<User> {
 
     @BindView(R.id.follower_detail_user_photo)
     CircleImageView userPhoto;
@@ -21,7 +21,7 @@ public class FollowerDetailsHeaderViewHolder extends BaseViewHolder<Follower> {
     }
 
     @Override
-    public void bind(Follower item) {
+    public void bind(User item) {
         Glide.with(itemView.getContext())
                 .load(item.avatarUrl())
                 .animate(android.R.anim.fade_in)

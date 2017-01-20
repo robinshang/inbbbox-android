@@ -12,13 +12,13 @@ import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
-import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersFourImagesView;
+import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersFourImageView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
+public abstract class BaseFollowersViewHolder extends BaseViewHolder<UserWithShots> {
 
     protected static final int FIRST_SHOT = 0;
     protected static final int SECOND_SHOT = 1;
@@ -31,7 +31,7 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
     float radius;
 
     @BindView(R.id.four_image_view)
-    RoundedCornersFourImagesView fourImagesView;
+    RoundedCornersFourImageView fourImagesView;
     @BindView(R.id.follower_item_user_photo)
     CircleImageView userPhoto;
     @BindView(R.id.follower_item_username)
@@ -39,27 +39,26 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
     @BindView(R.id.follower_item_shots_count)
     TextView shotsCount;
 
-    private Follower currentFollower;
+    private UserWithShots currentUserWithShots;
 
     BaseFollowersViewHolder(View view, @NonNull OnFollowerClickListener onFollowerClickListener) {
         super(view);
-        view.setOnClickListener(v -> onFollowerClickListener.onClick(currentFollower));
+        view.setOnClickListener(v -> onFollowerClickListener.onClick(currentUserWithShots));
     }
 
     @Override
-    public void bind(Follower item) {
-        this.currentFollower = item;
-        fourImagesView.setRadius(radius);
-        userName.setText(item.name());
-        shotsCount.setText(getShotCountString(item.shotsCount()));
-        loadUserPhoto(item.avatarUrl());
+    public void bind(UserWithShots item) {
+        this.currentUserWithShots = item;
+        userName.setText(item.user().name());
+        shotsCount.setText(getShotCountString(item.user().shotsCount()));
+        loadUserPhoto(item.user().avatarUrl());
     }
 
-    protected void loadShotImages(Shot leftTopShot, Shot rightTopShot, Shot leftBottomShot, Shot rightBottomShot) {
-        loadImageInto(fourImagesView.getTopLeftImageView(), leftTopShot);
-        loadImageInto(fourImagesView.getTopRightImageView(), rightTopShot);
-        loadImageInto(fourImagesView.getBottomLeftImageView(), leftBottomShot);
-        loadImageInto(fourImagesView.getBottomRightImageView(), rightBottomShot);
+    void loadShotImages(Shot leftTopShot, Shot rightTopShot, Shot leftBottomShot, Shot rightBottomShot) {
+        loadImageInto(fourImagesView.getTopLeftImage(), leftTopShot);
+        loadImageInto(fourImagesView.getTopRightImage(), rightTopShot);
+        loadImageInto(fourImagesView.getBottomLeftImage(), leftBottomShot);
+        loadImageInto(fourImagesView.getBottomRightImage(), rightBottomShot);
     }
 
     private void loadImageInto(ImageView imageView, Shot shot) {
@@ -76,10 +75,5 @@ public abstract class BaseFollowersViewHolder extends BaseViewHolder<Follower> {
                 .placeholder(R.drawable.logo_ball)
                 .animate(android.R.anim.fade_in)
                 .into(userPhoto);
-    }
-
-    @FunctionalInterface
-    public interface OnFollowerClickListener {
-        void onClick(Follower follower);
     }
 }

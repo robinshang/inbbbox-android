@@ -16,8 +16,10 @@ import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
+import rx.Observable;
 import rx.Single;
 import rx.observers.TestSubscriber;
 import rx.subscriptions.Subscriptions;
@@ -47,11 +49,15 @@ public class BucketDetailsPresenterTest {
     @Mock
     BucketsController bucketsControllerMock;
 
+    @Mock
+    RxBus rxBusMock;
+
     @InjectMocks
     BucketDetailsPresenter presenter;
 
     @Before
     public void setUp() throws Exception {
+        when(rxBusMock.getEvents(any())).thenReturn(Observable.empty());
         presenter.attachView(view);
     }
 

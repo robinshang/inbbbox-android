@@ -29,16 +29,17 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
-import co.netguru.android.inbbbox.feature.follower.adapter.BaseFollowersViewHolder;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.feature.follower.adapter.FollowersAdapter;
+import co.netguru.android.inbbbox.feature.follower.adapter.OnFollowerClickListener;
 import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.team.TeamDetailsActivity;
 
-public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Follower>, FollowersContract.View, FollowersContract.Presenter>
-        implements RefreshableFragment, FollowersContract.View, BaseFollowersViewHolder.OnFollowerClickListener {
+public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<UserWithShots>, FollowersContract.View, FollowersContract.Presenter>
+        implements RefreshableFragment, FollowersContract.View, OnFollowerClickListener {
 
     private static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final int FOLLOWERS_TO_LOAD_MORE = 8;
@@ -107,23 +108,23 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
 
     @NonNull
     @Override
-    public LceViewState<List<Follower>, FollowersContract.View> createViewState() {
+    public LceViewState<List<UserWithShots>, FollowersContract.View> createViewState() {
         return new RetainingLceViewState<>();
     }
 
     @Override
-    public List<Follower> getData() {
+    public List<UserWithShots> getData() {
         return adapter.getData();
+    }
+
+    @Override
+    public void setData(List<UserWithShots> data) {
+        adapter.setUserWithShotsList(data);
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
         getPresenter().getFollowedUsersFromServer();
-    }
-
-    @Override
-    public void setData(List<Follower> data) {
-        adapter.setFollowersList(data);
     }
 
     @Override
@@ -133,8 +134,8 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     }
 
     @Override
-    public void showMoreFollowedUsers(List<Follower> followerList) {
-        adapter.addMoreFollowers(followerList);
+    public void showMoreFollowedUsers(List<UserWithShots> userWithShotsList) {
+        adapter.addMoreFollowers(userWithShotsList);
     }
 
     @Override
@@ -171,6 +172,21 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     }
 
     @Override
+    public void onClick(UserWithShots followedUser) {
+        getPresenter().onFollowedUserSelect(followedUser);
+    }
+
+    @Override
+    public void openSingleUserDetails(UserWithShots followedUser) {
+        FollowerDetailsActivity.startActivity(getContext(), followedUser);
+    }
+
+    @Override
+    public void openTeamDetails(UserWithShots followedUser) {
+        TeamDetailsActivity.startActivity(getContext(), followedUser);
+    }
+
+    @Override
     public void refreshFragmentData() {
         getPresenter().getFollowedUsersFromServer();
     }
@@ -184,8 +200,7 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     }
 
     private void initRecyclerView() {
-        adapter = new FollowersAdapter(follower ->
-                FollowerDetailsActivity.startActivity(getContext(), follower));
+        adapter = new FollowersAdapter(this);
         gridLayoutManager = new GridLayoutManager(getContext(), GRID_VIEW_COLUMN_COUNT);
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setHasFixedSize(true);
@@ -201,12 +216,6 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     private void initRefreshLayout() {
         swipeRefreshLayout.setColorSchemeColors(accentColor);
         swipeRefreshLayout.setOnRefreshListener(getPresenter()::getFollowedUsersFromServer);
-    }
-
-
-    @Override
-    public void onClick(Follower follower) {
-        FollowerDetailsActivity.startActivity(getContext(), follower);
     }
 
     @Override

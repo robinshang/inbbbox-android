@@ -6,10 +6,17 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.common.utils.StringUtil;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.event.RxBus;
+import co.netguru.android.inbbbox.event.events.ShotLikedEvent;
+import co.netguru.android.inbbbox.event.events.ShotRemovedFromBucketEvent;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -17,27 +24,36 @@ import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applyCompletableIoSchedulers;
 import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applySingleIoSchedulers;
 
+@FragmentScope
 public class ShotDetailsPresenter
         extends MvpNullObjectBasePresenter<ShotDetailsContract.View>
         implements ShotDetailsContract.Presenter {
 
     private final ShotDetailsController shotDetailsController;
     private final ErrorController errorController;
+    private final RxBus rxBus;
+    private final BucketsController bucketsController;
     private final CompositeSubscription subscriptions;
     private boolean isCommentModeInit;
     private Shot shot;
+    private List<Shot> allShots;
     private Comment commentInEditor;
     private CommentLoadMoreState commentLoadMoreState;
     private int pageNumber = 1;
     private int commentsCounter = 0;
+    private boolean isInBucket;
 
     @Inject
-    public ShotDetailsPresenter(ShotDetailsController shotDetailsController,
-                                ErrorController errorController) {
+    ShotDetailsPresenter(ShotDetailsController shotDetailsController,
+                         ErrorController errorController, List<Shot> allShots, RxBus rxBus,
+                         BucketsController bucketsController) {
         this.shotDetailsController = shotDetailsController;
         this.errorController = errorController;
+        this.bucketsController = bucketsController;
+        this.rxBus = rxBus;
         this.subscriptions = new CompositeSubscription();
         this.commentLoadMoreState = new CommentLoadMoreState();
+        this.allShots = allShots;
     }
 
     @Override
@@ -131,8 +147,8 @@ public class ShotDetailsPresenter
     }
 
     @Override
-    public void onShotImageClick(List<Shot> allShots) {
-        getView().openShotFullscreen(shot, allShots);
+    public void onShotImageClick() {
+        getView().openShotFullscreen(allShots, allShots.indexOf(shot));
     }
 
     @Override
@@ -140,6 +156,48 @@ public class ShotDetailsPresenter
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
         getView().disableEditorProgressMode();
+    }
+
+    @Override
+    public void addShotToBucket(Bucket bucket, Shot shot) {
+        subscriptions.add(
+                bucketsController.addShotToBucket(bucket.id(), shot)
+                        .compose(RxTransformerUtil.applyCompletableIoSchedulers())
+                        .subscribe(() -> updateShotAndShowAddToBucketSuccess(shot),
+                                throwable -> handleError(throwable, "Error while adding shot to bucket"))
+        );
+    }
+
+    @Override
+    public void removeShotFromBuckets(List<Bucket> list, Shot shot) {
+        for (Bucket bucket: list) {
+            subscriptions.add(
+                    bucketsController.removeShotFromBucket(bucket.id(), shot)
+                            .compose(RxTransformerUtil.applyCompletableIoSchedulers())
+                            .subscribe(() -> handleShotRemovedFromBucket(shot),
+                                    throwable -> handleError(throwable, "Error while removing shot from bucket"))
+            );
+        }
+    }
+
+    @Override
+    public void checkIfShotIsBucketed(Shot shot) {
+        bucketsController.isShotBucketed(shot.id())
+                .compose(applySingleIoSchedulers())
+                .subscribe(this::updateShot,
+                        throwable -> Timber
+                                .e(throwable, "Error while checking shot bucket state"));
+
+    }
+
+    @Override
+    public void onShotBucketClicked(Shot shot) {
+        if (shot != null) {
+            if (isInBucket)
+                getView().showRemoveShotFromBucketView(shot);
+            else
+                getView().showAddShotToBucketView(shot);
+        }
     }
 
     private void initializeView() {
@@ -183,10 +241,13 @@ public class ShotDetailsPresenter
     }
 
     private void updateLikeState(boolean newLikeState) {
+        int index = allShots.indexOf(shot);
         shot = Shot.update(shot)
                 .isLiked(newLikeState)
                 .build();
+        allShots.set(index, shot);
         showShotDetails(shot);
+        rxBus.send(new ShotLikedEvent(shot, newLikeState));
     }
 
     private void handleDetailsStates(ShotDetailsState state) {
@@ -226,10 +287,12 @@ public class ShotDetailsPresenter
 
     private void updateShotDetails(boolean liked, boolean bucketed) {
         if (shot.isLiked() != liked || shot.isBucketed() != bucketed) {
+            int index = allShots.indexOf(shot);
             shot = Shot.update(shot)
                     .isLiked(liked)
                     .isBucketed(bucketed)
                     .build();
+            allShots.set(index, shot);
             showShotDetails(shot);
         }
     }
@@ -244,5 +307,22 @@ public class ShotDetailsPresenter
         getView().dismissCommentEditor();
         getView().updateComment(commentInEditor, comment);
         getView().showInfo(R.string.comment_update_complete);
+    }
+
+    private void updateShot(boolean isBucketed) {
+        this.shot = Shot.update(shot).isBucketed(isBucketed).build();
+        this.isInBucket = isBucketed;
+        getView().updateBucketedStatus(isBucketed);
+    }
+
+    private void handleShotRemovedFromBucket(Shot shot) {
+        checkIfShotIsBucketed(shot);
+        rxBus.send(new ShotRemovedFromBucketEvent(shot));
+        getView().showShotRemoveFromBucketSuccess();
+    }
+
+    private void updateShotAndShowAddToBucketSuccess(Shot shot) {
+        checkIfShotIsBucketed(shot);
+        getView().showBucketAddSuccess();
     }
 }

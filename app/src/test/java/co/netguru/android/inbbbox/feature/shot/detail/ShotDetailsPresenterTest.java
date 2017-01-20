@@ -13,20 +13,23 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.threeten.bp.ZonedDateTime;
 
-import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
 
+import static co.netguru.android.inbbbox.Statics.BUCKET;
+import static co.netguru.android.inbbbox.Statics.LIKED_SHOT_NOT_BUCKETED;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
@@ -66,6 +69,15 @@ public class ShotDetailsPresenterTest {
     @Mock
     User userMock;
 
+    @Mock
+    List<Shot> shotsMock;
+
+    @Mock
+    BucketsController bucketsControllerMock;
+
+    @Mock
+    RxBus rxBusMock;
+
     @InjectMocks
     ShotDetailsPresenter shotDetailsPresenter;
 
@@ -74,6 +86,8 @@ public class ShotDetailsPresenterTest {
     @Before
     public void setUp() {
         shotDetailsPresenter.attachView(viewMock);
+        when(bucketsControllerMock.isShotBucketed(anyLong())).thenReturn(Single.just(true));
+        when(rxBusMock.getEvents(any())).thenReturn(Observable.empty());
         when(shotMock.id()).thenReturn(EXAMPLE_ID);
         when(shotMock.author()).thenReturn(User.create(Statics.USER_ENTITY));
         when(shotMock.creationDate()).thenReturn(ZonedDateTime.now());
@@ -583,8 +597,30 @@ public class ShotDetailsPresenterTest {
 
     @Test
     public void whenOnShotImageClicked_thenShowFullscreen() {
-        shotDetailsPresenter.onShotImageClick(Collections.emptyList());
-        verify(viewMock, times(1)).openShotFullscreen(any(Shot.class), any(List.class));
+        shotDetailsPresenter.onShotImageClick();
+        verify(viewMock, times(1)).openShotFullscreen(any(List.class), anyInt());
+    }
+
+    @Test
+    public void whenBucketForShotChosen_thenAddToBucket() {
+        //given
+        when(bucketsControllerMock.addShotToBucket(BUCKET.id(), LIKED_SHOT_NOT_BUCKETED))
+                .thenReturn(Completable.complete());
+        //when
+        shotDetailsPresenter.addShotToBucket(BUCKET, LIKED_SHOT_NOT_BUCKETED);
+        //then
+        verify(viewMock, times(1)).showBucketAddSuccess();
+    }
+
+    @Test
+    public void whenBucketForShotChosenAndErrorOccurs_thenShowApiError() {
+        //given
+        when(bucketsControllerMock.addShotToBucket(BUCKET.id(), LIKED_SHOT_NOT_BUCKETED))
+                .thenReturn(Completable.error(new Throwable()));
+        //when
+        shotDetailsPresenter.addShotToBucket(BUCKET, LIKED_SHOT_NOT_BUCKETED);
+        //then
+        verify(viewMock, times(1)).showMessageOnServerError(anyString());
     }
 
     @After

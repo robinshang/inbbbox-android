@@ -57,17 +57,15 @@ public class ShotLoadingUtil {
                 .into(imageViewTarget);
     }
 
-    public static void loadMainViewShotWithListenerNoPlaceholder(Context context,
+    public static void loadMainViewShotNoPlaceholder(Context context,
                                                                  ImageView target,
-                                                                 ShotImage shot,
-                                                                 RequestListener<String, GlideDrawable> requestListener) {
+                                                                 ShotImage shot) {
 
         String imageUrl = getImageUrl(shot);
         Timber.d("shot image url: %s", imageUrl);
         GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(target);
         Glide.with(context)
                 .load(imageUrl)
-                .listener(requestListener)
                 .animate(android.R.anim.fade_in)
                 .into(imageViewTarget);
     }

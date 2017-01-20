@@ -17,7 +17,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,21 +25,26 @@ import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.utils.AnimationUtil;
 import co.netguru.android.inbbbox.common.utils.InputUtil;
 import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
 import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
-import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersImageView;
+import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
+import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenActivity;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.ShotDetailsAdapter;
-
+import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucketDialogFragment;
 
 public class ShotDetailsFragment
         extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
-        implements ShotDetailsContract.View, DetailsViewActionCallback {
+        implements ShotDetailsContract.View, DetailsViewActionCallback,
+        AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener,
+        BucketedStatusChangeEmitter {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_ALL_SHOTS = "arg:all_shots";
@@ -52,7 +56,7 @@ public class ShotDetailsFragment
     RecyclerView shotRecyclerView;
 
     @BindView(R.id.parallax_image_view)
-    RoundedCornersImageView parallaxImageView;
+    RoundedCornersShotImageView parallaxImageView;
 
     @BindView(R.id.comment_input_panel)
     View shotCommentInputPanel;
@@ -69,12 +73,10 @@ public class ShotDetailsFragment
     @BindView(R.id.comment_send_imageView)
     View sendButton;
 
-    @BindDimen(R.dimen.shot_corner_radius)
-    int radius;
-
     private ShotDetailsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
+    private BucketedStatusChangeListener listener;
 
     public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots,
                                                   ShotDetailsRequest detailsRequest) {
@@ -84,7 +86,7 @@ public class ShotDetailsFragment
         if (allShots instanceof ArrayList) {
             args.putParcelableArrayList(ARG_ALL_SHOTS, (ArrayList<Shot>) allShots);
         } else {
-            args.putParcelableArrayList(ARG_ALL_SHOTS, new ArrayList<Shot>(allShots));
+            args.putParcelableArrayList(ARG_ALL_SHOTS, new ArrayList<>(allShots));
         }
         ShotDetailsFragment fragment = new ShotDetailsFragment();
         fragment.setArguments(args);
@@ -103,15 +105,18 @@ public class ShotDetailsFragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        adapter = new ShotDetailsAdapter(this);
+        adapter = new ShotDetailsAdapter(this, this);
         getPresenter().retrieveInitialData();
         getPresenter().downloadData();
+        getPresenter().checkIfShotIsBucketed(getArguments().getParcelable(ARG_SHOT));
     }
 
     @NonNull
     @Override
     public ShotDetailsContract.Presenter createPresenter() {
-        return App.getUserComponent(getContext()).plus(new ShotsDetailsModule()).getPresenter();
+        List<Shot> shots = getArguments().getParcelableArrayList(ARG_ALL_SHOTS);
+
+        return App.getUserComponent(getContext()).plus(new ShotsDetailsModule(shots)).getPresenter();
     }
 
     @OnClick(R.id.comment_send_imageView)
@@ -126,8 +131,7 @@ public class ShotDetailsFragment
 
     @OnClick(R.id.parallax_image_view)
     void onShotImageClick() {
-        List<Shot> shots = getArguments().getParcelableArrayList(ARG_ALL_SHOTS);
-        getPresenter().onShotImageClick(shots);
+        getPresenter().onShotImageClick();
     }
 
     @Override
@@ -200,7 +204,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onUserSelected(User user) {
-        FollowerDetailsActivity.startActivity(getContext(), user);
+        FollowerDetailsActivity.startActivity(getContext(), UserWithShots.create(user, null));
     }
 
     @Override
@@ -209,9 +213,8 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void onShotBucket(long shotId, boolean isLikedBucket) {
-        // TODO: 15.11.2016 not in scope of this task
-        Toast.makeText(getContext(), "bucket: " + isLikedBucket, Toast.LENGTH_SHORT).show();
+    public void onShotBucket(long shotId) {
+        getPresenter().onShotBucketClicked(getArguments().getParcelable(ARG_SHOT));
     }
 
     @Override
@@ -241,9 +244,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showMainImage(ShotImage shotImage) {
-        parallaxImageView.setRadius(radius);
-        parallaxImageView.disableRadiusForBottomEdge(true);
-        ShotLoadingUtil.loadMainViewShot(getContext(), parallaxImageView, shotImage);
+        ShotLoadingUtil.loadMainViewShot(getContext(), parallaxImageView.getImageView(), shotImage);
     }
 
     @Override
@@ -336,14 +337,53 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void openShotFullscreen(Shot shot, List<Shot> allShots) {
+    public void openShotFullscreen(List<Shot> allShots, int previewShotIndex) {
         ShotDetailsRequest detailsRequest = getArguments().getParcelable(ARG_SHOT_DETAIL_REQUEST);
-        ShotFullscreenActivity.startActivity(getContext(), shot, allShots, detailsRequest);
+        ShotFullscreenActivity.startActivity(getContext(), allShots, previewShotIndex, detailsRequest);
     }
 
     @Override
     public void showMessageOnServerError(String errorText) {
         Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onBucketForShotSelect(Bucket bucket, Shot shot) {
+        getPresenter().addShotToBucket(bucket, shot);
+    }
+
+    @Override
+    public void showBucketAddSuccess() {
+        showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
+    }
+
+    @Override
+    public void showShotRemoveFromBucketSuccess() {
+        showTextOnSnackbar(R.string.shots_fragment_remove_shot_from_bucket_success);
+    }
+
+    @Override
+    public void updateBucketedStatus(boolean isBucketed) {
+        listener.onBucketedStatusChanged(isBucketed);
+    }
+
+    @Override
+    public void showAddShotToBucketView(Shot shot) {
+        AddToBucketDialogFragment
+                .newInstance(this, shot)
+                .show(getFragmentManager(), AddToBucketDialogFragment.TAG);
+    }
+
+    @Override
+    public void showRemoveShotFromBucketView(Shot shot) {
+        RemoveFromBucketDialogFragment
+                .newInstance(this, shot)
+                .show(getFragmentManager(), RemoveFromBucketDialogFragment.TAG);
+    }
+
+    @Override
+    public void setListener(BucketedStatusChangeListener listener) {
+        this.listener = listener;
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {
@@ -361,5 +401,10 @@ public class ShotDetailsFragment
         if (isInputPanelShowingEnabled && adapter.isInputVisibilityPermitted(lastVisibleIndex)) {
             showInputIfHidden();
         }
+    }
+
+    @Override
+    public void onBucketToRemoveFromForShotSelect(List<Bucket> list, Shot shot) {
+        getPresenter().removeShotFromBuckets(list, shot);
     }
 }

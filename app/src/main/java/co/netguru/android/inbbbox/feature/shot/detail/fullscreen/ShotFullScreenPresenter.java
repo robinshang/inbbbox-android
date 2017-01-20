@@ -13,6 +13,7 @@ import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
+import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -30,21 +31,21 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
     private final BucketsController bucketsController;
     private final UserShotsController userShotsController;
     private final ShotDetailsRequest detailsRequest;
-    private final Shot shot;
     private final List<Shot> allShots;
+    private final int previewShotIndex;
     private int currentPage;
     private boolean hasMore = true;
 
     @Inject
-    public ShotFullScreenPresenter(ShotsController shotsController, LikeShotController likedShotsController,
-                                   BucketsController bucketsController, UserShotsController userShotsController,
-                                   Shot shot, List<Shot> allShots, ShotDetailsRequest shotDetailsRequest) {
+    ShotFullScreenPresenter(ShotsController shotsController, LikeShotController likedShotsController,
+                            BucketsController bucketsController, UserShotsController userShotsController,
+                            List<Shot> allShots, int previewShotIndex, ShotDetailsRequest shotDetailsRequest) {
         this.shotsController = shotsController;
         this.likedShotsController = likedShotsController;
         this.bucketsController = bucketsController;
         this.userShotsController = userShotsController;
         this.detailsRequest = shotDetailsRequest;
-        this.shot = shot;
+        this.previewShotIndex = previewShotIndex;
         this.allShots = allShots;
     }
 
@@ -52,13 +53,11 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
     public void attachView(ShotFullscreenContract.View view) {
         super.attachView(view);
 
-        if (allShots != null && !allShots.isEmpty()) {
-            currentPage = allShots.size() / SHOTS_PER_PAGE;
-            hasMore = allShots.size() % SHOTS_PER_PAGE == 0;
+        currentPage = allShots.size() / SHOTS_PER_PAGE;
+        hasMore = allShots.size() % SHOTS_PER_PAGE == 0;
 
-            getView().previewShots(shot, allShots);
-        } else {
-            getView().previewSingleShot(shot);
+        if (!allShots.isEmpty()) {
+            getView().previewShots(allShots, previewShotIndex);
         }
     }
 
@@ -69,17 +68,17 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
             Observable<List<Shot>> requestMoreObservable;
 
             switch (detailsRequest.detailsType()) {
-                case DEFAULT:
+                case ShotDetailsType.DEFAULT:
                     requestMoreObservable = shotsController.getShots(currentPage, SHOTS_PER_PAGE);
                     break;
-                case LIKES:
+                case ShotDetailsType.LIKES:
                     requestMoreObservable = likedShotsController.getLikedShots(currentPage, SHOTS_PER_PAGE);
                     break;
-                case BUCKET:
+                case ShotDetailsType.BUCKET:
                     requestMoreObservable = bucketsController.getShotsListFromBucket(detailsRequest.id(), currentPage, SHOTS_PER_PAGE)
-                            .toObservable();
+                                                    .toObservable();
                     break;
-                case USER:
+                case ShotDetailsType.USER:
                     requestMoreObservable = userShotsController.getUserShotsList(detailsRequest.id(), currentPage, SHOTS_PER_PAGE);
                     break;
                 default:

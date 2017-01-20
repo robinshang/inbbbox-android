@@ -19,7 +19,7 @@ public class RequestInterceptor implements Interceptor {
 
     private static final String HEADER_ACCEPT = "Accept";
     private static final String HEADER_TYPE_JSON = "application/json";
-    private static final String HEADER_AUTHORIZATION = "AUTHORIZATION";
+    private static final String HEADER_AUTHORIZATION = "Authorization";
 
     private final LogoutController logoutController;
     private final ErrorController errorController;

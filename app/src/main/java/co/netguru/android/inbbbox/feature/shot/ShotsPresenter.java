@@ -4,8 +4,11 @@ import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
+import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
@@ -21,6 +24,7 @@ import timber.log.Timber;
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applyCompletableIoSchedulers;
 
+@FragmentScope
 public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.View>
         implements ShotsContract.Presenter {
 
@@ -118,8 +122,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         subscriptions.add(
                 bucketsController.addShotToBucket(bucket.id(), shot)
                         .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                        .subscribe(
-                                getView()::showBucketAddSuccess,
+                        .subscribe(getView()::showBucketAddSuccess,
                                 throwable -> handleError(throwable, "Error while adding shot to bucket"))
         );
     }
@@ -140,6 +143,18 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         Timber.e(throwable, errorText);
         getView().hideLoadingIndicator();
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
+    }
+
+    @Override
+    public void removeShotFromBuckets(List<Bucket> list, Shot shot) {
+        for (Bucket bucket: list) {
+            subscriptions.add(
+                    bucketsController.removeShotFromBucket(bucket.id(), shot)
+                            .compose(RxTransformerUtil.applyCompletableIoSchedulers())
+                            .subscribe(getView()::showShotRemoveFromBucketSuccess,
+                                    throwable -> handleError(throwable, "Error while removing shot from bucket"))
+            );
+        }
     }
 
     private void onShotLikeCompleted(Shot shot) {

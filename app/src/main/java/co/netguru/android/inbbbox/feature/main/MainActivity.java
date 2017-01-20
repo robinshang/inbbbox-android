@@ -30,7 +30,6 @@ import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.BindDrawable;
-import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
@@ -58,6 +57,8 @@ public class MainActivity
     private static final String REQUEST_EXTRA = "requestExtra";
     private static final String TOGGLE_BUTTON_STATE = "toggleButtonState";
 
+    private static final String EMPTY_STRING = "";
+
     @BindColor(R.color.accent)
     int highlightColor;
 
@@ -76,9 +77,6 @@ public class MainActivity
     Drawable toolbarCenterBackground;
     @BindDrawable(R.drawable.toolbar_start_background)
     Drawable toolbarStartBackground;
-
-    @BindString(R.string.empty_string)
-    String emptyString;
 
     private MainActivityComponent component;
     private TextView drawerUserName;
@@ -103,6 +101,7 @@ public class MainActivity
     public static void startActivityWithRequest(Context context, int requestCode) {
         final Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra(REQUEST_EXTRA, requestCode);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
     }
 
@@ -146,6 +145,7 @@ public class MainActivity
         switch (intent.getIntExtra(REQUEST_EXTRA, REQUEST_DEFAULT)) {
             case REQUEST_REFRESH_FOLLOWER_LIST:
                 pagerAdapter.refreshFragment(TabItemType.FOLLOWERS);
+                selectTab(tabLayout.getTabAt(TabItemType.FOLLOWERS.getPosition()));
                 break;
             default:
                 throw new IllegalStateException("Intent should contains REQUEST_EXTRA");
@@ -336,7 +336,7 @@ public class MainActivity
                 if (icon != null) {
                     icon.clearColorFilter();
                 }
-                tab.setText(emptyString);
+                tab.setText(EMPTY_STRING);
             }
 
             @Override

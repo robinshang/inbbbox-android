@@ -13,13 +13,14 @@ import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
-import co.netguru.android.inbbbox.data.follower.controllers.FollowersShotController;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import rx.Subscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
+import static co.netguru.android.inbbbox.data.dribbbleuser.user.User.TYPE_SINGLE_USER;
+import static co.netguru.android.inbbbox.data.dribbbleuser.user.User.TYPE_TEAM;
 
 @FragmentScope
 public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersContract.View>
@@ -27,15 +28,14 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
 
     private static final int FOLLOWERS_PAGE_COUNT = 15;
     private static final int FOLLOWERS_SHOT_PAGE_COUNT = 30;
-    private static final int FOLLOWERS_SHOT_PAGE_NUMBER = 1;
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
 
     private final FollowersController followersController;
-    private final FollowersShotController followersShotController;
     private final ErrorController errorController;
 
     @NonNull
     private Subscription refreshSubscription;
+
     @NonNull
     private Subscription loadNextBucketSubscription;
 
@@ -43,10 +43,8 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     private int pageNumber = 1;
 
     @Inject
-    FollowersPresenter(FollowersController followersController, FollowersShotController followersShotController,
-                       ErrorController errorController) {
+    FollowersPresenter(FollowersController followersController, ErrorController errorController) {
         this.followersController = followersController;
-        this.followersShotController = followersShotController;
         this.errorController = errorController;
         refreshSubscription = Subscriptions.unsubscribed();
         loadNextBucketSubscription = Subscriptions.unsubscribed();
@@ -66,14 +64,13 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
         if (refreshSubscription.isUnsubscribed()) {
             pageNumber = 1;
             loadNextBucketSubscription.unsubscribe();
-            refreshSubscription = followersController.getFollowedUsers(pageNumber, FOLLOWERS_PAGE_COUNT)
-                    .flatMap(follower -> followersShotController.getFollowedUserWithShots(follower,
-                            FOLLOWERS_SHOT_PAGE_NUMBER, FOLLOWERS_SHOT_PAGE_COUNT))
-                    .toList()
-                    .compose(androidIO())
-                    .doAfterTerminate(getView()::hideProgressBars)
-                    .subscribe(this::onGetFollowersNext,
-                            throwable -> handleError(throwable, "Error while getting followed users form server"));
+            refreshSubscription = followersController.getFollowedUsers(pageNumber,
+                    FOLLOWERS_PAGE_COUNT, FOLLOWERS_SHOT_PAGE_COUNT)
+                                          .toList()
+                                          .compose(androidIO())
+                                          .doAfterTerminate(getView()::hideProgressBars)
+                                          .subscribe(this::onGetFollowersNext,
+                                                  throwable -> handleError(throwable, "Error while getting followed users form server"));
         }
     }
 
@@ -81,29 +78,37 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     public void getMoreFollowedUsersFromServer() {
         if (hasMore && refreshSubscription.isUnsubscribed() && loadNextBucketSubscription.isUnsubscribed()) {
             pageNumber++;
-            loadNextBucketSubscription = followersController.getFollowedUsers(pageNumber, FOLLOWERS_PAGE_COUNT)
-                    .compose(RxTransformerUtil.executeRunnableIfObservableDidntEmitUntilGivenTime(
-                            SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
-                            getView()::showLoadingMoreFollowersView))
-                    .flatMap(follower -> followersShotController.getFollowedUserWithShots(follower,
-                            FOLLOWERS_SHOT_PAGE_NUMBER, FOLLOWERS_SHOT_PAGE_COUNT))
-                    .toList()
-                    .compose(androidIO())
-                    .doAfterTerminate(() -> {
-                        getView().hideProgressBars();
-                        getView().hideLoadingMoreBucketsView();
-                    })
-                    .subscribe(this::onGetMoreFollowersNext,
-                            throwable -> handleError(throwable, "Error while getting followed users form server"));
+            loadNextBucketSubscription = followersController.getFollowedUsers(pageNumber,
+                    FOLLOWERS_PAGE_COUNT, FOLLOWERS_SHOT_PAGE_COUNT)
+                                                 .compose(RxTransformerUtil.executeRunnableIfObservableDidntEmitUntilGivenTime(
+                                                         SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
+                                                         getView()::showLoadingMoreFollowersView))
+                                                 .toList()
+                                                 .compose(androidIO())
+                                                 .doAfterTerminate(() -> {
+                                                     getView().hideProgressBars();
+                                                     getView().hideLoadingMoreBucketsView();
+                                                 })
+                                                 .subscribe(this::onGetMoreFollowersNext,
+                                                         throwable -> handleError(throwable, "Error while getting followed users form server"));
         }
     }
 
     @Override
-    public void checkDataEmpty(List<Follower> data) {
+    public void checkDataEmpty(List<UserWithShots> data) {
         if (data.isEmpty()) {
             getView().showEmptyLikesInfo();
         } else {
             getView().hideEmptyLikesInfo();
+        }
+    }
+
+    @Override
+    public void onFollowedUserSelect(UserWithShots followedUser) {
+        if (TYPE_SINGLE_USER.equals(followedUser.user().type())) {
+            getView().openSingleUserDetails(followedUser);
+        } else if (TYPE_TEAM.equals(followedUser.user().type())) {
+            getView().openTeamDetails(followedUser);
         }
     }
 
@@ -113,14 +118,14 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
-    private void onGetFollowersNext(List<Follower> followersList) {
-        hasMore = followersList.size() == FOLLOWERS_PAGE_COUNT;
-        getView().setData(followersList);
+    private void onGetFollowersNext(List<UserWithShots> userWithShotsList) {
+        hasMore = userWithShotsList.size() >= FOLLOWERS_PAGE_COUNT;
+        getView().setData(userWithShotsList);
         getView().showContent();
     }
 
-    private void onGetMoreFollowersNext(List<Follower> followersList) {
-        hasMore = followersList.size() == FOLLOWERS_PAGE_COUNT;
-        getView().showMoreFollowedUsers(followersList);
+    private void onGetMoreFollowersNext(List<UserWithShots> userWithShotsList) {
+        hasMore = userWithShotsList.size() >= FOLLOWERS_PAGE_COUNT;
+        getView().showMoreFollowedUsers(userWithShotsList);
     }
 }

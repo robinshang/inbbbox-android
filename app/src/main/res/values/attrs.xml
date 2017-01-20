@@ -7,7 +7,8 @@
             <enum name="height" value="1"/>
         </attr>
     </declare-styleable>
-    <declare-styleable name="RoundedCornersImageView">
-        <attr name="radius" format="dimension"/>
+    <declare-styleable name="RoundedCornersView">
+        <attr name="roundedCornersBackgroundColor" format="color|reference"/>
+        <attr name="roundingBottomCornersEnabled" format="boolean|reference"/>
     </declare-styleable>
 </resources>

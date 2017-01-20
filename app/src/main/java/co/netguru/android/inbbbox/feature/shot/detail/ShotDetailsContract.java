@@ -7,6 +7,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
 import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
@@ -68,7 +69,17 @@ public interface ShotDetailsContract {
 
         void disableEditorProgressMode();
 
-        void openShotFullscreen(Shot shot, List<Shot> allShots);
+        void openShotFullscreen(List<Shot> allShots, int previewShotIndex);
+
+        void showBucketAddSuccess();
+
+        void showShotRemoveFromBucketSuccess();
+
+        void updateBucketedStatus(boolean isBucketed);
+
+        void showAddShotToBucketView(Shot shot);
+
+        void showRemoveShotFromBucketView(Shot shot);
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -93,6 +104,14 @@ public interface ShotDetailsContract {
 
         void getMoreComments();
 
-        void onShotImageClick(List<Shot> allShots);
+        void onShotImageClick();
+
+        void addShotToBucket(Bucket bucket, Shot shot);
+
+        void removeShotFromBuckets(List<Bucket> list, Shot shot);
+
+        void checkIfShotIsBucketed(Shot shot);
+
+        void onShotBucketClicked(Shot shot);
     }
 }

@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.common.retrofit.UpdatedRxJavaCallAdapter;
 import co.netguru.android.inbbbox.data.bucket.BucketApi;
+import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamApi;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserApi;
 import co.netguru.android.inbbbox.data.follower.FollowersApi;
 import co.netguru.android.inbbbox.data.like.LikesApi;
@@ -62,5 +63,11 @@ public class ApiModule {
     @Provides
     BucketApi providesBucketApi(Retrofit retrofit) {
         return retrofit.create(BucketApi.class);
+    }
+
+    @Singleton
+    @Provides
+    TeamApi provideTeamApi(Retrofit retrofit) {
+        return retrofit.create(TeamApi.class);
     }
 }

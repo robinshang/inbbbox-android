@@ -8,10 +8,13 @@ import com.google.gson.TypeAdapter;
 
 import co.netguru.android.inbbbox.data.db.UserDB;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
-import co.netguru.android.inbbbox.data.follower.model.ui.Follower;
 
 @AutoValue
 public abstract class User implements Parcelable {
+
+    public static final String TYPE_SINGLE_USER = "Player";
+    public static final String TYPE_TEAM = "Team";
+
     public abstract long id();
 
     public abstract String name();
@@ -21,6 +24,8 @@ public abstract class User implements Parcelable {
     public abstract String username();
 
     public abstract int shotsCount();
+
+    public abstract String type();
 
     public static User.Builder builder() {
         return new AutoValue_User.Builder();
@@ -38,6 +43,8 @@ public abstract class User implements Parcelable {
 
         public abstract User.Builder shotsCount(int shotsCount);
 
+        public abstract User.Builder type(String type);
+
         public abstract User build();
     }
 
@@ -48,6 +55,7 @@ public abstract class User implements Parcelable {
                 .avatarUrl(entity.avatarUrl())
                 .username(entity.username())
                 .shotsCount(entity.shotsCount())
+                .type(entity.type())
                 .build();
     }
 
@@ -58,20 +66,11 @@ public abstract class User implements Parcelable {
                 .avatarUrl(userDB.getAvatarUrl())
                 .username(userDB.getUsername())
                 .shotsCount(userDB.getShotsCount())
+                .type(userDB.getType())
                 .build();
     }
 
     public static TypeAdapter<User> typeAdapter(Gson gson) {
         return new AutoValue_User.GsonTypeAdapter(gson);
-    }
-
-    public static User createFromFollower(Follower follower) {
-        return User.builder()
-                .id(follower.id())
-                .name(follower.name())
-                .username(follower.username())
-                .avatarUrl(follower.avatarUrl())
-                .shotsCount(follower.shotsCount())
-                .build();
     }
 }

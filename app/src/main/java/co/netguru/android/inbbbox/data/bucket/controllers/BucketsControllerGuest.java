@@ -51,7 +51,19 @@ public class BucketsControllerGuest implements BucketsController {
     }
 
     @Override
-    public Single<Boolean> isShotBucketed(long shotId, long userId) {
+    public Single<Boolean> isShotBucketed(long shotId) {
         return guestModeBucketsRepository.isShotBucketed(shotId);
+    }
+
+    @Override
+    public Single<List<Bucket>> getListBucketsForShot(long shotId) {
+        // TODO 12.01.2017 Not in scope of task
+        return null;
+    }
+
+    @Override
+    public Completable removeShotFromBucket(long bucketId, Shot shot) {
+        // TODO 12.01.2017 Not in scope of task
+        return null;
     }
 }

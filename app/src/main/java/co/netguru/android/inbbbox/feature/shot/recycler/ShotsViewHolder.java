@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.shot.recycler;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.animation.AnimationSet;
@@ -12,10 +11,9 @@ import android.widget.LinearLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
-import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersImageView;
+import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.ItemSwipeListener;
 import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout;
 
@@ -26,10 +24,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     LongSwipeLayout longSwipeLayout;
 
     @BindView(R.id.iv_shot_image)
-    RoundedCornersImageView shotImageView;
-
-    @BindView(R.id.iv_background)
-    RoundedCornersImageView backgroundImageView;
+    RoundedCornersShotImageView shotImageView;
 
     @BindView(R.id.iv_like_action)
     ImageView likeIconImageView;
@@ -39,9 +34,6 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
 
     @BindView(R.id.iv_bucket_action)
     ImageView bucketImageView;
-
-    @BindView(R.id.gif_label_textView)
-    View gifLabelView;
 
     @BindView(R.id.iv_comment)
     ImageView commentImageView;
@@ -71,19 +63,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     }
 
     private void setupImage(Shot shot) {
-        float radius = itemView.getResources().getDimension(R.dimen.shot_corner_radius);
-        final Context context = itemView.getContext();
-        backgroundImageView.setRadius(radius);
-        shotImageView.setRadius(radius);
-
-        ShotLoadingUtil.loadListShot(context, shotImageView, shot);
-
-        if (shot.isGif()) {
-            gifLabelView.setVisibility(View.VISIBLE);
-        } else {
-            gifLabelView.setVisibility(View.GONE);
-        }
-
+        shotImageView.loadShot(shot);
         likeIconImageView.setActivated(shot.isLiked());
     }
 

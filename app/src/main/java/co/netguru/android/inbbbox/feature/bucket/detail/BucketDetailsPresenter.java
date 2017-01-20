@@ -19,6 +19,8 @@ import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.event.RxBus;
+import co.netguru.android.inbbbox.event.events.ShotRemovedFromBucketEvent;
 import rx.Subscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
@@ -35,9 +37,12 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     @VisibleForTesting
     @NonNull
     Subscription loadNextShotsSubscription;
+    @NonNull
+    Subscription busSubscription;
 
     private final BucketsController bucketsController;
     private final ErrorController errorController;
+    private final RxBus rxBus;
 
     private int shotsPerPage;
     private int pageNumber = 1;
@@ -47,11 +52,19 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     private String currentBucketName;
 
     @Inject
-    BucketDetailsPresenter(BucketsController bucketsController, ErrorController errorController) {
+    BucketDetailsPresenter(BucketsController bucketsController, ErrorController errorController, RxBus rxBus) {
         this.bucketsController = bucketsController;
         this.errorController = errorController;
+        this.rxBus = rxBus;
         refreshShotsSubscription = Subscriptions.unsubscribed();
         loadNextShotsSubscription = Subscriptions.unsubscribed();
+        busSubscription = Subscriptions.unsubscribed();
+    }
+
+    @Override
+    public void attachView(BucketDetailsContract.View view) {
+        super.attachView(view);
+        setupRxBus();
     }
 
     @Override
@@ -59,6 +72,7 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         super.detachView(retainInstance);
         refreshShotsSubscription.unsubscribe();
         loadNextShotsSubscription.unsubscribe();
+        busSubscription.unsubscribe();
     }
 
     @Override
@@ -135,5 +149,11 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         canLoadMore = shots.size() == shotsPerPage;
         getView().setData(shots);
         getView().showContent();
+    }
+
+    private void setupRxBus() {
+        busSubscription = rxBus.getEvents(ShotRemovedFromBucketEvent.class)
+                .compose(RxTransformers.androidIO())
+                .subscribe(shotRemovedEvent -> refreshShots());
     }
 }

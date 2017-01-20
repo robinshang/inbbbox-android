@@ -5,11 +5,13 @@ import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.data.BaseGuestModeRepository;
 import co.netguru.android.inbbbox.data.db.DaoSession;
-import co.netguru.android.inbbbox.data.db.mappers.FollowerEntityDBMapper;
-import co.netguru.android.inbbbox.data.db.mappers.UserEntityDBMapper;
-import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
+import co.netguru.android.inbbbox.data.db.FollowerDBDao;
+import co.netguru.android.inbbbox.data.db.mappers.FollowerDBMapper;
+import co.netguru.android.inbbbox.data.db.mappers.UserDBMapper;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import timber.log.Timber;
 
 @Singleton
@@ -20,22 +22,37 @@ public class GuestModeFollowersRepository extends BaseGuestModeRepository {
         super(daoSession);
     }
 
-    public Observable<FollowerEntity> getFollowers() {
+    public Observable<User> getFollowersWithoutShots() {
         Timber.d("Getting followers from local repository");
-        return daoSession.getFollowerEntityDBDao().queryBuilder().rx().oneByOne().map(FollowerEntity::fromDB);
+        return daoSession.getFollowerDBDao().queryBuilder()
+                .rx()
+                .oneByOne()
+                .map(followerDB -> User.fromDB(followerDB.getUser()));
     }
 
     public Completable removeFollower(long id) {
         Timber.d("Removing follower from local repository");
-        return daoSession.getFollowerEntityDBDao().rx().deleteByKey(id).toCompletable();
+        return daoSession.getFollowerDBDao()
+                .rx()
+                .deleteByKey(id)
+                .toCompletable();
     }
 
-    // TODO: 22.12.2016 Add follower when follow will be available
-    public Completable addFollower(FollowerEntity followerEntity) {
+    public Completable addFollower(User user) {
         Timber.d("Adding follower to local repository");
         return daoSession.rxTx().run(() -> {
-            daoSession.getFollowerEntityDBDao().insertOrReplace(FollowerEntityDBMapper.fromFollowerEntity(followerEntity));
-            daoSession.getUserEntityDBDao().insertOrReplace(UserEntityDBMapper.fromUserEntity(followerEntity.user()));
+            daoSession.getFollowerDBDao().insertOrReplace(FollowerDBMapper.fromUser(user));
+            daoSession.getUserDBDao().insertOrReplace(UserDBMapper.fromUser(user));
         }).toCompletable();
+    }
+
+    public Single<Boolean> isUserFollowed(long id) {
+        Timber.d("Checking if user is followed");
+        return daoSession.getFollowerDBDao().queryBuilder()
+                .where(FollowerDBDao.Properties.Id.eq(id))
+                .rx()
+                .unique()
+                .map(followerDB -> followerDB != null)
+                .toSingle();
     }
 }

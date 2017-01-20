@@ -66,7 +66,6 @@
     <string name="fragment_bucket_is_empty_text_after_icon">tej kolekcji!</string>
     <string name="fragment_buckets_empty_text_before_icon">Najpierw stwórz kilka</string>
     <string name="fragment_buckets_empty_text_after_icon">kolekcji!</string>
-    <string name="fragment_follower_details_dialog_text">Przestać obserwować %s ?</string>
     <string name="fragment_followers_empty_text">Najpierw zacznij kogoś obserwować!</string>
     <string name="fragment_like_empty_text">Najpierw dodaj jakiś projekt do ulubionych!</string>
     <string name="in_label">\"w \"</string>
@@ -101,5 +100,8 @@
     <string name="animated_load_ball_description">Animacja skaczącej piłeczki oznaczająca ładowanie.</string>
     <string name="back_arrow_description">Obrazek strzałki powrotu.</string>
     <string name="fullscreen_shot_description">Pełnoekranowy projekt.</string>
+    <string name="fragment_remove_from_bucket_title">Usuń z kolekcji</string>
+    <string name="remove_from_bucket_fragment_remove">Usuń projekt z powyższych kolekcji</string>
+    <string name="shots_fragment_remove_shot_from_bucket_success">Projekt usunięty z kolekcji</string>
 
 </resources>

@@ -1,27 +1,26 @@
 package co.netguru.android.inbbbox.data.follower.controllers;
 
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.FollowersApi;
-import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
+import co.netguru.android.inbbbox.data.shot.ShotsApi;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
 
-public class FollowersControllerApi implements FollowersController {
-
-    private final FollowersApi followersApi;
+public class FollowersControllerApi extends BaseFollowersController implements FollowersController {
 
     private static final int CODE_USER_IS_FOLLOWED = 204;
     private static final int CODE_USER_IS_NOT_FOLLOWED = 404;
 
-    public FollowersControllerApi(FollowersApi followersApi) {
-        this.followersApi = followersApi;
+    public FollowersControllerApi(FollowersApi followersApi, ShotsApi shotsApi) {
+        super(followersApi, shotsApi);
     }
 
     @Override
-    public Observable<FollowerEntity> getFollowedUsers(int pageNumber, int pageCount) {
-        return followersApi.getFollowedUsers(pageNumber, pageCount)
-                .flatMap(Observable::from);
+    public Observable<UserWithShots> getFollowedUsers(int pageNumber, int pageCount, int followerShotPageCount) {
+        return getFollowersFromApi(pageNumber, pageCount, followerShotPageCount);
     }
 
     @Override
@@ -30,8 +29,8 @@ public class FollowersControllerApi implements FollowersController {
     }
 
     @Override
-    public Completable followUser(long id) {
-        return followersApi.followUser(id);
+    public Completable followUser(User user) {
+        return followersApi.followUser(user.id());
     }
 
     @Override
@@ -40,9 +39,9 @@ public class FollowersControllerApi implements FollowersController {
                 .flatMap(voidResponse -> {
                     switch (voidResponse.code()) {
                         case CODE_USER_IS_FOLLOWED:
-                            return Single.just(true);
+                            return Single.just(Boolean.TRUE);
                         case CODE_USER_IS_NOT_FOLLOWED:
-                            return Single.just(false);
+                            return Single.just(Boolean.FALSE);
                         default:
                             return Single.error(new HttpException(voidResponse));
                     }

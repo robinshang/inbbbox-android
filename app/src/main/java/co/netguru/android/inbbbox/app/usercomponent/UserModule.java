@@ -5,7 +5,11 @@ import co.netguru.android.inbbbox.data.bucket.GuestModeBucketsRepository;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsControllerApi;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsControllerGuest;
+import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamApi;
+import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamController;
+import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamControllerApi;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserApi;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
 import co.netguru.android.inbbbox.data.follower.FollowersApi;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersControllerApi;
@@ -16,6 +20,7 @@ import co.netguru.android.inbbbox.data.like.controllers.GuestModeLikesRepository
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotControllerApi;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotControllerGuest;
+import co.netguru.android.inbbbox.data.shot.ShotsApi;
 import dagger.Module;
 import dagger.Provides;
 
@@ -43,23 +48,30 @@ public class UserModule {
 
     @UserScope
     @Provides
-    FollowersController provideFollowersController(FollowersApi followersApi,
+    FollowersController provideFollowersController(FollowersApi followersApi, ShotsApi shotsApi,
                                                    GuestModeFollowersRepository guestModeFollowersRepository) {
         if (mode == UserModeType.GUEST_USER_MODE) {
-            return new FollowersControllerGuest(guestModeFollowersRepository, followersApi);
+            return new FollowersControllerGuest(guestModeFollowersRepository, followersApi, shotsApi);
         }
 
-        return new FollowersControllerApi(followersApi);
+        return new FollowersControllerApi(followersApi, shotsApi);
     }
 
     @UserScope
     @Provides
     BucketsController provideBucketsController(UserApi userApi, BucketApi bucketApi,
-                                               GuestModeBucketsRepository guestModeBucketsRepository) {
+                                               GuestModeBucketsRepository guestModeBucketsRepository,
+                                               UserController userController) {
         if (mode == UserModeType.GUEST_USER_MODE) {
             return new BucketsControllerGuest(guestModeBucketsRepository);
         }
 
-        return new BucketsControllerApi(userApi, bucketApi);
+        return new BucketsControllerApi(userApi, bucketApi, userController);
+    }
+
+    @UserScope
+    @Provides
+    TeamController provideTeamController(TeamApi teamApi) {
+        return new TeamControllerApi(teamApi);
     }
 }
