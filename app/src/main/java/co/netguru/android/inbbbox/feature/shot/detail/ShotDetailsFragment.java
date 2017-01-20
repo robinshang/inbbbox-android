@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -298,7 +297,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showInfo(@StringRes int messageResId) {
-        showMessageOnSnackbar(getResources().getString(messageResId));
+        showTextOnSnackbar(getResources().getString(messageResId));
     }
 
     @Override
@@ -342,7 +341,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        showMessageOnSnackbar(errorText);
+        showTextOnSnackbar(errorText);
     }
 
     @Override
@@ -399,10 +398,6 @@ public class ShotDetailsFragment
         if (isInputPanelShowingEnabled && adapter.isInputVisibilityPermitted(lastVisibleIndex)) {
             showInputIfHidden();
         }
-    }
-
-    private void showMessageOnSnackbar(String message) {
-        Snackbar.make(shotRecyclerView, message, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

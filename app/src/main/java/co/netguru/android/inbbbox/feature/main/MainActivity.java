@@ -10,7 +10,6 @@ import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,7 +18,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -73,8 +71,6 @@ public class MainActivity
     NavigationView navigationView;
     @BindView(R.id.activity_main_drawer_layout)
     DrawerLayout drawerLayout;
-    @BindView(R.id.main_linear_layout)
-    LinearLayout mainLinearLayout;
 
     @BindDrawable(R.drawable.toolbar_center_background)
     Drawable toolbarCenterBackground;
@@ -157,7 +153,7 @@ public class MainActivity
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        showMessageOnSnackbar(errorText);
+        showTextOnSnackbar(errorText);
     }
 
     @NonNull
@@ -272,7 +268,7 @@ public class MainActivity
 
     @Override
     public void showMessage(@StringRes int message) {
-        showMessageOnSnackbar(getResources().getString(message));
+        showTextOnSnackbar(getResources().getString(message));
     }
 
     @Override
@@ -443,9 +439,5 @@ public class MainActivity
     private void changeMenuGroupsVisibility(boolean isMainMenuVisible, boolean isLogoutMenuVisible) {
         navigationView.getMenu().setGroupVisible(R.id.group_all, isMainMenuVisible);
         navigationView.getMenu().setGroupVisible(R.id.group_logout, isLogoutMenuVisible);
-    }
-
-    private void showMessageOnSnackbar(String message) {
-        Snackbar.make(mainLinearLayout, message, Snackbar.LENGTH_LONG).show();
     }
 }

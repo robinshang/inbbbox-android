@@ -4,7 +4,6 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -235,7 +234,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @Override
     public void showBucketListLoadingMore() {
-        showMessageOnSnackBar(getResources().getString( R.string.loading_more_buckets));
+        showMessageOnSnackbar(getResources().getString( R.string.loading_more_buckets));
     }
 
     @Override
@@ -266,7 +265,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        showMessageOnSnackBar(errorText);
+        showMessageOnSnackbar(errorText);
     }
 
     private void setupRecyclerView() {
@@ -280,10 +279,6 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
                         getPresenter().loadMoreBuckets();
                     }
                 });
-    }
-
-    private void showMessageOnSnackBar(String message) {
-        Snackbar.make(bucketsRecyclerView, message, Snackbar.LENGTH_LONG).show();
     }
 
     /**

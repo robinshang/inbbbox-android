@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 
@@ -128,5 +129,10 @@ public abstract class BaseMvpDialogFragment<V extends MvpView, P extends MvpPres
     public void onDetach() {
         super.onDetach();
         mvpDelegate.onDetach();
+    }
+
+    protected void showMessageOnSnackbar(String message) {
+        if (getView() != null)
+            Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
     }
 }
