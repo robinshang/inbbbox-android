@@ -135,4 +135,6 @@
     <string name="back_arrow_description">Back arrow image.</string>
     <string name="fullscreen_shot_description">Fullscreen shot image.</string>
     <string name="shot">Shot</string>
+    <string name="error_server">Something went wrong while fetching data. Try again.</string>
+    <string name="refresh">Refresh</string>
 </resources>
