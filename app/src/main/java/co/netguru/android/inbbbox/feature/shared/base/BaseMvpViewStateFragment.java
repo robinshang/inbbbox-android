@@ -12,7 +12,6 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import co.netguru.android.inbbbox.R;
 
 public abstract class BaseMvpViewStateFragment<C extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
         extends MvpLceViewStateFragment<C, M, V, P> {
@@ -51,6 +50,6 @@ public abstract class BaseMvpViewStateFragment<C extends View, M, V extends MvpL
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        return getString(R.string.empty_string);
+        return "";
     }
 }

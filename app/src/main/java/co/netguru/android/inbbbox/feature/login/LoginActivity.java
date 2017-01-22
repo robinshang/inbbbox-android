@@ -4,10 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
@@ -28,6 +29,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         OauthWebViewListener {
 
     private static final int SLIDE_IN_DURATION = 300;
+    private static final String MESSAGE_KEY = "message_key";
     private LoginComponent component;
 
     @BindView(R.id.btn_login)
@@ -38,6 +40,9 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @BindView(R.id.btn_guest)
     Button guestButton;
+
+    @BindView(R.id.login_relative_layout)
+    RelativeLayout loginRelativeLayout;
 
     @OnClick(R.id.btn_login)
     void onLoginClick() {
@@ -59,8 +64,9 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         context.startActivity(intent);
     }
 
-    public static void startActivityClearTask(Context context) {
+    public static void startActivityClearTaskWithMessage(Context context, String message) {
         final Intent intent = new Intent(context, LoginActivity.class);
+        intent.putExtra(MESSAGE_KEY, message);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
@@ -72,6 +78,10 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        if (getIntent().getStringExtra(MESSAGE_KEY) != null) {
+            showMessageOnSnackBar(getIntent().getStringExtra(MESSAGE_KEY));
+        }
     }
 
     private void initComponent() {
@@ -99,12 +109,12 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @Override
     public void showInvalidOauthUrlError() {
-        Toast.makeText(this, R.string.invalid_outh_url, Toast.LENGTH_LONG).show();
+        showMessageOnSnackBar(getResources().getString(R.string.invalid_outh_url));
     }
 
     @Override
     public void showWrongKeyError() {
-        Toast.makeText(this, R.string.wrong_oauth_state_key, Toast.LENGTH_LONG).show();
+        showMessageOnSnackBar(getResources().getString(R.string.wrong_oauth_state_key));
     }
 
     @Override
@@ -161,6 +171,10 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        Toast.makeText(this, errorText, Toast.LENGTH_LONG).show();
+        showMessageOnSnackBar(errorText);
+    }
+
+    private void showMessageOnSnackBar(String message) {
+        Snackbar.make(loginRelativeLayout, message, Snackbar.LENGTH_LONG).show();
     }
 }

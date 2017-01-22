@@ -17,7 +17,6 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.ShotLikedEvent;
 import co.netguru.android.inbbbox.event.events.ShotRemovedFromBucketEvent;
-
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -42,6 +41,7 @@ public class ShotDetailsPresenter
     private CommentLoadMoreState commentLoadMoreState;
     private int pageNumber = 1;
     private int commentsCounter = 0;
+    private boolean isInBucket;
 
     @Inject
     ShotDetailsPresenter(ShotDetailsController shotDetailsController,
@@ -163,8 +163,7 @@ public class ShotDetailsPresenter
         subscriptions.add(
                 bucketsController.addShotToBucket(bucket.id(), shot)
                         .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                        .subscribe(
-                                getView()::showBucketAddSuccess,
+                        .subscribe(() -> updateShotAndShowAddToBucketSuccess(shot),
                                 throwable -> handleError(throwable, "Error while adding shot to bucket"))
         );
     }
@@ -178,6 +177,26 @@ public class ShotDetailsPresenter
                             .subscribe(() -> handleShotRemovedFromBucket(shot),
                                     throwable -> handleError(throwable, "Error while removing shot from bucket"))
             );
+        }
+    }
+
+    @Override
+    public void checkIfShotIsBucketed(Shot shot) {
+        bucketsController.isShotBucketed(shot.id())
+                .compose(applySingleIoSchedulers())
+                .subscribe(this::updateShot,
+                        throwable -> Timber
+                                .e(throwable, "Error while checking shot bucket state"));
+
+    }
+
+    @Override
+    public void onShotBucketClicked(Shot shot) {
+        if (shot != null) {
+            if (isInBucket)
+                getView().showRemoveShotFromBucketView(shot);
+            else
+                getView().showAddShotToBucketView(shot);
         }
     }
 
@@ -290,8 +309,20 @@ public class ShotDetailsPresenter
         getView().showInfo(R.string.comment_update_complete);
     }
 
+    private void updateShot(boolean isBucketed) {
+        this.shot = Shot.update(shot).isBucketed(isBucketed).build();
+        this.isInBucket = isBucketed;
+        getView().updateBucketedStatus(isBucketed);
+    }
+
     private void handleShotRemovedFromBucket(Shot shot) {
+        checkIfShotIsBucketed(shot);
         rxBus.send(new ShotRemovedFromBucketEvent(shot));
         getView().showShotRemoveFromBucketSuccess();
+    }
+
+    private void updateShotAndShowAddToBucketSuccess(Shot shot) {
+        checkIfShotIsBucketed(shot);
+        getView().showBucketAddSuccess();
     }
 }

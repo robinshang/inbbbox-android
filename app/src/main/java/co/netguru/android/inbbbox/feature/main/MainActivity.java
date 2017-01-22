@@ -20,7 +20,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
@@ -30,7 +29,6 @@ import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.BindDrawable;
-import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
@@ -58,6 +56,8 @@ public class MainActivity
     private static final String REQUEST_EXTRA = "requestExtra";
     private static final String TOGGLE_BUTTON_STATE = "toggleButtonState";
 
+    private static final String EMPTY_STRING = "";
+
     @BindColor(R.color.accent)
     int highlightColor;
 
@@ -76,9 +76,6 @@ public class MainActivity
     Drawable toolbarCenterBackground;
     @BindDrawable(R.drawable.toolbar_start_background)
     Drawable toolbarStartBackground;
-
-    @BindString(R.string.empty_string)
-    String emptyString;
 
     private MainActivityComponent component;
     private TextView drawerUserName;
@@ -156,7 +153,7 @@ public class MainActivity
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        Toast.makeText(this, errorText, Toast.LENGTH_SHORT).show();
+        showTextOnSnackbar(errorText);
     }
 
     @NonNull
@@ -271,7 +268,7 @@ public class MainActivity
 
     @Override
     public void showMessage(@StringRes int message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        showTextOnSnackbar(getResources().getString(message));
     }
 
     @Override
@@ -338,7 +335,7 @@ public class MainActivity
                 if (icon != null) {
                     icon.clearColorFilter();
                 }
-                tab.setText(emptyString);
+                tab.setText(EMPTY_STRING);
             }
 
             @Override

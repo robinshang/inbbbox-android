@@ -260,11 +260,11 @@ public class ShotDetailsControllerTest {
     }
 
     private void mockInBucketShotState() {
-        when(bucketsController.isShotBucketed(anyInt(), anyInt())).thenReturn(Single.just(Boolean.TRUE));
+        when(bucketsController.isShotBucketed(anyInt())).thenReturn(Single.just(Boolean.TRUE));
     }
 
     private void mockNotInBucketShotState() {
-        when(bucketsController.isShotBucketed(anyInt(), anyInt()))
+        when(bucketsController.isShotBucketed(anyInt()))
                 .thenReturn(Single.just(Boolean.FALSE));
     }
 }

@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
 public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHolder> {
 

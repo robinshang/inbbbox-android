@@ -16,13 +16,11 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import org.threeten.bp.ZonedDateTime;
 
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindColor;
@@ -236,7 +234,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @Override
     public void showBucketListLoadingMore() {
-        Toast.makeText(getContext(), R.string.loading_more_buckets, Toast.LENGTH_SHORT).show();
+        showMessageOnSnackbar(getResources().getString( R.string.loading_more_buckets));
     }
 
     @Override
@@ -267,7 +265,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        Toast.makeText(getContext(), errorText, Toast.LENGTH_LONG).show();
+        showMessageOnSnackbar(errorText);
     }
 
     private void setupRecyclerView() {

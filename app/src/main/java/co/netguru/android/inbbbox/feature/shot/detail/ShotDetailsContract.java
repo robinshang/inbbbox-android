@@ -74,6 +74,12 @@ public interface ShotDetailsContract {
         void showBucketAddSuccess();
 
         void showShotRemoveFromBucketSuccess();
+
+        void updateBucketedStatus(boolean isBucketed);
+
+        void showAddShotToBucketView(Shot shot);
+
+        void showRemoveShotFromBucketView(Shot shot);
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -103,5 +109,9 @@ public interface ShotDetailsContract {
         void addShotToBucket(Bucket bucket, Shot shot);
 
         void removeShotFromBuckets(List<Bucket> list, Shot shot);
+
+        void checkIfShotIsBucketed(Shot shot);
+
+        void onShotBucketClicked(Shot shot);
     }
 }

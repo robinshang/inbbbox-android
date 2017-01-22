@@ -4,8 +4,6 @@
     <string name="block_canary_display_activity_label" translatable="false">Inbbbox block canary</string>
     <string name="leak_canary_display_activity_label" translatable="false">Inbbbox leak canary</string>
 
-    <string name="empty_string" translatable="false"></string>
-
     <string name="login_button_text">Login with Dribbble</string>
     <string name="login_inbbbox_text" translatable="false">Each shot swipes</string>
     <string name="undefined_api_error">Unknown server error</string>
@@ -26,7 +24,7 @@
     <string name="action_cancel">Cancel</string>
     <string name="action_create">Create</string>
     <string name="action_delete">Delete</string>
-    <string name="action_warning">Warning</string>h
+    <string name="action_warning">Warning</string>
 
     <string name="drawer_group_notification">Notifications</string>
     <string name="drawer_enable_reminder">Enable daily reminder</string>

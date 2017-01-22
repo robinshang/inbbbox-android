@@ -12,7 +12,7 @@ public interface DetailsViewActionCallback {
 
     void onShotLikeAction(boolean isLiked);
 
-    void onShotBucket(long shotId, boolean isLikedBucket);
+    void onShotBucket(long shotId);
 
     void onLoadMoreCommentsSelected();
 

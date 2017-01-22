@@ -73,6 +73,8 @@ public class LongSwipeLayout extends SwipeLayout {
     private void handleSwipingActions(MotionEvent event) {
         int swipingLimit = getLimitForLeftSwipe();
 
+        itemSwipeListener.onLeftSwipeProgress();
+
         if (-getSurfaceView().getLeft() < swipingLimit / 3 && !wasChecked && !isNormalSwipeTriggered) {
             wasChecked = true;
             isNormalSwipeTriggered = true;

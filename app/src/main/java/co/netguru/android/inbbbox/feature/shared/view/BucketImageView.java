@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,10 +45,10 @@ public class BucketImageView extends FrameLayout {
     int backgroundColor;
 
     @BindViews({
-            R.id.bucket_four_images_image1,
-            R.id.bucket_four_images_image2,
-            R.id.bucket_four_images_image3,
-            R.id.bucket_four_images_image4})
+                       R.id.bucket_four_images_image1,
+                       R.id.bucket_four_images_image2,
+                       R.id.bucket_four_images_image3,
+                       R.id.bucket_four_images_image4})
 
     List<ImageView> imageViews;
     int currentImage;
@@ -108,7 +109,7 @@ public class BucketImageView extends FrameLayout {
 
     private void scheduleTimer() {
         int delay = ANIMATE_EVERY_MILLISECONDS_MIN +
-                new Random().nextInt(ANIMATE_EVERY_MILLISECONDS_MAX - ANIMATE_EVERY_MILLISECONDS_MIN);
+                            new Random().nextInt(ANIMATE_EVERY_MILLISECONDS_MAX - ANIMATE_EVERY_MILLISECONDS_MIN);
 
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -174,10 +175,10 @@ public class BucketImageView extends FrameLayout {
     }
 
     private void animateImageMatrixFromBigtoLastSmall(ImageView imageView, int duration) {
-        Matrix matrix = imageView.getMatrix();
-
-        float drawableWidth = imageView.getDrawable().getIntrinsicWidth();
-        float drawableHeight = imageView.getDrawable().getIntrinsicHeight();
+        final Matrix matrix = imageView.getMatrix();
+        final Drawable drawable = imageView.getDrawable();
+        float drawableWidth = drawable.getIntrinsicWidth();
+        float drawableHeight = drawable.getIntrinsicHeight();
         float scaleFactor = smallImageWidth() / drawableWidth;
         float viewHeight = imageView.getHeight();
         float fromX = 0;
@@ -209,10 +210,10 @@ public class BucketImageView extends FrameLayout {
 
     private void animateImageMatrixToMoveTowardsFirst(ImageView imageView, int fromPosition,
                                                       int toPosition, int duration) {
-        Matrix matrix = imageView.getMatrix();
-
-        float drawableWidth = imageView.getDrawable().getIntrinsicWidth();
-        float drawableHeight = imageView.getDrawable().getIntrinsicHeight();
+        final Matrix matrix = imageView.getMatrix();
+        final Drawable drawable = imageView.getDrawable();
+        float drawableWidth = drawable.getIntrinsicWidth();
+        float drawableHeight = drawable.getIntrinsicHeight();
         float scaleFactor = smallImageWidth() / drawableWidth;
         float viewHeight = imageView.getHeight();
         float fromX = fromPosition * smallImageWidth();

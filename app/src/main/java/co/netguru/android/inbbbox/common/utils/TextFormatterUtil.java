@@ -18,8 +18,9 @@ public final class TextFormatterUtil {
         final ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
         final SpannableStringBuilder builder = new SpannableStringBuilder();
         builder.append(text.substring(0, index + 1))
-                .append(" ")
-                .setSpan(imageSpan, builder.length() - 1, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                .append(" ");
+        final int chars = builder.length();
+        builder.setSpan(imageSpan, chars - 1, chars, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         builder.append(text.substring(index));
 
         return builder;
