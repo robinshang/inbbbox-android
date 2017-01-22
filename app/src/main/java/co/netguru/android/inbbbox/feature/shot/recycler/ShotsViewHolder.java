@@ -20,29 +20,23 @@ import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayo
 class ShotsViewHolder extends BaseViewHolder<Shot>
         implements ItemSwipeListener {
 
+    private final ShotSwipeListener shotSwipeListener;
     @BindView(R.id.long_swipe_layout)
     LongSwipeLayout longSwipeLayout;
-
     @BindView(R.id.iv_shot_image)
     RoundedCornersShotImageView shotImageView;
-
     @BindView(R.id.iv_like_action)
     ImageView likeIconImageView;
-
     @BindView(R.id.iv_plus_image)
     ImageView plusIconImageView;
-
     @BindView(R.id.iv_bucket_action)
     ImageView bucketImageView;
-
     @BindView(R.id.iv_comment)
     ImageView commentImageView;
-
+    @BindView(R.id.iv_follow)
+    ImageView followImageView;
     @BindView(R.id._left_wrapper)
     LinearLayout leftWrapper;
-
-    private final ShotSwipeListener shotSwipeListener;
-
     private Shot shot;
 
     ShotsViewHolder(View itemView, @NonNull ShotSwipeListener shotSwipeListener) {
@@ -83,6 +77,11 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     }
 
     @Override
+    public void onRightLongSwipe() {
+        shotSwipeListener.onFollowUserSwipe(shot);
+    }
+
+    @Override
     public void onLeftSwipeActivate(boolean isActive) {
         if (!shot.isLiked()) {
             likeIconImageView.setActivated(isActive);
@@ -100,7 +99,12 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     }
 
     @Override
-    public void onLeftSwipeProgress() {
+    public void onRightLongSwipeActivate(boolean isActive) {
+        followImageView.setActivated(isActive);
+    }
+
+    @Override
+    public void onSwipeProgress() {
         int[] shotAbsoluteCoordinates = new int[2];
         shotImageView.getLocationOnScreen(shotAbsoluteCoordinates);
         int[] leftWrapperAbsoluteCoordinates = new int[2];
@@ -140,7 +144,10 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     }
 
     private float getPercent(int progress, int viewLeft, int viewWidth) {
-        int percent = 100 * progress / (viewLeft + viewWidth);
+        int percent = 0;
+        if (viewLeft != 0 || viewWidth != 0) {
+            percent = 100 * progress / (viewLeft + viewWidth);
+        }
         return percent / 100f;
     }
 }
