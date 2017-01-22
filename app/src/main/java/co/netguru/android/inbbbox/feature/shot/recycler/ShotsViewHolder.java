@@ -100,11 +100,20 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
 
     @Override
     public void onRightLongSwipeActivate(boolean isActive) {
-        followImageView.setActivated(isActive);
+        followImageView.setVisibility(isActive ? View.VISIBLE : View.INVISIBLE);
+        commentImageView.setAlpha(isActive ? 0 : 255);
     }
 
     @Override
-    public void onSwipeProgress() {
+    public void onSwipeProgress(int positionX, int swipeLimit) {
+        if (positionX > 0) {
+            handleLeftSwipe();
+        } else {
+            handleRightSwipe(positionX, swipeLimit);
+        }
+    }
+
+    private void handleLeftSwipe() {
         int[] shotAbsoluteCoordinates = new int[2];
         shotImageView.getLocationOnScreen(shotAbsoluteCoordinates);
         int[] leftWrapperAbsoluteCoordinates = new int[2];
@@ -141,6 +150,19 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
             //in case of fast swipe
             bucketImageView.clearAnimation();
         }
+    }
+
+    private void handleRightSwipe(int positionX, int swipeLimit) {
+        float progress = (float) -positionX / (float) swipeLimit;
+
+        float horizontalTranslation = positionX/3;
+        commentImageView.setTranslationX(horizontalTranslation);
+
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.setFillAfter(true);
+        animationSet.addAnimation(new ScaleAnimation(progress, progress, progress, progress,
+                commentImageView.getWidth(), commentImageView.getHeight() / 2));
+        commentImageView.startAnimation(animationSet);
     }
 
     private float getPercent(int progress, int viewLeft, int viewWidth) {

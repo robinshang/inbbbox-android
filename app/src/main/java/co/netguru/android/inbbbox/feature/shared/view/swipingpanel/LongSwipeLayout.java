@@ -56,10 +56,10 @@ public class LongSwipeLayout extends SwipeLayout {
     }
 
     private void handleSwipingActions() {
-        itemSwipeListener.onSwipeProgress();
-
         int swipeLimit = getSwipeLimit();
         int positionX = getSurfaceView().getLeft();
+
+        itemSwipeListener.onSwipeProgress(positionX, swipeLimit);
 
         handleSwipeLeft(positionX, swipeLimit);
         handleSwipeRight(positionX, swipeLimit);

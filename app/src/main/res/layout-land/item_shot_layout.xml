@@ -21,13 +21,20 @@
             android:id="@+id/bottom_right_wrapper"
             android:layout_width="@dimen/shot_right_swipe_action_panel_width"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="1">
+            android:layout_gravity="end"
+            android:gravity="center_vertical|end"
+            android:orientation="horizontal">
             <!--What you want to show-->
+
+            <ImageView
+                android:id="@+id/iv_follow"
+                style="@style/LongSwipeActionIcons"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_follow" />
+
             <ImageView
                 android:id="@+id/iv_comment"
-                style="@style/SwipeActionIcons"
+                style="@style/LongSwipeActionIcons"
                 android:contentDescription="@null"
                 android:src="@drawable/selector_comment_swipe" />
 
