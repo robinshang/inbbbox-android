@@ -254,6 +254,9 @@ dependencies {
     //Timber
     compile libs.timber
 
+    //Once
+    compile libs.once
+
     //OnActivityResult
     compile libs.onActivityResult
     apt proc.onActivityResult

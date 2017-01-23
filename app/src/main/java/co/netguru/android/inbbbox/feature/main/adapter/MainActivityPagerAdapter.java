@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import co.netguru.android.inbbbox.feature.bucket.BucketsFragment;
 import co.netguru.android.inbbbox.feature.follower.FollowersFragment;
 import co.netguru.android.inbbbox.feature.like.LikesFragment;
+import co.netguru.android.inbbbox.feature.onboarding.OnboardingFragment;
 import co.netguru.android.inbbbox.feature.shot.ShotsFragment;
 
 public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment> extends FragmentStatePagerAdapter {
@@ -26,7 +27,7 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment> 
     public Fragment getItem(int position) {
         switch (TabItemType.getTabItemForPosition(position)) {
             case SHOTS:
-                return ShotsFragment.newInstance();
+                return OnboardingFragment.newInstance();
             case LIKES:
                 return LikesFragment.newInstance();
             case BUCKETS:
