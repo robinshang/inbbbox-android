@@ -15,18 +15,15 @@
 <!-- METADATA -->
 <!-- Add links to JIRA, Google Drive, mailing list and other relevant resources -->
 <!-- Add links to CI configs with build status and deployment environment, e.g.: -->
-| environment | deployment            | status             |
-|-------------|-----------------------|--------------------|
-| Android        | [`HockeyApp`](https://rink.hockeyapp.net/manage/apps/404535) | [![Build Status](https://www.bitrise.io/app/cf503ac188f43ade.svg?token=k9n-sH184dmLSBSQRnW_qg&branch=master)](https://www.bitrise.io/app/cf503ac188f43ade) |
+| environment |Jira            | deployment            |  build status      |  coverage          |
+|-------------|-----------------------|-----------------------|--------------------|--------------------|
+| Android     |[`JIRA`](https://netguru.atlassian.net/secure/RapidBoard.jspa?rapidView=214&projectKey=IA) |[`HockeyApp`](https://rink.hockeyapp.net/manage/apps/404535) | [![Build Status](https://www.bitrise.io/app/cf503ac188f43ade.svg?token=k9n-sH184dmLSBSQRnW_qg&branch=master)](https://www.bitrise.io/app/cf503ac188f43ade) |[![codecov](https://codecov.io/gh/netguru/inbbbox-android/branch/master/graph/badge.svg?token=0UKDDNsV4s)](https://codecov.io/gh/netguru/inbbbox-android) |
 <!--- If applies, add link to app on Google Play -->
-
-[![codecov](https://codecov.io/gh/netguru/sensorytreat-android/branch/master/graph/badge.svg?token=0UKDDNsV4s)](https://codecov.io/gh/netguru/inbbbox-android/)
-
- [`JIRA`](https://netguru.atlassian.net/secure/RapidBoard.jspa?rapidView=214&projectKey=IA) 
 
 
 ## Synopsis
 <!-- Describe the project in few sentences -->
+Inbbbox is Android client app of dribbble.com service.
 
 ## Development
 
@@ -36,6 +33,7 @@ Reactive MVP with Dagger2 dependency injection.
 
 ### Integrations
 <!-- Describe external service and hardware integrations, link to reference docs, use #### headings -->
+Inbbbox app is integrated with dribbble.com service using [Dribbble API v1](http://developer.dribbble.com/v1/)
 
 ### Coding guidelines
 [Netguru Android code style guide](https://netguru.atlassian.net/wiki/display/ANDROID/Android+best+practices)
@@ -48,9 +46,8 @@ Reactive MVP with Dagger2 dependency injection.
 ## Testing
 <!-- Describe the project's testing methodology -->
 <!-- Examples: TDD? Using Espresso for views? What parts must be tested? etc -->
+ - Unit Testing using Mockito + JUnit. Tests concerns Presnters layer and partially Model layer of MVP architecture
 
-### Coverage
-![codecov.io](https://codecov.io/gh/netguru/inbbbox-android/branch/master/graphs/commits.svg?token=0UKDDNsV4s)
 
 ## Building
 <!-- Aim to explain the process so that any new or external developer not familiar with the project can perform build and deploy -->
@@ -69,35 +66,78 @@ Reactive MVP with Dagger2 dependency injection.
 
 ### Product flavors
 <!-- List and describe product flavors, purposes and dedicated deployment channels -->
-#### develop
- - preview API, functional testing
+#### mock
+ - mocked data, functional testing
  
 #### production
- - production API, release
+ - production API, real data,release
 
 ### Build properties
 <!-- List all build properties that have to be supplied, including secrets. Describe the method of supplying them, both on local builds and CI -->
 
 | Property         | External property name | Environment variable |
 |------------------|------------------------|----------------------|
-| HockeyApp App ID | HockeyAppId            | HOCKEY_APP_ID        |
+| HockeyApp App ID production | HockeyAppAppIdProd            | hockeyAppIdProd        |
+| Dribble client key | DribbbleClientKey            | dribbbleClientSecret        |
+| Dribble client secret | DribbbleClientSecret            | dribbbleClientSecret        |
+| Dribble client redirect key | DribbbleOauthRedirect            | dribbbleOauthRedirect        |
+| Dribble client token | DribbbleClientToken            | dribbbleClientToken        |
 
 #### Secrets
 Follow [this guide](https://netguru.atlassian.net/wiki/pages/viewpage.action?pageId=33030753) 
 
 #### Other properties
+ - SONAR_ACCESS_TOKEN - with access token to sonarQube server;
+ - CODECOV_TOKEN - token for upload code coverage reports for CodeCove account;
+ - GithubRepoName - repository name
+ - GithubOwnerName - repository owner name
 
 ### ProGuard
 <!-- Describe ProGuard configuration: is it enabled? Any unusual stuff? -->
+Proguard configuration is placed in proguard-rules.pro. Proguard is enabled only for Release build variants.
+In proguard-rules.pro file there are rules for such libs/tools like:
+ - app compat-v7
+ - FragmentArgs
+ - Gson
+ - retrofit
+ - dagger
+ - xlog
+ - stetho
+ - leak canary
+ - fabric
+ - rx
+ - glide
+ - BugTags
+ - AutoBundle
+ - AutoGson
+ - AutoParcel
+ - GreenDao
 
 ## Deployment
 <!-- Aim to explain the process so that any new or external developer can perform deploy -->
 
 ### Bitrise
 <!-- Describe the Continuous Integration process: Bitrise workflows, global configs etc. -->
+ Bitrise is separated for workflow mentioned below. Feature,
+ - feature - workflow triggered on Push to feature or bug brunch;
+ - MasterPR -  workflow triggered on Pull Request for feature/bug brunch to Master brunch
+ - Master - workflow triggered on Push or PR marge to Master brunch;
+
+ Each workflows has defined such steps us:
+  - Unit tests,
+  - CodeCove rapports upload,
+  - SonarCube analysis,
+  - lintAnalysis
+  - build of productionRelease flavour of the application;
+  - build upload build apk file to bitrise;
+  Additionally MasterPR step there is SigningApk step and deploy to HockeyApp step
 
 ### HockeyApp / Fabric environments
 <!-- Describe the deployment channels -->
+ - Project use HockeyApp for beta distribution and Crash managing and monitoring. Deploy to Hockeyapp is performed automatically by Bitrise system in Master step.
+
 
 ### Supported devices
-<!-- Describe the supported and target devices (do not put stuff that can be easily found in build.gradle files) --> 
+<!-- Describe the supported and target devices (do not put stuff that can be easily found in build.gradle files) -->
+ - all devices from API level 19 - Android 4.4+
+ - no devices restricted yet
