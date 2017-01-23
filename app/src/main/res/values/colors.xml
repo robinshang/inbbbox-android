@@ -10,6 +10,7 @@
 
     <color name="disabledGray">#80FFFFFF</color>
     <color name="materialButtonColorPressed">#f8f8f8f8</color>
+    <color name="whiteSemiTransparent">#c0ffffff</color>
 
     <color name="white">#FFFFFF</color>
     <color name="transparentWhite">#00000000</color>
