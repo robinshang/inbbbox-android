@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
+import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
@@ -52,6 +54,9 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     @BindString(R.string.fragment_like_empty_text)
     String emptyString;
 
+    @BindString(R.string.error_server)
+    String errorString;
+
     @BindColor(R.color.accent)
     int accentColor;
 
@@ -65,6 +70,8 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     TextView emptyViewText;
     @BindView(R.id.loadingView)
     ProgressBar progressBar;
+    @BindView(R.id.errorLayout)
+    LinearLayout errorLayout;
 
     private Snackbar loadingMoreSnackbar;
     private LikesAdapter likesAdapter;
@@ -122,6 +129,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     @Override
     public void showContent() {
         super.showContent();
+        errorLayout.setVisibility(View.INVISIBLE);
         getPresenter().checkDataEmpty(getData().isEmpty());
     }
 
@@ -210,7 +218,30 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        Snackbar.make(recyclerView, errorText, Snackbar.LENGTH_LONG).show();
+        showError(null, false);
+    }
+
+    @Override
+    public void showError(Throwable e, boolean pullToRefresh) {
+        super.showError(e, pullToRefresh);
+        errorLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showLoading(boolean pullToRefresh) {
+        super.showLoading(pullToRefresh);
+        errorLayout.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
+        return errorString;
+    }
+
+    @OnClick(R.id.refreshButton)
+    void onRefreshButtonClick() {
+        showLoading(false);
+        loadData(true);
     }
 
     private void initEmptyView() {
