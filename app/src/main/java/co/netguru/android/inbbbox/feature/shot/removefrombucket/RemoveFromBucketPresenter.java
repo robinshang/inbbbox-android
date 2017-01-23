@@ -85,12 +85,31 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
                     .doOnSubscribe(getView()::showBucketListLoading)
                     .compose(RxTransformerUtil.applySingleIoSchedulers())
                     .doAfterTerminate(getView()::hideProgressBar)
-                    .subscribe(buckets -> {
-                        apiHasMoreBuckets = buckets.size() == BUCKETS_PER_PAGE_COUNT;
-                        getView().setBucketsList(buckets);
-                        getView().showBucketsList();
-                    }, throwable -> handleError(throwable, "Error occurred while requesting buckets"));
+                    .subscribe(this::handleShotBuckets,
+                            throwable -> handleError(throwable,
+                                    "Error occurred while requesting buckets"));
         }
+    }
+
+    private void handleShotBuckets(List<Bucket> buckets) {
+        if (buckets.size() > 1) {
+            showContainedBuckets(buckets);
+        } else if (buckets.size() == 1) {
+            removeImmediately(buckets.get(0));
+        } else {
+            // TODO: 23.01.2017 close with error info
+        }
+    }
+
+    private void removeImmediately(Bucket bucket) {
+        bucketsToRemoveFromList.add(bucket);
+        getView().passResultAndCloseFragment(bucketsToRemoveFromList, shot);
+    }
+
+    private void showContainedBuckets(List<Bucket> buckets) {
+        apiHasMoreBuckets = buckets.size() == BUCKETS_PER_PAGE_COUNT;
+        getView().setBucketsList(buckets);
+        getView().showBucketsList();
     }
 
     @Override
