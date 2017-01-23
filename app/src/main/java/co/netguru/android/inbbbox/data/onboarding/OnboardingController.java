@@ -8,7 +8,6 @@ import rx.Observable;
 import rx.Single;
 
 public interface OnboardingController {
-    Single<Integer> getCurrentStep();
-    void setCurrentStep(int step);
-    Observable<List<Shot>> getShots();
+    Single<Boolean> isOnboardingPassed();
+    void setOnboardingPassed(boolean passed);
 }

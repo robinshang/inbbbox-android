@@ -13,9 +13,11 @@ import java.util.List;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.feature.onboarding.recycler.OnboardingLinearLayoutManager;
 import co.netguru.android.inbbbox.feature.onboarding.recycler.OnboardingShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
+import timber.log.Timber;
 
 public class OnboardingFragment extends BaseMvpFragment<OnboardingContract.View, OnboardingContract.Presenter>
         implements OnboardingContract.View, OnboardingShotSwipeListener {
@@ -81,6 +83,11 @@ public class OnboardingFragment extends BaseMvpFragment<OnboardingContract.View,
     @Override
     public void setData(List<OnboardingShot> data) {
         adapter.setItems(data);
+    }
+
+    @Override
+    public void closeOnboarding() {
+        MainActivity.startActivityWithRequest(getContext(), MainActivity.REQUEST_RESTART);
     }
 
     @Override

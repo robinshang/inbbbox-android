@@ -16,9 +16,11 @@ import co.netguru.android.inbbbox.feature.shot.ShotsFragment;
 public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment> extends FragmentStatePagerAdapter {
 
     private SparseArray<T> activeRefreshableFragments;
+    private boolean isOnboardingPassed;
 
-    public MainActivityPagerAdapter(FragmentManager fm) {
+    public MainActivityPagerAdapter(FragmentManager fm, boolean isOnboardingPassed) {
         super(fm);
+        this.isOnboardingPassed = isOnboardingPassed;
         activeRefreshableFragments = new SparseArray<>(TabItemType.values().length);
     }
 
@@ -27,7 +29,11 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment> 
     public Fragment getItem(int position) {
         switch (TabItemType.getTabItemForPosition(position)) {
             case SHOTS:
-                return OnboardingFragment.newInstance();
+                if(isOnboardingPassed) {
+                    return ShotsFragment.newInstance();
+                } else {
+                    return OnboardingFragment.newInstance();
+                }
             case LIKES:
                 return LikesFragment.newInstance();
             case BUCKETS:

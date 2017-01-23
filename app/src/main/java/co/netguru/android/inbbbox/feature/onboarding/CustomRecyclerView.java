@@ -6,11 +6,11 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView;
-import timber.log.Timber;
 
 public class CustomRecyclerView extends AutoItemScrollRecyclerView {
 
     public boolean disableTouch;
+
     public CustomRecyclerView(Context context) {
         super(context);
     }

@@ -42,6 +42,8 @@
 
         <activity android:name=".feature.team.TeamDetailsActivity" />
 
+        <activity android:name=".feature.onboarding.OnboardingActivity" />
+
         <activity
             android:name=".feature.shot.detail.fullscreen.ShotFullscreenActivity"
             android:theme="@style/AppThemeGallery"

@@ -14,9 +14,8 @@ import com.bumptech.glide.Glide;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.feature.onboarding.*;
+import co.netguru.android.inbbbox.feature.onboarding.OnboardingShot;
+import co.netguru.android.inbbbox.feature.onboarding.OnboardingShotSwipeListener;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.ItemSwipeListener;
@@ -28,43 +27,40 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingShot>
     public static final int ALPHA_MAX = 255;
     public static final int ALPHA_MIN = 0;
     public static final int LOCATION_ON_SCREEN_COORDINATES_NUMBER = 2;
-    public static final float COMMENT_TRANSLATION_FACTOR = 1/3f;
-
+    public static final float COMMENT_TRANSLATION_FACTOR = 1 / 3f;
+    private final OnboardingShotSwipeListener shotSwipeListener;
     @BindView(R.id.long_swipe_layout)
+    @Nullable
     LongSwipeLayout longSwipeLayout;
-
     @BindView(R.id.iv_shot_image)
     RoundedCornersShotImageView shotImageView;
-
     @BindView(R.id.iv_like_action)
+    @Nullable
     ImageView likeIconImageView;
-
     @BindView(R.id.iv_plus_image)
     @Nullable
     ImageView plusIconImageView;
-
     @BindView(R.id.iv_bucket_action)
     @Nullable
     ImageView bucketImageView;
-
     @BindView(R.id.iv_comment)
     @Nullable
     ImageView commentImageView;
-
     @BindView(R.id.iv_follow)
     @Nullable
     ImageView followImageView;
-
     @BindView(R.id._left_wrapper)
+    @Nullable
     LinearLayout leftWrapper;
-    private final OnboardingShotSwipeListener shotSwipeListener;
-
     private OnboardingShot onboardingShot;
 
     OnboardingShotsViewHolder(View itemView, @NonNull OnboardingShotSwipeListener shotSwipeListener) {
         super(itemView);
         this.shotSwipeListener = shotSwipeListener;
-        longSwipeLayout.setItemSwipeListener(this);
+
+        if (longSwipeLayout != null) {
+            longSwipeLayout.setItemSwipeListener(this);
+        }
     }
 
     @OnClick(R.id.iv_shot_image)
@@ -76,6 +72,11 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingShot>
     public void bind(OnboardingShot shot) {
         this.onboardingShot = shot;
         setupImage(shot);
+
+        // this is needed because comment image view would be deactivated on last pixel of swipe
+        if (shot.getStep() == OnboardingShot.STEP_COMMENT) {
+            longSwipeLayout.setSwipeLimitShift(-1);
+        }
     }
 
     private void setupImage(OnboardingShot shot) {
@@ -107,26 +108,28 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingShot>
 
     @Override
     public void onLeftSwipeActivate(boolean isActive) {
-        likeIconImageView.setActivated(isActive);
+        if (likeIconImageView != null) {
+            likeIconImageView.setActivated(isActive);
+        }
     }
 
     @Override
     public void onLeftLongSwipeActivate(boolean isActive) {
-        if(bucketImageView != null) {
+        if (bucketImageView != null) {
             bucketImageView.setActivated(isActive);
         }
     }
 
     @Override
     public void onRightSwipeActivate(boolean isActive) {
-        if(commentImageView != null) {
+        if (commentImageView != null) {
             commentImageView.setActivated(isActive);
         }
     }
 
     @Override
     public void onRightLongSwipeActivate(boolean isActive) {
-        if(followImageView != null) {
+        if (followImageView != null) {
             followImageView.setVisibility(isActive ? View.VISIBLE : View.INVISIBLE);
             commentImageView.setImageAlpha(isActive ? ALPHA_MIN : ALPHA_MAX);
         }
@@ -136,7 +139,7 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingShot>
     public void onSwipeProgress(int positionX, int swipeLimit) {
         if (positionX > 0) {
             handleLeftSwipe();
-        } else if(onboardingShot.getStep() >= 2) {
+        } else if (onboardingShot.getStep() >= 2) {
             handleRightSwipe(positionX, swipeLimit);
         }
     }
@@ -153,7 +156,7 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingShot>
         float percent = getPercent(progress, likeIconImageViewLeft, likeIconImageView.getWidth());
         float plusPercent = 0;
         float bucketPercent = 0;
-        if(onboardingShot.getStep() >= 1) {
+        if (onboardingShot.getStep() >= 1) {
             plusPercent = getPercent(progress, plusIconImageView.getLeft(), plusIconImageView.getWidth());
             bucketPercent = getPercent(progress, bucketImageView.getLeft(), bucketImageView.getWidth());
         }
@@ -178,7 +181,7 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingShot>
 
             animationSet.addAnimation(new ScaleAnimation(bucketPercent, bucketPercent, bucketPercent, bucketPercent, 0, bucketImageView.getHeight() / 2));
             bucketImageView.startAnimation(animationSet);
-        } else if(onboardingShot.getStep() >= 2){
+        } else if (onboardingShot.getStep() >= 2) {
             //in case of fast swipe
             bucketImageView.clearAnimation();
         }

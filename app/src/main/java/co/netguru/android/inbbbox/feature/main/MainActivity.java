@@ -42,6 +42,7 @@ import co.netguru.android.inbbbox.feature.shot.ShotsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 import static butterknife.ButterKnife.findById;
 
@@ -52,6 +53,8 @@ public class MainActivity
         TimePickerDialogFragment.OnTimePickedListener {
 
     public static final int REQUEST_REFRESH_FOLLOWER_LIST = 101;
+    public static final int REQUEST_RESTART = 202;
+
     private static final int REQUEST_DEFAULT = 0;
     private static final String REQUEST_EXTRA = "requestExtra";
     private static final String TOGGLE_BUTTON_STATE = "toggleButtonState";
@@ -109,7 +112,6 @@ public class MainActivity
         initComponent();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initializePager();
         initializeToolbar();
         initializeDrawer();
         getPresenter().prepareUserData();
@@ -145,6 +147,10 @@ public class MainActivity
             case REQUEST_REFRESH_FOLLOWER_LIST:
                 pagerAdapter.refreshFragment(TabItemType.FOLLOWERS);
                 selectTab(tabLayout.getTabAt(TabItemType.FOLLOWERS.getPosition()));
+                break;
+            case REQUEST_RESTART:
+                finish();
+                startActivity(intent);
                 break;
             default:
                 throw new IllegalStateException("Intent should contains REQUEST_EXTRA");
@@ -310,8 +316,9 @@ public class MainActivity
         getPresenter().toggleButtonChanged(toggleButtonState);
     }
 
-    private void initializePager() {
-        pagerAdapter = new MainActivityPagerAdapter(getSupportFragmentManager());
+    @Override
+    public void initializePager(boolean isOnboardingPassed) {
+        pagerAdapter = new MainActivityPagerAdapter(getSupportFragmentManager(), isOnboardingPassed);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 

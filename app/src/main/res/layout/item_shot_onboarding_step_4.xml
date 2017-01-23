@@ -17,33 +17,26 @@
         android:layout_centerInParent="true">
         <!-- Bottom View Start-->
         <LinearLayout
-            android:id="@+id/_left_wrapper"
-            android:layout_width="@dimen/shot_left_swipe_action_panel_width"
+            android:id="@+id/bottom_right_wrapper"
+            android:layout_width="@dimen/shot_right_swipe_action_panel_width"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:gravity="center"
+            android:layout_gravity="end"
+            android:gravity="center_vertical|end"
             android:orientation="horizontal">
+            <!--What you want to show-->
 
             <ImageView
-                android:id="@+id/iv_like_action"
-                style="@style/LongSwipeActionIcons"
-                android:layout_width="wrap_content"
-                android:contentDescription="@null"
-                android:src="@drawable/selector_like_swipe" />
-
-            <ImageView
-                android:id="@+id/iv_plus_image"
-                android:layout_width="@dimen/shot_swipe_action_plus_size"
-                android:layout_height="@dimen/shot_swipe_action_plus_size"
-                android:layout_gravity="center"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_plus" />
-
-            <ImageView
-                android:id="@+id/iv_bucket_action"
+                android:id="@+id/iv_follow"
                 style="@style/LongSwipeActionIcons"
                 android:contentDescription="@null"
-                android:src="@drawable/selector_bucket_swipe" />
+                android:src="@drawable/ic_follow" />
+
+            <ImageView
+                android:id="@+id/iv_comment"
+                style="@style/LongSwipeActionIcons"
+                android:contentDescription="@null"
+                android:src="@drawable/selector_comment_swipe" />
+
         </LinearLayout>
 
         <View

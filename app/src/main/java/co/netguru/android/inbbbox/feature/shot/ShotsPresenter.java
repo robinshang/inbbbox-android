@@ -15,10 +15,8 @@ import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
-import co.netguru.android.inbbbox.data.onboarding.OnboardingController;
 import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import rx.Observable;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;
@@ -33,14 +31,12 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     private static final int SHOTS_PER_PAGE = 15;
     private static final int FIRST_PAGE = 1;
-    private static final int ONBOARDING_SHOTS = 4;
 
     private final ShotsController shotsController;
     private final ErrorController errorController;
     private final LikeShotController likeShotController;
     private final BucketsController bucketsController;
     private final FollowersController followersController;
-    private final OnboardingController onboardingController;
     private final CompositeSubscription subscriptions;
 
     @NonNull
@@ -53,14 +49,13 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     @Inject
     ShotsPresenter(ShotsController shotsController, LikeShotController likeShotController,
                    BucketsController bucketsController, ErrorController errorController,
-                   FollowersController followersController, OnboardingController onboardingController) {
+                   FollowersController followersController) {
 
         this.shotsController = shotsController;
         this.likeShotController = likeShotController;
         this.bucketsController = bucketsController;
         this.errorController = errorController;
         this.followersController = followersController;
-        this.onboardingController = onboardingController;
         subscriptions = new CompositeSubscription();
         refreshSubscription = Subscriptions.unsubscribed();
         loadMoreSubscription = Subscriptions.unsubscribed();
@@ -90,9 +85,10 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     @Override
     public void getShotsFromServer(boolean pullToRefresh) {
         if (refreshSubscription.isUnsubscribed()) {
-            refreshSubscription = onboardingController.getCurrentStep()
-                    .toObservable()
-                    .flatMap(currentStep -> getShots(currentStep, pullToRefresh))
+            loadMoreSubscription.unsubscribe();
+            pageNumber = FIRST_PAGE;
+            getView().showLoadingIndicator(pullToRefresh);
+            refreshSubscription = shotsController.getShots(pageNumber, SHOTS_PER_PAGE)
                     .compose(androidIO())
                     .subscribe(shotList -> {
                         Timber.d("Shots received!");
@@ -101,17 +97,6 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                         getView().setData(shotList);
                         getView().showContent();
                     }, throwable -> handleError(throwable, "Error while getting shots"));
-        }
-    }
-
-    private Observable<List<Shot>> getShots(int currentOnboardingStep, boolean pullToRefresh) {
-        if (currentOnboardingStep < ONBOARDING_SHOTS) {
-            return onboardingController.getShots();
-        } else {
-            loadMoreSubscription.unsubscribe();
-            pageNumber = FIRST_PAGE;
-            getView().showLoadingIndicator(pullToRefresh);
-            return shotsController.getShots(pageNumber, SHOTS_PER_PAGE);
         }
     }
 

@@ -11,7 +11,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingShot;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingShotSwipeListener;
 
