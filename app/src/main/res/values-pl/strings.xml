@@ -55,7 +55,7 @@
     <string name="few_sec_ago">Kilka sekund temu</string>
     <string name="follow">OBSERWUJ</string>
     <string name="follower_item_shot">projekty</string>
-    <string name="for_label">\" dla \"</string>
+    <string name="for_label">" dla "</string>
     <string name="fragment_add_to_bucket_shot_created_by">przez</string>
     <string name="fragment_add_to_bucket_shot_created_for">dla</string>
     <string name="fragment_add_to_bucket_shot_created_on">na %s</string>
