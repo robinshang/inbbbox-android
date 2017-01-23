@@ -52,6 +52,8 @@ interface ShotsContract {
 
         void showCommentInput(Shot selectedShot);
 
+        void handleFollowShotAuthor(Shot shot);
+
         void removeShotFromBuckets(List<Bucket> list, Shot shot);
     }
 }
