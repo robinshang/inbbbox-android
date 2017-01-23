@@ -15,14 +15,10 @@
 <!-- METADATA -->
 <!-- Add links to JIRA, Google Drive, mailing list and other relevant resources -->
 <!-- Add links to CI configs with build status and deployment environment, e.g.: -->
-| environment | deployment            |  build status      |  coverage          |
-|-------------|-----------------------|--------------------|--------------------|
-| Android        | [`HockeyApp`](https://rink.hockeyapp.net/manage/apps/404535) | [![Build Status](https://www.bitrise.io/app/cf503ac188f43ade.svg?token=k9n-sH184dmLSBSQRnW_qg&branch=master)](https://www.bitrise.io/app/cf503ac188f43ade) |[![codecov](https://codecov.io/gh/netguru/inbbbox-android/branch/master/graph/badge.svg?token=0UKDDNsV4s)](https://codecov.io/gh/netguru/inbbbox-android) |
+| environment |Jira            | deployment            |  build status      |  coverage          |
+|-------------|-----------------------|-----------------------|--------------------|--------------------|
+| Android     |[`JIRA`](https://netguru.atlassian.net/secure/RapidBoard.jspa?rapidView=214&projectKey=IA) |[`HockeyApp`](https://rink.hockeyapp.net/manage/apps/404535) | [![Build Status](https://www.bitrise.io/app/cf503ac188f43ade.svg?token=k9n-sH184dmLSBSQRnW_qg&branch=master)](https://www.bitrise.io/app/cf503ac188f43ade) |[![codecov](https://codecov.io/gh/netguru/inbbbox-android/branch/master/graph/badge.svg?token=0UKDDNsV4s)](https://codecov.io/gh/netguru/inbbbox-android) |
 <!--- If applies, add link to app on Google Play -->
-
-[![codecov](https://codecov.io/gh/netguru/sensorytreat-android/branch/master/graph/badge.svg?token=0UKDDNsV4s)](https://codecov.io/gh/netguru/inbbbox-android/)
-
- [`JIRA`](https://netguru.atlassian.net/secure/RapidBoard.jspa?rapidView=214&projectKey=IA) 
 
 
 ## Synopsis
