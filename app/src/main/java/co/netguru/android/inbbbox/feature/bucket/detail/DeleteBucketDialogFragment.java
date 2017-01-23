@@ -17,8 +17,8 @@ public class DeleteBucketDialogFragment extends DialogFragment {
     private static final String BUCKET_NAME_ARG_KEY = "bucket_name_arg_key";
     private static final int TARGET_REQUEST_CODE = 1;
 
-    public static <T extends Fragment & DeleteBucketDialogListener> DeleteBucketDialogFragment
-    newInstance(T targetFragment, @NonNull String bucketName) {
+    public static <T extends Fragment & DeleteBucketDialogListener>
+    DeleteBucketDialogFragment newInstance(T targetFragment, @NonNull String bucketName) {
         Bundle args = new Bundle();
         args.putString(BUCKET_NAME_ARG_KEY, bucketName);
 
