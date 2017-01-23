@@ -263,6 +263,11 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     @Override
+    public void onFollowUserSwipe(Shot shot) {
+        getPresenter().handleFollowShotAuthor(shot);
+    }
+
+    @Override
     public void onBucketForShotSelect(Bucket bucket, Shot shot) {
         getPresenter().addShotToBucket(bucket, shot);
     }

@@ -20,29 +20,28 @@ import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayo
 class ShotsViewHolder extends BaseViewHolder<Shot>
         implements ItemSwipeListener {
 
-    @BindView(R.id.long_swipe_layout)
-    LongSwipeLayout longSwipeLayout;
-
-    @BindView(R.id.iv_shot_image)
-    RoundedCornersShotImageView shotImageView;
-
-    @BindView(R.id.iv_like_action)
-    ImageView likeIconImageView;
-
-    @BindView(R.id.iv_plus_image)
-    ImageView plusIconImageView;
-
-    @BindView(R.id.iv_bucket_action)
-    ImageView bucketImageView;
-
-    @BindView(R.id.iv_comment)
-    ImageView commentImageView;
-
-    @BindView(R.id._left_wrapper)
-    LinearLayout leftWrapper;
+    public static final int ALPHA_MAX = 255;
+    public static final int ALPHA_MIN = 0;
+    public static final int LOCATION_ON_SCREEN_COORDINATES_NUMBER = 2;
+    public static final float COMMENT_TRANSLATION_FACTOR = 1/3f;
 
     private final ShotSwipeListener shotSwipeListener;
-
+    @BindView(R.id.long_swipe_layout)
+    LongSwipeLayout longSwipeLayout;
+    @BindView(R.id.iv_shot_image)
+    RoundedCornersShotImageView shotImageView;
+    @BindView(R.id.iv_like_action)
+    ImageView likeIconImageView;
+    @BindView(R.id.iv_plus_image)
+    ImageView plusIconImageView;
+    @BindView(R.id.iv_bucket_action)
+    ImageView bucketImageView;
+    @BindView(R.id.iv_comment)
+    ImageView commentImageView;
+    @BindView(R.id.iv_follow)
+    ImageView followImageView;
+    @BindView(R.id._left_wrapper)
+    LinearLayout leftWrapper;
     private Shot shot;
 
     ShotsViewHolder(View itemView, @NonNull ShotSwipeListener shotSwipeListener) {
@@ -83,6 +82,11 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     }
 
     @Override
+    public void onRightLongSwipe() {
+        shotSwipeListener.onFollowUserSwipe(shot);
+    }
+
+    @Override
     public void onLeftSwipeActivate(boolean isActive) {
         if (!shot.isLiked()) {
             likeIconImageView.setActivated(isActive);
@@ -100,10 +104,24 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     }
 
     @Override
-    public void onLeftSwipeProgress() {
-        int[] shotAbsoluteCoordinates = new int[2];
+    public void onRightLongSwipeActivate(boolean isActive) {
+        followImageView.setVisibility(isActive ? View.VISIBLE : View.INVISIBLE);
+        commentImageView.setImageAlpha(isActive ? ALPHA_MIN : ALPHA_MAX);
+    }
+
+    @Override
+    public void onSwipeProgress(int positionX, int swipeLimit) {
+        if (positionX > 0) {
+            handleLeftSwipe();
+        } else {
+            handleRightSwipe(positionX, swipeLimit);
+        }
+    }
+
+    private void handleLeftSwipe() {
+        int[] shotAbsoluteCoordinates = new int[LOCATION_ON_SCREEN_COORDINATES_NUMBER];
         shotImageView.getLocationOnScreen(shotAbsoluteCoordinates);
-        int[] leftWrapperAbsoluteCoordinates = new int[2];
+        int[] leftWrapperAbsoluteCoordinates = new int[LOCATION_ON_SCREEN_COORDINATES_NUMBER];
         leftWrapper.getLocationOnScreen(leftWrapperAbsoluteCoordinates);
         int diff = leftWrapperAbsoluteCoordinates[0] - leftWrapper.getLeft();
         int progress = shotAbsoluteCoordinates[0] - diff;
@@ -139,8 +157,24 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
         }
     }
 
+    private void handleRightSwipe(int positionX, int swipeLimit) {
+        float progress = (float) -positionX / (float) swipeLimit;
+
+        float horizontalTranslation = positionX * COMMENT_TRANSLATION_FACTOR;
+        commentImageView.setTranslationX(horizontalTranslation);
+
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.setFillAfter(true);
+        animationSet.addAnimation(new ScaleAnimation(progress, progress, progress, progress,
+                commentImageView.getWidth(), commentImageView.getHeight() / 2));
+        commentImageView.startAnimation(animationSet);
+    }
+
     private float getPercent(int progress, int viewLeft, int viewWidth) {
-        int percent = 100 * progress / (viewLeft + viewWidth);
+        int percent = 0;
+        if (viewLeft != 0 || viewWidth != 0) {
+            percent = 100 * progress / (viewLeft + viewWidth);
+        }
         return percent / 100f;
     }
 }

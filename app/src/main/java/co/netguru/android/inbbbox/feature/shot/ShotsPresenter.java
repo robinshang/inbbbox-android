@@ -13,6 +13,7 @@ import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
+import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -35,6 +36,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private final ErrorController errorController;
     private final LikeShotController likeShotController;
     private final BucketsController bucketsController;
+    private final FollowersController followersController;
     private final CompositeSubscription subscriptions;
 
     @NonNull
@@ -46,12 +48,14 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     @Inject
     ShotsPresenter(ShotsController shotsController, LikeShotController likeShotController,
-                   BucketsController bucketsController, ErrorController errorController) {
+                   BucketsController bucketsController, ErrorController errorController,
+                   FollowersController followersController) {
 
         this.shotsController = shotsController;
         this.likeShotController = likeShotController;
         this.bucketsController = bucketsController;
         this.errorController = errorController;
+        this.followersController = followersController;
         subscriptions = new CompositeSubscription();
         refreshSubscription = Subscriptions.unsubscribed();
         loadMoreSubscription = Subscriptions.unsubscribed();
@@ -139,6 +143,14 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     }
 
     @Override
+    public void handleFollowShotAuthor(Shot shot) {
+        subscriptions.add(followersController.followUser(shot.author())
+                .compose(RxTransformerUtil.applyCompletableIoSchedulers())
+                .subscribe(() -> Timber.d("Followed shot author"),
+                        throwable -> handleError(throwable, "Error while following shot author")));
+    }
+
+    @Override
     public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().hideLoadingIndicator();
@@ -147,7 +159,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     @Override
     public void removeShotFromBuckets(List<Bucket> list, Shot shot) {
-        for (Bucket bucket: list) {
+        for (Bucket bucket : list) {
             subscriptions.add(
                     bucketsController.removeShotFromBucket(bucket.id(), shot)
                             .compose(RxTransformerUtil.applyCompletableIoSchedulers())

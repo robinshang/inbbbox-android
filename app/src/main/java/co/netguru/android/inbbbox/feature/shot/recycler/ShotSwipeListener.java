@@ -10,5 +10,7 @@ public interface ShotSwipeListener {
 
     void onCommentShotSwipe(Shot shot);
 
+    void onFollowUserSwipe(Shot shot);
+
     void onShotSelected(Shot shot);
 }

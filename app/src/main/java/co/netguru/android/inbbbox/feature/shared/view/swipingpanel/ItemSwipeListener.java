@@ -7,11 +7,15 @@ public interface ItemSwipeListener {
 
     void onRightSwipe();
 
+    void onRightLongSwipe();
+
     void onLeftSwipeActivate(boolean isActive);
 
     void onLeftLongSwipeActivate(boolean isActive);
 
     void onRightSwipeActivate(boolean isActive);
 
-    void onLeftSwipeProgress();
+    void onRightLongSwipeActivate(boolean isActive);
+
+    void onSwipeProgress(int positionX, int swipeLimit);
 }
