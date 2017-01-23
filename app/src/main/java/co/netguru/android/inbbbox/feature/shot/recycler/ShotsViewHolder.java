@@ -101,7 +101,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     @Override
     public void onRightLongSwipeActivate(boolean isActive) {
         followImageView.setVisibility(isActive ? View.VISIBLE : View.INVISIBLE);
-        commentImageView.setAlpha(isActive ? 0 : 255);
+        commentImageView.setImageAlpha(isActive ? 0 : 255);
     }
 
     @Override
@@ -155,7 +155,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     private void handleRightSwipe(int positionX, int swipeLimit) {
         float progress = (float) -positionX / (float) swipeLimit;
 
-        float horizontalTranslation = positionX/3;
+        float horizontalTranslation = positionX/3f;
         commentImageView.setTranslationX(horizontalTranslation);
 
         AnimationSet animationSet = new AnimationSet(true);

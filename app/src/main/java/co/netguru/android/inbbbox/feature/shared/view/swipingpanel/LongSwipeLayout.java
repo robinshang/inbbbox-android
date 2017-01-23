@@ -105,11 +105,6 @@ public class LongSwipeLayout extends SwipeLayout {
         return -(getPaddingLeft() - getDragDistance());
     }
 
-    @Override
-    protected void dispatchSwipeEvent(int surfaceLeft, int surfaceTop, boolean open) {
-        super.dispatchSwipeEvent(surfaceLeft, surfaceTop, open);
-    }
-
     private void initSwipeActionHandling() {
         isLeftSwipeTriggered = false;
         isLeftLongSwipeTriggered = false;
@@ -187,6 +182,7 @@ public class LongSwipeLayout extends SwipeLayout {
 
             @Override
             public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+                //no-op
             }
 
             @Override
