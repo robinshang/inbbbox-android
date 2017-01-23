@@ -20,6 +20,11 @@ import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayo
 class ShotsViewHolder extends BaseViewHolder<Shot>
         implements ItemSwipeListener {
 
+    public static final int ALPHA_MAX = 255;
+    public static final int ALPHA_MIN = 0;
+    public static final int LOCATION_ON_SCREEN_COORDINATES_NUMBER = 2;
+    public static final float COMMENT_TRANSLATION_FACTOR = 1/3f;
+
     private final ShotSwipeListener shotSwipeListener;
     @BindView(R.id.long_swipe_layout)
     LongSwipeLayout longSwipeLayout;
@@ -101,7 +106,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     @Override
     public void onRightLongSwipeActivate(boolean isActive) {
         followImageView.setVisibility(isActive ? View.VISIBLE : View.INVISIBLE);
-        commentImageView.setImageAlpha(isActive ? 0 : 255);
+        commentImageView.setImageAlpha(isActive ? ALPHA_MIN : ALPHA_MAX);
     }
 
     @Override
@@ -114,9 +119,9 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     }
 
     private void handleLeftSwipe() {
-        int[] shotAbsoluteCoordinates = new int[2];
+        int[] shotAbsoluteCoordinates = new int[LOCATION_ON_SCREEN_COORDINATES_NUMBER];
         shotImageView.getLocationOnScreen(shotAbsoluteCoordinates);
-        int[] leftWrapperAbsoluteCoordinates = new int[2];
+        int[] leftWrapperAbsoluteCoordinates = new int[LOCATION_ON_SCREEN_COORDINATES_NUMBER];
         leftWrapper.getLocationOnScreen(leftWrapperAbsoluteCoordinates);
         int diff = leftWrapperAbsoluteCoordinates[0] - leftWrapper.getLeft();
         int progress = shotAbsoluteCoordinates[0] - diff;
@@ -155,7 +160,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     private void handleRightSwipe(int positionX, int swipeLimit) {
         float progress = (float) -positionX / (float) swipeLimit;
 
-        float horizontalTranslation = positionX/3f;
+        float horizontalTranslation = positionX * COMMENT_TRANSLATION_FACTOR;
         commentImageView.setTranslationX(horizontalTranslation);
 
         AnimationSet animationSet = new AnimationSet(true);
