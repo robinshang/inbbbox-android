@@ -17,7 +17,7 @@
     <string name="add_to_bucket">DODAJ DO KOLEKCJI</string>
     <string name="api_error_429">Wykonujesz zbyt wiele akcji! Zwolnij na chwilę</string>
     <string name="authorization_error">Błąd autoryzacji</string>
-    <string name="by_label">\"od \"</string>
+    <string name="by_label">"od "</string>
     <string name="change_stream_source_error">Przynajmniej jedno źródło powinno być zaznaczone</string>
     <string name="comment">Komentarz</string>
     <string name="comment_deleted_complete">Komentarz został usunięty</string>
@@ -48,7 +48,8 @@
     <string name="edit_comment_title">Edytuj komentarz</string>
     <string name="edit_comment_update">Zaktualizuj komentarz</string>
     <string name="error_database">Nie można zmienić daty wyświetlania notyfikacji</string>
-    <string name="error_to_low_rank">Musić mieć pozycję \"Gracza\" albo \"Zespołu\" aby to zrobić</string>
+    <string name="error_to_low_rank">Musić mieć pozycję \"Player\" albo \"Team\" aby to zrobić
+    </string>
     <string name="few_hours_ago">Kilka godzin temu</string>
     <string name="few_minutes_ago">Kilka minut temu</string>
     <string name="few_sec_ago">Kilka sekund temu</string>
@@ -68,9 +69,9 @@
     <string name="fragment_buckets_empty_text_after_icon">kolekcji!</string>
     <string name="fragment_followers_empty_text">Najpierw zacznij kogoś obserwować!</string>
     <string name="fragment_like_empty_text">Najpierw dodaj jakiś projekt do ulubionych!</string>
-    <string name="in_label">\"w \"</string>
-    <string name="info_when_pattern">\" w dniu ${when}\"</string>
-    <string name="info_where_pattern">\"w ${where}\"</string>
+    <string name="in_label">"w "</string>
+    <string name="info_when_pattern">" w dniu ${when}"</string>
+    <string name="info_where_pattern">"w ${where}"</string>
     <string name="invalid_outh_url">Nieprawidłowy url</string>
     <string name="invalid_user_error">Nieprawidłowy użytkownik</string>
     <string name="like">POLUB</string>
