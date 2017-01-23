@@ -23,7 +23,7 @@
 
 ## Synopsis
 <!-- Describe the project in few sentences -->
-Inbbbox is mobile client of dribbble.com service.
+Inbbbox is Android client app of dribbble.com service.
 
 ## Development
 
