@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.commons.rx.RxTransformers;
+import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
@@ -22,11 +23,13 @@ import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
 @FragmentScope
-public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<RemoveFromBucketContract.View>
+public class RemoveFromBucketPresenter
+        extends MvpNullObjectBasePresenter<RemoveFromBucketContract.View>
         implements RemoveFromBucketContract.Presenter {
 
     private static final int BUCKETS_PER_PAGE_COUNT = 30;
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
+    private static final long REMOVE_DELAY = 500;
 
     private final BucketsController bucketsController;
     private final ErrorController errorController;
@@ -39,13 +42,12 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
     private Subscription removeFromBucketSubscription;
 
     private Shot shot;
-    private int pageNumber = 1;
     private boolean apiHasMoreBuckets = true;
-
     private List<Bucket> bucketsToRemoveFromList;
 
     @Inject
-    RemoveFromBucketPresenter(BucketsController bucketsController, ErrorController errorController) {
+    RemoveFromBucketPresenter(BucketsController bucketsController,
+                              ErrorController errorController) {
         this.bucketsController = bucketsController;
         this.errorController = errorController;
         refreshSubscription = Subscriptions.unsubscribed();
@@ -76,12 +78,17 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
         getView().showShotCreationDate(shot.creationDate());
     }
 
+    /**
+     * Delay added to getting buckets shots to provide better UX experience
+     * - when shot is added to only one bucket, removing will be preceded Immediately.
+     * To avoid that dialog only "blink" there is delay set to fully show progress bar to the user
+     */
     @Override
     public void loadBucketsForShot() {
         if (refreshSubscription.isUnsubscribed()) {
             loadNextBucketsSubscription.unsubscribe();
-            pageNumber = 1;
             refreshSubscription = bucketsController.getListBucketsForShot(shot.id())
+                    .delay(REMOVE_DELAY, TimeUnit.MILLISECONDS)
                     .doOnSubscribe(getView()::showBucketListLoading)
                     .compose(RxTransformerUtil.applySingleIoSchedulers())
                     .doAfterTerminate(getView()::hideProgressBar)
@@ -91,31 +98,10 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
         }
     }
 
-    private void handleShotBuckets(List<Bucket> buckets) {
-        if (buckets.size() > 1) {
-            showContainedBuckets(buckets);
-        } else if (buckets.size() == 1) {
-            removeImmediately(buckets.get(0));
-        } else {
-            // TODO: 23.01.2017 close with error info
-        }
-    }
-
-    private void removeImmediately(Bucket bucket) {
-        bucketsToRemoveFromList.add(bucket);
-        getView().passResultAndCloseFragment(bucketsToRemoveFromList, shot);
-    }
-
-    private void showContainedBuckets(List<Bucket> buckets) {
-        apiHasMoreBuckets = buckets.size() == BUCKETS_PER_PAGE_COUNT;
-        getView().setBucketsList(buckets);
-        getView().showBucketsList();
-    }
-
     @Override
     public void loadMoreBuckets() {
-        if (apiHasMoreBuckets && refreshSubscription.isUnsubscribed() && loadNextBucketsSubscription.isUnsubscribed()) {
-            pageNumber++;
+        if (apiHasMoreBuckets && refreshSubscription.isUnsubscribed()
+                && loadNextBucketsSubscription.isUnsubscribed()) {
             loadNextBucketsSubscription = bucketsController.getListBucketsForShot(shot.id())
                     .toObservable()
                     .compose(RxTransformerUtil.executeRunnableIfObservableDidntEmitUntilGivenTime(
@@ -125,7 +111,8 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
                     .subscribe(buckets -> {
                         apiHasMoreBuckets = buckets.size() == BUCKETS_PER_PAGE_COUNT;
                         getView().showMoreBuckets(buckets);
-                    }, throwable -> handleError(throwable, "Error occurred while requesting more buckets"));
+                    }, throwable -> handleError(throwable,
+                            "Error occurred while requesting more buckets"));
         }
     }
 
@@ -152,6 +139,28 @@ public class RemoveFromBucketPresenter extends MvpNullObjectBasePresenter<Remove
     @Override
     public void removeShotFromBuckets() {
         getView().passResultAndCloseFragment(bucketsToRemoveFromList, shot);
+    }
+
+    private void handleShotBuckets(List<Bucket> buckets) {
+        if (buckets.size() > 1) {
+            showContainedBuckets(buckets);
+        } else if (buckets.size() == 1) {
+            removeImmediately(buckets.get(0));
+        } else {
+            getView().showMessageOnServerError(errorController
+                    .getMessageBasedOnErrorCode(Constants.UNDEFINED));
+        }
+    }
+
+    private void removeImmediately(Bucket bucket) {
+        bucketsToRemoveFromList.add(bucket);
+        getView().passResultAndCloseFragment(bucketsToRemoveFromList, shot);
+    }
+
+    private void showContainedBuckets(List<Bucket> buckets) {
+        apiHasMoreBuckets = buckets.size() == BUCKETS_PER_PAGE_COUNT;
+        getView().setBucketsList(buckets);
+        getView().showBucketsList();
     }
 
     private void removeBucketFromList(Bucket bucketToRemove) {
