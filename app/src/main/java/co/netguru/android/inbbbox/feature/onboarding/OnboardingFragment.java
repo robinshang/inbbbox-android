@@ -17,13 +17,13 @@ import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.feature.onboarding.recycler.OnboardingLinearLayoutManager;
 import co.netguru.android.inbbbox.feature.onboarding.recycler.OnboardingShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
-import timber.log.Timber;
+import co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView;
 
 public class OnboardingFragment extends BaseMvpFragment<OnboardingContract.View, OnboardingContract.Presenter>
         implements OnboardingContract.View, OnboardingShotSwipeListener {
 
     @BindView(R.id.shots_recycler_view)
-    CustomRecyclerView shotsRecyclerView;
+    AutoItemScrollRecyclerView shotsRecyclerView;
 
     @BindView(R.id.scroll_overlay)
     View scrollOverlay;

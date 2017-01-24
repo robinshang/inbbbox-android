@@ -6,8 +6,6 @@ import android.view.MotionEvent;
 
 import com.daimajia.swipe.SwipeLayout;
 
-import timber.log.Timber;
-
 public class LongSwipeLayout extends SwipeLayout {
 
     private static final long AUTO_CLOSE_DELAY = 300;

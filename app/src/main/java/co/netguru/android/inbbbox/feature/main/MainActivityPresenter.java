@@ -290,8 +290,8 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     private void prepareOnboardingSettings() {
         onboardingController.isOnboardingPassed()
-                .subscribe(aBoolean -> {
-                    getView().initializePager(aBoolean);
+                .subscribe(isOnboardingPassed -> {
+                    getView().initializePager(isOnboardingPassed);
                 });
     }
 

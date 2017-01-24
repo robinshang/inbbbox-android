@@ -83,6 +83,7 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingShot>
         Glide.clear(shotImageView);
         Glide.with(shotImageView.getContext())
                 .load(shot.getDrawableResourceId())
+                .fitCenter()
                 .into(shotImageView.getImageView());
     }
 
@@ -139,7 +140,7 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingShot>
     public void onSwipeProgress(int positionX, int swipeLimit) {
         if (positionX > 0) {
             handleLeftSwipe();
-        } else if (onboardingShot.getStep() >= 2) {
+        } else if (onboardingShot.getStep() >= OnboardingShot.STEP_COMMENT) {
             handleRightSwipe(positionX, swipeLimit);
         }
     }
@@ -156,7 +157,7 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingShot>
         float percent = getPercent(progress, likeIconImageViewLeft, likeIconImageView.getWidth());
         float plusPercent = 0;
         float bucketPercent = 0;
-        if (onboardingShot.getStep() >= 1) {
+        if (onboardingShot.getStep() >= OnboardingShot.STEP_BUCKET) {
             plusPercent = getPercent(progress, plusIconImageView.getLeft(), plusIconImageView.getWidth());
             bucketPercent = getPercent(progress, bucketImageView.getLeft(), bucketImageView.getWidth());
         }
@@ -169,19 +170,19 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingShot>
             animationSet.addAnimation(new ScaleAnimation(percent, percent, percent, percent, 0, likeIconImageView.getHeight() / 2));
             animationSet.addAnimation(new TranslateAnimation(horizontalTranslation, horizontalTranslation, 0, 0));
             likeIconImageView.startAnimation(animationSet);
-        } else if (plusPercent <= 1 && onboardingShot.getStep() >= 1) {
+        } else if (plusPercent <= 1 && onboardingShot.getStep() >= OnboardingShot.STEP_BUCKET) {
             //in case of fast swipe
             likeIconImageView.clearAnimation();
 
             animationSet.addAnimation(new ScaleAnimation(plusPercent, plusPercent, plusPercent, plusPercent, 0, plusIconImageView.getHeight() / 2));
             plusIconImageView.startAnimation(animationSet);
-        } else if (bucketPercent <= 1 && onboardingShot.getStep() >= 2) {
+        } else if (bucketPercent <= 1 && onboardingShot.getStep() >= OnboardingShot.STEP_COMMENT) {
             //in case of fast swipe
             plusIconImageView.clearAnimation();
 
             animationSet.addAnimation(new ScaleAnimation(bucketPercent, bucketPercent, bucketPercent, bucketPercent, 0, bucketImageView.getHeight() / 2));
             bucketImageView.startAnimation(animationSet);
-        } else if (onboardingShot.getStep() >= 2) {
+        } else if (onboardingShot.getStep() >= OnboardingShot.STEP_COMMENT) {
             //in case of fast swipe
             bucketImageView.clearAnimation();
         }

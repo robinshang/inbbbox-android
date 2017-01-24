@@ -42,7 +42,6 @@ import co.netguru.android.inbbbox.feature.shot.ShotsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import de.hdodenhof.circleimageview.CircleImageView;
-import timber.log.Timber;
 
 import static butterknife.ButterKnife.findById;
 

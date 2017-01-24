@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.onboarding.OnboardingController;
-import timber.log.Timber;
 
 @FragmentScope
 public class OnboardingPresenter extends MvpNullObjectBasePresenter<OnboardingContract.View>

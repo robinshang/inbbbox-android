@@ -25,7 +25,7 @@ interface OnboardingContract {
 
         void handleShowShotDetails(OnboardingShot shot);
 
-        void handleCommentShot(OnboardingShot selectedShot);
+        void handleCommentShot(OnboardingShot shot);
 
         void handleFollowShotAuthor(OnboardingShot shot);
     }
