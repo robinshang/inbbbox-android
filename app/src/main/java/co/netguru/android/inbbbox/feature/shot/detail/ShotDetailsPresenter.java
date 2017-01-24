@@ -42,10 +42,13 @@ public class ShotDetailsPresenter
     private int pageNumber = 1;
     private int commentsCounter = 0;
     private boolean isInBucket;
+    private int currentIndex;
 
     @Inject
     ShotDetailsPresenter(ShotDetailsController shotDetailsController,
-                         ErrorController errorController, List<Shot> allShots, RxBus rxBus,
+                         ErrorController errorController,
+                         List<Shot> allShots,
+                         RxBus rxBus,
                          BucketsController bucketsController) {
         this.shotDetailsController = shotDetailsController;
         this.errorController = errorController;
@@ -77,13 +80,15 @@ public class ShotDetailsPresenter
                         .performLikeAction(shot, newLikeState)
                         .compose(applyCompletableIoSchedulers())
                         .subscribe(() -> updateLikeState(newLikeState),
-                                throwable -> handleError(throwable, "Error while performing like action"))
+                                throwable -> handleError(throwable,
+                                        "Error while performing like action"))
         );
     }
 
     @Override
     public void retrieveInitialData() {
         this.shot = getView().getShotInitialData();
+        this.currentIndex = allShots.indexOf(shot);
         this.isCommentModeInit = getView().getCommentModeInitialState();
     }
 
@@ -132,7 +137,8 @@ public class ShotDetailsPresenter
                         .deleteComment(shot.id(), commentInEditor.id())
                         .compose(applyCompletableIoSchedulers())
                         .subscribe(this::handleCommentDeleteComplete,
-                                throwable -> handleError(throwable, "Error while deleting comment"))
+                                throwable -> handleError(throwable,
+                                        "Error while deleting comment"))
         );
     }
 
@@ -148,7 +154,7 @@ public class ShotDetailsPresenter
 
     @Override
     public void onShotImageClick() {
-        getView().openShotFullscreen(allShots, allShots.indexOf(shot));
+        getView().openShotFullscreen(allShots, currentIndex);
     }
 
     @Override
@@ -164,18 +170,20 @@ public class ShotDetailsPresenter
                 bucketsController.addShotToBucket(bucket.id(), shot)
                         .compose(RxTransformerUtil.applyCompletableIoSchedulers())
                         .subscribe(() -> updateShotAndShowAddToBucketSuccess(shot),
-                                throwable -> handleError(throwable, "Error while adding shot to bucket"))
+                                throwable -> handleError(throwable,
+                                        "Error while adding shot to bucket"))
         );
     }
 
     @Override
     public void removeShotFromBuckets(List<Bucket> list, Shot shot) {
-        for (Bucket bucket: list) {
+        for (Bucket bucket : list) {
             subscriptions.add(
                     bucketsController.removeShotFromBucket(bucket.id(), shot)
                             .compose(RxTransformerUtil.applyCompletableIoSchedulers())
                             .subscribe(() -> handleShotRemovedFromBucket(shot),
-                                    throwable -> handleError(throwable, "Error while removing shot from bucket"))
+                                    throwable -> handleError(throwable,
+                                            "Error while removing shot from bucket"))
             );
         }
     }
@@ -241,11 +249,10 @@ public class ShotDetailsPresenter
     }
 
     private void updateLikeState(boolean newLikeState) {
-        int index = allShots.indexOf(shot);
         shot = Shot.update(shot)
                 .isLiked(newLikeState)
                 .build();
-        allShots.set(index, shot);
+//        allShots.set(currentIndex, shot);
         showShotDetails(shot);
         rxBus.send(new ShotLikedEvent(shot, newLikeState));
     }
@@ -281,18 +288,18 @@ public class ShotDetailsPresenter
                         .compose(androidIO())
                         .doOnCompleted(() -> getView().setInputShowingEnabled(true))
                         .subscribe(this::handleDetailsStates,
-                                throwable -> handleError(throwable, "Error while getting shot comments"))
+                                throwable -> handleError(throwable,
+                                        "Error while getting shot comments"))
         );
     }
 
     private void updateShotDetails(boolean liked, boolean bucketed) {
         if (shot.isLiked() != liked || shot.isBucketed() != bucketed) {
-            int index = allShots.indexOf(shot);
             shot = Shot.update(shot)
                     .isLiked(liked)
                     .isBucketed(bucketed)
                     .build();
-            allShots.set(index, shot);
+//            allShots.set(currentIndex, shot);
             showShotDetails(shot);
         }
     }
