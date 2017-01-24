@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.feature.shot.detail;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,6 +18,7 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.ShotLikedEvent;
 import co.netguru.android.inbbbox.event.events.ShotRemovedFromBucketEvent;
+import rx.Completable;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -177,15 +179,17 @@ public class ShotDetailsPresenter
 
     @Override
     public void removeShotFromBuckets(List<Bucket> list, Shot shot) {
+        List<Completable> bucketsToRemove = new ArrayList<>();
         for (Bucket bucket : list) {
-            subscriptions.add(
-                    bucketsController.removeShotFromBucket(bucket.id(), shot)
-                            .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                            .subscribe(() -> handleShotRemovedFromBucket(shot),
-                                    throwable -> handleError(throwable,
-                                            "Error while removing shot from bucket"))
-            );
+            bucketsToRemove.add(bucketsController.removeShotFromBucket(bucket.id(), shot));
         }
+        subscriptions.add(
+                Completable.merge(bucketsToRemove)
+                        .compose(RxTransformerUtil.applyCompletableIoSchedulers())
+                        .subscribe(() -> handleShotRemovedFromBucket(shot),
+                                throwable -> handleError(throwable,
+                                        "Error while removing shot from bucket"))
+        );
     }
 
     @Override
