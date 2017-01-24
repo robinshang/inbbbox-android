@@ -261,7 +261,6 @@ public class ShotDetailsPresenter
         shot = Shot.update(shot)
                 .isLiked(newLikeState)
                 .build();
-//        allShots.set(currentIndex, shot);
         showShotDetails(shot);
         rxBus.send(new ShotLikedEvent(shot, newLikeState));
     }
@@ -308,7 +307,6 @@ public class ShotDetailsPresenter
                     .isLiked(liked)
                     .isBucketed(bucketed)
                     .build();
-//            allShots.set(currentIndex, shot);
             showShotDetails(shot);
         }
     }
