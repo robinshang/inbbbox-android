@@ -193,7 +193,6 @@ public class ShotDetailsPresenter
     @Override
     public void onShotBucketClicked(Shot shot) {
         if (shot != null) {
-            // TODO: 23.01.2017 make id dependent to bucket count
             if (isInBucket)
                 getView().showRemoveShotFromBucketView(shot);
             else
