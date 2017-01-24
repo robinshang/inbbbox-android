@@ -91,6 +91,9 @@ public class ShotDetailsPresenterTest {
         when(bucketsControllerMock.isShotBucketed(anyLong())).thenReturn(Single.just(true));
         when(bucketsControllerMock.removeShotFromBucket(anyLong(), eq(shotMock))).
                 thenReturn(Completable.complete());
+        when(bucketsControllerMock.addShotToBucket(anyLong(), any()))
+                .thenReturn(Completable.complete());
+
         when(viewMock.getShotInitialData()).thenReturn(shotMock);
 
         when(rxBusMock.getEvents(any())).thenReturn(Observable.empty());
@@ -680,6 +683,43 @@ public class ShotDetailsPresenterTest {
         shotDetailsPresenter.removeShotFromBuckets(bucketList, shotMock);
 
         verify(bucketsControllerMock).isShotBucketed(EXAMPLE_ID);
+    }
+
+    @Test
+    public void whenShotIsBucketRequestFail_thenShowError() {
+        Random random = new Random();
+        int bucketsCount = random.nextInt(200);
+        List<Bucket> bucketList = new ArrayList<>();
+        for (int i = 0; i < bucketsCount; i++) {
+            bucketList.add(mock(Bucket.class));
+        }
+        when(bucketsControllerMock.isShotBucketed(anyLong()))
+                .thenReturn(Single.error(new Throwable()));
+
+        shotDetailsPresenter.removeShotFromBuckets(bucketList, shotMock);
+
+        verify(viewMock).showMessageOnServerError(anyString());
+    }
+
+    @Test
+    public void whenShotBucketIsClickedAndShotIsInBucket_thenShowRemoveBucketScreen() {
+        when(shotMock.isBucketed()).thenReturn(true);
+        when(bucketsControllerMock.isShotBucketed(anyLong())).thenReturn(Single.just(true));
+        shotDetailsPresenter.checkIfShotIsBucketed(shotMock);
+
+        shotDetailsPresenter.onShotBucketClicked(shotMock);
+
+        verify(viewMock).showRemoveShotFromBucketView(shotMock);
+    }
+
+    @Test
+    public void whenShotBucketIsClickedAndShotIsNotInBucket_thenShowAddBucketScreen() {
+        when(shotMock.isBucketed()).thenReturn(false);
+        when(bucketsControllerMock.isShotBucketed(anyLong())).thenReturn(Single.just(false));
+
+        shotDetailsPresenter.onShotBucketClicked(shotMock);
+
+        verify(viewMock).showAddShotToBucketView(shotMock);
     }
 
     @After

@@ -197,18 +197,23 @@ public class ShotDetailsPresenter
         bucketsController.isShotBucketed(shot.id())
                 .compose(applySingleIoSchedulers())
                 .subscribe(this::updateShot,
-                        throwable -> Timber
-                                .e(throwable, "Error while checking shot bucket state"));
+                        throwable -> handleError(throwable,
+                                "Error while checking shot bucket state"));
 
     }
 
     @Override
     public void onShotBucketClicked(Shot shot) {
         if (shot != null) {
-            if (isInBucket)
-                getView().showRemoveShotFromBucketView(shot);
-            else
-                getView().showAddShotToBucketView(shot);
+            verifyShotBucketState(shot);
+        }
+    }
+
+    private void verifyShotBucketState(Shot shot) {
+        if (isInBucket) {
+            getView().showRemoveShotFromBucketView(shot);
+        } else {
+            getView().showAddShotToBucketView(shot);
         }
     }
 
