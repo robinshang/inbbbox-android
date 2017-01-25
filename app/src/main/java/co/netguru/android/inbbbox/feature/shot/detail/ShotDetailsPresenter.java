@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.feature.shot.detail;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,6 +18,7 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.ShotLikedEvent;
 import co.netguru.android.inbbbox.event.events.ShotRemovedFromBucketEvent;
+import rx.Completable;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -42,10 +44,13 @@ public class ShotDetailsPresenter
     private int pageNumber = 1;
     private int commentsCounter = 0;
     private boolean isInBucket;
+    private int currentIndex;
 
     @Inject
     ShotDetailsPresenter(ShotDetailsController shotDetailsController,
-                         ErrorController errorController, List<Shot> allShots, RxBus rxBus,
+                         ErrorController errorController,
+                         List<Shot> allShots,
+                         RxBus rxBus,
                          BucketsController bucketsController) {
         this.shotDetailsController = shotDetailsController;
         this.errorController = errorController;
@@ -77,13 +82,15 @@ public class ShotDetailsPresenter
                         .performLikeAction(shot, newLikeState)
                         .compose(applyCompletableIoSchedulers())
                         .subscribe(() -> updateLikeState(newLikeState),
-                                throwable -> handleError(throwable, "Error while performing like action"))
+                                throwable -> handleError(throwable,
+                                        "Error while performing like action"))
         );
     }
 
     @Override
     public void retrieveInitialData() {
         this.shot = getView().getShotInitialData();
+        this.currentIndex = allShots.indexOf(shot);
         this.isCommentModeInit = getView().getCommentModeInitialState();
     }
 
@@ -132,7 +139,8 @@ public class ShotDetailsPresenter
                         .deleteComment(shot.id(), commentInEditor.id())
                         .compose(applyCompletableIoSchedulers())
                         .subscribe(this::handleCommentDeleteComplete,
-                                throwable -> handleError(throwable, "Error while deleting comment"))
+                                throwable -> handleError(throwable,
+                                        "Error while deleting comment"))
         );
     }
 
@@ -148,7 +156,7 @@ public class ShotDetailsPresenter
 
     @Override
     public void onShotImageClick() {
-        getView().openShotFullscreen(allShots, allShots.indexOf(shot));
+        getView().openShotFullscreen(allShots, currentIndex);
     }
 
     @Override
@@ -164,20 +172,24 @@ public class ShotDetailsPresenter
                 bucketsController.addShotToBucket(bucket.id(), shot)
                         .compose(RxTransformerUtil.applyCompletableIoSchedulers())
                         .subscribe(() -> updateShotAndShowAddToBucketSuccess(shot),
-                                throwable -> handleError(throwable, "Error while adding shot to bucket"))
+                                throwable -> handleError(throwable,
+                                        "Error while adding shot to bucket"))
         );
     }
 
     @Override
     public void removeShotFromBuckets(List<Bucket> list, Shot shot) {
-        for (Bucket bucket: list) {
-            subscriptions.add(
-                    bucketsController.removeShotFromBucket(bucket.id(), shot)
-                            .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                            .subscribe(() -> handleShotRemovedFromBucket(shot),
-                                    throwable -> handleError(throwable, "Error while removing shot from bucket"))
-            );
+        List<Completable> bucketsToRemove = new ArrayList<>();
+        for (Bucket bucket : list) {
+            bucketsToRemove.add(bucketsController.removeShotFromBucket(bucket.id(), shot));
         }
+        subscriptions.add(
+                Completable.merge(bucketsToRemove)
+                        .compose(RxTransformerUtil.applyCompletableIoSchedulers())
+                        .subscribe(() -> handleShotRemovedFromBucket(shot),
+                                throwable -> handleError(throwable,
+                                        "Error while removing shot from bucket"))
+        );
     }
 
     @Override
@@ -185,18 +197,23 @@ public class ShotDetailsPresenter
         bucketsController.isShotBucketed(shot.id())
                 .compose(applySingleIoSchedulers())
                 .subscribe(this::updateShot,
-                        throwable -> Timber
-                                .e(throwable, "Error while checking shot bucket state"));
+                        throwable -> handleError(throwable,
+                                "Error while checking shot bucket state"));
 
     }
 
     @Override
     public void onShotBucketClicked(Shot shot) {
         if (shot != null) {
-            if (isInBucket)
-                getView().showRemoveShotFromBucketView(shot);
-            else
-                getView().showAddShotToBucketView(shot);
+            verifyShotBucketState(shot);
+        }
+    }
+
+    private void verifyShotBucketState(Shot shot) {
+        if (isInBucket) {
+            getView().showRemoveShotFromBucketView(shot);
+        } else {
+            getView().showAddShotToBucketView(shot);
         }
     }
 
@@ -241,11 +258,9 @@ public class ShotDetailsPresenter
     }
 
     private void updateLikeState(boolean newLikeState) {
-        int index = allShots.indexOf(shot);
         shot = Shot.update(shot)
                 .isLiked(newLikeState)
                 .build();
-        allShots.set(index, shot);
         showShotDetails(shot);
         rxBus.send(new ShotLikedEvent(shot, newLikeState));
     }
@@ -281,18 +296,17 @@ public class ShotDetailsPresenter
                         .compose(androidIO())
                         .doOnCompleted(() -> getView().setInputShowingEnabled(true))
                         .subscribe(this::handleDetailsStates,
-                                throwable -> handleError(throwable, "Error while getting shot comments"))
+                                throwable -> handleError(throwable,
+                                        "Error while getting shot comments"))
         );
     }
 
     private void updateShotDetails(boolean liked, boolean bucketed) {
         if (shot.isLiked() != liked || shot.isBucketed() != bucketed) {
-            int index = allShots.indexOf(shot);
             shot = Shot.update(shot)
                     .isLiked(liked)
                     .isBucketed(bucketed)
                     .build();
-            allShots.set(index, shot);
             showShotDetails(shot);
         }
     }

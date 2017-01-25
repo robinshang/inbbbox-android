@@ -114,6 +114,7 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot>
         showCounters(item.likesCount(), item.bucketCount());
 
         isLiked = item.isLiked();
+        isBucketed = item.isBucketed();
         updateActionsState();
     }
 
