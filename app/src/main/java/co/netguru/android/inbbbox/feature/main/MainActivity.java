@@ -93,7 +93,6 @@ public class MainActivity
     private ToggleButton drawerToggleButton;
     private MainActivityPagerAdapter pagerAdapter;
     private View drawerCreateAccountButton;
-    private int currentTabIndex = Constants.UNDEFINED;
 
     public static void startActivity(Context context) {
         final Intent intent = new Intent(context, MainActivity.class);
@@ -356,7 +355,7 @@ public class MainActivity
     }
 
     private void selectTab(TabLayout.Tab tab) {
-        currentTabIndex = tab.getPosition();
+        int currentTabIndex = tab.getPosition();
         if (currentTabIndex != Constants.UNDEFINED) {
             unselectedPreviousTabs(currentTabIndex);
         }
