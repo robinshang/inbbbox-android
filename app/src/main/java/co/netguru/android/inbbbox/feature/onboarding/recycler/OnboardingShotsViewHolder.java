@@ -167,7 +167,7 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingShot>
 
         if (percent <= 1) {
             int horizontalTranslation = progress - likeIconImageViewLeft - ((int) (likeIconImageView.getWidth() * percent));
-            animationSet.addAnimation(new ScaleAnimation(percent, percent, percent, percent, 0, likeIconImageView.getHeight() / 2));
+            animationSet.addAnimation(new ScaleAnimation(percent, percent, percent, percent, 0, likeIconImageView.getHeight() / 2f));
             animationSet.addAnimation(new TranslateAnimation(horizontalTranslation, horizontalTranslation, 0, 0));
             likeIconImageView.startAnimation(animationSet);
         } else if (plusPercent <= 1 && onboardingShot.getStep() >= OnboardingShot.STEP_BUCKET) {
@@ -197,7 +197,7 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingShot>
         AnimationSet animationSet = new AnimationSet(true);
         animationSet.setFillAfter(true);
         animationSet.addAnimation(new ScaleAnimation(progress, progress, progress, progress,
-                commentImageView.getWidth(), commentImageView.getHeight() / 2));
+                commentImageView.getWidth(), commentImageView.getHeight() / 2f));
         commentImageView.startAnimation(animationSet);
     }
 

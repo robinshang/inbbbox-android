@@ -290,9 +290,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     private void prepareOnboardingSettings() {
         onboardingController.isOnboardingPassed()
-                .subscribe(isOnboardingPassed -> {
-                    getView().initializePager(isOnboardingPassed);
-                });
+                .subscribe(isOnboardingPassed ->  getView().initializePager(isOnboardingPassed));
     }
 
     private void setNotificationSettings(NotificationSettings notificationSettings) {
@@ -306,7 +304,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         isNew = streamSourceSettings.isNewToday();
         isPopular = streamSourceSettings.isPopularToday();
         isDebut = streamSourceSettings.isDebut();
-        
+
         setStreamSourcesInView(streamSourceSettings);
     }
 
