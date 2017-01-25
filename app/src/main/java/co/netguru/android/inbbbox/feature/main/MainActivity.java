@@ -30,6 +30,7 @@ import java.util.List;
 import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindView;
+import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -91,6 +92,7 @@ public class MainActivity
     private ToggleButton drawerToggleButton;
     private MainActivityPagerAdapter pagerAdapter;
     private View drawerCreateAccountButton;
+    private int currentTabIndex = Constants.UNDEFINED;
 
     public static void startActivity(Context context) {
         final Intent intent = new Intent(context, MainActivity.class);
@@ -321,37 +323,57 @@ public class MainActivity
                 tab.setIcon(item.getIcon());
             }
         }
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(createTabListener());
+        reselectFirstTab();
+    }
+
+    private TabLayout.OnTabSelectedListener createTabListener() {
+        return new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 selectTab(tab);
-                toolbar.setBackground(tab.getPosition() == TabItemType.SHOTS.getPosition()
-                        ? toolbarCenterBackground : toolbarStartBackground);
+
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                final Drawable icon = tab.getIcon();
-                if (icon != null) {
-                    icon.clearColorFilter();
-                }
-                tab.setText(EMPTY_STRING);
+                //no op
+
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 selectTab(tab);
             }
-        });
-        reselectFirstTab();
+        };
     }
 
     private void selectTab(TabLayout.Tab tab) {
+        if (currentTabIndex != Constants.UNDEFINED) {
+            unselectedPreviousTab(currentTabIndex);
+        }
+
+        currentTabIndex = tab.getPosition();
+
         final Drawable icon = tab.getIcon();
         if (icon != null) {
             icon.setColorFilter(highlightColor, PorterDuff.Mode.SRC_IN);
         }
         tab.setText(getString(TabItemType.getTabItemForPosition(tab.getPosition()).getTitle()));
+        setupToolbarForCurrentTab(currentTabIndex);
+    }
+
+    private void unselectedPreviousTab(int currentTabIndex) {
+        TabLayout.Tab tab = tabLayout.getTabAt(currentTabIndex);
+        final Drawable icon = tab.getIcon();
+        if (icon != null) {
+            icon.clearColorFilter();
+        }
+        tab.setText(EMPTY_STRING);
+    }
+
+    private void setupToolbarForCurrentTab(int position) {
+
     }
 
     private void reselectFirstTab() {
