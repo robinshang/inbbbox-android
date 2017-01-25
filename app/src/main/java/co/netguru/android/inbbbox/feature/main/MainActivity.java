@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -322,9 +323,15 @@ public class MainActivity
             if (tab != null) {
                 tab.setIcon(item.getIcon());
             }
+            selectInitialTabSelection(tab, item.getPosition());
         }
         tabLayout.addOnTabSelectedListener(createTabListener());
-        reselectFirstTab();
+    }
+
+    private void selectInitialTabSelection(TabLayout.Tab tab, int position) {
+        if (position == 0) {
+            selectTab(tab);
+        }
     }
 
     private TabLayout.OnTabSelectedListener createTabListener() {
@@ -349,11 +356,10 @@ public class MainActivity
     }
 
     private void selectTab(TabLayout.Tab tab) {
-        if (currentTabIndex != Constants.UNDEFINED) {
-            unselectedPreviousTab(currentTabIndex);
-        }
-
         currentTabIndex = tab.getPosition();
+        if (currentTabIndex != Constants.UNDEFINED) {
+            unselectedPreviousTabs(currentTabIndex);
+        }
 
         final Drawable icon = tab.getIcon();
         if (icon != null) {
@@ -363,24 +369,26 @@ public class MainActivity
         setupToolbarForCurrentTab(currentTabIndex);
     }
 
-    private void unselectedPreviousTab(int currentTabIndex) {
-        TabLayout.Tab tab = tabLayout.getTabAt(currentTabIndex);
+    private void unselectedPreviousTabs(int currentTabIndex) {
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            if (i != currentTabIndex) {
+                TabLayout.Tab tab = tabLayout.getTabAt(i);
+                clearTabsIconHighlight(tab);
+                tab.setText(EMPTY_STRING);
+            }
+        }
+    }
+
+    private void clearTabsIconHighlight(TabLayout.Tab tab) {
         final Drawable icon = tab.getIcon();
         if (icon != null) {
             icon.clearColorFilter();
         }
-        tab.setText(EMPTY_STRING);
     }
 
     private void setupToolbarForCurrentTab(int position) {
-
-    }
-
-    private void reselectFirstTab() {
-        final TabLayout.Tab firstTab = tabLayout.getTabAt(0);
-        if (firstTab != null) {
-            firstTab.select();
-        }
+        toolbar.setBackground(position == TabItemType.SHOTS.getPosition()
+                ? toolbarCenterBackground : toolbarStartBackground);
     }
 
     private void initializeToolbar() {
@@ -407,16 +415,7 @@ public class MainActivity
                 (buttonView, isChecked) -> getPresenter().toggleButtonChanged(isChecked));
         drawerCreateAccountButton.setOnClickListener(view -> getPresenter().onCreateAccountClick());
 
-        navigationView.setNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.drawer_item_logout:
-                    getPresenter().performLogout();
-                    break;
-                default:
-                    return false;
-            }
-            return true;
-        });
+        navigationView.setNavigationItemSelectedListener(this::onNavigationNItemSelected);
 
         ActionBarDrawerToggle actionBarDrawerToggle = createDrawerToggle();
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -424,6 +423,15 @@ public class MainActivity
         actionBarDrawerToggle.syncState();
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
         initializeDrawerReminder();
+    }
+
+    private boolean onNavigationNItemSelected(MenuItem item) {
+        int i = item.getItemId();
+        boolean result = false;
+        if (i == R.id.drawer_item_logout) {
+            getPresenter().performLogout();
+        }
+        return result;
     }
 
     private ActionBarDrawerToggle createDrawerToggle() {
