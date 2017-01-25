@@ -6,28 +6,37 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Random;
+
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
 import co.netguru.android.inbbbox.data.session.controllers.LogoutController;
 import co.netguru.android.inbbbox.data.session.controllers.TokenParametersController;
 import co.netguru.android.inbbbox.data.settings.SettingsController;
+import co.netguru.android.inbbbox.data.settings.model.CustomizationSettings;
 import co.netguru.android.inbbbox.data.settings.model.NotificationSettings;
 import co.netguru.android.inbbbox.data.settings.model.Settings;
+import co.netguru.android.inbbbox.data.settings.model.StreamSourceSettings;
 import co.netguru.android.inbbbox.feature.remindernotification.NotificationController;
 import co.netguru.android.inbbbox.feature.remindernotification.NotificationScheduler;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Single;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -55,6 +64,9 @@ public class MainActivityPresenterTest {
     public TokenParametersController tokenParametersControllerMock;
 
     @Mock
+    public StreamSourceSettings streamSourceSettings;
+
+    @Mock
     public LogoutController logoutControllerMock;
 
     @Mock
@@ -67,13 +79,19 @@ public class MainActivityPresenterTest {
     public Settings settingsMock;
 
     @Mock
+    public ErrorController errorControllerMock;
+
+    @Mock
     public NotificationSettings notificationSettingsMock;
 
     @InjectMocks
     MainActivityPresenter mainActivityPresenter;
 
+    private Random random;
+
     @Before
     public void setUp() {
+        random = new Random();
         mainActivityPresenter.attachView(viewMock);
         when(userControllerMock.getUserFromCache())
                 .thenReturn(Single.just(userMock));
@@ -87,6 +105,8 @@ public class MainActivityPresenterTest {
         when(logoutControllerMock.performLogout()).thenReturn(Completable.complete());
 
         when(userControllerMock.isGuestModeEnabled()).thenReturn(Single.just(false));
+        when(errorControllerMock.getThrowableMessage(any(Throwable.class)))
+                .thenCallRealMethod();
     }
 
     @Test
@@ -316,8 +336,214 @@ public class MainActivityPresenterTest {
         verify(viewMock, atLeastOnce()).showMessage(R.string.change_stream_source_error);
     }
 
+    @Test
+    public void whenShowTimePickDialogClicked_thenShowPickerDialog() {
+
+        mainActivityPresenter.timeViewClicked();
+
+        verify(viewMock).showTimePickDialog(anyInt(), anyInt());
+    }
+
+    @Test
+    public void whenShowTimePickDialogClickedAndGettingTimerSettingsFail_thenShowError() {
+        when(settingsControllerMock.getNotificationSettings())
+                .thenReturn(Single.error(new Throwable()));
+
+        mainActivityPresenter.timeViewClicked();
+
+        verify(viewMock).showMessage(anyInt());
+    }
+
+    @Test
+    public void whenCustomizationStatusChanged_thenChangeShotDetailsStatusOnSettingsController() {
+        when(settingsControllerMock.changeShotsDetailsStatus(anyBoolean()))
+                .thenReturn(Completable.complete());
+        boolean state = random.nextBoolean();
+
+        mainActivityPresenter.customizationStatusChanged(state);
+
+        verify(settingsControllerMock).changeShotsDetailsStatus(state);
+    }
+
+    @Test
+    public void whenCustomizationStatusChangedAndSavingSettingsFail_thenShowError() {
+        when(settingsControllerMock.changeShotsDetailsStatus(anyBoolean()))
+                .thenReturn(Completable.error(new Throwable()));
+        boolean state = random.nextBoolean();
+
+        mainActivityPresenter.customizationStatusChanged(state);
+
+        verify(viewMock).showMessageOnServerError(anyString());
+    }
+
+    @Test
+    public void whenNightChanged_thenChangeModeInSettings() {
+        when(settingsControllerMock.changeNightMode(anyBoolean()))
+                .thenReturn(Completable.complete());
+        boolean state = random.nextBoolean();
+
+        mainActivityPresenter.nightModeChanged(state);
+
+        verify(settingsControllerMock).changeNightMode(state);
+    }
+
+    @Test
+    public void whenNightChangedAndSavingItComplete_thenChangeViewNightModeState() {
+        when(settingsControllerMock.changeNightMode(anyBoolean()))
+                .thenReturn(Completable.complete());
+        boolean state = random.nextBoolean();
+
+        mainActivityPresenter.nightModeChanged(state);
+
+        verify(viewMock).changeNightMode(state);
+    }
+
+    @Test
+    public void whenNightChangedAndSavingItFail_thenShowError() {
+        when(settingsControllerMock.changeNightMode(anyBoolean()))
+                .thenReturn(Completable.error(new Throwable()));
+        boolean state = random.nextBoolean();
+
+        mainActivityPresenter.nightModeChanged(state);
+
+        verify(viewMock).showMessageOnServerError(anyString());
+    }
+
+    @Test
+    public void whenTimePicked_thenSaveNewTimeInNotificationSettingsAndScheduleNotificaiton() {
+        when(settingsControllerMock.changeNotificationTime(anyInt(), anyInt()))
+                .thenReturn(Completable.complete());
+        when(notificationControllerMock.scheduleNotification())
+                .thenReturn(Single.just(notificationSettingsMock));
+        int h = random.nextInt(24);
+        int min = random.nextInt(59);
+
+        mainActivityPresenter.onTimePicked(h, min);
+
+        verify(settingsControllerMock).changeNotificationTime(h, min);
+        verify(notificationControllerMock).scheduleNotification();
+    }
+
+    @Test
+    public void whenTimePickedAndSavedAndScheduled_thenShowNotificationTimeInView() {
+        when(settingsControllerMock.changeNotificationTime(anyInt(), anyInt()))
+                .thenReturn(Completable.complete());
+        when(notificationControllerMock.scheduleNotification())
+                .thenReturn(Single.just(notificationSettingsMock));
+        int h = random.nextInt(24);
+        int min = random.nextInt(59);
+
+        mainActivityPresenter.onTimePicked(h, min);
+
+        verify(viewMock).showNotificationTime(anyString());
+    }
+
+    @Test
+    public void whenPrepareUserSettingsCalled_thenSetNotificationViewSettings() {
+        NotificationSettings notificationSettingsMock = mock(NotificationSettings.class);
+        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+        Integer hour = random.nextInt(12);
+        Integer min = random.nextInt(59);
+        boolean isFollowing = random.nextBoolean();
+        boolean isNew = random.nextBoolean();
+        boolean isPopular = random.nextBoolean();
+        boolean isDebut = random.nextBoolean();
+        setupStreamSourceStatesMocks(isFollowing, isNew, isPopular, isDebut);
+        when(settingsMock.getNotificationSettings()).thenReturn(notificationSettingsMock);
+        when(notificationSettingsMock.isEnabled()).thenReturn(false);
+        when(notificationSettingsMock.getHour()).thenReturn(hour);
+        when(notificationSettingsMock.getMinute()).thenReturn(min);
+
+        mainActivityPresenter.prepareUserData();
+
+        verify(viewMock).changeNotificationStatus(false);
+        verify(viewMock).showNotificationTime(anyString());
+    }
+
+    @Test
+    public void whenPrepareUserSettingsCalled_thenSetStreamsSettingsInView() {
+        boolean isFollowing = random.nextBoolean();
+        boolean isNew = random.nextBoolean();
+        boolean isPopular = random.nextBoolean();
+        boolean isDebut = random.nextBoolean();
+        setupStreamSourceStatesMocks(isFollowing, isNew, isPopular, isDebut);
+        CustomizationSettings customizationSettings = mock(CustomizationSettings.class);
+        when(userControllerMock.isGuestModeEnabled()).thenReturn(Single.just(false));
+        when(settingsControllerMock.getStreamSourceSettings())
+                .thenReturn(Single.just(streamSourceSettings));
+        when(settingsControllerMock.getSettings()).thenReturn(Single.just(settingsMock));
+        when(settingsMock.getNotificationSettings()).thenReturn(notificationSettingsMock);
+        when(notificationSettingsMock.isEnabled()).thenReturn(false);
+        when(customizationSettings.isNightMode()).thenReturn(random.nextBoolean());
+        when(customizationSettings.isShowDetails()).thenReturn(random.nextBoolean());
+        when(settingsMock.getCustomizationSettings()).thenReturn(customizationSettings);
+
+        mainActivityPresenter.prepareUserData();
+
+        verify(viewMock).changeFollowingStatus(isFollowing);
+        verify(viewMock).changeNewStatus(isNew);
+        verify(viewMock).changePopularStatus(isPopular);
+        verify(viewMock).changeDebutsStatus(isDebut);
+    }
+
+    @Test
+    public void whenPrepareUserSettingsCalled_thenSetupCustomizationSettings() {
+        CustomizationSettings customizationSettings = mock(CustomizationSettings.class);
+        boolean customizationStatus = random.nextBoolean();
+        boolean nightModeStatus = random.nextBoolean();
+        boolean exampleState = random.nextBoolean();
+        setupStreamSourceStatesMocks(exampleState, exampleState, exampleState, exampleState);
+        when(userControllerMock.isGuestModeEnabled()).thenReturn(Single.just(false));
+        when(settingsControllerMock.getStreamSourceSettings())
+                .thenReturn(Single.just(streamSourceSettings));
+        when(settingsControllerMock.getSettings()).thenReturn(Single.just(settingsMock));
+        when(settingsMock.getNotificationSettings()).thenReturn(notificationSettingsMock);
+        when(notificationSettingsMock.isEnabled()).thenReturn(false);
+        when(customizationSettings.isNightMode()).thenReturn(nightModeStatus);
+        when(customizationSettings.isShowDetails()).thenReturn(customizationStatus);
+        when(settingsMock.getCustomizationSettings()).thenReturn(customizationSettings);
+
+        mainActivityPresenter.prepareUserData();
+
+        verify(viewMock).changeCustomizationStatus(customizationStatus);
+        verify(viewMock).setNightModeStatus(nightModeStatus);
+    }
+
+    @Test
+    public void whenPrepareUserSettingsCalled_thenSetSettingsListener() {
+        CustomizationSettings customizationSettings = mock(CustomizationSettings.class);
+        boolean customizationStatus = random.nextBoolean();
+        boolean nightModeStatus = random.nextBoolean();
+        boolean exampleState = random.nextBoolean();
+        setupStreamSourceStatesMocks(exampleState, exampleState, exampleState, exampleState);
+        when(settingsControllerMock.getStreamSourceSettings())
+                .thenReturn(Single.just(streamSourceSettings));
+        when(settingsControllerMock.getSettings()).thenReturn(Single.just(settingsMock));
+        when(settingsMock.getNotificationSettings()).thenReturn(notificationSettingsMock);
+        when(notificationSettingsMock.isEnabled()).thenReturn(false);
+        when(customizationSettings.isNightMode()).thenReturn(nightModeStatus);
+        when(customizationSettings.isShowDetails()).thenReturn(customizationStatus);
+        when(settingsMock.getCustomizationSettings()).thenReturn(customizationSettings);
+
+        mainActivityPresenter.prepareUserData();
+
+        verify(viewMock).setSettingsListeners();
+    }
+
     @After
     public void tearDown() {
         mainActivityPresenter.detachView(false);
+    }
+
+    private void setupStreamSourceStatesMocks(boolean following,
+                                              boolean newToday,
+                                              boolean popularToday,
+                                              boolean debut) {
+
+        when(streamSourceSettings.isFollowing()).thenReturn(following);
+        when(streamSourceSettings.isNewToday()).thenReturn(newToday);
+        when(streamSourceSettings.isPopularToday()).thenReturn(popularToday);
+        when(streamSourceSettings.isDebut()).thenReturn(debut);
+        when(settingsMock.getStreamSourceSettings()).thenReturn(streamSourceSettings);
     }
 }
