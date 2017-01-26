@@ -39,12 +39,13 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     @NonNull
     private Subscription loadMoreLikesSubscription;
     private Subscription busSubscription;
-
     private boolean hasMore = true;
     private int pageNumber = 1;
 
     @Inject
-    LikesPresenter(LikeShotController likedShotsController, ErrorController errorController, RxBus rxBus) {
+    LikesPresenter(LikeShotController likedShotsController,
+                   ErrorController errorController,
+                   RxBus rxBus) {
         this.likedShotsController = likedShotsController;
         this.errorController = errorController;
         this.rxBus = rxBus;
@@ -77,13 +78,15 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
                     .compose(androidIO())
                     .doAfterTerminate(getView()::hideProgressBar)
                     .subscribe(this::onGetLikeShotListNext,
-                            throwable -> handleError(throwable, "Error while getting likes from server"));
+                            throwable -> handleError(throwable,
+                                    "Error while getting likes from server"));
         }
     }
 
     @Override
     public void getMoreLikesFromServer() {
-        if (hasMore && refreshSubscription.isUnsubscribed() && loadMoreLikesSubscription.isUnsubscribed()) {
+        if (hasMore && refreshSubscription.isUnsubscribed()
+                && loadMoreLikesSubscription.isUnsubscribed()) {
             pageNumber++;
             loadMoreLikesSubscription = likedShotsController.getLikedShots(pageNumber, PAGE_COUNT)
                     .compose(RxTransformerUtil.executeRunnableIfObservableDidntEmitUntilGivenTime(
@@ -95,7 +98,8 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
                         getView().hideLoadingMoreLikesView();
                     })
                     .subscribe(this::onGetMoreLikeShotListNext,
-                            throwable -> handleError(throwable, "Error while getting more likes from server"));
+                            throwable -> handleError(throwable,
+                                    "Error while getting more likes from server"));
         }
     }
 
@@ -110,7 +114,6 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
             getView().showEmptyLikesInfo();
         } else {
             getView().hideEmptyLikesInfo();
-
         }
     }
 
@@ -135,7 +138,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
         busSubscription = rxBus.getEvents(ShotLikedEvent.class)
                 .compose(RxTransformers.androidIO())
                 .subscribe(shotLikedEvent -> {
-                    if(shotLikedEvent.getNewShotLikeState() == true) {
+                    if (shotLikedEvent.getNewShotLikeState()) {
                         getView().showLikeAtTop(shotLikedEvent.getShot());
                     } else {
                         getView().removeShotFromLikes(shotLikedEvent.getShot());

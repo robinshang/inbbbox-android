@@ -288,10 +288,13 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void hideLoadingIndicator() {
-        ballImageView.getViewTreeObserver().removeOnWindowFocusChangeListener(this);
-        swipeRefreshLayout.setRefreshing(false);
-        loadingBallContainer.post(() -> loadingBallContainer.setVisibility(View.GONE));
-        shotsRecyclerView.setVisibility(View.VISIBLE);
+        if (shotsRecyclerView != null && loadingBallContainer != null
+                && ballImageView != null && ballShadowImageView != null) {
+            ballImageView.getViewTreeObserver().removeOnWindowFocusChangeListener(this);
+            swipeRefreshLayout.setRefreshing(false);
+            loadingBallContainer.post(() -> loadingBallContainer.setVisibility(View.GONE));
+            shotsRecyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -313,15 +316,21 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     private void showLoadingIndicatorInternal() {
-        shotsRecyclerView.setVisibility(View.INVISIBLE);
-        loadingBallContainer.setVisibility(View.VISIBLE);
-        ballImageView.post(() -> ballImageView.startAnimation(ballAnimation));
-        ballShadowImageView.post(() -> ballShadowImageView.startAnimation(shadowAnimation));
+        if (shotsRecyclerView != null && loadingBallContainer != null
+                && ballImageView != null && ballShadowImageView != null) {
+
+            shotsRecyclerView.setVisibility(View.INVISIBLE);
+            loadingBallContainer.setVisibility(View.VISIBLE);
+            ballImageView.post(() -> ballImageView.startAnimation(ballAnimation));
+            ballShadowImageView.post(() -> ballShadowImageView.startAnimation(shadowAnimation));
+        }
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        ballImageView.getViewTreeObserver().removeOnWindowFocusChangeListener(this);
+        if (ballImageView != null && ballImageView.getViewTreeObserver() != null) {
+            ballImageView.getViewTreeObserver().removeOnWindowFocusChangeListener(this);
+        }
         showLoadingIndicatorInternal();
     }
 
