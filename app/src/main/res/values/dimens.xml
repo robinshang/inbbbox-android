@@ -15,6 +15,7 @@
     <dimen name='activity_login_button_padding_start'>16dp</dimen>
 
     <dimen name="activity_main_tab_height">66dp</dimen>
+    <dimen name="activity_main_tab_land_height">34dp</dimen>
     <dimen name="activity_main_tab_shadow_height">4dp</dimen>
     <dimen name="activity_main_tab_indicator_height">0dp</dimen>
 
@@ -100,7 +101,7 @@
     <dimen name="activity_login_divider_height">1dp</dimen>
     <dimen name="activity_login_divider_side_margin">8dp</dimen>
     <dimen name="activity_login_button_radius">70dp</dimen>
-    <dimen name="shot_item_width_landscape">200dp</dimen>
+    <dimen name="shot_item_width_landscape">400dp</dimen>
     <dimen name="guest_avatar_padding">8dp</dimen>
     <dimen name="button_border_width">2dp</dimen>
     <dimen name="fullscreen_arrow_size">48dp</dimen>
