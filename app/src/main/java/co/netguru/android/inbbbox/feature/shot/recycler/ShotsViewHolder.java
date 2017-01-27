@@ -1,6 +1,8 @@
 package co.netguru.android.inbbbox.feature.shot.recycler;
 
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
@@ -8,6 +10,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
@@ -20,12 +23,16 @@ import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayo
 class ShotsViewHolder extends BaseViewHolder<Shot>
         implements ItemSwipeListener {
 
-    public static final int ALPHA_MAX = 255;
-    public static final int ALPHA_MIN = 0;
-    public static final int LOCATION_ON_SCREEN_COORDINATES_NUMBER = 2;
-    public static final float COMMENT_TRANSLATION_FACTOR = 1/3f;
+    private static final int ALPHA_MAX = 255;
+    private static final int ALPHA_MIN = 0;
+    private static final int LOCATION_ON_SCREEN_COORDINATES_NUMBER = 2;
+    private static final float COMMENT_TRANSLATION_FACTOR = 1 / 3f;
 
     private final ShotSwipeListener shotSwipeListener;
+
+    @Nullable
+    @BindView(R.id.background_iv)
+    RoundedCornersShotImageView backgroundImageView;
     @BindView(R.id.long_swipe_layout)
     LongSwipeLayout longSwipeLayout;
     @BindView(R.id.iv_shot_image)
@@ -42,12 +49,22 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     ImageView followImageView;
     @BindView(R.id._left_wrapper)
     LinearLayout leftWrapper;
+
+    @BindDrawable(R.drawable.shot_placeholder)
+    Drawable shotPlaceHolder;
+
     private Shot shot;
 
     ShotsViewHolder(View itemView, @NonNull ShotSwipeListener shotSwipeListener) {
         super(itemView);
         this.shotSwipeListener = shotSwipeListener;
         longSwipeLayout.setItemSwipeListener(this);
+    }
+
+    private void setupBackground() {
+        if (backgroundImageView != null) {
+//            backgroundImageView.loadPlaceHolder(shotPlaceHolder);
+        }
     }
 
     @OnClick(R.id.iv_shot_image)
@@ -64,6 +81,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     private void setupImage(Shot shot) {
         shotImageView.loadShot(shot);
         likeIconImageView.setActivated(shot.isLiked());
+        setupBackground();
     }
 
     @Override

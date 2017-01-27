@@ -70,7 +70,7 @@ public abstract class RoundedCornersView extends FrameLayout {
     protected abstract int getLayoutResource();
 
     private Bitmap createMask(int width, int height) {
-        final Bitmap mask = Bitmap.createBitmap(width == 0 ? 1 : width, height, Bitmap.Config.ARGB_8888);
+        final Bitmap mask = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(mask);
 
         mask.eraseColor(Color.TRANSPARENT);
