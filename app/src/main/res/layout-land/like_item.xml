@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:paddingBottom="@dimen/margin_xxsmall"
+             android:paddingBottom="@dimen/margin_small"
              android:paddingEnd="@dimen/activity_login_button_margin_top"
              android:paddingStart="@dimen/activity_login_button_margin_top"
              android:paddingTop="@dimen/margin_xxsmall">
