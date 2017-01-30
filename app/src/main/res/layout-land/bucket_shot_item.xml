@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/margin_small"
-    android:paddingEnd="@dimen/activity_login_button_margin_top"
-    android:paddingStart="@dimen/activity_login_button_margin_top"
-    android:paddingTop="@dimen/margin_xxsmall">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:foreground="?selectableItemBackground"
+             android:paddingBottom="@dimen/margin_small"
+             android:paddingEnd="@dimen/activity_login_button_margin_top"
+             android:paddingStart="@dimen/activity_login_button_margin_top"
+             android:paddingTop="@dimen/margin_xxsmall">
 
     <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
         android:id="@+id/bucket_shot_item_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?selectableItemBackground"
-        android:background="@drawable/shot_placeholder"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:background="@drawable/shot_placeholder"/>
 </FrameLayout>

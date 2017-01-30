@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/splash_bg_land"
     android:orientation="horizontal"
     android:weightSum="2">
     <RelativeLayout
@@ -11,7 +12,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:background="@drawable/bcg_intro"
         android:fillViewport="true"
         android:gravity="center"
         android:padding="@dimen/margin_default">
@@ -50,7 +50,6 @@
         android:layout_gravity="center"
         android:layout_weight="1"
         android:animateLayoutChanges="true"
-        android:background="@drawable/bcg_intro"
         android:gravity="center">
 
         <Button

@@ -18,6 +18,7 @@
             android:launchMode="singleTask"
             android:noHistory="true"
             android:stateNotNeeded="true"
+            android:theme="@style/AppTheme.TranslucentStatus"
             tools:ignore="UnusedAttribute" />
 
         <activity
