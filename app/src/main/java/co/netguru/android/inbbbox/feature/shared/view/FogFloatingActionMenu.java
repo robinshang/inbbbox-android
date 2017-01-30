@@ -13,8 +13,10 @@ import co.netguru.android.inbbbox.R;
 public class FogFloatingActionMenu extends FloatingActionMenu {
 
     private static final long FOG_ANIM_DURATION = 200;
+    private static final int FAB_MAIN_BUTTON_INDEX = 4;
 
     private View fogView;
+    private boolean isInStaticMode;
 
     public FogFloatingActionMenu(Context context) {
         super(context);
@@ -56,7 +58,7 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
     }
 
     private void hideFog() {
-        if (fogView != null) {
+        if (fogView != null && !isInStaticMode) {
             fogView
                     .animate()
                     .alpha(0)
@@ -67,7 +69,7 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
     }
 
     private void showFog() {
-        if (fogView != null) {
+        if (fogView != null && !isInStaticMode) {
             fogView
                     .animate()
                     .alpha(1)
@@ -81,5 +83,25 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
     public void addFogView(View fogView) {
 
         this.fogView = fogView;
+    }
+
+    /**
+     * Menu is always opened and large FAB is hidden
+     */
+    public void enableStaticMode() {
+        isInStaticMode = true;
+        open(false);
+        postDelayed(() -> hideDynamicItems(), 100);
+
+    }
+
+    public void enableDynamicMode() {
+        isInStaticMode = false;
+    }
+
+    private void hideDynamicItems() {
+        for (int i = FAB_MAIN_BUTTON_INDEX; i < getChildCount(); i++) {
+            getChildAt(i).setVisibility(GONE);
+        }
     }
 }

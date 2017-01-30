@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.feature.shot;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -173,7 +174,13 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     private void initFabMenu() {
+        Integer orientation = getResources().getConfiguration().orientation;
         fabMenu.addFogView(fogContainerView);
+        if (orientation != Configuration.ORIENTATION_PORTRAIT) {
+            fabMenu.enableStaticMode();
+        } else {
+            fabMenu.enableDynamicMode();
+        }
     }
 
     private void initRefreshLayout() {

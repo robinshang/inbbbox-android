@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/contentView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView
+                android:id="@+id/shots_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <View
+            android:id="@+id/container_fog_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.1"
+            android:background="@color/whiteSemiTransparent"
+            android:clickable="false"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+    <ProgressBar
+        android:id="@+id/loadingView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/errorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <co.netguru.android.inbbbox.feature.shared.view.FogFloatingActionMenu
+        android:id="@+id/fab_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
+        app:layout_behavior="co.netguru.android.inbbbox.feature.shared.view.behavior.FloatingActionMenuAndButtonBehavior"
+        fab:menu_animationDelayPerItem="10"
+        fab:menu_colorNormal="@color/secondaryWindowBackground"
+        fab:menu_colorPressed="@color/materialButtonColorPressed"
+        fab:menu_colorRipple="@color/accent"
+        fab:menu_icon="@drawable/ic_fab_open"
+        fab:menu_labels_colorPressed="@color/materialButtonColorPressed"
+        fab:menu_labels_cornerRadius="@dimen/shots_label_radius"
+        fab:menu_labels_paddingBottom="@dimen/fab_menu_label_bottom_top_padding"
+        fab:menu_labels_paddingLeft="@dimen/fab_menu_label_side_padding"
+        fab:menu_labels_paddingRight="@dimen/fab_menu_label_side_padding"
+        fab:menu_labels_paddingTop="@dimen/fab_menu_label_bottom_top_padding"
+        fab:menu_labels_singleLine="true"
+        fab:menu_labels_style="@style/FabMenuLabel"
+        fab:menu_shadowRadius="0.5dp"
+        fab:menu_shadowXOffset="0dp"
+        fab:menu_shadowYOffset="0.5dp">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_comment_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_fab_comment"
+            fab:fab_colorNormal="@color/secondaryWindowBackground"
+            fab:fab_colorPressed="@color/accent"
+            fab:fab_label="@string/comment"
+            android:visibility="visible"
+            fab:fab_size="mini"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_bucket_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_fab_bucket"
+            fab:fab_colorNormal="@color/secondaryWindowBackground"
+            fab:fab_colorPressed="@color/accent"
+            fab:fab_label="@string/add_to_bucket"
+            fab:fab_size="mini"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_follow_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_fab_follow"
+            fab:fab_colorNormal="@color/secondaryWindowBackground"
+            fab:fab_colorPressed="@color/accent"
+            fab:fab_label="@string/follow"
+            fab:fab_size="mini"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_like_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_fab_like"
+            fab:fab_colorNormal="@color/secondaryWindowBackground"
+            fab:fab_colorPressed="@color/accent"
+            fab:fab_label="@string/like"
+            fab:fab_size="mini"/>
+
+    </co.netguru.android.inbbbox.feature.shared.view.FogFloatingActionMenu>
+
+    <include layout="@layout/animation_loading"/>
+</android.support.design.widget.CoordinatorLayout>
