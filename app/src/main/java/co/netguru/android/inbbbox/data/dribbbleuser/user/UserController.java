@@ -42,4 +42,8 @@ public class UserController {
     public Single<Boolean> isGuestModeEnabled() {
         return currentUserPrefsRepository.isGuestModeEnabled();
     }
+
+    public Completable disableGuestMode() {
+        return currentUserPrefsRepository.setGuestModeEnabled(false);
+    }
 }

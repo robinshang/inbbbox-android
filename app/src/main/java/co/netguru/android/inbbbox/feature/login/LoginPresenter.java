@@ -122,9 +122,11 @@ public final class LoginPresenter
     private void requestTokenAndLoadUserData(String code) {
         compositeSubscription.add(
                 apiTokenController.requestNewToken(code)
-                        .flatMap(token -> userController.requestUser())
                         .compose(androidIO())
-                        .subscribe(user -> handleOnlineUserLogin(),
+                        .flatMap(token -> userController.requestUser())
+                        .toCompletable()
+                        .andThen(userController.disableGuestMode())
+                        .subscribe(this::handleOnlineUserLogin,
                                 throwable -> handleError(throwable,
                                         "Error while requesting new token")));
     }
