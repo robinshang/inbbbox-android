@@ -20,7 +20,7 @@
 
             <co.netguru.android.inbbbox.feature.shared.view.BucketImageView
                 android:id="@+id/four_images_view"
-                app:layout_aspectRatio="100%"
+                app:layout_aspectRatio="133%"
                 app:layout_widthPercent="100%"/>
 
             <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
@@ -34,7 +34,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/logo_ball"
                 android:tint="@color/lightGray"
-                app:layout_aspectRatio="100%"
+                app:layout_aspectRatio="133%"
                 app:layout_widthPercent="100%"/>
         </android.support.percent.PercentFrameLayout>
 
