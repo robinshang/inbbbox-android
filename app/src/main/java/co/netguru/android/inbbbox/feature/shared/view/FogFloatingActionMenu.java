@@ -91,7 +91,7 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
     public void enableStaticMode() {
         isInStaticMode = true;
         open(false);
-        postDelayed(() -> hideDynamicItems(), 100);
+        post(this::hideDynamicItems);
 
     }
 
@@ -101,7 +101,9 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
 
     private void hideDynamicItems() {
         for (int i = FAB_MAIN_BUTTON_INDEX; i < getChildCount(); i++) {
-            getChildAt(i).setVisibility(GONE);
+            View child = getChildAt(i);
+            child.clearAnimation();
+            child.setVisibility(GONE);
         }
     }
 }
