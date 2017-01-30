@@ -4,16 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/margin_small"
-    android:foreground="?selectableItemBackground"
     android:paddingEnd="@dimen/activity_login_button_margin_top"
     android:paddingStart="@dimen/activity_login_button_margin_top"
     android:paddingTop="@dimen/margin_xxsmall">
 
     <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
-        android:id="@+id/like_item_image_view"
+        android:id="@+id/bucket_shot_item_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:foreground="?selectableItemBackground"
-        android:background="@drawable/shot_placeholder"/>
+        android:background="@drawable/shot_placeholder"
+        android:layout_gravity="center"/>
 </FrameLayout>
