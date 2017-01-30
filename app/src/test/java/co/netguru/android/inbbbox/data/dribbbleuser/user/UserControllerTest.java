@@ -13,9 +13,11 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.observers.TestSubscriber;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -48,6 +50,53 @@ public class UserControllerTest {
         testSubscriber.assertValue(Statics.USER_ENTITY);
         testSubscriber.assertCompleted();
         testSubscriber.assertNoErrors();
+    }
+
+    @Test
+    public void whenGetUserFromCacheSubscribed_thenGetUserFromRepository() {
+        when(currentUserPrefsRepository.getUser()).thenReturn(Single.just(Statics.USER_ENTITY));
+        TestSubscriber<User> testSubscriber = new TestSubscriber<>();
+
+        userController.getUserFromCache().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        verify(currentUserPrefsRepository).getUser();
+    }
+
+    @Test
+    public void whenEnableGuestModeSubscribed_thenSaveGuestModeStateTrue() {
+        when(currentUserPrefsRepository.setGuestModeEnabled(anyBoolean()))
+                .thenReturn(Completable.complete());
+        TestSubscriber testSubscriber = new TestSubscriber();
+
+        userController.enableGuestMode().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        verify(currentUserPrefsRepository).setGuestModeEnabled(true);
+    }
+
+    @Test
+    public void whenDisableGuestModeSubscribed_thenSaveGuestModeStateFalse() {
+        when(currentUserPrefsRepository.setGuestModeEnabled(anyBoolean()))
+                .thenReturn(Completable.complete());
+        TestSubscriber testSubscriber = new TestSubscriber();
+
+        userController.disableGuestMode().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        verify(currentUserPrefsRepository).setGuestModeEnabled(false);
+    }
+
+    @Test
+    public void whenIsGuestModeEnabledSubscribed_thenGetStateFromRepository() {
+        when(currentUserPrefsRepository.isGuestModeEnabled())
+                .thenReturn(Single.just(true));
+        TestSubscriber<Boolean> testSubscriber = new TestSubscriber<>();
+
+        userController.isGuestModeEnabled().subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        verify(currentUserPrefsRepository).isGuestModeEnabled();
     }
 
     //ERRORS
