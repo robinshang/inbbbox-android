@@ -173,7 +173,9 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     private void initFabMenu() {
+        fabMenu.setOrientation(getResources().getConfiguration().orientation);
         fabMenu.addFogView(fogContainerView);
+
     }
 
     private void initRefreshLayout() {

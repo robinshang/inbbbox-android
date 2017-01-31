@@ -34,6 +34,10 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
     View bottomSheetView;
 
     @Nullable
+    @BindView(R.id.bottom_sheet_background)
+    View bottomSheetBackground;
+
+    @Nullable
     private HidingBottomSheetActivityDelegate bottomSheetActivityDelegate;
 
     private Subscription criticalLogoutSubscription;
@@ -111,5 +115,12 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
     private void handleUnauthorisedEvent(CriticalLogoutEvent object) {
         LoginActivity.startActivityClearTaskWithMessage(this, object.getReason());
         finish();
+    }
+
+    @Override
+    public void onBottomSheetSlide(float slideOffset) {
+        if (bottomSheetBackground != null) {
+            bottomSheetBackground.setAlpha(slideOffset);
+        }
     }
 }

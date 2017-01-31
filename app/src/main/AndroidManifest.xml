@@ -18,7 +18,7 @@
             android:launchMode="singleTask"
             android:noHistory="true"
             android:stateNotNeeded="true"
-            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.TranslucentStatus"
             tools:ignore="UnusedAttribute" />
 
         <activity

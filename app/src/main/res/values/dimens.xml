@@ -6,6 +6,7 @@
     <dimen name="margin_big">24dp</dimen>
     <dimen name="margin_default">16dp</dimen>
     <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_xxsmall">4dp</dimen>
 
     <dimen name='activity_login_logo_margin_top'>81dp</dimen>
     <dimen name='activity_login_logo_text_margin_top'>18dp</dimen>
@@ -15,6 +16,7 @@
     <dimen name='activity_login_button_padding_start'>16dp</dimen>
 
     <dimen name="activity_main_tab_height">66dp</dimen>
+    <dimen name="activity_main_tab_land_height">34dp</dimen>
     <dimen name="activity_main_tab_shadow_height">4dp</dimen>
     <dimen name="activity_main_tab_indicator_height">0dp</dimen>
 
@@ -100,7 +102,7 @@
     <dimen name="activity_login_divider_height">1dp</dimen>
     <dimen name="activity_login_divider_side_margin">8dp</dimen>
     <dimen name="activity_login_button_radius">70dp</dimen>
-    <dimen name="shot_item_width_landscape">200dp</dimen>
+    <dimen name="shot_item_width_landscape">400dp</dimen>
     <dimen name="guest_avatar_padding">8dp</dimen>
     <dimen name="button_border_width">2dp</dimen>
     <dimen name="fullscreen_arrow_size">48dp</dimen>
@@ -109,6 +111,8 @@
     <dimen name="loading_ball_shadow_paddingTop">16dp</dimen>
     <dimen name="loading_text_marginTop">16dp</dimen>
     <dimen name="shot_load_more_text_padding_bottom">2dp</dimen>
+    <dimen name="details_parallax_image_view_height_land">200dp</dimen>
+    <dimen name="details_comment_input_pannel_height_land">52dp</dimen>
 
     <fraction name="four_images_view_percentage">50%</fraction>
     <fraction name="big_dialog_height_width_percentage">90%</fraction>
