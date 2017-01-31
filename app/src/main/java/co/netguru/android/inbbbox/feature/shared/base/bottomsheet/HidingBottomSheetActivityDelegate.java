@@ -68,7 +68,6 @@ public class HidingBottomSheetActivityDelegate implements HidingBottomSheetBeare
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 bottomSheetActivityCallback.onBottomSheetSlide(slideOffset);
-                //no-op
             }
         };
     }

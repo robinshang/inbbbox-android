@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:app="http://schemas.android.com/apk/res-auto"
              xmlns:tools="http://schemas.android.com/tools"
+             style="@style/ItemContainerLandscape"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:foreground="?selectableItemBackground">
@@ -9,14 +10,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/margin_default">
+        android:layout_marginStart="@dimen/follower_detail_header_item_photo_size"
+        android:layout_marginEnd="@dimen/follower_detail_header_item_photo_size"
+        android:orientation="vertical">
 
         <android.support.percent.PercentFrameLayout
             android:id="@+id/bucket_image_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_small">
+            android:layout_height="wrap_content">
 
             <co.netguru.android.inbbbox.feature.shared.view.BucketImageView
                 android:id="@+id/four_images_view"
