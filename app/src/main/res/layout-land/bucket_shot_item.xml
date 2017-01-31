@@ -3,10 +3,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:foreground="?selectableItemBackground"
-             android:paddingBottom="@dimen/margin_small"
-             android:paddingEnd="@dimen/activity_login_button_margin_top"
-             android:paddingStart="@dimen/activity_login_button_margin_top"
-             android:paddingTop="@dimen/margin_xxsmall">
+             style="@style/ItemContainerLandscape">
 
     <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
         android:id="@+id/bucket_shot_item_view"

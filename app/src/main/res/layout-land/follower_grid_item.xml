@@ -2,12 +2,9 @@
 <android.support.percent.PercentRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/ItemContainerLandscape"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/margin_xxsmall"
-    android:paddingEnd="@dimen/activity_login_button_margin_top"
-    android:paddingStart="@dimen/activity_login_button_margin_top"
-    android:paddingTop="@dimen/margin_xxsmall">
+    android:layout_height="match_parent">
 
     <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersFourImageView
         android:id="@+id/four_image_view"
