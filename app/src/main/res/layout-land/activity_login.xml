@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/splash_bg_land"
+    android:baselineAligned="false"
     android:orientation="horizontal"
     android:weightSum="2">
     <RelativeLayout
