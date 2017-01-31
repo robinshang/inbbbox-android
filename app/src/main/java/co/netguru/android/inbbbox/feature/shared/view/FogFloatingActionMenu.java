@@ -45,7 +45,6 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
         isInStaticMode = true;
         open(false);
         post(this::hideDynamicItems);
-
     }
 
     public void enableDynamicMode() {

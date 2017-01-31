@@ -51,7 +51,7 @@
         android:layout_gravity="end|bottom"
         android:layout_marginEnd="@dimen/margin_default"
         app:layout_behavior="co.netguru.android.inbbbox.feature.shared.view.behavior.FloatingActionMenuAndButtonBehavior"
-        fab:menu_animationDelayPerItem="1"
+        fab:menu_animationDelayPerItem="0"
         fab:menu_colorNormal="@color/secondaryWindowBackground"
         fab:menu_colorPressed="@color/materialButtonColorPressed"
         fab:menu_colorRipple="@color/accent"
