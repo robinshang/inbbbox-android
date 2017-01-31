@@ -122,8 +122,8 @@ public final class LoginPresenter
     private void requestTokenAndLoadUserData(String code) {
         compositeSubscription.add(
                 apiTokenController.requestNewToken(code)
-                        .compose(androidIO())
                         .flatMap(token -> userController.requestUser())
+                        .compose(androidIO())
                         .toCompletable()
                         .andThen(userController.disableGuestMode())
                         .subscribe(this::handleOnlineUserLogin,

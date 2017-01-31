@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.feature.shared.view;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -38,17 +39,12 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
         this.fogView = fogView;
     }
 
-    /**
-     * Menu is always opened and large FAB is hidden
-     */
-    public void enableStaticMode() {
-        isInStaticMode = true;
-        open(false);
-        post(this::hideDynamicItems);
-    }
-
-    public void enableDynamicMode() {
-        isInStaticMode = false;
+    public void setOrientation(int orientation) {
+        if (orientation != Configuration.ORIENTATION_PORTRAIT) {
+            enableStaticMode();
+        } else {
+            enableDynamicMode();
+        }
     }
 
     @Override
@@ -56,6 +52,19 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
         if (!isInStaticMode) {
             super.close(animate);
         }
+    }
+
+    /**
+     * Menu is always opened and large FAB is hidden
+     */
+    private void enableStaticMode() {
+        isInStaticMode = true;
+        open(false);
+        post(this::hideDynamicItems);
+    }
+
+    private void enableDynamicMode() {
+        isInStaticMode = false;
     }
 
     private void initFabMenu() {
