@@ -27,7 +27,6 @@ import rx.Subscription;
 public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<V>>
         extends MvpActivity<V, P> implements BottomSheetActivityCallback, HidingBottomSheetBearer {
 
-    private static final long ANIM_DURATION = 400;
     @BindView(android.R.id.content)
     View contentView;
     @Nullable
