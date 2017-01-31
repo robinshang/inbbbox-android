@@ -33,6 +33,32 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
         initFabMenu();
     }
 
+    public void addFogView(View fogView) {
+
+        this.fogView = fogView;
+    }
+
+    /**
+     * Menu is always opened and large FAB is hidden
+     */
+    public void enableStaticMode() {
+        isInStaticMode = true;
+        open(false);
+        post(this::hideDynamicItems);
+
+    }
+
+    public void enableDynamicMode() {
+        isInStaticMode = false;
+    }
+
+    @Override
+    public void close(boolean animate) {
+        if (!isInStaticMode) {
+            super.close(animate);
+        }
+    }
+
     private void initFabMenu() {
         setOnMenuToggleListener(this::handleFabMenuToggle);
     }
@@ -77,26 +103,6 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
                     .setInterpolator(new AccelerateInterpolator())
                     .withStartAction(() -> fogView.setVisibility(View.VISIBLE));
         }
-    }
-
-
-    public void addFogView(View fogView) {
-
-        this.fogView = fogView;
-    }
-
-    /**
-     * Menu is always opened and large FAB is hidden
-     */
-    public void enableStaticMode() {
-        isInStaticMode = true;
-        open(false);
-        postDelayed(this::hideDynamicItems, 100);
-
-    }
-
-    public void enableDynamicMode() {
-        isInStaticMode = false;
     }
 
     private void hideDynamicItems() {

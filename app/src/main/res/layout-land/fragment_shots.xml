@@ -49,23 +49,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_marginBottom="@dimen/margin_default"
         android:layout_marginEnd="@dimen/margin_default"
         app:layout_behavior="co.netguru.android.inbbbox.feature.shared.view.behavior.FloatingActionMenuAndButtonBehavior"
-        fab:menu_animationDelayPerItem="10"
+        fab:menu_animationDelayPerItem="1"
         fab:menu_colorNormal="@color/secondaryWindowBackground"
         fab:menu_colorPressed="@color/materialButtonColorPressed"
         fab:menu_colorRipple="@color/accent"
         fab:menu_icon="@drawable/ic_fab_open"
-        fab:menu_labels_colorPressed="@color/materialButtonColorPressed"
-        fab:menu_labels_cornerRadius="@dimen/shots_label_radius"
-        fab:menu_labels_paddingBottom="@dimen/fab_menu_label_bottom_top_padding"
-        fab:menu_labels_paddingLeft="@dimen/fab_menu_label_side_padding"
-        fab:menu_labels_paddingRight="@dimen/fab_menu_label_side_padding"
-        fab:menu_labels_paddingTop="@dimen/fab_menu_label_bottom_top_padding"
-        fab:menu_labels_singleLine="true"
-        fab:menu_labels_style="@style/FabMenuLabel"
-        fab:menu_shadowRadius="0.5dp"
+        fab:menu_shadowRadius="1dp"
         fab:menu_shadowXOffset="0dp"
         fab:menu_shadowYOffset="0.5dp">
 
@@ -75,9 +66,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_comment"
             fab:fab_colorNormal="@color/secondaryWindowBackground"
-            fab:fab_colorPressed="@color/accent"
+            fab:fab_colorPressed="@color/lightGrayAlpha"
             fab:fab_label="@string/comment"
-            android:visibility="visible"
             fab:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
@@ -86,9 +76,10 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_bucket"
             fab:fab_colorNormal="@color/secondaryWindowBackground"
-            fab:fab_colorPressed="@color/accent"
+            fab:fab_colorPressed="@color/lightGrayAlpha"
             fab:fab_label="@string/add_to_bucket"
             fab:fab_size="mini"/>
+
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_follow_menu"
@@ -96,7 +87,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_follow"
             fab:fab_colorNormal="@color/secondaryWindowBackground"
-            fab:fab_colorPressed="@color/accent"
+            fab:fab_colorPressed="@color/lightGrayAlpha"
             fab:fab_label="@string/follow"
             fab:fab_size="mini"/>
 
@@ -106,7 +97,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_like"
             fab:fab_colorNormal="@color/secondaryWindowBackground"
-            fab:fab_colorPressed="@color/accent"
+            fab:fab_colorPressed="@color/lightGrayAlpha"
             fab:fab_label="@string/like"
             fab:fab_size="mini"/>
 
