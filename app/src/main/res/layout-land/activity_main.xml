@@ -44,8 +44,8 @@
                 app:tabGravity="fill"
                 app:tabIndicatorHeight="@dimen/activity_main_tab_indicator_height"
                 app:tabSelectedTextColor="@android:color/transparent"
-                app:tabTextColor="@android:color/transparent"
-                app:tabTextAppearance="@style/TabText"/>
+                app:tabTextAppearance="@style/TabText"
+                app:tabTextColor="@android:color/transparent"/>
         </LinearLayout>
 
         <android.support.design.widget.NavigationView
@@ -56,6 +56,13 @@
             app:headerLayout="@layout/drawer_header"
             app:menu="@menu/drawer_menu"/>
     </android.support.v4.widget.DrawerLayout>
+
+    <View
+        android:id="@+id/bottom_sheet_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:background="@color/blackSemiTransparent"/>
 
     <FrameLayout
         android:id="@+id/bottom_sheet_fragment_container"

@@ -27,11 +27,16 @@ import rx.Subscription;
 public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<V>>
         extends MvpActivity<V, P> implements BottomSheetActivityCallback, HidingBottomSheetBearer {
 
+    private static final long ANIM_DURATION = 400;
     @BindView(android.R.id.content)
     View contentView;
     @Nullable
     @BindView(R.id.bottom_sheet_fragment_container)
     View bottomSheetView;
+
+    @Nullable
+    @BindView(R.id.bottom_sheet_background)
+    View bottomSheetBackground;
 
     @Nullable
     private HidingBottomSheetActivityDelegate bottomSheetActivityDelegate;
@@ -82,6 +87,7 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
     public void onBackPressed() {
         if (bottomSheetActivityDelegate != null && bottomSheetActivityDelegate.isBottomSheetOpen()) {
             bottomSheetActivityDelegate.hideBottomSheet();
+            hideBackground();
         } else {
             super.onBackPressed();
         }
@@ -102,6 +108,7 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
     public void showBottomSheet(Fragment fragment, String tag) {
         if (bottomSheetActivityDelegate != null) {
             bottomSheetActivityDelegate.showBottomSheet(fragment, tag);
+            showBackground();
         } else {
             throw new IllegalStateException("BottomSheetActivity delegate is null." +
                     " Did you provide bottom_sheet_fragment_container view for this activity?");
@@ -111,5 +118,35 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
     private void handleUnauthorisedEvent(CriticalLogoutEvent object) {
         LoginActivity.startActivityClearTaskWithMessage(this, object.getReason());
         finish();
+    }
+
+    private void showBackground() {
+        if (bottomSheetBackground != null) {
+//            bottomSheetBackground.animate()
+//                    .alpha(0.8f)
+//                    .setStartDelay(ANIM_DURATION)
+//                    .setDuration(ANIM_DURATION)
+//                    .setInterpolator(new AccelerateInterpolator())
+//                    .withStartAction(() -> bottomSheetBackground.setVisibility(View.VISIBLE));
+        }
+    }
+
+    private void hideBackground() {
+        if (bottomSheetBackground != null) {
+//            bottomSheetBackground
+//                    .animate()
+//                    .alpha(0f)
+//                    .setDuration(ANIM_DURATION)
+//                    .setInterpolator(new AccelerateInterpolator())
+//                    .withEndAction(() -> bottomSheetBackground.setVisibility(View.GONE));
+        }
+    }
+
+    @Override
+    public void onBottomSheetSlide(float slideOffset) {
+        if (bottomSheetBackground != null) {
+            bottomSheetBackground.setVisibility(View.VISIBLE);
+            bottomSheetBackground.setAlpha(slideOffset);
+        }
     }
 }

@@ -185,6 +185,13 @@
     <style name="ItemContainerLandscape">
         <item name="android:paddingBottom">@dimen/margin_small</item>
         <item name="android:paddingTop">@dimen/margin_xxsmall</item>
+        <item name="android:paddingEnd">@dimen/activity_login_button_margin_top</item>
+        <item name="android:paddingStart">@dimen/activity_login_button_margin_top</item>
+    </style>
+
+    <style name="ShotDetailsContainerLandscape">
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:layout_marginTop">@dimen/margin_xxsmall</item>
         <item name="android:layout_marginEnd">@dimen/activity_login_button_margin_top</item>
         <item name="android:layout_marginStart">@dimen/activity_login_button_margin_top</item>
     </style>
