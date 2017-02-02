@@ -2,11 +2,13 @@ package co.netguru.android.inbbbox.feature.shot.recycler;
 
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -23,7 +25,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     public static final int ALPHA_MAX = 255;
     public static final int ALPHA_MIN = 0;
     public static final int LOCATION_ON_SCREEN_COORDINATES_NUMBER = 2;
-    public static final float COMMENT_TRANSLATION_FACTOR = 1/3f;
+    public static final float COMMENT_TRANSLATION_FACTOR = 1 / 3f;
 
     private final ShotSwipeListener shotSwipeListener;
     @BindView(R.id.long_swipe_layout)
@@ -41,7 +43,15 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     @BindView(R.id.iv_follow)
     ImageView followImageView;
     @BindView(R.id._left_wrapper)
-    LinearLayout leftWrapper;
+    RelativeLayout leftWrapper;
+    @BindView(R.id.like_done_text)
+    TextView likeDoneText;
+    @BindView(R.id.add_to_bucket_done_text)
+    TextView bucketDoneText;
+    @BindView(R.id.follow_done_text)
+    TextView followDoneText;
+    @BindView(R.id.comment_done_text)
+    TextView commentDoneText;
     private Shot shot;
 
     ShotsViewHolder(View itemView, @NonNull ShotSwipeListener shotSwipeListener) {
@@ -68,22 +78,28 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
 
     @Override
     public void onLeftSwipe() {
-        shotSwipeListener.onShotLikeSwipe(shot);
+        animateShotView(false);
+        animateAndFinishLike(likeDoneText, likeIconImageView);
+
     }
 
     @Override
     public void onLeftLongSwipe() {
-        shotSwipeListener.onAddShotToBucketSwipe(shot);
+        animateShotView(false);
+        animateAndFinishAddToBucket(bucketDoneText, bucketImageView);
     }
 
     @Override
     public void onRightSwipe() {
-        shotSwipeListener.onCommentShotSwipe(shot);
+        animateShotView(true);
+        animateAndFinishComment(commentDoneText, commentImageView);
+
     }
 
     @Override
     public void onRightLongSwipe() {
-        shotSwipeListener.onFollowUserSwipe(shot);
+        animateShotView(true);
+        animateAndFinishFollowUser(followDoneText, followImageView);
     }
 
     @Override
@@ -176,5 +192,175 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
             percent = 100 * progress / (viewLeft + viewWidth);
         }
         return percent / 100f;
+    }
+
+    private void animateShotView(boolean rightToLeft) {
+        int finishLocation = rightToLeft ? -shotImageView.getWidth() : shotImageView.getWidth();
+        TranslateAnimation translateAnimation = new TranslateAnimation(0, finishLocation, 0, 0);
+        translateAnimation.setFillAfter(true);
+        translateAnimation.setDuration(1000);
+        shotImageView.startAnimation(translateAnimation);
+    }
+
+    private int getOnScreenX(View view) {
+        int[] coordinates = new int[LOCATION_ON_SCREEN_COORDINATES_NUMBER];
+        view.getLocationOnScreen(coordinates);
+        return coordinates[0];
+    }
+
+    private void animateAndFinishLike(TextView textView, ImageView centerImageView) {
+        int leftWrapperOnScreenX = getOnScreenX(leftWrapper);
+        int centerImageOnScreenX = getOnScreenX(centerImageView);
+        int textOnScreenX = getOnScreenX(textView);
+
+        int halfShotWidth = shotImageView.getWidth() / 2;
+        int center = leftWrapperOnScreenX + halfShotWidth - centerImageView.getWidth() / 2;
+        int toMove = center - centerImageOnScreenX;
+
+        AlphaAnimation fadeAnimation = new AlphaAnimation(1f, 0f);
+        fadeAnimation.setFillAfter(true);
+        fadeAnimation.setDuration(50);
+
+        plusIconImageView.startAnimation(fadeAnimation);
+        bucketImageView.startAnimation(fadeAnimation);
+
+        TranslateAnimation centerImageViewTranslateAnimation = new TranslateAnimation(0, toMove, 0, 0);
+        centerImageViewTranslateAnimation.setDuration(1000);
+        centerImageViewTranslateAnimation.setFillAfter(true);
+        centerImageView.startAnimation(centerImageViewTranslateAnimation);
+
+        int startTextPosition = leftWrapperOnScreenX - textOnScreenX + leftWrapper.getWidth();
+        int endTextPosition = halfShotWidth - (int) (textView.getPaint().measureText(textView.getText().toString()) / 2);
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.setFillAfter(true);
+        animationSet.setDuration(1000);
+        animationSet.addAnimation(new TranslateAnimation(startTextPosition, endTextPosition, 0, 0));
+        animationSet.addAnimation(new AlphaAnimation(0f, 1f));
+        textView.startAnimation(animationSet);
+        longSwipeLayout.postDelayed(() -> {
+            longSwipeLayout.close();
+            shotImageView.clearAnimation();
+            shotSwipeListener.onShotLikeSwipe(shot);
+
+            longSwipeLayout.postDelayed(() -> {
+                centerImageView.clearAnimation();
+                textView.clearAnimation();
+                plusIconImageView.clearAnimation();
+                bucketImageView.clearAnimation();
+            }, 200);
+
+        }, 1200);
+    }
+
+    private void animateAndFinishAddToBucket(TextView textView, ImageView centerImageView) {
+        int leftWrapperOnScreenX = getOnScreenX(leftWrapper);
+        int centerImageOnScreenX = getOnScreenX(centerImageView);
+        int textOnScreenX = getOnScreenX(textView);
+
+        int halfShotWidth = shotImageView.getWidth() / 2;
+        int center = leftWrapperOnScreenX + halfShotWidth - centerImageView.getWidth() / 2;
+        int toMove = center - centerImageOnScreenX;
+
+        TranslateAnimation centerImageViewTranslateAnimation = new TranslateAnimation(0, toMove, 0, 0);
+        centerImageViewTranslateAnimation.setDuration(1000);
+        centerImageViewTranslateAnimation.setFillAfter(true);
+        centerImageView.startAnimation(centerImageViewTranslateAnimation);
+
+        bucketImageView.startAnimation(centerImageViewTranslateAnimation);
+        likeIconImageView.startAnimation(centerImageViewTranslateAnimation);
+
+        int startTextPosition = leftWrapperOnScreenX - textOnScreenX + leftWrapper.getWidth();
+        int endTextPosition = halfShotWidth - (int) (textView.getPaint().measureText(textView.getText().toString()) / 2);
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.setFillAfter(true);
+        animationSet.setDuration(1000);
+        animationSet.addAnimation(new TranslateAnimation(startTextPosition, endTextPosition, 0, 0));
+        animationSet.addAnimation(new AlphaAnimation(0f, 1f));
+        textView.startAnimation(animationSet);
+        longSwipeLayout.postDelayed(() -> {
+            longSwipeLayout.close();
+            shotImageView.clearAnimation();
+
+            longSwipeLayout.postDelayed(() -> {
+                likeIconImageView.clearAnimation();
+                textView.clearAnimation();
+                centerImageView.clearAnimation();
+                bucketImageView.clearAnimation();
+                shotSwipeListener.onAddShotToBucketSwipe(shot);
+            }, 200);
+
+        }, 1200);
+    }
+
+    private void animateAndFinishFollowUser(TextView textView, ImageView centerImageView) {
+        int leftWrapperOnScreenX = getOnScreenX(leftWrapper);
+        int centerImageOnScreenX = getOnScreenX(centerImageView);
+        int textOnScreenX = getOnScreenX(textView);
+
+        int halfShotWidth = shotImageView.getWidth() / 2;
+        int center = leftWrapperOnScreenX + halfShotWidth - centerImageView.getWidth() / 2;
+        int toMove = center - centerImageOnScreenX;
+
+        TranslateAnimation centerImageViewTranslateAnimation = new TranslateAnimation(0, toMove, 0, 0);
+        centerImageViewTranslateAnimation.setDuration(1000);
+        centerImageViewTranslateAnimation.setFillAfter(true);
+        centerImageView.startAnimation(centerImageViewTranslateAnimation);
+
+        int startTextPosition = leftWrapperOnScreenX - textOnScreenX;
+        int endTextPosition = halfShotWidth - (int) (textView.getPaint().measureText(textView.getText().toString()) / 2);
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.setFillAfter(true);
+        animationSet.setDuration(1000);
+        animationSet.addAnimation(new TranslateAnimation(startTextPosition, -endTextPosition, 0, 0));
+        animationSet.addAnimation(new AlphaAnimation(0f, 1f));
+        textView.startAnimation(animationSet);
+
+        longSwipeLayout.postDelayed(() -> {
+            longSwipeLayout.close();
+            shotImageView.clearAnimation();
+
+            longSwipeLayout.postDelayed(() -> {
+                textView.clearAnimation();
+                centerImageView.clearAnimation();
+                shotSwipeListener.onFollowUserSwipe(shot);
+            }, 200);
+
+        }, 1200);
+    }
+
+    private void animateAndFinishComment(TextView textView, ImageView centerImageView) {
+        int leftWrapperOnScreenX = getOnScreenX(leftWrapper);
+        int centerImageOnScreenX = getOnScreenX(centerImageView);
+        int textOnScreenX = getOnScreenX(textView);
+
+        int halfShotWidth = shotImageView.getWidth() / 2;
+        int center = leftWrapperOnScreenX + halfShotWidth - centerImageView.getWidth() / 2;
+        int toMove = center - centerImageOnScreenX;
+
+        TranslateAnimation centerImageViewTranslateAnimation = new TranslateAnimation(0, toMove, 0, 0);
+        centerImageViewTranslateAnimation.setDuration(1000);
+        centerImageViewTranslateAnimation.setFillAfter(true);
+        centerImageView.startAnimation(centerImageViewTranslateAnimation);
+
+        int startTextPosition = leftWrapperOnScreenX - textOnScreenX;
+        int endTextPosition = halfShotWidth - (int) (textView.getPaint().measureText(textView.getText().toString()) / 2);
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.setFillAfter(true);
+        animationSet.setDuration(1000);
+        animationSet.addAnimation(new TranslateAnimation(startTextPosition, -endTextPosition, 0, 0));
+        animationSet.addAnimation(new AlphaAnimation(0f, 1f));
+        textView.startAnimation(animationSet);
+
+        longSwipeLayout.postDelayed(() -> {
+            longSwipeLayout.close();
+            shotImageView.clearAnimation();
+
+            longSwipeLayout.postDelayed(() -> {
+                textView.clearAnimation();
+                centerImageView.clearAnimation();
+                shotSwipeListener.onCommentShotSwipe(shot);
+            }, 300);
+
+        }, 1200);
     }
 }

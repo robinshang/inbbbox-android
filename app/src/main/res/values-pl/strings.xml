@@ -106,4 +106,9 @@
     <string name="remove_from_bucket_fragment_remove">Usuń projekt z powyższych kolekcji</string>
     <string name="shots_fragment_remove_shot_from_bucket_success">Projekt usunięty z kolekcji</string>
 
+    <string name="like_finish_message">Dodano do polubionych</string>
+    <string name="like_and_add_to_bucket_message">Projekt polubiony, dodawanie do kolekcji… </string>
+    <string name="commenting_message">Dodawanie komentarza…</string>
+    <string name="following_finish_message">Dodano autora do obserwowanych</string>
+
 </resources>

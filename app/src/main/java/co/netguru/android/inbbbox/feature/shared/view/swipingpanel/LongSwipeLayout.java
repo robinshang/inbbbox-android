@@ -37,17 +37,60 @@ public class LongSwipeLayout extends SwipeLayout {
             initSwipeActionHandling();
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             checkItemSelection();
-            close(true);
+//            close(true);
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
             handleSwipingActions();
         }
         return super.onTouchEvent(event);
     }
 
+    public void close() {
+        close(true, true);
+    }
+
+    public void setItemSwipeListener(ItemSwipeListener itemSwipeListener) {
+
+        this.itemSwipeListener = itemSwipeListener;
+    }
+
+    public SwipeListener getSwipeListener() {
+        return new SwipeListener() {
+            @Override
+            public void onStartOpen(SwipeLayout layout) {
+                //no-op
+            }
+
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                //no-op
+            }
+
+            @Override
+            public void onStartClose(SwipeLayout layout) {
+                //no-op
+            }
+
+            @Override
+            public void onClose(SwipeLayout layout) {
+                //no-op
+            }
+
+            @Override
+            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+                //no-op
+            }
+
+            @Override
+            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+                //no-op
+            }
+        };
+    }
+
     @Override
     protected void processHandRelease(float xvel, float yvel, boolean isCloseBeforeDragged) {
-        //keep it false to automatically close the surface
-        super.processHandRelease(xvel, yvel, false);
+        //false to automatically close the surface
+        super.processHandRelease(xvel, yvel, true);
     }
 
     private void init() {
@@ -123,6 +166,8 @@ public class LongSwipeLayout extends SwipeLayout {
         if (isRightLongSwipeTriggered) {
             rightLongSwipeSelected();
         }
+        if (!isRightSwipeTriggered && !isLeftSwipeTriggered && !isLeftLongSwipeTriggered && !isRightLongSwipeTriggered)
+            close();
     }
 
     private void rightSwipeSelected() {
@@ -147,48 +192,5 @@ public class LongSwipeLayout extends SwipeLayout {
         if (itemSwipeListener != null) {
             itemSwipeListener.onRightLongSwipe();
         }
-    }
-
-    private void delayClose() {
-        postDelayed(() -> close(true, true), AUTO_CLOSE_DELAY);
-    }
-
-    public void setItemSwipeListener(ItemSwipeListener itemSwipeListener) {
-
-        this.itemSwipeListener = itemSwipeListener;
-    }
-
-    public SwipeListener getSwipeListener() {
-        return new SwipeListener() {
-            @Override
-            public void onStartOpen(SwipeLayout layout) {
-                //no-op
-            }
-
-            @Override
-            public void onOpen(SwipeLayout layout) {
-                //no-op
-            }
-
-            @Override
-            public void onStartClose(SwipeLayout layout) {
-                //no-op
-            }
-
-            @Override
-            public void onClose(SwipeLayout layout) {
-                //no-op
-            }
-
-            @Override
-            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-                //no-op
-            }
-
-            @Override
-            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-                delayClose();
-            }
-        };
     }
 }
