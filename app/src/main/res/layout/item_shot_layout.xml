@@ -46,35 +46,15 @@
 
             <TextView
                 android:id="@+id/comment_done_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
+                style="@style/LongSwipeActionText"
                 android:layout_below="@id/iv_follow"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/commenting_message"
-                android:textColor="#FFF"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:visibility="invisible" />
+                android:text="@string/commenting_message" />
 
             <TextView
                 android:id="@+id/follow_done_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
+                style="@style/LongSwipeActionText"
                 android:layout_below="@id/iv_follow"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/following_finish_message"
-                android:textColor="#FFF"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:visibility="invisible" />
+                android:text="@string/following_finish_message" />
 
         </RelativeLayout>
 
@@ -115,35 +95,15 @@
 
             <TextView
                 android:id="@+id/like_done_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
+                style="@style/LongSwipeActionText"
                 android:layout_below="@id/iv_like_action"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/like_finish_message"
-                android:textColor="#FFF"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:visibility="invisible" />
+                android:text="@string/like_finish_message" />
 
             <TextView
                 android:id="@+id/add_to_bucket_done_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
+                style="@style/LongSwipeActionText"
                 android:layout_below="@id/iv_like_action"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/like_and_add_to_bucket_message"
-                android:textColor="#FFF"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:visibility="invisible" />
+                android:text="@string/like_and_add_to_bucket_message" />
 
         </RelativeLayout>
 

@@ -139,7 +139,7 @@
     <string name="refresh">Refresh</string>
 
     <string name="like_finish_message">Added to likes</string>
-    <string name="like_and_add_to_bucket_message">Shot liked, adding to bucket... </string>
-    <string name="commenting_message">Commenting...</string>
+    <string name="like_and_add_to_bucket_message">Shot liked, adding to bucket… </string>
+    <string name="commenting_message">Commenting…</string>
     <string name="following_finish_message">Following author</string>
 </resources>

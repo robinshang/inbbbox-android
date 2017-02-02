@@ -6,7 +6,7 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 public interface ShotSwipeListener {
     void onShotLikeSwipe(Shot shot);
 
-    void onAddShotToBucketSwipe(Shot shot);
+    void onLikeAndAddShotToBucketSwipe(Shot shot);
 
     void onCommentShotSwipe(Shot shot);
 

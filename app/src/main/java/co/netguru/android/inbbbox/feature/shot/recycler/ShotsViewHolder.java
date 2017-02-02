@@ -44,6 +44,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     ImageView followImageView;
     @BindView(R.id._left_wrapper)
     RelativeLayout leftWrapper;
+    //additional TextViews needed due to closing SwipeLayout when text changes
     @BindView(R.id.like_done_text)
     TextView likeDoneText;
     @BindView(R.id.add_to_bucket_done_text)
@@ -80,13 +81,12 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     public void onLeftSwipe() {
         animateShotView(false);
         animateAndFinishLike(likeDoneText, likeIconImageView);
-
     }
 
     @Override
     public void onLeftLongSwipe() {
         animateShotView(false);
-        animateAndFinishAddToBucket(bucketDoneText, bucketImageView);
+        animateAndFinishAddToBucket(bucketDoneText, plusIconImageView);
     }
 
     @Override
@@ -230,7 +230,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
         centerImageView.startAnimation(centerImageViewTranslateAnimation);
 
         int startTextPosition = leftWrapperOnScreenX - textOnScreenX + leftWrapper.getWidth();
-        int endTextPosition = halfShotWidth - (int) (textView.getPaint().measureText(textView.getText().toString()) / 2);
+        int endTextPosition = halfShotWidth - textView.getWidth() / 2;
         AnimationSet animationSet = new AnimationSet(true);
         animationSet.setFillAfter(true);
         animationSet.setDuration(1000);
@@ -270,7 +270,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
         likeIconImageView.startAnimation(centerImageViewTranslateAnimation);
 
         int startTextPosition = leftWrapperOnScreenX - textOnScreenX + leftWrapper.getWidth();
-        int endTextPosition = halfShotWidth - (int) (textView.getPaint().measureText(textView.getText().toString()) / 2);
+        int endTextPosition = halfShotWidth - textView.getWidth() / 2;
         AnimationSet animationSet = new AnimationSet(true);
         animationSet.setFillAfter(true);
         animationSet.setDuration(1000);
@@ -286,9 +286,8 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
                 textView.clearAnimation();
                 centerImageView.clearAnimation();
                 bucketImageView.clearAnimation();
-                shotSwipeListener.onAddShotToBucketSwipe(shot);
+                shotSwipeListener.onLikeAndAddShotToBucketSwipe(shot);
             }, 200);
-
         }, 1200);
     }
 
@@ -307,7 +306,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
         centerImageView.startAnimation(centerImageViewTranslateAnimation);
 
         int startTextPosition = leftWrapperOnScreenX - textOnScreenX;
-        int endTextPosition = halfShotWidth - (int) (textView.getPaint().measureText(textView.getText().toString()) / 2);
+        int endTextPosition = halfShotWidth - textView.getWidth() / 2;
         AnimationSet animationSet = new AnimationSet(true);
         animationSet.setFillAfter(true);
         animationSet.setDuration(1000);
@@ -324,7 +323,6 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
                 centerImageView.clearAnimation();
                 shotSwipeListener.onFollowUserSwipe(shot);
             }, 200);
-
         }, 1200);
     }
 
@@ -343,7 +341,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
         centerImageView.startAnimation(centerImageViewTranslateAnimation);
 
         int startTextPosition = leftWrapperOnScreenX - textOnScreenX;
-        int endTextPosition = halfShotWidth - (int) (textView.getPaint().measureText(textView.getText().toString()) / 2);
+        int endTextPosition = halfShotWidth - textView.getWidth() / 2;
         AnimationSet animationSet = new AnimationSet(true);
         animationSet.setFillAfter(true);
         animationSet.setDuration(1000);
@@ -360,7 +358,6 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
                 centerImageView.clearAnimation();
                 shotSwipeListener.onCommentShotSwipe(shot);
             }, 300);
-
         }, 1200);
     }
 }

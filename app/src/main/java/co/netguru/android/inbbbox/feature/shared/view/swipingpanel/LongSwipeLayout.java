@@ -37,7 +37,6 @@ public class LongSwipeLayout extends SwipeLayout {
             initSwipeActionHandling();
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             checkItemSelection();
-//            close(true);
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
             handleSwipingActions();
         }
@@ -154,20 +153,17 @@ public class LongSwipeLayout extends SwipeLayout {
     }
 
     private void checkItemSelection() {
-        if (isRightSwipeTriggered) {
-            rightSwipeSelected();
-        } else if (isLeftSwipeTriggered) {
-            leftSwipeSelected();
-        }
-
-        if (isLeftLongSwipeTriggered) {
-            leftLongSwipeSelected();
-        }
         if (isRightLongSwipeTriggered) {
             rightLongSwipeSelected();
-        }
-        if (!isRightSwipeTriggered && !isLeftSwipeTriggered && !isLeftLongSwipeTriggered && !isRightLongSwipeTriggered)
+        } else if (isRightSwipeTriggered) {
+            rightSwipeSelected();
+        } else if (isLeftLongSwipeTriggered) {
+            leftLongSwipeSelected();
+        } else if (isLeftSwipeTriggered) {
+            leftSwipeSelected();
+        } else {
             close();
+        }
     }
 
     private void rightSwipeSelected() {
