@@ -88,6 +88,7 @@
 
         <ImageView
             android:id="@+id/ball_imageView"
+            android:contentDescription="@string/user_image_content_description"
             android:layout_width="@dimen/shot_details_shots_tab_image_size"
             android:layout_height="@dimen/shot_details_shots_tab_image_size"
             android:src="@drawable/ic_ball"
@@ -114,6 +115,7 @@
 
         <ImageView
             android:id="@+id/comment_imageView"
+            android:contentDescription="@string/comment_icon_content_description"
             android:layout_width="@dimen/shot_details_shots_tab_image_size"
             android:layout_height="@dimen/shot_details_shots_tab_image_size"
             android:layout_marginEnd="@dimen/shot_details_shots_image_margin"
@@ -132,6 +134,7 @@
 
         <ImageView
             android:id="@+id/likes_imageView"
+            android:contentDescription="@string/likes_icon_content_description"
             android:layout_width="@dimen/shot_details_shots_tab_image_size"
             android:layout_height="@dimen/shot_details_shots_tab_image_size"
             android:layout_marginEnd="@dimen/shot_details_shots_image_margin"
