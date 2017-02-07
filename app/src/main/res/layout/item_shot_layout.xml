@@ -78,4 +78,63 @@
             android:padding="@dimen/shot_background_padding" />
         <!-- Surface View End -->
     </co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shot_details_shots_tab_height"
+        android:layout_marginTop="@dimen/shot_details_shots_tab_margin"
+        android:layout_below="@+id/long_swipe_layout"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:id="@+id/ball_imageView"
+            android:layout_width="@dimen/shot_details_shots_tab_height"
+            android:layout_height="@dimen/shot_details_shots_tab_height"
+            android:src="@drawable/ic_ball"
+            android:layout_marginStart="@dimen/shot_details_shots_tab_margin"
+            android:layout_marginEnd="@dimen/shot_details_shots_image_margin"/>
+
+        <TextView
+            android:id="@+id/user_name_imageView"
+            style="@style/Font12.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/ball_imageView"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:id="@+id/comments_count_textView"
+            style="@style/Font12.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="@dimen/shot_details_shots_tab_margin"/>
+
+        <ImageView
+            android:id="@+id/comment_imageView"
+            android:layout_width="@dimen/shot_details_shots_tab_height"
+            android:layout_height="@dimen/shot_details_shots_tab_height"
+            android:layout_marginEnd="@dimen/shot_details_shots_image_margin"
+            android:src="@drawable/ic_fab_comment"
+            android:layout_toStartOf="@id/comments_count_textView"/>
+
+        <TextView
+            android:id="@+id/likes_count_textView"
+            style="@style/Font12.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/comment_imageView"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="@dimen/shot_details_shots_tab_counts_margin"/>
+
+        <ImageView
+            android:id="@+id/likes_imageView"
+            android:layout_width="@dimen/shot_details_shots_tab_height"
+            android:layout_height="@dimen/shot_details_shots_tab_height"
+            android:layout_marginEnd="@dimen/shot_details_shots_image_margin"
+            android:src="@drawable/ic_like_emptystate"
+            android:layout_toStartOf="@id/likes_count_textView"/>
+
+    </RelativeLayout>
 </RelativeLayout>
