@@ -88,19 +88,20 @@
 
         <ImageView
             android:id="@+id/ball_imageView"
-            android:layout_width="@dimen/shot_details_shots_tab_height"
-            android:layout_height="@dimen/shot_details_shots_tab_height"
+            android:layout_width="@dimen/shot_details_shots_tab_image_size"
+            android:layout_height="@dimen/shot_details_shots_tab_image_size"
             android:src="@drawable/ic_ball"
             android:layout_marginStart="@dimen/shot_details_shots_tab_margin"
-            android:layout_marginEnd="@dimen/shot_details_shots_image_margin"/>
+            android:layout_marginEnd="@dimen/shot_details_shots_image_margin"
+            android:layout_centerVertical="true"/>
 
         <TextView
-            android:id="@+id/user_name_imageView"
+            android:id="@+id/user_name_textView"
             style="@style/Font12.Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/ball_imageView"
-            android:layout_centerInParent="true"/>
+            android:layout_centerVertical="true"/>
 
         <TextView
             android:id="@+id/comments_count_textView"
@@ -108,16 +109,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/shot_details_shots_tab_margin"/>
 
         <ImageView
             android:id="@+id/comment_imageView"
-            android:layout_width="@dimen/shot_details_shots_tab_height"
-            android:layout_height="@dimen/shot_details_shots_tab_height"
+            android:layout_width="@dimen/shot_details_shots_tab_image_size"
+            android:layout_height="@dimen/shot_details_shots_tab_image_size"
             android:layout_marginEnd="@dimen/shot_details_shots_image_margin"
             android:src="@drawable/ic_fab_comment"
-            android:layout_toStartOf="@id/comments_count_textView"/>
+            android:layout_toStartOf="@id/comments_count_textView"
+            android:layout_centerVertical="true"/>
 
         <TextView
             android:id="@+id/likes_count_textView"
@@ -125,16 +127,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/comment_imageView"
-            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/shot_details_shots_tab_counts_margin"/>
 
         <ImageView
             android:id="@+id/likes_imageView"
-            android:layout_width="@dimen/shot_details_shots_tab_height"
-            android:layout_height="@dimen/shot_details_shots_tab_height"
+            android:layout_width="@dimen/shot_details_shots_tab_image_size"
+            android:layout_height="@dimen/shot_details_shots_tab_image_size"
             android:layout_marginEnd="@dimen/shot_details_shots_image_margin"
             android:src="@drawable/ic_like_emptystate"
-            android:layout_toStartOf="@id/likes_count_textView"/>
+            android:layout_toStartOf="@id/likes_count_textView"
+            android:layout_centerVertical="true"/>
 
     </RelativeLayout>
 </RelativeLayout>
