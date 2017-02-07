@@ -13,7 +13,8 @@ public class OnboardingLinearLayoutManager extends LinearLayoutManager {
     }
 
     @Override
-    public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
+    public void smoothScrollToPosition(RecyclerView recyclerView,
+                                       RecyclerView.State state, int position) {
         canScroll = true;
         super.smoothScrollToPosition(recyclerView, state, position);
     }

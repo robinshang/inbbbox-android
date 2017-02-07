@@ -1,6 +1,6 @@
 package co.netguru.android.inbbbox.feature.onboarding;
 
-public class OnboardingShot {
+public class OnboardingStep {
 
     public static final int STEP_LIKE = 0;
     public static final int STEP_BUCKET = 1;
@@ -12,7 +12,7 @@ public class OnboardingShot {
     private int drawableResourceId;
     private int layoutResourceId;
 
-    public OnboardingShot(int step, int drawableResourceId, int layoutResourceId) {
+    public OnboardingStep(int step, int drawableResourceId, int layoutResourceId) {
         this.step = step;
         this.drawableResourceId = drawableResourceId;
         this.layoutResourceId = layoutResourceId;

@@ -6,25 +6,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import co.netguru.android.inbbbox.feature.onboarding.OnboardingShot;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingShotSwipeListener;
+import co.netguru.android.inbbbox.feature.onboarding.OnboardingStep;
 
 public class OnboardingShotsAdapter extends RecyclerView.Adapter<OnboardingShotsViewHolder> {
 
     private final OnboardingShotSwipeListener shotSwipeListener;
-
-    @NonNull
-    private List<OnboardingShot> items;
+    private final List<OnboardingStep> items = new ArrayList<>();
 
     @Inject
     public OnboardingShotsAdapter(@NonNull OnboardingShotSwipeListener shotSwipeListener) {
         this.shotSwipeListener = shotSwipeListener;
-        items = Collections.emptyList();
     }
 
     @Override
@@ -44,7 +41,7 @@ public class OnboardingShotsAdapter extends RecyclerView.Adapter<OnboardingShots
         return items.size();
     }
 
-    public List<OnboardingShot> getData() {
+    public List<OnboardingStep> getData() {
         return items;
     }
 
@@ -53,8 +50,9 @@ public class OnboardingShotsAdapter extends RecyclerView.Adapter<OnboardingShots
         return items.get(position).getLayoutResourceId();
     }
 
-    public void setItems(List<OnboardingShot> items) {
-        this.items = items;
+    public void setItems(List<OnboardingStep> items) {
+        this.items.clear();
+        this.items.addAll(items);
         notifyDataSetChanged();
     }
 

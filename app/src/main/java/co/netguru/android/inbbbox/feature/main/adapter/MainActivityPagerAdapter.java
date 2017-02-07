@@ -13,7 +13,8 @@ import co.netguru.android.inbbbox.feature.like.LikesFragment;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingFragment;
 import co.netguru.android.inbbbox.feature.shot.ShotsFragment;
 
-public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment> extends FragmentStatePagerAdapter {
+public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment>
+        extends FragmentStatePagerAdapter {
 
     private SparseArray<T> activeRefreshableFragments;
     private boolean isOnboardingPassed;
@@ -27,23 +28,30 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment> 
     @SuppressLint("DefaultLocale")
     @Override
     public Fragment getItem(int position) {
+        Fragment result;
+
         switch (TabItemType.getTabItemForPosition(position)) {
             case SHOTS:
-                if(isOnboardingPassed) {
-                    return ShotsFragment.newInstance();
+                if (isOnboardingPassed) {
+                    result = ShotsFragment.newInstance();
                 } else {
-                    return OnboardingFragment.newInstance();
+                    result = OnboardingFragment.newInstance();
                 }
+                break;
             case LIKES:
-                return LikesFragment.newInstance();
+                result = LikesFragment.newInstance();
+                break;
             case BUCKETS:
-                return BucketsFragment.newInstance();
+                result = BucketsFragment.newInstance();
+                break;
             case FOLLOWERS:
-                return FollowersFragment.newInstance();
+                result = FollowersFragment.newInstance();
+                break;
             default:
                 throw new IllegalArgumentException(String.format(
                         "There is no fragment defined for position: %d", position));
         }
+        return result;
     }
 
     @Override

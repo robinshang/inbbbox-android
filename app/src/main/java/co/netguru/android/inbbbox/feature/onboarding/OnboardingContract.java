@@ -10,7 +10,7 @@ interface OnboardingContract {
     interface View extends MvpView {
         void scrollToStep(int step);
 
-        void setData(List<OnboardingShot> data);
+        void setData(List<OnboardingStep> data);
 
         void closeOnboarding();
     }
@@ -19,14 +19,14 @@ interface OnboardingContract {
 
         void getShots();
 
-        void handleLikeShot(OnboardingShot shot);
+        void handleLikeShot(OnboardingStep shot);
 
-        void handleAddShotToBucket(OnboardingShot shot);
+        void handleAddShotToBucket(OnboardingStep shot);
 
-        void handleShowShotDetails(OnboardingShot shot);
+        void handleShowShotDetails(OnboardingStep shot);
 
-        void handleCommentShot(OnboardingShot shot);
+        void handleCommentShot(OnboardingStep shot);
 
-        void handleFollowShotAuthor(OnboardingShot shot);
+        void handleFollowShotAuthor(OnboardingStep shot);
     }
 }

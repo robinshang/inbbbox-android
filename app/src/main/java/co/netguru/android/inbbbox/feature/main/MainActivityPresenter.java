@@ -290,7 +290,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     private void prepareOnboardingSettings() {
         onboardingController.isOnboardingPassed()
-                .subscribe(isOnboardingPassed ->  getView().initializePager(isOnboardingPassed));
+                .subscribe(getView()::initializePager);
     }
 
     private void setNotificationSettings(NotificationSettings notificationSettings) {

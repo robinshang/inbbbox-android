@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
@@ -19,7 +21,8 @@ import co.netguru.android.inbbbox.feature.onboarding.recycler.OnboardingShotsAda
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView;
 
-public class OnboardingFragment extends BaseMvpFragment<OnboardingContract.View, OnboardingContract.Presenter>
+public class OnboardingFragment
+        extends BaseMvpFragment<OnboardingContract.View, OnboardingContract.Presenter>
         implements OnboardingContract.View, OnboardingShotSwipeListener {
 
     @BindView(R.id.shots_recycler_view)
@@ -28,8 +31,13 @@ public class OnboardingFragment extends BaseMvpFragment<OnboardingContract.View,
     @BindView(R.id.scroll_overlay)
     View scrollOverlay;
 
-    private OnboardingShotsAdapter adapter;
-    private OnboardingLinearLayoutManager layoutManager;
+    @Inject
+    OnboardingShotsAdapter adapter;
+
+    @Inject
+    OnboardingLinearLayoutManager layoutManager;
+
+    private OnboardingComponent component;
 
     public static OnboardingFragment newInstance() {
         return new OnboardingFragment();
@@ -45,7 +53,13 @@ public class OnboardingFragment extends BaseMvpFragment<OnboardingContract.View,
     @NonNull
     @Override
     public OnboardingContract.Presenter createPresenter() {
-        return App.getUserComponent(getContext()).getOnboardingComponent().getPresenter();
+        return component.getPresenter();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initComponent();
     }
 
     @Override
@@ -55,33 +69,12 @@ public class OnboardingFragment extends BaseMvpFragment<OnboardingContract.View,
         getPresenter().getShots();
     }
 
-    private void initRecycler() {
-        adapter = new OnboardingShotsAdapter(this);
-        shotsRecyclerView.setAdapter(adapter);
-
-        layoutManager = new OnboardingLinearLayoutManager(getContext());
-        shotsRecyclerView.setLayoutManager(layoutManager);
-        shotsRecyclerView.setHasFixedSize(true);
-
-        shotsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    scrollOverlay.setVisibility(View.GONE);
-                    layoutManager.setCanScroll(false);
-                }
-            }
-        });
-    }
-
-    public List<OnboardingShot> getData() {
+    public List<OnboardingStep> getData() {
         return adapter.getData();
     }
 
     @Override
-    public void setData(List<OnboardingShot> data) {
+    public void setData(List<OnboardingStep> data) {
         adapter.setItems(data);
     }
 
@@ -91,27 +84,27 @@ public class OnboardingFragment extends BaseMvpFragment<OnboardingContract.View,
     }
 
     @Override
-    public void onShotLikeSwipe(OnboardingShot shot) {
+    public void onShotLikeSwipe(OnboardingStep shot) {
         getPresenter().handleLikeShot(shot);
     }
 
     @Override
-    public void onAddShotToBucketSwipe(OnboardingShot shot) {
+    public void onAddShotToBucketSwipe(OnboardingStep shot) {
         getPresenter().handleAddShotToBucket(shot);
     }
 
     @Override
-    public void onCommentShotSwipe(OnboardingShot shot) {
+    public void onCommentShotSwipe(OnboardingStep shot) {
         getPresenter().handleCommentShot(shot);
     }
 
     @Override
-    public void onFollowUserSwipe(OnboardingShot shot) {
+    public void onFollowUserSwipe(OnboardingStep shot) {
         getPresenter().handleFollowShotAuthor(shot);
     }
 
     @Override
-    public void onShotSelected(OnboardingShot shot) {
+    public void onShotSelected(OnboardingStep shot) {
         getPresenter().handleShowShotDetails(shot);
     }
 
@@ -121,4 +114,32 @@ public class OnboardingFragment extends BaseMvpFragment<OnboardingContract.View,
         layoutManager.setCanScroll(true);
         shotsRecyclerView.smoothScrollToPosition(step);
     }
+
+    private void initComponent() {
+        component = App.getUserComponent(getContext())
+                .plusOnboardingComponent(new OnboardingModule(this, getContext()));
+        component.inject(this);
+    }
+
+    private void initRecycler() {
+        shotsRecyclerView.setAdapter(adapter);
+        shotsRecyclerView.setLayoutManager(layoutManager);
+        shotsRecyclerView.setHasFixedSize(true);
+        shotsRecyclerView.addOnScrollListener(createListener());
+    }
+
+    private RecyclerView.OnScrollListener createListener() {
+        return new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    scrollOverlay.setVisibility(View.GONE);
+                    layoutManager.setCanScroll(false);
+                }
+            }
+        };
+    }
+
 }
