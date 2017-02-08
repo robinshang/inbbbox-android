@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -52,6 +54,8 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     TextView commentsCountTextView;
     @BindView(R.id.likes_count_textView)
     TextView likesCountTextView;
+    @BindView(R.id.user_imageView)
+    ImageView userImageView;
 
     @BindDrawable(R.drawable.shot_placeholder)
     Drawable shotPlaceHolder;
@@ -74,6 +78,7 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
         this.shot = shot;
         setupImage(shot);
         setupDetails(shot);
+        loadUserImage(shot.author().avatarUrl());
     }
 
     @Override
@@ -199,5 +204,13 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
 
         likesCountTextView.setText(String.valueOf(shot.likesCount()));
         commentsCountTextView.setText(String.valueOf(shot.commentsCount()));
+    }
+
+    private void loadUserImage(String url) {
+        Glide.with(itemView.getContext())
+                .load(url)
+                .fitCenter()
+                .error(R.drawable.ic_ball)
+                .into(userImageView);
     }
 }

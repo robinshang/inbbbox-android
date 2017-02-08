@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/shot_item_internal_padding">
@@ -86,22 +87,22 @@
         android:layout_below="@+id/long_swipe_layout"
         android:layout_alignParentStart="true">
 
-        <ImageView
-            android:id="@+id/ball_imageView"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_imageView"
             android:contentDescription="@string/user_image_content_description"
-            android:layout_width="@dimen/shot_details_shots_tab_image_size"
-            android:layout_height="@dimen/shot_details_shots_tab_image_size"
-            android:src="@drawable/ic_ball"
-            android:layout_marginStart="@dimen/shot_details_shots_tab_margin"
-            android:layout_marginEnd="@dimen/shot_details_shots_image_margin"
-            android:layout_centerVertical="true"/>
+            android:layout_width="@dimen/shot_details_shots_tab_height"
+            android:layout_height="@dimen/shot_details_shots_tab_height"
+            android:layout_centerVertical="true"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="@dimen/drawer_header_photo_border"
+            app:civ_fill_color="@color/lightGray" />
 
         <TextView
             android:id="@+id/user_name_textView"
             style="@style/Font12.Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/ball_imageView"
+            android:layout_toEndOf="@+id/user_imageView"
             android:layout_centerVertical="true"/>
 
         <TextView
