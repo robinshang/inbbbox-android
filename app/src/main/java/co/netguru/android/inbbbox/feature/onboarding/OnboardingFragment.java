@@ -133,13 +133,15 @@ public class OnboardingFragment
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    scrollOverlay.setVisibility(View.GONE);
-                    layoutManager.setCanScroll(false);
-                }
+                updateScrollState(newState);
             }
         };
     }
 
+    private void updateScrollState(int newState) {
+        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+            scrollOverlay.setVisibility(View.GONE);
+            layoutManager.setCanScroll(false);
+        }
+    }
 }

@@ -3,8 +3,6 @@ package co.netguru.android.inbbbox.feature.onboarding.recycler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -73,11 +71,7 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingStep>
     public void bind(OnboardingStep shot) {
         this.onboardingShot = shot;
         setupImage(shot);
-
-        // this is needed because comment image view would be deactivated on last pixel of swipe
-        if (shot.getStep() == OnboardingStepData.STEP_COMMENT.getStep()) {
-            longSwipeLayout.setSwipeLimitShift(Constants.UNDEFINED);
-        }
+        setupSwipeLayout(shot);
     }
 
     private void setupImage(OnboardingStep shot) {
@@ -148,12 +142,20 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingStep>
 
     private void handleLeftSwipe() {
         int progress = getSwipeProgress();
+        handleLikeAnimation(progress);
+        handlePlusAndBucketAnimation(progress);
+    }
+
+    private void handleLikeAnimation(int progress) {
         int likeIconLeft = likeIcon.getLeft();
         float likePercent = getPercent(progress, likeIconLeft, likeIcon.getWidth());
 
         translateView(likeIcon, progress, likePercent);
         scaleView(likeIcon, likePercent);
+        handlePlusAndBucketAnimation(progress);
+    }
 
+    private void handlePlusAndBucketAnimation(int progress) {
         if (onboardingShot.getStep() >= OnboardingStepData.STEP_BUCKET.getStep()) {
             float plusPercent = getPercent(progress, plusIcon.getLeft(), plusIcon.getWidth());
             float bucketPercent = getPercent(progress, bucketIcon.getLeft(), bucketIcon.getWidth());
@@ -207,6 +209,13 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingStep>
             return (float) progress / (viewLeft + viewWidth);
         } else {
             return 0;
+        }
+    }
+
+    private void setupSwipeLayout(OnboardingStep shot) {
+        // this is needed because comment image view would be deactivated on last pixel of swipe
+        if (shot.getStep() == OnboardingStepData.STEP_COMMENT.getStep()) {
+            longSwipeLayout.setSwipeLimitShift(Constants.UNDEFINED);
         }
     }
 }

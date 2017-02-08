@@ -86,6 +86,4 @@ public abstract class ShotEntity implements Parcelable {
 
         public abstract ShotEntity build();
     }
-
-
 }

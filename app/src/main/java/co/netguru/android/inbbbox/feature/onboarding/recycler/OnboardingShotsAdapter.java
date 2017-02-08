@@ -55,5 +55,4 @@ public class OnboardingShotsAdapter extends RecyclerView.Adapter<OnboardingShots
         this.items.addAll(items);
         notifyDataSetChanged();
     }
-
 }
