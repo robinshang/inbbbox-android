@@ -3,7 +3,6 @@ package co.netguru.android.inbbbox.data.shot;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
@@ -14,6 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import co.netguru.android.inbbbox.data.settings.SettingsController;
 import co.netguru.android.inbbbox.data.settings.model.StreamSourceSettings;
@@ -24,9 +24,6 @@ import rx.Observable;
 import rx.Single;
 import rx.observers.TestSubscriber;
 
-import static co.netguru.android.inbbbox.Statics.ITEM_COUNT;
-import static co.netguru.android.inbbbox.Statics.getFilteredMockedData;
-import static co.netguru.android.inbbbox.Statics.getFollowingMockedData;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
@@ -52,12 +49,32 @@ public class ShotsControllerTest {
     @Mock
     public ShotsApi shotsApiMock;
 
+    @Mock
+    public ShotEntity shotEntityMock;
+
     @InjectMocks
     private ShotsController shotsController;
 
+    @Mock
+    private List<ShotEntity> shotEntityList;
+
     @Before
     public void setUp() {
-        when(settingsControllerMock.getStreamSourceSettings()).thenReturn(Single.just(streamSourceSettings));
+        Random random = new Random();
+        for (int i = 1; i < random.nextInt(200); i++) {
+            shotEntityList.add(shotEntityMock);
+        }
+
+        shotEntityList = new ArrayList<>();
+
+        when(settingsControllerMock.getStreamSourceSettings())
+                .thenReturn(Single.just(streamSourceSettings));
+        when(shotsApiMock.getFollowingShots(anyInt(), anyInt()))
+                .thenReturn(Observable.just(shotEntityList));
+        when(shotsApiMock.getShotsByDateSort(anyString(), anyString(), anyInt(), anyInt()))
+                .thenReturn(Observable.just(shotEntityList));
+        when(shotsApiMock.getShotsByList(anyString(), anyInt(), anyInt()))
+                .thenReturn(Observable.just(shotEntityList));
     }
 
     private void setupStreamSourceStates(boolean following,
@@ -72,7 +89,17 @@ public class ShotsControllerTest {
     }
 
     //Following shots
-    @Ignore
+    @Test
+    public void whenFollowingSourceEnableSubscribed_thenGetStreamSourceSettings() {
+        setupStreamSourceStates(true, false, false, false);
+        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
+
+        shotsController.getShots(SHOT_PAGE, SHOT_PAGE_COUNT).subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        verify(settingsControllerMock).getStreamSourceSettings();
+    }
+
     @Test
     public void whenFollowingSourceEnabled_thenCallGetFollowingShots() {
         setupStreamSourceStates(true, false, false, false);
@@ -81,10 +108,9 @@ public class ShotsControllerTest {
         shotsController.getShots(SHOT_PAGE, SHOT_PAGE_COUNT).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        verify(shotsApiMock, times(1)).getFollowingShots(SHOT_PAGE, SHOT_PAGE_COUNT);
+        verify(shotsApiMock).getFollowingShots(SHOT_PAGE, SHOT_PAGE_COUNT);
     }
 
-    @Ignore
     @Test
     public void whenFilteredSourceDisabled_thenFilteredNotCalled() {
         setupStreamSourceStates(true, false, false, false);
@@ -99,25 +125,6 @@ public class ShotsControllerTest {
         verify(shotsApiMock, never()).getShotsByList(anyString(), anyInt(), anyInt());
     }
 
-    @Ignore
-    @Test
-    public void whenFollowingSourceEnabled_thenReturnFollowingViewItems() {
-        List<ShotEntity> listOfExpected = getFollowingMockedData();
-        setupStreamSourceStates(true, false, false, false);
-        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
-
-        shotsController.getShots(SHOT_PAGE, SHOT_PAGE_COUNT).subscribe(testSubscriber);
-
-        testSubscriber.assertNoErrors();
-        List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
-        for (int i = 0; i < ITEM_COUNT; i++) {
-            Assert.assertEquals(resultList.get(i)
-                    .title()
-                    .equals(listOfExpected.get(i).title()), true);
-        }
-    }
-
-    @Ignore
     @Test
     public void whenNewTodayEnabled_thenCallGetShotsByDate() {
         setupStreamSourceStates(false, true, false, false);
@@ -129,7 +136,6 @@ public class ShotsControllerTest {
         verify(shotsApiMock, times(1)).getShotsByDateSort(anyString(), anyString(), anyInt(), anyInt());
     }
 
-    @Ignore
     @Test
     public void whenPopularTodayEnabled_thenCallGetShotsByDate() {
         setupStreamSourceStates(false, false, true, false);
@@ -141,7 +147,6 @@ public class ShotsControllerTest {
         verify(shotsApiMock, times(1)).getShotsByDateSort(anyString(), anyString(), anyInt(), anyInt());
     }
 
-    @Ignore
     @Test
     public void whenDebutTodayEnabled_thenCallGetShotsByList() {
         setupStreamSourceStates(false, false, false, true);
@@ -153,7 +158,6 @@ public class ShotsControllerTest {
         verify(shotsApiMock, times(1)).getShotsByList(anyString(), anyInt(), anyInt());
     }
 
-    @Ignore
     @Test
     public void whenAllFilteredEnabled_thenCallGetShotsByDateTwoTimes() {
         setupStreamSourceStates(false, true, true, true);
@@ -165,7 +169,6 @@ public class ShotsControllerTest {
         verify(shotsApiMock, times(2)).getShotsByDateSort(anyString(), anyString(), anyInt(), anyInt());
     }
 
-    @Ignore
     @Test
     public void whenAllFilteredEnabled_thenCallGetShotsByList() {
         setupStreamSourceStates(false, true, true, true);
@@ -177,70 +180,6 @@ public class ShotsControllerTest {
         verify(shotsApiMock, times(1)).getShotsByList(anyString(), anyInt(), anyInt());
     }
 
-    @Ignore
-    @Test
-    public void whenNewTodayOfFilteredSourceEnabled_thenReturnFilteredViewItems() {
-        when(shotsApiMock.getFollowingShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.just(getFilteredMockedData()));
-        List<ShotEntity> listOfExpected = getFilteredMockedData();
-        setupStreamSourceStates(false, true, false, false);
-        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
-
-        shotsController.getShots(SHOT_PAGE, SHOT_PAGE_COUNT).subscribe(testSubscriber);
-
-        testSubscriber.assertNoErrors();
-        List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
-        for (int i = 0; i < ITEM_COUNT; i++) {
-            Assert.assertEquals(resultList.get(i)
-                    .title()
-                    .equals(listOfExpected.get(i).title()), true);
-        }
-    }
-
-    @Ignore
-    @Test
-    public void whenAllOfFilteredSourceEnabled_thenReturnFilteredViewItemsFromThreeSources() {
-        List<ShotEntity> listOfExpected = getFilteredMockedData();
-        setupStreamSourceStates(false, true, true, true);
-        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
-
-        shotsController.getShots(SHOT_PAGE, SHOT_PAGE_COUNT).subscribe(testSubscriber);
-
-        testSubscriber.assertNoErrors();
-        List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
-
-        for (int i = 0; i < ITEM_COUNT; i++) {
-            Assert.assertEquals(resultList.get(i)
-                    .title()
-                    .equals(listOfExpected.get(i).title()), true);
-        }
-    }
-
-
-    @Ignore
-    @Test
-    public void whenAllSourcesEnabled_thenReturnFilteredAndFollowingViewItemsFrom() {
-        List<ShotEntity> expectedItems = new ArrayList<>();
-        expectedItems.addAll(getFilteredMockedData());
-        expectedItems.addAll(getFollowingMockedData());
-        List<String> expetedTitltes = new ArrayList<>();
-        for (ShotEntity entity : expectedItems) {
-            expetedTitltes.add(entity.title());
-        }
-
-        setupStreamSourceStates(true, true, true, true);
-        TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
-
-        shotsController.getShots(SHOT_PAGE, SHOT_PAGE_COUNT).subscribe(testSubscriber);
-
-        testSubscriber.assertNoErrors();
-        List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
-
-        for (int i = 0; i < ITEM_COUNT; i++) {
-            Assert.assertEquals(expetedTitltes.contains(resultList.get(i).title()), true);
-        }
-    }
-
-    @Ignore
     @Test
     public void whenNoSourcesEnabled_thenReturnEmptyResult() {
         setupStreamSourceStates(false, false, false, false);

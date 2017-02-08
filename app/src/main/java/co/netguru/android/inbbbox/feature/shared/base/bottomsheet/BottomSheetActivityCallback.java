@@ -13,4 +13,6 @@ public interface BottomSheetActivityCallback {
     FragmentTransaction replaceFragment(@IdRes int fragmentContainer, Fragment fragment, String tag);
 
     FragmentManager getSupportFragmentManager();
+
+    void onBottomSheetSlide(float slideOffset);
 }

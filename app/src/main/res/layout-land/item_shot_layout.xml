@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/shot_item_internal_padding">
+                style="@style/ItemContainerLandscape"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:foreground="?selectableItemBackground">
 
     <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
-        android:layout_width="@dimen/shot_item_width_landscape"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@color/accent" />
+        android:background="@color/accent"/>
 
     <co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout
         android:id="@+id/long_swipe_layout"
-        android:layout_width="@dimen/shot_item_width_landscape"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
         <!-- Bottom View Start-->
@@ -30,13 +30,13 @@
                 android:id="@+id/iv_follow"
                 style="@style/LongSwipeActionIcons"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_follow" />
+                android:src="@drawable/ic_follow"/>
 
             <ImageView
                 android:id="@+id/iv_comment"
                 style="@style/LongSwipeActionIcons"
                 android:contentDescription="@null"
-                android:src="@drawable/selector_comment_swipe" />
+                android:src="@drawable/selector_comment_swipe"/>
 
         </LinearLayout>
 
@@ -53,7 +53,7 @@
                 style="@style/LongSwipeActionIcons"
                 android:layout_width="wrap_content"
                 android:contentDescription="@null"
-                android:src="@drawable/selector_like_swipe" />
+                android:src="@drawable/selector_like_swipe"/>
 
             <ImageView
                 android:id="@+id/iv_plus_image"
@@ -61,21 +61,22 @@
                 android:layout_height="@dimen/shot_swipe_action_plus_size"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_plus" />
+                android:src="@drawable/ic_plus"/>
 
             <ImageView
                 android:id="@+id/iv_bucket_action"
                 style="@style/LongSwipeActionIcons"
                 android:contentDescription="@null"
-                android:src="@drawable/selector_bucket_swipe" />
+                android:src="@drawable/selector_bucket_swipe"/>
         </LinearLayout>
+
 
         <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
             android:id="@+id/iv_shot_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/shot_background_padding"
-            app:roundedCornersBackgroundColor="@color/accent" />
+            android:foreground="?selectableItemBackground"
+            android:padding="@dimen/shot_background_padding"/>
         <!-- Surface View End -->
     </co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout>
 </RelativeLayout>

@@ -44,8 +44,11 @@ import co.netguru.android.inbbbox.feature.shot.removefrombucket.adapter.BucketVi
 import co.netguru.android.inbbbox.feature.shot.removefrombucket.adapter.BucketsAdapterRemoveFromBucket;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RemoveFromBucketDialogFragment extends BaseMvpDialogFragment<RemoveFromBucketContract.View, RemoveFromBucketContract.Presenter>
-        implements RemoveFromBucketContract.View, BucketViewHolderRemoveFromBucket.CheckboxChangeListener {
+public class RemoveFromBucketDialogFragment
+        extends BaseMvpDialogFragment<RemoveFromBucketContract.View,
+        RemoveFromBucketContract.Presenter>
+        implements RemoveFromBucketContract.View,
+        BucketViewHolderRemoveFromBucket.CheckboxChangeListener {
 
     public static final String TAG = RemoveFromBucketDialogFragment.class.getSimpleName();
 
@@ -82,9 +85,11 @@ public class RemoveFromBucketDialogFragment extends BaseMvpDialogFragment<Remove
     @BindString(R.string.fragment_add_to_bucket_shot_created_for)
     String shotCreatedForString;
 
-    private final BucketsAdapterRemoveFromBucket bucketsAdapter = new BucketsAdapterRemoveFromBucket(this);
+    private final BucketsAdapterRemoveFromBucket bucketsAdapter
+            = new BucketsAdapterRemoveFromBucket(this);
 
-    public static RemoveFromBucketDialogFragment newInstance(@NonNull Fragment targetFragment, @NonNull Shot shot) {
+    public static RemoveFromBucketDialogFragment newInstance(@NonNull Fragment targetFragment,
+                                                             @NonNull Shot shot) {
         Bundle args = new Bundle();
         args.putParcelable(SHOT_ARG_KEY, shot);
 
@@ -98,14 +103,17 @@ public class RemoveFromBucketDialogFragment extends BaseMvpDialogFragment<Remove
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_remove_from_bucket, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        heightPercentage = getResources().getFraction(R.fraction.big_dialog_height_width_percentage, 1, 1);
+        heightPercentage = getResources()
+                .getFraction(R.fraction.big_dialog_height_width_percentage, 1, 1);
         setupRecyclerView();
         getPresenter().handleShot(getArguments().getParcelable(SHOT_ARG_KEY));
         getPresenter().loadBucketsForShot();
@@ -163,17 +171,21 @@ public class RemoveFromBucketDialogFragment extends BaseMvpDialogFragment<Remove
     }
 
     private SpannableStringBuilder getFormattedAuthor(String authorName) {
-        return TextFormatterUtil.changeColourOfConcatenatedWord(shotCreatedByString, authorName, pinkColor);
+        return TextFormatterUtil.changeColourOfConcatenatedWord(shotCreatedByString,
+                authorName,
+                pinkColor);
     }
 
     @Override
     public void showShotAuthorAndTeam(String authorName, String teamName) {
         SpannableStringBuilder spannableStringAuthorBuilder = getFormattedAuthor(authorName);
-        SpannableStringBuilder spannableStringTeamBuilder = TextFormatterUtil.changeColourOfConcatenatedWord(
+        SpannableStringBuilder spannableStringTeamBuilder = TextFormatterUtil
+                .changeColourOfConcatenatedWord(
                 shotCreatedForString,
                 teamName,
                 pinkColor);
-        SpannableStringBuilder result = spannableStringAuthorBuilder.append(' ').append(spannableStringTeamBuilder);
+        SpannableStringBuilder result = spannableStringAuthorBuilder.append(' ')
+                .append(spannableStringTeamBuilder);
         authorTextView.setText(result, TextView.BufferType.SPANNABLE);
     }
 
@@ -203,11 +215,14 @@ public class RemoveFromBucketDialogFragment extends BaseMvpDialogFragment<Remove
     public void passResultAndCloseFragment(List<Bucket> list, Shot shot) {
         Fragment targetFragment = getTargetFragment();
         try {
-            RemoveFromBucketDialogFragment.BucketSelectListener listener = (RemoveFromBucketDialogFragment.BucketSelectListener) targetFragment;
+            RemoveFromBucketDialogFragment.BucketSelectListener listener
+                    = (RemoveFromBucketDialogFragment.BucketSelectListener) targetFragment;
             listener.onBucketToRemoveFromForShotSelect(list, shot);
             dismiss();
         } catch (ClassCastException e) {
-            throw new InterfaceNotImplementedException(e, targetFragment.getClass().getSimpleName(), RemoveFromBucketDialogFragment.BucketSelectListener.class.getSimpleName());
+            throw new InterfaceNotImplementedException(e,
+                    targetFragment.getClass().getSimpleName(),
+                    RemoveFromBucketDialogFragment.BucketSelectListener.class.getSimpleName());
         }
     }
 
@@ -244,7 +259,9 @@ public class RemoveFromBucketDialogFragment extends BaseMvpDialogFragment<Remove
     private void setupRecyclerView() {
         bucketsRecyclerView.setAdapter(bucketsAdapter);
         bucketsRecyclerView.addItemDecoration(
-                new DividerItemDecorator(getContext(), DividerItemDecorator.Orientation.VERTICAL_LIST, false));
+                new DividerItemDecorator(getContext(),
+                        DividerItemDecorator.Orientation.VERTICAL_LIST, false));
+
         bucketsRecyclerView.addOnScrollListener(
                 new LoadMoreScrollListener(LAST_X_BUCKETS_VISIBLE_TO_LOAD_MORE) {
                     @Override

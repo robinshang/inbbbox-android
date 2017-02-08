@@ -31,10 +31,12 @@ public class ShotsController {
 
     public Observable<List<Shot>> getShots(int pageNumber, int pageCount) {
         return settingsController.getStreamSourceSettings()
-                .flatMapObservable(settings -> getShotsObservable(settings, pageNumber, pageCount));
+                .flatMapObservable(settings -> getShotsObservable(settings,
+                        pageNumber, pageCount));
     }
 
-    private Observable<List<Shot>> getShotsObservable(StreamSourceSettings streamSourceSettings, int pageNumber, int pageCount) {
+    private Observable<List<Shot>> getShotsObservable(StreamSourceSettings streamSourceSettings,
+                                                      int pageNumber, int pageCount) {
         return selectRequest(streamSourceSettings, pageNumber, pageCount)
                 .compose(fromListObservable())
                 .map(Shot::create)
@@ -42,7 +44,8 @@ public class ShotsController {
                 .toList();
     }
 
-    private Observable<List<ShotEntity>> selectRequest(StreamSourceSettings sourceSettings, int pageNumber, int pageCount) {
+    private Observable<List<ShotEntity>> selectRequest(StreamSourceSettings sourceSettings,
+                                                       int pageNumber, int pageCount) {
         final List<Observable<List<ShotEntity>>> observablesToExecute = new LinkedList<>();
         if (sourceSettings.isFollowing()) {
             observablesToExecute.add(shotsApi.getFollowingShots(pageNumber, pageCount));
@@ -54,15 +57,20 @@ public class ShotsController {
             addShotsSortedByDate(observablesToExecute, pageNumber, pageCount);
         }
         if (sourceSettings.isDebut()) {
-            observablesToExecute.add(shotsApi.getShotsByList(Constants.API.LIST_PARAM_DEBUTS_PARAM, pageNumber, pageCount));
+            observablesToExecute.add(shotsApi.
+                    getShotsByList(Constants.API.LIST_PARAM_DEBUTS_PARAM,
+                            pageNumber, pageCount));
         }
 
         return Observable.zip(observablesToExecute, this::mergeResults);
     }
 
-    private void addShotsSortedByDate(List<Observable<List<ShotEntity>>> observablesToExecute, int pageNumber, int pageCount) {
+    private void addShotsSortedByDate(List<Observable<List<ShotEntity>>> observablesToExecute,
+                                      int pageNumber, int pageCount) {
         observablesToExecute.add(shotsApi.getShotsByDateSort(DateTimeFormatUtil.getCurrentDate(),
-                Constants.API.LIST_PARAM_SORT_RECENT_PARAM, pageNumber, pageCount));
+                Constants.API.LIST_PARAM_SORT_RECENT_PARAM,
+                pageNumber,
+                pageCount));
     }
 
     private List<ShotEntity> mergeResults(Object[] args) {

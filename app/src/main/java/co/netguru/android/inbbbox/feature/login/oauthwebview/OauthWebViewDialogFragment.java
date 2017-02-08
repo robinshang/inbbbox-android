@@ -57,6 +57,12 @@ public class OauthWebViewDialogFragment
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback.onOauthFragmentClose();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,

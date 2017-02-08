@@ -76,6 +76,8 @@ public class LoginPresenterTest {
                 .thenReturn(Observable.just(expectedToken));
         when(userControllerMock.requestUser()).
                 thenReturn(Observable.just(Statics.USER_ENTITY));
+        when(userControllerMock.disableGuestMode())
+                .thenReturn(Completable.complete());
     }
 
     @Test

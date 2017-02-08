@@ -106,6 +106,11 @@ public abstract class BaseActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onBottomSheetSlide(float slideOffset) {
+        //no-op
+    }
+
     private void handleUnauthorisedEvent(CriticalLogoutEvent object) {
         LoginActivity.startActivityClearTaskWithMessage(this, object.getReason());
         finish();

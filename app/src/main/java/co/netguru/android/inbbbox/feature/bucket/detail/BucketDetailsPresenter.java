@@ -91,7 +91,9 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         if (refreshShotsSubscription.isUnsubscribed()) {
             loadNextShotsSubscription.unsubscribe();
             pageNumber = 1;
-            refreshShotsSubscription = bucketsController.getShotsListFromBucket(currentBucketId, pageNumber, shotsPerPage)
+            refreshShotsSubscription = bucketsController.getShotsListFromBucket(currentBucketId,
+                    pageNumber,
+                    shotsPerPage)
                     .compose(RxTransformerUtil.applySingleIoSchedulers())
                     .doAfterTerminate(getView()::hideProgressbar)
                     .subscribe(this::handleNewShots,
@@ -123,19 +125,25 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
 
     @Override
     public void loadMoreShots() {
-        if (canLoadMore && refreshShotsSubscription.isUnsubscribed() && loadNextShotsSubscription.isUnsubscribed()) {
+        if (canLoadMore && refreshShotsSubscription.isUnsubscribed()
+                && loadNextShotsSubscription.isUnsubscribed()) {
             pageNumber++;
-            loadNextShotsSubscription =
-                    bucketsController.getShotsListFromBucket(currentBucketId, pageNumber, shotsPerPage)
-                            .toObservable()
-                            .compose(RxTransformerUtil.executeRunnableIfObservableDidntEmitUntilGivenTime(
-                                    SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS, getView()::showLoadingMoreShotsView))
-                            .compose(RxTransformers.androidIO())
-                            .doAfterTerminate(getView()::hideLoadingMoreShotsView)
-                            .subscribe(shots -> {
-                                getView().addShots(shots);
-                                canLoadMore = shots.size() == shotsPerPage;
-                            }, throwable -> handleError(throwable, "Error while loading new shots from bucket"));
+            loadNextShotsSubscription = bucketsController.getShotsListFromBucket(currentBucketId,
+                    pageNumber,
+                    shotsPerPage)
+                    .toObservable()
+                    .compose(RxTransformerUtil
+                            .executeRunnableIfObservableDidntEmitUntilGivenTime(
+                                    SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE,
+                                    TimeUnit.SECONDS,
+                                    getView()::showLoadingMoreShotsView))
+                    .compose(RxTransformers.androidIO())
+                    .doAfterTerminate(getView()::hideLoadingMoreShotsView)
+                    .subscribe(shots -> {
+                        getView().addShots(shots);
+                        canLoadMore = shots.size() == shotsPerPage;
+                    }, throwable -> handleError(throwable,
+                            "Error while loading new shots from bucket"));
         }
     }
 

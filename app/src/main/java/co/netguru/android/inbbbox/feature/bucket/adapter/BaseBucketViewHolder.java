@@ -78,15 +78,6 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
         });
     }
 
-    private void loadImageInto(ImageView imageView, String url) {
-        Glide.clear(imageView);
-        Glide.with(itemView.getContext())
-                .load(url)
-                .centerCrop()
-                .animate(android.R.anim.fade_in)
-                .into(imageView);
-    }
-
     private void showEmptyView() {
         emptyView.setVisibility(View.VISIBLE);
         bucketImageView.setVisibility(View.GONE);

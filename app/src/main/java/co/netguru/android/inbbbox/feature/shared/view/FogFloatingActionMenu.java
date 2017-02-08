@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.feature.shared.view;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -13,8 +14,10 @@ import co.netguru.android.inbbbox.R;
 public class FogFloatingActionMenu extends FloatingActionMenu {
 
     private static final long FOG_ANIM_DURATION = 200;
+    private static final int FAB_MAIN_BUTTON_INDEX = 4;
 
     private View fogView;
+    private boolean isInStaticMode;
 
     public FogFloatingActionMenu(Context context) {
         super(context);
@@ -29,6 +32,39 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
     public FogFloatingActionMenu(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initFabMenu();
+    }
+
+    public void addFogView(View fogView) {
+
+        this.fogView = fogView;
+    }
+
+    public void setOrientation(int orientation) {
+        if (orientation != Configuration.ORIENTATION_PORTRAIT) {
+            enableStaticMode();
+        } else {
+            enableDynamicMode();
+        }
+    }
+
+    @Override
+    public void close(boolean animate) {
+        if (!isInStaticMode) {
+            super.close(animate);
+        }
+    }
+
+    /**
+     * Menu is always opened and large FAB is hidden
+     */
+    private void enableStaticMode() {
+        isInStaticMode = true;
+        open(false);
+        post(this::hideDynamicItems);
+    }
+
+    private void enableDynamicMode() {
+        isInStaticMode = false;
     }
 
     private void initFabMenu() {
@@ -56,7 +92,7 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
     }
 
     private void hideFog() {
-        if (fogView != null) {
+        if (fogView != null && !isInStaticMode) {
             fogView
                     .animate()
                     .alpha(0)
@@ -67,7 +103,7 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
     }
 
     private void showFog() {
-        if (fogView != null) {
+        if (fogView != null && !isInStaticMode) {
             fogView
                     .animate()
                     .alpha(1)
@@ -77,9 +113,11 @@ public class FogFloatingActionMenu extends FloatingActionMenu {
         }
     }
 
-
-    public void addFogView(View fogView) {
-
-        this.fogView = fogView;
+    private void hideDynamicItems() {
+        for (int i = FAB_MAIN_BUTTON_INDEX; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            child.clearAnimation();
+            child.setVisibility(GONE);
+        }
     }
 }

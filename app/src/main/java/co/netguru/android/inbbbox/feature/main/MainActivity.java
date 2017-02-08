@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ import java.util.List;
 import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindView;
+import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -93,6 +95,7 @@ public class MainActivity
     private ToggleButton drawerToggleButton;
     private MainActivityPagerAdapter pagerAdapter;
     private View drawerCreateAccountButton;
+    private int currentTabIndex = Constants.UNDEFINED;
 
     public static void startActivity(Context context) {
         final Intent intent = new Intent(context, MainActivity.class);
@@ -127,6 +130,12 @@ public class MainActivity
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         restoreToggleButtonState(savedInstanceState);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        selectTab(tabLayout.getTabAt(currentTabIndex));
     }
 
     @Override
@@ -326,45 +335,72 @@ public class MainActivity
             if (tab != null) {
                 tab.setIcon(item.getIcon());
             }
+            selectInitialTabSelection(tab, item.getPosition());
         }
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(createTabListener());
+    }
+
+    private void selectInitialTabSelection(TabLayout.Tab tab, int position) {
+        if (position == 0) {
+            selectTab(tab);
+        }
+    }
+
+    private TabLayout.OnTabSelectedListener createTabListener() {
+        return new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 selectTab(tab);
-                toolbar.setBackground(tab.getPosition() == TabItemType.SHOTS.getPosition()
-                        ? toolbarCenterBackground : toolbarStartBackground);
+
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                final Drawable icon = tab.getIcon();
-                if (icon != null) {
-                    icon.clearColorFilter();
-                }
-                tab.setText(EMPTY_STRING);
+                //no op
+
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 selectTab(tab);
             }
-        });
-        reselectFirstTab();
+        };
     }
 
     private void selectTab(TabLayout.Tab tab) {
+        currentTabIndex = tab.getPosition();
+        if (currentTabIndex != Constants.UNDEFINED) {
+            unselectedPreviousTabs(currentTabIndex);
+        }
+
         final Drawable icon = tab.getIcon();
         if (icon != null) {
             icon.setColorFilter(highlightColor, PorterDuff.Mode.SRC_IN);
         }
         tab.setText(getString(TabItemType.getTabItemForPosition(tab.getPosition()).getTitle()));
+        setupToolbarForCurrentTab(currentTabIndex);
     }
 
-    private void reselectFirstTab() {
-        final TabLayout.Tab firstTab = tabLayout.getTabAt(0);
-        if (firstTab != null) {
-            firstTab.select();
+    private void unselectedPreviousTabs(int currentTabIndex) {
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            if (i != currentTabIndex) {
+                TabLayout.Tab tab = tabLayout.getTabAt(i);
+                clearTabsIconHighlight(tab);
+                tab.setText(EMPTY_STRING);
+            }
         }
+    }
+
+    private void clearTabsIconHighlight(TabLayout.Tab tab) {
+        final Drawable icon = tab.getIcon();
+        if (icon != null) {
+            icon.clearColorFilter();
+        }
+    }
+
+    private void setupToolbarForCurrentTab(int position) {
+        toolbar.setBackground(position == TabItemType.SHOTS.getPosition()
+                ? toolbarCenterBackground : toolbarStartBackground);
     }
 
     private void initializeToolbar() {
@@ -391,16 +427,7 @@ public class MainActivity
                 (buttonView, isChecked) -> getPresenter().toggleButtonChanged(isChecked));
         drawerCreateAccountButton.setOnClickListener(view -> getPresenter().onCreateAccountClick());
 
-        navigationView.setNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.drawer_item_logout:
-                    getPresenter().performLogout();
-                    break;
-                default:
-                    return false;
-            }
-            return true;
-        });
+        navigationView.setNavigationItemSelectedListener(this::onNavigationNItemSelected);
 
         ActionBarDrawerToggle actionBarDrawerToggle = createDrawerToggle();
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -408,6 +435,15 @@ public class MainActivity
         actionBarDrawerToggle.syncState();
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
         initializeDrawerReminder();
+    }
+
+    private boolean onNavigationNItemSelected(MenuItem item) {
+        int i = item.getItemId();
+        boolean result = false;
+        if (i == R.id.drawer_item_logout) {
+            getPresenter().performLogout();
+        }
+        return result;
     }
 
     private ActionBarDrawerToggle createDrawerToggle() {

@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.feature.shared.view;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -43,5 +44,9 @@ public class RoundedCornersShotImageView extends RoundedCornersView {
     public void loadShot(Shot shot) {
         ShotLoadingUtil.loadListShot(getContext(), shotImageView, shot);
         gifLabel.setVisibility(shot.isGif() ? VISIBLE : GONE);
+    }
+
+    public void loadPlaceHolder(Drawable drawable) {
+        shotImageView.setImageDrawable(drawable);
     }
 }

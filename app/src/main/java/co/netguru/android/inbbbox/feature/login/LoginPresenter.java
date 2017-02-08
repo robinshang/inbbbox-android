@@ -124,7 +124,9 @@ public final class LoginPresenter
                 apiTokenController.requestNewToken(code)
                         .flatMap(token -> userController.requestUser())
                         .compose(androidIO())
-                        .subscribe(user -> handleOnlineUserLogin(),
+                        .toCompletable()
+                        .andThen(userController.disableGuestMode())
+                        .subscribe(this::handleOnlineUserLogin,
                                 throwable -> handleError(throwable,
                                         "Error while requesting new token")));
     }
