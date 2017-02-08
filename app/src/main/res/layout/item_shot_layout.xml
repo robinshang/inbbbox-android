@@ -119,7 +119,7 @@
             android:layout_width="@dimen/shot_details_shots_tab_image_size"
             android:layout_height="@dimen/shot_details_shots_tab_image_size"
             android:layout_marginEnd="@dimen/shot_details_shots_image_margin"
-            android:src="@drawable/ic_fab_comment"
+            android:src="@drawable/ic_comment_grey"
             android:layout_toStartOf="@id/comments_count_textView"
             android:layout_centerVertical="true"/>
 
