@@ -51,6 +51,8 @@ interface MainViewContract {
         void openSignUpPage(String url);
 
         void showCreateAccountButton();
+
+        void initializePager(boolean isOnboardingPassed);
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
