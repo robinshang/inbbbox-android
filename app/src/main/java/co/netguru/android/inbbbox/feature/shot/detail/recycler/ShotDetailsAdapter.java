@@ -83,6 +83,10 @@ public class ShotDetailsAdapter extends RecyclerView.Adapter<ShotDetailsViewHold
         return (details != null ? comments.size() + LOAD_MORE_ITEM : 0) + STATIC_ITEMS_COUNT;
     }
 
+    public void updateIsBucketed(boolean isBucketed) {
+        details = Shot.update(details).isBucketed(isBucketed).build();
+    }
+
     public void setDetails(Shot details) {
         this.details = details;
         notifyDataSetChanged();

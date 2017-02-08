@@ -361,6 +361,7 @@ public class ShotDetailsFragment
 
     @Override
     public void updateBucketedStatus(boolean isBucketed) {
+        adapter.updateIsBucketed(isBucketed);
         listener.onBucketedStatusChanged(isBucketed);
     }
 
