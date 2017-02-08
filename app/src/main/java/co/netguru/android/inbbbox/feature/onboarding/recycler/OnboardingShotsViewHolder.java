@@ -16,6 +16,7 @@ import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingShotSwipeListener;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingStep;
+import co.netguru.android.inbbbox.feature.onboarding.OnboardingStepData;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.ItemSwipeListener;
@@ -74,7 +75,7 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingStep>
         setupImage(shot);
 
         // this is needed because comment image view would be deactivated on last pixel of swipe
-        if (shot.getStep() == OnboardingStep.STEP_COMMENT) {
+        if (shot.getStep() == OnboardingStepData.STEP_COMMENT.getStep()) {
             longSwipeLayout.setSwipeLimitShift(Constants.UNDEFINED);
         }
     }
@@ -140,7 +141,7 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingStep>
     public void onSwipeProgress(int positionX, int swipeLimit) {
         if (positionX > 0) {
             handleLeftSwipe();
-        } else if (onboardingShot.getStep() >= OnboardingStep.STEP_COMMENT) {
+        } else if (onboardingShot.getStep() >= OnboardingStepData.STEP_COMMENT.getStep()) {
             handleRightSwipe(positionX, swipeLimit);
         }
     }
@@ -153,7 +154,7 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingStep>
         translateView(likeIcon, progress, likePercent);
         scaleView(likeIcon, likePercent);
 
-        if (onboardingShot.getStep() >= OnboardingStep.STEP_BUCKET) {
+        if (onboardingShot.getStep() >= OnboardingStepData.STEP_BUCKET.getStep()) {
             float plusPercent = getPercent(progress, plusIcon.getLeft(), plusIcon.getWidth());
             float bucketPercent = getPercent(progress, bucketIcon.getLeft(), bucketIcon.getWidth());
 

@@ -2,13 +2,12 @@ package co.netguru.android.inbbbox.feature.onboarding;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
-import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.onboarding.OnboardingController;
 
 @FragmentScope
@@ -16,22 +15,6 @@ public class OnboardingPresenter extends MvpNullObjectBasePresenter<OnboardingCo
         implements OnboardingContract.Presenter {
 
     private final OnboardingController onboardingController;
-
-    public static final int STEPS_AMOUNT = 5;
-
-    public static final int[] STEPS_DRAWABLES = {
-            R.drawable.onboarding_step_1,
-            R.drawable.onboarding_step_2,
-            R.drawable.onboarding_step_3,
-            R.drawable.onboarding_step_4,
-            R.drawable.onboarding_step_5};
-
-    public static final int[] STEPS_LAYOUTS = {
-            R.layout.item_shot_onboarding_step_1,
-            R.layout.item_shot_onboarding_step_2,
-            R.layout.item_shot_onboarding_step_3,
-            R.layout.item_shot_onboarding_step_4,
-            R.layout.item_shot_onboarding_step_5};
 
     @Inject
     OnboardingPresenter(OnboardingController onboardingController) {
@@ -45,35 +28,35 @@ public class OnboardingPresenter extends MvpNullObjectBasePresenter<OnboardingCo
 
     @Override
     public void handleLikeShot(OnboardingStep step) {
-        if (step.getStep() == OnboardingStep.STEP_LIKE) {
+        if (step.getStep() == OnboardingStepData.STEP_LIKE.getStep()) {
             scrollToNextStep(step);
         }
     }
 
     @Override
     public void handleAddShotToBucket(OnboardingStep step) {
-        if (step.getStep() == OnboardingStep.STEP_BUCKET) {
+        if (step.getStep() == OnboardingStepData.STEP_BUCKET.getStep()) {
             scrollToNextStep(step);
         }
     }
 
     @Override
     public void handleCommentShot(OnboardingStep step) {
-        if (step.getStep() == OnboardingStep.STEP_COMMENT) {
+        if (step.getStep() == OnboardingStepData.STEP_COMMENT.getStep()) {
             scrollToNextStep(step);
         }
     }
 
     @Override
     public void handleFollowShotAuthor(OnboardingStep step) {
-        if (step.getStep() == OnboardingStep.STEP_FOLLOW) {
+        if (step.getStep() == OnboardingStepData.STEP_FOLLOW.getStep()) {
             scrollToNextStep(step);
         }
     }
 
     @Override
     public void handleShowShotDetails(OnboardingStep step) {
-        if (step.getStep() == OnboardingStep.STEP_CLICK) {
+        if (step.getStep() == OnboardingStepData.STEP_CLICK.getStep()) {
             onboardingController.setOnboardingPassed(true);
             getView().closeOnboarding();
         }
@@ -84,12 +67,11 @@ public class OnboardingPresenter extends MvpNullObjectBasePresenter<OnboardingCo
     }
 
     private List<OnboardingStep> provideOnboardingShots() {
-        List<OnboardingStep> shots = new ArrayList<>();
-
-        for(int i = 0; i < STEPS_AMOUNT; i++) {
-            shots.add(new OnboardingStep(i, STEPS_DRAWABLES[i], STEPS_LAYOUTS[i]));
-        }
-
-        return shots;
+        return Arrays.asList(
+                new OnboardingStep(OnboardingStepData.STEP_LIKE),
+                new OnboardingStep(OnboardingStepData.STEP_BUCKET),
+                new OnboardingStep(OnboardingStepData.STEP_COMMENT),
+                new OnboardingStep(OnboardingStepData.STEP_FOLLOW),
+                new OnboardingStep(OnboardingStepData.STEP_CLICK));
     }
 }
