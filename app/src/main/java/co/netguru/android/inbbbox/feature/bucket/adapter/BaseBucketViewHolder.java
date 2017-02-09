@@ -69,11 +69,11 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
     private void showEmptyView() {
         emptyView.setVisibility(View.VISIBLE);
         bucketImageView.setVisibility(View.GONE);
+        bucketOneImageView.setVisibility(View.GONE);
     }
 
     private void handleNotEmptyShotsList(List<Shot> shots) {
         emptyView.setVisibility(View.GONE);
-        bucketImageView.setVisibility(View.VISIBLE);
         if (shots.size() < 4) {
             showOnlyOneImage(shots.get(0));
         } else {
@@ -88,8 +88,8 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
     }
 
     private void showFourFirstImages(List<Shot> shots) {
-        bucketImageView.setVisibility(View.VISIBLE);
         bucketOneImageView.setVisibility(View.GONE);
+        bucketImageView.setVisibility(View.VISIBLE);
         loadCroppedImageInto(bucketImageView.getImageView(0), shots.get(0).normalImageUrl());
         loadCroppedImageInto(bucketImageView.getImageView(1), shots.get(1).normalImageUrl());
         loadCroppedImageInto(bucketImageView.getImageView(2), shots.get(2).normalImageUrl());
