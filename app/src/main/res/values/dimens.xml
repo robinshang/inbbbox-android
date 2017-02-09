@@ -125,4 +125,8 @@
     <dimen name="shot_details_shots_image_margin">4dp</dimen>
     <dimen name="shot_details_shots_tab_counts_margin">14dp</dimen>
 
+    <dimen name="shot_details_shots_tab_image_size_land">25dp</dimen>
+    <dimen name="shot_details_shots_tab_heart_image_size_land">26dp</dimen>
+    <dimen name="shot_details_shots_tab_shot_height_land">200dp</dimen>
+
 </resources>
