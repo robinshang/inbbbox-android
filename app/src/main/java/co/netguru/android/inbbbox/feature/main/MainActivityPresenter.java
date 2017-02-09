@@ -13,6 +13,7 @@ import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
+import co.netguru.android.inbbbox.data.onboarding.OnboardingController;
 import co.netguru.android.inbbbox.data.session.controllers.LogoutController;
 import co.netguru.android.inbbbox.data.session.controllers.TokenParametersController;
 import co.netguru.android.inbbbox.data.settings.SettingsController;
@@ -41,6 +42,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private final TokenParametersController tokenParametersController;
     private final LogoutController logoutController;
     private final ErrorController errorController;
+    private final OnboardingController onboardingController;
     private final CompositeSubscription subscriptions;
 
     private boolean isFollowing;
@@ -58,7 +60,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                           SettingsController settingsController,
                           ErrorController errorController,
                           TokenParametersController tokenParametersController,
-                          LogoutController logoutController) {
+                          LogoutController logoutController, OnboardingController onboardingController) {
         this.userController = userController;
         this.notificationScheduler = notificationScheduler;
         this.notificationController = notificationController;
@@ -66,6 +68,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         this.tokenParametersController = tokenParametersController;
         this.logoutController = logoutController;
         this.errorController = errorController;
+        this.onboardingController = onboardingController;
         this.subscriptions = new CompositeSubscription();
     }
 
@@ -110,6 +113,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                                         .e(throwable, "Error while getting guest mode state"))
         );
         prepareUserSettings();
+        prepareOnboardingSettings();
     }
 
     private void verifyGuestMode(Boolean isGuestModeEnabled) {
@@ -282,6 +286,11 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         setStreamSourceSettings(settings.getStreamSourceSettings());
         setCustomizationSettings(settings.getCustomizationSettings());
         getView().setSettingsListeners();
+    }
+
+    private void prepareOnboardingSettings() {
+        onboardingController.isOnboardingPassed()
+                .subscribe(getView()::initializePager);
     }
 
     private void setNotificationSettings(NotificationSettings notificationSettings) {

@@ -10,33 +10,48 @@ import android.view.ViewGroup;
 import co.netguru.android.inbbbox.feature.bucket.BucketsFragment;
 import co.netguru.android.inbbbox.feature.follower.FollowersFragment;
 import co.netguru.android.inbbbox.feature.like.LikesFragment;
+import co.netguru.android.inbbbox.feature.onboarding.OnboardingFragment;
 import co.netguru.android.inbbbox.feature.shot.ShotsFragment;
 
-public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment> extends FragmentStatePagerAdapter {
+public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment>
+        extends FragmentStatePagerAdapter {
 
     private SparseArray<T> activeRefreshableFragments;
+    private boolean isOnboardingPassed;
 
-    public MainActivityPagerAdapter(FragmentManager fm) {
+    public MainActivityPagerAdapter(FragmentManager fm, boolean isOnboardingPassed) {
         super(fm);
+        this.isOnboardingPassed = isOnboardingPassed;
         activeRefreshableFragments = new SparseArray<>(TabItemType.values().length);
     }
 
     @SuppressLint("DefaultLocale")
     @Override
     public Fragment getItem(int position) {
+        Fragment result;
+
         switch (TabItemType.getTabItemForPosition(position)) {
             case SHOTS:
-                return ShotsFragment.newInstance();
+                if (isOnboardingPassed) {
+                    result = ShotsFragment.newInstance();
+                } else {
+                    result = OnboardingFragment.newInstance();
+                }
+                break;
             case LIKES:
-                return LikesFragment.newInstance();
+                result = LikesFragment.newInstance();
+                break;
             case BUCKETS:
-                return BucketsFragment.newInstance();
+                result = BucketsFragment.newInstance();
+                break;
             case FOLLOWERS:
-                return FollowersFragment.newInstance();
+                result = FollowersFragment.newInstance();
+                break;
             default:
                 throw new IllegalArgumentException(String.format(
                         "There is no fragment defined for position: %d", position));
         }
+        return result;
     }
 
     @Override

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/shot_item_internal_padding">
+
+    <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
+        android:layout_width="@dimen/shot_item_width_landscape"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/accent" />
+
+    <co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout
+        android:id="@+id/long_swipe_layout"
+        android:layout_width="@dimen/shot_item_width_landscape"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+        <!-- Bottom View Start-->
+        <LinearLayout
+            android:id="@+id/bottom_right_wrapper"
+            android:layout_width="@dimen/shot_right_swipe_action_panel_width_half"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:gravity="center_vertical|end"
+            android:orientation="horizontal">
+            <!--What you want to show-->
+
+            <ImageView
+                android:id="@+id/iv_comment"
+                style="@style/LongSwipeActionIcons"
+                android:contentDescription="@null"
+                android:src="@drawable/selector_comment_swipe" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/stub_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+        <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
+            android:id="@+id/iv_shot_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/shot_background_padding" />
+        <!-- Surface View End -->
+    </co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout>
+</RelativeLayout>

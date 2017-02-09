@@ -15,6 +15,7 @@ public class LongSwipeLayout extends SwipeLayout {
     private boolean isRightSwipeTriggered;
     private boolean isRightLongSwipeTriggered;
     private ItemSwipeListener itemSwipeListener;
+    private int swipeLimitShift = 0;
 
     public LongSwipeLayout(Context context) {
         super(context);
@@ -29,6 +30,10 @@ public class LongSwipeLayout extends SwipeLayout {
     public LongSwipeLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
+    }
+
+    public void setSwipeLimitShift(int swipeLimitShift) {
+        this.swipeLimitShift = swipeLimitShift;
     }
 
     @Override
@@ -61,13 +66,15 @@ public class LongSwipeLayout extends SwipeLayout {
 
         itemSwipeListener.onSwipeProgress(positionX, swipeLimit);
 
-        handleSwipeLeft(positionX, swipeLimit);
-        handleSwipeRight(positionX, swipeLimit);
+        if (swipeLimit > 0) {
+            handleSwipeLeft(positionX, swipeLimit);
+            handleSwipeRight(positionX, swipeLimit);
 
-        itemSwipeListener.onLeftSwipeActivate(isLeftSwipeTriggered);
-        itemSwipeListener.onLeftLongSwipeActivate(isLeftLongSwipeTriggered);
-        itemSwipeListener.onRightSwipeActivate(isRightSwipeTriggered);
-        itemSwipeListener.onRightLongSwipeActivate(isRightLongSwipeTriggered);
+            itemSwipeListener.onLeftSwipeActivate(isLeftSwipeTriggered);
+            itemSwipeListener.onLeftLongSwipeActivate(isLeftLongSwipeTriggered);
+            itemSwipeListener.onRightSwipeActivate(isRightSwipeTriggered);
+            itemSwipeListener.onRightLongSwipeActivate(isRightLongSwipeTriggered);
+        }
     }
 
     private void handleSwipeLeft(int positionX, int swipeLimit) {
@@ -102,7 +109,7 @@ public class LongSwipeLayout extends SwipeLayout {
     }
 
     private int getSwipeLimit() {
-        return -(getPaddingLeft() - getDragDistance());
+        return -(getPaddingLeft() - getDragDistance() + swipeLimitShift);
     }
 
     private void initSwipeActionHandling() {
