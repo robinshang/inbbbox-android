@@ -119,4 +119,14 @@
     <fraction name="four_images_view_percentage">50%</fraction>
     <fraction name="big_dialog_height_width_percentage">90%</fraction>
 
+    <dimen name="shot_details_shots_tab_height">30dp</dimen>
+    <dimen name="shot_details_shots_tab_image_size">22dp</dimen>
+    <dimen name="shot_details_shots_tab_margin">2dp</dimen>
+    <dimen name="shot_details_shots_image_margin">4dp</dimen>
+    <dimen name="shot_details_shots_tab_counts_margin">14dp</dimen>
+
+    <dimen name="shot_details_shots_tab_user_image_size_land">25dp</dimen>
+    <dimen name="shot_details_shots_tab_image_size_land">22dp</dimen>
+    <dimen name="shot_details_shots_tab_shot_height_land">200dp</dimen>
+
 </resources>
