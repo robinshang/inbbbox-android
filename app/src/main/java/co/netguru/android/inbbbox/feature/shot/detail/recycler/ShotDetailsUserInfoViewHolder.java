@@ -118,18 +118,9 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot>
         updateActionsState();
     }
 
-    private void updateItemLikesCountAndShowCounters(Shot shot) {
-        if (isLiked && isLiked != shot.isLiked())
-            item = Shot.update(item).likesCount(item.likesCount() - 1).build();
-        else if (!isLiked && isLiked != shot.isLiked())
-            item = Shot.update(item).likesCount(item.likesCount() + 1).build();
-
-        showCounters(item.likesCount(), item.bucketCount());
-    }
-
     @Override
     public void onBucketedStatusChanged(boolean isInBucket) {
-        this.isBucketed = isInBucket;
+        updateItemBucketedCountAndShowCounters(isInBucket);
         updateActionsState();
     }
 
@@ -178,5 +169,24 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot>
                 .fitCenter()
                 .error(R.drawable.ic_ball)
                 .into(userAvatarImageView);
+    }
+
+    private void updateItemLikesCountAndShowCounters(Shot shot) {
+        if (isLiked && isLiked != shot.isLiked())
+            item = Shot.update(item).likesCount(item.likesCount() - 1).build();
+        else if (!isLiked && isLiked != shot.isLiked())
+            item = Shot.update(item).likesCount(item.likesCount() + 1).build();
+
+        showCounters(item.likesCount(), item.bucketCount());
+    }
+
+    private void updateItemBucketedCountAndShowCounters(boolean isInBucket) {
+        if (isBucketed && isBucketed != isInBucket)
+            item = Shot.update(item).bucketCount(item.bucketCount() - 1).build();
+        else if (!isBucketed && isBucketed != isInBucket)
+            item = Shot.update(item).bucketCount(item.bucketCount() + 1).build();
+
+        this.isBucketed = isInBucket;
+        showCounters(item.likesCount(), item.bucketCount());
     }
 }
