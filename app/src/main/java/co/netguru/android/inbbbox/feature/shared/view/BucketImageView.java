@@ -45,12 +45,12 @@ public class BucketImageView extends FrameLayout {
     int backgroundColor;
 
     @BindViews({
-                       R.id.bucket_four_images_image1,
-                       R.id.bucket_four_images_image2,
-                       R.id.bucket_four_images_image3,
-                       R.id.bucket_four_images_image4})
-
+            R.id.bucket_four_images_image1,
+            R.id.bucket_four_images_image2,
+            R.id.bucket_four_images_image3,
+            R.id.bucket_four_images_image4})
     List<ImageView> imageViews;
+
     int currentImage;
     private Bitmap maskBitmap;
     private Paint maskPaint;
@@ -109,7 +109,7 @@ public class BucketImageView extends FrameLayout {
 
     private void scheduleTimer() {
         int delay = ANIMATE_EVERY_MILLISECONDS_MIN +
-                            new Random().nextInt(ANIMATE_EVERY_MILLISECONDS_MAX - ANIMATE_EVERY_MILLISECONDS_MIN);
+                new Random().nextInt(ANIMATE_EVERY_MILLISECONDS_MAX - ANIMATE_EVERY_MILLISECONDS_MIN);
 
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
