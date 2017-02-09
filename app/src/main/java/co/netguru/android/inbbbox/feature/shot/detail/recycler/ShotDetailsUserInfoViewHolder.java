@@ -111,11 +111,20 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot>
         showAuthorInfo(item.author().name());
         showTeamInfo(item.team());
         showInfo(item.projectUrl(), DateTimeFormatUtil.getShotDetailsDate(item.creationDate()));
-        showCounters(item.likesCount(), item.bucketCount());
+        updateItemLikesCountAndShowCounters(item);
 
         isLiked = item.isLiked();
         isBucketed = item.isBucketed();
         updateActionsState();
+    }
+
+    private void updateItemLikesCountAndShowCounters(Shot shot) {
+        if (isLiked && isLiked != shot.isLiked())
+            item = Shot.update(item).likesCount(item.likesCount() - 1).build();
+        else if (!isLiked && isLiked != shot.isLiked())
+            item = Shot.update(item).likesCount(item.likesCount() + 1).build();
+
+        showCounters(item.likesCount(), item.bucketCount());
     }
 
     @Override
