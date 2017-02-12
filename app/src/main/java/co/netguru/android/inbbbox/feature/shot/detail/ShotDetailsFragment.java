@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +38,7 @@ import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenA
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucketDialogFragment;
+import co.netguru.android.inbbbox.feature.team.TeamDetailsActivity;
 
 public class ShotDetailsFragment
         extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
@@ -198,8 +198,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onTeamSelected(Team team) {
-        // TODO: 15.11.2016 not in scope of this task
-        Toast.makeText(getContext(), "team clicked: " + team.name(), Toast.LENGTH_SHORT).show();
+        getPresenter().getTeamUserWithShots(team);
     }
 
     @Override
@@ -377,6 +376,11 @@ public class ShotDetailsFragment
         RemoveFromBucketDialogFragment
                 .newInstance(this, shot)
                 .show(getFragmentManager(), RemoveFromBucketDialogFragment.TAG);
+    }
+
+    @Override
+    public void showTeamView(UserWithShots userWithShots) {
+        TeamDetailsActivity.startActivity(getContext(), userWithShots);
     }
 
     @Override
