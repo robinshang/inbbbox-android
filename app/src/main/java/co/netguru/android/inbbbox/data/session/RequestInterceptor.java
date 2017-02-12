@@ -1,10 +1,13 @@
 package co.netguru.android.inbbbox.data.session;
 
+import android.content.Context;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
 import javax.inject.Inject;
 
+import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.session.controllers.LogoutController;
 import co.netguru.android.inbbbox.data.session.model.Token;
@@ -24,17 +27,20 @@ public class RequestInterceptor implements Interceptor {
     private final LogoutController logoutController;
     private final ErrorController errorController;
     private final TokenPrefsRepository tokenPrefsRepository;
+    private final Context context;
     private final RxBus rxBus;
 
     @Inject
     public RequestInterceptor(LogoutController logoutController,
                               ErrorController errorController,
                               TokenPrefsRepository tokenPrefsRepository,
-                              RxBus rxBus) {
+                              RxBus rxBus,
+                              Context context) {
         this.logoutController = logoutController;
         this.errorController = errorController;
         this.tokenPrefsRepository = tokenPrefsRepository;
         this.rxBus = rxBus;
+        this.context = context;
     }
 
     @Override
@@ -42,7 +48,13 @@ public class RequestInterceptor implements Interceptor {
         Request original = chain.request();
         Request newRequest = getRequestWithToken(original, tokenPrefsRepository.getToken());
 
-        return handleResponseErrors(chain.proceed(newRequest));
+        Response response;
+        try {
+            response = chain.proceed(newRequest);
+        } catch (IOException e) {
+            throw new IOException(context.getString(R.string.error_no_internet));
+        }
+        return handleResponseErrors(response);
     }
 
     private Response handleResponseErrors(Response response) {
