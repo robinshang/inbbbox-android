@@ -204,7 +204,7 @@ public class ShotDetailsPresenter
     }
 
     @Override
-    public void checkIfShotIsBucketed(Shot shot) {
+    public void checkShotBucketsCount(Shot shot) {
         subscriptions.add(bucketsController.getListBucketsForShot(shot.id())
                 .compose(RxTransformerUtil.applySingleIoSchedulers())
                 .subscribe(this::verifyShotBucketsCount,
@@ -372,13 +372,13 @@ public class ShotDetailsPresenter
     }
 
     private void handleShotRemovedFromBucket(Shot shot) {
-        checkIfShotIsBucketed(shot);
-        rxBus.send(new ShotRemovedFromBucketEvent(shot));
         getView().showShotRemoveFromBucketSuccess();
+        rxBus.send(new ShotRemovedFromBucketEvent(shot));
+        checkShotBucketsCount(shot);
     }
 
     private void updateShotAndShowAddToBucketSuccess(Shot shot) {
-        checkIfShotIsBucketed(shot);
         getView().showBucketAddSuccess();
+        checkShotBucketsCount(shot);
     }
 }

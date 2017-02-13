@@ -114,7 +114,7 @@ public interface ShotDetailsContract {
 
         void removeShotFromBuckets(List<Bucket> list, Shot shot);
 
-        void checkIfShotIsBucketed(Shot shot);
+        void checkShotBucketsCount(Shot shot);
 
         void onShotBucketClicked(Shot shot);
 
