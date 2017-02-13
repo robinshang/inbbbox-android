@@ -102,6 +102,9 @@ public final class Statics {
     public static final Team TEAM = Team.builder()
             .id(1)
             .name("team")
+            .username("team")
+            .shotsCount(2)
+            .avatarUrl("")
             .build();
 
     public static final Shot NOT_LIKED_SHOT = Shot.builder()

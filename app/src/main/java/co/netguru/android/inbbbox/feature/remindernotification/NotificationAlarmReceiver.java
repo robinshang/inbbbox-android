@@ -12,13 +12,14 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
-import co.netguru.android.inbbbox.feature.main.MainActivity;
+import co.netguru.android.inbbbox.feature.splash.SplashActivity;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
+import static co.netguru.android.inbbbox.feature.splash.SplashActivity.SPLASH_ACTIVITY_REQUEST_CODE;
+
 public class NotificationAlarmReceiver extends BroadcastReceiver {
 
-    private static final int MAIN_ACTIVITY_REQUEST_CODE = 1;
     private static final int NOTIFICATION_ID = 0;
 
     @Inject
@@ -44,14 +45,14 @@ public class NotificationAlarmReceiver extends BroadcastReceiver {
                 .setContentTitle(context.getString(R.string.app_name))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(true)
-                .setContentIntent(createMainActivityPendingIntent(context))
+                .setContentIntent(createSplashActivityPendingIntent(context))
                 .setContentText(context.getString(R.string.notification_text))
                 .build();
     }
 
-    private PendingIntent createMainActivityPendingIntent(Context context) {
-        final Intent intent = new Intent(context, MainActivity.class);
-        return PendingIntent.getActivity(context, MAIN_ACTIVITY_REQUEST_CODE,
+    private PendingIntent createSplashActivityPendingIntent(Context context) {
+        final Intent intent = new Intent(context, SplashActivity.class);
+        return PendingIntent.getActivity(context, SPLASH_ACTIVITY_REQUEST_CODE,
                 intent, PendingIntent.FLAG_ONE_SHOT);
     }
 }

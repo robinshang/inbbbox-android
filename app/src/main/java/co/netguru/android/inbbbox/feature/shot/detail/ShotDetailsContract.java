@@ -8,6 +8,8 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 import java.util.List;
 
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
+import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
 import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
@@ -80,6 +82,8 @@ public interface ShotDetailsContract {
         void showAddShotToBucketView(Shot shot);
 
         void showRemoveShotFromBucketView(Shot shot);
+
+        void showTeamView(UserWithShots userWithShots);
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -113,5 +117,7 @@ public interface ShotDetailsContract {
         void checkIfShotIsBucketed(Shot shot);
 
         void onShotBucketClicked(Shot shot);
+
+        void getTeamUserWithShots(Team team);
     }
 }
