@@ -24,6 +24,7 @@ import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageVie
 
 public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShots> implements RequestListener<String, GlideDrawable> {
 
+    public static final int SHOTS_IN_VIEW = 4;
     @BindView(R.id.four_images_view)
     BucketImageView bucketImageView;
     @BindView(R.id.one_image_view)
@@ -76,7 +77,7 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
 
     private void handleNotEmptyShotsList(List<Shot> shots) {
         emptyView.setVisibility(View.GONE);
-        if (shots.size() < 4) {
+        if (shots.size() < SHOTS_IN_VIEW) {
             showOnlyOneImage(shots.get(0));
         } else {
             showFourFirstImages(shots);
@@ -137,7 +138,7 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
             resourcesReady++;
             enqueuedImages.remove(model);
 
-            if (resourcesReady == 4) {
+            if (resourcesReady == SHOTS_IN_VIEW) {
                 bucketImageView.startAnimation();
             }
         }
