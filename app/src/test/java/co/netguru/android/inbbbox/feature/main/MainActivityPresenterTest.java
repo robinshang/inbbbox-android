@@ -17,6 +17,7 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
+import co.netguru.android.inbbbox.data.onboarding.OnboardingController;
 import co.netguru.android.inbbbox.data.session.controllers.LogoutController;
 import co.netguru.android.inbbbox.data.session.controllers.TokenParametersController;
 import co.netguru.android.inbbbox.data.settings.SettingsController;
@@ -84,6 +85,9 @@ public class MainActivityPresenterTest {
     @Mock
     public NotificationSettings notificationSettingsMock;
 
+    @Mock
+    public OnboardingController onboardingController;
+
     @InjectMocks
     MainActivityPresenter mainActivityPresenter;
 
@@ -103,6 +107,7 @@ public class MainActivityPresenterTest {
         when(settingsControllerMock.getNotificationSettings())
                 .thenReturn(Single.just(notificationSettingsMock));
         when(logoutControllerMock.performLogout()).thenReturn(Completable.complete());
+        when(onboardingController.isOnboardingPassed()).thenReturn(Single.just(true));
 
         when(userControllerMock.isGuestModeEnabled()).thenReturn(Single.just(false));
         when(errorControllerMock.getThrowableMessage(any(Throwable.class)))

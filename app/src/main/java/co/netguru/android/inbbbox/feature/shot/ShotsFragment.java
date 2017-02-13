@@ -148,8 +148,11 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @OnClick(R.id.fab_follow_menu)
     void onFollowClick() {
-        // TODO: 07.11.2016 replace this when feature will be implemented
-        Toast.makeText(getContext(), "Follow", Toast.LENGTH_SHORT).show();
+        int currentItemPosition = shotsRecyclerView.getCurrentItem();
+        if (currentItemPosition != RecyclerView.NO_POSITION) {
+            getPresenter()
+                    .handleFollowShotAuthor(adapter.getShotFromPosition(currentItemPosition));
+        }
     }
 
     @Override
