@@ -137,4 +137,7 @@
     <string name="shot">Shot</string>
     <string name="error_server">Something went wrong while fetching data. Try again.</string>
     <string name="refresh">Refresh</string>
+    <string name="user_image_content_description" translatable="false">User image</string>
+    <string name="comment_icon_content_description" translatable="false">Comment icon</string>
+    <string name="likes_icon_content_description" translatable="false">Likes icon</string>
 </resources>

@@ -144,6 +144,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     @Override
     public void handleFollowShotAuthor(Shot shot) {
+        getView().closeFabMenu();
         subscriptions.add(followersController.followUser(shot.author())
                 .compose(RxTransformerUtil.applyCompletableIoSchedulers())
                 .subscribe(() -> Timber.d("Followed shot author"),

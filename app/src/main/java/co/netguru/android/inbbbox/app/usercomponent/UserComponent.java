@@ -6,6 +6,8 @@ import co.netguru.android.inbbbox.feature.bucket.detail.BucketsDetailsComponent;
 import co.netguru.android.inbbbox.feature.follower.FollowersFragmentComponent;
 import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsFragmentComponent;
 import co.netguru.android.inbbbox.feature.like.LikesFragmentComponent;
+import co.netguru.android.inbbbox.feature.onboarding.OnboardingComponent;
+import co.netguru.android.inbbbox.feature.onboarding.OnboardingModule;
 import co.netguru.android.inbbbox.feature.shot.ShotsComponent;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketComponent;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsComponent;
@@ -44,6 +46,8 @@ public interface UserComponent {
     CreateBucketComponent plusCreateBucketComponent();
 
     TeamDetailsFragmentComponent plusTeamDetailsFragmentComponent();
+
+    OnboardingComponent plusOnboardingComponent(OnboardingModule module);
 
     @Subcomponent.Builder
     interface Builder {

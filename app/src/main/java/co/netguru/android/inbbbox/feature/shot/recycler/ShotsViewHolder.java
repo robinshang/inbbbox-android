@@ -8,6 +8,9 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import butterknife.BindDrawable;
 import butterknife.BindView;
@@ -45,6 +48,14 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     ImageView followImageView;
     @BindView(R.id._left_wrapper)
     LinearLayout leftWrapper;
+    @BindView(R.id.user_name_textView)
+    TextView userNameTextView;
+    @BindView(R.id.comments_count_textView)
+    TextView commentsCountTextView;
+    @BindView(R.id.likes_count_textView)
+    TextView likesCountTextView;
+    @BindView(R.id.user_imageView)
+    ImageView userImageView;
 
     @BindDrawable(R.drawable.shot_placeholder)
     Drawable shotPlaceHolder;
@@ -66,11 +77,8 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     public void bind(Shot shot) {
         this.shot = shot;
         setupImage(shot);
-    }
-
-    private void setupImage(Shot shot) {
-        shotImageView.loadShot(shot);
-        likeIconImageView.setActivated(shot.isLiked());
+        setupDetails(shot);
+        loadUserImage(shot.author().avatarUrl());
     }
 
     @Override
@@ -183,5 +191,26 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
             percent = 100 * progress / (viewLeft + viewWidth);
         }
         return percent / 100f;
+    }
+
+    private void setupImage(Shot shot) {
+        shotImageView.loadShot(shot);
+        likeIconImageView.setActivated(shot.isLiked());
+    }
+
+    private void setupDetails(Shot shot) {
+        if (shot.author() != null && shot.author().username() != null)
+            userNameTextView.setText(shot.author().username());
+
+        likesCountTextView.setText(String.valueOf(shot.likesCount()));
+        commentsCountTextView.setText(String.valueOf(shot.commentsCount()));
+    }
+
+    private void loadUserImage(String url) {
+        Glide.with(itemView.getContext())
+                .load(url)
+                .fitCenter()
+                .error(R.drawable.ic_ball)
+                .into(userImageView);
     }
 }

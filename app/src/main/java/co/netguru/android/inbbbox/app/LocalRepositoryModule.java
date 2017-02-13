@@ -14,6 +14,8 @@ import javax.inject.Singleton;
 import co.netguru.android.inbbbox.data.db.DaoMaster;
 import co.netguru.android.inbbbox.data.db.DaoSession;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.CurrentUserPrefsRepository;
+import co.netguru.android.inbbbox.data.onboarding.OnboardingController;
+import co.netguru.android.inbbbox.data.onboarding.OnboardingSharedPrefsController;
 import co.netguru.android.inbbbox.data.session.TokenPrefsRepository;
 import co.netguru.android.inbbbox.data.settings.SettingsPrefsRepository;
 import dagger.Module;
@@ -26,6 +28,7 @@ public class LocalRepositoryModule {
     private static final String SETTINGS_SHARED_PREFERENCES_NAME = "settings";
     private static final String TOKEN_SHARED_PREFERENCES_NAME = "token";
     private static final String USER_SHARED_PREFERENCES_NAME = "user";
+    private static final String ONBOARDING_SHARED_PREFERENCES_NAME = "onboarding";
 
     @Named(SETTINGS_SHARED_PREFERENCES_NAME)
     @Provides
@@ -49,6 +52,14 @@ public class LocalRepositoryModule {
     SharedPreferences provideUserSharedPreferences(Context context) {
         return context.getSharedPreferences(context.getPackageName()
                 .concat(USER_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
+    }
+
+    @Named(ONBOARDING_SHARED_PREFERENCES_NAME)
+    @Provides
+    @Singleton
+    SharedPreferences provideOnboardingSharedPreferences(Context context) {
+        return context.getSharedPreferences(context.getPackageName()
+                .concat(ONBOARDING_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
     }
 
     @Provides
@@ -82,5 +93,12 @@ public class LocalRepositoryModule {
     @Provides
     DaoSession provideDaoSession(Database database) {
         return new DaoMaster(database).newSession();
+    }
+
+    @Singleton
+    @Provides
+    OnboardingController provideOnboardingController(
+            @Named(ONBOARDING_SHARED_PREFERENCES_NAME) SharedPreferences sharedPreferences) {
+        return new OnboardingSharedPrefsController(sharedPreferences);
     }
 }
