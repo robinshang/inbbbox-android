@@ -109,6 +109,7 @@
     <string name="fragment_follow_details_dialog_text">Dodać użytkownika %s do obserwowanych?</string>
     <string name="fragment_unfollow_details_dialog_text">Usunąć użytkownika %s z obserwowanych?</string>
     <string name="shot">Projekt</string>
+    <string name="error_no_internet">Nie udało się połączyć z internetem. Sprawdź prosze swoje połączenie i spróbuj ponownie</string>
 
     <plurals name="fragment_buckets_shots_string">
         <item quantity="zero">Nie dodano jeszcze żadnych projektów</item>

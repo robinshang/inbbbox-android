@@ -140,4 +140,5 @@
     <string name="user_image_content_description" translatable="false">User image</string>
     <string name="comment_icon_content_description" translatable="false">Comment icon</string>
     <string name="likes_icon_content_description" translatable="false">Likes icon</string>
+    <string name="error_no_internet">Couldn\'t connect to the Internet. Please check your connection and try again</string>
 </resources>
