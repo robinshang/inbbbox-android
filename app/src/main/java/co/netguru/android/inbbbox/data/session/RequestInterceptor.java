@@ -1,6 +1,8 @@
 package co.netguru.android.inbbbox.data.session;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -48,13 +50,8 @@ public class RequestInterceptor implements Interceptor {
         Request original = chain.request();
         Request newRequest = getRequestWithToken(original, tokenPrefsRepository.getToken());
 
-        Response response;
-        try {
-            response = chain.proceed(newRequest);
-        } catch (IOException e) {
-            throw new IOException(context.getString(R.string.error_no_internet));
-        }
-        return handleResponseErrors(response);
+        checkInternetConnection();
+        return handleResponseErrors(chain.proceed(newRequest));
     }
 
     private Response handleResponseErrors(Response response) {
@@ -90,5 +87,14 @@ public class RequestInterceptor implements Interceptor {
                 token.getTokenType() +
                 " " +
                 token.getAccessToken();
+    }
+
+    private void checkInternetConnection() throws IOException {
+        final ConnectivityManager conMgr = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final NetworkInfo activeNetwork = conMgr.getActiveNetworkInfo();
+        if (activeNetwork == null || !activeNetwork.isConnected()) {
+            throw  new IOException(context.getString(R.string.error_no_internet));
+        }
     }
 }
