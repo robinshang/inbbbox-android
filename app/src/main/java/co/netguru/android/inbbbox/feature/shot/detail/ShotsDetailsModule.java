@@ -8,6 +8,7 @@ import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.shot.ShotsApi;
+import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import dagger.Module;
@@ -35,9 +36,10 @@ public class ShotsDetailsModule {
     ShotDetailsPresenter provideShotDetailsPresenter(ShotDetailsController shotDetailsController,
                                                      ErrorController errorController,
                                                      RxBus rxBus,
-                                                     BucketsController bucketsController) {
+                                                     BucketsController bucketsController,
+                                                     UserShotsController userShotsController) {
         return new ShotDetailsPresenter(shotDetailsController, errorController, allShots,
-                rxBus, bucketsController);
+                rxBus, bucketsController, userShotsController);
 
     }
 }

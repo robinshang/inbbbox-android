@@ -14,6 +14,9 @@ import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.common.utils.StringUtil;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
+import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
+import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.ShotLikedEvent;
@@ -31,10 +34,13 @@ public class ShotDetailsPresenter
         extends MvpNullObjectBasePresenter<ShotDetailsContract.View>
         implements ShotDetailsContract.Presenter {
 
+    private static final int SHOT_PAGE_COUNT = 30;
+
     private final ShotDetailsController shotDetailsController;
     private final ErrorController errorController;
     private final RxBus rxBus;
     private final BucketsController bucketsController;
+    private final UserShotsController userShotsController;
     private final CompositeSubscription subscriptions;
     private boolean isCommentModeInit;
     private Shot shot;
@@ -53,10 +59,12 @@ public class ShotDetailsPresenter
                          ErrorController errorController,
                          List<Shot> allShots,
                          RxBus rxBus,
-                         BucketsController bucketsController) {
+                         BucketsController bucketsController,
+                         UserShotsController userShotsController) {
         this.shotDetailsController = shotDetailsController;
         this.errorController = errorController;
         this.bucketsController = bucketsController;
+        this.userShotsController = userShotsController;
         this.rxBus = rxBus;
         this.subscriptions = new CompositeSubscription();
         this.commentLoadMoreState = new CommentLoadMoreState();
@@ -228,6 +236,18 @@ public class ShotDetailsPresenter
         if (shot != null) {
             verifyShotBucketState(shot);
         }
+    }
+
+    @Override
+    public void getTeamUserWithShots(Team team) {
+        subscriptions.add(userShotsController.getTeamUserWithShots(team, pageNumber, SHOT_PAGE_COUNT)
+                .compose(androidIO())
+                .subscribe(this::showTeamView,
+                        throwable -> handleError(throwable, "Error while getting user wit shots")));
+    }
+
+    private void showTeamView(UserWithShots userWithShots) {
+        getView().showTeamView(userWithShots);
     }
 
     private void verifyShotBucketState(Shot shot) {
