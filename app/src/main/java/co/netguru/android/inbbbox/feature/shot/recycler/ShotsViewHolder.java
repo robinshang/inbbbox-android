@@ -130,6 +130,16 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
         }
     }
 
+    @Override
+    public void onStartSwipe() {
+        shotSwipeListener.onStartSwipe(shot);
+    }
+
+    @Override
+    public void onEndSwipe() {
+        shotSwipeListener.onEndSwipe(shot);
+    }
+
     private void handleLeftSwipe() {
         int progress = getSwipeProgress();
         handleLikeAnimation(progress);

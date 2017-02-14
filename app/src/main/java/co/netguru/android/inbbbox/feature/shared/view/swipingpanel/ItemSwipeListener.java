@@ -18,4 +18,8 @@ public interface ItemSwipeListener {
     void onRightLongSwipeActivate(boolean isActive);
 
     void onSwipeProgress(int positionX, int swipeLimit);
+
+    void onStartSwipe();
+
+    void onEndSwipe();
 }

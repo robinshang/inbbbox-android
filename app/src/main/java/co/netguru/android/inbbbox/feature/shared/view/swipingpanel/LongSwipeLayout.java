@@ -169,7 +169,7 @@ public class LongSwipeLayout extends SwipeLayout {
         return new SwipeListener() {
             @Override
             public void onStartOpen(SwipeLayout layout) {
-                //no-op
+                itemSwipeListener.onStartSwipe();
             }
 
             @Override
@@ -194,6 +194,7 @@ public class LongSwipeLayout extends SwipeLayout {
 
             @Override
             public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+                itemSwipeListener.onEndSwipe();
                 delayClose();
             }
         };
