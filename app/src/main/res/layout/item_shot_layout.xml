@@ -30,7 +30,7 @@
                 android:id="@+id/iv_follow"
                 style="@style/LongSwipeActionIcons"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_follow" />
+                android:src="@drawable/selector_follow_swipe" />
 
             <ImageView
                 android:id="@+id/iv_comment"
