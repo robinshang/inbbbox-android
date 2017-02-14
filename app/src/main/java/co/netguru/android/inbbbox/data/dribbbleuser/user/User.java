@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
 import co.netguru.android.inbbbox.data.db.UserDB;
+import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
 
 @AutoValue
@@ -56,6 +57,17 @@ public abstract class User implements Parcelable {
                 .username(entity.username())
                 .shotsCount(entity.shotsCount())
                 .type(entity.type())
+                .build();
+    }
+
+    public static User createFromTeam(Team team) {
+        return User.builder()
+                .id(team.id())
+                .name(team.name())
+                .avatarUrl(team.avatarUrl())
+                .username(team.username())
+                .shotsCount(team.shotsCount())
+                .type(TYPE_TEAM)
                 .build();
     }
 

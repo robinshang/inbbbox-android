@@ -11,6 +11,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,6 +24,7 @@ import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageVie
 
 public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShots> implements RequestListener<String, GlideDrawable> {
 
+    public static final int SHOTS_IN_VIEW = 4;
     @BindView(R.id.four_images_view)
     BucketImageView bucketImageView;
     @BindView(R.id.one_image_view)
@@ -33,9 +35,9 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
     TextView bucketNameTextView;
     @BindView(R.id.empty_view)
     ImageView emptyView;
-
     private BucketWithShots bucketWithShots;
     private int resourcesReady = 0;
+    private final List<String> enqueuedImages = new ArrayList<>();
 
     BaseBucketViewHolder(View view, BucketClickListener bucketClickListener) {
         super(view);
@@ -44,6 +46,7 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
 
     @Override
     public void bind(BucketWithShots item) {
+        enqueuedImages.clear();
         resourcesReady = 0;
         this.bucketWithShots = item;
         List<Shot> shots = bucketWithShots.shots();
@@ -74,7 +77,7 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
 
     private void handleNotEmptyShotsList(List<Shot> shots) {
         emptyView.setVisibility(View.GONE);
-        if (shots.size() < 4) {
+        if (shots.size() < SHOTS_IN_VIEW) {
             showOnlyOneImage(shots.get(0));
         } else {
             showFourFirstImages(shots);
@@ -113,6 +116,8 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
     }
 
     private void requestImage(ImageView imageView, String url) {
+        enqueuedImages.add(url);
+
         Glide.clear(imageView);
         Glide.with(itemView.getContext())
                 .load(url)
@@ -129,10 +134,13 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
 
     @Override
     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-        resourcesReady++;
+        if (enqueuedImages.contains(model)) {
+            resourcesReady++;
+            enqueuedImages.remove(model);
 
-        if (resourcesReady == 4) {
-            bucketImageView.startAnimation();
+            if (resourcesReady == SHOTS_IN_VIEW) {
+                bucketImageView.startAnimation();
+            }
         }
         return false;
     }
