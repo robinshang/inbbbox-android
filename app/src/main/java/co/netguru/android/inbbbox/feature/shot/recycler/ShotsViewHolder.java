@@ -3,9 +3,6 @@ package co.netguru.android.inbbbox.feature.shot.recycler;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,15 +34,15 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     @BindView(R.id.iv_shot_image)
     RoundedCornersShotImageView shotImageView;
     @BindView(R.id.iv_like_action)
-    ImageView likeIconImageView;
+    ImageView likeIcon;
     @BindView(R.id.iv_plus_image)
-    ImageView plusIconImageView;
+    ImageView plusIcon;
     @BindView(R.id.iv_bucket_action)
-    ImageView bucketImageView;
+    ImageView bucketIcon;
     @BindView(R.id.iv_comment)
-    ImageView commentImageView;
+    ImageView commentIcon;
     @BindView(R.id.iv_follow)
-    ImageView followImageView;
+    ImageView followIcon;
     @BindView(R.id._left_wrapper)
     LinearLayout leftWrapper;
     @BindView(R.id.user_name_textView)
@@ -104,24 +101,24 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     @Override
     public void onLeftSwipeActivate(boolean isActive) {
         if (!shot.isLiked()) {
-            likeIconImageView.setActivated(isActive);
+            likeIcon.setActivated(isActive);
         }
     }
 
     @Override
     public void onLeftLongSwipeActivate(boolean isActive) {
-        bucketImageView.setActivated(isActive);
+        bucketIcon.setActivated(isActive);
     }
 
     @Override
     public void onRightSwipeActivate(boolean isActive) {
-        commentImageView.setActivated(isActive);
+        commentIcon.setActivated(isActive);
     }
 
     @Override
     public void onRightLongSwipeActivate(boolean isActive) {
-        followImageView.setVisibility(isActive ? View.VISIBLE : View.INVISIBLE);
-        commentImageView.setImageAlpha(isActive ? ALPHA_MIN : ALPHA_MAX);
+        followIcon.setVisibility(isActive ? View.VISIBLE : View.INVISIBLE);
+        commentIcon.setImageAlpha(isActive ? ALPHA_MIN : ALPHA_MAX);
     }
 
     @Override
@@ -134,68 +131,78 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     }
 
     private void handleLeftSwipe() {
-        int[] shotAbsoluteCoordinates = new int[LOCATION_ON_SCREEN_COORDINATES_NUMBER];
-        shotImageView.getLocationOnScreen(shotAbsoluteCoordinates);
-        int[] leftWrapperAbsoluteCoordinates = new int[LOCATION_ON_SCREEN_COORDINATES_NUMBER];
-        leftWrapper.getLocationOnScreen(leftWrapperAbsoluteCoordinates);
-        int diff = leftWrapperAbsoluteCoordinates[0] - leftWrapper.getLeft();
-        int progress = shotAbsoluteCoordinates[0] - diff;
-        int likeIconImageViewLeft = likeIconImageView.getLeft();
+        int progress = getSwipeProgress();
+        handleLikeAnimation(progress);
+        handlePlusAndBucketAnimation(progress);
+    }
 
-        float percent = getPercent(progress, likeIconImageViewLeft, likeIconImageView.getWidth());
-        float plusPercent = getPercent(progress, plusIconImageView.getLeft(), plusIconImageView.getWidth());
-        float bucketPercent = getPercent(progress, bucketImageView.getLeft(), bucketImageView.getWidth());
+    private void handleLikeAnimation(int progress) {
+        int likeIconLeft = likeIcon.getLeft();
+        float likePercent = getPercent(progress, likeIconLeft, likeIcon.getWidth());
 
-        AnimationSet animationSet = new AnimationSet(true);
-        animationSet.setFillAfter(true);
+        translateView(likeIcon, progress, likePercent);
+        scaleView(likeIcon, likePercent);
+        handlePlusAndBucketAnimation(progress);
+    }
 
-        if (percent <= 1) {
-            int horizontalTranslation = progress - likeIconImageViewLeft - ((int) (likeIconImageView.getWidth() * percent));
-            animationSet.addAnimation(new ScaleAnimation(percent, percent, percent, percent, 0, likeIconImageView.getHeight() / 2));
-            animationSet.addAnimation(new TranslateAnimation(horizontalTranslation, horizontalTranslation, 0, 0));
-            likeIconImageView.startAnimation(animationSet);
-        } else if (plusPercent <= 1) {
-            //in case of fast swipe
-            likeIconImageView.clearAnimation();
+    private void handlePlusAndBucketAnimation(int progress) {
+        float plusPercent = getPercent(progress, plusIcon.getLeft(), plusIcon.getWidth());
+        float bucketPercent = getPercent(progress, bucketIcon.getLeft(), bucketIcon.getWidth());
 
-            animationSet.addAnimation(new ScaleAnimation(plusPercent, plusPercent, plusPercent, plusPercent, 0, plusIconImageView.getHeight() / 2));
-            plusIconImageView.startAnimation(animationSet);
-        } else if (bucketPercent <= 1) {
-            //in case of fast swipe
-            plusIconImageView.clearAnimation();
-
-            animationSet.addAnimation(new ScaleAnimation(bucketPercent, bucketPercent, bucketPercent, bucketPercent, 0, bucketImageView.getHeight() / 2));
-            bucketImageView.startAnimation(animationSet);
-        } else {
-            //in case of fast swipe
-            bucketImageView.clearAnimation();
-        }
+        scaleView(plusIcon, plusPercent);
+        scaleView(bucketIcon, bucketPercent);
     }
 
     private void handleRightSwipe(int positionX, int swipeLimit) {
         float progress = (float) -positionX / (float) swipeLimit;
-
         float horizontalTranslation = positionX * COMMENT_TRANSLATION_FACTOR;
-        commentImageView.setTranslationX(horizontalTranslation);
 
-        AnimationSet animationSet = new AnimationSet(true);
-        animationSet.setFillAfter(true);
-        animationSet.addAnimation(new ScaleAnimation(progress, progress, progress, progress,
-                commentImageView.getWidth(), commentImageView.getHeight() / 2));
-        commentImageView.startAnimation(animationSet);
+        commentIcon.setTranslationX(horizontalTranslation);
+        scaleView(commentIcon, progress, commentIcon.getWidth(), commentIcon.getHeight() / 2f);
+    }
+
+    private void scaleView(View v, float percent) {
+        scaleView(v, percent, 0, v.getHeight() / 2f);
+    }
+
+    private void scaleView(View v, float percent, float pivotX, float pivotY) {
+        if (percent > 0 && percent < 1) {
+            v.setPivotX(pivotX);
+            v.setPivotY(pivotY);
+            v.setScaleX(percent);
+            v.setScaleY(percent);
+        }
+    }
+
+    private void translateView(View v, int progress, float percent) {
+        if (percent > 0 && percent < 1) {
+            int horizontalTranslation = progress - v.getLeft() - ((int) (v.getWidth() * percent));
+            v.setTranslationX(horizontalTranslation);
+        }
+    }
+
+    private int getSwipeProgress() {
+        int[] shotAbsoluteCoordinates = new int[LOCATION_ON_SCREEN_COORDINATES_NUMBER];
+        shotImageView.getLocationOnScreen(shotAbsoluteCoordinates);
+
+        int[] leftWrapperAbsoluteCoordinates = new int[LOCATION_ON_SCREEN_COORDINATES_NUMBER];
+        leftWrapper.getLocationOnScreen(leftWrapperAbsoluteCoordinates);
+
+        int diff = leftWrapperAbsoluteCoordinates[0] - leftWrapper.getLeft();
+        return shotAbsoluteCoordinates[0] - diff;
     }
 
     private float getPercent(int progress, int viewLeft, int viewWidth) {
-        int percent = 0;
         if (viewLeft != 0 || viewWidth != 0) {
-            percent = 100 * progress / (viewLeft + viewWidth);
+            return (float) progress / (viewLeft + viewWidth);
+        } else {
+            return 0;
         }
-        return percent / 100f;
     }
 
     private void setupImage(Shot shot) {
         shotImageView.loadShot(shot);
-        likeIconImageView.setActivated(shot.isLiked());
+        likeIcon.setActivated(shot.isLiked());
     }
 
     private void setupDetails(Shot shot) {
