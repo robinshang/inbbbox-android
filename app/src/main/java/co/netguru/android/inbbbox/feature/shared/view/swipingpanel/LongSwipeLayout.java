@@ -69,11 +69,6 @@ public class LongSwipeLayout extends SwipeLayout {
         if (swipeLimit > 0) {
             handleSwipeLeft(positionX, swipeLimit);
             handleSwipeRight(positionX, swipeLimit);
-
-            itemSwipeListener.onLeftSwipeActivate(isLeftSwipeTriggered);
-            itemSwipeListener.onLeftLongSwipeActivate(isLeftLongSwipeTriggered);
-            itemSwipeListener.onRightSwipeActivate(isRightSwipeTriggered);
-            itemSwipeListener.onRightLongSwipeActivate(isRightLongSwipeTriggered);
         }
     }
 

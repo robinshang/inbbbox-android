@@ -102,34 +102,34 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingStep>
         shotSwipeListener.onFollowUserSwipe(onboardingShot);
     }
 
-    @Override
-    public void onLeftSwipeActivate(boolean isActive) {
-        if (likeIcon != null) {
-            likeIcon.setActivated(isActive);
-        }
-    }
-
-    @Override
-    public void onLeftLongSwipeActivate(boolean isActive) {
-        if (bucketIcon != null) {
-            bucketIcon.setActivated(isActive);
-        }
-    }
-
-    @Override
-    public void onRightSwipeActivate(boolean isActive) {
-        if (commentIcon != null) {
-            commentIcon.setActivated(isActive);
-        }
-    }
-
-    @Override
-    public void onRightLongSwipeActivate(boolean isActive) {
-        if (followIcon != null) {
-            followIcon.setVisibility(isActive ? View.VISIBLE : View.INVISIBLE);
-            commentIcon.setImageAlpha(isActive ? ALPHA_MIN : ALPHA_MAX);
-        }
-    }
+//    @Override
+//    public void onLeftSwipeActivate(boolean isActive) {
+//        if (likeIcon != null) {
+//            likeIcon.setActivated(isActive);
+//        }
+//    }
+//
+//    @Override
+//    public void onLeftLongSwipeActivate(boolean isActive) {
+//        if (bucketIcon != null) {
+//            bucketIcon.setActivated(isActive);
+//        }
+//    }
+//
+//    @Override
+//    public void onRightSwipeActivate(boolean isActive) {
+//        if (commentIcon != null) {
+//            commentIcon.setActivated(isActive);
+//        }
+//    }
+//
+//    @Override
+//    public void onRightLongSwipeActivate(boolean isActive) {
+//        if (followIcon != null) {
+//            followIcon.setVisibility(isActive ? View.VISIBLE : View.INVISIBLE);
+//            commentIcon.setImageAlpha(isActive ? ALPHA_MIN : ALPHA_MAX);
+//        }
+//    }
 
     @Override
     public void onSwipeProgress(int positionX, int swipeLimit) {
@@ -138,6 +138,16 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingStep>
         } else if (onboardingShot.getStep() >= OnboardingStepData.STEP_COMMENT.getStep()) {
             handleRightSwipe(positionX, swipeLimit);
         }
+    }
+
+    @Override
+    public void onStartSwipe() {
+        // no-op
+    }
+
+    @Override
+    public void onEndSwipe() {
+        // no-op
     }
 
     private void handleLeftSwipe() {

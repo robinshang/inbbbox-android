@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -19,32 +19,53 @@ import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageVie
 import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.ItemSwipeListener;
 import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout;
 
+import static co.netguru.android.inbbbox.common.utils.AnimationUtil.ALPHA_MAX;
+import static co.netguru.android.inbbbox.common.utils.AnimationUtil.ALPHA_MIN;
+import static co.netguru.android.inbbbox.common.utils.AnimationUtil.animateAlpha;
+import static co.netguru.android.inbbbox.common.utils.AnimationUtil.dpToPx;
+import static co.netguru.android.inbbbox.common.utils.AnimationUtil.scaleView;
+import static co.netguru.android.inbbbox.common.utils.AnimationUtil.translateView;
+
 class ShotsViewHolder extends BaseViewHolder<Shot>
         implements ItemSwipeListener {
 
-    private static final int ALPHA_MAX = 255;
-    private static final int ALPHA_MIN = 0;
-    private static final int LOCATION_ON_SCREEN_COORDINATES_NUMBER = 2;
-    private static final float COMMENT_TRANSLATION_FACTOR = 1 / 3f;
-
+    public static final int COMMENT_ICON_PADDING_DP = 24;
+    public static final float HALF = 0.5f;
+    public static final float COMMENT_FILLED_ICON_ALPHA_START_PROGRESS = 0.25f;
+    public static final float COMMENT_ICON_FADE_START_PROGRESS = 0.8f;
+    public static final float COMMENT_ICON_FADE_END_PROGRESS = 0.9f;
+    private static final float FOLLOW_ICON_ALPHA_ANIMATION_START_PROGRESS = 0.85f;
+    private static final float FOLLOW_ICON_FILLED_ALPHA_ANIMATION_START_PROGRESS = 0.92f;
+    private static final float FOLLOW_ICON_ALPHA_ANIMATION_END_PROGRESS = 1;
+    private static final float LIKE_ICON_FILLED_ALPHA_ANIMATION_START_PROGRESS = 0.25f;
+    private static final float LIKE_ICON_FILLED_ALPHA_ANIMATION_END_PROGRESS = 0.45f;
+    private static final float BUCKET_ICON_ALPHA_ANIMATION_START_PROGRESS = 0.8f;
+    private static final float BUCKET_ICON_ALPHA_ANIMATION_END_PROGRESS = 0.95f;
     private final ShotSwipeListener shotSwipeListener;
-
     @BindView(R.id.long_swipe_layout)
     LongSwipeLayout longSwipeLayout;
     @BindView(R.id.iv_shot_image)
     RoundedCornersShotImageView shotImageView;
     @BindView(R.id.iv_like_action)
     ImageView likeIcon;
+    @BindView(R.id.iv_like_action_full)
+    ImageView likeIconFull;
     @BindView(R.id.iv_plus_image)
     ImageView plusIcon;
     @BindView(R.id.iv_bucket_action)
     ImageView bucketIcon;
+    @BindView(R.id.iv_bucket_action_full)
+    ImageView bucketIconFull;
     @BindView(R.id.iv_comment)
     ImageView commentIcon;
+    @BindView(R.id.iv_comment_full)
+    ImageView commentIconFull;
     @BindView(R.id.iv_follow)
     ImageView followIcon;
+    @BindView(R.id.iv_follow_full)
+    ImageView followIconFull;
     @BindView(R.id._left_wrapper)
-    LinearLayout leftWrapper;
+    RelativeLayout leftWrapper;
     @BindView(R.id.user_name_textView)
     TextView userNameTextView;
     @BindView(R.id.comments_count_textView)
@@ -53,10 +74,8 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     TextView likesCountTextView;
     @BindView(R.id.user_imageView)
     ImageView userImageView;
-
     @BindDrawable(R.drawable.shot_placeholder)
     Drawable shotPlaceHolder;
-
     private Shot shot;
 
     ShotsViewHolder(View itemView, @NonNull ShotSwipeListener shotSwipeListener) {
@@ -99,34 +118,13 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     }
 
     @Override
-    public void onLeftSwipeActivate(boolean isActive) {
-        if (!shot.isLiked()) {
-            likeIcon.setActivated(isActive);
-        }
-    }
+    public void onSwipeProgress(int swipePosition, int swipeLimit) {
+        float progress = (float) swipePosition / (float) swipeLimit;
 
-    @Override
-    public void onLeftLongSwipeActivate(boolean isActive) {
-        bucketIcon.setActivated(isActive);
-    }
-
-    @Override
-    public void onRightSwipeActivate(boolean isActive) {
-        commentIcon.setActivated(isActive);
-    }
-
-    @Override
-    public void onRightLongSwipeActivate(boolean isActive) {
-        followIcon.setVisibility(isActive ? View.VISIBLE : View.INVISIBLE);
-        commentIcon.setImageAlpha(isActive ? ALPHA_MIN : ALPHA_MAX);
-    }
-
-    @Override
-    public void onSwipeProgress(int positionX, int swipeLimit) {
-        if (positionX > 0) {
-            handleLeftSwipe();
+        if (swipePosition > 0) {
+            handleLeftSwipe(progress, swipePosition, swipeLimit);
         } else {
-            handleRightSwipe(positionX, swipeLimit);
+            handleRightSwipe(-progress, swipePosition, swipeLimit);
         }
     }
 
@@ -140,66 +138,100 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
         shotSwipeListener.onEndSwipe(shot);
     }
 
-    private void handleLeftSwipe() {
-        int progress = getSwipeProgress();
-        handleLikeAnimation(progress);
-        handlePlusAndBucketAnimation(progress);
+    private void handleLeftSwipe(float progress, int swipePosition, int swipeLimit) {
+        handleLikeAnimation(swipePosition, progress);
+        handlePlusAndBucketAnimation(swipePosition);
     }
 
-    private void handleLikeAnimation(int progress) {
+    private void handleRightSwipe(float progress, int swipePosition, int swipeLimit) {
+        handleFollowIconSwipe(progress);
+        handleCommentIconSwipe(progress, swipeLimit);
+    }
+
+    private void handleLikeAnimation(int swipePosition, float progress) {
         int likeIconLeft = likeIcon.getLeft();
-        float likePercent = getPercent(progress, likeIconLeft, likeIcon.getWidth());
+        float likePercent = getPercent(swipePosition, likeIconLeft, likeIcon.getWidth());
 
-        translateView(likeIcon, progress, likePercent);
+        translateView(likeIcon, swipePosition, likePercent);
+        translateView(likeIconFull, swipePosition, likePercent);
         scaleView(likeIcon, likePercent);
-        handlePlusAndBucketAnimation(progress);
+        scaleView(likeIconFull, likePercent);
+
+        animateAlpha(likeIconFull, LIKE_ICON_FILLED_ALPHA_ANIMATION_START_PROGRESS,
+                LIKE_ICON_FILLED_ALPHA_ANIMATION_END_PROGRESS, progress);
     }
 
-    private void handlePlusAndBucketAnimation(int progress) {
-        float plusPercent = getPercent(progress, plusIcon.getLeft(), plusIcon.getWidth());
-        float bucketPercent = getPercent(progress, bucketIcon.getLeft(), bucketIcon.getWidth());
+    private void handlePlusAndBucketAnimation(int swipePosition) {
+        float progressFactor = (float) swipePosition / (float) leftWrapper.getWidth();
+        float plusPercent = getPercent(swipePosition, plusIcon.getLeft(), plusIcon.getWidth());
+        float bucketPercent = getPercent(swipePosition, bucketIcon.getLeft(), bucketIcon.getWidth());
 
         scaleView(plusIcon, plusPercent);
         scaleView(bucketIcon, bucketPercent);
+        scaleView(bucketIconFull, bucketPercent);
+
+        animateAlpha(bucketIconFull, BUCKET_ICON_ALPHA_ANIMATION_START_PROGRESS,
+                BUCKET_ICON_ALPHA_ANIMATION_END_PROGRESS, progressFactor);
+        animateAlpha(bucketIcon, BUCKET_ICON_ALPHA_ANIMATION_START_PROGRESS,
+                BUCKET_ICON_ALPHA_ANIMATION_END_PROGRESS, progressFactor, true);
     }
 
-    private void handleRightSwipe(int positionX, int swipeLimit) {
-        float progress = (float) -positionX / (float) swipeLimit;
-        float horizontalTranslation = positionX * COMMENT_TRANSLATION_FACTOR;
-
-        commentIcon.setTranslationX(horizontalTranslation);
-        scaleView(commentIcon, progress, commentIcon.getWidth(), commentIcon.getHeight() / 2f);
+    private void handleFollowIconSwipe(float progress) {
+        animateAlpha(followIcon, FOLLOW_ICON_ALPHA_ANIMATION_START_PROGRESS,
+                FOLLOW_ICON_ALPHA_ANIMATION_END_PROGRESS, progress);
+        animateAlpha(followIconFull, FOLLOW_ICON_FILLED_ALPHA_ANIMATION_START_PROGRESS,
+                FOLLOW_ICON_ALPHA_ANIMATION_END_PROGRESS, progress);
     }
 
-    private void scaleView(View v, float percent) {
-        scaleView(v, percent, 0, v.getHeight() / 2f);
+    private void handleCommentIconSwipe(float progress, int swipeLimit) {
+        float margin = dpToPx(COMMENT_ICON_PADDING_DP);
+
+        // this is the progress at which comment icon is in the center horizontally
+        float commentCenterProgress = HALF +
+                ((commentIcon.getWidth() + margin) * HALF) / swipeLimit;
+
+        handleCommentIconTranslationAndScale(progress, margin, commentCenterProgress, swipeLimit);
+        handleCommentIconAlpha(progress, commentCenterProgress);
     }
 
-    private void scaleView(View v, float percent, float pivotX, float pivotY) {
-        if (percent > 0 && percent < 1) {
-            v.setPivotX(pivotX);
-            v.setPivotY(pivotY);
-            v.setScaleX(percent);
-            v.setScaleY(percent);
+    private void handleCommentIconTranslationAndScale(float progress, float margin,
+                                                      float commentCenterProgress, float swipeLimit) {
+        if (progress < commentCenterProgress) {
+            // translation
+            float translationX = (-progress * swipeLimit) + commentIcon.getWidth() + margin;
+            commentIcon.setTranslationX(translationX);
+            commentIconFull.setTranslationX(translationX);
+
+            // scale
+            float scale = progress / commentCenterProgress;
+            scaleView(commentIcon, scale, 0, commentIcon.getHeight() * HALF);
+            scaleView(commentIconFull, scale, 0, commentIconFull.getHeight() * HALF);
         }
     }
 
-    private void translateView(View v, int progress, float percent) {
-        if (percent > 0 && percent < 1) {
-            int horizontalTranslation = progress - v.getLeft() - ((int) (v.getWidth() * percent));
-            v.setTranslationX(horizontalTranslation);
+    private void handleCommentIconAlpha(float progress, float commentCenterProgress) {
+        float alphaProgressStart = commentCenterProgress - COMMENT_FILLED_ICON_ALPHA_START_PROGRESS;
+        float alphaProgressEnd = commentCenterProgress;
+
+        if (progress >= alphaProgressStart && progress <= alphaProgressEnd) {
+            float alpha = (progress - alphaProgressStart) / (alphaProgressEnd - alphaProgressStart);
+
+            commentIconFull.setAlpha(alpha);
+            commentIcon.setAlpha(ALPHA_MAX - alpha);
+        } else if (progress < alphaProgressStart) {
+            commentIcon.setAlpha(ALPHA_MAX);
+            commentIconFull.setAlpha(ALPHA_MIN);
+        } else if (progress > COMMENT_ICON_FADE_START_PROGRESS) {
+            commentIcon.setAlpha(ALPHA_MIN);
+
+            if (progress < COMMENT_ICON_FADE_END_PROGRESS) {
+                float alpha = ALPHA_MAX - ((progress - COMMENT_ICON_FADE_START_PROGRESS) /
+                        (COMMENT_ICON_FADE_END_PROGRESS - COMMENT_ICON_FADE_START_PROGRESS));
+                commentIconFull.setAlpha(alpha);
+            } else {
+                commentIconFull.setAlpha(ALPHA_MIN);
+            }
         }
-    }
-
-    private int getSwipeProgress() {
-        int[] shotAbsoluteCoordinates = new int[LOCATION_ON_SCREEN_COORDINATES_NUMBER];
-        shotImageView.getLocationOnScreen(shotAbsoluteCoordinates);
-
-        int[] leftWrapperAbsoluteCoordinates = new int[LOCATION_ON_SCREEN_COORDINATES_NUMBER];
-        leftWrapper.getLocationOnScreen(leftWrapperAbsoluteCoordinates);
-
-        int diff = leftWrapperAbsoluteCoordinates[0] - leftWrapper.getLeft();
-        return shotAbsoluteCoordinates[0] - diff;
     }
 
     private float getPercent(int progress, int viewLeft, int viewWidth) {
