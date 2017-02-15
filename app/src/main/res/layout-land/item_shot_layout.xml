@@ -130,6 +130,7 @@
         </co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout>
 
         <RelativeLayout
+            android:id="@+id/shot_details_layout"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_below="@+id/long_swipe_layout">
