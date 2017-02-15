@@ -3,6 +3,8 @@ package co.netguru.android.inbbbox.common.utils;
 import android.content.res.Resources;
 import android.view.View;
 
+import timber.log.Timber;
+
 public class AnimationUtil {
 
     private static final float SLID_IN_DESIGNATED_TRANSLATION = 0;
@@ -33,13 +35,20 @@ public class AnimationUtil {
             v.setPivotY(pivotY);
             v.setScaleX(percent);
             v.setScaleY(percent);
+        } else {
+            v.setScaleX(1);
+            v.setScaleY(1);
         }
     }
 
-    public static void translateView(View v, int progress, float percent) {
-        if (percent > 0 && percent < 1) {
+    public static void translateView(View v, int progress, float percent, int swipeLimit) {
+        // problem: nie wiem jaki progress jest przy percencie
+        if (percent >= 0 && percent <= 1) {
             int horizontalTranslation = progress - v.getLeft() - ((int) (v.getWidth() * percent));
+            Timber.d("translation: "+horizontalTranslation);
             v.setTranslationX(horizontalTranslation);
+        } else {
+            v.setTranslationX(0);
         }
     }
 
