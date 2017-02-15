@@ -15,6 +15,7 @@ import co.netguru.android.inbbbox.data.db.mappers.TeamDBMapper;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 @Singleton
 public class GuestModeLikesRepository extends BaseGuestModeRepository {
@@ -56,18 +57,21 @@ public class GuestModeLikesRepository extends BaseGuestModeRepository {
         return daoSession.getShotDBDao().rx().deleteByKey(shot.id()).toCompletable();
     }
 
-    public Completable isShotLiked(Shot shot) {
+    public Single<Boolean> isShotLiked(Shot shot) {
         return daoSession.getShotDBDao().queryBuilder()
                 .where(ShotDBDao.Properties.Id.eq(shot.id()))
                 .rx()
                 .unique()
-                .flatMap(shotDB -> {
+                .map(shotDB -> {
+                    boolean isLiked = false;
                     if (shotDB == null || !shotDB.getIsLiked()) {
-                        return Observable.error(new Throwable(SHOT_IS_NOT_LIKED_ERROR));
+                        isLiked = false;
+                    } else if (shotDB != null && shotDB.getIsLiked()) {
+                        isLiked = true;
                     }
-                    return Observable.empty();
+                    return isLiked;
                 })
-                .toCompletable();
+                .toSingle();
     }
 
     private ShotDB likeShot(Shot shot) {
