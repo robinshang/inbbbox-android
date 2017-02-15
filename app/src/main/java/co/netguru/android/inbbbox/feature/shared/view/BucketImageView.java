@@ -89,6 +89,7 @@ public class BucketImageView extends FrameLayout {
     public void startAnimation() {
         if (timer != null) {
             timer.cancel();
+            timer.purge();
         }
 
         initGrid();
@@ -98,6 +99,7 @@ public class BucketImageView extends FrameLayout {
     public void onPause() {
         if (timer != null) {
             timer.cancel();
+            timer.purge();
         }
     }
 

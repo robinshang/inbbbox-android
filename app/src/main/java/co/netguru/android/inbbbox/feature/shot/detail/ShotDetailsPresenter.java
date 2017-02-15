@@ -271,6 +271,7 @@ public class ShotDetailsPresenter
         if (isCommentModeInit) {
             getView().showInputIfHidden();
             getView().showKeyboard();
+            getView().requestFocusOnCommentInput();
         }
     }
 
