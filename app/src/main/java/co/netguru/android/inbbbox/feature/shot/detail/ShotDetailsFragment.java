@@ -255,6 +255,11 @@ public class ShotDetailsFragment
     }
 
     @Override
+    public void requestFocusOnCommentInput() {
+        commentTextInputLayout.requestFocus();
+    }
+
+    @Override
     public void hideDetailsScreen() {
         getActivity().onBackPressed();
     }

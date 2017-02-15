@@ -45,6 +45,8 @@ public interface ShotDetailsContract {
 
         void showInputIfHidden();
 
+        void requestFocusOnCommentInput();
+
         void hideDetailsScreen();
 
         void hideKeyboard();
