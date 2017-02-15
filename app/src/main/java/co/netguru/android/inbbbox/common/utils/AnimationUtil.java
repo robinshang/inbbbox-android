@@ -41,8 +41,7 @@ public class AnimationUtil {
         }
     }
 
-    public static void translateView(View v, int progress, float percent, int swipeLimit) {
-        // problem: nie wiem jaki progress jest przy percencie
+    public static void translateView(View v, int progress, float percent) {
         if (percent >= 0 && percent <= 1) {
             int horizontalTranslation = progress - v.getLeft() - ((int) (v.getWidth() * percent));
             v.setTranslationX(horizontalTranslation);

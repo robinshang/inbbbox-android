@@ -4,7 +4,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
@@ -84,15 +83,15 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
         float progress = (float) swipePosition / (float) swipeLimit;
 
         if (swipePosition > 0) {
-            handleLeftSwipe(progress, swipePosition, swipeLimit);
+            handleLeftSwipe(progress, swipePosition);
         } else {
             handleRightSwipe(-progress, swipePosition, swipeLimit);
         }
     }
 
 
-    private void handleLeftSwipe(float progress, int swipePosition, int swipeLimit) {
-        handleLikeAnimation(swipePosition, progress, swipeLimit);
+    private void handleLeftSwipe(float progress, int swipePosition) {
+        handleLikeAnimation(swipePosition, progress);
         handlePlusAndBucketAnimation(swipePosition);
     }
 
@@ -101,12 +100,12 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
         handleCommentIconSwipe(progress, swipeLimit);
     }
 
-    private void handleLikeAnimation(int swipePosition, float progress, int swipeLimit) {
+    private void handleLikeAnimation(int swipePosition, float progress) {
         int likeIconLeft = likeIcon.getLeft();
         float likePercent = getPercent(swipePosition, likeIconLeft, likeIcon.getWidth());
 
-        translateView(likeIcon, swipePosition, likePercent, swipeLimit);
-        translateView(likeIconFull, swipePosition, likePercent, swipeLimit);
+        translateView(likeIcon, swipePosition, likePercent);
+        translateView(likeIconFull, swipePosition, likePercent);
         scaleView(likeIcon, likePercent);
         scaleView(likeIconFull, likePercent);
 
@@ -130,7 +129,7 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
     }
 
     private void handleFollowIconSwipe(float progress) {
-        if(followIcon != null) {
+        if (followIcon != null) {
             animateAlpha(followIcon, FOLLOW_ICON_ALPHA_ANIMATION_START_PROGRESS,
                     FOLLOW_ICON_ALPHA_ANIMATION_END_PROGRESS, progress);
             animateAlpha(followIconFull, FOLLOW_ICON_FILLED_ALPHA_ANIMATION_START_PROGRESS,
