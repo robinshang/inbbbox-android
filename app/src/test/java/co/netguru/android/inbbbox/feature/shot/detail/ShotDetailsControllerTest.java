@@ -251,12 +251,12 @@ public class ShotDetailsControllerTest {
 
     private void mockLikedShotState() {
         when(likeShotControllerApiMock.isShotLiked(shotMock))
-                .thenReturn(Completable.complete());
+                .thenReturn(Single.just(true));
     }
 
     private void mockNotLikedShotState() {
         when(likeShotControllerApiMock.isShotLiked(shotMock))
-                .thenReturn(Completable.error(new Throwable()));
+                .thenReturn(Single.just(false));
     }
 
     private void mockInBucketShotState() {

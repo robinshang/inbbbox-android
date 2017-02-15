@@ -17,6 +17,7 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.observers.TestSubscriber;
 
 import static org.mockito.Matchers.any;
@@ -56,7 +57,7 @@ public class LikeShotControllerGuestTest {
         when(guestModeLikesRepository.removeLikedShot(any(Shot.class)))
                 .thenReturn(Completable.complete());
         when(guestModeLikesRepository.isShotLiked(any(Shot.class)))
-                .thenReturn(Completable.complete());
+                .thenReturn(Single.just(true));
     }
 
     @Test
