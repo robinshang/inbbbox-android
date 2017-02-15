@@ -3,14 +3,12 @@ package co.netguru.android.inbbbox.common.utils;
 import android.content.res.Resources;
 import android.view.View;
 
-import timber.log.Timber;
-
 public class AnimationUtil {
 
-    private static final float SLID_IN_DESIGNATED_TRANSLATION = 0;
-    private static final float TRANSLATION_INITIAL_OFFSET = 550f;
     public static final float ALPHA_MIN = 0f;
     public static final float ALPHA_MAX = 1f;
+    private static final float SLID_IN_DESIGNATED_TRANSLATION = 0;
+    private static final float TRANSLATION_INITIAL_OFFSET = 550f;
 
     private AnimationUtil() {
         throw new AssertionError();
@@ -51,12 +49,12 @@ public class AnimationUtil {
     }
 
     public static void animateAlpha(View view, float fromProgress, float toProgress,
-                              float currentProgress) {
+                                    float currentProgress) {
         animateAlpha(view, fromProgress, toProgress, currentProgress, false);
     }
 
     public static void animateAlpha(View view, float fromProgress, float toProgress,
-                              float currentProgress, boolean reverse) {
+                                    float currentProgress, boolean reverse) {
         if (currentProgress <= fromProgress) {
             view.setAlpha(reverse ? ALPHA_MAX : ALPHA_MIN);
         } else if (currentProgress >= toProgress) {
