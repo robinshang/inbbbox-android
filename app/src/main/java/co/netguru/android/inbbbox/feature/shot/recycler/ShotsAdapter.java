@@ -18,6 +18,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
     private final ShotSwipeListener shotSwipeListener;
     private final DetailsVisibilityChangeEmitter emitter;
+    private boolean isDetailsVisible;
 
     @NonNull
     private List<Shot> items;
@@ -28,6 +29,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
         this.shotSwipeListener = shotSwipeListener;
         this.emitter = emitter;
         items = Collections.emptyList();
+        isDetailsVisible = true;
     }
 
     @Override
@@ -40,6 +42,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
     @Override
     public void onBindViewHolder(ShotsViewHolder holder, int position) {
         holder.bind(items.get(position));
+        holder.onDetailsChangeVisibility(isDetailsVisible);
     }
 
     @Override
@@ -70,6 +73,10 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
         final int position = findShotPosition(shot.id());
         items.set(position, shot);
         notifyItemChanged(position);
+    }
+
+    public void setDetailsVisibilityFlag(boolean isVisible) {
+        this.isDetailsVisible = isVisible;
     }
 
     public Shot getShotFromPosition(int shotPosition) {

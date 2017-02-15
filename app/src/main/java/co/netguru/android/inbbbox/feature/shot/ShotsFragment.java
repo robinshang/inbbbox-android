@@ -247,6 +247,8 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void onDetailsVisibilityChange(boolean isVisible) {
+        adapter.setDetailsVisibilityFlag(isVisible);
+
         if (detailsVisibilityChangeListener != null)
             detailsVisibilityChangeListener.onDetailsChangeVisibility(isVisible);
     }
