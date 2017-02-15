@@ -17,13 +17,16 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
     private final ShotSwipeListener shotSwipeListener;
+    private final DetailsVisibilityChangeEmitter emitter;
 
     @NonNull
     private List<Shot> items;
 
     @Inject
-    public ShotsAdapter(@NonNull ShotSwipeListener shotSwipeListener) {
+    public ShotsAdapter(@NonNull ShotSwipeListener shotSwipeListener,
+                        @NonNull DetailsVisibilityChangeEmitter emitter) {
         this.shotSwipeListener = shotSwipeListener;
+        this.emitter = emitter;
         items = Collections.emptyList();
     }
 
@@ -31,7 +34,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
     public ShotsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_shot_layout, parent, false);
-        return new ShotsViewHolder(itemView, shotSwipeListener);
+        return new ShotsViewHolder(itemView, shotSwipeListener, emitter);
     }
 
     @Override

@@ -23,7 +23,7 @@ import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.ItemSwipeList
 import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout;
 
 class ShotsViewHolder extends BaseViewHolder<Shot>
-        implements ItemSwipeListener {
+        implements ItemSwipeListener, DetailsVisibilityChangeListener {
 
     private static final int ALPHA_MAX = 255;
     private static final int ALPHA_MIN = 0;
@@ -56,15 +56,19 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
     TextView likesCountTextView;
     @BindView(R.id.user_imageView)
     ImageView userImageView;
+    @BindView(R.id.shot_details_layout)
+    View shotDetailsView;
 
     @BindDrawable(R.drawable.shot_placeholder)
     Drawable shotPlaceHolder;
 
     private Shot shot;
 
-    ShotsViewHolder(View itemView, @NonNull ShotSwipeListener shotSwipeListener) {
+    ShotsViewHolder(View itemView, @NonNull ShotSwipeListener shotSwipeListener,
+                    @NonNull DetailsVisibilityChangeEmitter emitter) {
         super(itemView);
         this.shotSwipeListener = shotSwipeListener;
+        emitter.setListener(this);
         longSwipeLayout.setItemSwipeListener(this);
     }
 
@@ -131,6 +135,15 @@ class ShotsViewHolder extends BaseViewHolder<Shot>
         } else {
             handleRightSwipe(positionX, swipeLimit);
         }
+    }
+
+    @Override
+    public void onDetailsChangeVisibility(boolean shouldBeVisible) {
+        if (shouldBeVisible)
+            shotDetailsView.setVisibility(View.VISIBLE);
+        else
+            shotDetailsView.setVisibility(View.INVISIBLE);
+
     }
 
     private void handleLeftSwipe() {

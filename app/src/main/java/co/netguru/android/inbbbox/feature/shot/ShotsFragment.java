@@ -17,7 +17,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
@@ -40,6 +39,8 @@ import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
+import co.netguru.android.inbbbox.feature.shot.recycler.DetailsVisibilityChangeEmitter;
+import co.netguru.android.inbbbox.feature.shot.recycler.DetailsVisibilityChangeListener;
 import co.netguru.android.inbbbox.feature.shot.recycler.ShotSwipeListener;
 import co.netguru.android.inbbbox.feature.shot.recycler.ShotsAdapter;
 import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucketDialogFragment;
@@ -47,7 +48,7 @@ import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucket
 public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
         ShotsContract.View, ShotsContract.Presenter> implements RefreshableFragment, ShotsContract.View, ShotSwipeListener,
         AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener,
-        ViewTreeObserver.OnWindowFocusChangeListener {
+        ViewTreeObserver.OnWindowFocusChangeListener, DetailsVisibilityChangeEmitter {
 
     private static final int SHOTS_TO_LOAD_MORE = 5;
 
@@ -77,6 +78,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     private ShotsAdapter adapter;
     private ShotActionListener shotActionListener;
+    private DetailsVisibilityChangeListener detailsVisibilityChangeListener;
 
     public static ShotsFragment newInstance() {
         return new ShotsFragment();
@@ -187,7 +189,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     private void initRecycler() {
-        adapter = new ShotsAdapter(this);
+        adapter = new ShotsAdapter(this, this);
         shotsRecyclerView.setAdapter(adapter);
         shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shotsRecyclerView.setHasFixedSize(true);
@@ -241,6 +243,12 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
                 .build();
 
         shotActionListener.showShotDetails(selectedShot, adapter.getItems(), request);
+    }
+
+    @Override
+    public void onDetailsVisibilityChange(boolean isVisible) {
+        if (detailsVisibilityChangeListener != null)
+            detailsVisibilityChangeListener.onDetailsChangeVisibility(isVisible);
     }
 
     @Override
@@ -305,6 +313,11 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void showMessageOnServerError(String errorText) {
         Snackbar.make(shotsRecyclerView, errorText, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setListener(DetailsVisibilityChangeListener listener) {
+        this.detailsVisibilityChangeListener = listener;
     }
 
     private void initLoadingAnimation() {

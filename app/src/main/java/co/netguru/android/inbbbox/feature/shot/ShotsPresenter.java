@@ -9,6 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
+import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
@@ -17,6 +18,8 @@ import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.event.RxBus;
+import co.netguru.android.inbbbox.event.events.DetailsVisibilityChangeEvent;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;
@@ -38,27 +41,38 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private final BucketsController bucketsController;
     private final FollowersController followersController;
     private final CompositeSubscription subscriptions;
+    private final RxBus rxBus;
 
     @NonNull
     private Subscription refreshSubscription;
     @NonNull
     private Subscription loadMoreSubscription;
+    @NonNull
+    private Subscription busSubscription;
     private int pageNumber = FIRST_PAGE;
     private boolean hasMore = true;
 
     @Inject
     ShotsPresenter(ShotsController shotsController, LikeShotController likeShotController,
                    BucketsController bucketsController, ErrorController errorController,
-                   FollowersController followersController) {
+                   FollowersController followersController, RxBus rxBus) {
 
         this.shotsController = shotsController;
         this.likeShotController = likeShotController;
         this.bucketsController = bucketsController;
         this.errorController = errorController;
         this.followersController = followersController;
+        this.rxBus = rxBus;
         subscriptions = new CompositeSubscription();
         refreshSubscription = Subscriptions.unsubscribed();
         loadMoreSubscription = Subscriptions.unsubscribed();
+        busSubscription = Subscriptions.unsubscribed();
+    }
+
+    @Override
+    public void attachView(ShotsContract.View view) {
+        super.attachView(view);
+        setupRxBus();
     }
 
     @Override
@@ -179,5 +193,11 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         return Shot.update(shot)
                 .isLiked(true)
                 .build();
+    }
+
+    private void setupRxBus() {
+        busSubscription = rxBus.getEvents(DetailsVisibilityChangeEvent.class)
+                .compose(RxTransformers.androidIO())
+                .subscribe(event -> getView().onDetailsVisibilityChange(event.isDetailsVisible()));
     }
 }

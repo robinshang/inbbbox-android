@@ -34,6 +34,8 @@ interface ShotsContract {
         void showShotRemoveFromBucketSuccess();
 
         void showDetailsScreenInCommentMode(Shot selectedShot);
+
+        void onDetailsVisibilityChange(boolean isVisible);
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
