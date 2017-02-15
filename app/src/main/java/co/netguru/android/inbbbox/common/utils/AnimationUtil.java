@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.common.utils;
 
-import android.content.res.Resources;
 import android.view.View;
 
 public class AnimationUtil {
@@ -63,9 +62,5 @@ public class AnimationUtil {
             float alpha = (currentProgress - fromProgress) / (toProgress - fromProgress);
             view.setAlpha(reverse ? 1 - alpha : alpha);
         }
-    }
-
-    public static int dpToPx(int dp) {
-        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 }

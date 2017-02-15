@@ -12,7 +12,7 @@ import co.netguru.android.inbbbox.feature.onboarding.OnboardingStep;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingStepData;
 import co.netguru.android.inbbbox.feature.shot.recycler.BaseShotsViewHolder;
 
-import static co.netguru.android.inbbbox.common.utils.AnimationUtil.dpToPx;
+import static co.netguru.android.inbbbox.common.utils.UnitsUtils.dpToPx;
 
 public class OnboardingShotsViewHolder extends BaseShotsViewHolder<OnboardingStep> {
 

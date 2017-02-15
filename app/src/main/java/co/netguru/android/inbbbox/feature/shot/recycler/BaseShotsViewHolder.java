@@ -15,18 +15,18 @@ import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayo
 import static co.netguru.android.inbbbox.common.utils.AnimationUtil.ALPHA_MAX;
 import static co.netguru.android.inbbbox.common.utils.AnimationUtil.ALPHA_MIN;
 import static co.netguru.android.inbbbox.common.utils.AnimationUtil.animateAlpha;
-import static co.netguru.android.inbbbox.common.utils.AnimationUtil.dpToPx;
+import static co.netguru.android.inbbbox.common.utils.UnitsUtils.dpToPx;
 import static co.netguru.android.inbbbox.common.utils.AnimationUtil.scaleView;
 import static co.netguru.android.inbbbox.common.utils.AnimationUtil.translateView;
 
 public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
         implements ItemSwipeListener {
 
-    public static final int COMMENT_ICON_PADDING_DP = 24;
-    public static final float HALF = 0.5f;
-    public static final float COMMENT_FILLED_ICON_ALPHA_START_PROGRESS = 0.25f;
-    public static final float COMMENT_ICON_FADE_START_PROGRESS = 0.8f;
-    public static final float COMMENT_ICON_FADE_END_PROGRESS = 0.9f;
+    private static final int COMMENT_ICON_PADDING_DP = 24;
+    private static final float HALF = 0.5f;
+    private static final float COMMENT_FILLED_ICON_ALPHA_START_PROGRESS = 0.25f;
+    private static final float COMMENT_ICON_FADE_START_PROGRESS = 0.8f;
+    private static final float COMMENT_ICON_FADE_END_PROGRESS = 0.9f;
     private static final float FOLLOW_ICON_ALPHA_ANIMATION_START_PROGRESS = 0.85f;
     private static final float FOLLOW_ICON_FILLED_ALPHA_ANIMATION_START_PROGRESS = 0.92f;
     private static final float FOLLOW_ICON_ALPHA_ANIMATION_END_PROGRESS = 1;
@@ -70,7 +70,7 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
     @BindView(R.id._left_wrapper)
     ViewGroup leftWrapper;
 
-    public BaseShotsViewHolder(View view) {
+    protected BaseShotsViewHolder(View view) {
         super(view);
 
         if (longSwipeLayout != null) {
@@ -137,7 +137,7 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
         }
     }
 
-    protected void handleCommentIconSwipe(float progress, int swipeLimit) {
+    private void handleCommentIconSwipe(float progress, int swipeLimit) {
         float margin = dpToPx(COMMENT_ICON_PADDING_DP);
 
         // this is the progress at which comment icon is in the center horizontally
