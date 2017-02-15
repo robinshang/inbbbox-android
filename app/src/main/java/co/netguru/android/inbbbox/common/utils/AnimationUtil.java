@@ -45,7 +45,6 @@ public class AnimationUtil {
         // problem: nie wiem jaki progress jest przy percencie
         if (percent >= 0 && percent <= 1) {
             int horizontalTranslation = progress - v.getLeft() - ((int) (v.getWidth() * percent));
-            Timber.d("translation: "+horizontalTranslation);
             v.setTranslationX(horizontalTranslation);
         } else {
             v.setTranslationX(0);
