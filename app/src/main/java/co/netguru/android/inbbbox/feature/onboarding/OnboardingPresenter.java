@@ -20,6 +20,15 @@ public class OnboardingPresenter extends MvpNullObjectBasePresenter<OnboardingCo
         implements OnboardingContract.Presenter {
 
     private static final int NETGURU_ID = 653174;
+    private static final User NETGURU_USER = User
+            .builder()
+            .id(NETGURU_ID)
+            .name("")
+            .avatarUrl("")
+            .username("")
+            .shotsCount(0)
+            .type("team")
+            .build();
 
     private final OnboardingController onboardingController;
     private final FollowersController followersController;
@@ -61,7 +70,7 @@ public class OnboardingPresenter extends MvpNullObjectBasePresenter<OnboardingCo
     public void handleFollowShotAuthor(OnboardingStep step) {
         if (step.getStep() == OnboardingStepData.STEP_FOLLOW.getStep()) {
             scrollToNextStep(step);
-            followersController.followUser(getNetguruUser())
+            followersController.followUser(NETGURU_USER)
                     .compose(applyCompletableIoSchedulers())
                     .subscribe(() -> {},
                             throwable -> Timber.d("Error occurred when following netguru"));
@@ -94,17 +103,5 @@ public class OnboardingPresenter extends MvpNullObjectBasePresenter<OnboardingCo
                 new OnboardingStep(OnboardingStepData.STEP_COMMENT),
                 new OnboardingStep(OnboardingStepData.STEP_FOLLOW),
                 new OnboardingStep(OnboardingStepData.STEP_CLICK));
-    }
-
-    private User getNetguruUser() {
-        return User
-                .builder()
-                .id(NETGURU_ID)
-                .name("")
-                .avatarUrl("")
-                .username("")
-                .shotsCount(0)
-                .type("team")
-                .build();
     }
 }
