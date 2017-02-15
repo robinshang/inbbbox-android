@@ -81,6 +81,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         if (!retainInstance) {
             refreshSubscription.unsubscribe();
             loadMoreSubscription.unsubscribe();
+            busSubscription.unsubscribe();
         }
     }
 
