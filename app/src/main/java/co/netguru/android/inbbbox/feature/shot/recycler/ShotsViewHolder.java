@@ -3,9 +3,6 @@ package co.netguru.android.inbbbox.feature.shot.recycler;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,9 +13,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import retrofit2.http.HEAD;
-
-import static co.netguru.android.inbbbox.common.utils.AnimationUtil.ALPHA_MIN;
 
 class ShotsViewHolder extends BaseShotsViewHolder<Shot> implements DetailsVisibilityChangeListener {
 
