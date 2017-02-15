@@ -15,7 +15,7 @@
     <dimen name='activity_login_button_drawable_padding'>48dp</dimen>
     <dimen name='activity_login_button_padding_start'>16dp</dimen>
 
-    <dimen name="activity_main_tab_height">66dp</dimen>
+    <dimen name="activity_main_tab_height">56dp</dimen>
     <dimen name="activity_main_tab_land_height">34dp</dimen>
     <dimen name="activity_main_tab_shadow_height">4dp</dimen>
     <dimen name="activity_main_tab_indicator_height">0dp</dimen>
