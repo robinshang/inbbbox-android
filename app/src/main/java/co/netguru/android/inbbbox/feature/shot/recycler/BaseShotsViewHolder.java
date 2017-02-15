@@ -85,7 +85,7 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
         if (swipePosition > 0) {
             handleLeftSwipe(progress, swipePosition);
         } else {
-            handleRightSwipe(-progress, swipePosition, swipeLimit);
+            handleRightSwipe(-progress, swipeLimit);
         }
     }
 
@@ -95,7 +95,7 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
         handlePlusAndBucketAnimation(swipePosition);
     }
 
-    protected void handleRightSwipe(float progress, int swipePosition, int swipeLimit) {
+    protected void handleRightSwipe(float progress, int swipeLimit) {
         handleFollowIconSwipe(progress);
         handleCommentIconSwipe(progress, swipeLimit);
     }

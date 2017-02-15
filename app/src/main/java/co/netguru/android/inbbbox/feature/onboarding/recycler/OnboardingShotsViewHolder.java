@@ -78,9 +78,9 @@ public class OnboardingShotsViewHolder extends BaseShotsViewHolder<OnboardingSte
     }
 
     @Override
-    protected void handleRightSwipe(float progress, int swipePosition, int swipeLimit) {
+    protected void handleRightSwipe(float progress, int swipePosition) {
         if (onboardingShot.getStep() >= OnboardingStepData.STEP_COMMENT.getStep()) {
-            super.handleRightSwipe(progress, swipePosition, swipeLimit);
+            super.handleRightSwipe(progress, swipePosition);
         }
     }
 
