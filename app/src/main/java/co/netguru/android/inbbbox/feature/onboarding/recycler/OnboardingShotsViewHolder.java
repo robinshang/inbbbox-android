@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.Optional;
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingShotSwipeListener;
@@ -65,6 +66,12 @@ class OnboardingShotsViewHolder extends BaseViewHolder<OnboardingStep>
     @OnClick(R.id.iv_shot_image)
     void onShotClick() {
         shotSwipeListener.onShotSelected(onboardingShot);
+    }
+
+    @OnClick(R.id.skip_follow)
+    @Optional
+    void onSkipClick() {
+        shotSwipeListener.onSkip(onboardingShot);
     }
 
     @Override

@@ -1,13 +1,15 @@
 package co.netguru.android.inbbbox.feature.onboarding;
 
 public interface OnboardingShotSwipeListener {
-    void onShotLikeSwipe(OnboardingStep shot);
+    void onShotLikeSwipe(OnboardingStep step);
 
-    void onAddShotToBucketSwipe(OnboardingStep shot);
+    void onAddShotToBucketSwipe(OnboardingStep step);
 
-    void onCommentShotSwipe(OnboardingStep shot);
+    void onCommentShotSwipe(OnboardingStep step);
 
-    void onFollowUserSwipe(OnboardingStep shot);
+    void onFollowUserSwipe(OnboardingStep step);
 
-    void onShotSelected(OnboardingStep shot);
+    void onSkip(OnboardingStep step);
+
+    void onShotSelected(OnboardingStep step);
 }
