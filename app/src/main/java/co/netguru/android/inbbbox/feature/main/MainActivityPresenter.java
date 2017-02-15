@@ -21,6 +21,8 @@ import co.netguru.android.inbbbox.data.settings.model.CustomizationSettings;
 import co.netguru.android.inbbbox.data.settings.model.NotificationSettings;
 import co.netguru.android.inbbbox.data.settings.model.Settings;
 import co.netguru.android.inbbbox.data.settings.model.StreamSourceSettings;
+import co.netguru.android.inbbbox.event.RxBus;
+import co.netguru.android.inbbbox.event.events.DetailsVisibilityChangeEvent;
 import co.netguru.android.inbbbox.feature.main.MainViewContract.Presenter;
 import co.netguru.android.inbbbox.feature.remindernotification.NotificationController;
 import co.netguru.android.inbbbox.feature.remindernotification.NotificationScheduler;
@@ -44,7 +46,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private final ErrorController errorController;
     private final OnboardingController onboardingController;
     private final CompositeSubscription subscriptions;
-
+    private final RxBus rxBus;
     private boolean isFollowing;
     private boolean isNew;
     private boolean isPopular;
@@ -60,7 +62,8 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                           SettingsController settingsController,
                           ErrorController errorController,
                           TokenParametersController tokenParametersController,
-                          LogoutController logoutController, OnboardingController onboardingController) {
+                          LogoutController logoutController, OnboardingController onboardingController,
+                          RxBus rxBus) {
         this.userController = userController;
         this.notificationScheduler = notificationScheduler;
         this.notificationController = notificationController;
@@ -69,6 +72,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         this.logoutController = logoutController;
         this.errorController = errorController;
         this.onboardingController = onboardingController;
+        this.rxBus = rxBus;
         this.subscriptions = new CompositeSubscription();
     }
 
@@ -178,8 +182,10 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     public void customizationStatusChanged(boolean isDetails) {
         final Subscription subscription = settingsController.changeShotsDetailsStatus(isDetails)
                 .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                .subscribe(() -> Timber.d("Customization settings changed"),
-                        throwable -> handleError(throwable, "Error while changing customization settings"));
+                .subscribe(() -> {
+                            Timber.d("Customization settings changed");
+                            getView().changeCustomizationStatus(isDetails);
+                        }, throwable -> handleError(throwable, "Error while changing customization settings"));
         subscriptions.add(subscription);
     }
 
@@ -219,6 +225,11 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                                 throwable -> Timber
                                         .e(throwable, "Error during sign up url retrieving"))
         );
+    }
+
+    @Override
+    public void onShotDetailsVisibilityChange(boolean isVisible) {
+        rxBus.send(new DetailsVisibilityChangeEvent(isVisible));
     }
 
     private void requestUserData() {

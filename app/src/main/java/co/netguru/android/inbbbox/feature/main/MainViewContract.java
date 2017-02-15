@@ -82,5 +82,7 @@ interface MainViewContract {
         void onTimePicked(int hour, int minute);
 
         void onCreateAccountClick();
+
+        void onShotDetailsVisibilityChange(boolean isVisible);
     }
 }
