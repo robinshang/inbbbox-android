@@ -182,10 +182,8 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     public void customizationStatusChanged(boolean isDetails) {
         final Subscription subscription = settingsController.changeShotsDetailsStatus(isDetails)
                 .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                .subscribe(() -> {
-                            Timber.d("Customization settings changed");
-                            getView().changeCustomizationStatus(isDetails);
-                        }, throwable -> handleError(throwable, "Error while changing customization settings"));
+                .subscribe(() -> onCustomizationStatuChangeSuccess(isDetails),
+                        throwable -> handleError(throwable, "Error while changing customization settings"));
         subscriptions.add(subscription);
     }
 
@@ -230,6 +228,11 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     @Override
     public void onShotDetailsVisibilityChange(boolean isVisible) {
         rxBus.send(new DetailsVisibilityChangeEvent(isVisible));
+    }
+
+    private void onCustomizationStatuChangeSuccess(boolean isDetails) {
+        Timber.d("Customization settings changed");
+        getView().changeCustomizationStatus(isDetails);
     }
 
     private void requestUserData() {
