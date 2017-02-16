@@ -84,23 +84,28 @@ public class OnboardingFragment
     }
 
     @Override
-    public void onShotLikeSwipe(OnboardingStep shot) {
-        getPresenter().handleLikeShot(shot);
+    public void onShotLikeSwipe(OnboardingStep step) {
+        getPresenter().handleLikeShot(step);
     }
 
     @Override
-    public void onAddShotToBucketSwipe(OnboardingStep shot) {
-        getPresenter().handleAddShotToBucket(shot);
+    public void onAddShotToBucketSwipe(OnboardingStep step) {
+        getPresenter().handleAddShotToBucket(step);
     }
 
     @Override
-    public void onCommentShotSwipe(OnboardingStep shot) {
-        getPresenter().handleCommentShot(shot);
+    public void onCommentShotSwipe(OnboardingStep step) {
+        getPresenter().handleCommentShot(step);
     }
 
     @Override
-    public void onFollowUserSwipe(OnboardingStep shot) {
-        getPresenter().handleFollowShotAuthor(shot);
+    public void onFollowUserSwipe(OnboardingStep step) {
+        getPresenter().handleFollowShotAuthor(step);
+    }
+
+    @Override
+    public void onSkip(OnboardingStep step) {
+        getPresenter().handleSkipFollow(step);
     }
 
     @Override

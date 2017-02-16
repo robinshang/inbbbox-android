@@ -19,14 +19,16 @@ interface OnboardingContract {
 
         void getShots();
 
-        void handleLikeShot(OnboardingStep shot);
+        void handleLikeShot(OnboardingStep step);
 
-        void handleAddShotToBucket(OnboardingStep shot);
+        void handleAddShotToBucket(OnboardingStep step);
 
-        void handleShowShotDetails(OnboardingStep shot);
+        void handleShowShotDetails(OnboardingStep step);
 
-        void handleCommentShot(OnboardingStep shot);
+        void handleCommentShot(OnboardingStep step);
 
-        void handleFollowShotAuthor(OnboardingStep shot);
+        void handleFollowShotAuthor(OnboardingStep step);
+
+        void handleSkipFollow(OnboardingStep step);
     }
 }
