@@ -17,26 +17,32 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
     private final ShotSwipeListener shotSwipeListener;
+    private final DetailsVisibilityChangeEmitter emitter;
+    private boolean isDetailsVisible;
 
     @NonNull
     private List<Shot> items;
 
     @Inject
-    public ShotsAdapter(@NonNull ShotSwipeListener shotSwipeListener) {
+    public ShotsAdapter(@NonNull ShotSwipeListener shotSwipeListener,
+                        @NonNull DetailsVisibilityChangeEmitter emitter) {
         this.shotSwipeListener = shotSwipeListener;
+        this.emitter = emitter;
         items = Collections.emptyList();
+        isDetailsVisible = true;
     }
 
     @Override
     public ShotsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_shot_layout, parent, false);
-        return new ShotsViewHolder(itemView, shotSwipeListener);
+        return new ShotsViewHolder(itemView, shotSwipeListener, emitter);
     }
 
     @Override
     public void onBindViewHolder(ShotsViewHolder holder, int position) {
         holder.bind(items.get(position));
+        holder.onDetailsChangeVisibility(isDetailsVisible);
     }
 
     @Override
@@ -67,6 +73,10 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
         final int position = findShotPosition(shot.id());
         items.set(position, shot);
         notifyItemChanged(position);
+    }
+
+    public void setDetailsVisibilityFlag(boolean isVisible) {
+        this.isDetailsVisible = isVisible;
     }
 
     public Shot getShotFromPosition(int shotPosition) {
