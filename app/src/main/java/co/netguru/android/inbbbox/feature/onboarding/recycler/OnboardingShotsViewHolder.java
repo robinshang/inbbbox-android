@@ -6,6 +6,8 @@ import android.view.View;
 import com.bumptech.glide.Glide;
 
 import butterknife.OnClick;
+import butterknife.Optional;
+import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingShotSwipeListener;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingStep;
@@ -31,8 +33,13 @@ public class OnboardingShotsViewHolder extends BaseShotsViewHolder<OnboardingSte
     void onShotClick() {
         shotSwipeListener.onShotSelected(onboardingShot);
     }
-
-
+  
+    @OnClick(R.id.skip_follow)
+    @Optional
+    void onSkipClick() {
+        shotSwipeListener.onSkip(onboardingShot);
+    }
+  
     @Override
     public void bind(OnboardingStep item) {
         this.onboardingShot = item;
