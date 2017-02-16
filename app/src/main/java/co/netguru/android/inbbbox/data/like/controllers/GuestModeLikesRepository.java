@@ -69,7 +69,7 @@ public class GuestModeLikesRepository extends BaseGuestModeRepository {
         if (shotDB == null || !shotDB.getIsLiked())
             isLiked = false;
 
-        else if (shotDB != null && shotDB.getIsLiked())
+        else if (shotDB.getIsLiked())
             isLiked = true;
 
         return isLiked;
