@@ -20,8 +20,6 @@ import rx.Single;
 @Singleton
 public class GuestModeLikesRepository extends BaseGuestModeRepository {
 
-    private static final String SHOT_IS_NOT_LIKED_ERROR = "Shot is not liked";
-
     @Inject
     GuestModeLikesRepository(DaoSession daoSession) {
         super(daoSession);
