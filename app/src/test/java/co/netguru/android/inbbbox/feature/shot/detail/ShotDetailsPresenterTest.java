@@ -76,6 +76,9 @@ public class ShotDetailsPresenterTest {
     List<Shot> shotsMock;
 
     @Mock
+    List<Bucket> bucketsMock;
+
+    @Mock
     BucketsController bucketsControllerMock;
 
     @Mock
@@ -682,7 +685,7 @@ public class ShotDetailsPresenterTest {
 
         shotDetailsPresenter.removeShotFromBuckets(bucketList, shotMock);
 
-        verify(bucketsControllerMock).isShotBucketed(EXAMPLE_ID);
+        verify(bucketsControllerMock).getListBucketsForShot(EXAMPLE_ID);
     }
 
     @Test
@@ -704,12 +707,26 @@ public class ShotDetailsPresenterTest {
     @Test
     public void whenShotBucketIsClickedAndShotIsInBucket_thenShowRemoveBucketScreen() {
         when(shotMock.isBucketed()).thenReturn(true);
-        when(bucketsControllerMock.isShotBucketed(anyLong())).thenReturn(Single.just(true));
-        shotDetailsPresenter.checkIfShotIsBucketed(shotMock);
+        when(bucketsControllerMock.getListBucketsForShot(anyLong())).thenReturn(Single.just(bucketsMock));
+        int bucketsListSize = 3;
+        when(bucketsMock.size()).thenReturn(bucketsListSize);
+        shotDetailsPresenter.checkShotBucketsCount(shotMock);
 
         shotDetailsPresenter.onShotBucketClicked(shotMock);
 
         verify(viewMock).showRemoveShotFromBucketView(shotMock);
+    }
+
+    @Test
+    public void whenShotBucketIsClickedAndShotIsInOneBucket_thenDoNotShowBucketScreen() {
+        int bucketsListSize = 1;
+        when(shotMock.isBucketed()).thenReturn(true);
+        when(bucketsControllerMock.getListBucketsForShot(anyLong())).thenReturn(Single.just(bucketsMock));
+        when(bucketsMock.size()).thenReturn(bucketsListSize);
+
+        shotDetailsPresenter.onShotBucketClicked(shotMock);
+
+        verify(viewMock, never()).showRemoveShotFromBucketView(shotMock);
     }
 
     @Test

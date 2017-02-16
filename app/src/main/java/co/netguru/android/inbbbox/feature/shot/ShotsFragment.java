@@ -283,6 +283,16 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     @Override
+    public void onStartSwipe(Shot shot) {
+        swipeRefreshLayout.setEnabled(false);
+    }
+
+    @Override
+    public void onEndSwipe(Shot shot) {
+        swipeRefreshLayout.setEnabled(true);
+    }
+
+    @Override
     public void showLoadingIndicator(boolean swipeToRefresh) {
         if (swipeToRefresh) {
             showLoadingIndicatorInternal();

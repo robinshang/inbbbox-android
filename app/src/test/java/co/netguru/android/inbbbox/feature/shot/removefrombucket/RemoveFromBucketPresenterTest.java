@@ -196,21 +196,6 @@ public class RemoveFromBucketPresenterTest {
     }
 
     @Test
-    public void whenLoadBucketsDoneAndBucketsListReadyWithOneItem_thenRemoveImmediately() {
-        long id = 999;
-        removeFromBucketPresenter.handleShot(shotMock);
-        when(shotMock.id()).thenReturn(id);
-        when(bucketListMock.size()).thenReturn(1);
-        when(bucketListMock.get(0)).thenReturn(bucketMock);
-        List<Bucket> expectedListToRemove = new ArrayList<>();
-        expectedListToRemove.add(bucketMock);
-
-        removeFromBucketPresenter.loadBucketsForShot();
-
-        verify(viewMock).passResultAndCloseFragment(expectedListToRemove, shotMock);
-    }
-
-    @Test
     public void whenLoadBucketsDoneAndBucketsListReadWithManyItems_thenShowList() {
         long id = 999;
         removeFromBucketPresenter.handleShot(shotMock);

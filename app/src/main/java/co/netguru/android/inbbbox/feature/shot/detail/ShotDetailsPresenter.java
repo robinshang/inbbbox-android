@@ -49,8 +49,10 @@ public class ShotDetailsPresenter
     private CommentLoadMoreState commentLoadMoreState;
     private int pageNumber = 1;
     private int commentsCounter = 0;
-    private boolean isInBucket;
+    private boolean isInOneBucket;
+    private boolean isInMoreBuckets;
     private int currentIndex;
+    private List<Bucket> bucketListShotBelongsTo;
 
     @Inject
     ShotDetailsPresenter(ShotDetailsController shotDetailsController,
@@ -67,6 +69,7 @@ public class ShotDetailsPresenter
         this.subscriptions = new CompositeSubscription();
         this.commentLoadMoreState = new CommentLoadMoreState();
         this.allShots = allShots;
+        this.bucketListShotBelongsTo = new ArrayList<>();
     }
 
     @Override
@@ -201,13 +204,31 @@ public class ShotDetailsPresenter
     }
 
     @Override
-    public void checkIfShotIsBucketed(Shot shot) {
-        bucketsController.isShotBucketed(shot.id())
-                .compose(applySingleIoSchedulers())
-                .subscribe(this::updateShot,
+    public void checkShotBucketsCount(Shot shot) {
+        subscriptions.add(bucketsController.getListBucketsForShot(shot.id())
+                .compose(RxTransformerUtil.applySingleIoSchedulers())
+                .subscribe(this::verifyShotBucketsCount,
                         throwable -> handleError(throwable,
-                                "Error while checking shot bucket state"));
+                                "Error occurred while requesting buckets")));
+    }
 
+    private void verifyShotBucketsCount(List<Bucket> bucketList) {
+        this.bucketListShotBelongsTo = bucketList;
+        if (bucketList.size() == 1) {
+            setShotBucketStates(true, false);
+            updateShot(true);
+        } else if (bucketList.size() > 1) {
+            setShotBucketStates(false, true);
+            updateShot(true);
+        } else {
+            setShotBucketStates(false, false);
+            updateShot(false);
+        }
+    }
+
+    private void setShotBucketStates(boolean isInOneBucket, boolean isInMoreBuckets) {
+        this.isInOneBucket = isInOneBucket;
+        this.isInMoreBuckets = isInMoreBuckets;
     }
 
     @Override
@@ -230,8 +251,10 @@ public class ShotDetailsPresenter
     }
 
     private void verifyShotBucketState(Shot shot) {
-        if (isInBucket) {
+        if (isInMoreBuckets) {
             getView().showRemoveShotFromBucketView(shot);
+        } else if (isInOneBucket) {
+            removeShotFromBuckets(bucketListShotBelongsTo, shot);
         } else {
             getView().showAddShotToBucketView(shot);
         }
@@ -346,18 +369,17 @@ public class ShotDetailsPresenter
 
     private void updateShot(boolean isBucketed) {
         this.shot = Shot.update(shot).isBucketed(isBucketed).build();
-        this.isInBucket = isBucketed;
         getView().updateBucketedStatus(isBucketed);
     }
 
     private void handleShotRemovedFromBucket(Shot shot) {
-        checkIfShotIsBucketed(shot);
-        rxBus.send(new ShotRemovedFromBucketEvent(shot));
         getView().showShotRemoveFromBucketSuccess();
+        rxBus.send(new ShotRemovedFromBucketEvent(shot));
+        checkShotBucketsCount(shot);
     }
 
     private void updateShotAndShowAddToBucketSuccess(Shot shot) {
-        checkIfShotIsBucketed(shot);
         getView().showBucketAddSuccess();
+        checkShotBucketsCount(shot);
     }
 }
