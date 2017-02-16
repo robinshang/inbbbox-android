@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.shot.recycler;
 
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
@@ -7,12 +8,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
-public class ShotsViewHolder extends BaseShotsViewHolder<Shot> {
+class ShotsViewHolder extends BaseShotsViewHolder<Shot> implements DetailsVisibilityChangeListener {
 
     private final ShotSwipeListener shotSwipeListener;
     @BindView(R.id.user_name_textView)
@@ -23,11 +25,17 @@ public class ShotsViewHolder extends BaseShotsViewHolder<Shot> {
     TextView likesCountTextView;
     @BindView(R.id.user_imageView)
     ImageView userImageView;
+    @BindView(R.id.shot_details_layout)
+    View shotDetailsView;
+    @BindDrawable(R.drawable.shot_placeholder)
+    Drawable shotPlaceHolder;
     private Shot shot;
 
-    ShotsViewHolder(View itemView, @NonNull ShotSwipeListener shotSwipeListener) {
+    ShotsViewHolder(View itemView, @NonNull ShotSwipeListener shotSwipeListener,
+                    @NonNull DetailsVisibilityChangeEmitter emitter) {
         super(itemView);
         this.shotSwipeListener = shotSwipeListener;
+        emitter.setListener(this);
     }
 
     @OnClick(R.id.iv_shot_image)
@@ -71,6 +79,14 @@ public class ShotsViewHolder extends BaseShotsViewHolder<Shot> {
     @Override
     public void onEndSwipe() {
         shotSwipeListener.onEndSwipe(shot);
+    }
+
+    @Override
+    public void onDetailsChangeVisibility(boolean shouldBeVisible) {
+        if (shouldBeVisible)
+            shotDetailsView.setVisibility(View.VISIBLE);
+        else
+            shotDetailsView.setVisibility(View.INVISIBLE);
     }
 
     private void setupImage(Shot shot) {

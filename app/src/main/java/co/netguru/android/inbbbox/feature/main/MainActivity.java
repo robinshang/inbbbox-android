@@ -250,6 +250,7 @@ public class MainActivity
     @Override
     public void changeCustomizationStatus(boolean isDetails) {
         shotDetailsSwitch.setChecked(isDetails);
+        getPresenter().onShotDetailsVisibilityChange(isDetails);
     }
 
     @Override
