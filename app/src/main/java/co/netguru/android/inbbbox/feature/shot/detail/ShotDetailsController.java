@@ -38,7 +38,7 @@ public class ShotDetailsController {
 
     public Observable<ShotDetailsState> getShotComments(Shot shot, int pageNumber) {
         return Observable.zip(getCommentListWithAuthorState(Long.toString(shot.id()), pageNumber),
-                getLikeState(shot),
+                getLikeState(shot).toObservable(),
                 getBucketState(shot.id()),
                 (comments, isLiked, isBucketed) -> ShotDetailsState
                         .create(isLiked, isBucketed, comments));
@@ -122,9 +122,7 @@ public class ShotDetailsController {
         return user != null && user.id() == currentUserId;
     }
 
-    private Observable<Boolean> getLikeState(Shot shot) {
-        return likeShotController.isShotLiked(shot)
-                .andThen(Observable.just(Boolean.TRUE))
-                .onErrorResumeNext(Observable.just(Boolean.FALSE));
+    private Single<Boolean> getLikeState(Shot shot) {
+        return likeShotController.isShotLiked(shot);
     }
 }

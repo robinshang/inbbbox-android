@@ -163,21 +163,23 @@ public class GuestModeLikesRepositoryTest {
     }
 
     @Test
-    public void shouldBeNoErrorsWhenShotIsLiked() {
+    public void shouldReturnTrueWhenShotIsLiked() {
         //given
         final TestSubscriber subscriber = new TestSubscriber();
         when(shotDBDao.queryBuilder()).thenReturn(shotDBQueryBuilder);
         when(shotDBQueryBuilder.where(any())).thenReturn(shotDBQueryBuilder);
         when(shotDBQueryBuilder.rx()).thenReturn(shotDBRxQuery);
-        when(shotDBRxQuery.unique()).thenReturn(Observable.empty());
+        Observable<ShotDB> observable = Observable.just(Statics.LIKED_SHOT_DB_NOT_BUCKETED);
+        when(shotDBRxQuery.unique()).thenReturn(observable);
         //when
-        repository.isShotLiked(Statics.NOT_LIKED_SHOT).subscribe(subscriber);
+        repository.isShotLiked(Statics.LIKED_SHOT_BUCKETED).subscribe(subscriber);
         //then
-        subscriber.assertNoErrors();
+        subscriber.assertCompleted();
+        subscriber.assertValue(Boolean.TRUE);
     }
 
     @Test
-    public void shouldReturnErrorWhenShotIsNotLiked() {
+    public void shouldReturnFalseWhenShotIsNotLiked() {
         //given
         final TestSubscriber subscriber = new TestSubscriber();
         when(shotDBDao.queryBuilder()).thenReturn(shotDBQueryBuilder);
@@ -187,6 +189,7 @@ public class GuestModeLikesRepositoryTest {
         //when
         repository.isShotLiked(Statics.NOT_LIKED_SHOT).subscribe(subscriber);
         //then
-        subscriber.assertError(Throwable.class);
+        subscriber.assertCompleted();
+        subscriber.assertValue(Boolean.FALSE);
     }
 }
