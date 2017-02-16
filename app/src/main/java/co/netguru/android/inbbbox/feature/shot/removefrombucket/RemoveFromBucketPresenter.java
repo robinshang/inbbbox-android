@@ -28,7 +28,6 @@ public class RemoveFromBucketPresenter
 
     private static final int BUCKETS_PER_PAGE_COUNT = 30;
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
-    private static final long REMOVE_DELAY = 500;
 
     private final BucketsController bucketsController;
     private final ErrorController errorController;
@@ -76,22 +75,16 @@ public class RemoveFromBucketPresenter
         }
         getView().showShotCreationDate(shot.creationDate());
     }
-
-    /**
-     * Delay added to getting buckets shots to provide better UX experience
-     * - when shot is added to only one bucket, removing will be preceded Immediately.
-     * To avoid that dialog only "blink" there is delay set to fully show progress bar to the user
-     */
+    
     @Override
     public void loadBucketsForShot() {
         if (refreshSubscription.isUnsubscribed()) {
             loadNextBucketsSubscription.unsubscribe();
             refreshSubscription = bucketsController.getListBucketsForShot(shot.id())
-                    .delay(REMOVE_DELAY, TimeUnit.MILLISECONDS)
                     .doOnSubscribe(getView()::showBucketListLoading)
                     .compose(RxTransformerUtil.applySingleIoSchedulers())
                     .doAfterTerminate(getView()::hideProgressBar)
-                    .subscribe(this::handleShotBuckets,
+                    .subscribe(this::showContainedBuckets,
                             throwable -> handleError(throwable,
                                     "Error occurred while requesting buckets"));
         }
@@ -137,19 +130,6 @@ public class RemoveFromBucketPresenter
 
     @Override
     public void removeShotFromBuckets() {
-        getView().passResultAndCloseFragment(bucketsToRemoveFromList, shot);
-    }
-
-    private void handleShotBuckets(List<Bucket> buckets) {
-        if (buckets.size() == 1) {
-            removeImmediately(buckets.get(0));
-        } else {
-            showContainedBuckets(buckets);
-        }
-    }
-
-    private void removeImmediately(Bucket bucket) {
-        bucketsToRemoveFromList.add(bucket);
         getView().passResultAndCloseFragment(bucketsToRemoveFromList, shot);
     }
 

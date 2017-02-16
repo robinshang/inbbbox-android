@@ -18,6 +18,7 @@ import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotControllerApi;
 import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Observable;
@@ -61,6 +62,9 @@ public class ShotsPresenterTest {
     @Mock
     Shot shotMock;
 
+    @Mock
+    RxBus rxBusMock;
+
     @InjectMocks
     ShotsPresenter presenter;
 
@@ -68,6 +72,7 @@ public class ShotsPresenterTest {
 
     @Before
     public void setUp() {
+        when(rxBusMock.getEvents(any())).thenReturn(Observable.empty());
         presenter.attachView(viewMock);
 
         Shot exampleShot = Statics.LIKED_SHOT_NOT_BUCKETED;

@@ -15,11 +15,10 @@ import co.netguru.android.inbbbox.data.db.mappers.TeamDBMapper;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 @Singleton
 public class GuestModeLikesRepository extends BaseGuestModeRepository {
-
-    private static final String SHOT_IS_NOT_LIKED_ERROR = "Shot is not liked";
 
     @Inject
     GuestModeLikesRepository(DaoSession daoSession) {
@@ -56,18 +55,24 @@ public class GuestModeLikesRepository extends BaseGuestModeRepository {
         return daoSession.getShotDBDao().rx().deleteByKey(shot.id()).toCompletable();
     }
 
-    public Completable isShotLiked(Shot shot) {
+    public Single<Boolean> isShotLiked(Shot shot) {
         return daoSession.getShotDBDao().queryBuilder()
                 .where(ShotDBDao.Properties.Id.eq(shot.id()))
                 .rx()
                 .unique()
-                .flatMap(shotDB -> {
-                    if (shotDB == null || !shotDB.getIsLiked()) {
-                        return Observable.error(new Throwable(SHOT_IS_NOT_LIKED_ERROR));
-                    }
-                    return Observable.empty();
-                })
-                .toCompletable();
+                .map(this::checkIfShotDbIsLiked)
+                .toSingle();
+    }
+
+    private boolean checkIfShotDbIsLiked(ShotDB shotDB) {
+        boolean isLiked = false;
+        if (shotDB == null || !shotDB.getIsLiked())
+            isLiked = false;
+
+        else if (shotDB.getIsLiked())
+            isLiked = true;
+
+        return isLiked;
     }
 
     private ShotDB likeShot(Shot shot) {
