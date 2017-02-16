@@ -60,16 +60,19 @@ public class GuestModeLikesRepository extends BaseGuestModeRepository {
                 .where(ShotDBDao.Properties.Id.eq(shot.id()))
                 .rx()
                 .unique()
-                .map(shotDB -> {
-                    boolean isLiked = false;
-                    if (shotDB == null || !shotDB.getIsLiked()) {
-                        isLiked = false;
-                    } else if (shotDB != null && shotDB.getIsLiked()) {
-                        isLiked = true;
-                    }
-                    return isLiked;
-                })
+                .map(this::checkIfShotDbIsLiked)
                 .toSingle();
+    }
+
+    private boolean checkIfShotDbIsLiked(ShotDB shotDB) {
+        boolean isLiked = false;
+        if (shotDB == null || !shotDB.getIsLiked())
+            isLiked = false;
+
+        else if (shotDB != null && shotDB.getIsLiked())
+            isLiked = true;
+
+        return isLiked;
     }
 
     private ShotDB likeShot(Shot shot) {
