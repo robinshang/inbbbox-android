@@ -5,6 +5,7 @@
     android:padding="@dimen/shot_item_internal_padding">
 
     <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
+        android:id="@+id/rounded_corners_image_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -72,4 +73,16 @@
             android:padding="@dimen/shot_background_padding" />
         <!-- Surface View End -->
     </co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout>
+
+    <Button
+        android:id="@+id/skip_follow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rounded_corners_image_view"
+
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:text="@string/dont_follow"
+        android:textAllCaps="false"
+        android:textColor="@color/textGrey" />
 </RelativeLayout>
