@@ -2,17 +2,10 @@ package co.netguru.android.inbbbox.feature.shared.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.DrawFilter;
-import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Region;
-import android.support.annotation.ColorInt;
 import android.support.annotation.LayoutRes;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -30,13 +23,7 @@ public abstract class RoundedCornersView extends FrameLayout {
 
     @BindColor(R.color.windowBackground)
     int defaultRoundedCornersBackground;
-    @ColorInt
-    private int roundedCornersBackgroundColor;
     private boolean isRoundingBottomCornersEnabled;
-
-    private Bitmap maskBitmap;
-    private Paint maskPaint;
-    private Paint cornersMaskPaint;
 
     private Path clipPathTop = new Path();
     private Path clipPathBottom = new Path();
@@ -65,7 +52,6 @@ public abstract class RoundedCornersView extends FrameLayout {
         super.onSizeChanged(w, h, oldw, oldh);
         if (w != oldw || h != oldh) {
             initClippingPath();
-//            maskBitmap = createMask(w, h);
         }
     }
 
@@ -78,7 +64,6 @@ public abstract class RoundedCornersView extends FrameLayout {
         if (isRoundingBottomCornersEnabled)
             canvas.clipPath(clipPathBottom, Region.Op.INTERSECT);
         super.draw(canvas);
-//        canvas.drawBitmap(maskBitmap, 0f, 0f, maskPaint);
     }
 
     @LayoutRes
@@ -86,9 +71,6 @@ public abstract class RoundedCornersView extends FrameLayout {
 
     private void handleAttrs(Context context, AttributeSet attrs) {
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RoundedCornersView);
-        roundedCornersBackgroundColor =
-                a.getColor(R.styleable.RoundedCornersView_roundedCornersBackgroundColor,
-                        defaultRoundedCornersBackground);
         isRoundingBottomCornersEnabled =
                 a.getBoolean(R.styleable.RoundedCornersView_roundingBottomCornersEnabled,
                         true);
@@ -98,10 +80,6 @@ public abstract class RoundedCornersView extends FrameLayout {
     private void init() {
         LayoutInflater.from(getContext()).inflate(getLayoutResource(), this);
         ButterKnife.bind(this);
-        maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        cornersMaskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        cornersMaskPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-
         setWillNotDraw(false);
     }
 
@@ -113,20 +91,5 @@ public abstract class RoundedCornersView extends FrameLayout {
         clipPathBottom.reset();
         clippingRectBottom = new RectF(0, -radius, getWidth(), getHeight());
         clipPathBottom.addRoundRect(clippingRectBottom, radius, radius, Path.Direction.CW);
-    }
-
-    private Bitmap createMask(int width, int height) {
-        final Bitmap mask = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(mask);
-
-        mask.eraseColor(Color.TRANSPARENT);
-        canvas.drawColor(roundedCornersBackgroundColor);
-        canvas.drawRoundRect(new RectF(0, 0, width, height), radius, radius, cornersMaskPaint);
-
-        if (!isRoundingBottomCornersEnabled) {
-            canvas.drawRect(0, height - radius, width, height, cornersMaskPaint);
-        }
-
-        return mask;
     }
 }
