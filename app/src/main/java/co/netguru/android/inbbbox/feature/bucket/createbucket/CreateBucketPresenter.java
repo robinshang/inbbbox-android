@@ -51,12 +51,12 @@ public class CreateBucketPresenter extends MvpNullObjectBasePresenter<CreateBuck
             createBucketSubscription = bucketsController.createBucket(name, description)
                     .compose(RxTransformerUtil.applySingleIoSchedulers())
                     .doOnSubscribe(getView()::showProgressView)
-                    .doAfterTerminate(getView()::hideProgressView)
-                    .subscribe(bucket -> {
-                                rxBus.send(new BucketCreatedEvent(bucket));
-                                getView().close();
-                            },
-                            throwable -> Timber.d(throwable, "Error occurred while creating bucket"));
+                    .doAfterTerminate(() -> {
+                        getView().hideProgressView();
+                        getView().close();
+                    })
+                    .subscribe(bucket -> rxBus.send(new BucketCreatedEvent(bucket)),
+                            throwable -> handleError(throwable, "Error occurred while creating bucket"));
         }
     }
 

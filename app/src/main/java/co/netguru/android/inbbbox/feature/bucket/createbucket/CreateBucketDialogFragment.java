@@ -4,7 +4,9 @@ package co.netguru.android.inbbbox.feature.bucket.createbucket;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +22,8 @@ public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBuck
 
     public static final String TAG = CreateBucketDialogFragment.class.getSimpleName();
 
+    private static final int FRAGMENT_REQUEST_CODE = 101;
+
     @BindView(R.id.name_text_input_layout)
     TextInputLayout nameTextInputLayout;
     @BindView(R.id.description_text_input_layout)
@@ -30,8 +34,11 @@ public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBuck
     private Button createButton;
     private Button cancelButton;
 
-    public static CreateBucketDialogFragment newInstance() {
-        return new CreateBucketDialogFragment();
+    public static CreateBucketDialogFragment newInstance(Fragment targetFragment) {
+        final CreateBucketDialogFragment createBucketDialogFragment = new CreateBucketDialogFragment();
+        createBucketDialogFragment.setTargetFragment(targetFragment, FRAGMENT_REQUEST_CODE);
+
+        return createBucketDialogFragment;
     }
 
     @NonNull
@@ -89,7 +96,7 @@ public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBuck
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        showMessageOnSnackbar(errorText);
+        Snackbar.make(getTargetFragment().getView(), errorText, Snackbar.LENGTH_LONG).show();
     }
 
     private void setupDialogButtons(Dialog dialog) {

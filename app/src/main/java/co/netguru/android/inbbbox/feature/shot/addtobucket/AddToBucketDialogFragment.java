@@ -254,7 +254,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @Override
     public void showCreateBucketView() {
-        CreateBucketDialogFragment.newInstance().show(getFragmentManager(), CreateBucketDialogFragment.TAG);
+        CreateBucketDialogFragment.newInstance(this).show(getFragmentManager(), CreateBucketDialogFragment.TAG);
     }
 
     @Override

@@ -210,7 +210,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     @Override
     public void openCreateDialogFragment() {
         CreateBucketDialogFragment
-                .newInstance()
+                .newInstance(this)
                 .show(getFragmentManager(), CreateBucketDialogFragment.TAG);
     }
 
