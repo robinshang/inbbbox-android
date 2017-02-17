@@ -201,7 +201,6 @@ public class ShotDetailsPresenterTest {
         verify(viewMock, times(1)).showDetails(argumentCaptor.capture());
         Shot shot = argumentCaptor.getValue();
         Assert.assertEquals(shot.isLiked(), likeState);
-        verify(viewMock, times(1)).initView();
     }
 
     @Test

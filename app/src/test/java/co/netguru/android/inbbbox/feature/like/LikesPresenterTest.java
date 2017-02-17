@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -69,6 +70,7 @@ public class LikesPresenterTest {
         when(likeShotControllerMock.getLikedShots(anyInt(), anyInt()))
                 .thenReturn(Observable.just(shotList));
         when(rxBusMock.getEvents(any())).thenReturn(Observable.just(shotUpdatedEventMock));
+        when(shotUpdatedEventMock.getShot()).thenReturn(Statics.NOT_LIKED_SHOT);
         when(errorControllerMock.getThrowableMessage(any(Throwable.class)))
                 .thenReturn("test");
 
