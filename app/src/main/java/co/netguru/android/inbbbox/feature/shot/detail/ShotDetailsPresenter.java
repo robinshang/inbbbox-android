@@ -21,8 +21,8 @@ import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
-import co.netguru.android.inbbbox.event.events.ShotLikedEvent;
 import co.netguru.android.inbbbox.event.events.ShotRemovedFromBucketEvent;
+import co.netguru.android.inbbbox.event.events.ShotUpdatedEvent;
 import rx.Completable;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -260,8 +260,10 @@ public class ShotDetailsPresenter
     }
 
     private void handleCommentDeleteComplete() {
+        shot = Shot.update(shot).commentsCount(shot.commentsCount() - 1).build();
         getView().removeCommentFromView(commentInEditor);
         getView().showInfo(R.string.comment_deleted_complete);
+        rxBus.send(new ShotUpdatedEvent(shot));
     }
 
     private void sendCommentToApi(String comment) {
@@ -283,6 +285,8 @@ public class ShotDetailsPresenter
         getView().hideSendingCommentIndicator();
         getView().addNewComment(updatedComment);
         getView().clearCommentInput();
+        shot = Shot.update(shot).commentsCount(shot.commentsCount() + 1).build();
+        rxBus.send(new ShotUpdatedEvent(shot));
     }
 
     private void updateLikeState(boolean newLikeState) {
@@ -291,7 +295,7 @@ public class ShotDetailsPresenter
                 .likesCount(newLikeState ? shot.likesCount() + 1 : shot.likesCount() - 1)
                 .build();
         showShotDetails(shot);
-        rxBus.send(new ShotLikedEvent(shot, newLikeState));
+        rxBus.send(new ShotUpdatedEvent(shot));
     }
 
     private void handleDetailsStates(ShotDetailsState state) {
@@ -364,6 +368,7 @@ public class ShotDetailsPresenter
             setShotBucketStates(false, false);
             updateBucketedStateAndShowDetails(false);
         }
+        rxBus.send(new ShotUpdatedEvent(shot));
     }
 
     private void updateBucketsCount(int userBucketsCount) {
