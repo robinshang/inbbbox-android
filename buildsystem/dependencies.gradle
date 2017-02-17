@@ -63,12 +63,13 @@ ext {
             rxJava                  : "io.reactivex:rxjava:$rxjavaVersion",
             rxJavaProGuardRules     : "com.artemzin.rxjava:proguard-rules:$rxJavaProguardRulesVersion",
             stetho                  : "com.facebook.stetho:stetho:$stethoVersion",
-            stethoOkhttp            : "com.facebook.stetho:stetho-okhttp3:$stethoVersion",
-            strictmodeNotifier      : "com.nshmura:strictmode-notifier:0.9.3",
-            supportDesignLib        : "com.android.support:design:$supportLibraryVersion",
-            swipeLayout             : "com.daimajia.swipelayout:library:1.2.0@aar",
-            threetenabp             : "com.jakewharton.threetenabp:threetenabp:1.0.4",
-            timber                  : "com.jakewharton.timber:timber:4.4.0",
+            stethoOkhttp      : "com.facebook.stetho:stetho-okhttp3:$stethoVersion",
+            strictmodeNotifier: "com.nshmura:strictmode-notifier:0.9.3",
+            supportDesignLib  : "com.android.support:design:$supportLibraryVersion",
+            swipeLayout       : "com.daimajia.swipelayout:library:1.2.0@aar",
+            threetenabp       : "com.jakewharton.threetenabp:threetenabp:1.0.4",
+            timber            : "com.jakewharton.timber:timber:4.4.0",
+            googleAnalytics   : "com.google.android.gms:play-services-analytics:10.0.1",
     ]
 
     proc = [

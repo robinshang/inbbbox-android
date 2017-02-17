@@ -264,6 +264,9 @@ dependencies {
     //PhotoView
     compile libs.photoView
 
+    //Analytics
+    compile libs.googleAnalytics
+
     //Debug tools
     // Stetho
     debugCompile libs.stetho
@@ -292,3 +295,5 @@ dependencies {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
 }
+
+apply plugin: 'com.google.gms.google-services'
