@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.feature.shot.detail;
 
+import android.support.annotation.Nullable;
+
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ public class ShotDetailsPresenter
     private boolean isInOneBucket;
     private boolean isInMoreBuckets;
     private int currentIndex;
+    @Nullable
     private List<Bucket> bucketListShotBelongsTo;
 
     @Inject
@@ -69,7 +72,6 @@ public class ShotDetailsPresenter
         this.subscriptions = new CompositeSubscription();
         this.commentLoadMoreState = new CommentLoadMoreState();
         this.allShots = allShots;
-        this.bucketListShotBelongsTo = new ArrayList<>();
     }
 
     @Override
@@ -212,25 +214,6 @@ public class ShotDetailsPresenter
                                 "Error occurred while requesting buckets")));
     }
 
-    private void verifyShotBucketsCount(List<Bucket> bucketList) {
-        this.bucketListShotBelongsTo = bucketList;
-        if (bucketList.size() == 1) {
-            setShotBucketStates(true, false);
-            updateShot(true);
-        } else if (bucketList.size() > 1) {
-            setShotBucketStates(false, true);
-            updateShot(true);
-        } else {
-            setShotBucketStates(false, false);
-            updateShot(false);
-        }
-    }
-
-    private void setShotBucketStates(boolean isInOneBucket, boolean isInMoreBuckets) {
-        this.isInOneBucket = isInOneBucket;
-        this.isInMoreBuckets = isInMoreBuckets;
-    }
-
     @Override
     public void onShotBucketClicked(Shot shot) {
         if (shot != null) {
@@ -261,6 +244,7 @@ public class ShotDetailsPresenter
     }
 
     private void initializeView() {
+        getView().initView();
         getView().showMainImage(shot);
         getView().updateLoadMoreState(commentLoadMoreState);
         getView().setInputShowingEnabled(false);
@@ -304,6 +288,7 @@ public class ShotDetailsPresenter
     private void updateLikeState(boolean newLikeState) {
         shot = Shot.update(shot)
                 .isLiked(newLikeState)
+                .likesCount(newLikeState ? shot.likesCount() + 1 : shot.likesCount() - 1)
                 .build();
         showShotDetails(shot);
         rxBus.send(new ShotLikedEvent(shot, newLikeState));
@@ -358,7 +343,6 @@ public class ShotDetailsPresenter
     private void showShotDetails(Shot shotDetails) {
         Timber.d("Shot details received: %s", shotDetails);
         getView().showDetails(shotDetails);
-        getView().initView();
     }
 
     private void handleCommentUpdated(Comment comment) {
@@ -367,9 +351,39 @@ public class ShotDetailsPresenter
         getView().showInfo(R.string.comment_update_complete);
     }
 
-    private void updateShot(boolean isBucketed) {
-        this.shot = Shot.update(shot).isBucketed(isBucketed).build();
-        getView().updateBucketedStatus(isBucketed);
+    private void verifyShotBucketsCount(List<Bucket> bucketList) {
+        updateBucketsCount(bucketList.size());
+        bucketListShotBelongsTo = bucketList;
+        if (bucketList.size() == 1) {
+            setShotBucketStates(true, false);
+            updateBucketedStateAndShowDetails(true);
+        } else if (bucketList.size() > 1) {
+            setShotBucketStates(false, true);
+            updateBucketedStateAndShowDetails(true);
+        } else {
+            setShotBucketStates(false, false);
+            updateBucketedStateAndShowDetails(false);
+        }
+    }
+
+    private void updateBucketsCount(int userBucketsCount) {
+        if (bucketListShotBelongsTo != null) {
+            if (userBucketsCount > bucketListShotBelongsTo.size()) {
+                shot = Shot.update(shot).bucketCount(shot.bucketCount() + 1).build();
+            } else if (userBucketsCount < bucketListShotBelongsTo.size()) {
+                shot = Shot.update(shot).bucketCount(shot.bucketCount() - 1).build();
+            }
+        }
+    }
+
+    private void setShotBucketStates(boolean isInOneBucket, boolean isInMoreBuckets) {
+        this.isInOneBucket = isInOneBucket;
+        this.isInMoreBuckets = isInMoreBuckets;
+    }
+
+    private void updateBucketedStateAndShowDetails(boolean isBucketed) {
+        shot = Shot.update(shot).isBucketed(isBucketed).build();
+        getView().showDetails(shot);
     }
 
     private void handleShotRemovedFromBucket(Shot shot) {
