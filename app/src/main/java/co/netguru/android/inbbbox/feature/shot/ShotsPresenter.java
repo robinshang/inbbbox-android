@@ -20,6 +20,7 @@ import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.DetailsVisibilityChangeEvent;
+import co.netguru.android.inbbbox.event.events.ShotLikedEvent;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;
@@ -49,6 +50,8 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private Subscription loadMoreSubscription;
     @NonNull
     private Subscription busSubscription;
+    @NonNull
+    private Subscription busShotLikeSubscription;
     private int pageNumber = FIRST_PAGE;
     private boolean hasMore = true;
 
@@ -67,6 +70,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         refreshSubscription = Subscriptions.unsubscribed();
         loadMoreSubscription = Subscriptions.unsubscribed();
         busSubscription = Subscriptions.unsubscribed();
+        busShotLikeSubscription = Subscriptions.unsubscribed();
     }
 
     @Override
@@ -82,6 +86,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
             refreshSubscription.unsubscribe();
             loadMoreSubscription.unsubscribe();
             busSubscription.unsubscribe();
+            busShotLikeSubscription.unsubscribe();
         }
     }
 
@@ -200,5 +205,8 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         busSubscription = rxBus.getEvents(DetailsVisibilityChangeEvent.class)
                 .compose(RxTransformers.androidIO())
                 .subscribe(event -> getView().onDetailsVisibilityChange(event.isDetailsVisible()));
+        busShotLikeSubscription = rxBus.getEvents(ShotLikedEvent.class)
+                .compose(RxTransformers.androidIO())
+                .subscribe(event -> getView().updateShot(event.getShot()));
     }
 }
