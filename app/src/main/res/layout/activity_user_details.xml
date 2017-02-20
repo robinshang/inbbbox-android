@@ -15,17 +15,17 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="256dp"
+            android:layout_height="@dimen/user_details_collapsing_toolbar_height"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/details_user_imageView"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
+                android:layout_width="@dimen/user_details_circle_image_size"
+                android:layout_height="@dimen/user_details_circle_image_size"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="90dp"
+                android:layout_marginTop="@dimen/user_details_circle_image_margin_top"
                 app:civ_border_color="@color/white"
                 app:civ_border_width="@dimen/drawer_header_photo_border"
                 app:civ_fill_color="@color/lightGray"/>
@@ -33,7 +33,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="104dp"
+                android:layout_height="?attr/actionBarSize"
                 android:gravity="top"
                 android:minHeight="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
