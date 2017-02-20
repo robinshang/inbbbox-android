@@ -208,7 +208,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void changeShotLikeStatus(Shot shot) {
-        adapter.changeShotLikeStatus(shot);
+        adapter.updateShot(shot);
         shotActionListener.shotLikeStatusChanged();
     }
 
@@ -251,6 +251,11 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
         if (detailsVisibilityChangeListener != null)
             detailsVisibilityChangeListener.onDetailsChangeVisibility(isVisible);
+    }
+
+    @Override
+    public void updateShot(Shot shot) {
+        adapter.updateShot(shot);
     }
 
     @Override

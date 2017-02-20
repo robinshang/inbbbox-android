@@ -17,11 +17,8 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.feature.shot.detail.BucketedStatusChangeEmitter;
-import co.netguru.android.inbbbox.feature.shot.detail.BucketedStatusChangeListener;
 
-public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot>
-        implements BucketedStatusChangeListener {
+class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot> {
 
     @BindView(R.id.details_user_imageView)
     ImageView userAvatarImageView;
@@ -61,24 +58,19 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot>
 
     private static final String APP_NAME_KEY = "${where}";
     private static final String DATE_KEY = "${when}";
-    private boolean isLiked;
-    private boolean isBucketed;
     @Nullable
     private Shot item;
 
-    ShotDetailsUserInfoViewHolder(ViewGroup parent, DetailsViewActionCallback actionCallback,
-                                  BucketedStatusChangeEmitter bucketedStatusChangeEmitter) {
+    ShotDetailsUserInfoViewHolder(ViewGroup parent, DetailsViewActionCallback actionCallback) {
         super(LayoutInflater
                         .from(parent.getContext())
                         .inflate(R.layout.item_shot_info_user_info_layout, parent, false),
                 actionCallback);
-        bucketedStatusChangeEmitter.setListener(this);
     }
 
     @OnClick(R.id.details_likes_imageView)
     void onLikeShotClick() {
-        isLiked = !isLiked;
-        actionCallbackListener.onShotLikeAction(isLiked);
+        actionCallbackListener.onShotLikeAction(!item.isLiked());
         updateActionsState();
     }
 
@@ -111,17 +103,9 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot>
         showAuthorInfo(item.author().name());
         showTeamInfo(item.team());
         showInfo(item.projectUrl(), DateTimeFormatUtil.getShotDetailsDate(item.creationDate()));
+
+        updateActionsState();
         showCounters(item.likesCount(), item.bucketCount());
-
-        isLiked = item.isLiked();
-        isBucketed = item.isBucketed();
-        updateActionsState();
-    }
-
-    @Override
-    public void onBucketedStatusChanged(boolean isInBucket) {
-        this.isBucketed = isInBucket;
-        updateActionsState();
     }
 
     private void showTeamInfo(Team team) {
@@ -136,13 +120,8 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot>
     }
 
     private void updateActionsState() {
-        likeImageView.setActivated(isLiked);
-        bucketImageView.setActivated(isBucketed);
-    }
-
-    private void showCounters(Integer likeCount, Integer bucketCount) {
-        likesCountTextView.setText(likeCount.toString());
-        bucketCountTextView.setText(bucketCount.toString());
+        likeImageView.setActivated(item.isLiked());
+        bucketImageView.setActivated(item.isBucketed());
     }
 
     private void showInfo(String projectName, String date) {
@@ -169,5 +148,10 @@ public class ShotDetailsUserInfoViewHolder extends ShotDetailsViewHolder<Shot>
                 .fitCenter()
                 .error(R.drawable.ic_ball)
                 .into(userAvatarImageView);
+    }
+
+    private void showCounters(Integer likeCount, Integer bucketCount) {
+        likesCountTextView.setText(likeCount.toString());
+        bucketCountTextView.setText(bucketCount.toString());
     }
 }

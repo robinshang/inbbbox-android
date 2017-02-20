@@ -43,8 +43,7 @@ import co.netguru.android.inbbbox.feature.team.TeamDetailsActivity;
 public class ShotDetailsFragment
         extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
         implements ShotDetailsContract.View, DetailsViewActionCallback,
-        AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener,
-        BucketedStatusChangeEmitter {
+        AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_ALL_SHOTS = "arg:all_shots";
@@ -76,7 +75,6 @@ public class ShotDetailsFragment
     private ShotDetailsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
-    private BucketedStatusChangeListener listener;
 
     public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots,
                                                   ShotDetailsRequest detailsRequest) {
@@ -105,7 +103,7 @@ public class ShotDetailsFragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        adapter = new ShotDetailsAdapter(this, this);
+        adapter = new ShotDetailsAdapter(this);
         getPresenter().retrieveInitialData();
         getPresenter().downloadData();
         getPresenter().checkShotBucketsCount(getArguments().getParcelable(ARG_SHOT));
@@ -364,12 +362,6 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void updateBucketedStatus(boolean isBucketed) {
-        adapter.updateIsBucketed(isBucketed);
-        listener.onBucketedStatusChanged(isBucketed);
-    }
-
-    @Override
     public void showAddShotToBucketView(Shot shot) {
         AddToBucketDialogFragment
                 .newInstance(this, shot)
@@ -386,11 +378,6 @@ public class ShotDetailsFragment
     @Override
     public void showTeamView(UserWithShots userWithShots) {
         TeamDetailsActivity.startActivity(getContext(), userWithShots);
-    }
-
-    @Override
-    public void setListener(BucketedStatusChangeListener listener) {
-        this.listener = listener;
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {

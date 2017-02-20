@@ -69,7 +69,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
         notifyItemRangeChanged(currentSize - 1, items.size());
     }
 
-    public void changeShotLikeStatus(Shot shot) {
+    public void updateShot(Shot shot) {
         final int position = findShotPosition(shot.id());
         items.set(position, shot);
         notifyItemChanged(position);
