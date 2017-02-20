@@ -16,7 +16,7 @@ import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
-import co.netguru.android.inbbbox.event.events.ShotLikedEvent;
+import co.netguru.android.inbbbox.event.events.ShotUpdatedEvent;
 import rx.Subscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
@@ -135,10 +135,10 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     }
 
     private void setupRxBus() {
-        busSubscription = rxBus.getEvents(ShotLikedEvent.class)
+        busSubscription = rxBus.getEvents(ShotUpdatedEvent.class)
                 .compose(RxTransformers.androidIO())
                 .subscribe(shotLikedEvent -> {
-                    if (shotLikedEvent.getNewShotLikeState()) {
+                    if (shotLikedEvent.getShot().isLiked()) {
                         getView().showLikeAtTop(shotLikedEvent.getShot());
                     } else {
                         getView().removeShotFromLikes(shotLikedEvent.getShot());

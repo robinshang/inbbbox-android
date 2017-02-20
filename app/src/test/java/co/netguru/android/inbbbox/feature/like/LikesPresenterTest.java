@@ -14,11 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
-import co.netguru.android.inbbbox.event.events.ShotLikedEvent;
+import co.netguru.android.inbbbox.event.events.ShotUpdatedEvent;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 
@@ -45,7 +46,7 @@ public class LikesPresenterTest {
     public RxBus rxBusMock;
 
     @Mock
-    public ShotLikedEvent shotLikedEventMock;
+    public ShotUpdatedEvent shotUpdatedEventMock;
 
     @Mock
     public LikesViewContract.View viewMock;
@@ -68,7 +69,8 @@ public class LikesPresenterTest {
         }
         when(likeShotControllerMock.getLikedShots(anyInt(), anyInt()))
                 .thenReturn(Observable.just(shotList));
-        when(rxBusMock.getEvents(any())).thenReturn(Observable.just(shotLikedEventMock));
+        when(rxBusMock.getEvents(any())).thenReturn(Observable.just(shotUpdatedEventMock));
+        when(shotUpdatedEventMock.getShot()).thenReturn(Statics.NOT_LIKED_SHOT);
         when(errorControllerMock.getThrowableMessage(any(Throwable.class)))
                 .thenReturn("test");
 

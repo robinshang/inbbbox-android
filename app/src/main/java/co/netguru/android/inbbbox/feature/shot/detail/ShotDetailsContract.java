@@ -79,8 +79,6 @@ public interface ShotDetailsContract {
 
         void showShotRemoveFromBucketSuccess();
 
-        void updateBucketedStatus(boolean isBucketed);
-
         void showAddShotToBucketView(Shot shot);
 
         void showRemoveShotFromBucketView(Shot shot);
