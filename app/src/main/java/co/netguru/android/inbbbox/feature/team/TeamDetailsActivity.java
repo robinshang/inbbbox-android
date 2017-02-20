@@ -2,7 +2,6 @@ package co.netguru.android.inbbbox.feature.team;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,8 +32,8 @@ public class TeamDetailsActivity extends BaseActivity implements ShotsFragment.S
 
     private static final String USER_KEY = "user_key";
 
-    @BindColor(R.color.black)
-    int colorBlack;
+    @BindColor(R.color.white)
+    int colorWhite;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -94,15 +93,14 @@ public class TeamDetailsActivity extends BaseActivity implements ShotsFragment.S
 
         for (final UserDetailsTabItemType item : UserDetailsTabItemType.values()) {
             final TabLayout.Tab tab = tabLayout.getTabAt(item.getPosition());
-            selectInitialTabSelection(tab, item.getPosition());
+            if (tab != null) {
+                tab.setText(item.getTitle());
+            }
         }
-        tabLayout.addOnTabSelectedListener(createTabListener());
     }
 
     private void initializeToolbar() {
-        collapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT);
-
-        toolbar.setTitleTextColor(colorBlack);
+        toolbar.setTitleTextColor(colorWhite);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -111,45 +109,6 @@ public class TeamDetailsActivity extends BaseActivity implements ShotsFragment.S
             UserWithShots user = getIntent().getParcelableExtra(USER_KEY);
             actionBar.setTitle(user.user().name());
         }
-    }
-
-    private void selectInitialTabSelection(TabLayout.Tab tab, int position) {
-        if (position == 0) {
-            selectTab(tab);
-        }
-    }
-
-    private TabLayout.OnTabSelectedListener createTabListener() {
-        return new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                selectTab(tab);
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                //no op
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                selectTab(tab);
-            }
-        };
-    }
-
-    private void selectTab(TabLayout.Tab tab) {
-        currentTabIndex = tab.getPosition();
-
-        tab.setText(getString(UserDetailsTabItemType.getTabItemForPosition(tab.getPosition()).getTitle()));
-        setupToolbarForCurrentTab(currentTabIndex);
-    }
-
-    private void setupToolbarForCurrentTab(int position) {
-        toolbar.setBackground(position == UserDetailsTabItemType.SHOTS.getPosition()
-                ? toolbarCenterBackground : toolbarStartBackground);
     }
 
     @Override
