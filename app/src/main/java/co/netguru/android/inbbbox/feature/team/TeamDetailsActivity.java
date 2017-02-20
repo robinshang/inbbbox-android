@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide;
 import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindView;
-import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.feature.shared.UserDetailsActivityPagerAdapter;
@@ -49,10 +48,6 @@ public class TeamDetailsActivity extends BaseActivity {
     @BindDrawable(R.drawable.toolbar_start_background)
     Drawable toolbarStartBackground;
 
-    @BindColor(R.color.accent)
-    int highlightColor;
-
-    private int currentTabIndex = Constants.UNDEFINED;
     private UserDetailsActivityPagerAdapter pagerAdapter;
 
     public static void startActivity(Context context, UserWithShots user) {

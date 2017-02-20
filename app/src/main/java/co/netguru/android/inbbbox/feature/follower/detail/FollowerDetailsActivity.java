@@ -2,39 +2,63 @@ package co.netguru.android.inbbbox.feature.follower.detail;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import butterknife.BindColor;
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
+import co.netguru.android.inbbbox.feature.shared.UserDetailsActivityPagerAdapter;
+import co.netguru.android.inbbbox.feature.shared.UserDetailsTabItemType;
 import co.netguru.android.inbbbox.feature.shared.base.BaseActivity;
+import co.netguru.android.inbbbox.feature.shared.view.NonSwipeableViewPager;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FollowerDetailsActivity extends BaseActivity
         implements FollowerDetailsFragment.OnFollowedShotActionListener {
 
     private static final String USER_KEY = "user_key";
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
     @BindColor(R.color.white)
     int colorWhite;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.user_details_tab_layout)
+    TabLayout tabLayout;
+    @BindView(R.id.user_details_view_pager)
+    NonSwipeableViewPager viewPager;
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.details_user_imageView)
+    CircleImageView userImageView;
+
+    @BindDrawable(R.drawable.toolbar_center_background)
+    Drawable toolbarCenterBackground;
+    @BindDrawable(R.drawable.toolbar_start_background)
+    Drawable toolbarStartBackground;
+
     private boolean shouldRefreshFollowers;
+    private UserDetailsActivityPagerAdapter pagerAdapter;
 
     public static void startActivity(Context context, UserWithShots user) {
         final Intent intent = new Intent(context, FollowerDetailsActivity.class);
@@ -45,11 +69,10 @@ public class FollowerDetailsActivity extends BaseActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_follower_details);
+        setContentView(R.layout.activity_user_details);
+        initializePager();
         initializeToolbar();
-        if (savedInstanceState == null) {
-            instantiateFragment();
-        }
+        setupImage();
         shouldRefreshFollowers = false;
     }
 
@@ -96,18 +119,38 @@ public class FollowerDetailsActivity extends BaseActivity
         }
     }
 
+    public void initializePager() {
+        pagerAdapter = new UserDetailsActivityPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+        for (final UserDetailsTabItemType item : UserDetailsTabItemType.values()) {
+            final TabLayout.Tab tab = tabLayout.getTabAt(item.getPosition());
+            if (tab != null) {
+                tab.setText(item.getTitle());
+            }
+        }
+    }
+
     private void initializeToolbar() {
+        collapsingToolbarLayout.setTitleEnabled(false);
         toolbar.setTitleTextColor(colorWhite);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+
+            UserWithShots user = getIntent().getParcelableExtra(USER_KEY);
+            actionBar.setTitle(user.user().name());
         }
     }
 
-    private void instantiateFragment() {
-        replaceFragment(R.id.follower_details_fragment_container,
-                FollowerDetailsFragment.newInstance(getIntent().getParcelableExtra(USER_KEY)),
-                FollowerDetailsFragment.TAG).commit();
+    private void setupImage() {
+        UserWithShots user = getIntent().getParcelableExtra(USER_KEY);
+        Glide.with(this)
+                .load(user.user().avatarUrl())
+                .fitCenter()
+                .error(R.drawable.ic_ball)
+                .into(userImageView);
     }
 }
