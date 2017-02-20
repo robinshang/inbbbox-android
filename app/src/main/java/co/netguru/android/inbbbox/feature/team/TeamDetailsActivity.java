@@ -106,6 +106,7 @@ public class TeamDetailsActivity extends BaseActivity implements ShotsFragment.S
     }
 
     private void initializeToolbar() {
+        collapsingToolbarLayout.setTitleEnabled(false);
         toolbar.setTitleTextColor(colorWhite);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
