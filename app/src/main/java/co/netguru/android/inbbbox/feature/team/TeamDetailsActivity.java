@@ -14,24 +14,19 @@ import android.view.MenuItem;
 
 import com.bumptech.glide.Glide;
 
-import java.util.List;
-
 import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.UserDetailsActivityPagerAdapter;
 import co.netguru.android.inbbbox.feature.shared.UserDetailsTabItemType;
 import co.netguru.android.inbbbox.feature.shared.base.BaseActivity;
 import co.netguru.android.inbbbox.feature.shared.view.NonSwipeableViewPager;
-import co.netguru.android.inbbbox.feature.shot.ShotsFragment;
-import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class TeamDetailsActivity extends BaseActivity implements ShotsFragment.ShotActionListener {
+public class TeamDetailsActivity extends BaseActivity {
 
     private static final String USER_KEY = "user_key";
 
@@ -125,15 +120,5 @@ public class TeamDetailsActivity extends BaseActivity implements ShotsFragment.S
                 .fitCenter()
                 .error(R.drawable.ic_ball)
                 .into(userImageView);
-    }
-
-    @Override
-    public void shotLikeStatusChanged() {
-
-    }
-
-    @Override
-    public void showShotDetails(Shot shot, List<Shot> nearbyShots, ShotDetailsRequest detailsRequest) {
-
     }
 }
