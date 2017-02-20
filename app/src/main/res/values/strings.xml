@@ -11,10 +11,12 @@
     <string name="invalid_outh_url">Invalid oauth url</string>
     <string name="wrong_oauth_state_key">Something went wrong while logging in, try again</string>
 
+    <string name="tab_following_title">Following</string>
     <string name="tab_shots_title">Shots</string>
     <string name="tab_likes_title">Likes</string>
     <string name="tab_buckets_title">Buckets</string>
-    <string name="tab_following_title">Following</string>
+    <string name="tab_info_title">Info</string>
+    <string name="tab_projects_title">Projects</string>
 
     <string name="action_settings">Settings</string>
     <string name="action_list_view">List view</string>
