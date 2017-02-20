@@ -2,9 +2,11 @@ package co.netguru.android.inbbbox.feature.team;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -31,8 +33,8 @@ public class TeamDetailsActivity extends BaseActivity implements ShotsFragment.S
 
     private static final String USER_KEY = "user_key";
 
-    @BindColor(R.color.white)
-    int colorWhite;
+    @BindColor(R.color.black)
+    int colorBlack;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -40,6 +42,8 @@ public class TeamDetailsActivity extends BaseActivity implements ShotsFragment.S
     TabLayout tabLayout;
     @BindView(R.id.user_details_view_pager)
     NonSwipeableViewPager viewPager;
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
     @BindDrawable(R.drawable.toolbar_center_background)
     Drawable toolbarCenterBackground;
@@ -96,7 +100,9 @@ public class TeamDetailsActivity extends BaseActivity implements ShotsFragment.S
     }
 
     private void initializeToolbar() {
-        toolbar.setTitleTextColor(colorWhite);
+        collapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT);
+
+        toolbar.setTitleTextColor(colorBlack);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

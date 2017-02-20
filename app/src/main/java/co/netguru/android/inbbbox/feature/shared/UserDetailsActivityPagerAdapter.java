@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import co.netguru.android.inbbbox.feature.bucket.BucketsFragment;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
-import co.netguru.android.inbbbox.feature.shot.ShotsFragment;
 
 public class UserDetailsActivityPagerAdapter<T extends Fragment & RefreshableFragment>
         extends FragmentStatePagerAdapter {
@@ -29,15 +28,15 @@ public class UserDetailsActivityPagerAdapter<T extends Fragment & RefreshableFra
         switch (UserDetailsTabItemType.getTabItemForPosition(position)) {
             case SHOTS:
 //               TODO: 20.02 Instantiate ShotsFragment [not in scope of this task]
-                result = ShotsFragment.newInstance();
+                result = BucketsFragment.newInstance();
                 break;
             case INFO:
 //                 TODO: 20.02 Instantiate InfoFragment [not in scope of this task]
-                result = ShotsFragment.newInstance();
+                result = BucketsFragment.newInstance();
                 break;
             case PROJECTS:
 //                 TODO: 20.02 Instantiate ProjectsFragment [not in scope of this task]
-                result = ShotsFragment.newInstance();
+                result = BucketsFragment.newInstance();
                 break;
             case BUCKETS:
 //                TODO: 20.02 Instantiate BucketsFragment [not in scope of this task]
