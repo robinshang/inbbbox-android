@@ -4,57 +4,57 @@ import android.os.Bundle;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-public class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
+class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
 
     /**
      * Events
      */
     //Screen events
-    private static final String EVENT_SCREEN_BUCKETS = "screen:buckets";
-    private static final String EVENT_SCREEN_FOLLOWEES = "screen:followees";
-    private static final String EVENT_SCREEN_LOGIN = "screen:login";
-    private static final String EVENT_SCREEN_SETTINGS = "screen:settings";
-    private static final String EVENT_SCREEN_SHOT_BUCKETS = "screen:shot_buckets";
-    private static final String EVENT_SCREEN_SHOT_DETAILS = "screen:shot_details";
-    private static final String EVENT_SCREEN_SHOTS = "screen:shots";
-    private static final String EVENT_SCREEN_LIKES = "screen:likes";
+    private static final String EVENT_SCREEN_BUCKETS = "screen_buckets";
+    private static final String EVENT_SCREEN_FOLLOWEES = "screen_followees";
+    private static final String EVENT_SCREEN_LOGIN = "screen_login";
+    private static final String EVENT_SCREEN_SETTINGS = "screen_settings";
+    private static final String EVENT_SCREEN_SHOT_BUCKETS = "screen_shot_buckets";
+    private static final String EVENT_SCREEN_SHOT_DETAILS = "screen_shot_details";
+    private static final String EVENT_SCREEN_SHOTS = "screen_shots";
+    private static final String EVENT_SCREEN_LIKES = "screen_likes";
 
     //Login events
-    private static final String EVENT_LOGIN_SUCCESS = "login:login_success";
-    private static final String EVENT_LOGIN_FAILED = "login:login_failed";
-    private static final String EVENT_LOGIN_GUEST = "login:login_guest";
+    private static final String EVENT_LOGIN_SUCCESS = "login_success";
+    private static final String EVENT_LOGIN_FAILED = "login_failed";
+    private static final String EVENT_LOGIN_GUEST = "login_guest";
 
     //User action events
-    private static final String EVENT_USER_LIKE = "user:like";
-    private static final String EVENT_USER_ADD_TO_BUCKET = "user:add_to_bucket";
-    private static final String EVENT_USER_COMMENT = "user:comment";
-    private static final String EVENT_USER_SWIPE_DOWN = "user:swipe_down";
-    private static final String EVENT_USER_FOLLOW = "user:follow";
+    private static final String EVENT_USER_LIKE = "user_like";
+    private static final String EVENT_USER_ADD_TO_BUCKET = "user_add_to_bucket";
+    private static final String EVENT_USER_COMMENT = "user_comment";
+    private static final String EVENT_USER_SWIPE_DOWN = "user_swipe_down";
+    private static final String EVENT_USER_FOLLOW = "user_follow";
 
     //Settings events
-    private static final String EVENT_SETTINGS_DAILY_REMINDER = "settings:daily_reminder_enable";
+    private static final String EVENT_SETTINGS_DAILY_REMINDER = "settings_daily_reminder_enable";
     private static final String EVENT_SETTINGS_SOURCE_FOLLOWING =
-            "settings:source_following";
+            "settings_source_following";
     private static final String EVENT_SETTINGS_SOURCE_NEW_TODAY =
-            "settings:source_new_today";
+            "settings_source_new_today";
     private static final String EVENT_SETTINGS_SOURCE_POPULAR_TODAY =
-            "settings:source_popular_today";
-    private static final String EVENT_SETTINGS_SOURCE_DEBUTS = "settings:source_debuts";
-    private static final String EVENT_SETTINGS_AUTHOR_ON_HOME = "settings:author_on_home_screen";
-    private static final String EVENT_SETTINGS_NIGHTMODE = "settings:night_mode";
-    private static final String EVENT_SETTINGS_NIGHTMODE_AUTO = "settings:night_mode_auto";
+            "settings_source_popular_today";
+    private static final String EVENT_SETTINGS_SOURCE_DEBUTS = "settings_source_debuts";
+    private static final String EVENT_SETTINGS_AUTHOR_ON_HOME = "settings_author_on_home_screen";
+    private static final String EVENT_SETTINGS_NIGHTMODE = "settings_night_mode";
+    private static final String EVENT_SETTINGS_NIGHTMODE_AUTO = "settings_night_mode_auto";
 
     //API events
-    private static final String EVENT_API_REQUESTS_REMAINING = "api:requests_remaining";
+    private static final String EVENT_API_REQUESTS_REMAINING = "api_requests_remaining";
 
     /**
      * Params
      */
-    private static final String PARAM_REQUESTS_REMAINING = "param:requests_remaining";
+    private static final String PARAM_REQUESTS_REMAINING = "param_requests_remaining";
 
     private final FirebaseAnalytics analytics;
 
-    public FirebaseAnalyticsEventLogger(FirebaseAnalytics analytics) {
+    FirebaseAnalyticsEventLogger(FirebaseAnalytics analytics) {
         this.analytics = analytics;
     }
 
