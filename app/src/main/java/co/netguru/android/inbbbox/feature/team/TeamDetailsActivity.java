@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import butterknife.BindColor;
@@ -27,6 +29,7 @@ import co.netguru.android.inbbbox.feature.shared.base.BaseActivity;
 import co.netguru.android.inbbbox.feature.shared.view.NonSwipeableViewPager;
 import co.netguru.android.inbbbox.feature.shot.ShotsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TeamDetailsActivity extends BaseActivity implements ShotsFragment.ShotActionListener {
 
@@ -43,6 +46,8 @@ public class TeamDetailsActivity extends BaseActivity implements ShotsFragment.S
     NonSwipeableViewPager viewPager;
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.details_user_imageView)
+    CircleImageView userImageView;
 
     @BindDrawable(R.drawable.toolbar_center_background)
     Drawable toolbarCenterBackground;
@@ -67,6 +72,7 @@ public class TeamDetailsActivity extends BaseActivity implements ShotsFragment.S
         setContentView(R.layout.activity_user_details);
         initializeToolbar();
         initializePager();
+        setupImage();
     }
 
     @Override
@@ -109,6 +115,15 @@ public class TeamDetailsActivity extends BaseActivity implements ShotsFragment.S
             UserWithShots user = getIntent().getParcelableExtra(USER_KEY);
             actionBar.setTitle(user.user().name());
         }
+    }
+
+    private void setupImage() {
+        UserWithShots user = getIntent().getParcelableExtra(USER_KEY);
+        Glide.with(this)
+                .load(user.user().avatarUrl())
+                .fitCenter()
+                .error(R.drawable.ic_ball)
+                .into(userImageView);
     }
 
     @Override

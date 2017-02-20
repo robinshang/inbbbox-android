@@ -25,7 +25,6 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/details_user_imageView"
-                android:src="@drawable/ic_ball"
                 android:layout_gravity="center"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
