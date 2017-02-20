@@ -265,7 +265,7 @@ dependencies {
     compile libs.photoView
 
     //Analytics
-    compile libs.googleAnalytics
+    compile libs.firebaseAnalytics
 
     //Debug tools
     // Stetho
