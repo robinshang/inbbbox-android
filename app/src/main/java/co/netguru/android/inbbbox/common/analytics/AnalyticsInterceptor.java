@@ -24,9 +24,28 @@ public class AnalyticsInterceptor implements Interceptor {
         Request request = chain.request();
         Response response = chain.proceed(request);
         if (request.url().toString().contains(Constants.API.DRIBBLE_BASE_URL)) {
+            logUserEvents(request);
             logRequestsRemaining(response.header(HEADER_REQUESTS_REMAINING, DEFAULT_VALUE));
         }
         return response;
+    }
+
+    private void logUserEvents(Request request) {
+        switch (RequestDecoder.decodeRequest(request)) {
+            case ADD_SHOT_TO_BUCKET:
+                eventLogger.logEventUserAddToBucket();
+                break;
+            case LIKE:
+                eventLogger.logEventUserLike();
+                break;
+            case FOLLOW:
+                eventLogger.logEventUserFollow();
+                break;
+            case COMMENT:
+                eventLogger.logEventUserComment();
+                break;
+            default:
+        }
     }
 
     private void logRequestsRemaining(String headerValue) {
