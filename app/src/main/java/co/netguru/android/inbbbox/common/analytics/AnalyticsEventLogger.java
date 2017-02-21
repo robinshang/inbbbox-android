@@ -2,9 +2,13 @@ package co.netguru.android.inbbbox.common.analytics;
 
 public interface AnalyticsEventLogger {
 
+    /**
+     * Screens
+     */
+
     void logEventScreenBuckets();
 
-    void logEventScreenFollowers();
+    void logEventScreenFollowing();
 
     void logEventScreenLikes();
 
@@ -12,11 +16,25 @@ public interface AnalyticsEventLogger {
 
     void logEventScreenSettings();
 
-    void logEventScreenShotBuckets();
+    void logEventScreenBucketDetails();
 
     void logEventScreenShotDetails();
 
     void logEventScreenShots();
+
+    void logEventScreenUserDetails();
+
+    /**
+     * Dialogs
+     */
+
+    void logEventDialogShotToBuckets();
+
+    void logEventDialogCreateBucket();
+
+    /**
+     * Login events
+     */
 
     void logEventLoginSuccess();
 
@@ -24,31 +42,91 @@ public interface AnalyticsEventLogger {
 
     void logEventLoginGuest();
 
-    void logEventUserLike();
+    void logEventCreateAccountAsGuest();
 
-    void logEventUserAddToBucket();
-
-    void logEventUserComment();
+    /**
+     * User interaction
+     */
 
     void logEventUserSwipeDown();
 
-    void logEventUserFollow();
+    void logEventShotsFABComment();
+
+    void logEventShotsFABAddToBucket();
+
+    void logEventShotsFABFollow();
+
+    void logEventShotsFABLike();
+
+    void logEventBucketsFABCreate();
+
+    void logEventAppbarList();
+
+    void logEventAppbarGrid();
+
+    void logEventAppbarFollow(boolean follow);
+
+    void logEventShotSwipeLike();
+
+    void logEventShotSwipeAddToBucket();
+
+    void logEventShotSwipeComment();
+
+    void logEventShotSwipeFollow();
+
+    void logEventShotsListSwipes(int numberOfSwipes);
+
+    void logEventShotDetailsLike();
+
+    void logEventShotDetailsAddToBucket();
+
+    void logEventShotDetailsComment();
+
+    void logEventShotDetailsAuthorDetails();
+
+    void logEventShotDetailsCollapseToolbar();
+
+    void logEventShotDetailsCloseBack();
+
+    void logEventShotDetailsCloseX();
+
+    void logEventShotDetailsCloseSwipe();
+
+    void logEventLikesItemClick();
+
+    void logEventBucketsItemClick();
+
+    void logEventFollowingItemClick();
+
+    /**
+     * API
+     */
 
     void logEventApiRequestsRemaining(int requestsRemaining);
 
-    void logEventSettingsAuthorOnHome();
+    void logEventApiFollow();
 
-    void logEventSettingsReminder();
+    void logEventApiLike();
 
-    void logEventSettingsNightmode();
+    void logEventApiAddToBucket();
 
-    void logEventSettingsNightmodeAuto();
+    void logEventApiComment();
 
-    void logEventSettingsDebuts();
+    /**
+     * Settings
+     */
 
-    void logEventSettingsFollowing();
+    void logEventSettingsDetailsOnHome(boolean enabled);
 
-    void logEventSettingsNewToday();
+    void logEventSettingsReminder(boolean enabled);
 
-    void logEventSettingsPopularToday();
+    void logEventSettingsNightmode(boolean enabled);
+
+    void logEventSettingsDebuts(boolean enabled);
+
+    void logEventSettingsFollowing(boolean enabled);
+
+    void logEventSettingsNewToday(boolean enabled);
+
+    void logEventSettingsPopularToday(boolean enabled);
 }

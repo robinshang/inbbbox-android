@@ -33,16 +33,16 @@ public class AnalyticsInterceptor implements Interceptor {
     private void logUserEvents(Request request) {
         switch (RequestDecoder.decodeRequest(request)) {
             case ADD_SHOT_TO_BUCKET:
-                eventLogger.logEventUserAddToBucket();
+                eventLogger.logEventApiAddToBucket();
                 break;
             case LIKE:
-                eventLogger.logEventUserLike();
+                eventLogger.logEventApiLike();
                 break;
             case FOLLOW:
-                eventLogger.logEventUserFollow();
+                eventLogger.logEventApiFollow();
                 break;
             case COMMENT:
-                eventLogger.logEventUserComment();
+                eventLogger.logEventApiComment();
                 break;
             default:
         }
