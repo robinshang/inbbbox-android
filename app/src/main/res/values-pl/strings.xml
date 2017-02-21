@@ -85,7 +85,7 @@
     <string name="tab_buckets_title">Kolekcje</string>
     <string name="tab_following_title">Obserwowani</string>
     <string name="tab_likes_title">Ulubione</string>
-    <string name="tab_shots_title">Projekty</string>
+    <string name="tab_shots_title">Shoty</string>
     <string name="wrong_oauth_state_key">Coś poszło nie tak podczas logowania, spróbuj ponownie</string>
     <string name="yesterday">wczoraj</string>
     <string name="loading_more_shots">Ładowanie projektów</string>
@@ -117,5 +117,7 @@
         <item quantity="few">%d projekty</item>
         <item quantity="many">%d projektów</item>
     </plurals>
+    <string name="tab_info_title">Info</string>
+    <string name="tab_projects_title">Projekty</string>
 
 </resources>
