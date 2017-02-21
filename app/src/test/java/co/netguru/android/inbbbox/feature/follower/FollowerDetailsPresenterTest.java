@@ -18,8 +18,8 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
-import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsContract;
-import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsPresenter;
+import co.netguru.android.inbbbox.feature.user.shots.UserShotsContract;
+import co.netguru.android.inbbbox.feature.user.shots.UserShotsPresenter;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
 import rx.Single;
@@ -57,10 +57,10 @@ public class FollowerDetailsPresenterTest {
     UserWithShots followerMock;
 
     @InjectMocks
-    FollowerDetailsPresenter followerDetailsPresenter;
+    UserShotsPresenter followerDetailsPresenter;
 
     @Mock
-    FollowerDetailsContract.View viewMock;
+    UserShotsContract.View viewMock;
 
     @Before
     public void setUp() {

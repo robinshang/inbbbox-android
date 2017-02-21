@@ -41,7 +41,7 @@
             tools:ignore="UnusedAttribute" />
 
         <activity
-            android:name=".feature.follower.detail.FollowerDetailsActivity"
+            android:name=".feature.user.UserActivity"
             android:screenOrientation="portrait"/>
 
         <activity

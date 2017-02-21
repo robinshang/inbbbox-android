@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.follower.detail;
+package co.netguru.android.inbbbox.feature.user.followdialog;
 
 import android.app.Dialog;
 import android.os.Bundle;

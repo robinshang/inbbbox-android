@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.shared;
+package co.netguru.android.inbbbox.feature.user;
 
 import android.annotation.SuppressLint;
 import android.support.v4.app.Fragment;
@@ -7,16 +7,21 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.feature.bucket.BucketsFragment;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
+import co.netguru.android.inbbbox.feature.shared.UserDetailsTabItemType;
+import co.netguru.android.inbbbox.feature.user.shots.UserShotsFragment;
 
-public class UserDetailsActivityPagerAdapter<T extends Fragment & RefreshableFragment>
+public class UserPagerAdapter<T extends Fragment & RefreshableFragment>
         extends FragmentStatePagerAdapter {
 
     private SparseArray<T> activeRefreshableFragments;
+    private UserWithShots userWithShots;
 
-    public UserDetailsActivityPagerAdapter(FragmentManager fm) {
+    public UserPagerAdapter(FragmentManager fm, UserWithShots userWithShots) {
         super(fm);
+        this.userWithShots = userWithShots;
         activeRefreshableFragments = new SparseArray<>(UserDetailsTabItemType.values().length);
     }
 
@@ -27,20 +32,19 @@ public class UserDetailsActivityPagerAdapter<T extends Fragment & RefreshableFra
 
         switch (UserDetailsTabItemType.getTabItemForPosition(position)) {
             case SHOTS:
-//               TODO: 20.02 Instantiate ShotsFragment [not in scope of this task]
-                result = BucketsFragment.newInstance();
+                result = UserShotsFragment.newInstance(userWithShots);
                 break;
             case INFO:
 //                 TODO: 20.02 Instantiate InfoFragment [not in scope of this task]
-                result = BucketsFragment.newInstance();
+                result = UserShotsFragment.newInstance(userWithShots);
                 break;
             case PROJECTS:
 //                 TODO: 20.02 Instantiate ProjectsFragment [not in scope of this task]
-                result = BucketsFragment.newInstance();
+                result = UserShotsFragment.newInstance(userWithShots);
                 break;
             case BUCKETS:
 //                TODO: 20.02 Instantiate BucketsFragment [not in scope of this task]
-                result = BucketsFragment.newInstance();
+                result = UserShotsFragment.newInstance(userWithShots);
                 break;
             default:
                 throw new IllegalArgumentException(String.format(
