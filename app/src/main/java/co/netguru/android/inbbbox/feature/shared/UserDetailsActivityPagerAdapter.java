@@ -65,13 +65,6 @@ public class UserDetailsActivityPagerAdapter<T extends Fragment & RefreshableFra
 
     @Override
     public int getCount() {
-        return co.netguru.android.inbbbox.feature.main.adapter.TabItemType.values().length;
-    }
-
-    public void refreshFragment(co.netguru.android.inbbbox.feature.main.adapter.TabItemType tabItemType) {
-        T refreshableFragment = activeRefreshableFragments.get(tabItemType.getPosition());
-        if (refreshableFragment != null) {
-            refreshableFragment.refreshFragmentData();
-        }
+        return UserDetailsTabItemType.values().length;
     }
 }

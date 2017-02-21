@@ -2,7 +2,6 @@ package co.netguru.android.inbbbox.feature.follower.detail;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -18,7 +17,6 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import butterknife.BindColor;
-import butterknife.BindDrawable;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
@@ -51,11 +49,6 @@ public class FollowerDetailsActivity extends BaseActivity
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.details_user_imageView)
     CircleImageView userImageView;
-
-    @BindDrawable(R.drawable.toolbar_center_background)
-    Drawable toolbarCenterBackground;
-    @BindDrawable(R.drawable.toolbar_start_background)
-    Drawable toolbarStartBackground;
 
     private boolean shouldRefreshFollowers;
     private UserDetailsActivityPagerAdapter pagerAdapter;
