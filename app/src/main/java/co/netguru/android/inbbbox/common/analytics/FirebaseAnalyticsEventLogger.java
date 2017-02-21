@@ -11,7 +11,7 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
      */
     //Screen events
     private static final String EVENT_SCREEN_BUCKETS = "screen_buckets";
-    private static final String EVENT_SCREEN_FOLLOWEES = "screen_followees";
+    private static final String EVENT_SCREEN_FOLLOWERS = "screen_followers";
     private static final String EVENT_SCREEN_LOGIN = "screen_login";
     private static final String EVENT_SCREEN_SETTINGS = "screen_settings";
     private static final String EVENT_SCREEN_SHOT_BUCKETS = "screen_shot_buckets";
@@ -64,8 +64,8 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     }
 
     @Override
-    public void logEventScreenFollowees() {
-        analytics.logEvent(EVENT_SCREEN_FOLLOWEES, new Bundle());
+    public void logEventScreenFollowers() {
+        analytics.logEvent(EVENT_SCREEN_FOLLOWERS, new Bundle());
     }
 
     @Override

@@ -4,7 +4,7 @@ public interface AnalyticsEventLogger {
 
     void logEventScreenBuckets();
 
-    void logEventScreenFollowees();
+    void logEventScreenFollowers();
 
     void logEventScreenLikes();
 
