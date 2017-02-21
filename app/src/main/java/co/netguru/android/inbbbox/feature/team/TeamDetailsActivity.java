@@ -4,26 +4,44 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
+import co.netguru.android.inbbbox.feature.shared.UserDetailsActivityPagerAdapter;
+import co.netguru.android.inbbbox.feature.shared.UserDetailsTabItemType;
 import co.netguru.android.inbbbox.feature.shared.base.BaseActivity;
+import co.netguru.android.inbbbox.feature.shared.view.NonSwipeableViewPager;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TeamDetailsActivity extends BaseActivity {
 
     private static final String USER_KEY = "user_key";
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
     @BindColor(R.color.white)
     int colorWhite;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.user_details_tab_layout)
+    TabLayout tabLayout;
+    @BindView(R.id.user_details_view_pager)
+    NonSwipeableViewPager viewPager;
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.details_user_imageView)
+    CircleImageView userImageView;
+
+    private UserDetailsActivityPagerAdapter pagerAdapter;
 
     public static void startActivity(Context context, UserWithShots user) {
         final Intent intent = new Intent(context, TeamDetailsActivity.class);
@@ -34,12 +52,10 @@ public class TeamDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_follower_details);
+        setContentView(R.layout.activity_user_details);
         initializeToolbar();
-
-        if (savedInstanceState == null) {
-            instantiateFragment();
-        }
+        initializePager();
+        setupImage();
     }
 
     @Override
@@ -59,13 +75,21 @@ public class TeamDetailsActivity extends BaseActivity {
         }
     }
 
-    private void instantiateFragment() {
-        replaceFragment(R.id.follower_details_fragment_container,
-                TeamDetailsFragment.newInstance(getIntent().getParcelableExtra(USER_KEY)),
-                TeamDetailsFragment.TAG).commit();
+    public void initializePager() {
+        pagerAdapter = new UserDetailsActivityPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+        for (final UserDetailsTabItemType item : UserDetailsTabItemType.values()) {
+            final TabLayout.Tab tab = tabLayout.getTabAt(item.getPosition());
+            if (tab != null) {
+                tab.setText(item.getTitle());
+            }
+        }
     }
 
     private void initializeToolbar() {
+        collapsingToolbarLayout.setTitleEnabled(false);
         toolbar.setTitleTextColor(colorWhite);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
@@ -77,4 +101,12 @@ public class TeamDetailsActivity extends BaseActivity {
         }
     }
 
+    private void setupImage() {
+        UserWithShots user = getIntent().getParcelableExtra(USER_KEY);
+        Glide.with(this)
+                .load(user.user().avatarUrl())
+                .fitCenter()
+                .error(R.drawable.ic_ball)
+                .into(userImageView);
+    }
 }
