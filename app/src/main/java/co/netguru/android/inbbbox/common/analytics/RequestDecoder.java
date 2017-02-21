@@ -11,10 +11,10 @@ enum RequestDecoder {
 
     private static final String METHOD_POST = "POST";
     private static final String METHOD_PUT = "PUT";
-    private static final String REGEX_ADD_TO_BUCKET = "\\.*buckets/\\.+/shots";
-    private static final String REGEX_LIKE_SHOTS = "\\.*shots/\\.+/like";
-    private static final String REGEX_FOLLOW = "\\.*users/\\.+/follow";
-    private static final String REGEX_COMMENT = "\\.*shots/\\.+/comments";
+    private static final String REGEX_ADD_TO_BUCKET = ".*buckets/.+/shots";
+    private static final String REGEX_LIKE_SHOTS = ".*shots/.+/like";
+    private static final String REGEX_FOLLOW = ".*users/.+/follow";
+    private static final String REGEX_COMMENT = ".*shots/.+/comments";
 
     static RequestDecoder decodeRequest(Request request) {
         final String method = request.method();
