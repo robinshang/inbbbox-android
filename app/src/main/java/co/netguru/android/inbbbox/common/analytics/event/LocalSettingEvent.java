@@ -13,7 +13,7 @@ public class LocalSettingEvent extends BaseEvent {
     public LocalSettingEvent(String settingName, boolean enabled) {
         super(EVENT_NAME);
         Bundle params = getParams();
-        params.putString(FirebaseAnalytics.Param.VALUE, settingName);
+        params.putString(FirebaseAnalytics.Param.ITEM_NAME, settingName);
         params.putString(PARAM_SETTING_VALUE, Boolean.toString(enabled));
     }
 }
