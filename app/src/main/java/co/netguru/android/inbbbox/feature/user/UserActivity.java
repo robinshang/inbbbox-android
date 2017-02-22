@@ -50,7 +50,6 @@ public class UserActivity extends BaseActivity implements UserShotsFragment.OnFo
     CircleImageView userImageView;
 
     private boolean shouldRefreshFollowers;
-    private UserPagerAdapter pagerAdapter;
 
     public static void startActivity(Context context, UserWithShots user) {
         final Intent intent = new Intent(context, UserActivity.class);
@@ -109,7 +108,7 @@ public class UserActivity extends BaseActivity implements UserShotsFragment.OnFo
     }
 
     public void initializePager(UserWithShots user) {
-        pagerAdapter = new UserPagerAdapter(getSupportFragmentManager(), user);
+        UserPagerAdapter pagerAdapter = new UserPagerAdapter(getSupportFragmentManager(), user);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
