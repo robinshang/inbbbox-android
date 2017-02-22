@@ -155,6 +155,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                 .subscribe(this::onScheduleNotificationNext, this::onScheduleNotificationError);
 
         subscriptions.add(subscription);
+        analyticsEventLogger.logEventSettingsReminder(status);
     }
 
     @Override
@@ -203,6 +204,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                     getView().changeNightMode(isNightMode);
                 }, throwable -> handleError(throwable, "Error while changing customization settings"));
         subscriptions.add(subscription);
+        analyticsEventLogger.logEventSettingsNightmode(isNightMode);
     }
 
     @Override
@@ -235,6 +237,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     @Override
     public void onShotDetailsVisibilityChange(boolean isVisible) {
         rxBus.send(new DetailsVisibilityChangeEvent(isVisible));
+        analyticsEventLogger.logEventSettingsDetailsOnHome(isVisible);
     }
 
     private void onCustomizationStatuChangeSuccess(boolean isDetails) {

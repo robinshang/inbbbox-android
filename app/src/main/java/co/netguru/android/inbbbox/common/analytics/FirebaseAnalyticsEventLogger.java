@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.common.analytics;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import co.netguru.android.inbbbox.common.analytics.event.LocalSettingEvent;
 import co.netguru.android.inbbbox.common.analytics.event.ScreenViewEvent;
 import co.netguru.android.inbbbox.common.analytics.event.SourceStreamEvent;
 import co.netguru.android.inbbbox.common.analytics.event.SourceStreamLeaveEvent;
@@ -23,6 +24,10 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     private static final String SOURCE_NEW_TODAY = "new today";
     private static final String SOURCE_POPULAR_TODAY = "popular today";
     private static final String SOURCE_DEBUT = "debut";
+
+    private static final String SETTING_REMINDER = "reminder";
+    private static final String SETTING_NIGHT_MODE = "night mode";
+    private static final String SETTING_DETAILS_ON_HOME = "details on home";
 
     private final FirebaseAnalytics analytics;
 
@@ -281,17 +286,17 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
 
     @Override
     public void logEventSettingsDetailsOnHome(boolean enabled) {
-
+        new LocalSettingEvent(SETTING_DETAILS_ON_HOME, enabled);
     }
 
     @Override
     public void logEventSettingsReminder(boolean enabled) {
-
+        new LocalSettingEvent(SETTING_REMINDER, enabled);
     }
 
     @Override
     public void logEventSettingsNightmode(boolean enabled) {
-
+        new LocalSettingEvent(SETTING_NIGHT_MODE, enabled);
     }
 
     @Override
