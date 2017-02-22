@@ -28,11 +28,14 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
@@ -76,8 +79,12 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     @BindView(R.id.fragment_buckets_empty_text)
     TextView emptyViewText;
 
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
+
     private Snackbar loadingMoreSnackbar;
     private BucketShotsAdapter bucketShotsAdapter;
+    private BucketsDetailsComponent component;
 
     private BucketShotViewHolder.OnShotInBucketClickListener shotInBucketClickListener;
 
@@ -106,6 +113,8 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        initComponent();
+        analyticsEventLogger.logEventScreenBucketDetails();
         return inflater.inflate(R.layout.fragment_bucket_details, container, false);
     }
 
@@ -123,10 +132,15 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
         loadingMoreSnackbar = null;
     }
 
+    private void initComponent() {
+        component = App.getUserComponent(getContext()).plusBucketDetailsComponent();
+        component.inject(this);
+    }
+
     @NonNull
     @Override
     public BucketDetailsContract.Presenter createPresenter() {
-        return App.getUserComponent(getContext()).plusBucketDetailsComponent().getPresenter();
+        return component.getPresenter();
     }
 
     @NonNull
