@@ -11,6 +11,7 @@ import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.feature.bucket.BucketsFragment;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shared.UserDetailsTabItemType;
+import co.netguru.android.inbbbox.feature.user.info.UserInfoFragment;
 import co.netguru.android.inbbbox.feature.user.shots.UserShotsFragment;
 
 public class UserPagerAdapter<T extends Fragment & RefreshableFragment>
@@ -35,8 +36,7 @@ public class UserPagerAdapter<T extends Fragment & RefreshableFragment>
                 result = UserShotsFragment.newInstance(userWithShots);
                 break;
             case INFO:
-//                 TODO: 20.02 Instantiate InfoFragment [not in scope of this task]
-                result = UserShotsFragment.newInstance(userWithShots);
+                result = UserInfoFragment.newInstance(userWithShots);
                 break;
             case PROJECTS:
 //                 TODO: 20.02 Instantiate ProjectsFragment [not in scope of this task]
