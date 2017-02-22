@@ -28,12 +28,16 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsDrawerListener;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
@@ -80,6 +84,11 @@ public class MainActivity
     Drawable toolbarCenterBackground;
     @BindDrawable(R.drawable.toolbar_start_background)
     Drawable toolbarStartBackground;
+
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
+    @Inject
+    AnalyticsDrawerListener analyticsDrawerListener;
 
     private MainActivityComponent component;
     private TextView drawerUserName;
@@ -378,8 +387,10 @@ public class MainActivity
         if (icon != null) {
             icon.setColorFilter(highlightColor, PorterDuff.Mode.SRC_IN);
         }
-        tab.setText(getString(TabItemType.getTabItemForPosition(tab.getPosition()).getTitle()));
+        TabItemType tabItemType = TabItemType.getTabItemForPosition(currentTabIndex);
+        tab.setText(getString(tabItemType.getTitle()));
         setupToolbarForCurrentTab(currentTabIndex);
+        logPagerScreenEvent(tabItemType);
     }
 
     private void unselectedPreviousTabs(int currentTabIndex) {
@@ -436,6 +447,7 @@ public class MainActivity
         actionBarDrawerToggle.syncState();
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
         initializeDrawerReminder();
+        drawerLayout.addDrawerListener(analyticsDrawerListener);
     }
 
     private boolean onNavigationNItemSelected(MenuItem item) {
@@ -482,5 +494,23 @@ public class MainActivity
     private void changeMenuGroupsVisibility(boolean isMainMenuVisible, boolean isLogoutMenuVisible) {
         navigationView.getMenu().setGroupVisible(R.id.group_all, isMainMenuVisible);
         navigationView.getMenu().setGroupVisible(R.id.group_logout, isLogoutMenuVisible);
+    }
+
+    private void logPagerScreenEvent(TabItemType tabItemType) {
+        switch (tabItemType) {
+            case SHOTS:
+                analyticsEventLogger.logEventScreenShots();
+                break;
+            case LIKES:
+                analyticsEventLogger.logEventScreenLikes();
+                break;
+            case BUCKETS:
+                analyticsEventLogger.logEventScreenBuckets();
+                break;
+            case FOLLOWERS:
+                analyticsEventLogger.logEventScreenFollowing();
+                break;
+            default:
+        }
     }
 }
