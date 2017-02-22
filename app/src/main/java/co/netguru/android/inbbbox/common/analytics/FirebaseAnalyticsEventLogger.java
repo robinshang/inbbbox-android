@@ -3,6 +3,8 @@ package co.netguru.android.inbbbox.common.analytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import co.netguru.android.inbbbox.common.analytics.event.ScreenViewEvent;
+import co.netguru.android.inbbbox.common.analytics.event.SourceStreamEvent;
+import co.netguru.android.inbbbox.common.analytics.event.SourceStreamLeaveEvent;
 
 class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
 
@@ -13,8 +15,14 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     private static final String SCREEN_LOGIN = "login";
     private static final String SCREEN_SHOT_DETAILS = "shot details";
     private static final String SCREEN_USER_DETAILS = "user details";
+    private static final String SCREEN_TEAM_DETAILS = "team details";
     private static final String SCREEN_BUCKET_DETAILS = "bucket details";
     private static final String SCREEN_SETTINGS_DRAWER = "settings drawer";
+
+    private static final String SOURCE_FOLLOWING = "following";
+    private static final String SOURCE_NEW_TODAY = "new today";
+    private static final String SOURCE_POPULAR_TODAY = "popular today";
+    private static final String SOURCE_DEBUT = "debut";
 
     private final FirebaseAnalytics analytics;
 
@@ -288,21 +296,27 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
 
     @Override
     public void logEventSettingsDebuts(boolean enabled) {
-
+        logSourceStreamEvent(enabled, SOURCE_DEBUT);
     }
 
     @Override
     public void logEventSettingsFollowing(boolean enabled) {
-
+        logSourceStreamEvent(enabled, SOURCE_FOLLOWING);
     }
 
     @Override
     public void logEventSettingsNewToday(boolean enabled) {
-
+        logSourceStreamEvent(enabled, SOURCE_NEW_TODAY);
     }
 
     @Override
     public void logEventSettingsPopularToday(boolean enabled) {
+        logSourceStreamEvent(enabled, SOURCE_POPULAR_TODAY);
+    }
 
+    private void logSourceStreamEvent(boolean enabled, String groupId) {
+        (enabled ? new SourceStreamEvent(groupId) :
+                new SourceStreamLeaveEvent(groupId))
+                .logEvent(analytics);
     }
 }
