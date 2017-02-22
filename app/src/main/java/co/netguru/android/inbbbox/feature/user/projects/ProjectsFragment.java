@@ -21,11 +21,11 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
-import co.netguru.android.inbbbox.data.user.projects.model.ui.Project;
+import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
 import co.netguru.android.inbbbox.feature.user.projects.adapter.ProjectsAdapter;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
 
-public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Project>,
+public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<ProjectWithShots>,
         ProjectsContract.View, ProjectsContract.Presenter> implements ProjectsContract.View {
 
     private static final String USER_KEY = "userKey";
@@ -41,7 +41,6 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     int accentColor;
 
     private ProjectsAdapter projectsAdapter;
-    private LinearLayoutManager linearLayoutManager;
 
     public static ProjectsFragment newInstance(UserWithShots user) {
         final Bundle args = new Bundle();
@@ -79,26 +78,25 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
 
     private void initRecyclerView() {
         projectsAdapter = new ProjectsAdapter();
-        linearLayoutManager = new LinearLayoutManager(getContext());
 
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(projectsAdapter);
     }
 
     @NonNull
     @Override
-    public LceViewState<List<Project>, ProjectsContract.View> createViewState() {
+    public LceViewState<List<ProjectWithShots>, ProjectsContract.View> createViewState() {
         return new RetainingLceViewState<>();
     }
 
     @Override
-    public List<Project> getData() {
+    public List<ProjectWithShots> getData() {
         return projectsAdapter.getProjectList();
     }
 
     @Override
-    public void setData(List<Project> data) {
+    public void setData(List<ProjectWithShots> data) {
         projectsAdapter.setProjectList(data);
     }
 

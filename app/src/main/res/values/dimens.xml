@@ -132,5 +132,10 @@
     <dimen name="user_details_collapsing_toolbar_height">200dp</dimen>
     <dimen name="user_details_circle_image_size">90dp</dimen>
     <dimen name="user_details_circle_image_margin_top">90dp</dimen>
+    <dimen name="projects_item_shots_padding_start">16dp</dimen>
+    <dimen name="projects_item_shots_padding_top">24dp</dimen>
+    <dimen name="projects_item_shots_count_padding_start">8dp</dimen>
+    <dimen name="projects_shot_item_shot_padding">6dp</dimen>
+    <dimen name="projects_shot_item_shot_width">160dp</dimen>
 
 </resources>

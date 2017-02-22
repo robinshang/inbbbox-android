@@ -6,11 +6,11 @@ import android.view.ViewGroup;
 import java.util.Collections;
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.user.projects.model.ui.Project;
+import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
 
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsViewHolder> {
 
-    private List<Project> projectList;
+    private List<ProjectWithShots> projectList;
 
     public ProjectsAdapter() {
         projectList = Collections.emptyList();
@@ -31,12 +31,12 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsViewHolder> {
         return projectList.size();
     }
 
-    public void setProjectList(List<Project> projectList) {
+    public void setProjectList(List<ProjectWithShots> projectList) {
         this.projectList = projectList;
         notifyDataSetChanged();
     }
 
-    public List<Project> getProjectList() {
+    public List<ProjectWithShots> getProjectList() {
         return projectList;
     }
 }

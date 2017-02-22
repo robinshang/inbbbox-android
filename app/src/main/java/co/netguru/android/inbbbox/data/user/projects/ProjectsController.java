@@ -5,8 +5,11 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.data.user.projects.model.ui.Project;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.data.user.projects.model.api.ProjectEntity;
+import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 @Singleton
 public class ProjectsController {
@@ -18,10 +21,19 @@ public class ProjectsController {
         this.projectsApi = projectsApi;
     }
 
-    public Observable<List<Project>> getUserProjects(long userId) {
+    public Observable<List<ProjectWithShots>> getUserProjects(long userId) {
         return projectsApi.getUserProjects(userId)
                 .flatMap(Observable::from)
-                .map(Project::create)
+                .flatMap(this::getProjectWithShots)
                 .toList();
+    }
+
+    private Observable<ProjectWithShots> getProjectWithShots(ProjectEntity projectEntity) {
+        return projectsApi.getShotsFromProject(projectEntity.id())
+                .flatMap(Observable::from)
+                .map(Shot::create)
+                .toList()
+                .map(shotList -> ProjectWithShots.create(projectEntity, shotList))
+                .subscribeOn(Schedulers.io());
     }
 }
