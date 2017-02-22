@@ -4,7 +4,7 @@ import co.netguru.android.inbbbox.feature.bucket.BucketsFragmentComponent;
 import co.netguru.android.inbbbox.feature.bucket.createbucket.CreateBucketComponent;
 import co.netguru.android.inbbbox.feature.bucket.detail.BucketsDetailsComponent;
 import co.netguru.android.inbbbox.feature.follower.FollowersFragmentComponent;
-import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsFragmentComponent;
+import co.netguru.android.inbbbox.feature.user.shots.UserShotsComponent;
 import co.netguru.android.inbbbox.feature.like.LikesFragmentComponent;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingComponent;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingModule;
@@ -15,8 +15,8 @@ import co.netguru.android.inbbbox.feature.shot.detail.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenComponent;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenModule;
 import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucketComponent;
-import co.netguru.android.inbbbox.feature.team.TeamDetailsFragmentComponent;
 
+import co.netguru.android.inbbbox.feature.user.shots.UserShotsModule;
 import dagger.Subcomponent;
 
 @UserScope
@@ -33,7 +33,7 @@ public interface UserComponent {
 
     FollowersFragmentComponent plusFollowersFragmentComponent();
 
-    FollowerDetailsFragmentComponent plusFollowersDetailsFragmentComponent();
+    UserShotsComponent plusUserShotsComponent(UserShotsModule module);
 
     BucketsFragmentComponent plusBucketsFragmentComponent();
 
@@ -44,8 +44,6 @@ public interface UserComponent {
     RemoveFromBucketComponent plusRemoveFromBucketComponent();
 
     CreateBucketComponent plusCreateBucketComponent();
-
-    TeamDetailsFragmentComponent plusTeamDetailsFragmentComponent();
 
     OnboardingComponent plusOnboardingComponent(OnboardingModule module);
 
