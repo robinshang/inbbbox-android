@@ -11,7 +11,6 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
-import timber.log.Timber;
 
 public class UserShotsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -51,7 +50,6 @@ public class UserShotsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void addMoreUserShots(List<Shot> newShots) {
-        Timber.d("addMoreUserShots: "+newShots);
         final int currentSize = this.shotList.size();
         this.shotList.addAll(newShots);
         notifyItemRangeChanged(currentSize - 1, shotList.size());
