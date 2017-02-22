@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.projects;
+package co.netguru.android.inbbbox.feature.user.projects;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
@@ -19,17 +20,22 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
-import co.netguru.android.inbbbox.data.projects.model.ui.Project;
-import co.netguru.android.inbbbox.feature.projects.adapter.ProjectsAdapter;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
+import co.netguru.android.inbbbox.data.user.projects.model.ui.Project;
+import co.netguru.android.inbbbox.feature.user.projects.adapter.ProjectsAdapter;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
 
 public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Project>,
         ProjectsContract.View, ProjectsContract.Presenter> implements ProjectsContract.View {
 
+    private static final String USER_KEY = "userKey";
+
     @BindView(R.id.contentView)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.projects_recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.loadingView)
+    ProgressBar progressBar;
 
     @BindColor(R.color.accent)
     int accentColor;
@@ -37,8 +43,14 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     private ProjectsAdapter projectsAdapter;
     private LinearLayoutManager linearLayoutManager;
 
-    public static ProjectsFragment newInstance() {
-        return new ProjectsFragment();
+    public static ProjectsFragment newInstance(UserWithShots user) {
+        final Bundle args = new Bundle();
+        args.putParcelable(USER_KEY, user);
+
+        final ProjectsFragment fragment = new ProjectsFragment();
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Nullable
@@ -62,9 +74,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
 
     private void initSwipeRefreshView() {
         swipeRefreshLayout.setColorSchemeColors(accentColor);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            // TODO: 22.02.2017 Call proper method from presenter
-        });
+        swipeRefreshLayout.setOnRefreshListener(getPresenter()::getUserProjects);
     }
 
     private void initRecyclerView() {
@@ -94,6 +104,12 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        getPresenter().getUserProjects(1);
+        getPresenter().userDataReceived(getArguments().getParcelable(USER_KEY));
+    }
+
+    @Override
+    public void hideProgressBar() {
+        swipeRefreshLayout.setRefreshing(false);
+        progressBar.setVisibility(View.GONE);
     }
 }

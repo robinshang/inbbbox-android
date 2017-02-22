@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.projects.adapter;
+package co.netguru.android.inbbbox.feature.user.projects.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import java.util.Collections;
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.projects.model.ui.Project;
+import co.netguru.android.inbbbox.data.user.projects.model.ui.Project;
 
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsViewHolder> {
 

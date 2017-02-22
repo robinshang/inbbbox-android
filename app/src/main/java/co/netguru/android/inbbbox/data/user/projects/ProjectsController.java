@@ -1,11 +1,11 @@
-package co.netguru.android.inbbbox.data.projects;
+package co.netguru.android.inbbbox.data.user.projects;
 
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import co.netguru.android.inbbbox.data.projects.model.ui.Project;
+import co.netguru.android.inbbbox.data.user.projects.model.ui.Project;
 import rx.Observable;
 
 @Singleton

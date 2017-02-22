@@ -1,10 +1,10 @@
-package co.netguru.android.inbbbox.feature.projects.adapter;
+package co.netguru.android.inbbbox.feature.user.projects.adapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.projects.model.ui.Project;
+import co.netguru.android.inbbbox.data.user.projects.model.ui.Project;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 
 public class ProjectsViewHolder extends BaseViewHolder<Project> {

@@ -7,7 +7,7 @@ import co.netguru.android.inbbbox.feature.follower.FollowersFragmentComponent;
 import co.netguru.android.inbbbox.feature.like.LikesFragmentComponent;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingComponent;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingModule;
-import co.netguru.android.inbbbox.feature.projects.ProjectsComponent;
+import co.netguru.android.inbbbox.feature.user.projects.ProjectsComponent;
 import co.netguru.android.inbbbox.feature.shot.ShotsComponent;
 import co.netguru.android.inbbbox.feature.shot.ShotsModule;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketComponent;

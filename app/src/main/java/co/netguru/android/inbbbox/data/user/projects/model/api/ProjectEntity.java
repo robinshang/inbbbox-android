@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.data.projects.model.api;
+package co.netguru.android.inbbbox.data.user.projects.model.api;
 
 import android.support.annotation.Nullable;
 

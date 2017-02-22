@@ -1,10 +1,10 @@
-package co.netguru.android.inbbbox.data.projects.model.ui;
+package co.netguru.android.inbbbox.data.user.projects.model.ui;
 
 import android.support.annotation.NonNull;
 
 import com.google.auto.value.AutoValue;
 
-import co.netguru.android.inbbbox.data.projects.model.api.ProjectEntity;
+import co.netguru.android.inbbbox.data.user.projects.model.api.ProjectEntity;
 
 @AutoValue
 public abstract class Project {
