@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindView;
+import butterknife.OnPageChange;
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
@@ -127,6 +128,7 @@ public class MainActivity
         initializeDrawer();
         getPresenter().prepareUserData();
         navigationView.setSaveEnabled(false);
+        analyticsEventLogger.logEventScreenShots();
     }
 
     @Override
@@ -387,10 +389,8 @@ public class MainActivity
         if (icon != null) {
             icon.setColorFilter(highlightColor, PorterDuff.Mode.SRC_IN);
         }
-        TabItemType tabItemType = TabItemType.getTabItemForPosition(currentTabIndex);
-        tab.setText(getString(tabItemType.getTitle()));
+        tab.setText(getString(TabItemType.getTabItemForPosition(currentTabIndex).getTitle()));
         setupToolbarForCurrentTab(currentTabIndex);
-        logPagerScreenEvent(tabItemType);
     }
 
     private void unselectedPreviousTabs(int currentTabIndex) {
@@ -496,8 +496,8 @@ public class MainActivity
         navigationView.getMenu().setGroupVisible(R.id.group_logout, isLogoutMenuVisible);
     }
 
-    private void logPagerScreenEvent(TabItemType tabItemType) {
-        switch (tabItemType) {
+    private void logPagerScreenEvent(int position) {
+        switch (TabItemType.getTabItemForPosition(position)) {
             case SHOTS:
                 analyticsEventLogger.logEventScreenShots();
                 break;
@@ -512,5 +512,10 @@ public class MainActivity
                 break;
             default:
         }
+    }
+
+    @OnPageChange(R.id.main_view_pager)
+    void onPageSelected(int i) {
+        logPagerScreenEvent(i);
     }
 }

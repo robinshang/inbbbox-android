@@ -16,11 +16,14 @@ import android.widget.ProgressBar;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.utils.AnimationUtil;
 import co.netguru.android.inbbbox.common.utils.InputUtil;
 import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
@@ -51,6 +54,9 @@ public class ShotDetailsFragment
     private static final String ARG_SHOT_DETAIL_REQUEST = "arg:detail_request";
     private static final int SLIDE_IN_DURATION = 500;
 
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
+
     @BindView(R.id.shot_details_recyclerView)
     RecyclerView shotRecyclerView;
 
@@ -75,6 +81,7 @@ public class ShotDetailsFragment
     private ShotDetailsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
+    private ShotDetailsComponent component;
 
     public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots,
                                                   ShotDetailsRequest detailsRequest) {
@@ -94,6 +101,8 @@ public class ShotDetailsFragment
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        initComponent();
+        analyticsEventLogger.logEventScreenShotDetails();
         return LayoutInflater
                 .from(getContext())
                 .inflate(R.layout.fragment_shot_details, container, false);
@@ -109,12 +118,16 @@ public class ShotDetailsFragment
         getPresenter().checkShotBucketsCount(getArguments().getParcelable(ARG_SHOT));
     }
 
+    private void initComponent() {
+        List<Shot> shots = getArguments().getParcelableArrayList(ARG_ALL_SHOTS);
+        component = App.getUserComponent(getContext()).plus(new ShotsDetailsModule(shots));
+        component.inject(this);
+    }
+
     @NonNull
     @Override
     public ShotDetailsContract.Presenter createPresenter() {
-        List<Shot> shots = getArguments().getParcelableArrayList(ARG_ALL_SHOTS);
-
-        return App.getUserComponent(getContext()).plus(new ShotsDetailsModule(shots)).getPresenter();
+        return component.getPresenter();
     }
 
     @OnClick(R.id.comment_send_imageView)
