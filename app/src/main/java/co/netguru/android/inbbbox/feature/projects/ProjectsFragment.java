@@ -10,15 +10,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
+
+import java.util.List;
+
 import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.data.projects.model.ui.Project;
 import co.netguru.android.inbbbox.feature.projects.adapter.ProjectsAdapter;
-import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
+import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
 
-public class ProjectsFragment extends BaseMvpFragment<ProjectsContract.View, ProjectsContract.Presenter>
-        implements ProjectsContract.View {
+public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Project>,
+        ProjectsContract.View, ProjectsContract.Presenter> implements ProjectsContract.View {
 
     @BindView(R.id.contentView)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -68,5 +74,26 @@ public class ProjectsFragment extends BaseMvpFragment<ProjectsContract.View, Pro
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(projectsAdapter);
+    }
+
+    @NonNull
+    @Override
+    public LceViewState<List<Project>, ProjectsContract.View> createViewState() {
+        return new RetainingLceViewState<>();
+    }
+
+    @Override
+    public List<Project> getData() {
+        return projectsAdapter.getProjectList();
+    }
+
+    @Override
+    public void setData(List<Project> data) {
+        projectsAdapter.setProjectList(data);
+    }
+
+    @Override
+    public void loadData(boolean pullToRefresh) {
+        getPresenter().getUserProjects(1);
     }
 }

@@ -11,6 +11,7 @@ import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamApi;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserApi;
 import co.netguru.android.inbbbox.data.follower.FollowersApi;
 import co.netguru.android.inbbbox.data.like.LikesApi;
+import co.netguru.android.inbbbox.data.projects.ProjectsApi;
 import co.netguru.android.inbbbox.data.session.AuthorizeApi;
 import co.netguru.android.inbbbox.data.shot.ShotsApi;
 import dagger.Module;
@@ -69,5 +70,11 @@ public class ApiModule {
     @Provides
     TeamApi provideTeamApi(Retrofit retrofit) {
         return retrofit.create(TeamApi.class);
+    }
+
+    @Singleton
+    @Provides
+    ProjectsApi provideProjectsApi(Retrofit retrofit) {
+        return retrofit.create(ProjectsApi.class);
     }
 }
