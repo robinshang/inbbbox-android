@@ -24,6 +24,8 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
@@ -31,6 +33,7 @@ import butterknife.OnClick;
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.feature.bucket.adapter.BaseBucketViewHolder;
@@ -75,6 +78,10 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
     private Snackbar loadingMoreSnackbar;
+    private BucketsFragmentComponent component;
+
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
 
     public static BucketsFragment newInstance() {
         return new BucketsFragment();
@@ -85,6 +92,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        initComponent();
         return inflater.inflate(R.layout.fragment_buckets, container, false);
     }
 
@@ -128,7 +136,12 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     @NonNull
     @Override
     public BucketsFragmentContract.Presenter createPresenter() {
-        return App.getUserComponent(getContext()).plusBucketsFragmentComponent().getPresenter();
+        return component.getPresenter();
+    }
+
+    private void initComponent() {
+        component = App.getUserComponent(getContext()).plusBucketsFragmentComponent();
+        component.inject(this);
     }
 
     @NonNull
@@ -161,6 +174,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     @Override
     public void onBucketClick(BucketWithShots bucketWithShots) {
         getPresenter().handleBucketWithShotsClick(bucketWithShots);
+        analyticsEventLogger.logEventBucketsItemClick();
     }
 
     @Override
@@ -240,6 +254,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     @OnClick(R.id.create_bucket_fab)
     public void onCreateBucketFabClick() {
         getPresenter().handleCreateBucket();
+        analyticsEventLogger.logEventBucketsFABCreate();
     }
 
     private void initRefreshLayout() {

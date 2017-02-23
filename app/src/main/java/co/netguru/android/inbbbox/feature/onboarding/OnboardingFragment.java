@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.feature.onboarding.recycler.OnboardingLinearLayoutManager;
 import co.netguru.android.inbbbox.feature.onboarding.recycler.OnboardingShotsAdapter;
@@ -36,6 +37,9 @@ public class OnboardingFragment
 
     @Inject
     OnboardingLinearLayoutManager layoutManager;
+
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
 
     private OnboardingComponent component;
 
@@ -67,6 +71,7 @@ public class OnboardingFragment
         super.onViewCreated(view, savedInstanceState);
         initRecycler();
         getPresenter().getShots();
+        analyticsEventLogger.logEventOnboardingStart();
     }
 
     public List<OnboardingStep> getData() {
@@ -81,6 +86,7 @@ public class OnboardingFragment
     @Override
     public void closeOnboarding() {
         MainActivity.startActivityWithRequest(getContext(), MainActivity.REQUEST_RESTART);
+        analyticsEventLogger.logEventOnboardingEnd();
     }
 
     @Override

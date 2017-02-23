@@ -24,6 +24,8 @@ public interface AnalyticsEventLogger {
 
     void logEventScreenUserDetails();
 
+    void logEventScreenTeamDetails();
+
     /**
      * Dialogs
      */
@@ -66,6 +68,8 @@ public interface AnalyticsEventLogger {
 
     void logEventAppbarFollow(boolean follow);
 
+    void logEventAppbarDeleteBucket();
+
     void logEventShotSwipeLike();
 
     void logEventShotSwipeAddToBucket();
@@ -93,6 +97,8 @@ public interface AnalyticsEventLogger {
     void logEventShotDetailsCloseSwipe();
 
     void logEventLikesItemClick();
+
+    void logEventShotsItemClick();
 
     void logEventBucketsItemClick();
 
@@ -131,4 +137,12 @@ public interface AnalyticsEventLogger {
     void logEventSettingsNewToday(boolean enabled);
 
     void logEventSettingsPopularToday(boolean enabled);
+
+    /**
+     * Onboarding
+     */
+
+    void logEventOnboardingStart();
+
+    void logEventOnboardingEnd();
 }

@@ -6,6 +6,8 @@ import co.netguru.android.inbbbox.common.analytics.event.BaseEvent;
 import co.netguru.android.inbbbox.common.analytics.event.ButtonPressEvent;
 import co.netguru.android.inbbbox.common.analytics.event.LocalSettingEvent;
 import co.netguru.android.inbbbox.common.analytics.event.LoginEvent;
+import co.netguru.android.inbbbox.common.analytics.event.OnboardingEndEvent;
+import co.netguru.android.inbbbox.common.analytics.event.OnboardingStartEvent;
 import co.netguru.android.inbbbox.common.analytics.event.RemainingRequestsEvent;
 import co.netguru.android.inbbbox.common.analytics.event.RequestEvent;
 import co.netguru.android.inbbbox.common.analytics.event.ScreenViewEvent;
@@ -51,6 +53,17 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     private static final String BUTTON_SHOTS_FAB_LIKE = "shots fab: like";
     private static final String BUTTON_SHOTS_FAB_COMMENT = "shots fab: add to bucket";
     private static final String BUTTON_SHOTS_FAB_FOLLOW = "shots fab: follow";
+    private static final String BUTTON_BUCKETS_FAB_CREATE = "buckets fab: create";
+    private static final String BUTTON_APPBAR_GRID = "appbar: grid";
+    private static final String BUTTON_APPBAR_LIST = "appbar: list";
+    private static final String BUTTON_APPBAR_FOLLOW = "appbar: follow";
+    private static final String BUTTON_APPBAR_UNFOLLOW = "appbar: unfollow";
+    private static final String BUTTON_APPBAR_DELETE_BUCKET = "appbar: delete bucket";
+
+    private static final String LIST_ITEM_SHOTS = "list item: shots";
+    private static final String LIST_ITEM_LIKES = "list item: likes";
+    private static final String LIST_ITEM_BUCKETS = "list item: buckets";
+    private static final String LIST_ITEM_FOLLOWING = "list item: following";
 
     private final FirebaseAnalytics analytics;
 
@@ -105,6 +118,11 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     @Override
     public void logEventScreenUserDetails() {
         logEvent(new ScreenViewEvent(SCREEN_USER_DETAILS));
+    }
+
+    @Override
+    public void logEventScreenTeamDetails() {
+        logEvent(new ScreenViewEvent(SCREEN_TEAM_DETAILS));
     }
 
     /**
@@ -176,22 +194,27 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
 
     @Override
     public void logEventBucketsFABCreate() {
-
+        logEvent(new ButtonPressEvent(BUTTON_BUCKETS_FAB_CREATE));
     }
 
     @Override
     public void logEventAppbarList() {
-
+        logEvent(new ButtonPressEvent(BUTTON_APPBAR_LIST));
     }
 
     @Override
     public void logEventAppbarGrid() {
-
+        logEvent(new ButtonPressEvent(BUTTON_APPBAR_GRID));
     }
 
     @Override
     public void logEventAppbarFollow(boolean follow) {
+        logEvent(new ButtonPressEvent(follow ? BUTTON_APPBAR_FOLLOW : BUTTON_APPBAR_UNFOLLOW));
+    }
 
+    @Override
+    public void logEventAppbarDeleteBucket() {
+        logEvent(new ButtonPressEvent(BUTTON_APPBAR_DELETE_BUCKET));
     }
 
     @Override
@@ -260,18 +283,23 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     }
 
     @Override
-    public void logEventLikesItemClick() {
+    public void logEventShotsItemClick() {
+        logEvent(new ButtonPressEvent(LIST_ITEM_SHOTS));
+    }
 
+    @Override
+    public void logEventLikesItemClick() {
+        logEvent(new ButtonPressEvent(LIST_ITEM_LIKES));
     }
 
     @Override
     public void logEventBucketsItemClick() {
-
+        logEvent(new ButtonPressEvent(LIST_ITEM_BUCKETS));
     }
 
     @Override
     public void logEventFollowingItemClick() {
-
+        logEvent(new ButtonPressEvent(LIST_ITEM_FOLLOWING));
     }
 
     /**
@@ -349,6 +377,20 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
 
     private void logSourceStreamEvent(boolean enabled, String groupId) {
         logEvent(enabled ? new SourceStreamEvent(groupId) : new SourceStreamLeaveEvent(groupId));
+    }
+
+    /**
+     * Onboarding
+     */
+
+    @Override
+    public void logEventOnboardingStart() {
+        logEvent(new OnboardingStartEvent());
+    }
+
+    @Override
+    public void logEventOnboardingEnd() {
+        logEvent(new OnboardingEndEvent());
     }
 
     private void logEvent(BaseEvent event) {
