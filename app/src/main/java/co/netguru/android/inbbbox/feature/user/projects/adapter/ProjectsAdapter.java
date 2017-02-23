@@ -74,6 +74,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsViewHolder> {
         projectList.set(index, ProjectWithShots.update(project, hasMoreShots));
     }
 
+    @FunctionalInterface
     public interface OnGetMoreProjectShotsListener {
 
         void onGetMoreProjectShots(ProjectWithShots projectWithShots);
