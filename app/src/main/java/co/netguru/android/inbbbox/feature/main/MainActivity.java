@@ -501,7 +501,8 @@ public class MainActivity
         navigationView.getMenu().setGroupVisible(R.id.group_logout, isLogoutMenuVisible);
     }
 
-    private void logPagerScreenEvent(int position) {
+    @OnPageChange(R.id.main_view_pager)
+    void onPageSelected(int position) {
         switch (TabItemType.getTabItemForPosition(position)) {
             case SHOTS:
                 analyticsEventLogger.logEventScreenShots();
@@ -517,10 +518,5 @@ public class MainActivity
                 break;
             default:
         }
-    }
-
-    @OnPageChange(R.id.main_view_pager)
-    void onPageSelected(int i) {
-        logPagerScreenEvent(i);
     }
 }

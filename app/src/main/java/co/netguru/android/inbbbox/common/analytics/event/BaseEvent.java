@@ -4,8 +4,6 @@ import android.os.Bundle;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import timber.log.Timber;
-
 public class BaseEvent {
 
     private final String name;
@@ -24,7 +22,6 @@ public class BaseEvent {
     }
 
     public void logEvent(FirebaseAnalytics analytics) {
-        Timber.e("Event-%s", name);
         analytics.logEvent(name, params);
     }
 }
