@@ -7,14 +7,16 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
+import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
+import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
 
 public interface ProjectsContract {
 
-    interface View extends MvpLceView<List<ProjectWithShots>> {
+    interface View extends MvpLceView<List<ProjectWithShots>>, HttpErrorView {
         void hideProgressBar();
     }
 
-    interface Presenter extends MvpPresenter<View> {
+    interface Presenter extends MvpPresenter<View>, ErrorPresenter {
 
         void userDataReceived(UserWithShots user);
 

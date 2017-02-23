@@ -110,4 +110,9 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
         swipeRefreshLayout.setRefreshing(false);
         progressBar.setVisibility(View.GONE);
     }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        showTextOnSnackbar(errorText);
+    }
 }
