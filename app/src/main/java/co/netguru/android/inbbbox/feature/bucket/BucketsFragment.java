@@ -131,6 +131,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     protected void changeGridMode(boolean isGridMode) {
         adapter.setGridMode(isGridMode);
         bucketsRecyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
+        analyticsEventLogger.logEventAppbarCollectionLayoutChange(isGridMode);
     }
 
     @NonNull

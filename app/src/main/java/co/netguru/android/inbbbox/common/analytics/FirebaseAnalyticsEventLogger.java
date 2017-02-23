@@ -3,7 +3,6 @@ package co.netguru.android.inbbbox.common.analytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import co.netguru.android.inbbbox.common.analytics.event.BaseEvent;
-import co.netguru.android.inbbbox.common.analytics.event.ButtonPressEvent;
 import co.netguru.android.inbbbox.common.analytics.event.LocalSettingEvent;
 import co.netguru.android.inbbbox.common.analytics.event.LoginEvent;
 import co.netguru.android.inbbbox.common.analytics.event.OnboardingEndEvent;
@@ -14,6 +13,7 @@ import co.netguru.android.inbbbox.common.analytics.event.ScreenViewEvent;
 import co.netguru.android.inbbbox.common.analytics.event.ShotsSwipeEvent;
 import co.netguru.android.inbbbox.common.analytics.event.SourceStreamEvent;
 import co.netguru.android.inbbbox.common.analytics.event.SourceStreamLeaveEvent;
+import co.netguru.android.inbbbox.common.analytics.event.UserInteractionEvent;
 
 class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
 
@@ -29,6 +29,7 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     private static final String SCREEN_SETTINGS_DRAWER = "settings drawer";
     private static final String SCREEN_DIALOG_SHOT_TO_BUCKETS = "dialog: add shot to buckets";
     private static final String SCREEN_DIALOG_CREATE_BUCKET = "dialog: create bucket";
+    private static final String SCREEN_SHOT_FULLSCREEN = "shot fullscreen";
 
     private static final String SOURCE_FOLLOWING = "following";
     private static final String SOURCE_NEW_TODAY = "new today";
@@ -60,6 +61,13 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     private static final String BUTTON_APPBAR_FOLLOW = "appbar: follow";
     private static final String BUTTON_APPBAR_UNFOLLOW = "appbar: unfollow";
     private static final String BUTTON_APPBAR_DELETE_BUCKET = "appbar: delete bucket";
+    private static final String BUTTON_CLOSE_SHOT_DETAILS_X = "close shot details x";
+    private static final String BUTTON_CLOSE_SHOT_DETAILS_BACK = "close shot details back";
+    private static final String BUTTON_SHOT_DETAILS_LIKE = "shot details like";
+    private static final String BUTTON_SHOT_DETAILS_COMMENT = "shot details comment";
+    private static final String BUTTON_SHOT_DETAILS_BUCKET = "shot details bucket";
+    private static final String BUTTON_SHOT_DETAILS_USER = "shot details user";
+    private static final String BUTTON_SHOT_DETAILS_TEAM = "shot details team";
 
     private static final String LIST_ITEM_SHOTS = "list item: shots";
     private static final String LIST_ITEM_LIKES = "list item: likes";
@@ -70,6 +78,11 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     private static final String SWIPE_SHOT_BUCKET = "shot swipe: bucket";
     private static final String SWIPE_SHOT_COMMENT = "shot swipe: comment";
     private static final String SWIPE_SHOT_FOLLOW = "shot swipe: follow";
+
+    private static final String SWIPE_FULLSCREEN = "fullscreen swipe";
+    private static final String SWIPE_SHOT_LIST = "shot list swipe";
+
+    private static final String SHOT_DETAILS_COLLAPSED = "shot details collapsed";
 
     private final FirebaseAnalytics analytics;
 
@@ -131,6 +144,11 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
         logEvent(new ScreenViewEvent(SCREEN_TEAM_DETAILS));
     }
 
+    @Override
+    public void logEventScreenShotFullscreen() {
+        logEvent(new ScreenViewEvent(SCREEN_SHOT_FULLSCREEN));
+    }
+
     /**
      * Dialogs
      */
@@ -174,33 +192,28 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
      */
 
     @Override
-    public void logEventUserSwipeDown() {
-
-    }
-
-    @Override
     public void logEventShotsFABComment() {
-        logEvent(new ButtonPressEvent(BUTTON_SHOTS_FAB_COMMENT));
+        logEvent(new UserInteractionEvent(BUTTON_SHOTS_FAB_COMMENT));
     }
 
     @Override
     public void logEventShotsFABAddToBucket() {
-        logEvent(new ButtonPressEvent(BUTTON_SHOTS_FAB_ADD_TO_BUCKETS));
+        logEvent(new UserInteractionEvent(BUTTON_SHOTS_FAB_ADD_TO_BUCKETS));
     }
 
     @Override
     public void logEventShotsFABFollow() {
-        logEvent(new ButtonPressEvent(BUTTON_SHOTS_FAB_FOLLOW));
+        logEvent(new UserInteractionEvent(BUTTON_SHOTS_FAB_FOLLOW));
     }
 
     @Override
     public void logEventShotsFABLike() {
-        logEvent(new ButtonPressEvent(BUTTON_SHOTS_FAB_LIKE));
+        logEvent(new UserInteractionEvent(BUTTON_SHOTS_FAB_LIKE));
     }
 
     @Override
     public void logEventBucketsFABCreate() {
-        logEvent(new ButtonPressEvent(BUTTON_BUCKETS_FAB_CREATE));
+        logEvent(new UserInteractionEvent(BUTTON_BUCKETS_FAB_CREATE));
     }
 
     @Override
@@ -213,107 +226,112 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
 
     @Override
     public void logEventAppbarList() {
-        logEvent(new ButtonPressEvent(BUTTON_APPBAR_LIST));
+        logEvent(new UserInteractionEvent(BUTTON_APPBAR_LIST));
     }
 
     @Override
     public void logEventAppbarGrid() {
-        logEvent(new ButtonPressEvent(BUTTON_APPBAR_GRID));
+        logEvent(new UserInteractionEvent(BUTTON_APPBAR_GRID));
     }
 
     @Override
     public void logEventAppbarFollow(boolean follow) {
-        logEvent(new ButtonPressEvent(follow ? BUTTON_APPBAR_FOLLOW : BUTTON_APPBAR_UNFOLLOW));
+        logEvent(new UserInteractionEvent(follow ? BUTTON_APPBAR_FOLLOW : BUTTON_APPBAR_UNFOLLOW));
     }
 
     @Override
     public void logEventAppbarDeleteBucket() {
-        logEvent(new ButtonPressEvent(BUTTON_APPBAR_DELETE_BUCKET));
+        logEvent(new UserInteractionEvent(BUTTON_APPBAR_DELETE_BUCKET));
     }
 
     @Override
     public void logEventShotSwipeLike() {
-        logEvent(new ButtonPressEvent(SWIPE_SHOT_LIKE));
+        logEvent(new UserInteractionEvent(SWIPE_SHOT_LIKE));
     }
 
     @Override
     public void logEventShotSwipeAddToBucket() {
-        logEvent(new ButtonPressEvent(SWIPE_SHOT_BUCKET));
+        logEvent(new UserInteractionEvent(SWIPE_SHOT_BUCKET));
     }
 
     @Override
     public void logEventShotSwipeComment() {
-        logEvent(new ButtonPressEvent(SWIPE_SHOT_COMMENT));
+        logEvent(new UserInteractionEvent(SWIPE_SHOT_COMMENT));
     }
 
     @Override
     public void logEventShotSwipeFollow() {
-        logEvent(new ButtonPressEvent(SWIPE_SHOT_FOLLOW));
+        logEvent(new UserInteractionEvent(SWIPE_SHOT_FOLLOW));
     }
 
     @Override
     public void logEventShotsListSwipes(int numberOfSwipes) {
-        logEvent(new ShotsSwipeEvent(numberOfSwipes));
+        logEvent(new ShotsSwipeEvent(SWIPE_SHOT_LIST, numberOfSwipes));
     }
 
     @Override
     public void logEventShotDetailsLike() {
-
+        logEvent(new UserInteractionEvent(BUTTON_SHOT_DETAILS_LIKE));
     }
 
     @Override
     public void logEventShotDetailsAddToBucket() {
-
+        logEvent(new UserInteractionEvent(BUTTON_SHOT_DETAILS_BUCKET));
     }
 
     @Override
     public void logEventShotDetailsComment() {
-
+        logEvent(new UserInteractionEvent(BUTTON_SHOT_DETAILS_COMMENT));
     }
 
     @Override
     public void logEventShotDetailsAuthorDetails() {
-
+        logEvent(new UserInteractionEvent(BUTTON_SHOT_DETAILS_USER));
     }
 
     @Override
-    public void logEventShotDetailsCollapseToolbar() {
-
+    public void logEventShotDetailsTeamDetails() {
+        logEvent(new UserInteractionEvent(BUTTON_SHOT_DETAILS_TEAM));
     }
 
     @Override
     public void logEventShotDetailsCloseBack() {
-
+        logEvent(new UserInteractionEvent(BUTTON_CLOSE_SHOT_DETAILS_BACK));
     }
 
     @Override
     public void logEventShotDetailsCloseX() {
-
+        logEvent(new UserInteractionEvent(BUTTON_CLOSE_SHOT_DETAILS_X));
     }
 
     @Override
-    public void logEventShotDetailsCloseSwipe() {
-
+    public void logEventShotDetailsViewCollapsed() {
+        logEvent(new UserInteractionEvent(SHOT_DETAILS_COLLAPSED));
     }
 
     @Override
     public void logEventShotsItemClick() {
-        logEvent(new ButtonPressEvent(LIST_ITEM_SHOTS));
+        logEvent(new UserInteractionEvent(LIST_ITEM_SHOTS));
     }
 
     @Override
     public void logEventLikesItemClick() {
-        logEvent(new ButtonPressEvent(LIST_ITEM_LIKES));
+        logEvent(new UserInteractionEvent(LIST_ITEM_LIKES));
     }
 
     @Override
     public void logEventBucketsItemClick() {
-        logEvent(new ButtonPressEvent(LIST_ITEM_BUCKETS));
+        logEvent(new UserInteractionEvent(LIST_ITEM_BUCKETS));
     }
 
     @Override
     public void logEventFollowingItemClick() {
-        logEvent(new ButtonPressEvent(LIST_ITEM_FOLLOWING));
+        logEvent(new UserInteractionEvent(LIST_ITEM_FOLLOWING));
+    }
+
+    @Override
+    public void logEventFullscreenSwipe(int numberOfSwipes) {
+        logEvent(new ShotsSwipeEvent(SWIPE_FULLSCREEN, numberOfSwipes));
     }
 
     /**

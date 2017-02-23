@@ -17,6 +17,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView;
@@ -38,6 +39,9 @@ public class ShotFullscreenFragment extends
 
     @Inject
     ShotFullscreenAdapter adapter;
+
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
 
     private ShotFullscreenComponent component;
 
@@ -70,6 +74,7 @@ public class ShotFullscreenFragment extends
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initComponent();
+        analyticsEventLogger.logEventScreenShotFullscreen();
     }
 
     @Nullable
@@ -114,6 +119,7 @@ public class ShotFullscreenFragment extends
             @Override
             public void requestMoreData() {
                 getPresenter().onRequestMoreData();
+                analyticsEventLogger.logEventFullscreenSwipe(SHOTS_TO_LOAD_MORE);
             }
         });
         shotsRecyclerView.post(() -> shotsRecyclerView.scrollToPosition(currentShotIndex));

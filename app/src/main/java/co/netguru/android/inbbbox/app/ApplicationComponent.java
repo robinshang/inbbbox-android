@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import co.netguru.android.commons.di.BaseComponent;
 import co.netguru.android.inbbbox.app.usercomponent.UserComponent;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsModule;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.feature.login.LoginComponent;
@@ -40,4 +41,6 @@ public interface ApplicationComponent extends BaseComponent {
     RxBus rxBus();
 
     void inject(NotificationAlarmReceiver receiver);
+
+    AnalyticsEventLogger analyticsEventLogger();
 }

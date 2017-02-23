@@ -437,7 +437,7 @@ public class MainActivity
 
         drawerToggleButton.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> getPresenter().toggleButtonChanged(isChecked));
-        drawerCreateAccountButton.setOnClickListener(view -> getPresenter().onCreateAccountClick());
+        drawerCreateAccountButton.setOnClickListener(view -> onCreateAccountClick());
 
         navigationView.setNavigationItemSelectedListener(this::onNavigationNItemSelected);
 
@@ -448,6 +448,11 @@ public class MainActivity
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
         initializeDrawerReminder();
         drawerLayout.addDrawerListener(analyticsDrawerListener);
+    }
+
+    private void onCreateAccountClick() {
+        getPresenter().onCreateAccountClick();
+        analyticsEventLogger.logEventCreateAccountAsGuest();
     }
 
     private boolean onNavigationNItemSelected(MenuItem item) {

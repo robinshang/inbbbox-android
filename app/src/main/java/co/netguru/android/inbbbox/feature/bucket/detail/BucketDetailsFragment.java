@@ -171,6 +171,7 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
         switch (item.getItemId()) {
             case R.id.action_delete_bucket:
                 getPresenter().onDeleteBucketClick();
+                analyticsEventLogger.logEventAppbarDeleteBucket();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -181,6 +182,7 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     protected void changeGridMode(boolean isGridMode) {
         recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
         bucketShotsAdapter.setGridMode(isGridMode);
+        analyticsEventLogger.logEventAppbarCollectionLayoutChange(isGridMode);
     }
 
     @Override

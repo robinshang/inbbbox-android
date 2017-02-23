@@ -26,6 +26,8 @@ public interface AnalyticsEventLogger {
 
     void logEventScreenTeamDetails();
 
+    void logEventScreenShotFullscreen();
+
     /**
      * Dialogs
      */
@@ -49,8 +51,6 @@ public interface AnalyticsEventLogger {
     /**
      * User interaction
      */
-
-    void logEventUserSwipeDown();
 
     void logEventShotsFABComment();
 
@@ -90,13 +90,13 @@ public interface AnalyticsEventLogger {
 
     void logEventShotDetailsAuthorDetails();
 
-    void logEventShotDetailsCollapseToolbar();
+    void logEventShotDetailsTeamDetails();
 
     void logEventShotDetailsCloseBack();
 
     void logEventShotDetailsCloseX();
 
-    void logEventShotDetailsCloseSwipe();
+    void logEventShotDetailsViewCollapsed();
 
     void logEventLikesItemClick();
 
@@ -105,6 +105,8 @@ public interface AnalyticsEventLogger {
     void logEventBucketsItemClick();
 
     void logEventFollowingItemClick();
+
+    void logEventFullscreenSwipe(int numberOfSwipes);
 
     /**
      * API

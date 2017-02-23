@@ -33,7 +33,6 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
-import co.netguru.android.inbbbox.feature.user.UserActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
@@ -41,6 +40,7 @@ import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenA
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucketDialogFragment;
+import co.netguru.android.inbbbox.feature.user.UserActivity;
 
 public class ShotDetailsFragment
         extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
@@ -132,11 +132,13 @@ public class ShotDetailsFragment
     @OnClick(R.id.comment_send_imageView)
     void onSendCommentClick() {
         getPresenter().sendComment();
+        analyticsEventLogger.logEventShotDetailsComment();
     }
 
     @OnClick(R.id.details_close_imageView)
     void onCloseClick() {
         getPresenter().closeScreen();
+        analyticsEventLogger.logEventShotDetailsCloseX();
     }
 
     @OnClick(R.id.parallax_image_view)
@@ -209,21 +211,25 @@ public class ShotDetailsFragment
     @Override
     public void onTeamSelected(Team team) {
         getPresenter().getTeamUserWithShots(team);
+        analyticsEventLogger.logEventShotDetailsTeamDetails();
     }
 
     @Override
     public void onUserSelected(User user) {
         UserActivity.startActivity(getContext(), UserWithShots.create(user, null));
+        analyticsEventLogger.logEventShotDetailsAuthorDetails();
     }
 
     @Override
     public void onShotLikeAction(boolean newLikeState) {
         getPresenter().handleShotLike(newLikeState);
+        analyticsEventLogger.logEventShotDetailsLike();
     }
 
     @Override
     public void onShotBucket(long shotId) {
         getPresenter().onShotBucketClicked(getArguments().getParcelable(ARG_SHOT));
+        analyticsEventLogger.logEventShotDetailsAddToBucket();
     }
 
     @Override
