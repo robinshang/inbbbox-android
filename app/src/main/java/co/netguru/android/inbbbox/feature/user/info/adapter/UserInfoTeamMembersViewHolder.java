@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.user.info.adapter;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -11,13 +12,14 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-class UserInfoTeamMembersViewHolder extends BaseViewHolder<User> {
+class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
 
     @BindView(R.id.user_image)
     CircleImageView userImage;
@@ -25,7 +27,7 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<User> {
     @BindView(R.id.user_name)
     TextView userName;
 
-    @BindView(R.id.user_info_recycler_view)
+    @BindView(R.id.user_shots)
     RecyclerView userShotsRecyclerView;
 
     UserInfoTeamMembersViewHolder(ViewGroup parent) {
@@ -34,10 +36,23 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<User> {
     }
 
     @Override
-    public void bind(User item) {
-        this.userName.setText(item.name());
-        loadUserImage(item.avatarUrl());
+    public void bind(UserWithShots item) {
+        this.userName.setText(item.user().name());
+        loadUserImage(item.user().avatarUrl());
+        initRecyclerView(item);
     }
+
+    private void initRecyclerView(UserWithShots user) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
+                userShotsRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        UserShotsAdapter adapter = new UserShotsAdapter();
+        adapter.setShots(user.shotList());
+
+        userShotsRecyclerView.setLayoutManager(linearLayoutManager);
+        userShotsRecyclerView.setHasFixedSize(true);
+        userShotsRecyclerView.setAdapter(adapter);
+    }
+
 
     private void loadUserImage(String url) {
         Glide.with(itemView.getContext())

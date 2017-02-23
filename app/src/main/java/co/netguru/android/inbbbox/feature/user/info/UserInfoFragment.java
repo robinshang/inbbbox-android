@@ -8,12 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.user.info.adapter.UserInfoTeamMembersAdapter;
+import co.netguru.android.inbbbox.feature.user.shots.UserShotsModule;
 
 public class UserInfoFragment extends BaseMvpFragment<UserInfoContract.View, UserInfoContract.Presenter>
         implements UserInfoContract.View {
@@ -23,6 +26,8 @@ public class UserInfoFragment extends BaseMvpFragment<UserInfoContract.View, Use
 
     @BindView(R.id.user_info_recycler_view)
     RecyclerView recyclerView;
+
+    private UserInfoTeamMembersAdapter adapter;
 
     public static UserInfoFragment newInstance(UserWithShots user) {
         final Bundle args = new Bundle();
@@ -35,7 +40,8 @@ public class UserInfoFragment extends BaseMvpFragment<UserInfoContract.View, Use
 
     @Override
     public UserInfoContract.Presenter createPresenter() {
-        return App.getUserComponent(getContext()).plusUserInfoComponent().getPresenter();
+        UserInfoModule module = new UserInfoModule(getArguments().getParcelable(KEY_USER));
+        return App.getUserComponent(getContext()).plusUserInfoComponent(module).getPresenter();
     }
 
     @Nullable
@@ -51,13 +57,17 @@ public class UserInfoFragment extends BaseMvpFragment<UserInfoContract.View, Use
     }
 
     private void initRecycler() {
-        UserInfoTeamMembersAdapter adapter = new UserInfoTeamMembersAdapter();
+        adapter = new UserInfoTeamMembersAdapter();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
-                LinearLayoutManager.HORIZONTAL, false);
+                LinearLayoutManager.VERTICAL, false);
 
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public void showData(List<UserWithShots> users) {
+        adapter.setUserShots(users);
+    }
 }

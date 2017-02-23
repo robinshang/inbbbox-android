@@ -4,7 +4,7 @@ import co.netguru.android.commons.di.FragmentScope;
 import dagger.Subcomponent;
 
 @FragmentScope
-@Subcomponent
+@Subcomponent(modules = UserInfoModule.class)
 public interface UserInfoComponent {
 
     void inject(UserInfoFragment fragment);

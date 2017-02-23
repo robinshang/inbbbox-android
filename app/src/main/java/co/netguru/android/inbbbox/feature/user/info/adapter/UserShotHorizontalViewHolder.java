@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.user.shots.adapter;
+package co.netguru.android.inbbbox.feature.user.info.adapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -11,16 +11,17 @@ import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 
-public class UserShotsViewHolder extends BaseViewHolder<Shot> {
+public class UserShotHorizontalViewHolder extends BaseViewHolder<Shot> {
 
     private final ShotClickListener shotClickListener;
     @BindView(R.id.shot_image)
+
     RoundedCornersShotImageView shotImageView;
     private Shot item;
 
-    public UserShotsViewHolder(ViewGroup parent, ShotClickListener shotClickListener) {
+    public UserShotHorizontalViewHolder(ViewGroup parent, ShotClickListener shotClickListener) {
         super(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_shot_user, parent, false));
+                .inflate(R.layout.fragment_user_info_shot, parent, false));
         this.shotClickListener = shotClickListener;
     }
 
