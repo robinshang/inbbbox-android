@@ -12,9 +12,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpDialogFragment;
 
 public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBucketContract.View, CreateBucketContract.Presenter>
@@ -33,6 +36,10 @@ public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBuck
 
     private Button createButton;
     private Button cancelButton;
+    private CreateBucketComponent component;
+
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
 
     public static CreateBucketDialogFragment newInstance(Fragment targetFragment) {
         final CreateBucketDialogFragment createBucketDialogFragment = new CreateBucketDialogFragment();
@@ -44,6 +51,7 @@ public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBuck
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        initComponent();
         View dialogContentView = View.inflate(getContext(), R.layout.dialog_fragment_create_bucket_view, null);
         super.onViewCreated(dialogContentView, savedInstanceState);
         Dialog dialog = new AlertDialog.Builder(getContext(), R.style.NoTitleDialog)
@@ -57,10 +65,21 @@ public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBuck
         return dialog;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        analyticsEventLogger.logEventDialogCreateBucket();
+    }
+
+    private void initComponent() {
+        component = App.getUserComponent(getContext()).plusCreateBucketComponent();
+        component.inject(this);
+    }
+
     @NonNull
     @Override
     public CreateBucketContract.Presenter createPresenter() {
-        return App.getUserComponent(getContext()).plusCreateBucketComponent().getPresenter();
+        return component.getPresenter();
     }
 
     @Override
