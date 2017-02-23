@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
@@ -47,6 +48,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private final OnboardingController onboardingController;
     private final CompositeSubscription subscriptions;
     private final RxBus rxBus;
+    private final AnalyticsEventLogger analyticsEventLogger;
     private boolean isFollowing;
     private boolean isNew;
     private boolean isPopular;
@@ -63,7 +65,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                           ErrorController errorController,
                           TokenParametersController tokenParametersController,
                           LogoutController logoutController, OnboardingController onboardingController,
-                          RxBus rxBus) {
+                          RxBus rxBus, AnalyticsEventLogger analyticsEventLogger) {
         this.userController = userController;
         this.notificationScheduler = notificationScheduler;
         this.notificationController = notificationController;
@@ -74,6 +76,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         this.onboardingController = onboardingController;
         this.rxBus = rxBus;
         this.subscriptions = new CompositeSubscription();
+        this.analyticsEventLogger = analyticsEventLogger;
     }
 
     @Override
@@ -152,30 +155,35 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                 .subscribe(this::onScheduleNotificationNext, this::onScheduleNotificationError);
 
         subscriptions.add(subscription);
+        analyticsEventLogger.logEventSettingsReminder(status);
     }
 
     @Override
     public void followingStatusChanged(boolean status) {
         isFollowing = status;
         changeStreamSourceStatusIfCorrect();
+        analyticsEventLogger.logEventSettingsFollowing(status);
     }
 
     @Override
     public void newStatusChanged(boolean status) {
         isNew = status;
         changeStreamSourceStatusIfCorrect();
+        analyticsEventLogger.logEventSettingsNewToday(status);
     }
 
     @Override
     public void popularStatusChanged(boolean status) {
         isPopular = status;
         changeStreamSourceStatusIfCorrect();
+        analyticsEventLogger.logEventSettingsPopularToday(status);
     }
 
     @Override
     public void debutsStatusChanged(boolean status) {
         isDebut = status;
         changeStreamSourceStatusIfCorrect();
+        analyticsEventLogger.logEventSettingsDebuts(status);
     }
 
     @Override
@@ -196,6 +204,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                     getView().changeNightMode(isNightMode);
                 }, throwable -> handleError(throwable, "Error while changing customization settings"));
         subscriptions.add(subscription);
+        analyticsEventLogger.logEventSettingsNightmode(isNightMode);
     }
 
     @Override
@@ -228,6 +237,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     @Override
     public void onShotDetailsVisibilityChange(boolean isVisible) {
         rxBus.send(new DetailsVisibilityChangeEvent(isVisible));
+        analyticsEventLogger.logEventSettingsDetailsOnHome(isVisible);
     }
 
     private void onCustomizationStatuChangeSuccess(boolean isDetails) {

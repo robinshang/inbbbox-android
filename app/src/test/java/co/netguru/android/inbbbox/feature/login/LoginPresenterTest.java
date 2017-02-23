@@ -16,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.UUID;
 
 import co.netguru.android.inbbbox.Statics;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
 import co.netguru.android.inbbbox.data.session.controllers.TokenController;
@@ -57,6 +58,9 @@ public class LoginPresenterTest {
 
     @Mock
     private UserController userControllerMock;
+
+    @Mock
+    private AnalyticsEventLogger eventLoggerMock;
 
     private static final String URL_STRING = "www.google.com";
     private static final UUID UUID_STATIC = UUID.randomUUID();
@@ -101,6 +105,7 @@ public class LoginPresenterTest {
         verify(userControllerMock, times(1)).requestUser();
         verify(tokenControllerMock).requestNewToken(CODE);
         verify(viewMock).showNextScreen();
+        verify(eventLoggerMock).logEventLoginSuccess();
     }
 
     @Test
@@ -217,6 +222,7 @@ public class LoginPresenterTest {
         presenter.loginWithGuestClicked();
 
         verify(viewMock, times(1)).showNextScreen();
+        verify(eventLoggerMock).logEventLoginGuest();
     }
 
     @Test
@@ -234,6 +240,7 @@ public class LoginPresenterTest {
         presenter.loginWithGuestClicked();
 
         verify(viewMock, times(1)).showMessageOnServerError(errorMessage);
+        verify(eventLoggerMock).logEventLoginFail();
     }
 
     //Error
