@@ -4,6 +4,9 @@ import co.netguru.android.inbbbox.feature.bucket.BucketsFragmentComponent;
 import co.netguru.android.inbbbox.feature.bucket.createbucket.CreateBucketComponent;
 import co.netguru.android.inbbbox.feature.bucket.detail.BucketsDetailsComponent;
 import co.netguru.android.inbbbox.feature.follower.FollowersFragmentComponent;
+import co.netguru.android.inbbbox.feature.shot.ShotsModule;
+import co.netguru.android.inbbbox.feature.shot.recycler.DetailsVisibilityChangeEmitter;
+import co.netguru.android.inbbbox.feature.shot.recycler.ShotSwipeListener;
 import co.netguru.android.inbbbox.feature.user.shots.UserShotsComponent;
 import co.netguru.android.inbbbox.feature.like.LikesFragmentComponent;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingComponent;
@@ -23,7 +26,7 @@ import dagger.Subcomponent;
 @Subcomponent(modules = {UserModule.class})
 public interface UserComponent {
 
-    ShotsComponent getShotsComponent();
+    ShotsComponent getShotsComponent(ShotsModule module);
 
     LikesFragmentComponent getLikesFragmentComponent();
 
