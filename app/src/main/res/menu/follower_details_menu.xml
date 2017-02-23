@@ -4,7 +4,7 @@
 
     <item android:id="@+id/action_unfollow"
         android:icon="@drawable/ic_unfollow"
-        android:title="@string/action_follow"
+        android:title="@string/action_unfollow"
         app:showAsAction="ifRoom"
         android:orderInCategory="0"
         android:visible="false"/>

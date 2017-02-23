@@ -72,6 +72,11 @@ public class UserActivity extends BaseActivity implements UserShotsFragment.OnFo
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.follower_details_menu, menu);
+
+//        TODO: (23-02 not in scope of a task) Set menu icons visibility depending on following status
+        menu.findItem(R.id.action_unfollow).setVisible(false);
+        menu.findItem(R.id.action_follow).setVisible(true);
+
         return true;
     }
 
