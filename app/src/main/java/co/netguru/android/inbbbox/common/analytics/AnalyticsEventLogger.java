@@ -62,6 +62,8 @@ public interface AnalyticsEventLogger {
 
     void logEventBucketsFABCreate();
 
+    void logEventAppbarCollectionLayoutChange(boolean isGrid);
+
     void logEventAppbarList();
 
     void logEventAppbarGrid();

@@ -11,6 +11,7 @@ import co.netguru.android.inbbbox.common.analytics.event.OnboardingStartEvent;
 import co.netguru.android.inbbbox.common.analytics.event.RemainingRequestsEvent;
 import co.netguru.android.inbbbox.common.analytics.event.RequestEvent;
 import co.netguru.android.inbbbox.common.analytics.event.ScreenViewEvent;
+import co.netguru.android.inbbbox.common.analytics.event.ShotsSwipeEvent;
 import co.netguru.android.inbbbox.common.analytics.event.SourceStreamEvent;
 import co.netguru.android.inbbbox.common.analytics.event.SourceStreamLeaveEvent;
 
@@ -64,6 +65,11 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     private static final String LIST_ITEM_LIKES = "list item: likes";
     private static final String LIST_ITEM_BUCKETS = "list item: buckets";
     private static final String LIST_ITEM_FOLLOWING = "list item: following";
+
+    private static final String SWIPE_SHOT_LIKE = "shot swipe: like";
+    private static final String SWIPE_SHOT_BUCKET = "shot swipe: bucket";
+    private static final String SWIPE_SHOT_COMMENT = "shot swipe: comment";
+    private static final String SWIPE_SHOT_FOLLOW = "shot swipe: follow";
 
     private final FirebaseAnalytics analytics;
 
@@ -198,6 +204,14 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     }
 
     @Override
+    public void logEventAppbarCollectionLayoutChange(boolean isGrid) {
+        if (isGrid)
+            logEventAppbarGrid();
+        else
+            logEventAppbarList();
+    }
+
+    @Override
     public void logEventAppbarList() {
         logEvent(new ButtonPressEvent(BUTTON_APPBAR_LIST));
     }
@@ -219,27 +233,27 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
 
     @Override
     public void logEventShotSwipeLike() {
-
+        logEvent(new ButtonPressEvent(SWIPE_SHOT_LIKE));
     }
 
     @Override
     public void logEventShotSwipeAddToBucket() {
-
+        logEvent(new ButtonPressEvent(SWIPE_SHOT_BUCKET));
     }
 
     @Override
     public void logEventShotSwipeComment() {
-
+        logEvent(new ButtonPressEvent(SWIPE_SHOT_COMMENT));
     }
 
     @Override
     public void logEventShotSwipeFollow() {
-
+        logEvent(new ButtonPressEvent(SWIPE_SHOT_FOLLOW));
     }
 
     @Override
     public void logEventShotsListSwipes(int numberOfSwipes) {
-
+        logEvent(new ShotsSwipeEvent(numberOfSwipes));
     }
 
     @Override

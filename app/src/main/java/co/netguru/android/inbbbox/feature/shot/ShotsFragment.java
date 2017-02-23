@@ -216,6 +216,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
             @Override
             public void requestMoreData() {
                 getPresenter().getMoreShotsFromServer();
+                analyticsEventLogger.logEventShotsListSwipes(SHOTS_TO_LOAD_MORE);
             }
         });
     }
@@ -296,21 +297,25 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void onShotLikeSwipe(Shot shot) {
         getPresenter().likeShot(shot);
+        analyticsEventLogger.logEventShotSwipeLike();
     }
 
     @Override
     public void onAddShotToBucketSwipe(Shot shot) {
         getPresenter().handleAddShotToBucket(shot);
+        analyticsEventLogger.logEventShotSwipeAddToBucket();
     }
 
     @Override
     public void onCommentShotSwipe(Shot shot) {
         getPresenter().showCommentInput(shot);
+        analyticsEventLogger.logEventShotSwipeComment();
     }
 
     @Override
     public void onFollowUserSwipe(Shot shot) {
         getPresenter().handleFollowShotAuthor(shot);
+        analyticsEventLogger.logEventShotSwipeFollow();
     }
 
     @Override
@@ -321,6 +326,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void onShotSelected(Shot shot) {
         getPresenter().showShotDetails(shot);
+        analyticsEventLogger.logEventShotsItemClick();
     }
 
     @Override
