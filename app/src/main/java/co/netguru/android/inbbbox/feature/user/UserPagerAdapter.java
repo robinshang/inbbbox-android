@@ -8,7 +8,6 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
-import co.netguru.android.inbbbox.feature.bucket.BucketsFragment;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shared.UserDetailsTabItemType;
 import co.netguru.android.inbbbox.feature.user.shots.UserShotsFragment;
