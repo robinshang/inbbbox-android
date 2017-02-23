@@ -4,21 +4,18 @@ import co.netguru.android.inbbbox.feature.bucket.BucketsFragmentComponent;
 import co.netguru.android.inbbbox.feature.bucket.createbucket.CreateBucketComponent;
 import co.netguru.android.inbbbox.feature.bucket.detail.BucketsDetailsComponent;
 import co.netguru.android.inbbbox.feature.follower.FollowersFragmentComponent;
-import co.netguru.android.inbbbox.feature.shot.ShotsModule;
-import co.netguru.android.inbbbox.feature.shot.recycler.DetailsVisibilityChangeEmitter;
-import co.netguru.android.inbbbox.feature.shot.recycler.ShotSwipeListener;
-import co.netguru.android.inbbbox.feature.user.shots.UserShotsComponent;
 import co.netguru.android.inbbbox.feature.like.LikesFragmentComponent;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingComponent;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingModule;
 import co.netguru.android.inbbbox.feature.shot.ShotsComponent;
+import co.netguru.android.inbbbox.feature.shot.ShotsModule;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketComponent;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsComponent;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotsDetailsModule;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenComponent;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenModule;
 import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucketComponent;
-
+import co.netguru.android.inbbbox.feature.user.shots.UserShotsComponent;
 import co.netguru.android.inbbbox.feature.user.shots.UserShotsModule;
 import dagger.Subcomponent;
 
