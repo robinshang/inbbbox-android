@@ -23,6 +23,8 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
@@ -76,7 +78,10 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     private Animation shadowAnimation;
     private AnimationSet ballAnimation;
 
-    private ShotsAdapter adapter;
+    @Inject
+    ShotsAdapter adapter;
+
+    private ShotsComponent component;
     private ShotActionListener shotActionListener;
     private DetailsVisibilityChangeListener detailsVisibilityChangeListener;
 
@@ -98,13 +103,15 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        component = App.getUserComponent(getContext()).getShotsComponent(new ShotsModule(this, this));
+        component.inject(this);
         return inflater.inflate(R.layout.fragment_shots, container, false);
     }
 
     @NonNull
     @Override
     public ShotsContract.Presenter createPresenter() {
-        return App.getUserComponent(getContext()).getShotsComponent().getPresenter();
+        return component.getPresenter();
     }
 
     @Override
@@ -189,7 +196,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     private void initRecycler() {
-        adapter = new ShotsAdapter(this, this);
         shotsRecyclerView.setAdapter(adapter);
         shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shotsRecyclerView.setHasFixedSize(true);
@@ -247,7 +253,14 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void onDetailsVisibilityChange(boolean isVisible) {
+        final int currentPosition = shotsRecyclerView.getCurrentItem();
+        shotsRecyclerView.setAdapter(null);
+
+        shotsRecyclerView.setAdapter(adapter);
         adapter.setDetailsVisibilityFlag(isVisible);
+        shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        shotsRecyclerView.scrollToPosition(currentPosition);
 
         if (detailsVisibilityChangeListener != null)
             detailsVisibilityChangeListener.onDetailsChangeVisibility(isVisible);
