@@ -17,6 +17,12 @@ public interface ProjectsContract {
         void hideProgressBar();
 
         void addMoreProjectShots(long projectId, List<Shot> shotList);
+
+        void showLoadingMoreShotsFromProjectView();
+
+        void addMoreProjects(List<ProjectWithShots> projects);
+
+        void showLoadingMoreProjectsView();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -24,6 +30,8 @@ public interface ProjectsContract {
         void userDataReceived(UserWithShots user);
 
         void getUserProjects();
+
+        void getMoreUserProjects();
 
         void getMoreShotsFromProject(ProjectWithShots projectWithShots);
     }

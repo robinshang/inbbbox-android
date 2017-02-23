@@ -42,6 +42,12 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsViewHolder> {
         notifyDataSetChanged();
     }
 
+    public void addMoreProjects(List<ProjectWithShots> projects) {
+        final int currentSize = this.projectList.size();
+        this.projectList.addAll(projects);
+        notifyItemRangeChanged(currentSize - 1, projects.size());
+    }
+
     public List<ProjectWithShots> getProjectList() {
         return projectList;
     }

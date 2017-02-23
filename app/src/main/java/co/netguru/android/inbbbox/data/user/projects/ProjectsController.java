@@ -22,9 +22,10 @@ public class ProjectsController {
         this.projectsApi = projectsApi;
     }
 
-    public Observable<List<ProjectWithShots>> getUserProjectsWithShots(long userId, int shotsPageNumber,
+    public Observable<List<ProjectWithShots>> getUserProjectsWithShots(long userId, int projectPageNumber,
+                                                                       int projectPageCount, int shotsPageNumber,
                                                                        int shotsPageCount) {
-        return projectsApi.getUserProjects(userId)
+        return projectsApi.getUserProjects(userId, projectPageNumber, projectPageCount)
                 .flatMap(Observable::from)
                 .flatMap(projectEntity -> getProjectWithShots(projectEntity, shotsPageNumber, shotsPageCount))
                 .toList();

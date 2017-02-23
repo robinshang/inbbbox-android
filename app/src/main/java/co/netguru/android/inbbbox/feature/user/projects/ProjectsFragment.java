@@ -23,6 +23,7 @@ import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
+import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import co.netguru.android.inbbbox.feature.user.projects.adapter.ProjectsAdapter;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
 
@@ -31,6 +32,8 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
         ProjectsAdapter.OnGetMoreProjectShotsListener {
 
     private static final String USER_KEY = "userKey";
+
+    private static final int PROJECTS_TO_LOAD_MORE = 10;
 
     @BindView(R.id.contentView)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -81,8 +84,14 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     private void initRecyclerView() {
         projectsAdapter = new ProjectsAdapter(this);
 
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addOnScrollListener(new LoadMoreScrollListener(PROJECTS_TO_LOAD_MORE) {
+            @Override
+            public void requestMoreData() {
+                getPresenter().getMoreUserProjects();
+            }
+        });
         recyclerView.setAdapter(projectsAdapter);
     }
 
@@ -116,6 +125,21 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     @Override
     public void addMoreProjectShots(long projectId, List<Shot> shotList) {
         projectsAdapter.addMoreProjectShots(projectId, shotList);
+    }
+
+    @Override
+    public void showLoadingMoreShotsFromProjectView() {
+        showTextOnSnackbar(R.string.loading_more_project_shots);
+    }
+
+    @Override
+    public void addMoreProjects(List<ProjectWithShots> projects) {
+        projectsAdapter.addMoreProjects(projects);
+    }
+
+    @Override
+    public void showLoadingMoreProjectsView() {
+        showTextOnSnackbar(R.string.loading_more_projects);
     }
 
     @Override

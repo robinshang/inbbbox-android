@@ -5,11 +5,13 @@ import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.user.projects.ProjectsController;
@@ -25,6 +27,7 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
         implements ProjectsContract.Presenter {
 
     public static final int PROJECT_SHOTS_PAGE_COUNT = 15;
+    private static final int PROJECTS_PAGE_COUNT = 15;
     private static final int PROJECT_SHOTS_FIRST_PAGE = 1;
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
 
@@ -33,8 +36,14 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
 
     private UserWithShots user;
 
+    private boolean hasMoreProjects = true;
+    private int projectsPage = 1;
+
     @NonNull
     private Subscription refreshSubscription;
+
+    @NonNull
+    private Subscription loadNextProjectsSubscription;
 
     @NonNull
     private Subscription loadNextProjectShotsSubscription;
@@ -44,6 +53,7 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
         this.projectsController = projectsController;
         this.errorController = errorController;
         refreshSubscription = Subscriptions.unsubscribed();
+        loadNextProjectsSubscription = Subscriptions.unsubscribed();
         loadNextProjectShotsSubscription = Subscriptions.unsubscribed();
     }
 
@@ -52,6 +62,7 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
         super.detachView(retainInstance);
         if (!retainInstance) {
             refreshSubscription.unsubscribe();
+            loadNextProjectsSubscription.unsubscribe();
             loadNextProjectShotsSubscription.unsubscribe();
         }
     }
@@ -66,12 +77,31 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
     public void getUserProjects() {
         if (refreshSubscription.isUnsubscribed()) {
             loadNextProjectShotsSubscription.unsubscribe();
+            loadNextProjectsSubscription.unsubscribe();
+            projectsPage = 1;
+
             refreshSubscription = projectsController.getUserProjectsWithShots(user.user().id(),
-                    PROJECT_SHOTS_FIRST_PAGE, PROJECT_SHOTS_PAGE_COUNT)
+                    projectsPage, PROJECTS_PAGE_COUNT, PROJECT_SHOTS_FIRST_PAGE, PROJECT_SHOTS_PAGE_COUNT)
                     .compose(androidIO())
                     .doAfterTerminate(getView()::hideProgressBar)
                     .subscribe(this::onGetUserProjectsNext,
                             throwable -> handleError(throwable, "Error while getting user projects from server"));
+        }
+    }
+
+    @Override
+    public void getMoreUserProjects() {
+        if (hasMoreProjects && refreshSubscription.isUnsubscribed() && loadNextProjectsSubscription.isUnsubscribed()) {
+            projectsPage++;
+            loadNextProjectsSubscription = projectsController.getUserProjectsWithShots(user.user().id(),
+                    projectsPage, PROJECTS_PAGE_COUNT, PROJECT_SHOTS_FIRST_PAGE, PROJECT_SHOTS_PAGE_COUNT)
+                    .compose(RxTransformerUtil.executeRunnableIfObservableDidntEmitUntilGivenTime(
+                            SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
+                            getView()::showLoadingMoreProjectsView))
+                    .compose(androidIO())
+                    .doAfterTerminate(getView()::hideProgressBar)
+                    .subscribe(this::onGetMoreUserProjectsNext,
+                            throwable -> handleError(throwable, "Error while getting more user projects from server"));
         }
     }
 
@@ -81,10 +111,13 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
                 && loadNextProjectShotsSubscription.isUnsubscribed()) {
             loadNextProjectShotsSubscription = projectsController.getShotsFromProject(project.id(),
                     project.nextShotPage(), PROJECT_SHOTS_PAGE_COUNT)
+                    .compose(RxTransformerUtil.executeRunnableIfObservableDidntEmitUntilGivenTime(
+                            SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
+                            getView()::showLoadingMoreShotsFromProjectView))
                     .compose(androidIO())
                     .doAfterTerminate(getView()::hideProgressBar)
                     .subscribe(shotList -> onGetUserProjectShotsNext(project.id(), shotList),
-                            throwable -> handleError(throwable, "Error while getting project shots from server"));
+                            throwable -> handleError(throwable, "Error while getting more project shots from server"));
         }
     }
 
@@ -95,8 +128,14 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
     }
 
     private void onGetUserProjectsNext(List<ProjectWithShots> projects) {
+        hasMoreProjects = projects.size() >= PROJECTS_PAGE_COUNT;
         getView().setData(projects);
         getView().showContent();
+    }
+
+    private void onGetMoreUserProjectsNext(List<ProjectWithShots> projects) {
+        hasMoreProjects = projects.size() >= PROJECTS_PAGE_COUNT;
+        getView().addMoreProjects(projects);
     }
 
     private void onGetUserProjectShotsNext(long projectId, List<Shot> shotList) {

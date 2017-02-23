@@ -60,7 +60,7 @@ public class ProjectsViewHolder extends BaseViewHolder<ProjectWithShots> {
         recyclerView.addOnScrollListener(new LoadMoreScrollListener(SHOTS_TO_LOAD_MORE) {
             @Override
             public void requestMoreData() {
-                if (currentItem != null && currentItem.hasMoreShots()) {
+                if (currentItem != null) {
                     onGetMoreProjectShotsListener.onGetMoreProjectShots(currentItem);
                 }
             }

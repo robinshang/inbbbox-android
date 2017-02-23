@@ -12,7 +12,8 @@ import rx.Observable;
 public interface ProjectsApi {
 
     @GET("users/{userId}/projects")
-    Observable<List<ProjectEntity>> getUserProjects(@Path("userId") long userId);
+    Observable<List<ProjectEntity>> getUserProjects(@Path("userId") long userId,
+                                                    @Query("page") int pageNumber, @Query("per_page") int pageCount);
 
     @GET("projects/{projectId}/shots")
     Observable<List<ShotEntity>> getShotsFromProject(@Path("projectId") long projectId,
