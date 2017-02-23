@@ -12,6 +12,8 @@ import android.widget.RelativeLayout;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -19,6 +21,7 @@ import co.netguru.android.commons.di.WithComponent;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.utils.AnimationUtil;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewDialogFragment;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewListener;
@@ -31,6 +34,9 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     private static final int SLIDE_IN_DURATION = 300;
     private static final String MESSAGE_KEY = "message_key";
     private LoginComponent component;
+
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
 
     @BindView(R.id.btn_login)
     Button loginButton;
@@ -82,6 +88,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         if (getIntent().getStringExtra(MESSAGE_KEY) != null) {
             showMessageOnSnackBar(getIntent().getStringExtra(MESSAGE_KEY));
         }
+        analyticsEventLogger.logEventScreenLogin();
     }
 
     private void initComponent() {

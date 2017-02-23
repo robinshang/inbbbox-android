@@ -23,6 +23,8 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindString;
@@ -30,6 +32,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -78,6 +81,10 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
     private ShotsFragment.ShotActionListener shotActionListener;
+    private LikesFragmentComponent component;
+
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
 
     public static LikesFragment newInstance() {
         return new LikesFragment();
@@ -97,6 +104,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        initComponent();
         return inflater.inflate(R.layout.fragment_likes, container, false);
     }
 
@@ -118,12 +126,18 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     protected void changeGridMode(boolean isGridMode) {
         likesAdapter.setGridMode(isGridMode);
         recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
+        analyticsEventLogger.logEventAppbarCollectionLayoutChange(isGridMode);
     }
 
     @NonNull
     @Override
     public LikesViewContract.Presenter createPresenter() {
-        return App.getUserComponent(getContext()).getLikesFragmentComponent().getPresenter();
+        return component.getPresenter();
+    }
+
+    private void initComponent() {
+        component = App.getUserComponent(getContext()).getLikesFragmentComponent();
+        component.inject(this);
     }
 
     @Override
@@ -273,5 +287,6 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     @Override
     public void onShotClick(Shot shot) {
         getPresenter().showShotDetails(shot, likesAdapter.getData());
+        analyticsEventLogger.logEventLikesItemClick();
     }
 }

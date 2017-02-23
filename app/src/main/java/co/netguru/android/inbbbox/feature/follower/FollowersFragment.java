@@ -21,20 +21,23 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.feature.follower.adapter.FollowersAdapter;
 import co.netguru.android.inbbbox.feature.follower.adapter.OnFollowerClickListener;
-import co.netguru.android.inbbbox.feature.user.UserActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.user.UserActivity;
 
 public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<UserWithShots>, FollowersContract.View, FollowersContract.Presenter>
         implements RefreshableFragment, FollowersContract.View, OnFollowerClickListener {
@@ -66,6 +69,10 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     private FollowersAdapter adapter;
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
+    private FollowersFragmentComponent component;
+
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
 
     public static FollowersFragment newInstance() {
         return new FollowersFragment();
@@ -75,6 +82,7 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        initComponent();
         return inflater.inflate(R.layout.fragment_followers, container, false);
     }
 
@@ -96,12 +104,18 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     protected void changeGridMode(boolean isGridMode) {
         adapter.setGridMode(isGridMode);
         recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
+        analyticsEventLogger.logEventAppbarCollectionLayoutChange(isGridMode);
     }
 
     @NonNull
     @Override
     public FollowersContract.Presenter createPresenter() {
-        return App.getUserComponent(getContext()).plusFollowersFragmentComponent().getPresenter();
+        return component.getPresenter();
+    }
+
+    private void initComponent() {
+        component = App.getUserComponent(getContext()).plusFollowersFragmentComponent();
+        component.inject(this);
     }
 
     @NonNull
@@ -172,6 +186,7 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     @Override
     public void onClick(UserWithShots followedUser) {
         getPresenter().onFollowedUserSelect(followedUser);
+        analyticsEventLogger.logEventFollowingItemClick();
     }
 
     @Override

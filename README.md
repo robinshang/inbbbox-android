@@ -34,6 +34,7 @@ Reactive MVP with Dagger2 dependency injection.
 ### Integrations
 <!-- Describe external service and hardware integrations, link to reference docs, use #### headings -->
 Inbbbox app is integrated with dribbble.com service using [Dribbble API v1](http://developer.dribbble.com/v1/)
+Inbbbox uses Firebase Analytics for user involvement tracking.
 
 ### Coding guidelines
 [Netguru Android code style guide](https://netguru.atlassian.net/wiki/display/ANDROID/Android+best+practices)
@@ -51,6 +52,8 @@ Inbbbox app is integrated with dribbble.com service using [Dribbble API v1](http
 
 ## Building
 <!-- Aim to explain the process so that any new or external developer not familiar with the project can perform build and deploy -->
+Extra files needed:
+ - google-services.json (available in Bitrise)
 
 ### Build types
 <!-- List and describe build types -->

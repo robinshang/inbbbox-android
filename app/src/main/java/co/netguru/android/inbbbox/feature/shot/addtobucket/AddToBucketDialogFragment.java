@@ -23,12 +23,15 @@ import org.threeten.bp.ZonedDateTime;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindColor;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
 import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
@@ -84,6 +87,10 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     String shotCreatedForString;
 
     private final BucketsAdapter bucketsAdapter = new BucketsAdapter(this);
+    private AddToBucketComponent component;
+
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
 
     public static AddToBucketDialogFragment newInstance(@NonNull Fragment targetFragment, @NonNull Shot shot) {
         Bundle args = new Bundle();
@@ -100,6 +107,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        initComponent();
         return inflater.inflate(R.layout.fragment_add_to_bucket, container, false);
     }
 
@@ -116,12 +124,18 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     public void onStart() {
         setupDialogHeight();
         super.onStart();
+        analyticsEventLogger.logEventDialogShotToBuckets();
+    }
+
+    private void initComponent() {
+        component = App.getUserComponent(getContext()).plusAddToBucketComponent();
+        component.inject(this);
     }
 
     @NonNull
     @Override
     public AddToBucketContract.Presenter createPresenter() {
-        return App.getUserComponent(getContext()).plusAddToBucketComponent().getPresenter();
+        return component.getPresenter();
     }
 
     @OnClick(R.id.close_image)
