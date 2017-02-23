@@ -45,6 +45,7 @@ public class AnalyticsInterceptor implements Interceptor {
                 eventLogger.logEventApiComment();
                 break;
             default:
+                eventLogger.logEventApiOther();
         }
     }
 

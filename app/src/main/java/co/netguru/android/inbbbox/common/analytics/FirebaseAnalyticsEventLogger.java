@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.common.analytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import co.netguru.android.inbbbox.common.analytics.event.BaseEvent;
+import co.netguru.android.inbbbox.common.analytics.event.ButtonPressEvent;
 import co.netguru.android.inbbbox.common.analytics.event.LocalSettingEvent;
 import co.netguru.android.inbbbox.common.analytics.event.LoginEvent;
 import co.netguru.android.inbbbox.common.analytics.event.RemainingRequestsEvent;
@@ -39,11 +40,17 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     private static final String REQUEST_ADD_TO_BUCKET = "add to bucket";
     private static final String REQUEST_COMMENT = "comment";
     private static final String REQUEST_FOLLOW = "follow";
+    private static final String REQUEST_OTHER = "other";
 
     private static final String LOGIN_SUCCESS = "login success";
     private static final String LOGIN_FAILURE = "login failure";
     private static final String LOGIN_GUEST = "login guest";
     private static final String LOGIN_CREATE_ACCOUNT_AS_GUEST = "create account as guest";
+
+    private static final String BUTTON_SHOTS_FAB_ADD_TO_BUCKETS = "shots fab: add to bucket";
+    private static final String BUTTON_SHOTS_FAB_LIKE = "shots fab: like";
+    private static final String BUTTON_SHOTS_FAB_COMMENT = "shots fab: add to bucket";
+    private static final String BUTTON_SHOTS_FAB_FOLLOW = "shots fab: follow";
 
     private final FirebaseAnalytics analytics;
 
@@ -149,22 +156,22 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
 
     @Override
     public void logEventShotsFABComment() {
-
+        logEvent(new ButtonPressEvent(BUTTON_SHOTS_FAB_COMMENT));
     }
 
     @Override
     public void logEventShotsFABAddToBucket() {
-
+        logEvent(new ButtonPressEvent(BUTTON_SHOTS_FAB_ADD_TO_BUCKETS));
     }
 
     @Override
     public void logEventShotsFABFollow() {
-
+        logEvent(new ButtonPressEvent(BUTTON_SHOTS_FAB_FOLLOW));
     }
 
     @Override
     public void logEventShotsFABLike() {
-
+        logEvent(new ButtonPressEvent(BUTTON_SHOTS_FAB_LIKE));
     }
 
     @Override
@@ -296,6 +303,11 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
         logEvent(new RequestEvent(REQUEST_COMMENT));
     }
 
+    @Override
+    public void logEventApiOther() {
+        logEvent(new RequestEvent(REQUEST_OTHER));
+    }
+
     /**
      * Settings
      */
@@ -336,8 +348,7 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     }
 
     private void logSourceStreamEvent(boolean enabled, String groupId) {
-        logEvent((enabled ? new SourceStreamEvent(groupId) :
-                new SourceStreamLeaveEvent(groupId)));
+        logEvent(enabled ? new SourceStreamEvent(groupId) : new SourceStreamLeaveEvent(groupId));
     }
 
     private void logEvent(BaseEvent event) {

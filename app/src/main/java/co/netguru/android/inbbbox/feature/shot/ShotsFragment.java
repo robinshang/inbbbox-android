@@ -23,10 +23,13 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -79,6 +82,10 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     private ShotsAdapter adapter;
     private ShotActionListener shotActionListener;
     private DetailsVisibilityChangeListener detailsVisibilityChangeListener;
+    private ShotsComponent component;
+
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
 
     public static ShotsFragment newInstance() {
         return new ShotsFragment();
@@ -98,13 +105,19 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        initComponent();
         return inflater.inflate(R.layout.fragment_shots, container, false);
     }
 
     @NonNull
     @Override
     public ShotsContract.Presenter createPresenter() {
-        return App.getUserComponent(getContext()).getShotsComponent().getPresenter();
+        return component.getPresenter();
+    }
+
+    private void initComponent() {
+        component = App.getUserComponent(getContext()).getShotsComponent();
+        component.inject(this);
     }
 
     @Override
@@ -128,6 +141,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         if (currentItemPosition != RecyclerView.NO_POSITION) {
             getPresenter().likeShot(adapter.getShotFromPosition(currentItemPosition));
         }
+        analyticsEventLogger.logEventShotsFABLike();
     }
 
     @OnClick(R.id.fab_bucket_menu)
@@ -137,6 +151,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
             getPresenter().handleAddShotToBucket(
                     adapter.getShotFromPosition(currentItemPosition));
         }
+        analyticsEventLogger.logEventShotsFABAddToBucket();
     }
 
     @OnClick(R.id.fab_comment_menu)
@@ -146,6 +161,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
             getPresenter()
                     .showCommentInput(adapter.getShotFromPosition(currentItemPosition));
         }
+        analyticsEventLogger.logEventShotsFABComment();
     }
 
     @OnClick(R.id.fab_follow_menu)
@@ -155,6 +171,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
             getPresenter()
                     .handleFollowShotAuthor(adapter.getShotFromPosition(currentItemPosition));
         }
+        analyticsEventLogger.logEventShotsFABFollow();
     }
 
     @Override

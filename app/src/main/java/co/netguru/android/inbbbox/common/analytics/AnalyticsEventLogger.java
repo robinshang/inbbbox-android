@@ -112,6 +112,8 @@ public interface AnalyticsEventLogger {
 
     void logEventApiComment();
 
+    void logEventApiOther();
+
     /**
      * Settings
      */
