@@ -1,24 +1,30 @@
 package co.netguru.android.inbbbox.feature.user.projects.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.Collections;
 import java.util.List;
 
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
+import co.netguru.android.inbbbox.feature.user.projects.ProjectsPresenter;
 
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsViewHolder> {
 
+    private final OnGetMoreProjectShotsListener onGetMoreProjectShotsListener;
+
     private List<ProjectWithShots> projectList;
 
-    public ProjectsAdapter() {
+    public ProjectsAdapter(@NonNull OnGetMoreProjectShotsListener onGetMoreProjectShotsListener) {
+        this.onGetMoreProjectShotsListener = onGetMoreProjectShotsListener;
         projectList = Collections.emptyList();
     }
 
     @Override
     public ProjectsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ProjectsViewHolder(parent);
+        return new ProjectsViewHolder(parent, onGetMoreProjectShotsListener);
     }
 
     @Override
@@ -38,5 +44,32 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsViewHolder> {
 
     public List<ProjectWithShots> getProjectList() {
         return projectList;
+    }
+
+    public void addMoreProjectShots(long projectId, List<Shot> shotList) {
+        final int index = findProjectIndex(projectId);
+        final ProjectWithShots project = projectList.get(index);
+        project.shotList().addAll(shotList);
+        updateProjectShotPageStatus(index, project, shotList.size() >= ProjectsPresenter.PROJECT_SHOTS_PAGE_COUNT);
+
+        notifyItemChanged(index);
+    }
+
+    private int findProjectIndex(long projectId) {
+        for (int i = 0; i < projectList.size(); i++) {
+            if (projectList.get(i).id() == projectId) {
+                return i;
+            }
+        }
+        throw new IllegalArgumentException("There is no project with id: " + projectId);
+    }
+
+    private void updateProjectShotPageStatus(int index, ProjectWithShots project, boolean hasMoreShots) {
+        projectList.set(index, ProjectWithShots.update(project, hasMoreShots));
+    }
+
+    public interface OnGetMoreProjectShotsListener {
+
+        void onGetMoreProjectShots(ProjectWithShots projectWithShots);
     }
 }

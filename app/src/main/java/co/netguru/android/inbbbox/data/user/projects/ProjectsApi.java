@@ -6,6 +6,7 @@ import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
 import co.netguru.android.inbbbox.data.user.projects.model.api.ProjectEntity;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 public interface ProjectsApi {
@@ -14,5 +15,6 @@ public interface ProjectsApi {
     Observable<List<ProjectEntity>> getUserProjects(@Path("userId") long userId);
 
     @GET("projects/{projectId}/shots")
-    Observable<List<ShotEntity>> getShotsFromProject(@Path("projectId") long projectId);
+    Observable<List<ShotEntity>> getShotsFromProject(@Path("projectId") long projectId,
+                                                     @Query("page") int pageNumber, @Query("per_page") int pageCount);
 }

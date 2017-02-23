@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.user.projects.model.api.ProjectEntity;
 import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
+import co.netguru.android.inbbbox.feature.user.projects.ProjectsPresenter;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -21,19 +22,30 @@ public class ProjectsController {
         this.projectsApi = projectsApi;
     }
 
-    public Observable<List<ProjectWithShots>> getUserProjects(long userId) {
+    public Observable<List<ProjectWithShots>> getUserProjectsWithShots(long userId, int shotsPageNumber,
+                                                                       int shotsPageCount) {
         return projectsApi.getUserProjects(userId)
                 .flatMap(Observable::from)
-                .flatMap(this::getProjectWithShots)
+                .flatMap(projectEntity -> getProjectWithShots(projectEntity, shotsPageNumber, shotsPageCount))
                 .toList();
     }
 
-    private Observable<ProjectWithShots> getProjectWithShots(ProjectEntity projectEntity) {
-        return projectsApi.getShotsFromProject(projectEntity.id())
+    public Observable<List<Shot>> getShotsFromProject(long projectId, int shotsPageNumber,
+                                                      int shotsPageCount) {
+        return projectsApi.getShotsFromProject(projectId, shotsPageNumber, shotsPageCount)
+                .flatMap(Observable::from)
+                .map(Shot::create)
+                .toList();
+    }
+
+    private Observable<ProjectWithShots> getProjectWithShots(ProjectEntity projectEntity,
+                                                            int shotsPageNumber, int shotsPageCount) {
+        return projectsApi.getShotsFromProject(projectEntity.id(), shotsPageNumber, shotsPageCount)
                 .flatMap(Observable::from)
                 .map(Shot::create)
                 .toList()
-                .map(shotList -> ProjectWithShots.create(projectEntity, shotList))
+                .map(shotList -> ProjectWithShots.create(projectEntity, shotList,
+                        shotList.size() >= ProjectsPresenter.PROJECT_SHOTS_PAGE_COUNT))
                 .subscribeOn(Schedulers.io());
     }
 }

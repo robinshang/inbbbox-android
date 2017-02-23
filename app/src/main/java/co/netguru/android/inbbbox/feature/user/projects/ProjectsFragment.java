@@ -21,12 +21,14 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
 import co.netguru.android.inbbbox.feature.user.projects.adapter.ProjectsAdapter;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
 
 public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<ProjectWithShots>,
-        ProjectsContract.View, ProjectsContract.Presenter> implements ProjectsContract.View {
+        ProjectsContract.View, ProjectsContract.Presenter> implements ProjectsContract.View,
+        ProjectsAdapter.OnGetMoreProjectShotsListener {
 
     private static final String USER_KEY = "userKey";
 
@@ -77,7 +79,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     }
 
     private void initRecyclerView() {
-        projectsAdapter = new ProjectsAdapter();
+        projectsAdapter = new ProjectsAdapter(this);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -112,7 +114,17 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     }
 
     @Override
+    public void addMoreProjectShots(long projectId, List<Shot> shotList) {
+        projectsAdapter.addMoreProjectShots(projectId, shotList);
+    }
+
+    @Override
     public void showMessageOnServerError(String errorText) {
         showTextOnSnackbar(errorText);
+    }
+
+    @Override
+    public void onGetMoreProjectShots(ProjectWithShots project) {
+        getPresenter().getMoreShotsFromProject(project);
     }
 }
