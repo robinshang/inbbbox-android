@@ -79,7 +79,9 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     private Animation shadowAnimation;
     private AnimationSet ballAnimation;
 
-    private ShotsAdapter adapter;
+    @Inject
+    ShotsAdapter adapter;
+
     private ShotActionListener shotActionListener;
     private DetailsVisibilityChangeListener detailsVisibilityChangeListener;
     private ShotsComponent component;
@@ -206,7 +208,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     private void initRecycler() {
-        adapter = new ShotsAdapter(this, this);
         shotsRecyclerView.setAdapter(adapter);
         shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shotsRecyclerView.setHasFixedSize(true);
@@ -264,7 +265,14 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void onDetailsVisibilityChange(boolean isVisible) {
+        final int currentPosition = shotsRecyclerView.getCurrentItem();
+        shotsRecyclerView.setAdapter(null);
+
+        shotsRecyclerView.setAdapter(adapter);
         adapter.setDetailsVisibilityFlag(isVisible);
+        shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        shotsRecyclerView.scrollToPosition(currentPosition);
 
         if (detailsVisibilityChangeListener != null)
             detailsVisibilityChangeListener.onDetailsChangeVisibility(isVisible);

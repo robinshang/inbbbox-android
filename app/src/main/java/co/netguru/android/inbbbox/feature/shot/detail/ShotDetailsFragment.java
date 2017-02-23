@@ -33,7 +33,7 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
-import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsActivity;
+import co.netguru.android.inbbbox.feature.user.UserActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
@@ -41,7 +41,6 @@ import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenA
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucketDialogFragment;
-import co.netguru.android.inbbbox.feature.team.TeamDetailsActivity;
 
 public class ShotDetailsFragment
         extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
@@ -214,7 +213,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onUserSelected(User user) {
-        FollowerDetailsActivity.startActivity(getContext(), UserWithShots.create(user, null));
+        UserActivity.startActivity(getContext(), UserWithShots.create(user, null));
     }
 
     @Override
@@ -390,7 +389,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showTeamView(UserWithShots userWithShots) {
-        TeamDetailsActivity.startActivity(getContext(), userWithShots);
+        UserActivity.startActivity(getContext(), userWithShots);
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {

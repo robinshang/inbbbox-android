@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.team;
+package co.netguru.android.inbbbox.feature.user;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -13,17 +14,24 @@ import android.view.MenuItem;
 
 import com.bumptech.glide.Glide;
 
+import java.util.List;
+
 import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
-import co.netguru.android.inbbbox.feature.shared.UserDetailsActivityPagerAdapter;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.feature.shared.UserDetailsTabItemType;
 import co.netguru.android.inbbbox.feature.shared.base.BaseActivity;
 import co.netguru.android.inbbbox.feature.shared.view.NonSwipeableViewPager;
+import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsFragment;
+import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
+import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
+import co.netguru.android.inbbbox.feature.user.shots.UserShotsFragment;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class TeamDetailsActivity extends BaseActivity {
+public class UserActivity extends BaseActivity implements UserShotsFragment.OnFollowedShotActionListener {
 
     private static final String USER_KEY = "user_key";
 
@@ -41,10 +49,10 @@ public class TeamDetailsActivity extends BaseActivity {
     @BindView(R.id.details_user_imageView)
     CircleImageView userImageView;
 
-    private UserDetailsActivityPagerAdapter pagerAdapter;
+    private boolean shouldRefreshFollowers;
 
     public static void startActivity(Context context, UserWithShots user) {
-        final Intent intent = new Intent(context, TeamDetailsActivity.class);
+        final Intent intent = new Intent(context, UserActivity.class);
         intent.putExtra(USER_KEY, user);
         context.startActivity(intent);
     }
@@ -52,10 +60,13 @@ public class TeamDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_details);
-        initializeToolbar();
-        initializePager();
+        setContentView(R.layout.activity_user);
+        UserWithShots user = getIntent().getParcelableExtra(USER_KEY);
+
+        initializePager(user);
+        initializeToolbar(user);
         setupImage();
+        shouldRefreshFollowers = false;
     }
 
     @Override
@@ -75,8 +86,29 @@ public class TeamDetailsActivity extends BaseActivity {
         }
     }
 
-    public void initializePager() {
-        pagerAdapter = new UserDetailsActivityPagerAdapter(getSupportFragmentManager());
+    @Override
+    public void showShotDetails(Shot shot, List<Shot> allShots, long userId) {
+        ShotDetailsRequest detailsRequest = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.USER)
+                .id(userId)
+                .build();
+        final Fragment fragment = ShotDetailsFragment.newInstance(shot, allShots, detailsRequest);
+        showBottomSheet(fragment, ShotDetailsFragment.TAG);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (shouldRefreshFollowers) {
+            MainActivity.startActivityWithRequest(this, MainActivity.REQUEST_REFRESH_FOLLOWER_LIST);
+            shouldRefreshFollowers = false;
+            finish();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public void initializePager(UserWithShots user) {
+        UserPagerAdapter pagerAdapter = new UserPagerAdapter(getSupportFragmentManager(), user);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -88,15 +120,14 @@ public class TeamDetailsActivity extends BaseActivity {
         }
     }
 
-    private void initializeToolbar() {
+    private void initializeToolbar(UserWithShots user) {
         collapsingToolbarLayout.setTitleEnabled(false);
         toolbar.setTitleTextColor(colorWhite);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
+
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-
-            UserWithShots user = getIntent().getParcelableExtra(USER_KEY);
             actionBar.setTitle(user.user().name());
         }
     }

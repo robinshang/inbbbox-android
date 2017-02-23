@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.follower.detail;
+package co.netguru.android.inbbbox.feature.user.shots;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
@@ -11,44 +11,25 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
 
-public interface FollowerDetailsContract {
+public interface UserShotsContract {
 
     interface View extends MvpView, HttpErrorView, MvpLceView<List<Shot>> {
-        void showFollowerData(UserWithShots follower);
 
         void showMoreUserShots(List<Shot> shotList);
 
         void hideProgress();
 
         void openShotDetailsScreen(Shot shot, List<Shot> allShots, long userId);
-
-        void showUnFollowDialog(String username);
-
-        void showFollowDialog(String username);
-
-        void setFollowingMenuIcon(boolean isFollowed);
-
-        void onUnfollowUserCompleted();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
 
         void userDataReceived(UserWithShots userWithShots);
 
-        void checkIfUserIsFollowed(UserWithShots userWithShots);
-
         void refreshUserShots();
 
         void getMoreUserShotsFromServer();
 
-        void onUnFollowClick();
-
-        void unFollowUser();
-
         void showShotDetails(Shot shot);
-
-        void onFollowClick();
-
-        void followUser();
     }
 }
