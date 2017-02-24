@@ -76,25 +76,6 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
         return App.getUserComponent(getContext()).plusProjectsComponent().getPresenter();
     }
 
-    private void initSwipeRefreshView() {
-        swipeRefreshLayout.setColorSchemeColors(accentColor);
-        swipeRefreshLayout.setOnRefreshListener(getPresenter()::getUserProjects);
-    }
-
-    private void initRecyclerView() {
-        projectsAdapter = new ProjectsAdapter(this);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addOnScrollListener(new LoadMoreScrollListener(PROJECTS_TO_LOAD_MORE) {
-            @Override
-            public void requestMoreData() {
-                getPresenter().getMoreUserProjects();
-            }
-        });
-        recyclerView.setAdapter(projectsAdapter);
-    }
-
     @NonNull
     @Override
     public LceViewState<List<ProjectWithShots>, ProjectsContract.View> createViewState() {
@@ -150,5 +131,24 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     @Override
     public void onGetMoreProjectShots(ProjectWithShots project) {
         getPresenter().getMoreShotsFromProject(project);
+    }
+
+    private void initSwipeRefreshView() {
+        swipeRefreshLayout.setColorSchemeColors(accentColor);
+        swipeRefreshLayout.setOnRefreshListener(getPresenter()::getUserProjects);
+    }
+
+    private void initRecyclerView() {
+        projectsAdapter = new ProjectsAdapter(this);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addOnScrollListener(new LoadMoreScrollListener(PROJECTS_TO_LOAD_MORE) {
+            @Override
+            public void requestMoreData() {
+                getPresenter().getMoreUserProjects();
+            }
+        });
+        recyclerView.setAdapter(projectsAdapter);
     }
 }
