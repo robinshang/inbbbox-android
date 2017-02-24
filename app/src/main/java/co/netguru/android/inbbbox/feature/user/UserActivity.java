@@ -3,8 +3,10 @@ package co.netguru.android.inbbbox.feature.user;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -19,11 +21,12 @@ import java.util.List;
 import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.feature.shared.UserDetailsTabItemType;
-import co.netguru.android.inbbbox.feature.shared.base.BaseActivity;
+import co.netguru.android.inbbbox.feature.shared.base.BaseMvpActivity;
 import co.netguru.android.inbbbox.feature.shared.view.NonSwipeableViewPager;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
@@ -31,7 +34,9 @@ import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.user.shots.UserShotsFragment;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserActivity extends BaseActivity implements UserShotsFragment.OnFollowedShotActionListener {
+public class UserActivity
+        extends BaseMvpActivity<UserActivityContract.View, UserActivityContract.Presenter>
+        implements UserActivityContract.View, UserShotsFragment.OnFollowedShotActionListener {
 
     private static final String USER_KEY = "user_key";
 
@@ -49,7 +54,11 @@ public class UserActivity extends BaseActivity implements UserShotsFragment.OnFo
     @BindView(R.id.details_user_imageView)
     CircleImageView userImageView;
 
+    private UserActivityComponent component;
     private boolean shouldRefreshFollowers;
+    private MenuItem itemFollow;
+    private MenuItem itemUnfollow;
+    private UserWithShots user;
 
     public static void startActivity(Context context, UserWithShots user) {
         final Intent intent = new Intent(context, UserActivity.class);
@@ -59,14 +68,16 @@ public class UserActivity extends BaseActivity implements UserShotsFragment.OnFo
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        initComponent();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        UserWithShots user = getIntent().getParcelableExtra(USER_KEY);
+        user = getIntent().getParcelableExtra(USER_KEY);
 
         initializePager(user);
         initializeToolbar(user);
         setupImage();
         shouldRefreshFollowers = false;
+        getPresenter().checkFollowingStatus(user.user());
     }
 
     @Override
@@ -74,9 +85,11 @@ public class UserActivity extends BaseActivity implements UserShotsFragment.OnFo
         getMenuInflater().inflate(R.menu.follower_details_menu, menu);
 
 //        TODO: (23-02 not in scope of a task) Set menu icons visibility depending on following status
-        menu.findItem(R.id.action_unfollow).setVisible(false);
-        menu.findItem(R.id.action_follow).setVisible(true);
+        itemFollow = menu.findItem(R.id.action_follow);
+        itemUnfollow = menu.findItem(R.id.action_unfollow);
 
+        itemFollow.setVisible(false);
+        itemUnfollow.setVisible(false);
         return true;
     }
 
@@ -85,6 +98,12 @@ public class UserActivity extends BaseActivity implements UserShotsFragment.OnFo
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                return true;
+            case R.id.action_follow:
+                getPresenter().startFollowing(user.user());
+                return true;
+            case R.id.action_unfollow:
+                getPresenter().stopFollowing(user.user());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -138,11 +157,31 @@ public class UserActivity extends BaseActivity implements UserShotsFragment.OnFo
     }
 
     private void setupImage() {
-        UserWithShots user = getIntent().getParcelableExtra(USER_KEY);
         Glide.with(this)
                 .load(user.user().avatarUrl())
                 .fitCenter()
                 .error(R.drawable.ic_ball)
                 .into(userImageView);
+    }
+
+    @NonNull
+    @Override
+    public UserActivityContract.Presenter createPresenter() {
+        return component.getPresenter();
+    }
+
+    @Override
+    public void showFollowingAction(boolean following) {
+        itemFollow.setVisible(following);
+        itemUnfollow.setVisible(!following);
+    }
+
+    private void initComponent() {
+        component = App.getUserComponent(this).plusUserActivityComponent();
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Snackbar.make(userImageView, errorText, Snackbar.LENGTH_LONG).show();
     }
 }
