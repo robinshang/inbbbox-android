@@ -11,7 +11,7 @@ import timber.log.Timber;
 public class AnalyticsInterceptor implements Interceptor {
 
     private static final String HEADER_REQUESTS_REMAINING = "X-RateLimit-Remaining";
-    private static final String DEFAULT_VALUE = "0";
+    private static final String DEFAULT_VALUE = "60";
 
     private final AnalyticsEventLogger eventLogger;
 
@@ -24,36 +24,38 @@ public class AnalyticsInterceptor implements Interceptor {
         Request request = chain.request();
         Response response = chain.proceed(request);
         if (request.url().toString().contains(Constants.API.DRIBBLE_BASE_URL)) {
-            logUserEvents(request);
-            logRequestsRemaining(response.header(HEADER_REQUESTS_REMAINING, DEFAULT_VALUE));
+            logEvents(request, response);
         }
         return response;
     }
 
-    private void logUserEvents(Request request) {
-        switch (RequestDecoder.decodeRequest(request)) {
-            case ADD_SHOT_TO_BUCKET:
-                eventLogger.logEventApiAddToBucket();
-                break;
-            case LIKE:
-                eventLogger.logEventApiLike();
-                break;
-            case FOLLOW:
-                eventLogger.logEventApiFollow();
-                break;
-            case COMMENT:
-                eventLogger.logEventApiComment();
-                break;
-            default:
-                eventLogger.logEventApiOther();
-        }
-    }
-
-    private void logRequestsRemaining(String headerValue) {
+    private void logEvents(Request request, Response response) {
         try {
-            eventLogger.logEventApiRequestsRemaining(Integer.parseInt(headerValue));
+            int requestsRemaining = Integer.parseInt(
+                    response.header(HEADER_REQUESTS_REMAINING, DEFAULT_VALUE));
+            logUserEvents(request, requestsRemaining);
         } catch (NumberFormatException e) {
             Timber.e(e, "Could not parse remaining request count, %s", e.getMessage());
         }
+    }
+
+    private void logUserEvents(Request request, int requestsRemaining) {
+        switch (RequestDecoder.decodeRequest(request)) {
+            case ADD_SHOT_TO_BUCKET:
+                eventLogger.logEventApiAddToBucket(requestsRemaining);
+                break;
+            case LIKE:
+                eventLogger.logEventApiLike(requestsRemaining);
+                break;
+            case FOLLOW:
+                eventLogger.logEventApiFollow(requestsRemaining);
+                break;
+            case COMMENT:
+                eventLogger.logEventApiComment(requestsRemaining);
+                break;
+            default:
+                eventLogger.logEventApiOther(requestsRemaining);
+        }
+        eventLogger.logEventApiRequestsRemaining(requestsRemaining);
     }
 }
