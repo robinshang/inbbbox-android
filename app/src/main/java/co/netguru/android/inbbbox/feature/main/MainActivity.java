@@ -28,12 +28,17 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindView;
+import butterknife.OnPageChange;
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsDrawerListener;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
@@ -81,6 +86,11 @@ public class MainActivity
     @BindDrawable(R.drawable.toolbar_start_background)
     Drawable toolbarStartBackground;
 
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
+    @Inject
+    AnalyticsDrawerListener analyticsDrawerListener;
+
     private MainActivityComponent component;
     private TextView drawerUserName;
     private CircleImageView drawerUserPhoto;
@@ -118,6 +128,7 @@ public class MainActivity
         initializeDrawer();
         getPresenter().prepareUserData();
         navigationView.setSaveEnabled(false);
+        analyticsEventLogger.logEventScreenShots();
     }
 
     @Override
@@ -378,7 +389,7 @@ public class MainActivity
         if (icon != null) {
             icon.setColorFilter(highlightColor, PorterDuff.Mode.SRC_IN);
         }
-        tab.setText(getString(TabItemType.getTabItemForPosition(tab.getPosition()).getTitle()));
+        tab.setText(getString(TabItemType.getTabItemForPosition(currentTabIndex).getTitle()));
         setupToolbarForCurrentTab(currentTabIndex);
     }
 
@@ -426,7 +437,7 @@ public class MainActivity
 
         drawerToggleButton.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> getPresenter().toggleButtonChanged(isChecked));
-        drawerCreateAccountButton.setOnClickListener(view -> getPresenter().onCreateAccountClick());
+        drawerCreateAccountButton.setOnClickListener(view -> onCreateAccountClick());
 
         navigationView.setNavigationItemSelectedListener(this::onNavigationNItemSelected);
 
@@ -436,6 +447,12 @@ public class MainActivity
         actionBarDrawerToggle.syncState();
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
         initializeDrawerReminder();
+        drawerLayout.addDrawerListener(analyticsDrawerListener);
+    }
+
+    private void onCreateAccountClick() {
+        getPresenter().onCreateAccountClick();
+        analyticsEventLogger.logEventCreateAccountAsGuest();
     }
 
     private boolean onNavigationNItemSelected(MenuItem item) {
@@ -482,5 +499,24 @@ public class MainActivity
     private void changeMenuGroupsVisibility(boolean isMainMenuVisible, boolean isLogoutMenuVisible) {
         navigationView.getMenu().setGroupVisible(R.id.group_all, isMainMenuVisible);
         navigationView.getMenu().setGroupVisible(R.id.group_logout, isLogoutMenuVisible);
+    }
+
+    @OnPageChange(R.id.main_view_pager)
+    void onPageSelected(int position) {
+        switch (TabItemType.getTabItemForPosition(position)) {
+            case SHOTS:
+                analyticsEventLogger.logEventScreenShots();
+                break;
+            case LIKES:
+                analyticsEventLogger.logEventScreenLikes();
+                break;
+            case BUCKETS:
+                analyticsEventLogger.logEventScreenBuckets();
+                break;
+            case FOLLOWERS:
+                analyticsEventLogger.logEventScreenFollowing();
+                break;
+            default:
+        }
     }
 }

@@ -40,22 +40,33 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:titleMarginTop="13dp" />
 
-            <android.support.design.widget.TabLayout
-                android:id="@+id/user_details_tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="bottom"
-                app:tabIndicatorColor="@android:color/white" />
-
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 
-    <co.netguru.android.inbbbox.feature.shared.view.NonSwipeableViewPager
-        android:id="@+id/user_details_view_pager"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/user_details_tab_layout"
+            android:background="@color/accent"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            app:tabIndicatorColor="@android:color/white"
+            app:tabTextColor="@color/palePink"
+            app:tabSelectedTextColor="@color/white"/>
+
+        <co.netguru.android.inbbbox.feature.shared.view.NonSwipeableViewPager
+            android:id="@+id/user_details_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/bottom_sheet_fragment_container"

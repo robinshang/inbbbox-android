@@ -14,6 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Random;
 
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
@@ -87,6 +88,9 @@ public class MainActivityPresenterTest {
 
     @Mock
     public OnboardingController onboardingController;
+
+    @Mock
+    AnalyticsEventLogger analyticsEventLoggerMock;
 
     @InjectMocks
     MainActivityPresenter mainActivityPresenter;

@@ -86,6 +86,7 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
     public void onBackPressed() {
         if (bottomSheetActivityDelegate != null && bottomSheetActivityDelegate.isBottomSheetOpen()) {
             bottomSheetActivityDelegate.hideBottomSheet();
+            App.getAppComponent(this).analyticsEventLogger().logEventShotDetailsCloseBack();
         } else {
             super.onBackPressed();
         }

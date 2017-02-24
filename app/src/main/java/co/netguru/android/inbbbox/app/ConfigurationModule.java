@@ -10,6 +10,7 @@ import org.threeten.bp.ZonedDateTime;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.Constants;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsInterceptor;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.gson.AutoGsonAdapterFactory;
 import co.netguru.android.inbbbox.common.gson.DateTimeConverter;
@@ -49,11 +50,13 @@ public class ConfigurationModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient(RequestInterceptor interceptor) {
+    OkHttpClient provideOkHttpClient(RequestInterceptor interceptor,
+                                     AnalyticsInterceptor analyticsInterceptor) {
         return new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BASIC))
                 .addInterceptor(interceptor)
+                .addInterceptor(analyticsInterceptor)
                 .build();
     }
 
