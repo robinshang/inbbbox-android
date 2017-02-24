@@ -116,6 +116,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                         getView().hideLoadingIndicator();
                         getView().setData(shotList);
                         getView().showContent();
+                        getView().showFirstShot();
                     }, throwable -> handleError(throwable, "Error while getting shots"));
         }
     }

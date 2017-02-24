@@ -38,6 +38,8 @@ interface ShotsContract {
         void onDetailsVisibilityChange(boolean isVisible);
 
         void updateShot(Shot shot);
+
+        void showFirstShot();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
