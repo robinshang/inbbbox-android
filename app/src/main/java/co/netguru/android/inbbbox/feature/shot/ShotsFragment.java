@@ -171,7 +171,10 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void setData(List<Shot> data) {
+        shotsRecyclerView.setAdapter(null);
         adapter.setItems(data);
+        adapter.notifyDataSetChanged();
+        shotsRecyclerView.setAdapter(adapter);
     }
 
     @Override

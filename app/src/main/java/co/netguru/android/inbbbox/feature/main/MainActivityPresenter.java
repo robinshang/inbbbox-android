@@ -51,6 +51,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private boolean isNew;
     private boolean isPopular;
     private boolean isDebut;
+    private boolean sourceDidNotChange;
 
     @Nullable
     private User user;
@@ -254,8 +255,13 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         final Subscription subscription = settingsController.changeStreamSourceSettings(isFollowing, isNew, isPopular, isDebut)
                 .compose(RxTransformerUtil.applyCompletableIoSchedulers())
                 .subscribe(() -> {
-                            Timber.d("Stream source settings changed");
-                            getView().refreshShotsView();
+                            // Checks if the source should be the same, if it's, it wouldn't refresh the shots
+                            if (!sourceDidNotChange) {
+                                Timber.d("Stream source settings changed");
+                                getView().refreshShotsView();
+                            } else {
+                                sourceDidNotChange = false;
+                            }
                         },
                         throwable -> Timber.e(throwable, "Error while changing stream source settings"));
         subscriptions.add(subscription);
@@ -264,6 +270,8 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private void canNotChangeStreamSourceStatus() {
         getView().showMessage(R.string.change_stream_source_error);
         prepareUserSettings();
+        // Flag to avoid re set the data if the source is the same
+        sourceDidNotChange = true;
     }
 
     private void saveNotificationStatus(boolean status) {
