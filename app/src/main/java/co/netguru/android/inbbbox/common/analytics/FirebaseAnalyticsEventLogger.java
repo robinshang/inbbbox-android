@@ -58,6 +58,8 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     private static final String BUTTON_APPBAR_GRID = "appbar: grid";
     private static final String BUTTON_APPBAR_LIST = "appbar: list";
     private static final String BUTTON_APPBAR_DELETE_BUCKET = "appbar: delete bucket";
+    private static final String BUTTON_APPBAR_FOLLOW = "appbar: follow";
+    private static final String BUTTON_APPBAR_UNFOLLOW = "appbar: unfollow";
     private static final String BUTTON_CLOSE_SHOT_DETAILS_X = "close shot details x";
     private static final String BUTTON_CLOSE_SHOT_DETAILS_BACK = "close shot details back";
     private static final String BUTTON_SHOT_DETAILS_LIKE = "shot details like";
@@ -324,6 +326,12 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     @Override
     public void logEventFullscreenSwipe(int numberOfSwipes) {
         logEvent(new ShotsSwipeEvent(SWIPE_FULLSCREEN, numberOfSwipes));
+    }
+
+    @Override
+    public void logEventAppbarFollow(boolean following) {
+        logEvent(new UserInteractionEvent(following ? BUTTON_APPBAR_FOLLOW :
+                BUTTON_APPBAR_UNFOLLOW));
     }
 
     /**

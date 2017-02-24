@@ -7,5 +7,7 @@ import dagger.Subcomponent;
 @Subcomponent
 public interface UserActivityComponent {
 
+    void inject(UserActivity userActivity);
+
     UserActivityPresenter getPresenter();
 }

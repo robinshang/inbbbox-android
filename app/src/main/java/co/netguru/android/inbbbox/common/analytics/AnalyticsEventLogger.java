@@ -66,6 +66,8 @@ public interface AnalyticsEventLogger {
 
     void logEventAppbarList();
 
+    void logEventAppbarFollow(boolean following);
+
     void logEventAppbarGrid();
 
     void logEventAppbarDeleteBucket();

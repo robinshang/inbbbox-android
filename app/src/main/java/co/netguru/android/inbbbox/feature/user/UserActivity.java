@@ -18,10 +18,14 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
@@ -60,6 +64,9 @@ public class UserActivity
     private MenuItem itemUnfollow;
     private UserWithShots user;
 
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
+
     public static void startActivity(Context context, UserWithShots user) {
         final Intent intent = new Intent(context, UserActivity.class);
         intent.putExtra(USER_KEY, user);
@@ -73,21 +80,19 @@ public class UserActivity
         setContentView(R.layout.activity_user);
         user = getIntent().getParcelableExtra(USER_KEY);
 
-        initializePager(user);
-        initializeToolbar(user);
+        initializePager();
+        initializeToolbar();
         setupImage();
         shouldRefreshFollowers = false;
         getPresenter().checkFollowingStatus(user.user());
+        logScreenEvent();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.follower_details_menu, menu);
-
-//        TODO: (23-02 not in scope of a task) Set menu icons visibility depending on following status
         itemFollow = menu.findItem(R.id.action_follow);
         itemUnfollow = menu.findItem(R.id.action_unfollow);
-
         itemFollow.setVisible(false);
         itemUnfollow.setVisible(false);
         return true;
@@ -101,9 +106,11 @@ public class UserActivity
                 return true;
             case R.id.action_follow:
                 getPresenter().startFollowing(user.user());
+                analyticsEventLogger.logEventAppbarFollow(true);
                 return true;
             case R.id.action_unfollow:
                 getPresenter().stopFollowing(user.user());
+                analyticsEventLogger.logEventAppbarFollow(false);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -131,7 +138,7 @@ public class UserActivity
         }
     }
 
-    public void initializePager(UserWithShots user) {
+    private void initializePager() {
         UserPagerAdapter pagerAdapter = new UserPagerAdapter(getSupportFragmentManager(), user);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -144,7 +151,7 @@ public class UserActivity
         }
     }
 
-    private void initializeToolbar(UserWithShots user) {
+    private void initializeToolbar() {
         collapsingToolbarLayout.setTitleEnabled(false);
         toolbar.setTitleTextColor(colorWhite);
         setSupportActionBar(toolbar);
@@ -178,10 +185,18 @@ public class UserActivity
 
     private void initComponent() {
         component = App.getUserComponent(this).plusUserActivityComponent();
+        component.inject(this);
     }
 
     @Override
     public void showMessageOnServerError(String errorText) {
         Snackbar.make(userImageView, errorText, Snackbar.LENGTH_LONG).show();
+    }
+
+    private void logScreenEvent() {
+        if (User.TYPE_TEAM.equals(user.user().type()))
+            analyticsEventLogger.logEventScreenTeamDetails();
+        else
+            analyticsEventLogger.logEventScreenUserDetails();
     }
 }
