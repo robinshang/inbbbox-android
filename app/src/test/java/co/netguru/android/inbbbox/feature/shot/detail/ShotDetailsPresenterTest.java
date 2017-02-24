@@ -13,12 +13,15 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.threeten.bp.ZonedDateTime;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -73,6 +76,9 @@ public class ShotDetailsPresenterTest {
     List<Shot> shotsMock;
 
     @Mock
+    List<Bucket> bucketsMock;
+
+    @Mock
     BucketsController bucketsControllerMock;
 
     @Mock
@@ -85,20 +91,30 @@ public class ShotDetailsPresenterTest {
 
     @Before
     public void setUp() {
-        shotDetailsPresenter.attachView(viewMock);
         when(bucketsControllerMock.isShotBucketed(anyLong())).thenReturn(Single.just(true));
+        when(bucketsControllerMock.removeShotFromBucket(anyLong(), eq(shotMock))).
+                thenReturn(Completable.complete());
+        when(bucketsControllerMock.addShotToBucket(anyLong(), any()))
+                .thenReturn(Completable.complete());
+
+        when(viewMock.getShotInitialData()).thenReturn(shotMock);
+
         when(rxBusMock.getEvents(any())).thenReturn(Observable.empty());
+
         when(shotMock.id()).thenReturn(EXAMPLE_ID);
         when(shotMock.author()).thenReturn(User.create(Statics.USER_ENTITY));
         when(shotMock.creationDate()).thenReturn(ZonedDateTime.now());
-        when(viewMock.getShotInitialData()).thenReturn(shotMock);
+
         when(errorControllerMock.getThrowableMessage(any(Throwable.class))).thenCallRealMethod();
+
+        shotDetailsPresenter.attachView(viewMock);
         shotDetailsPresenter.retrieveInitialData();
     }
 
     @Test
     public void whenShotDetailsDownload_thenShowMainShotImageWithShotImageInterface() {
-        when(shotDetailsControllerMock.getShotComments(shotMock, requestedPage)).thenReturn(Observable.empty());
+        when(shotDetailsControllerMock.getShotComments(shotMock, requestedPage))
+                .thenReturn(Observable.empty());
 
         shotDetailsPresenter.downloadData();
 
@@ -107,7 +123,8 @@ public class ShotDetailsPresenterTest {
 
     @Test
     public void whenShotDetailsDownload_thenShowDetailsWithShotData() {
-        when(shotDetailsControllerMock.getShotComments(shotMock, requestedPage)).thenReturn(Observable.empty());
+        when(shotDetailsControllerMock.getShotComments(shotMock, requestedPage))
+                .thenReturn(Observable.empty());
 
         shotDetailsPresenter.downloadData();
 
@@ -118,8 +135,10 @@ public class ShotDetailsPresenterTest {
     @Test
     public void whenShotDetailsDownload_thenLoadDetailsAndUpdateItAfterStateAreDownloaded() {
         boolean expectedLikeState = true;
-        ShotDetailsState resultState = ShotDetailsState.create(expectedLikeState, false, Statics.COMMENTS);
-        when(shotDetailsControllerMock.getShotComments(shotMock, requestedPage)).thenReturn(Observable.just(resultState));
+        ShotDetailsState resultState = ShotDetailsState.create(expectedLikeState, false,
+                Statics.COMMENTS);
+        when(shotDetailsControllerMock.getShotComments(shotMock, requestedPage))
+                .thenReturn(Observable.just(resultState));
         when(shotMock.isLiked()).thenReturn(expectedLikeState);
         ArgumentCaptor<Shot> argumentCaptor = ArgumentCaptor.forClass(Shot.class);
 
@@ -134,8 +153,10 @@ public class ShotDetailsPresenterTest {
     @Test
     public void whenShotDetailsDownload_thenShowShotNotLiked() {
         boolean expectedLikeState = false;
-        ShotDetailsState resultState = ShotDetailsState.create(expectedLikeState, false, Statics.COMMENTS);
-        when(shotDetailsControllerMock.getShotComments(shotMock, requestedPage)).thenReturn(Observable.just(resultState));
+        ShotDetailsState resultState = ShotDetailsState.create(expectedLikeState,
+                false, Statics.COMMENTS);
+        when(shotDetailsControllerMock.getShotComments(shotMock, requestedPage))
+                .thenReturn(Observable.just(resultState));
         ArgumentCaptor<Shot> argumentCaptor = ArgumentCaptor.forClass(Shot.class);
 
         shotDetailsPresenter.downloadData();
@@ -180,13 +201,13 @@ public class ShotDetailsPresenterTest {
         verify(viewMock, times(1)).showDetails(argumentCaptor.capture());
         Shot shot = argumentCaptor.getValue();
         Assert.assertEquals(shot.isLiked(), likeState);
-        verify(viewMock, times(1)).initView();
     }
 
     @Test
     public void whenInputModeEnabled_thenShowKeyboardAndShowInputOnDataDownload() {
         when(viewMock.getCommentModeInitialState()).thenReturn(true);
-        when(shotDetailsControllerMock.getShotComments(any(Shot.class), anyInt())).thenReturn(Observable.empty());
+        when(shotDetailsControllerMock.getShotComments(any(Shot.class), anyInt()))
+                .thenReturn(Observable.empty());
 
         shotDetailsPresenter.retrieveInitialData();
         shotDetailsPresenter.downloadData();
@@ -621,6 +642,100 @@ public class ShotDetailsPresenterTest {
         shotDetailsPresenter.addShotToBucket(BUCKET, LIKED_SHOT_NOT_BUCKETED);
         //then
         verify(viewMock, times(1)).showMessageOnServerError(anyString());
+    }
+
+    @Test
+    public void whenRemoveShotFromBucketCalled_thenPerformeRemovingRequestForAllBuckets() {
+        Random random = new Random();
+        int bucketsCount = random.nextInt(200);
+        List<Bucket> bucketList = new ArrayList<>();
+        for (int i = 0; i < bucketsCount; i++) {
+            bucketList.add(mock(Bucket.class));
+        }
+
+        shotDetailsPresenter.removeShotFromBuckets(bucketList, shotMock);
+
+        verify(bucketsControllerMock, times(bucketsCount))
+                .removeShotFromBucket(anyLong(), eq(shotMock));
+    }
+
+    @Test
+    public void whenRemoveShotFromBucketCalled_thenShowRemoveSuccessInfo() {
+        Random random = new Random();
+        int bucketsCount = random.nextInt(200);
+        List<Bucket> bucketList = new ArrayList<>();
+        for (int i = 0; i < bucketsCount; i++) {
+            bucketList.add(mock(Bucket.class));
+        }
+
+        shotDetailsPresenter.removeShotFromBuckets(bucketList, shotMock);
+
+        verify(viewMock).showShotRemoveFromBucketSuccess();
+    }
+
+    @Test
+    public void whenRemoveDone_thenCheckIfShotStillInBucket() {
+        Random random = new Random();
+        int bucketsCount = random.nextInt(200);
+        List<Bucket> bucketList = new ArrayList<>();
+        for (int i = 0; i < bucketsCount; i++) {
+            bucketList.add(mock(Bucket.class));
+        }
+
+        shotDetailsPresenter.removeShotFromBuckets(bucketList, shotMock);
+
+        verify(bucketsControllerMock).getListBucketsForShot(EXAMPLE_ID);
+    }
+
+    @Test
+    public void whenShotIsBucketRequestFail_thenShowError() {
+        Random random = new Random();
+        int bucketsCount = random.nextInt(200);
+        List<Bucket> bucketList = new ArrayList<>();
+        for (int i = 0; i < bucketsCount; i++) {
+            bucketList.add(mock(Bucket.class));
+        }
+        when(bucketsControllerMock.isShotBucketed(anyLong()))
+                .thenReturn(Single.error(new Throwable()));
+
+        shotDetailsPresenter.removeShotFromBuckets(bucketList, shotMock);
+
+        verify(viewMock).showMessageOnServerError(anyString());
+    }
+
+    @Test
+    public void whenShotBucketIsClickedAndShotIsInBucket_thenShowRemoveBucketScreen() {
+        when(shotMock.isBucketed()).thenReturn(true);
+        when(bucketsControllerMock.getListBucketsForShot(anyLong())).thenReturn(Single.just(bucketsMock));
+        int bucketsListSize = 3;
+        when(bucketsMock.size()).thenReturn(bucketsListSize);
+        shotDetailsPresenter.checkShotBucketsCount(shotMock);
+
+        shotDetailsPresenter.onShotBucketClicked(shotMock);
+
+        verify(viewMock).showRemoveShotFromBucketView(shotMock);
+    }
+
+    @Test
+    public void whenShotBucketIsClickedAndShotIsInOneBucket_thenDoNotShowBucketScreen() {
+        int bucketsListSize = 1;
+        when(shotMock.isBucketed()).thenReturn(true);
+        when(bucketsControllerMock.getListBucketsForShot(anyLong())).thenReturn(Single.just(bucketsMock));
+        when(bucketsMock.size()).thenReturn(bucketsListSize);
+
+        shotDetailsPresenter.onShotBucketClicked(shotMock);
+
+        verify(viewMock, never()).showRemoveShotFromBucketView(shotMock);
+    }
+
+    @Test
+    public void whenShotBucketIsClickedAndShotIsNotInBucket_thenShowAddBucketScreen() {
+        when(shotMock.isBucketed()).thenReturn(false);
+        when(bucketsControllerMock.isShotBucketed(anyLong())).thenReturn(Single.just(false));
+
+        shotDetailsPresenter.onShotBucketClicked(shotMock);
+
+        verify(viewMock).showAddShotToBucketView(shotMock);
     }
 
     @After

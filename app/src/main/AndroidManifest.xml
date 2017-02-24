@@ -4,6 +4,8 @@
     package="co.netguru.android.inbbbox">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:name=".app.App"
@@ -19,10 +21,12 @@
             android:noHistory="true"
             android:stateNotNeeded="true"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.TranslucentStatus"
             tools:ignore="UnusedAttribute" />
 
         <activity
             android:name=".feature.splash.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,17 +38,25 @@
         <activity
             android:name=".feature.main.MainActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             tools:ignore="UnusedAttribute" />
 
-        <activity android:name=".feature.follower.detail.FollowerDetailsActivity" />
+        <activity
+            android:name=".feature.user.UserActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".feature.bucket.detail.BucketDetailsActivity" />
+        <activity
+            android:name=".feature.bucket.detail.BucketDetailsActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".feature.team.TeamDetailsActivity" />
+        <activity
+            android:name=".feature.team.TeamDetailsActivity"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".feature.shot.detail.fullscreen.ShotFullscreenActivity"
             android:theme="@style/AppThemeGallery"
+            android:screenOrientation="portrait"
             />
 
         <receiver android:name=".feature.remindernotification.NotificationAlarmReceiver" />

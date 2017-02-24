@@ -8,11 +8,13 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
+import co.netguru.android.inbbbox.data.onboarding.OnboardingController;
 import co.netguru.android.inbbbox.data.session.controllers.LogoutController;
 import co.netguru.android.inbbbox.data.session.controllers.TokenParametersController;
 import co.netguru.android.inbbbox.data.settings.SettingsController;
@@ -20,6 +22,8 @@ import co.netguru.android.inbbbox.data.settings.model.CustomizationSettings;
 import co.netguru.android.inbbbox.data.settings.model.NotificationSettings;
 import co.netguru.android.inbbbox.data.settings.model.Settings;
 import co.netguru.android.inbbbox.data.settings.model.StreamSourceSettings;
+import co.netguru.android.inbbbox.event.RxBus;
+import co.netguru.android.inbbbox.event.events.DetailsVisibilityChangeEvent;
 import co.netguru.android.inbbbox.feature.main.MainViewContract.Presenter;
 import co.netguru.android.inbbbox.feature.remindernotification.NotificationController;
 import co.netguru.android.inbbbox.feature.remindernotification.NotificationScheduler;
@@ -41,8 +45,10 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private final TokenParametersController tokenParametersController;
     private final LogoutController logoutController;
     private final ErrorController errorController;
+    private final OnboardingController onboardingController;
     private final CompositeSubscription subscriptions;
-
+    private final RxBus rxBus;
+    private final AnalyticsEventLogger analyticsEventLogger;
     private boolean isFollowing;
     private boolean isNew;
     private boolean isPopular;
@@ -58,7 +64,8 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                           SettingsController settingsController,
                           ErrorController errorController,
                           TokenParametersController tokenParametersController,
-                          LogoutController logoutController) {
+                          LogoutController logoutController, OnboardingController onboardingController,
+                          RxBus rxBus, AnalyticsEventLogger analyticsEventLogger) {
         this.userController = userController;
         this.notificationScheduler = notificationScheduler;
         this.notificationController = notificationController;
@@ -66,7 +73,10 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         this.tokenParametersController = tokenParametersController;
         this.logoutController = logoutController;
         this.errorController = errorController;
+        this.onboardingController = onboardingController;
+        this.rxBus = rxBus;
         this.subscriptions = new CompositeSubscription();
+        this.analyticsEventLogger = analyticsEventLogger;
     }
 
     @Override
@@ -110,6 +120,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                                         .e(throwable, "Error while getting guest mode state"))
         );
         prepareUserSettings();
+        prepareOnboardingSettings();
     }
 
     private void verifyGuestMode(Boolean isGuestModeEnabled) {
@@ -144,37 +155,42 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                 .subscribe(this::onScheduleNotificationNext, this::onScheduleNotificationError);
 
         subscriptions.add(subscription);
+        analyticsEventLogger.logEventSettingsReminder(status);
     }
 
     @Override
     public void followingStatusChanged(boolean status) {
         isFollowing = status;
         changeStreamSourceStatusIfCorrect();
+        analyticsEventLogger.logEventSettingsFollowing(status);
     }
 
     @Override
     public void newStatusChanged(boolean status) {
         isNew = status;
         changeStreamSourceStatusIfCorrect();
+        analyticsEventLogger.logEventSettingsNewToday(status);
     }
 
     @Override
     public void popularStatusChanged(boolean status) {
         isPopular = status;
         changeStreamSourceStatusIfCorrect();
+        analyticsEventLogger.logEventSettingsPopularToday(status);
     }
 
     @Override
     public void debutsStatusChanged(boolean status) {
         isDebut = status;
         changeStreamSourceStatusIfCorrect();
+        analyticsEventLogger.logEventSettingsDebuts(status);
     }
 
     @Override
     public void customizationStatusChanged(boolean isDetails) {
         final Subscription subscription = settingsController.changeShotsDetailsStatus(isDetails)
                 .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                .subscribe(() -> Timber.d("Customization settings changed"),
+                .subscribe(() -> onCustomizationStatuChangeSuccess(isDetails),
                         throwable -> handleError(throwable, "Error while changing customization settings"));
         subscriptions.add(subscription);
     }
@@ -188,6 +204,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                     getView().changeNightMode(isNightMode);
                 }, throwable -> handleError(throwable, "Error while changing customization settings"));
         subscriptions.add(subscription);
+        analyticsEventLogger.logEventSettingsNightmode(isNightMode);
     }
 
     @Override
@@ -215,6 +232,17 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                                 throwable -> Timber
                                         .e(throwable, "Error during sign up url retrieving"))
         );
+    }
+
+    @Override
+    public void onShotDetailsVisibilityChange(boolean isVisible) {
+        rxBus.send(new DetailsVisibilityChangeEvent(isVisible));
+        analyticsEventLogger.logEventSettingsDetailsOnHome(isVisible);
+    }
+
+    private void onCustomizationStatuChangeSuccess(boolean isDetails) {
+        Timber.d("Customization settings changed");
+        getView().changeCustomizationStatus(isDetails);
     }
 
     private void requestUserData() {
@@ -284,6 +312,11 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         getView().setSettingsListeners();
     }
 
+    private void prepareOnboardingSettings() {
+        onboardingController.isOnboardingPassed()
+                .subscribe(getView()::initializePager);
+    }
+
     private void setNotificationSettings(NotificationSettings notificationSettings) {
         getView().changeNotificationStatus(notificationSettings.isEnabled());
         getView().showNotificationTime(DateTimeFormatUtil.getFormattedTime(notificationSettings.getHour(),
@@ -295,7 +328,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         isNew = streamSourceSettings.isNewToday();
         isPopular = streamSourceSettings.isPopularToday();
         isDebut = streamSourceSettings.isDebut();
-        
+
         setStreamSourcesInView(streamSourceSettings);
     }
 

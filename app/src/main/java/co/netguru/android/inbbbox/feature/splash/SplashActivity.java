@@ -15,6 +15,7 @@ import co.netguru.android.inbbbox.feature.main.MainActivity;
 public class SplashActivity extends MvpActivity<SplashContract.View, SplashContract.Presenter>
         implements SplashContract.View {
 
+    public static final int SPLASH_ACTIVITY_REQUEST_CODE = 1;
     private SplashScreenComponent component;
 
     @Override

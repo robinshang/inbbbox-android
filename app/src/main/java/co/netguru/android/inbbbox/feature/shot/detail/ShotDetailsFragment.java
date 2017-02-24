@@ -12,16 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.utils.AnimationUtil;
 import co.netguru.android.inbbbox.common.utils.InputUtil;
 import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
@@ -31,7 +33,6 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
-import co.netguru.android.inbbbox.feature.follower.detail.FollowerDetailsActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
@@ -39,18 +40,21 @@ import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenA
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.DetailsViewActionCallback;
 import co.netguru.android.inbbbox.feature.shot.detail.recycler.ShotDetailsAdapter;
 import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucketDialogFragment;
+import co.netguru.android.inbbbox.feature.user.UserActivity;
 
 public class ShotDetailsFragment
         extends BaseMvpFragment<ShotDetailsContract.View, ShotDetailsContract.Presenter>
         implements ShotDetailsContract.View, DetailsViewActionCallback,
-        AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener,
-        BucketedStatusChangeEmitter {
+        AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener {
 
     public static final String TAG = ShotDetailsFragment.class.getSimpleName();
     private static final String ARG_ALL_SHOTS = "arg:all_shots";
     private static final String ARG_SHOT = "arg:shot";
     private static final String ARG_SHOT_DETAIL_REQUEST = "arg:detail_request";
     private static final int SLIDE_IN_DURATION = 500;
+
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
 
     @BindView(R.id.shot_details_recyclerView)
     RecyclerView shotRecyclerView;
@@ -76,7 +80,7 @@ public class ShotDetailsFragment
     private ShotDetailsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
-    private BucketedStatusChangeListener listener;
+    private ShotDetailsComponent component;
 
     public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots,
                                                   ShotDetailsRequest detailsRequest) {
@@ -96,6 +100,8 @@ public class ShotDetailsFragment
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        initComponent();
+        analyticsEventLogger.logEventScreenShotDetails();
         return LayoutInflater
                 .from(getContext())
                 .inflate(R.layout.fragment_shot_details, container, false);
@@ -105,28 +111,34 @@ public class ShotDetailsFragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        adapter = new ShotDetailsAdapter(this, this);
+        adapter = new ShotDetailsAdapter(this);
         getPresenter().retrieveInitialData();
         getPresenter().downloadData();
-        getPresenter().checkIfShotIsBucketed(getArguments().getParcelable(ARG_SHOT));
+        getPresenter().checkShotBucketsCount(getArguments().getParcelable(ARG_SHOT));
+    }
+
+    private void initComponent() {
+        List<Shot> shots = getArguments().getParcelableArrayList(ARG_ALL_SHOTS);
+        component = App.getUserComponent(getContext()).plus(new ShotsDetailsModule(shots));
+        component.inject(this);
     }
 
     @NonNull
     @Override
     public ShotDetailsContract.Presenter createPresenter() {
-        List<Shot> shots = getArguments().getParcelableArrayList(ARG_ALL_SHOTS);
-
-        return App.getUserComponent(getContext()).plus(new ShotsDetailsModule(shots)).getPresenter();
+        return component.getPresenter();
     }
 
     @OnClick(R.id.comment_send_imageView)
     void onSendCommentClick() {
         getPresenter().sendComment();
+        analyticsEventLogger.logEventShotDetailsComment();
     }
 
     @OnClick(R.id.details_close_imageView)
     void onCloseClick() {
         getPresenter().closeScreen();
+        analyticsEventLogger.logEventShotDetailsCloseX();
     }
 
     @OnClick(R.id.parallax_image_view)
@@ -198,23 +210,26 @@ public class ShotDetailsFragment
 
     @Override
     public void onTeamSelected(Team team) {
-        // TODO: 15.11.2016 not in scope of this task
-        Toast.makeText(getContext(), "team clicked: " + team.name(), Toast.LENGTH_SHORT).show();
+        getPresenter().getTeamUserWithShots(team);
+        analyticsEventLogger.logEventShotDetailsTeamDetails();
     }
 
     @Override
     public void onUserSelected(User user) {
-        FollowerDetailsActivity.startActivity(getContext(), UserWithShots.create(user, null));
+        UserActivity.startActivity(getContext(), UserWithShots.create(user, null));
+        analyticsEventLogger.logEventShotDetailsAuthorDetails();
     }
 
     @Override
     public void onShotLikeAction(boolean newLikeState) {
         getPresenter().handleShotLike(newLikeState);
+        analyticsEventLogger.logEventShotDetailsLike();
     }
 
     @Override
     public void onShotBucket(long shotId) {
         getPresenter().onShotBucketClicked(getArguments().getParcelable(ARG_SHOT));
+        analyticsEventLogger.logEventShotDetailsAddToBucket();
     }
 
     @Override
@@ -253,6 +268,11 @@ public class ShotDetailsFragment
             AnimationUtil.startSlideInFromBottomShowAnimation(shotCommentInputPanel,
                     SLIDE_IN_DURATION);
         }
+    }
+
+    @Override
+    public void requestFocusOnCommentInput() {
+        commentTextInputLayout.requestFocus();
     }
 
     @Override
@@ -360,11 +380,6 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void updateBucketedStatus(boolean isBucketed) {
-        listener.onBucketedStatusChanged(isBucketed);
-    }
-
-    @Override
     public void showAddShotToBucketView(Shot shot) {
         AddToBucketDialogFragment
                 .newInstance(this, shot)
@@ -379,8 +394,8 @@ public class ShotDetailsFragment
     }
 
     @Override
-    public void setListener(BucketedStatusChangeListener listener) {
-        this.listener = listener;
+    public void showTeamView(UserWithShots userWithShots) {
+        UserActivity.startActivity(getContext(), userWithShots);
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {

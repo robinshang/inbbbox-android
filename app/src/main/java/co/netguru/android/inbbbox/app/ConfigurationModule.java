@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.app;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -8,6 +10,7 @@ import org.threeten.bp.ZonedDateTime;
 import javax.inject.Singleton;
 
 import co.netguru.android.inbbbox.Constants;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsInterceptor;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.gson.AutoGsonAdapterFactory;
 import co.netguru.android.inbbbox.common.gson.DateTimeConverter;
@@ -40,18 +43,20 @@ public class ConfigurationModule {
     RequestInterceptor providesRequestInterceptor(TokenPrefsRepository tokenPrefsRepository,
                                                   LogoutController logoutController,
                                                   ErrorController errorController,
-                                                  RxBus rxBus) {
+                                                  RxBus rxBus, Context context) {
         return new RequestInterceptor(logoutController, errorController,
-                tokenPrefsRepository, rxBus);
+                tokenPrefsRepository, rxBus, context);
     }
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient(RequestInterceptor interceptor) {
+    OkHttpClient provideOkHttpClient(RequestInterceptor interceptor,
+                                     AnalyticsInterceptor analyticsInterceptor) {
         return new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BASIC))
                 .addInterceptor(interceptor)
+                .addInterceptor(analyticsInterceptor)
                 .build();
     }
 

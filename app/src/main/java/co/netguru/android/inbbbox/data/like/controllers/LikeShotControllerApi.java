@@ -8,6 +8,7 @@ import co.netguru.android.inbbbox.data.like.LikesApi;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 @Singleton
 public class LikeShotControllerApi implements LikeShotController {
@@ -19,8 +20,10 @@ public class LikeShotControllerApi implements LikeShotController {
     }
 
     @Override
-    public Completable isShotLiked(Shot shot) {
-        return likesApi.isShotLiked(shot.id());
+    public Single<Boolean> isShotLiked(Shot shot) {
+        return likesApi.isShotLiked(shot.id())
+                .andThen(Single.just(Boolean.TRUE))
+                .onErrorResumeNext(Single.just(Boolean.FALSE));
     }
 
     @Override

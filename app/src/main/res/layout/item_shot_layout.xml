@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/shot_item_internal_padding">
@@ -33,16 +34,37 @@
                 android:id="@+id/iv_follow"
                 style="@style/LongSwipeActionIcons"
                 android:layout_centerVertical="true"
+                android:alpha="0"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_follow" />
+                android:src="@drawable/ic_follow_swipe" />
+
+            <ImageView
+                android:id="@+id/iv_follow_full"
+                style="@style/LongSwipeActionIcons"
+                android:alpha="0"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_follow_swipe_active" />
 
             <ImageView
                 android:id="@+id/iv_comment"
                 style="@style/LongSwipeActionIcons"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/iv_follow"
+                android:layout_width="@dimen/shot_swipe_action_icon_width"
+                android:layout_height="@dimen/shot_swipe_action_icon_width"
+                android:layout_gravity="end|center_vertical"
                 android:contentDescription="@null"
-                android:src="@drawable/selector_comment_swipe" />
+                android:src="@drawable/ic_comment" />
+
+            <ImageView
+                android:id="@+id/iv_comment_full"
+                style="@style/LongSwipeActionIcons"
+                android:layout_width="@dimen/shot_swipe_action_icon_width"
+                android:layout_height="@dimen/shot_swipe_action_icon_width"
+                android:layout_gravity="end|center_vertical"
+                android:alpha="0"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_comment_filled" />
 
             <TextView
                 android:id="@+id/comment_done_text"
@@ -65,7 +87,8 @@
             android:layout_gravity="start"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <ImageView
                 android:id="@+id/iv_like_action"
@@ -73,7 +96,16 @@
                 android:layout_width="wrap_content"
                 android:layout_centerVertical="true"
                 android:contentDescription="@null"
-                android:src="@drawable/selector_like_swipe" />
+                android:src="@drawable/ic_like_swipe" />
+
+            <ImageView
+                android:id="@+id/iv_like_action_full"
+                style="@style/LongSwipeActionIcons"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:alpha="0"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_like_swipe_filled" />
 
             <ImageView
                 android:id="@+id/iv_plus_image"
@@ -82,6 +114,7 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_toEndOf="@id/iv_like_action"
+                android:layout_centerInParent="true"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_plus" />
 
@@ -91,7 +124,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/iv_plus_image"
                 android:contentDescription="@null"
-                android:src="@drawable/selector_bucket_swipe" />
+                android:src="@drawable/ic_bucket_swipe"/>
 
             <TextView
                 android:id="@+id/like_done_text"
@@ -105,14 +138,90 @@
                 android:layout_below="@id/iv_like_action"
                 android:text="@string/like_and_add_to_bucket_message" />
 
+
+            <ImageView
+                android:id="@+id/iv_bucket_action_full"
+                style="@style/LongSwipeActionIcons"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:alpha="0"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_bucket_swipe_filled" />
+
         </RelativeLayout>
 
         <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
             android:id="@+id/iv_shot_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:foreground="?selectableItemBackground"
             android:padding="@dimen/shot_background_padding" />
         <!-- Surface View End -->
     </co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout>
 
+    <RelativeLayout
+        android:id="@+id/shot_details_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shot_details_shots_tab_height"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/long_swipe_layout"
+        android:layout_marginTop="@dimen/shot_details_shots_tab_margin">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_imageView"
+            android:layout_width="@dimen/shot_details_shots_tab_height"
+            android:layout_height="@dimen/shot_details_shots_tab_height"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/user_image_content_description"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="@dimen/drawer_header_photo_border"
+            app:civ_fill_color="@color/lightGray" />
+
+        <TextView
+            android:id="@+id/user_name_textView"
+            style="@style/Font12.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/user_imageView" />
+
+        <TextView
+            android:id="@+id/comments_count_textView"
+            style="@style/Font12.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/shot_details_shots_tab_margin" />
+
+        <ImageView
+            android:id="@+id/comment_imageView"
+            android:layout_width="@dimen/shot_details_shots_tab_image_size"
+            android:layout_height="@dimen/shot_details_shots_tab_image_size"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/shot_details_shots_image_margin"
+            android:layout_toStartOf="@id/comments_count_textView"
+            android:contentDescription="@string/comment_icon_content_description"
+            android:src="@drawable/ic_comment_grey" />
+
+        <TextView
+            android:id="@+id/likes_count_textView"
+            style="@style/Font12.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/shot_details_shots_tab_counts_margin"
+            android:layout_toStartOf="@+id/comment_imageView" />
+
+        <ImageView
+            android:id="@+id/likes_imageView"
+            android:layout_width="@dimen/shot_details_shots_tab_image_size"
+            android:layout_height="@dimen/shot_details_shots_tab_image_size"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/shot_details_shots_image_margin"
+            android:layout_toStartOf="@id/likes_count_textView"
+            android:contentDescription="@string/likes_icon_content_description"
+            android:src="@drawable/ic_like_grey" />
+
+    </RelativeLayout>
 </RelativeLayout>

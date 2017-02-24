@@ -6,6 +6,7 @@ import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.ShotsApi;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 public abstract class BaseFollowersController {
 
@@ -32,6 +33,8 @@ public abstract class BaseFollowersController {
                 .map(Shot::create)
                 .map(shot -> Shot.update(shot).author(user).build())
                 .toList()
-                .map(shotList -> UserWithShots.create(user, shotList));
+                .map(shotList -> UserWithShots.create(user, shotList))
+                .subscribeOn(Schedulers.io());
     }
+
 }

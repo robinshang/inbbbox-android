@@ -7,5 +7,7 @@ import dagger.Subcomponent;
 @Subcomponent
 public interface BucketsDetailsComponent {
 
+    void inject(BucketDetailsFragment bucketDetailsFragment);
+
     BucketDetailsPresenter getPresenter();
 }

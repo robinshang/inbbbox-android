@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.feature.bucket.adapter;
 
 
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -10,6 +11,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -22,6 +24,7 @@ import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageVie
 
 public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShots> implements RequestListener<String, GlideDrawable> {
 
+    public static final int SHOTS_IN_VIEW = 4;
     @BindView(R.id.four_images_view)
     BucketImageView bucketImageView;
     @BindView(R.id.one_image_view)
@@ -32,9 +35,9 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
     TextView bucketNameTextView;
     @BindView(R.id.empty_view)
     ImageView emptyView;
-
     private BucketWithShots bucketWithShots;
     private int resourcesReady = 0;
+    private final List<String> enqueuedImages = new ArrayList<>();
 
     BaseBucketViewHolder(View view, BucketClickListener bucketClickListener) {
         super(view);
@@ -43,6 +46,7 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
 
     @Override
     public void bind(BucketWithShots item) {
+        enqueuedImages.clear();
         resourcesReady = 0;
         this.bucketWithShots = item;
         List<Shot> shots = bucketWithShots.shots();
@@ -65,37 +69,15 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
         bucketImageView.onResume();
     }
 
-    private void loadCroppedImageInto(ImageView imageView, String url) {
-        imageView.post(() -> {
-            Glide.clear(imageView);
-            Glide.with(itemView.getContext())
-                    .load(url)
-                    .override(imageView.getWidth(), (int) (imageView.getHeight() * BucketImageView.BIG_IMAGE_HEIGHT_FACTOR))
-                    .centerCrop()
-                    .listener(this)
-                    .dontAnimate()
-                    .into(imageView);
-        });
-    }
-
-    private void loadImageInto(ImageView imageView, String url) {
-        Glide.clear(imageView);
-        Glide.with(itemView.getContext())
-                .load(url)
-                .centerCrop()
-                .animate(android.R.anim.fade_in)
-                .into(imageView);
-    }
-
     private void showEmptyView() {
         emptyView.setVisibility(View.VISIBLE);
         bucketImageView.setVisibility(View.GONE);
+        bucketOneImageView.setVisibility(View.GONE);
     }
 
     private void handleNotEmptyShotsList(List<Shot> shots) {
         emptyView.setVisibility(View.GONE);
-        bucketImageView.setVisibility(View.VISIBLE);
-        if (shots.size() < 4) {
+        if (shots.size() < SHOTS_IN_VIEW) {
             showOnlyOneImage(shots.get(0));
         } else {
             showFourFirstImages(shots);
@@ -109,12 +91,40 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
     }
 
     private void showFourFirstImages(List<Shot> shots) {
-        bucketImageView.setVisibility(View.VISIBLE);
         bucketOneImageView.setVisibility(View.GONE);
+        bucketImageView.setVisibility(View.VISIBLE);
         loadCroppedImageInto(bucketImageView.getImageView(0), shots.get(0).normalImageUrl());
         loadCroppedImageInto(bucketImageView.getImageView(1), shots.get(1).normalImageUrl());
         loadCroppedImageInto(bucketImageView.getImageView(2), shots.get(2).normalImageUrl());
         loadCroppedImageInto(bucketImageView.getImageView(3), shots.get(3).normalImageUrl());
+    }
+
+    private void loadCroppedImageInto(ImageView imageView, String url) {
+        imageView.post(() -> {
+            if (imageView.getWidth() != 0) {
+                requestImage(imageView, url);
+            } else {
+                imageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        imageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        requestImage(imageView, url);
+                    }
+                });
+            }
+        });
+    }
+
+    private void requestImage(ImageView imageView, String url) {
+        enqueuedImages.add(url);
+
+        Glide.clear(imageView);
+        Glide.with(itemView.getContext())
+                .load(url)
+                .centerCrop()
+                .listener(BaseBucketViewHolder.this)
+                .override(imageView.getWidth(), (int) (imageView.getHeight() * BucketImageView.BIG_IMAGE_HEIGHT_FACTOR))
+                .into(imageView);
     }
 
     @Override
@@ -124,10 +134,13 @@ public abstract class BaseBucketViewHolder extends BaseViewHolder<BucketWithShot
 
     @Override
     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-        resourcesReady++;
+        if (enqueuedImages.contains(model)) {
+            resourcesReady++;
+            enqueuedImages.remove(model);
 
-        if (resourcesReady == 4) {
-            bucketImageView.startAnimation();
+            if (resourcesReady == SHOTS_IN_VIEW) {
+                bucketImageView.startAnimation();
+            }
         }
         return false;
     }

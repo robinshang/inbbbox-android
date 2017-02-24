@@ -9,6 +9,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.db.BucketDB;
+import co.netguru.android.inbbbox.data.db.ShotDB;
 import co.netguru.android.inbbbox.data.dribbbleuser.Links;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
@@ -102,6 +103,9 @@ public final class Statics {
     public static final Team TEAM = Team.builder()
             .id(1)
             .name("team")
+            .username("team")
+            .shotsCount(2)
+            .avatarUrl("")
             .build();
 
     public static final Shot NOT_LIKED_SHOT = Shot.builder()
@@ -192,6 +196,11 @@ public final class Statics {
             .normalImageUrl("")
             .thumbnailUrl("")
             .build();
+
+
+    public static final ShotDB LIKED_SHOT_DB_NOT_BUCKETED = new ShotDB(LIKED_SHOT_NOT_BUCKETED.id(), "title",
+            ZonedDateTime.now().minusDays(2), "", 14, 4, 21, "description",  false,  "", "", "", false, true,
+            User.create(USER_ENTITY).id(), TEAM.id());
 
     public static final FollowerEntity FOLLOWER_ENTITY = FollowerEntity.builder()
             .id(1)

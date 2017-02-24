@@ -17,7 +17,7 @@
     <string name="add_to_bucket">DODAJ DO KOLEKCJI</string>
     <string name="api_error_429">Wykonujesz zbyt wiele akcji! Zwolnij na chwilę</string>
     <string name="authorization_error">Błąd autoryzacji</string>
-    <string name="by_label">\"od \"</string>
+    <string name="by_label">od&#160;</string>
     <string name="change_stream_source_error">Przynajmniej jedno źródło powinno być zaznaczone</string>
     <string name="comment">Komentarz</string>
     <string name="comment_deleted_complete">Komentarz został usunięty</string>
@@ -48,13 +48,14 @@
     <string name="edit_comment_title">Edytuj komentarz</string>
     <string name="edit_comment_update">Zaktualizuj komentarz</string>
     <string name="error_database">Nie można zmienić daty wyświetlania notyfikacji</string>
-    <string name="error_to_low_rank">Musić mieć pozycję \"Gracza\" albo \"Zespołu\" aby to zrobić</string>
+    <string name="error_to_low_rank">Musić mieć pozycję \"Player\" albo \"Team\" aby to zrobić
+    </string>
     <string name="few_hours_ago">Kilka godzin temu</string>
     <string name="few_minutes_ago">Kilka minut temu</string>
     <string name="few_sec_ago">Kilka sekund temu</string>
     <string name="follow">OBSERWUJ</string>
     <string name="follower_item_shot">projekty</string>
-    <string name="for_label">\" dla \"</string>
+    <string name="for_label">&#160;dla&#160;</string>
     <string name="fragment_add_to_bucket_shot_created_by">przez</string>
     <string name="fragment_add_to_bucket_shot_created_for">dla</string>
     <string name="fragment_add_to_bucket_shot_created_on">na %s</string>
@@ -68,9 +69,9 @@
     <string name="fragment_buckets_empty_text_after_icon">kolekcji!</string>
     <string name="fragment_followers_empty_text">Najpierw zacznij kogoś obserwować!</string>
     <string name="fragment_like_empty_text">Najpierw dodaj jakiś projekt do ulubionych!</string>
-    <string name="in_label">\"w \"</string>
-    <string name="info_when_pattern">\" w dniu ${when}\"</string>
-    <string name="info_where_pattern">\"w ${where}\"</string>
+    <string name="in_label">"w "</string>
+    <string name="info_when_pattern">" w dniu ${when}"</string>
+    <string name="info_where_pattern">"w ${where}"</string>
     <string name="invalid_outh_url">Nieprawidłowy url</string>
     <string name="invalid_user_error">Nieprawidłowy użytkownik</string>
     <string name="like">POLUB</string>
@@ -84,7 +85,7 @@
     <string name="tab_buckets_title">Kolekcje</string>
     <string name="tab_following_title">Obserwowani</string>
     <string name="tab_likes_title">Ulubione</string>
-    <string name="tab_shots_title">Projekty</string>
+    <string name="tab_shots_title">Shoty</string>
     <string name="wrong_oauth_state_key">Coś poszło nie tak podczas logowania, spróbuj ponownie</string>
     <string name="yesterday">wczoraj</string>
     <string name="loading_more_shots">Ładowanie projektów</string>
@@ -105,6 +106,19 @@
     <string name="fragment_remove_from_bucket_title">Usuń z kolekcji</string>
     <string name="remove_from_bucket_fragment_remove">Usuń projekt z powyższych kolekcji</string>
     <string name="shots_fragment_remove_shot_from_bucket_success">Projekt usunięty z kolekcji</string>
+    <string name="fragment_follow_details_dialog_text">Dodać użytkownika %s do obserwowanych?</string>
+    <string name="fragment_unfollow_details_dialog_text">Usunąć użytkownika %s z obserwowanych?</string>
+    <string name="shot">Projekt</string>
+    <string name="error_no_internet">Nie udało się połączyć z internetem. Sprawdź prosze swoje połączenie i spróbuj ponownie</string>
+
+    <plurals name="fragment_buckets_shots_string">
+        <item quantity="zero">Nie dodano jeszcze żadnych projektów</item>
+        <item quantity="one">%d projekt</item>
+        <item quantity="few">%d projekty</item>
+        <item quantity="many">%d projektów</item>
+    </plurals>
+    <string name="tab_info_title">Info</string>
+    <string name="tab_projects_title">Projekty</string>
 
     <string name="like_finish_message">Dodano do polubionych</string>
     <string name="like_and_add_to_bucket_message">Projekt polubiony, dodawanie do kolekcji… </string>

@@ -4,21 +4,28 @@ package co.netguru.android.inbbbox.feature.bucket.createbucket;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpDialogFragment;
 
 public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBucketContract.View, CreateBucketContract.Presenter>
         implements CreateBucketContract.View {
 
     public static final String TAG = CreateBucketDialogFragment.class.getSimpleName();
+
+    private static final int FRAGMENT_REQUEST_CODE = 101;
 
     @BindView(R.id.name_text_input_layout)
     TextInputLayout nameTextInputLayout;
@@ -29,14 +36,22 @@ public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBuck
 
     private Button createButton;
     private Button cancelButton;
+    private CreateBucketComponent component;
 
-    public static CreateBucketDialogFragment newInstance() {
-        return new CreateBucketDialogFragment();
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
+
+    public static CreateBucketDialogFragment newInstance(Fragment targetFragment) {
+        final CreateBucketDialogFragment createBucketDialogFragment = new CreateBucketDialogFragment();
+        createBucketDialogFragment.setTargetFragment(targetFragment, FRAGMENT_REQUEST_CODE);
+
+        return createBucketDialogFragment;
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        initComponent();
         View dialogContentView = View.inflate(getContext(), R.layout.dialog_fragment_create_bucket_view, null);
         super.onViewCreated(dialogContentView, savedInstanceState);
         Dialog dialog = new AlertDialog.Builder(getContext(), R.style.NoTitleDialog)
@@ -50,10 +65,21 @@ public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBuck
         return dialog;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        analyticsEventLogger.logEventDialogCreateBucket();
+    }
+
+    private void initComponent() {
+        component = App.getUserComponent(getContext()).plusCreateBucketComponent();
+        component.inject(this);
+    }
+
     @NonNull
     @Override
     public CreateBucketContract.Presenter createPresenter() {
-        return App.getUserComponent(getContext()).plusCreateBucketComponent().getPresenter();
+        return component.getPresenter();
     }
 
     @Override
@@ -89,7 +115,7 @@ public class CreateBucketDialogFragment extends BaseMvpDialogFragment<CreateBuck
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        showMessageOnSnackbar(errorText);
+        Snackbar.make(getTargetFragment().getView(), errorText, Snackbar.LENGTH_LONG).show();
     }
 
     private void setupDialogButtons(Dialog dialog) {

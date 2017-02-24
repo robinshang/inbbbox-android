@@ -76,7 +76,7 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
     private Single<Boolean> getTokenValidationSingle() {
         return Single.zip(tokenController.isTokenValid(),
                 userController.isGuestModeEnabled(),
-                (isTokenValid, isGuestModeEnabled) -> isTokenValid && !isGuestModeEnabled);
+                (isTokenValid, isGuestModeEnabled) -> isTokenValid || isGuestModeEnabled);
     }
 
     private void handleTokenVerificationResult(Boolean isValid) {

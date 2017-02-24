@@ -6,6 +6,7 @@ import co.netguru.android.inbbbox.data.like.LikesApi;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import timber.log.Timber;
 
 public class LikeShotControllerGuest implements LikeShotController {
@@ -20,11 +21,9 @@ public class LikeShotControllerGuest implements LikeShotController {
     }
 
     @Override
-    public Completable isShotLiked(Shot shot) {
+    public Single<Boolean> isShotLiked(Shot shot) {
         Timber.d("checking is shot liked...");
-        return guestModeLikesRepository.isShotLiked(shot)
-                .doOnCompleted(() -> Timber.d("Shot is liked"))
-                .doOnError(throwable -> Timber.d("Shot is not liked"));
+        return guestModeLikesRepository.isShotLiked(shot);
     }
 
     @Override

@@ -15,6 +15,7 @@ public class LongSwipeLayout extends SwipeLayout {
     private boolean isRightSwipeTriggered;
     private boolean isRightLongSwipeTriggered;
     private ItemSwipeListener itemSwipeListener;
+    private int swipeLimitShift = 0;
 
     public LongSwipeLayout(Context context) {
         super(context);
@@ -29,6 +30,10 @@ public class LongSwipeLayout extends SwipeLayout {
     public LongSwipeLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
+    }
+
+    public void setSwipeLimitShift(int swipeLimitShift) {
+        this.swipeLimitShift = swipeLimitShift;
     }
 
     @Override
@@ -52,40 +57,6 @@ public class LongSwipeLayout extends SwipeLayout {
         this.itemSwipeListener = itemSwipeListener;
     }
 
-    public SwipeListener getSwipeListener() {
-        return new SwipeListener() {
-            @Override
-            public void onStartOpen(SwipeLayout layout) {
-                //no-op
-            }
-
-            @Override
-            public void onOpen(SwipeLayout layout) {
-                //no-op
-            }
-
-            @Override
-            public void onStartClose(SwipeLayout layout) {
-                //no-op
-            }
-
-            @Override
-            public void onClose(SwipeLayout layout) {
-                //no-op
-            }
-
-            @Override
-            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-                //no-op
-            }
-
-            @Override
-            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-                //no-op
-            }
-        };
-    }
-
     @Override
     protected void processHandRelease(float xvel, float yvel, boolean isCloseBeforeDragged) {
         //false to automatically close the surface
@@ -103,13 +74,10 @@ public class LongSwipeLayout extends SwipeLayout {
 
         itemSwipeListener.onSwipeProgress(positionX, swipeLimit);
 
-        handleSwipeLeft(positionX, swipeLimit);
-        handleSwipeRight(positionX, swipeLimit);
-
-        itemSwipeListener.onLeftSwipeActivate(isLeftSwipeTriggered);
-        itemSwipeListener.onLeftLongSwipeActivate(isLeftLongSwipeTriggered);
-        itemSwipeListener.onRightSwipeActivate(isRightSwipeTriggered);
-        itemSwipeListener.onRightLongSwipeActivate(isRightLongSwipeTriggered);
+        if (swipeLimit > 0) {
+            handleSwipeLeft(positionX, swipeLimit);
+            handleSwipeRight(positionX, swipeLimit);
+        }
     }
 
     private void handleSwipeLeft(int positionX, int swipeLimit) {
@@ -144,7 +112,7 @@ public class LongSwipeLayout extends SwipeLayout {
     }
 
     private int getSwipeLimit() {
-        return -(getPaddingLeft() - getDragDistance());
+        return -(getPaddingLeft() - getDragDistance() + swipeLimitShift);
     }
 
     private void initSwipeActionHandling() {
@@ -188,5 +156,45 @@ public class LongSwipeLayout extends SwipeLayout {
         if (itemSwipeListener != null) {
             itemSwipeListener.onRightLongSwipe();
         }
+    }
+
+    private void delayClose() {
+        postDelayed(() -> close(true, true), AUTO_CLOSE_DELAY);
+    }
+
+
+    public SwipeListener getSwipeListener() {
+        return new SwipeListener() {
+            @Override
+            public void onStartOpen(SwipeLayout layout) {
+                itemSwipeListener.onStartSwipe();
+            }
+
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                //no-op
+            }
+
+            @Override
+            public void onStartClose(SwipeLayout layout) {
+                //no-op
+            }
+
+            @Override
+            public void onClose(SwipeLayout layout) {
+                //no-op
+            }
+
+            @Override
+            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+                //no-op
+            }
+
+            @Override
+            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+                itemSwipeListener.onEndSwipe();
+//                delayClose();
+            }
+        };
     }
 }

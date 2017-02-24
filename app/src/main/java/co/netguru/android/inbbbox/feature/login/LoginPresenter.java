@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
@@ -30,17 +31,20 @@ public final class LoginPresenter
     private final ErrorController errorController;
     private final UserController userController;
     private final CompositeSubscription compositeSubscription;
+    private final AnalyticsEventLogger analyticsEventLogger;
     private int guestModeCounter = 0;
 
     @Inject
     LoginPresenter(TokenParametersController oauthUrlController,
                    TokenController apiTokenController,
                    ErrorController errorController,
-                   UserController userController) {
+                   UserController userController,
+                   AnalyticsEventLogger analyticsEventLogger) {
         this.tokenParametersController = oauthUrlController;
         this.apiTokenController = apiTokenController;
         this.errorController = errorController;
         this.userController = userController;
+        this.analyticsEventLogger = analyticsEventLogger;
         compositeSubscription = new CompositeSubscription();
     }
 
@@ -92,7 +96,7 @@ public final class LoginPresenter
     public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
-
+        analyticsEventLogger.logEventLoginFail();
     }
 
     @Override
@@ -117,6 +121,7 @@ public final class LoginPresenter
     private void handleGuestLogin() {
         getView().initializeUserMode(UserModeType.GUEST_USER_MODE);
         getView().showNextScreen();
+        analyticsEventLogger.logEventLoginGuest();
     }
 
     private void requestTokenAndLoadUserData(String code) {
@@ -124,7 +129,9 @@ public final class LoginPresenter
                 apiTokenController.requestNewToken(code)
                         .flatMap(token -> userController.requestUser())
                         .compose(androidIO())
-                        .subscribe(user -> handleOnlineUserLogin(),
+                        .toCompletable()
+                        .andThen(userController.disableGuestMode())
+                        .subscribe(this::handleOnlineUserLogin,
                                 throwable -> handleError(throwable,
                                         "Error while requesting new token")));
     }
@@ -132,5 +139,6 @@ public final class LoginPresenter
     private void handleOnlineUserLogin() {
         getView().initializeUserMode(UserModeType.ONLINE_USER_MODE);
         getView().showNextScreen();
+        analyticsEventLogger.logEventLoginSuccess();
     }
 }

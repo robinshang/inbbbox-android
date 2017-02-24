@@ -13,4 +13,8 @@ public interface ShotSwipeListener {
     void onFollowUserSwipe(Shot shot);
 
     void onShotSelected(Shot shot);
+
+    void onStartSwipe(Shot shot);
+
+    void onEndSwipe(Shot shot);
 }
