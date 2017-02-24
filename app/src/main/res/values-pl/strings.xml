@@ -79,6 +79,8 @@
     <string name="loading_more_buckets">Ładowanie kolekcji</string>
     <string name="loading_more_followers">Ładowanie obserwujących</string>
     <string name="loading_more_likes">Ładowanie ulubionych projektów</string>
+    <string name="loading_more_projects">Ładowanie ulubionych projektów użytkownika</string>
+    <string name="loading_more_project_shots">Ładowanie shotów z projektu użytkownika</string>
     <string name="notification_text">Sprawdź Inbbbox! Codzienna dawka projektów czeka na Ciebie</string>
     <string name="shots_fragment_add_shot_to_bucket_success">Projekt pomyślnie dodany do kolekcji</string>
     <string name="undefined_api_error">Niezydentyfikowany błąd serwera</string>
