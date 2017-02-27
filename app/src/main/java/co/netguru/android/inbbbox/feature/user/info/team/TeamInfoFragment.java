@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.feature.user.info.team;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
+import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import co.netguru.android.inbbbox.feature.user.UserActivity;
 import co.netguru.android.inbbbox.feature.user.info.team.adapter.UserInfoTeamMembersAdapter;
 import timber.log.Timber;
@@ -35,6 +37,7 @@ public class TeamInfoFragment extends BaseMvpFragment
 
     private UserInfoTeamMembersAdapter adapter;
     private ShotActionListener shotActionListener;
+    private Snackbar loadingMoreSnackbar;
 
     public static TeamInfoFragment newInstance(User user) {
         final Bundle args = new Bundle();
@@ -76,6 +79,41 @@ public class TeamInfoFragment extends BaseMvpFragment
         initRecycler();
     }
 
+    @Override
+    public void showTeamMembers(List<UserWithShots> users) {
+        adapter.setTeamMembers(users);
+    }
+
+    @Override
+    public void showMoreTeamMembers(List<UserWithShots> users) {
+        adapter.addMoreTeamMembers(users);
+    }
+
+    @Override
+    public void openShotDetails(Shot shot) {
+        shotActionListener.showShotDetails(shot, Collections.emptyList(), shot.author().id());
+    }
+
+    @Override
+    public void openUserDetails(User user) {
+        UserActivity.startActivity(getContext(), user);
+    }
+
+    @Override
+    public void showLoadingMoreTeamMembersView() {
+        if (loadingMoreSnackbar == null && getView() != null) {
+            loadingMoreSnackbar = Snackbar.make(getView(), R.string.loading_more_followers, Snackbar.LENGTH_INDEFINITE);
+        }
+        loadingMoreSnackbar.show();
+    }
+
+    @Override
+    public void hideLoadingMoreTeamMembersView() {
+        if (loadingMoreSnackbar != null) {
+            loadingMoreSnackbar.dismiss();
+        }
+    }
+
     private void initRecycler() {
         adapter = new UserInfoTeamMembersAdapter(getPresenter()::onUserClick,
                 getPresenter()::onShotClick);
@@ -87,20 +125,17 @@ public class TeamInfoFragment extends BaseMvpFragment
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(getScrollListener());
     }
 
-    @Override
-    public void showData(List<UserWithShots> users) {
-        adapter.setUserShots(users);
-    }
+    private LoadMoreScrollListener getScrollListener() {
+        return new LoadMoreScrollListener(5) {
 
-    @Override
-    public void openShotDetails(Shot shot) {
-        shotActionListener.showShotDetails(shot, Collections.emptyList(), shot.author().id());
-    }
-
-    @Override
-    public void openUserDetails(User user) {
-        UserActivity.startActivity(getContext(), user);
+            @Override
+            public void requestMoreData() {
+                Timber.d("request more data");
+                getPresenter().loadMoreTeamMembers();
+            }
+        };
     }
 }

@@ -12,16 +12,24 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 interface TeamInfoContract {
 
     interface View extends MvpView {
-        void showData(List<UserWithShots> users);
+        void showTeamMembers(List<UserWithShots> users);
+
+        void showMoreTeamMembers(List<UserWithShots> users);
 
         void openShotDetails(Shot shot);
 
         void openUserDetails(User user);
+
+        void showLoadingMoreTeamMembersView();
+
+        void hideLoadingMoreTeamMembersView();
     }
 
     interface Presenter extends MvpPresenter<View> {
         void onShotClick(Shot shot);
 
         void onUserClick(User user);
+
+        void loadMoreTeamMembers();
     }
 }

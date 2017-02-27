@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.feature.user.info.team.adapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -30,7 +31,7 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
     RecyclerView userShotsRecyclerView;
 
     private UserClickListener userClickListener;
-    private ShotClickListener shotClickListener;
+    private UserShotsAdapter adapter;
 
     private User user;
 
@@ -38,8 +39,18 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
                                   ShotClickListener shotClickListener) {
         super(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_team_info_item_member, parent, false));
+
         this.userClickListener = userClickListener;
-        this.shotClickListener = shotClickListener;
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
+                userShotsRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+
+        adapter = new UserShotsAdapter(shotClickListener);
+
+        userShotsRecyclerView.setLayoutManager(linearLayoutManager);
+        userShotsRecyclerView.setNestedScrollingEnabled(false);
+        userShotsRecyclerView.setHasFixedSize(true);
+        userShotsRecyclerView.setAdapter(adapter);
     }
 
     @OnClick(R.id.user_name)
@@ -56,15 +67,12 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
     }
 
     private void initRecyclerView(UserWithShots user) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
-                userShotsRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
-        UserShotsAdapter adapter = new UserShotsAdapter(shotClickListener);
-        adapter.setShots(user.shotList());
-
-        userShotsRecyclerView.setLayoutManager(linearLayoutManager);
-        userShotsRecyclerView.setNestedScrollingEnabled(false);
-        userShotsRecyclerView.setHasFixedSize(true);
-        userShotsRecyclerView.setAdapter(adapter);
+        if (!user.shotList().isEmpty()) {
+            userShotsRecyclerView.setVisibility(View.VISIBLE);
+            adapter.setShots(user.shotList());
+        } else {
+            userShotsRecyclerView.setVisibility(View.GONE);
+        }
     }
 
     private void loadUserImage(String url) {

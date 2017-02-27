@@ -112,4 +112,5 @@ public class UserInfoFragment extends BaseMvpFragment<UserInfoContract.View, Use
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(userInfoAdapter);
     }
+
 }
