@@ -1,13 +1,14 @@
-package co.netguru.android.inbbbox.feature.user.info;
+package co.netguru.android.inbbbox.feature.user.info.singleuser;
 
 import co.netguru.android.commons.di.FragmentScope;
+import dagger.Component;
 import dagger.Subcomponent;
 
 @FragmentScope
 @Subcomponent(modules = UserInfoModule.class)
 public interface UserInfoComponent {
 
-    void inject(UserInfoFragment fragment);
+    void inject(UserInfoFragment userInfoFragment);
 
     UserInfoPresenter getPresenter();
 }

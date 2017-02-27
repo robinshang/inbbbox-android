@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.user.info.adapter;
+package co.netguru.android.inbbbox.feature.user.info.team.adapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -10,13 +10,15 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
+import co.netguru.android.inbbbox.feature.user.UserClickListener;
 
 public class UserShotHorizontalViewHolder extends BaseViewHolder<Shot> {
 
     private final ShotClickListener shotClickListener;
-    @BindView(R.id.shot_image)
 
+    @BindView(R.id.shot_image)
     RoundedCornersShotImageView shotImageView;
+
     private Shot item;
 
     public UserShotHorizontalViewHolder(ViewGroup parent, ShotClickListener shotClickListener) {

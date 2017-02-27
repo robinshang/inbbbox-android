@@ -28,4 +28,13 @@ public final class TeamControllerApi implements TeamController {
                 .toList()
                 .toSingle();
     }
+
+    @Override
+    public Single<List<User>> getUserTeams(long userId, int pageNumber, int pageCount) {
+        return teamApi.getUserTeams(userId, pageNumber, pageCount)
+                .flatMapObservable(Observable::from)
+                .map(User::create)
+                .toList()
+                .toSingle();
+    }
 }

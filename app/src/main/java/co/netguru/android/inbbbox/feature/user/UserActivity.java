@@ -19,7 +19,7 @@ import java.util.List;
 import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.feature.shared.UserDetailsTabItemType;
@@ -28,10 +28,10 @@ import co.netguru.android.inbbbox.feature.shared.view.NonSwipeableViewPager;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
-import co.netguru.android.inbbbox.feature.user.shots.UserShotsFragment;
+import co.netguru.android.inbbbox.feature.user.info.team.ShotActionListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserActivity extends BaseActivity implements UserShotsFragment.OnFollowedShotActionListener {
+public class UserActivity extends BaseActivity implements ShotActionListener {
 
     private static final String USER_KEY = "user_key";
 
@@ -51,7 +51,7 @@ public class UserActivity extends BaseActivity implements UserShotsFragment.OnFo
 
     private boolean shouldRefreshFollowers;
 
-    public static void startActivity(Context context, UserWithShots user) {
+    public static void startActivity(Context context, User user) {
         final Intent intent = new Intent(context, UserActivity.class);
         intent.putExtra(USER_KEY, user);
         context.startActivity(intent);
@@ -61,7 +61,7 @@ public class UserActivity extends BaseActivity implements UserShotsFragment.OnFo
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        UserWithShots user = getIntent().getParcelableExtra(USER_KEY);
+        User user = getIntent().getParcelableExtra(USER_KEY);
 
         initializePager(user);
         initializeToolbar(user);
@@ -107,7 +107,7 @@ public class UserActivity extends BaseActivity implements UserShotsFragment.OnFo
         }
     }
 
-    public void initializePager(UserWithShots user) {
+    public void initializePager(User user) {
         UserPagerAdapter pagerAdapter = new UserPagerAdapter(getSupportFragmentManager(), user);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -120,7 +120,7 @@ public class UserActivity extends BaseActivity implements UserShotsFragment.OnFo
         }
     }
 
-    private void initializeToolbar(UserWithShots user) {
+    private void initializeToolbar(User user) {
         collapsingToolbarLayout.setTitleEnabled(false);
         toolbar.setTitleTextColor(colorWhite);
         setSupportActionBar(toolbar);
@@ -128,14 +128,14 @@ public class UserActivity extends BaseActivity implements UserShotsFragment.OnFo
 
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(user.user().name());
+            actionBar.setTitle(user.name());
         }
     }
 
     private void setupImage() {
-        UserWithShots user = getIntent().getParcelableExtra(USER_KEY);
+        User user = getIntent().getParcelableExtra(USER_KEY);
         Glide.with(this)
-                .load(user.user().avatarUrl())
+                .load(user.avatarUrl())
                 .fitCenter()
                 .error(R.drawable.ic_ball)
                 .into(userImageView);

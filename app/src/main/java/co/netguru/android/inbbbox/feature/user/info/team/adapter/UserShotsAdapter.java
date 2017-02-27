@@ -1,32 +1,31 @@
-package co.netguru.android.inbbbox.feature.user.info.adapter;
+package co.netguru.android.inbbbox.feature.user.info.team.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
-import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
-import co.netguru.android.inbbbox.feature.user.shots.adapter.UserShotsViewHolder;
+import co.netguru.android.inbbbox.feature.user.UserClickListener;
 
 public class UserShotsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @NonNull
-    private List<Shot> shots;
+    private final List<Shot> shots = new ArrayList<>();
 
-    public UserShotsAdapter() {
-        shots = Collections.emptyList();
+    private ShotClickListener listener;
+
+    public UserShotsAdapter(ShotClickListener listener) {
+        this.listener = listener;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new UserShotHorizontalViewHolder(parent, null);
+        return new UserShotHorizontalViewHolder(parent, listener);
     }
 
     @Override
@@ -43,8 +42,9 @@ public class UserShotsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return shots;
     }
 
-    public void setShots(List<Shot> shots) {
-        this.shots = shots;
+    public void setShots(@NonNull List<Shot> shots) {
+        this.shots.clear();
+        this.shots.addAll(shots);
         notifyDataSetChanged();
     }
 

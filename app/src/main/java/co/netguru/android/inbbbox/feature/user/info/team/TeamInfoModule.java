@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.user.info;
+package co.netguru.android.inbbbox.feature.user.info.team;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
@@ -7,17 +7,17 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class UserInfoModule {
+public class TeamInfoModule {
 
-    private UserWithShots user;
+    private User user;
 
-    public UserInfoModule(UserWithShots user) {
+    public TeamInfoModule(User user) {
         this.user = user;
     }
 
     @Provides
     @FragmentScope
-    public UserWithShots provideUser() {
+    public User provideUser() {
         return user;
     }
 }

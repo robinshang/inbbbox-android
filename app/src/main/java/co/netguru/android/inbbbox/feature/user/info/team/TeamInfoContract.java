@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.user.info;
+package co.netguru.android.inbbbox.feature.user.info.team;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
@@ -7,14 +7,21 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
-public interface UserInfoContract {
+interface TeamInfoContract {
 
     interface View extends MvpView {
         void showData(List<UserWithShots> users);
+
+        void openShotDetails(Shot shot);
+
+        void openUserDetails(User user);
     }
 
     interface Presenter extends MvpPresenter<View> {
+        void onShotClick(Shot shot);
 
+        void onUserClick(User user);
     }
 }

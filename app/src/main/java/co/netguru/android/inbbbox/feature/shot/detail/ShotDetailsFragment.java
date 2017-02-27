@@ -200,7 +200,7 @@ public class ShotDetailsFragment
 
     @Override
     public void onUserSelected(User user) {
-        UserActivity.startActivity(getContext(), UserWithShots.create(user, null));
+        UserActivity.startActivity(getContext(), user);
     }
 
     @Override
@@ -376,7 +376,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showTeamView(UserWithShots userWithShots) {
-        UserActivity.startActivity(getContext(), userWithShots);
+        UserActivity.startActivity(getContext(), userWithShots.user());
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {

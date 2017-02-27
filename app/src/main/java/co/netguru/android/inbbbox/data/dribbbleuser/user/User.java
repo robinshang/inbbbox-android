@@ -76,7 +76,7 @@ public abstract class User implements Parcelable {
                 .followersCount(entity.followersCount())
                 .followingsCount(entity.followingsCount())
                 .bio(entity.bio())
-                .location(entity.location())
+                .location(entity.location() == null ? "Unknown" : entity.location())
                 .build();
     }
 

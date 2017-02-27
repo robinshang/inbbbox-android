@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import timber.log.Timber;
 
 public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
@@ -70,6 +71,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
     }
 
     public void updateShot(Shot shot) {
+        Timber.d("shot updated: "+shot.toString());
         final int position = findShotPosition(shot.id());
         items.set(position, shot);
         notifyItemChanged(position);

@@ -4,10 +4,13 @@ import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
+import java.util.Collections;
+
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -32,18 +35,18 @@ public class UserShotsPresenter extends MvpNullObjectBasePresenter<UserShotsCont
     @NonNull
     private Subscription refreshShotsSubscription;
 
-    private UserWithShots userWithShots;
+    private User user;
     private boolean hasMore = true;
     private int pageNumber = 1;
 
     @Inject
     UserShotsPresenter(UserShotsController userShotsController,
-                       ErrorController errorController, @NonNull UserWithShots userWithShots) {
+                       ErrorController errorController, @NonNull User user) {
         this.userShotsController = userShotsController;
         this.errorController = errorController;
         refreshShotsSubscription = Subscriptions.unsubscribed();
         loadMoreShotsSubscription = Subscriptions.unsubscribed();
-        this.userWithShots = userWithShots;
+        this.user = user;
     }
 
     @Override
@@ -56,9 +59,9 @@ public class UserShotsPresenter extends MvpNullObjectBasePresenter<UserShotsCont
     }
 
     @Override
-    public void userDataReceived(UserWithShots userWithShots) {
-        if (userWithShots != null) {
-            this.userWithShots = userWithShots;
+    public void userDataReceived(User user) {
+        if (user != null) {
+            this.user = user;
             refreshUserShots();
         }
     }
@@ -68,11 +71,11 @@ public class UserShotsPresenter extends MvpNullObjectBasePresenter<UserShotsCont
         if (refreshShotsSubscription.isUnsubscribed()) {
             loadMoreShotsSubscription.unsubscribe();
             pageNumber = 1;
-            loadMoreShotsSubscription = userShotsController.getUserShotsList(userWithShots.user().id(),
+            loadMoreShotsSubscription = userShotsController.getUserShotsList(user.id(),
                     pageNumber, SHOT_PAGE_COUNT)
                     .compose(androidIO())
                     .compose(fromListObservable())
-                    .map(shot -> Shot.update(shot).author(userWithShots.user()).build())
+                    .map(shot -> Shot.update(shot).author(user).build())
                     .toList()
                     .doAfterTerminate(getView()::hideProgress)
                     .subscribe(shotList -> {
@@ -86,10 +89,10 @@ public class UserShotsPresenter extends MvpNullObjectBasePresenter<UserShotsCont
     public void getMoreUserShotsFromServer() {
         if (hasMore && refreshShotsSubscription.isUnsubscribed() && loadMoreShotsSubscription.isUnsubscribed()) {
             pageNumber++;
-            loadMoreShotsSubscription = userShotsController.getUserShotsList(userWithShots.user().id(),
+            loadMoreShotsSubscription = userShotsController.getUserShotsList(user.id(),
                     pageNumber, SHOT_PAGE_COUNT)
                     .compose(fromListObservable())
-                    .map(shot -> Shot.update(shot).author(userWithShots.user()).build())
+                    .map(shot -> Shot.update(shot).author(user).build())
                     .toList()
                     .compose(androidIO())
                     .subscribe(shotList -> {
@@ -101,7 +104,7 @@ public class UserShotsPresenter extends MvpNullObjectBasePresenter<UserShotsCont
 
     @Override
     public void showShotDetails(Shot shot) {
-        getView().openShotDetailsScreen(shot, userWithShots.shotList(), userWithShots.user().id());
+        getView().openShotDetailsScreen(shot, Collections.emptyList(), user.id());
     }
 
     @Override

@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.user.info.adapter;
+package co.netguru.android.inbbbox.feature.user.info.team.adapter;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,10 +13,9 @@ import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
-import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
-import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
+import co.netguru.android.inbbbox.feature.user.UserClickListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
@@ -30,13 +29,27 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
     @BindView(R.id.user_shots)
     RecyclerView userShotsRecyclerView;
 
-    UserInfoTeamMembersViewHolder(ViewGroup parent) {
+    private UserClickListener userClickListener;
+    private ShotClickListener shotClickListener;
+
+    private User user;
+
+    UserInfoTeamMembersViewHolder(ViewGroup parent, UserClickListener userClickListener,
+                                  ShotClickListener shotClickListener) {
         super(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_user_info_item_member, parent, false));
+                .inflate(R.layout.fragment_team_info_item_member, parent, false));
+        this.userClickListener = userClickListener;
+        this.shotClickListener = shotClickListener;
+    }
+
+    @OnClick(R.id.user_name)
+    void onUserNameClick() {
+        userClickListener.onUserClick(user);
     }
 
     @Override
     public void bind(UserWithShots item) {
+        this.user = item.user();
         this.userName.setText(item.user().name());
         loadUserImage(item.user().avatarUrl());
         initRecyclerView(item);
@@ -45,14 +58,14 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
     private void initRecyclerView(UserWithShots user) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
                 userShotsRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
-        UserShotsAdapter adapter = new UserShotsAdapter();
+        UserShotsAdapter adapter = new UserShotsAdapter(shotClickListener);
         adapter.setShots(user.shotList());
 
         userShotsRecyclerView.setLayoutManager(linearLayoutManager);
+        userShotsRecyclerView.setNestedScrollingEnabled(false);
         userShotsRecyclerView.setHasFixedSize(true);
         userShotsRecyclerView.setAdapter(adapter);
     }
-
 
     private void loadUserImage(String url) {
         Glide.with(itemView.getContext())

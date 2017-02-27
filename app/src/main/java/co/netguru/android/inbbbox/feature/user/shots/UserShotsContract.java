@@ -6,6 +6,7 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
@@ -24,7 +25,7 @@ public interface UserShotsContract {
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
 
-        void userDataReceived(UserWithShots userWithShots);
+        void userDataReceived(User user);
 
         void refreshUserShots();
 

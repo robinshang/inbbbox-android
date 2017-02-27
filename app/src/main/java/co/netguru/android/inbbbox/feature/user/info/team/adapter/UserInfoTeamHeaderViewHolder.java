@@ -1,5 +1,6 @@
-package co.netguru.android.inbbbox.feature.user.info.adapter;
+package co.netguru.android.inbbbox.feature.user.info.team.adapter;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -9,7 +10,9 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 
-class UserInfoTeamHeaderViewHolder extends BaseViewHolder<User> {
+import static co.netguru.android.inbbbox.common.utils.StringUtil.getParsedHtmlTextSpanned;
+
+public class UserInfoTeamHeaderViewHolder extends BaseViewHolder<User> {
 
     @BindView(R.id.user_followers)
     TextView userFollowers;
@@ -26,7 +29,7 @@ class UserInfoTeamHeaderViewHolder extends BaseViewHolder<User> {
     @BindView(R.id.user_description)
     TextView userDescription;
 
-    UserInfoTeamHeaderViewHolder(ViewGroup parent) {
+    public UserInfoTeamHeaderViewHolder(ViewGroup parent) {
         super(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_user_info_header, parent, false));
     }
@@ -36,8 +39,8 @@ class UserInfoTeamHeaderViewHolder extends BaseViewHolder<User> {
         userShots.setText(String.valueOf(item.shotsCount()));
         userFollowers.setText(String.valueOf(item.followersCount()));
         userFollowing.setText(String.valueOf(item.followingsCount()));
-        userCountry.setText(String.valueOf(item.location()));
-        userDescription.setText(String.valueOf(item.bio()));
+        userCountry.setText(item.location());
+        userDescription.setText(getParsedHtmlTextSpanned(item.bio()));
     }
 
 }

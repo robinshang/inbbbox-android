@@ -7,22 +7,22 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
-import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
-import co.netguru.android.inbbbox.feature.bucket.BucketsFragment;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shared.UserDetailsTabItemType;
-import co.netguru.android.inbbbox.feature.user.info.UserInfoFragment;
+import co.netguru.android.inbbbox.feature.user.info.singleuser.UserInfoFragment;
+import co.netguru.android.inbbbox.feature.user.info.team.TeamInfoFragment;
 import co.netguru.android.inbbbox.feature.user.shots.UserShotsFragment;
 
 public class UserPagerAdapter<T extends Fragment & RefreshableFragment>
         extends FragmentStatePagerAdapter {
 
     private SparseArray<T> activeRefreshableFragments;
-    private UserWithShots userWithShots;
+    private User user;
 
-    public UserPagerAdapter(FragmentManager fm, UserWithShots userWithShots) {
+    public UserPagerAdapter(FragmentManager fm, User user) {
         super(fm);
-        this.userWithShots = userWithShots;
+        this.user = user;
         activeRefreshableFragments = new SparseArray<>(UserDetailsTabItemType.values().length);
     }
 
@@ -33,18 +33,25 @@ public class UserPagerAdapter<T extends Fragment & RefreshableFragment>
 
         switch (UserDetailsTabItemType.getTabItemForPosition(position)) {
             case SHOTS:
-                result = UserShotsFragment.newInstance(userWithShots);
+                result = UserShotsFragment.newInstance(user);
                 break;
             case INFO:
-                result = UserInfoFragment.newInstance(userWithShots);
+                if (user.type().equals(User.TYPE_SINGLE_USER)) {
+                    result = UserInfoFragment.newInstance(user);
+                } else if (user.type().equals(User.TYPE_TEAM)) {
+                    result = TeamInfoFragment.newInstance(user);
+                } else {
+                    throw new IllegalArgumentException(
+                            String.format("Wrong user type: %s", user.type()));
+                }
                 break;
             case PROJECTS:
 //                 TODO: 20.02 Instantiate ProjectsFragment [not in scope of this task]
-                result = UserShotsFragment.newInstance(userWithShots);
+                result = UserShotsFragment.newInstance(user);
                 break;
             case BUCKETS:
 //                TODO: 20.02 Instantiate BucketsFragment [not in scope of this task]
-                result = UserShotsFragment.newInstance(userWithShots);
+                result = UserShotsFragment.newInstance(user);
                 break;
             default:
                 throw new IllegalArgumentException(String.format(
