@@ -9,8 +9,6 @@ import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.feature.user.UserClickListener;
-import co.netguru.android.inbbbox.feature.user.info.singleuser.teams.TeamClickListener;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 

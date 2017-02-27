@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.user.info.team.adapter;
 
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;

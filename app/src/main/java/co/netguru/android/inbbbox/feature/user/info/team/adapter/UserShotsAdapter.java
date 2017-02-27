@@ -5,12 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
-import co.netguru.android.inbbbox.feature.user.UserClickListener;
 
 public class UserShotsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

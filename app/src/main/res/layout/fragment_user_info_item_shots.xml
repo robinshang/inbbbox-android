@@ -20,5 +20,5 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/user_shots_recyclerView_height"
         android:layout_marginStart="@dimen/user_shots_marginStart"
-        android:layout_marginTop="@dimen/user_shots_marginTop"/>
+        android:layout_marginTop="@dimen/user_shots_marginTop" />
 </LinearLayout>

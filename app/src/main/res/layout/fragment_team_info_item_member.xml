@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/item_member_margin"
     android:layout_marginBottom="@dimen/item_member_margin"
+    android:layout_marginTop="@dimen/item_member_margin"
     android:orientation="vertical">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_image"
         android:layout_width="@dimen/shot_details_shots_tab_height"
         android:layout_height="@dimen/shot_details_shots_tab_height"
+        android:layout_marginLeft="@dimen/item_member_image_marginLeft"
         android:contentDescription="@string/user_image_content_description"
         app:civ_border_color="@color/white"
         app:civ_border_width="@dimen/drawer_header_photo_border"
-        app:civ_fill_color="@color/lightGray"
-        android:layout_marginLeft="@dimen/item_member_image_marginLeft"
-        />
+        app:civ_fill_color="@color/lightGray" />
 
     <TextView
         android:id="@+id/user_name"
@@ -28,14 +26,13 @@
         android:gravity="center_vertical"
         android:textColor="#262626"
         android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/user_shots"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_member_recycler_height"
         android:layout_below="@id/user_image"
-        android:layout_marginLeft="@dimen/item_member_recycler_marginLeft"
-        />
+        android:layout_marginLeft="@dimen/item_member_recycler_marginLeft" />
 
 </RelativeLayout>

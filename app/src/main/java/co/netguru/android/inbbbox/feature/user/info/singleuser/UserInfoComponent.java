@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.feature.user.info.singleuser;
 
 import co.netguru.android.commons.di.FragmentScope;
-import dagger.Component;
 import dagger.Subcomponent;
 
 @FragmentScope

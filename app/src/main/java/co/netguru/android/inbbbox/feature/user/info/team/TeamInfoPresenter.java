@@ -29,7 +29,7 @@ import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applySin
 public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContract.View>
         implements TeamInfoContract.Presenter, UserClickListener {
 
-    private static final int USERS_PAGE_COUNT = 3;
+    private static final int USERS_PAGE_COUNT = 10;
     private static final int SHOTS_PER_USER = 12;
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
 

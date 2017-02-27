@@ -10,8 +10,8 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 
 public class TeamsAdapter extends RecyclerView.Adapter<TeamViewHolder> {
 
-    private TeamClickListener teamClickListener;
     private final List<User> teams = new ArrayList<>();
+    private TeamClickListener teamClickListener;
 
     public TeamsAdapter(TeamClickListener teamClickListener) {
         this.teamClickListener = teamClickListener;

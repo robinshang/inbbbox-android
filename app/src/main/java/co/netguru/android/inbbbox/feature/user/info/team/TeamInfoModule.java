@@ -2,7 +2,6 @@ package co.netguru.android.inbbbox.feature.user.info.team;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
-import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import dagger.Module;
 import dagger.Provides;
 

@@ -12,14 +12,19 @@ public interface UserInfoContract {
 
     interface View extends MvpView {
         void showTeams(List<User> teams);
+
         void openTeam(User user);
+
         void openShot(Shot shot);
+
         void showShots(List<Shot> shots);
+
         void showMessageOnServerError(String message);
     }
 
     interface Presenter extends MvpPresenter<View> {
         void onTeamClick(User team);
+
         void onShotClick(Shot shot);
     }
 }

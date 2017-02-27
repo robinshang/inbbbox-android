@@ -31,7 +31,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/user_info_header_followers_top"
-                android:text="followers"
+                android:text="@string/followers"
                 android:textSize="@dimen/user_info_header_value_text_textSize" />
 
             <View
@@ -63,7 +63,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/user_info_header_followers_top"
-                android:text="shots"
+                android:text="@string/shots"
                 android:textSize="@dimen/user_info_header_value_text_textSize" />
 
         </RelativeLayout>
@@ -89,7 +89,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/user_info_header_followers_top"
-                android:text="following"
+                android:text="@string/following"
                 android:textSize="@dimen/user_info_header_value_text_textSize" />
 
             <View
