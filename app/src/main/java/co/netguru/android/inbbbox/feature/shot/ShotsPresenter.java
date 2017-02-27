@@ -16,6 +16,8 @@ import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
+import co.netguru.android.inbbbox.data.settings.SettingsController;
+import co.netguru.android.inbbbox.data.settings.model.CustomizationSettings;
 import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
@@ -43,6 +45,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private final FollowersController followersController;
     private final CompositeSubscription subscriptions;
     private final RxBus rxBus;
+    private final SettingsController settingsController;
 
     @NonNull
     private Subscription refreshSubscription;
@@ -58,7 +61,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     @Inject
     ShotsPresenter(ShotsController shotsController, LikeShotController likeShotController,
                    BucketsController bucketsController, ErrorController errorController,
-                   FollowersController followersController, RxBus rxBus) {
+                   FollowersController followersController, RxBus rxBus, SettingsController settingsController) {
 
         this.shotsController = shotsController;
         this.likeShotController = likeShotController;
@@ -66,6 +69,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         this.errorController = errorController;
         this.followersController = followersController;
         this.rxBus = rxBus;
+        this.settingsController = settingsController;
         subscriptions = new CompositeSubscription();
         refreshSubscription = Subscriptions.unsubscribed();
         loadMoreSubscription = Subscriptions.unsubscribed();
@@ -77,6 +81,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     public void attachView(ShotsContract.View view) {
         super.attachView(view);
         setupRxBus();
+        initShotsView();
     }
 
     @Override
@@ -88,6 +93,17 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
             busSubscription.unsubscribe();
             busUpdateShotSubscription.unsubscribe();
         }
+    }
+
+    private void initShotsView() {
+        subscriptions.add(settingsController.getCustomizationSettings()
+                .compose(RxTransformerUtil.applySingleIoSchedulers())
+                .subscribe(this::showShotsDetail,
+                        throwable -> Timber.e(throwable, "Error getting show details state.")));
+    }
+
+    private void showShotsDetail(CustomizationSettings customizationSettings) {
+        getView().onDetailsVisibilityChange(customizationSettings.isShowDetails());
     }
 
     @Override
