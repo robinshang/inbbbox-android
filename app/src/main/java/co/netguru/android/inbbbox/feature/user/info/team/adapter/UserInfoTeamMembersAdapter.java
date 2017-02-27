@@ -11,7 +11,6 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.user.UserClickListener;
-import timber.log.Timber;
 
 public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -53,10 +52,10 @@ public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerVie
                 ((UserInfoTeamHeaderViewHolder) holder).bind(team);
                 break;
             case VIEW_TYPE_USER:
-                ((UserInfoTeamMembersViewHolder) holder).bind(userList.get(position-1));
+                ((UserInfoTeamMembersViewHolder) holder).bind(userList.get(position - 1));
                 break;
             default:
-                throw new IllegalArgumentException("Couldn't bind position: "+position);
+                throw new IllegalArgumentException("Couldn't bind position: " + position);
         }
     }
 
@@ -92,10 +91,5 @@ public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerVie
         final int currentSize = this.userList.size();
         this.userList.addAll(newUsers);
         notifyItemRangeChanged(currentSize - 1, newUsers.size());
-
-        Timber.d("new members size: "+userList.size());
-        for(UserWithShots user : userList) {
-            Timber.d("User: "+user.user().name());
-        }
     }
 }

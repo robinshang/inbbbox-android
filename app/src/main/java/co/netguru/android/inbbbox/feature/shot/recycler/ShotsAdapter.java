@@ -13,7 +13,6 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import timber.log.Timber;
 
 public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
@@ -55,13 +54,13 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
         return items;
     }
 
+    public List<Shot> getItems() {
+        return items;
+    }
+
     public void setItems(List<Shot> items) {
         this.items = items;
         notifyDataSetChanged();
-    }
-
-    public List<Shot> getItems() {
-        return items;
     }
 
     public void addMoreItems(List<Shot> items) {
@@ -71,7 +70,6 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
     }
 
     public void updateShot(Shot shot) {
-        Timber.d("shot updated: "+shot.toString());
         final int position = findShotPosition(shot.id());
         items.set(position, shot);
         notifyItemChanged(position);

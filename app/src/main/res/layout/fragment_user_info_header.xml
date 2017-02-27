@@ -6,12 +6,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/user_info_header_top_height"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
         <RelativeLayout
-            android:layout_width="0dp"
+            android:layout_width="@dimen/common_zero"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
@@ -20,8 +20,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"
-                android:textSize="24sp"
+                android:layout_marginTop="@dimen/user_info_header_followers_top"
+                android:textSize="@dimen/user_info_header_value_textSize"
                 android:textStyle="bold"
                 tools:text="2024" />
 
@@ -30,12 +30,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="16dp"
-                android:textSize="12sp"
-                android:text="followers" />
+                android:layout_marginBottom="@dimen/user_info_header_followers_top"
+                android:text="followers"
+                android:textSize="@dimen/user_info_header_value_text_textSize" />
 
             <View
-                android:layout_width="1dp"
+                android:layout_width="@dimen/common_1dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:background="@color/gray" />
@@ -43,7 +43,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="0dp"
+            android:layout_width="@dimen/common_zero"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
@@ -52,8 +52,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"
-                android:textSize="24sp"
+                android:layout_marginTop="@dimen/user_info_header_followers_top"
+                android:textSize="@dimen/user_info_header_value_textSize"
                 android:textStyle="bold"
                 tools:text="94" />
 
@@ -62,14 +62,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="16dp"
-                android:textSize="12sp"
-                android:text="shots" />
+                android:layout_marginBottom="@dimen/user_info_header_followers_top"
+                android:text="shots"
+                android:textSize="@dimen/user_info_header_value_text_textSize" />
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="0dp"
+            android:layout_width="@dimen/common_zero"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
@@ -78,8 +78,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"
-                android:textSize="24sp"
+                android:layout_marginTop="@dimen/user_info_header_followers_top"
+                android:textSize="@dimen/user_info_header_value_textSize"
                 android:textStyle="bold"
                 tools:text="667" />
 
@@ -88,12 +88,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="16dp"
-                android:textSize="12sp"
-                android:text="following" />
+                android:layout_marginBottom="@dimen/user_info_header_followers_top"
+                android:text="following"
+                android:textSize="@dimen/user_info_header_value_text_textSize" />
 
             <View
-                android:layout_width="1dp"
+                android:layout_width="@dimen/common_1dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:background="@color/gray" />
@@ -104,7 +104,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/common_1dp"
         android:background="@color/gray" />
 
     <TextView
@@ -112,26 +112,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="@dimen/user_info_header_country_marginTop"
         android:drawableLeft="@drawable/location_glyph_world_pin"
-        android:drawablePadding="8dp"
+        android:drawablePadding="@dimen/user_info_header_country_drawable_padding"
         android:gravity="center_vertical"
-        android:textColor="#949399"
+        android:textColor="@color/darkGray"
 
-        android:textSize="16sp"
+        android:textSize="@dimen/user_info_header_country_textSize"
         tools:text="Poland" />
 
     <TextView
         android:id="@+id/user_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginLeft="@dimen/user_info_header_bio_marginLeft"
+        android:layout_marginRight="@dimen/user_info_header_bio_marginRight"
+        android:layout_marginTop="@dimen/user_info_header_bio_marginTop"
         android:gravity="center_horizontal"
         android:lineSpacingMultiplier="1.2"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:textColor="#8F8E93"
-        tools:text="One of Europe's fastest growing mobile and web development groups. We've helped partners scale existing projects and build MVPs. Contact us art hi@netguru.co!" />
-
+        android:textColor="@color/darkerGray" />
 
 </LinearLayout>

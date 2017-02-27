@@ -23,6 +23,8 @@ interface TeamInfoContract {
         void showLoadingMoreTeamMembersView();
 
         void hideLoadingMoreTeamMembersView();
+
+        void showMessageOnServerError(String message);
     }
 
     interface Presenter extends MvpPresenter<View> {

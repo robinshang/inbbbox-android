@@ -3,8 +3,6 @@ package co.netguru.android.inbbbox.feature.shared.view;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import timber.log.Timber;
-
 public abstract class LoadMoreScrollListener extends RecyclerView.OnScrollListener {
 
     private final int launchWhenLastXVisible;
@@ -31,7 +29,6 @@ public abstract class LoadMoreScrollListener extends RecyclerView.OnScrollListen
         final int totalItemCount = linearLayoutManager.getItemCount();
         final int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
 
-        Timber.d("scrolled: "+scrolled+", totalItemCount: "+totalItemCount+", lastVisible: "+lastVisibleItemPosition+", launchWhen: "+launchWhenLastXVisible);
         if (scrolled && totalItemCount - lastVisibleItemPosition < launchWhenLastXVisible) {
             scrolled = false;
             requestMoreData();

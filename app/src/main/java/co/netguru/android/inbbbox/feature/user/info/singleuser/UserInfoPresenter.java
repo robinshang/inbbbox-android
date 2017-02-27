@@ -48,9 +48,10 @@ public class UserInfoPresenter extends MvpNullObjectBasePresenter<UserInfoContra
         getUserShots();
     }
 
-    private void handleError(Throwable throwable, String errorText) {
-        Timber.d(throwable, errorText);
-        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
+    @Override
+    public void detachView(boolean retainInstance) {
+        super.detachView(retainInstance);
+        subscriptions.clear();
     }
 
     @Override
@@ -80,5 +81,10 @@ public class UserInfoPresenter extends MvpNullObjectBasePresenter<UserInfoContra
                 .subscribe(shotList -> {
                     getView().showShots(shotList);
                 }, throwable -> handleError(throwable, "Error while refreshing user shots")));
+    }
+
+    private void handleError(Throwable throwable, String errorText) {
+        Timber.d(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 }

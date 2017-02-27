@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
+import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
@@ -34,6 +35,7 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
 
     private final TeamController teamController;
     private final UserShotsController userShotsController;
+    private final ErrorController errorController;
 
     private final User user;
     @NonNull
@@ -46,9 +48,10 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
 
     @Inject
     public TeamInfoPresenter(TeamController teamController, UserShotsController userShotsController,
-                             User user) {
+                             ErrorController errorController, User user) {
         this.teamController = teamController;
         this.userShotsController = userShotsController;
+        this.errorController = errorController;
         this.user = user;
         refreshSubscription = Subscriptions.unsubscribed();
         loadNextUsersSubscription = Subscriptions.unsubscribed();
@@ -59,6 +62,13 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
         super.attachView(view);
 
         loadTeamData();
+    }
+
+    @Override
+    public void detachView(boolean retainInstance) {
+        super.detachView(retainInstance);
+        refreshSubscription.unsubscribe();
+        loadNextUsersSubscription.unsubscribe();
     }
 
     private void loadTeamData() {
@@ -80,7 +90,6 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
                     .subscribe(users -> {
                                 getView().showTeamMembers(users);
                                 hasMore = users.size() >= USERS_PAGE_COUNT;
-                                Timber.d("fetched users: " + users.size());
                             },
                             throwable -> handleError(throwable, "Error while loading team members"));
         }
@@ -88,7 +97,7 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
 
     public void handleError(Throwable throwable, String errorText) {
         Timber.d(throwable, errorText);
-//        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
     @Override
@@ -119,7 +128,6 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
                         getView().hideLoadingMoreTeamMembersView();
                     })
                     .subscribe(users -> {
-                                Timber.d("fetched more users: " + users.size());
                                 getView().showMoreTeamMembers(users);
                                 hasMore = users.size() >= USERS_PAGE_COUNT;
                             },

@@ -114,6 +114,11 @@ public class TeamInfoFragment extends BaseMvpFragment
         }
     }
 
+    @Override
+    public void showMessageOnServerError(String message) {
+        Snackbar.make(recyclerView, message, Snackbar.LENGTH_LONG).show();
+    }
+
     private void initRecycler() {
         adapter = new UserInfoTeamMembersAdapter(getPresenter()::onUserClick,
                 getPresenter()::onShotClick);
@@ -133,7 +138,6 @@ public class TeamInfoFragment extends BaseMvpFragment
 
             @Override
             public void requestMoreData() {
-                Timber.d("request more data");
                 getPresenter().loadMoreTeamMembers();
             }
         };
