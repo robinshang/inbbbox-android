@@ -92,6 +92,7 @@ public class OauthWebViewDialogFragmentPresenter extends MvpNullObjectBasePresen
         analyticsEventLogger.logEventLoginFail();
     }
 
+    @Override
     public void handleKeysNotMatching() {
         getView().showWrongKeyError();
     }
@@ -123,6 +124,7 @@ public class OauthWebViewDialogFragmentPresenter extends MvpNullObjectBasePresen
                                         "Error while requesting new token")));
     }
 
+    @SuppressWarnings("unused")
     private void handleOnlineUserLogin() {
         getView().initializeUserMode(UserModeType.ONLINE_USER_MODE);
         getView().showNextScreen();

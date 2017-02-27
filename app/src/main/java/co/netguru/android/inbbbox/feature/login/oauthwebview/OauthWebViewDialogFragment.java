@@ -111,12 +111,12 @@ public class OauthWebViewDialogFragment
 
     @Override
     public void showInvalidOauthUrlError() {
-        showMessageOnSnackBar(getResources().getString(R.string.invalid_outh_url));
+        showMessageOnSnackBarDialog(getResources().getString(R.string.invalid_outh_url));
     }
 
     @Override
     public void showWrongKeyError() {
-        showMessageOnSnackBar(getResources().getString(R.string.wrong_oauth_state_key));
+        showMessageOnSnackBarDialog(getResources().getString(R.string.wrong_oauth_state_key));
     }
 
     @Override
@@ -163,10 +163,10 @@ public class OauthWebViewDialogFragment
 
     @Override
     public void showMessageOnServerError(String errorText) {
-        showMessageOnSnackBar(errorText);
+        showMessageOnSnackBarDialog(errorText);
     }
 
-    private void showMessageOnSnackBar(String message) {
+    private void showMessageOnSnackBarDialog(String message) {
         Snackbar.make(webView, message, Snackbar.LENGTH_LONG).show();
     }
 
