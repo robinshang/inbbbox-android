@@ -192,22 +192,22 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     private void onShotBucketedCompleted(Shot shot) {
         Timber.d("Shots bucketed: %s", shot);
-        getView().showBucketAddSuccessAndUpdateShot(changeShotBucketedStatus(shot));
+        getView().showBucketAddSuccessAndUpdateShot(updateShotBucketedStatus(shot));
     }
 
     private void onShotLikeCompleted(Shot shot) {
         Timber.d("Shot liked : %s", shot);
-        rxBus.send(new ShotUpdatedEvent(changeShotLikeStatus(shot)));
+        rxBus.send(new ShotUpdatedEvent(updateShotLikeStatus(shot)));
     }
 
-    private Shot changeShotBucketedStatus(Shot shot) {
+    private Shot updateShotBucketedStatus(Shot shot) {
         return Shot.update(shot)
                 .isBucketed(true)
                 .bucketCount(shot.likesCount() + 1)
                 .build();
     }
 
-    private Shot changeShotLikeStatus(Shot shot) {
+    private Shot updateShotLikeStatus(Shot shot) {
         return Shot.update(shot)
                 .likesCount(shot.likesCount() + 1)
                 .isLiked(true)
