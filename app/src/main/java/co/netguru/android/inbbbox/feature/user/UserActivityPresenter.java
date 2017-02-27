@@ -68,4 +68,12 @@ public class UserActivityPresenter extends MvpNullObjectBasePresenter<UserActivi
         Timber.e(e, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(e));
     }
+
+    @Override
+    public void detachView(boolean retainInstance) {
+        followSubscription.clear();
+        unfollowSubscription.clear();
+        isFollowingSubscription.unsubscribe();
+        super.detachView(retainInstance);
+    }
 }
