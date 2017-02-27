@@ -227,12 +227,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     @Override
-    public void changeShotLikeStatus(Shot shot) {
-        adapter.updateShot(shot);
-        shotActionListener.shotLikeStatusChanged();
-    }
-
-    @Override
     public void closeFabMenu() {
         if (fabMenu.isOpened()) {
             fabMenu.close(true);
@@ -246,7 +240,8 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     @Override
-    public void showBucketAddSuccess() {
+    public void showBucketAddSuccessAndUpdateShot(Shot shot) {
+        adapter.updateShot(shot);
         showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
     }
 
