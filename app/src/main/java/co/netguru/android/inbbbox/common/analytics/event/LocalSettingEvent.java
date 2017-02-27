@@ -1,19 +1,11 @@
 package co.netguru.android.inbbbox.common.analytics.event;
 
 
-import android.os.Bundle;
+public class LocalSettingEvent extends ContentEvent {
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
-public class LocalSettingEvent extends BaseEvent {
-
-    private static final String EVENT_NAME = "local_setting";
-    private static final String PARAM_SETTING_VALUE = "enabled";
+    private static final String CONTENT_TYPE = "local_setting";
 
     public LocalSettingEvent(String settingName, boolean enabled) {
-        super(EVENT_NAME);
-        Bundle params = getParams();
-        params.putString(FirebaseAnalytics.Param.ITEM_NAME, settingName);
-        params.putString(PARAM_SETTING_VALUE, Boolean.toString(enabled));
+        super(CONTENT_TYPE, String.format("%s %b", settingName, enabled));
     }
 }

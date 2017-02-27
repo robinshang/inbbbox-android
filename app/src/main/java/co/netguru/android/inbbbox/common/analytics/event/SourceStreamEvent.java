@@ -1,12 +1,11 @@
 package co.netguru.android.inbbbox.common.analytics.event;
 
 
-import com.google.firebase.analytics.FirebaseAnalytics;
+public class SourceStreamEvent extends ContentEvent {
 
-public class SourceStreamEvent extends BaseEvent {
+    private static final String CONTENT_TYPE = "source stream";
 
-    public SourceStreamEvent(String groupId) {
-        super(FirebaseAnalytics.Event.JOIN_GROUP);
-        getParams().putString(FirebaseAnalytics.Param.GROUP_ID, groupId);
+    public SourceStreamEvent(String groupId, boolean joined) {
+        super(CONTENT_TYPE, String.format("%s %b", groupId, joined));
     }
 }
