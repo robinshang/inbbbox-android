@@ -27,7 +27,7 @@ interface ShotsContract {
 
         void showBucketChoosing(Shot shot);
 
-        void showBucketAddSuccessAndUpdateShot(Shot shot);
+        void showBucketAddSuccess();
 
         void showShotRemoveFromBucketSuccess();
 

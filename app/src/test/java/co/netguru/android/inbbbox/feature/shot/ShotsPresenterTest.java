@@ -33,7 +33,6 @@ import static co.netguru.android.inbbbox.Statics.NOT_LIKED_SHOT;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -212,7 +211,7 @@ public class ShotsPresenterTest {
         //when
         presenter.addShotToBucket(BUCKET, LIKED_SHOT_NOT_BUCKETED);
         //then
-        verify(viewMock, times(1)).showBucketAddSuccessAndUpdateShot(any());
+        verify(viewMock, times(1)).showBucketAddSuccess();
     }
 
     @Test
