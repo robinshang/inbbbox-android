@@ -191,12 +191,12 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
 
     @Override
     public void openSingleUserDetails(UserWithShots followedUser) {
-        UserActivity.startActivity(getContext(), followedUser);
+        UserActivity.startActivity(getContext(), followedUser.user());
     }
 
     @Override
     public void openTeamDetails(UserWithShots followedUser) {
-        UserActivity.startActivity(getContext(), followedUser);
+        UserActivity.startActivity(getContext(), followedUser.user());
     }
 
     @Override

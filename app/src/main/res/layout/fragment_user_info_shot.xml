@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="@dimen/item_user_shot_width"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/item_user_shot_marginLeft"
+    android:layout_marginRight="@dimen/item_user_shot_marginRight"
+    android:orientation="vertical">
+
+    <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
+        android:id="@+id/shot_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+</FrameLayout>
