@@ -48,14 +48,15 @@ class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case 0:
                 ((UserInfoTeamHeaderViewHolder) holder).bind(user);
                 break;
-
             case 1:
                 ((UserInfoShotsViewHolder) holder).bind(shots);
                 break;
-
             case 2:
                 ((UserInfoTeamsViewHolder) holder).bind(teams);
                 break;
+            default:
+                throw new IllegalArgumentException(
+                        String.format("Could not bind view holder for position: %d", position));
         }
     }
 

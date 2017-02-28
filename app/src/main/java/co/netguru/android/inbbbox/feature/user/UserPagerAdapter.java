@@ -37,14 +37,7 @@ public class UserPagerAdapter<T extends Fragment & RefreshableFragment>
                 result = UserShotsFragment.newInstance(user);
                 break;
             case INFO:
-                if (user.type().equals(User.TYPE_SINGLE_USER)) {
-                    result = UserInfoFragment.newInstance(user);
-                } else if (user.type().equals(User.TYPE_TEAM)) {
-                    result = TeamInfoFragment.newInstance(user);
-                } else {
-                    throw new IllegalArgumentException(
-                            String.format("Wrong user type: %s", user.type()));
-                }
+                result = getInfoFragment();
                 break;
             case PROJECTS:
                 result = ProjectsFragment.newInstance(user);
@@ -78,4 +71,16 @@ public class UserPagerAdapter<T extends Fragment & RefreshableFragment>
     public int getCount() {
         return UserDetailsTabItemType.values().length;
     }
+
+    private Fragment getInfoFragment() {
+        if (user.type().equals(User.TYPE_SINGLE_USER)) {
+            return UserInfoFragment.newInstance(user);
+        } else if (user.type().equals(User.TYPE_TEAM)) {
+            return TeamInfoFragment.newInstance(user);
+        } else {
+            throw new IllegalArgumentException(
+                    String.format("Wrong user type: %s", user.type()));
+        }
+    }
+
 }
