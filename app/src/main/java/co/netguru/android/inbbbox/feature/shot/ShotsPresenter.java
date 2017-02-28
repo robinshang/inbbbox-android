@@ -219,10 +219,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     }
 
     private Shot updateShotBucketedStatus(Shot shot) {
-        if (!shot.isLiked()) {
-            shot = updateShotLikeStatus(shot);
-        }
-        return Shot.update(shot)
+        return Shot.update(shot.isLiked() ? shot : updateShotLikeStatus(shot))
                 .isBucketed(true)
                 .build();
     }
