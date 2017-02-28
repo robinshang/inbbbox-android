@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.data.user.projects.model.ui;
 
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.google.auto.value.AutoValue;
@@ -10,7 +11,7 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.user.projects.model.api.ProjectEntity;
 
 @AutoValue
-public abstract class ProjectWithShots {
+public abstract class ProjectWithShots implements Parcelable {
 
     private static final int FIRST_NEXT_SHOT_PAGE = 2;
 

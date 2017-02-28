@@ -23,6 +23,8 @@ public interface ProjectsContract {
         void addMoreProjects(List<ProjectWithShots> projects);
 
         void showLoadingMoreProjectsView();
+
+        void showProjectDetails(ProjectWithShots projectWithShots);
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -34,5 +36,7 @@ public interface ProjectsContract {
         void getMoreUserProjects();
 
         void getMoreShotsFromProject(ProjectWithShots projectWithShots);
+
+        void onProjectClick(ProjectWithShots projectWithShots);
     }
 }

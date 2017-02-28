@@ -23,6 +23,7 @@ import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
+import co.netguru.android.inbbbox.feature.project.ProjectActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import co.netguru.android.inbbbox.feature.user.projects.adapter.ProjectsAdapter;
@@ -124,6 +125,11 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     }
 
     @Override
+    public void showProjectDetails(ProjectWithShots projectWithShots) {
+        ProjectActivity.startActivity(getContext(), projectWithShots);
+    }
+
+    @Override
     public void showMessageOnServerError(String errorText) {
         showTextOnSnackbar(errorText);
     }
@@ -139,7 +145,8 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     }
 
     private void initRecyclerView() {
-        projectsAdapter = new ProjectsAdapter(this);
+        projectsAdapter = new ProjectsAdapter(getPresenter()::getMoreShotsFromProject,
+                getPresenter()::onProjectClick);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);

@@ -122,6 +122,11 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
     }
 
     @Override
+    public void onProjectClick(ProjectWithShots projectWithShots) {
+        getView().showProjectDetails(projectWithShots);
+    }
+
+    @Override
     public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));

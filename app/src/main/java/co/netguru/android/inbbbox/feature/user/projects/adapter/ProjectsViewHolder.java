@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
@@ -18,7 +19,8 @@ import co.netguru.android.inbbbox.feature.user.projects.adapter.shots.ProjectSho
 public class ProjectsViewHolder extends BaseViewHolder<ProjectWithShots> {
 
     private static final int SHOTS_TO_LOAD_MORE = 10;
-
+    private final ProjectsAdapter.OnGetMoreProjectShotsListener onGetMoreProjectShotsListener;
+    private final ProjectClickListener projectClickListener;
     @BindView(R.id.project_item_header)
     TextView headerTextView;
     @BindView(R.id.project_item_small_header)
@@ -27,19 +29,23 @@ public class ProjectsViewHolder extends BaseViewHolder<ProjectWithShots> {
     TextView shotCountTextView;
     @BindView(R.id.project_item_recycler_view)
     RecyclerView recyclerView;
-
-    private final ProjectsAdapter.OnGetMoreProjectShotsListener onGetMoreProjectShotsListener;
-
     private ProjectShotsAdapter adapter;
 
     @Nullable
     private ProjectWithShots currentItem;
 
-    ProjectsViewHolder(ViewGroup parent, ProjectsAdapter.OnGetMoreProjectShotsListener onGetMoreProjectShotsListener) {
+    ProjectsViewHolder(ViewGroup parent, ProjectsAdapter.OnGetMoreProjectShotsListener onGetMoreProjectShotsListener,
+                       ProjectClickListener projectClickListener) {
         super(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.projects_item, parent, false));
         this.onGetMoreProjectShotsListener = onGetMoreProjectShotsListener;
+        this.projectClickListener = projectClickListener;
         initializeRecyclerView(parent.getContext());
+    }
+
+    @OnClick({R.id.project_item_click_layer})
+    void onProjectClick() {
+        projectClickListener.onProjectClick(currentItem);
     }
 
     @Override

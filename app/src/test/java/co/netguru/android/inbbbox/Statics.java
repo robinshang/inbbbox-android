@@ -19,6 +19,7 @@ import co.netguru.android.inbbbox.data.shot.model.api.CommentEntity;
 import co.netguru.android.inbbbox.data.shot.model.api.Image;
 import co.netguru.android.inbbbox.data.shot.model.api.ShotEntity;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.data.user.projects.model.api.ProjectEntity;
 import co.netguru.android.inbbbox.feature.shot.detail.Comment;
 
 public final class Statics {
@@ -56,6 +57,15 @@ public final class Statics {
     public static List<ShotEntity> getFilteredMockedData() {
         return getFollowingMock(ITEM_COUNT, "filtered");
     }
+
+    public static final ProjectEntity PROJECT_ENTITY = ProjectEntity.builder()
+            .id(1)
+            .name("")
+            .description("")
+            .shotsCount(SHOTS_COUNT)
+            .createdAt(ZonedDateTime.now())
+            .updatedAt(ZonedDateTime.now())
+            .build();
 
     public static final UserEntity USER_ENTITY = UserEntity.builder()
             .avatarUrl("")
