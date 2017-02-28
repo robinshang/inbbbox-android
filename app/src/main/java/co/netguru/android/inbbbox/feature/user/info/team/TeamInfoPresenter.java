@@ -124,9 +124,7 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
                     .toList()
                     .toSingle()
                     .compose(applySingleIoSchedulers())
-                    .doAfterTerminate(() -> {
-                        getView().hideLoadingMoreTeamMembersView();
-                    })
+                    .doAfterTerminate(getView()::hideLoadingMoreTeamMembersView)
                     .subscribe(users -> {
                                 getView().showMoreTeamMembers(users);
                                 hasMore = users.size() >= USERS_PAGE_COUNT;

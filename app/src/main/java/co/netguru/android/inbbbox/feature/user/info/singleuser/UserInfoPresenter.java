@@ -65,7 +65,7 @@ public class UserInfoPresenter extends MvpNullObjectBasePresenter<UserInfoContra
     private void getUserTeams() {
         subscriptions.add(teamController.getUserTeams(user.id(), PAGE, TEAMS_PAGE_COUNT)
                 .compose(applySingleIoSchedulers())
-                .subscribe(teams -> getView().showTeams(teams),
+                .subscribe(getView()::showTeams,
                         throwable -> handleError(throwable, "Error while loading team members")));
     }
 
@@ -76,9 +76,8 @@ public class UserInfoPresenter extends MvpNullObjectBasePresenter<UserInfoContra
                 .compose(fromListObservable())
                 .map(shot -> Shot.update(shot).author(user).build())
                 .toSortedList(Shot::compareShotByPopularity)
-                .subscribe(shotList -> {
-                    getView().showShots(shotList);
-                }, throwable -> handleError(throwable, "Error while refreshing user shots")));
+                .subscribe(getView()::showShots,
+                        throwable -> handleError(throwable, "Error while refreshing user shots")));
     }
 
     private void handleError(Throwable throwable, String errorText) {

@@ -23,11 +23,9 @@ import javax.inject.Inject;
 import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
-import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.feature.shared.UserDetailsTabItemType;
@@ -37,7 +35,6 @@ import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.user.info.team.ShotActionListener;
-import co.netguru.android.inbbbox.feature.user.shots.UserShotsFragment;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserActivity
@@ -59,15 +56,13 @@ public class UserActivity
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.details_user_imageView)
     CircleImageView userImageView;
-
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
     private UserActivityComponent component;
     private boolean shouldRefreshFollowers;
     private MenuItem itemFollow;
     private MenuItem itemUnfollow;
     private User user;
-
-    @Inject
-    AnalyticsEventLogger analyticsEventLogger;
 
     public static void startActivity(Context context, User user) {
         final Intent intent = new Intent(context, UserActivity.class);
