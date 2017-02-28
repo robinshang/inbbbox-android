@@ -228,18 +228,15 @@ public class ShotsPresenterTest {
 
     @Test
     public void whenShotsDetailsIsEnableAtStart_showDetails() {
-
         verify(viewMock, times(1)).onDetailsVisibilityChange(true);
-
     }
 
     @Test
     public void whenShotsDetailsIsDisableAtStart_notShowDetails() {
         customizationSettings = new CustomizationSettings(false, true);
         when(settingsControllerMock.getCustomizationSettings()).thenReturn(Single.just(customizationSettings));
-
+        
         presenter.attachView(viewMock);
-
         verify(viewMock, times(1)).onDetailsVisibilityChange(false);
     }
 
