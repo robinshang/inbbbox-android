@@ -20,7 +20,7 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
-import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
 import co.netguru.android.inbbbox.feature.project.ProjectActivity;
@@ -48,7 +48,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
 
     private ProjectsAdapter projectsAdapter;
 
-    public static ProjectsFragment newInstance(UserWithShots user) {
+    public static ProjectsFragment newInstance(User user) {
         final Bundle args = new Bundle();
         args.putParcelable(USER_KEY, user);
 

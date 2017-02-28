@@ -20,7 +20,7 @@ import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
-import co.netguru.android.inbbbox.event.events.ShotRemovedFromBucketEvent;
+import co.netguru.android.inbbbox.event.events.ShotUpdatedEvent;
 import rx.Subscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
@@ -160,7 +160,7 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     }
 
     private void setupRxBus() {
-        busSubscription = rxBus.getEvents(ShotRemovedFromBucketEvent.class)
+        busSubscription = rxBus.getEvents(ShotUpdatedEvent.class)
                 .compose(RxTransformers.androidIO())
                 .subscribe(shotRemovedEvent -> refreshShots());
     }

@@ -16,6 +16,8 @@ import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotControllerApi;
+import co.netguru.android.inbbbox.data.settings.SettingsController;
+import co.netguru.android.inbbbox.data.settings.model.CustomizationSettings;
 import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
@@ -23,6 +25,7 @@ import co.netguru.android.inbbbox.event.events.ShotUpdatedEvent;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import static co.netguru.android.inbbbox.Statics.BUCKET;
 import static co.netguru.android.inbbbox.Statics.LIKED_SHOT_NOT_BUCKETED;
@@ -30,7 +33,6 @@ import static co.netguru.android.inbbbox.Statics.NOT_LIKED_SHOT;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -66,14 +68,20 @@ public class ShotsPresenterTest {
     @Mock
     RxBus rxBusMock;
 
+    @Mock
+    SettingsController settingsControllerMock;
+
     @InjectMocks
     ShotsPresenter presenter;
 
     private final List<Shot> shotsList = new ArrayList<>();
+    private CustomizationSettings customizationSettings = new CustomizationSettings(true, false);
 
     @Before
     public void setUp() {
         when(rxBusMock.getEvents(any())).thenReturn(Observable.empty());
+        when(settingsControllerMock.getCustomizationSettings()).thenReturn(Single.just(customizationSettings));
+
         presenter.attachView(viewMock);
 
         Shot exampleShot = Statics.LIKED_SHOT_NOT_BUCKETED;
@@ -203,7 +211,7 @@ public class ShotsPresenterTest {
         //when
         presenter.addShotToBucket(BUCKET, LIKED_SHOT_NOT_BUCKETED);
         //then
-        verify(viewMock, only()).showBucketAddSuccessAndUpdateShot(any());
+        verify(viewMock, times(1)).showBucketAddSuccess();
     }
 
     @Test
@@ -216,4 +224,19 @@ public class ShotsPresenterTest {
         //then
         verify(viewMock, times(1)).showMessageOnServerError(anyString());
     }
+
+    @Test
+    public void whenShotsDetailsIsEnableAtStart_showDetails() {
+        verify(viewMock, times(1)).onDetailsVisibilityChange(true);
+    }
+
+    @Test
+    public void whenShotsDetailsIsDisableAtStart_notShowDetails() {
+        customizationSettings = new CustomizationSettings(false, true);
+        when(settingsControllerMock.getCustomizationSettings()).thenReturn(Single.just(customizationSettings));
+        
+        presenter.attachView(viewMock);
+        verify(viewMock, times(1)).onDetailsVisibilityChange(false);
+    }
+
 }

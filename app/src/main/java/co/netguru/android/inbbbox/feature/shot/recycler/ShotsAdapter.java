@@ -54,13 +54,13 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
         return items;
     }
 
+    public List<Shot> getItems() {
+        return items;
+    }
+
     public void setItems(List<Shot> items) {
         this.items = items;
         notifyDataSetChanged();
-    }
-
-    public List<Shot> getItems() {
-        return items;
     }
 
     public void addMoreItems(List<Shot> items) {

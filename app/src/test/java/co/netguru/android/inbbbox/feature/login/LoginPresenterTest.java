@@ -96,50 +96,6 @@ public class LoginPresenterTest {
         verify(viewMock, times(1)).disableLoginButton();
     }
 
-
-    @Test
-    public void whenCodeReceivedThen_getTokenUserAndFinish() {
-
-        presenter.handleOauthCodeReceived(CODE);
-
-        verify(userControllerMock, times(1)).requestUser();
-        verify(tokenControllerMock).requestNewToken(CODE);
-        verify(viewMock).showNextScreen();
-        verify(eventLoggerMock).logEventLoginSuccess();
-    }
-
-    @Test
-    public void whenWebViewClose_thenEnableLoginButton() {
-        presenter.handleWebViewClose();
-
-        verify(viewMock, times(1)).enableLoginButton();
-    }
-
-    @Test
-    public void whenKeyNotMatching_thenShowWrongKeyError() {
-
-        presenter.handleKeysNotMatching();
-
-        verify(viewMock, times(1)).showWrongKeyError();
-    }
-
-    @Test
-    public void whenUnknownOauthError_thenShowInvalidOauthUrlError() {
-
-        presenter.handleUnknownOauthError();
-
-        verify(viewMock, times(1)).showInvalidOauthUrlError();
-    }
-
-    @Test
-    public void whenKnownOauthError_thenShowErrorMessage() {
-        String message = "test";
-
-        presenter.handleKnownOauthError(message);
-
-        verify(viewMock, times(1)).showMessageOnServerError(message);
-    }
-
     @Test
     public void whenLogoClickedLessThanThresholdValue_thenDoNothing() {
 
@@ -241,20 +197,6 @@ public class LoginPresenterTest {
 
         verify(viewMock, times(1)).showMessageOnServerError(errorMessage);
         verify(eventLoggerMock).logEventLoginFail();
-    }
-
-    //Error
-    @Test
-    public void whenGettingErrorWhenTokenSaving_thenRunThrowableMessageHanding() {
-        String throwableText = "test";
-        Throwable testThrowable = new Throwable(throwableText);
-        when(tokenControllerMock.requestNewToken(CODE)).thenReturn(Observable.error(testThrowable));
-
-        presenter.handleOauthCodeReceived(CODE);
-
-        verify(viewMock, never()).showNextScreen();
-        verify(viewMock).showMessageOnServerError(anyString());
-        verify(errorControllerMock, times(1)).getThrowableMessage(testThrowable);
     }
 
     @After

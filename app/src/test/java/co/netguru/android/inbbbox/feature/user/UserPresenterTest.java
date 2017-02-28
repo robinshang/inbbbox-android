@@ -53,9 +53,6 @@ public class UserPresenterTest {
     @Mock
     User userMock;
 
-    @Mock
-    UserWithShots userWithShotsMock;
-
     @InjectMocks
     UserShotsPresenter followerDetailsPresenter;
 
@@ -66,7 +63,6 @@ public class UserPresenterTest {
     public void setUp() {
         followerDetailsPresenter.attachView(viewMock);
         when(errorControllerMock.getThrowableMessage(any(Throwable.class))).thenCallRealMethod();
-        when(userWithShotsMock.user()).thenReturn(userMock);
 
         RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
 
@@ -78,9 +74,8 @@ public class UserPresenterTest {
         when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
                 .thenReturn(Observable.empty());
         when(userMock.id()).thenReturn(EXAMPLE_ID);
-        when(userWithShotsMock.shotList()).thenReturn(null);
 
-        followerDetailsPresenter.userDataReceived(userWithShotsMock);
+        followerDetailsPresenter.userDataReceived(userMock);
 
         verify(userShotsControllerMock).getUserShotsList(eq(EXAMPLE_ID), anyInt(), anyInt());
     }
@@ -94,7 +89,7 @@ public class UserPresenterTest {
         when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
                 .thenReturn(Observable.error(throwable));
 
-        followerDetailsPresenter.userDataReceived(exampleUser);
+        followerDetailsPresenter.userDataReceived(userMock);
 
         verify(viewMock).showMessageOnServerError(message);
     }
