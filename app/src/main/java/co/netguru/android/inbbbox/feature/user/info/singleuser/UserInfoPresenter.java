@@ -63,10 +63,10 @@ public class UserInfoPresenter extends MvpNullObjectBasePresenter<UserInfoContra
     }
 
     private void getUserTeams() {
-        teamController.getUserTeams(user.id(), PAGE, TEAMS_PAGE_COUNT)
+        subscriptions.add(teamController.getUserTeams(user.id(), PAGE, TEAMS_PAGE_COUNT)
                 .compose(applySingleIoSchedulers())
                 .subscribe(teams -> getView().showTeams(teams),
-                        throwable -> handleError(throwable, "Error while loading team members"));
+                        throwable -> handleError(throwable, "Error while loading team members")));
     }
 
     private void getUserShots() {

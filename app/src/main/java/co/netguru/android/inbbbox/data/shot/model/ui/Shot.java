@@ -64,7 +64,7 @@ public abstract class Shot implements Parcelable, ShotImage {
     public abstract boolean isLiked();
 
     public static Integer compareShotByPopularity(Shot shot1, Shot shot2) {
-        return -Integer.compare(shot1.likesCount(), shot2.likesCount());
+        return Integer.compare(shot2.likesCount(), shot1.likesCount());
     }
 
     public static Builder update(Shot shot) {

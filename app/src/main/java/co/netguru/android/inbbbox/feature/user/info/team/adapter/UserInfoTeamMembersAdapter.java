@@ -17,6 +17,8 @@ public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerVie
     private static final int VIEW_TYPE_HEADER = 0;
     private static final int VIEW_TYPE_USER = 1;
 
+    private static final int HEADER_ADD_SIZE = 1;
+
     @NonNull
     private List<UserWithShots> userList;
 
@@ -70,7 +72,7 @@ public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemCount() {
-        return userList.size() + 1;
+        return userList.size() + HEADER_ADD_SIZE;
     }
 
     public void setTeam(User team) {

@@ -31,6 +31,7 @@ public class TeamInfoFragment extends BaseMvpFragment
 
     public static final String TAG = TeamInfoFragment.class.getSimpleName();
     private static final String KEY_USER = "key_user";
+    private static final int SHOTS_TO_LOAD_MORE = 5;
 
     @BindView(R.id.user_info_recycler_view)
     RecyclerView recyclerView;
@@ -58,6 +59,12 @@ public class TeamInfoFragment extends BaseMvpFragment
             throw new InterfaceNotImplementedException(e, context.toString(),
                     ShotActionListener.class.getSimpleName());
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        shotActionListener = null;
     }
 
     @Override
@@ -134,7 +141,7 @@ public class TeamInfoFragment extends BaseMvpFragment
     }
 
     private LoadMoreScrollListener getScrollListener() {
-        return new LoadMoreScrollListener(5) {
+        return new LoadMoreScrollListener(SHOTS_TO_LOAD_MORE) {
 
             @Override
             public void requestMoreData() {

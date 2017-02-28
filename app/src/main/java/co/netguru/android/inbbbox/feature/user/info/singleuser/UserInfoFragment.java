@@ -58,6 +58,12 @@ public class UserInfoFragment extends BaseMvpFragment<UserInfoContract.View, Use
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        shotActionListener = null;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
