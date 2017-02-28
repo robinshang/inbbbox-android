@@ -19,6 +19,7 @@ import co.netguru.android.inbbbox.data.like.controllers.LikeShotControllerApi;
 import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
+import co.netguru.android.inbbbox.event.events.ShotUpdatedEvent;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Completable;
 import rx.Observable;
@@ -120,7 +121,7 @@ public class ShotsPresenterTest {
     }
 
     @Test
-    public void whenShotLiked_thenChangeShotStatus() {
+    public void whenShotLiked_thenSendShotUpdatedEvent() {
         when(likeShotControllerApiMock.likeShot(any(Shot.class))).thenReturn(Completable.complete());
         presenter.getShotsFromServer(false);
         Shot expectedShot = Shot.update(Statics.LIKED_SHOT_NOT_BUCKETED)
@@ -134,7 +135,7 @@ public class ShotsPresenterTest {
 
         presenter.likeShot(expectedShot);
 
-        verify(viewMock, times(1)).changeShotLikeStatus(any(Shot.class));
+        verify(rxBusMock).send(any(ShotUpdatedEvent.class));
     }
 
     @Test
@@ -202,7 +203,7 @@ public class ShotsPresenterTest {
         //when
         presenter.addShotToBucket(BUCKET, LIKED_SHOT_NOT_BUCKETED);
         //then
-        verify(viewMock, only()).showBucketAddSuccess();
+        verify(viewMock, only()).showBucketAddSuccessAndUpdateShot(any());
     }
 
     @Test

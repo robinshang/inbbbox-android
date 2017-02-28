@@ -21,15 +21,13 @@ interface ShotsContract {
 
         void hideLoadingIndicator();
 
-        void changeShotLikeStatus(Shot shot);
-
         void closeFabMenu();
 
         void showShotDetails(Shot shot);
 
         void showBucketChoosing(Shot shot);
 
-        void showBucketAddSuccess();
+        void showBucketAddSuccessAndUpdateShot(Shot shot);
 
         void showShotRemoveFromBucketSuccess();
 

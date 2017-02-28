@@ -66,6 +66,8 @@ public interface AnalyticsEventLogger {
 
     void logEventAppbarList();
 
+    void logEventAppbarFollow(boolean following);
+
     void logEventAppbarGrid();
 
     void logEventAppbarDeleteBucket();
@@ -112,15 +114,15 @@ public interface AnalyticsEventLogger {
 
     void logEventApiRequestsRemaining(int requestsRemaining);
 
-    void logEventApiFollow();
+    void logEventApiFollow(int requestsRemaining);
 
-    void logEventApiLike();
+    void logEventApiLike(int requestsRemaining);
 
-    void logEventApiAddToBucket();
+    void logEventApiAddToBucket(int requestsRemaining);
 
-    void logEventApiComment();
+    void logEventApiComment(int requestsRemaining);
 
-    void logEventApiOther();
+    void logEventApiOther(int requestsRemaining);
 
     /**
      * Settings

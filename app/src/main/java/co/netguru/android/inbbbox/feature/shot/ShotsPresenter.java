@@ -147,7 +147,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         subscriptions.add(
                 bucketsController.addShotToBucket(bucket.id(), shot)
                         .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                        .subscribe(getView()::showBucketAddSuccess,
+                        .subscribe(() -> onShotBucketedCompleted(shot),
                                 throwable -> handleError(throwable, "Error while adding shot to bucket"))
         );
     }
@@ -191,13 +191,26 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         }
     }
 
-    private void onShotLikeCompleted(Shot shot) {
-        Timber.d("Shot liked : %s", shot);
-        getView().changeShotLikeStatus(changeShotLikeStatus(shot));
+    private void onShotBucketedCompleted(Shot shot) {
+        Timber.d("Shots bucketed: %s", shot);
+        getView().showBucketAddSuccessAndUpdateShot(updateShotBucketedStatus(shot));
     }
 
-    private Shot changeShotLikeStatus(Shot shot) {
+    private void onShotLikeCompleted(Shot shot) {
+        Timber.d("Shot liked : %s", shot);
+        rxBus.send(new ShotUpdatedEvent(updateShotLikeStatus(shot)));
+    }
+
+    private Shot updateShotBucketedStatus(Shot shot) {
         return Shot.update(shot)
+                .isBucketed(true)
+                .bucketCount(shot.likesCount() + 1)
+                .build();
+    }
+
+    private Shot updateShotLikeStatus(Shot shot) {
+        return Shot.update(shot)
+                .likesCount(shot.likesCount() + 1)
                 .isLiked(true)
                 .build();
     }
