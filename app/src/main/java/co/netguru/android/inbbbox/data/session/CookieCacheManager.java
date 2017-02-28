@@ -17,15 +17,13 @@ public class CookieCacheManager {
 
     @Inject
     CookieCacheManager(Context context) {
-
         this.context = context;
     }
 
     public Completable clearCache() {
-        return Completable.fromCallable(() -> {
+        return Completable.fromAction(() -> {
             Timber.d("Cookies cache clearing");
             clearCacheFolder();
-            return null;
         });
     }
 
