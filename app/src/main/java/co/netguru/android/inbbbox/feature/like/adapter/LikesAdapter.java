@@ -14,6 +14,8 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 
+import static co.netguru.android.inbbbox.Constants.UNDEFINED;
+
 @FragmentScope
 public class LikesAdapter extends RecyclerView.Adapter<BaseViewHolder<Shot>> {
 
@@ -75,23 +77,36 @@ public class LikesAdapter extends RecyclerView.Adapter<BaseViewHolder<Shot>> {
     }
 
     public void addLikeOnTop(Shot likedShot) {
-        this.likeList.add(0, likedShot);
-        notifyItemRangeChanged(0, 1);
+        final int shotPosition = getShotIndexIfExists(likedShot);
+        if (shotPosition != UNDEFINED) {
+            this.likeList.set(shotPosition, likedShot);
+            notifyItemChanged(shotPosition);
+        } else {
+            this.likeList.add(0, likedShot);
+            notifyItemRangeChanged(0, 1);
+        }
     }
 
     public void removeLike(Shot unlikedShot) {
-        for (int i = 0; i < likeList.size(); i++) {
-            Shot shot = likeList.get(i);
-            if (shot.id() == unlikedShot.id()) {
-                likeList.remove(i);
-                notifyItemRemoved(i);
-                break;
-            }
+        final int shotPosition = getShotIndexIfExists(unlikedShot);
+        if (shotPosition != UNDEFINED) {
+            likeList.remove(shotPosition);
+            notifyItemRemoved(shotPosition);
         }
     }
 
     public void setGridMode(boolean isGridMode) {
         this.isGridMode = isGridMode;
         notifyDataSetChanged();
+    }
+
+    private int getShotIndexIfExists(Shot likedShot) {
+        for (int i = 0; i < likeList.size(); i++) {
+            final Shot currentShot = likeList.get(i);
+            if (currentShot.id() == likedShot.id()) {
+                return i;
+            }
+        }
+        return UNDEFINED;
     }
 }
