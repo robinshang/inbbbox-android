@@ -30,6 +30,7 @@ import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applyCompletableIoSchedulers;
+import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applySingleIoSchedulers;
 
 @FragmentScope
 public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.View>
@@ -97,7 +98,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     private void initShotsView() {
         subscriptions.add(settingsController.getCustomizationSettings()
-                .compose(RxTransformerUtil.applySingleIoSchedulers())
+                .compose(applySingleIoSchedulers())
                 .subscribe(this::showShotsDetail,
                         throwable -> Timber.e(throwable, "Error getting show details state.")));
     }
