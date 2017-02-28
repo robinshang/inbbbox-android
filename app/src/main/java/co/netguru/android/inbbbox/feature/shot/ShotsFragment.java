@@ -280,6 +280,11 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     @Override
+    public void showFirstShot() {
+        shotsRecyclerView.scrollToPosition(0);
+    }
+
+    @Override
     public void showShotDetails(Shot shot) {
         ShotDetailsRequest request = ShotDetailsRequest.builder()
                 .detailsType(ShotDetailsType.DEFAULT)
