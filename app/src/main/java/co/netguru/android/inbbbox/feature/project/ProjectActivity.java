@@ -46,6 +46,17 @@ public class ProjectActivity extends BaseActivity implements ProjectShotClickLis
         }
     }
 
+    @Override
+    public void onShotDetailsRequest(Shot shot, List<Shot> allShots) {
+        ShotDetailsRequest request = ShotDetailsRequest.builder()
+                .detailsType(ShotDetailsType.DEFAULT)
+                .id(shot.id())
+                .build();
+
+        final Fragment fragment = ShotDetailsFragment.newInstance(shot, allShots, request);
+        showBottomSheet(fragment, ShotDetailsFragment.TAG);
+    }
+
     private void initializeFragment() {
         ProjectWithShots projectWithShots = getIntent().getParcelableExtra(KEY_PROJECT);
 
@@ -69,14 +80,4 @@ public class ProjectActivity extends BaseActivity implements ProjectShotClickLis
         }
     }
 
-    @Override
-    public void onShotDetailsRequest(Shot shot, List<Shot> allShots) {
-        ShotDetailsRequest request = ShotDetailsRequest.builder()
-                .detailsType(ShotDetailsType.DEFAULT)
-                .id(shot.id())
-                .build();
-
-        final Fragment fragment = ShotDetailsFragment.newInstance(shot, allShots, request);
-        showBottomSheet(fragment, ShotDetailsFragment.TAG);
-    }
 }

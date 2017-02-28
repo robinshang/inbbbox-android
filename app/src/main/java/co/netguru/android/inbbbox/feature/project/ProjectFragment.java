@@ -28,7 +28,6 @@ import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.shared.shotsadapter.SharedShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
-import timber.log.Timber;
 
 @FragmentScope
 public class ProjectFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
@@ -81,15 +80,6 @@ public class ProjectFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
         initRefreshLayout();
     }
 
-    private void initRecycler() {
-        gridLayoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
-        linearLayoutManager = new LinearLayoutManager(getContext());
-        shotsAdapter = new SharedShotsAdapter(getPresenter()::onShotClick);
-        recyclerView.setAdapter(shotsAdapter);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addOnScrollListener(getScrollListener());
-    }
-
     @Override
     protected void changeGridMode(boolean isGridMode) {
         recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
@@ -108,7 +98,6 @@ public class ProjectFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
 
     @Override
     public void setData(List<Shot> data) {
-        Timber.d("setData");
         shotsAdapter.setShots(data);
     }
 
@@ -134,7 +123,6 @@ public class ProjectFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
 
     @Override
     public void hideProgressBar() {
-        Timber.d("hideProgressBar");
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -161,5 +149,14 @@ public class ProjectFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
                 presenter.loadMoreShots();
             }
         };
+    }
+
+    private void initRecycler() {
+        gridLayoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        shotsAdapter = new SharedShotsAdapter(getPresenter()::onShotClick);
+        recyclerView.setAdapter(shotsAdapter);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addOnScrollListener(getScrollListener());
     }
 }

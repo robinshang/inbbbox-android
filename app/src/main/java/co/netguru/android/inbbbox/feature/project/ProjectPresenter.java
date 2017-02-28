@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.feature.project;
 
+import android.support.annotation.NonNull;
+
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -17,6 +20,7 @@ import rx.subscriptions.Subscriptions;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 
+@FragmentScope
 public class ProjectPresenter extends MvpNullObjectBasePresenter<ProjectContract.View>
         implements ProjectContract.Presenter {
 
@@ -26,13 +30,12 @@ public class ProjectPresenter extends MvpNullObjectBasePresenter<ProjectContract
     private final ProjectsController projectsController;
     private final ErrorController errorController;
     private final ProjectWithShots projectWithShots;
-
+    @NonNull
+    Subscription refreshSubscription;
+    @NonNull
+    Subscription loadMoreSubscription;
     private int pageNumber = 1;
-    private boolean hasMore;
-
-    private Subscription refreshSubscription;
-
-    private Subscription loadMoreSubscription;
+    private boolean hasMore = true;
 
     @Inject
     public ProjectPresenter(ProjectWithShots projectWithShots,
