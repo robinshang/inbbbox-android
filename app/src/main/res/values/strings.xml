@@ -146,4 +146,9 @@
     <string name="likes_icon_content_description" translatable="false">Likes icon</string>
     <string name="error_no_internet">Couldn\'t connect to the Internet. Please check your connection and try again</string>
     <string name="dont_follow">Don\'t follow &amp; skip</string>
+    <string name="most_popular">Most popular</string>
+    <string name="on_teams">On teams</string>
+    <string name="followers">followers</string>
+    <string name="shots">shots</string>
+    <string name="following">following</string>
 </resources>

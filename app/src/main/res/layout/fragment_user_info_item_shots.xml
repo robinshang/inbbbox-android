@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/text_header_shots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/user_info_shots_header_margin"
+        android:layout_marginTop="@dimen/user_info_shots_header_margin"
+        android:text="@string/most_popular"
+        android:textColor="@color/textDark"
+        android:textSize="@dimen/user_info_shots_header_textSize"
+        android:textStyle="bold" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/user_shots_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/user_shots_recyclerView_height"
+        android:layout_marginStart="@dimen/user_shots_marginStart"
+        android:layout_marginTop="@dimen/user_shots_marginTop" />
+</LinearLayout>

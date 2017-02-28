@@ -28,6 +28,14 @@ public abstract class User implements Parcelable {
 
     public abstract String type();
 
+    public abstract int followersCount();
+
+    public abstract int followingsCount();
+
+    public abstract String bio();
+
+    public abstract String location();
+
     public static User.Builder builder() {
         return new AutoValue_User.Builder();
     }
@@ -46,6 +54,14 @@ public abstract class User implements Parcelable {
 
         public abstract User.Builder type(String type);
 
+        public abstract User.Builder followersCount(int followersCount);
+
+        public abstract User.Builder followingsCount(int followingsCount);
+
+        public abstract User.Builder bio(String bio);
+
+        public abstract User.Builder location(String location);
+
         public abstract User build();
     }
 
@@ -57,6 +73,10 @@ public abstract class User implements Parcelable {
                 .username(entity.username())
                 .shotsCount(entity.shotsCount())
                 .type(entity.type())
+                .followersCount(entity.followersCount())
+                .followingsCount(entity.followingsCount())
+                .bio(entity.bio())
+                .location(entity.location() == null ? "Unknown" : entity.location())
                 .build();
     }
 
