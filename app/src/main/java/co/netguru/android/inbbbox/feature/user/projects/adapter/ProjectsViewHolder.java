@@ -15,7 +15,6 @@ import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import co.netguru.android.inbbbox.feature.user.projects.adapter.shots.ProjectShotsAdapter;
-import timber.log.Timber;
 
 public class ProjectsViewHolder extends BaseViewHolder<ProjectWithShots> {
 

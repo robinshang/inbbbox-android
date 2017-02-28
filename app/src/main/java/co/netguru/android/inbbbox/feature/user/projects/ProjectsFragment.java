@@ -24,10 +24,9 @@ import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
 import co.netguru.android.inbbbox.feature.project.ProjectActivity;
-import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
-import co.netguru.android.inbbbox.feature.user.projects.adapter.ProjectClickListener;
-import co.netguru.android.inbbbox.feature.user.projects.adapter.ProjectsAdapter;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
+import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.user.projects.adapter.ProjectsAdapter;
 
 public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<ProjectWithShots>,
         ProjectsContract.View, ProjectsContract.Presenter> implements ProjectsContract.View,

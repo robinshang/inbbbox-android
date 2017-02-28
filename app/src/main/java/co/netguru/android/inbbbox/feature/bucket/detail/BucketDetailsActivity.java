@@ -17,7 +17,6 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
-import co.netguru.android.inbbbox.feature.shared.shotsadapter.SharedShotViewHolder;
 import co.netguru.android.inbbbox.feature.shared.base.BaseActivity;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;

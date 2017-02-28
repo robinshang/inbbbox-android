@@ -40,9 +40,8 @@ import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
-import co.netguru.android.inbbbox.feature.shared.shotsadapter.SharedShotViewHolder;
-import co.netguru.android.inbbbox.feature.shared.shotsadapter.SharedShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.shared.shotsadapter.SharedShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 
 public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
@@ -58,17 +57,12 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     private static final String BUCKET_WITH_SHOTS_ARG_KEY = "bucket_with_shots_arg_key";
     private static final String SHOTS_PER_PAGE_ARG_KEY = "shots_per_page_arg_key";
     private static final int SPAN_COUNT = 2;
-
-    private GridLayoutManager gridLayoutManager;
-    private LinearLayoutManager linearLayoutManager;
-
     @BindDrawable(R.drawable.ic_buckets_empty_state)
     Drawable emptyTextDrawable;
     @BindString(R.string.fragment_bucket_is_empty_text_before_icon)
     String emptyStringBeforeIcon;
     @BindString(R.string.fragment_bucket_is_empty_text_after_icon)
     String emptyStringAfterIcon;
-
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.contentView)
@@ -77,10 +71,10 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     ScrollView emptyView;
     @BindView(R.id.fragment_buckets_empty_text)
     TextView emptyViewText;
-
     @Inject
     AnalyticsEventLogger analyticsEventLogger;
-
+    private GridLayoutManager gridLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
     private Snackbar loadingMoreSnackbar;
     private SharedShotsAdapter bucketShotsAdapter;
     private BucketsDetailsComponent component;
