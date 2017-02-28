@@ -16,7 +16,8 @@ import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.feature.bucket.detail.adapter.BucketShotViewHolder;
+import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
+import co.netguru.android.inbbbox.feature.shared.shotsadapter.SharedShotViewHolder;
 import co.netguru.android.inbbbox.feature.shared.base.BaseActivity;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
@@ -24,7 +25,7 @@ import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
 
 
 public class BucketDetailsActivity extends BaseActivity
-        implements BucketShotViewHolder.OnShotInBucketClickListener {
+        implements ShotClickListener {
 
     private static final String BUCKET_WITH_SHOTS_KEY = "bucket_with_shots_key";
     private static final String SHOTS_PER_PAGE_KEY = "shots_per_page_key";

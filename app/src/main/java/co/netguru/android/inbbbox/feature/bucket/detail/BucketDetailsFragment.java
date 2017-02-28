@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.bucket.detail;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -40,11 +39,11 @@ import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedExcep
 import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.feature.bucket.detail.adapter.BucketShotViewHolder;
-import co.netguru.android.inbbbox.feature.bucket.detail.adapter.BucketShotsAdapter;
+import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
+import co.netguru.android.inbbbox.feature.shared.shotsadapter.SharedShotViewHolder;
+import co.netguru.android.inbbbox.feature.shared.shotsadapter.SharedShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
-
 
 public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
         BucketDetailsContract.View, BucketDetailsContract.Presenter>
@@ -83,10 +82,10 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     AnalyticsEventLogger analyticsEventLogger;
 
     private Snackbar loadingMoreSnackbar;
-    private BucketShotsAdapter bucketShotsAdapter;
+    private SharedShotsAdapter bucketShotsAdapter;
     private BucketsDetailsComponent component;
 
-    private BucketShotViewHolder.OnShotInBucketClickListener shotInBucketClickListener;
+    private ShotClickListener shotClickListener;
 
     public static BucketDetailsFragment newInstance(BucketWithShots bucketWithShots, int perPage) {
 
@@ -103,10 +102,10 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            shotInBucketClickListener =
-                    (BucketShotViewHolder.OnShotInBucketClickListener) context;
+            shotClickListener =
+                    (ShotClickListener) context;
         } catch (ClassCastException e) {
-            throw new InterfaceNotImplementedException(e, context.toString(), BucketShotViewHolder.OnShotInBucketClickListener.class.getSimpleName());
+            throw new InterfaceNotImplementedException(e, context.toString(), ShotClickListener.class.getSimpleName());
         }
     }
 
@@ -156,7 +155,7 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
 
     @Override
     public void setData(List<Shot> data) {
-        bucketShotsAdapter.setNewShots(data);
+        bucketShotsAdapter.setShots(data);
     }
 
     @Override
@@ -253,13 +252,12 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     @Override
     public void showMessageOnServerError(String errorText) {
         showTextOnSnackbar(errorText);
-
     }
 
     private void setupRecyclerView() {
         gridLayoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
         linearLayoutManager = new LinearLayoutManager(getContext());
-        bucketShotsAdapter = new BucketShotsAdapter(shotInBucketClickListener);
+        bucketShotsAdapter = new SharedShotsAdapter(shotClickListener);
         recyclerView.setAdapter(bucketShotsAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(

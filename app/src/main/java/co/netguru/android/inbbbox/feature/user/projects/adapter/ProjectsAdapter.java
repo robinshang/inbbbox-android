@@ -14,17 +14,20 @@ import co.netguru.android.inbbbox.feature.user.projects.ProjectsPresenter;
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsViewHolder> {
 
     private final OnGetMoreProjectShotsListener onGetMoreProjectShotsListener;
+    private final ProjectClickListener projectClickListener;
 
     private List<ProjectWithShots> projectList;
 
-    public ProjectsAdapter(@NonNull OnGetMoreProjectShotsListener onGetMoreProjectShotsListener) {
+    public ProjectsAdapter(@NonNull OnGetMoreProjectShotsListener onGetMoreProjectShotsListener,
+                           @NonNull ProjectClickListener projectClickListener) {
         this.onGetMoreProjectShotsListener = onGetMoreProjectShotsListener;
+        this.projectClickListener = projectClickListener;
         projectList = Collections.emptyList();
     }
 
     @Override
     public ProjectsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ProjectsViewHolder(parent, onGetMoreProjectShotsListener);
+        return new ProjectsViewHolder(parent, onGetMoreProjectShotsListener, projectClickListener);
     }
 
     @Override
