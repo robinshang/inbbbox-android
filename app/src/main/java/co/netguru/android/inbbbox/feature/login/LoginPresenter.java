@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.feature.login;
 
-import android.support.annotation.NonNull;
-
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
@@ -16,8 +14,6 @@ import co.netguru.android.inbbbox.data.session.controllers.TokenController;
 import co.netguru.android.inbbbox.data.session.controllers.TokenParametersController;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
-
-import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 
 @ActivityScope
 public final class LoginPresenter
@@ -68,28 +64,20 @@ public final class LoginPresenter
     }
 
     @Override
-    public void handleKeysNotMatching() {
-        getView().showWrongKeyError();
+    public void loginWithGuestClicked() {
+        compositeSubscription.add(
+                tokenParametersController.getUserGuestToken()
+                        .flatMapCompletable(apiTokenController::saveToken)
+                        .andThen(userController.enableGuestMode())
+                        .subscribe(this::handleGuestLogin,
+                                throwable -> handleError(throwable,
+                                        "Error while getting user guest token")));
     }
 
-    @Override
-    public void handleWebViewClose() {
-        getView().enableLoginButton();
-    }
-
-    @Override
-    public void handleOauthCodeReceived(@NonNull String receivedCode) {
-        requestTokenAndLoadUserData(receivedCode);
-    }
-
-    @Override
-    public void handleUnknownOauthError() {
-        getView().showInvalidOauthUrlError();
-    }
-
-    @Override
-    public void handleKnownOauthError(@NonNull String oauthErrorMessage) {
-        getView().showMessageOnServerError(oauthErrorMessage);
+    private void handleGuestLogin() {
+        getView().initializeUserMode(UserModeType.GUEST_USER_MODE);
+        getView().showNextScreen();
+        analyticsEventLogger.logEventLoginGuest();
     }
 
     @Override
@@ -107,38 +95,4 @@ public final class LoginPresenter
         }
     }
 
-    @Override
-    public void loginWithGuestClicked() {
-        compositeSubscription.add(
-                tokenParametersController.getUserGuestToken()
-                        .flatMapCompletable(apiTokenController::saveToken)
-                        .andThen(userController.enableGuestMode())
-                        .subscribe(this::handleGuestLogin,
-                                throwable -> handleError(throwable,
-                                        "Error while getting user guest token")));
-    }
-
-    private void handleGuestLogin() {
-        getView().initializeUserMode(UserModeType.GUEST_USER_MODE);
-        getView().showNextScreen();
-        analyticsEventLogger.logEventLoginGuest();
-    }
-
-    private void requestTokenAndLoadUserData(String code) {
-        compositeSubscription.add(
-                apiTokenController.requestNewToken(code)
-                        .flatMap(token -> userController.requestUser())
-                        .compose(androidIO())
-                        .toCompletable()
-                        .andThen(userController.disableGuestMode())
-                        .subscribe(this::handleOnlineUserLogin,
-                                throwable -> handleError(throwable,
-                                        "Error while requesting new token")));
-    }
-
-    private void handleOnlineUserLogin() {
-        getView().initializeUserMode(UserModeType.ONLINE_USER_MODE);
-        getView().showNextScreen();
-        analyticsEventLogger.logEventLoginSuccess();
-    }
 }
