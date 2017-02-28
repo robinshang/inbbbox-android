@@ -16,6 +16,8 @@ import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
+import co.netguru.android.inbbbox.data.settings.SettingsController;
+import co.netguru.android.inbbbox.data.settings.model.CustomizationSettings;
 import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
@@ -28,6 +30,7 @@ import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applyCompletableIoSchedulers;
+import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applySingleIoSchedulers;
 
 @FragmentScope
 public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.View>
@@ -43,6 +46,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private final FollowersController followersController;
     private final CompositeSubscription subscriptions;
     private final RxBus rxBus;
+    private final SettingsController settingsController;
 
     @NonNull
     private Subscription refreshSubscription;
@@ -58,7 +62,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     @Inject
     ShotsPresenter(ShotsController shotsController, LikeShotController likeShotController,
                    BucketsController bucketsController, ErrorController errorController,
-                   FollowersController followersController, RxBus rxBus) {
+                   FollowersController followersController, RxBus rxBus, SettingsController settingsController) {
 
         this.shotsController = shotsController;
         this.likeShotController = likeShotController;
@@ -66,6 +70,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         this.errorController = errorController;
         this.followersController = followersController;
         this.rxBus = rxBus;
+        this.settingsController = settingsController;
         subscriptions = new CompositeSubscription();
         refreshSubscription = Subscriptions.unsubscribed();
         loadMoreSubscription = Subscriptions.unsubscribed();
@@ -77,6 +82,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     public void attachView(ShotsContract.View view) {
         super.attachView(view);
         setupRxBus();
+        initShotsView();
     }
 
     @Override
@@ -88,6 +94,17 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
             busSubscription.unsubscribe();
             busUpdateShotSubscription.unsubscribe();
         }
+    }
+
+    private void initShotsView() {
+        subscriptions.add(settingsController.getCustomizationSettings()
+                .compose(applySingleIoSchedulers())
+                .subscribe(this::showShotsDetail,
+                        throwable -> Timber.e(throwable, "Error getting show details state.")));
+    }
+
+    private void showShotsDetail(CustomizationSettings customizationSettings) {
+        getView().onDetailsVisibilityChange(customizationSettings.isShowDetails());
     }
 
     @Override
@@ -146,7 +163,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         subscriptions.add(
                 bucketsController.addShotToBucket(bucket.id(), shot)
                         .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                        .subscribe(getView()::showBucketAddSuccess,
+                        .subscribe(() -> onShotBucketedCompleted(shot),
                                 throwable -> handleError(throwable, "Error while adding shot to bucket"))
         );
     }
@@ -190,13 +207,26 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         }
     }
 
-    private void onShotLikeCompleted(Shot shot) {
-        Timber.d("Shot liked : %s", shot);
-        getView().changeShotLikeStatus(changeShotLikeStatus(shot));
+    private void onShotBucketedCompleted(Shot shot) {
+        Timber.d("Shots bucketed: %s", shot);
+        getView().showBucketAddSuccessAndUpdateShot(updateShotBucketedStatus(shot));
     }
 
-    private Shot changeShotLikeStatus(Shot shot) {
+    private void onShotLikeCompleted(Shot shot) {
+        Timber.d("Shot liked : %s", shot);
+        rxBus.send(new ShotUpdatedEvent(updateShotLikeStatus(shot)));
+    }
+
+    private Shot updateShotBucketedStatus(Shot shot) {
         return Shot.update(shot)
+                .isBucketed(true)
+                .bucketCount(shot.likesCount() + 1)
+                .build();
+    }
+
+    private Shot updateShotLikeStatus(Shot shot) {
+        return Shot.update(shot)
+                .likesCount(shot.likesCount() + 1)
                 .isLiked(true)
                 .build();
     }

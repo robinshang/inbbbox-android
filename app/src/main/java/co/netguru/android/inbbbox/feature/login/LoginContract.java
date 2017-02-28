@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.feature.login;
 
-import android.support.annotation.NonNull;
-
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -30,17 +28,8 @@ public interface LoginContract {
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
+
         void showLoginView();
-
-        void handleKeysNotMatching();
-
-        void handleWebViewClose();
-
-        void handleOauthCodeReceived(@NonNull String receivedCode);
-
-        void handleUnknownOauthError();
-
-        void handleKnownOauthError(@NonNull String oauthErrorMessage);
 
         void checkGuestMode();
 

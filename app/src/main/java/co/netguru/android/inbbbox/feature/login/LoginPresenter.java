@@ -1,13 +1,12 @@
 package co.netguru.android.inbbbox.feature.login;
 
-import android.support.annotation.NonNull;
-
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
@@ -15,8 +14,6 @@ import co.netguru.android.inbbbox.data.session.controllers.TokenController;
 import co.netguru.android.inbbbox.data.session.controllers.TokenParametersController;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
-
-import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 
 @ActivityScope
 public final class LoginPresenter
@@ -30,17 +27,20 @@ public final class LoginPresenter
     private final ErrorController errorController;
     private final UserController userController;
     private final CompositeSubscription compositeSubscription;
+    private final AnalyticsEventLogger analyticsEventLogger;
     private int guestModeCounter = 0;
 
     @Inject
     LoginPresenter(TokenParametersController oauthUrlController,
                    TokenController apiTokenController,
                    ErrorController errorController,
-                   UserController userController) {
+                   UserController userController,
+                   AnalyticsEventLogger analyticsEventLogger) {
         this.tokenParametersController = oauthUrlController;
         this.apiTokenController = apiTokenController;
         this.errorController = errorController;
         this.userController = userController;
+        this.analyticsEventLogger = analyticsEventLogger;
         compositeSubscription = new CompositeSubscription();
     }
 
@@ -64,46 +64,6 @@ public final class LoginPresenter
     }
 
     @Override
-    public void handleKeysNotMatching() {
-        getView().showWrongKeyError();
-    }
-
-    @Override
-    public void handleWebViewClose() {
-        getView().enableLoginButton();
-    }
-
-    @Override
-    public void handleOauthCodeReceived(@NonNull String receivedCode) {
-        requestTokenAndLoadUserData(receivedCode);
-    }
-
-    @Override
-    public void handleUnknownOauthError() {
-        getView().showInvalidOauthUrlError();
-    }
-
-    @Override
-    public void handleKnownOauthError(@NonNull String oauthErrorMessage) {
-        getView().showMessageOnServerError(oauthErrorMessage);
-    }
-
-    @Override
-    public void handleError(Throwable throwable, String errorText) {
-        Timber.e(throwable, errorText);
-        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
-
-    }
-
-    @Override
-    public void checkGuestMode() {
-        guestModeCounter++;
-        if (guestModeCounter == GUEST_MODE_ACTIVATION_THRESHOLD) {
-            getView().showGuestModeLoginButton();
-        }
-    }
-
-    @Override
     public void loginWithGuestClicked() {
         compositeSubscription.add(
                 tokenParametersController.getUserGuestToken()
@@ -117,22 +77,22 @@ public final class LoginPresenter
     private void handleGuestLogin() {
         getView().initializeUserMode(UserModeType.GUEST_USER_MODE);
         getView().showNextScreen();
+        analyticsEventLogger.logEventLoginGuest();
     }
 
-    private void requestTokenAndLoadUserData(String code) {
-        compositeSubscription.add(
-                apiTokenController.requestNewToken(code)
-                        .flatMap(token -> userController.requestUser())
-                        .compose(androidIO())
-                        .toCompletable()
-                        .andThen(userController.disableGuestMode())
-                        .subscribe(this::handleOnlineUserLogin,
-                                throwable -> handleError(throwable,
-                                        "Error while requesting new token")));
+    @Override
+    public void handleError(Throwable throwable, String errorText) {
+        Timber.e(throwable, errorText);
+        getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
+        analyticsEventLogger.logEventLoginFail();
     }
 
-    private void handleOnlineUserLogin() {
-        getView().initializeUserMode(UserModeType.ONLINE_USER_MODE);
-        getView().showNextScreen();
+    @Override
+    public void checkGuestMode() {
+        guestModeCounter++;
+        if (guestModeCounter == GUEST_MODE_ACTIVATION_THRESHOLD) {
+            getView().showGuestModeLoginButton();
+        }
     }
+
 }

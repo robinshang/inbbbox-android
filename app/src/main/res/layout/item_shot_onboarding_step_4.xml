@@ -61,15 +61,11 @@
 
         </FrameLayout>
 
-        <View
-            android:id="@+id/stub_view"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-
         <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
             android:id="@+id/iv_shot_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:padding="@dimen/shot_background_padding" />
         <!-- Surface View End -->
     </co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout>

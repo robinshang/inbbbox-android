@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 
+import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.utils.InputUtil;
 
 public class HidingBottomSheetActivityDelegate implements HidingBottomSheetBearer {
@@ -79,6 +80,9 @@ public class HidingBottomSheetActivityDelegate implements HidingBottomSheetBeare
             fragmentManager.beginTransaction()
                     .remove(fragmentToRemove)
                     .commit();
+            App.getAppComponent(fragmentToRemove.getContext())
+                    .analyticsEventLogger()
+                    .logEventShotDetailsViewCollapsed();
         }
     }
 }

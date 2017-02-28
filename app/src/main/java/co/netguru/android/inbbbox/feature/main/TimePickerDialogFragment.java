@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.text.format.DateFormat;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
@@ -44,11 +45,13 @@ public class TimePickerDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new TimePickerDialog(getContext(),
+        final Context context = getContext();
+        return new TimePickerDialog(context,
                 R.style.TimePickerDialog,
                 (view, hourOfDay, minute) -> onTimePickedListener.timePicked(hourOfDay, minute),
                 getArguments().getInt(START_HOUR),
-                getArguments().getInt(START_MINUTE), false);
+                getArguments().getInt(START_MINUTE),
+                DateFormat.is24HourFormat(context));
     }
 
     @FunctionalInterface

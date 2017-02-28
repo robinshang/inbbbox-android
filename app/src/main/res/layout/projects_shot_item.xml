@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/projects_shot_item_shot_width"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/projects_shot_item_shot_padding"
+    android:paddingEnd="@dimen/projects_shot_item_shot_padding"
+    android:paddingStart="@dimen/projects_shot_item_shot_padding">
+
+    <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
+        android:id="@+id/project_shot_item_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+</FrameLayout>

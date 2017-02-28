@@ -16,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.UUID;
 
 import co.netguru.android.inbbbox.Statics;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
 import co.netguru.android.inbbbox.data.session.controllers.TokenController;
@@ -58,6 +59,9 @@ public class LoginPresenterTest {
     @Mock
     private UserController userControllerMock;
 
+    @Mock
+    private AnalyticsEventLogger eventLoggerMock;
+
     private static final String URL_STRING = "www.google.com";
     private static final UUID UUID_STATIC = UUID.randomUUID();
     private static final String CODE = "testCode";
@@ -90,49 +94,6 @@ public class LoginPresenterTest {
         verify(tokenParametersControllerMock, times(1)).getOauthAuthorizeUrlAndUuidPair();
         verify(viewMock, times((1))).openAuthWebViewFragment(URL_STRING, UUID_STATIC.toString());
         verify(viewMock, times(1)).disableLoginButton();
-    }
-
-
-    @Test
-    public void whenCodeReceivedThen_getTokenUserAndFinish() {
-
-        presenter.handleOauthCodeReceived(CODE);
-
-        verify(userControllerMock, times(1)).requestUser();
-        verify(tokenControllerMock).requestNewToken(CODE);
-        verify(viewMock).showNextScreen();
-    }
-
-    @Test
-    public void whenWebViewClose_thenEnableLoginButton() {
-        presenter.handleWebViewClose();
-
-        verify(viewMock, times(1)).enableLoginButton();
-    }
-
-    @Test
-    public void whenKeyNotMatching_thenShowWrongKeyError() {
-
-        presenter.handleKeysNotMatching();
-
-        verify(viewMock, times(1)).showWrongKeyError();
-    }
-
-    @Test
-    public void whenUnknownOauthError_thenShowInvalidOauthUrlError() {
-
-        presenter.handleUnknownOauthError();
-
-        verify(viewMock, times(1)).showInvalidOauthUrlError();
-    }
-
-    @Test
-    public void whenKnownOauthError_thenShowErrorMessage() {
-        String message = "test";
-
-        presenter.handleKnownOauthError(message);
-
-        verify(viewMock, times(1)).showMessageOnServerError(message);
     }
 
     @Test
@@ -217,6 +178,7 @@ public class LoginPresenterTest {
         presenter.loginWithGuestClicked();
 
         verify(viewMock, times(1)).showNextScreen();
+        verify(eventLoggerMock).logEventLoginGuest();
     }
 
     @Test
@@ -234,20 +196,7 @@ public class LoginPresenterTest {
         presenter.loginWithGuestClicked();
 
         verify(viewMock, times(1)).showMessageOnServerError(errorMessage);
-    }
-
-    //Error
-    @Test
-    public void whenGettingErrorWhenTokenSaving_thenRunThrowableMessageHanding() {
-        String throwableText = "test";
-        Throwable testThrowable = new Throwable(throwableText);
-        when(tokenControllerMock.requestNewToken(CODE)).thenReturn(Observable.error(testThrowable));
-
-        presenter.handleOauthCodeReceived(CODE);
-
-        verify(viewMock, never()).showNextScreen();
-        verify(viewMock).showMessageOnServerError(anyString());
-        verify(errorControllerMock, times(1)).getThrowableMessage(testThrowable);
+        verify(eventLoggerMock).logEventLoginFail();
     }
 
     @After

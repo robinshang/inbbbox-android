@@ -8,6 +8,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen;
 import co.netguru.android.inbbbox.app.usercomponent.UserComponent;
 import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
 import co.netguru.android.inbbbox.app.usercomponent.UserModule;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsModule;
 
 public class App extends Application {
 
@@ -41,6 +42,7 @@ public class App extends Application {
         this.appComponent = DaggerApplicationComponent
                 .builder()
                 .applicationModule(new ApplicationModule(this))
+                .analyticsModule(new AnalyticsModule(this))
                 .build();
     }
 

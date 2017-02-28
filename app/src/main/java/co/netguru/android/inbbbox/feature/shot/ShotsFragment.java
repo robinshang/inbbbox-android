@@ -23,10 +23,13 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -76,9 +79,15 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     private Animation shadowAnimation;
     private AnimationSet ballAnimation;
 
-    private ShotsAdapter adapter;
+    @Inject
+    ShotsAdapter adapter;
+
     private ShotActionListener shotActionListener;
     private DetailsVisibilityChangeListener detailsVisibilityChangeListener;
+    private ShotsComponent component;
+
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
 
     public static ShotsFragment newInstance() {
         return new ShotsFragment();
@@ -98,13 +107,20 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        initComponent();
         return inflater.inflate(R.layout.fragment_shots, container, false);
     }
 
     @NonNull
     @Override
     public ShotsContract.Presenter createPresenter() {
-        return App.getUserComponent(getContext()).getShotsComponent().getPresenter();
+        return component.getPresenter();
+    }
+
+    private void initComponent() {
+        component = App.getUserComponent(getContext())
+                .getShotsComponent(new ShotsModule(this, this));
+        component.inject(this);
     }
 
     @Override
@@ -128,6 +144,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         if (currentItemPosition != RecyclerView.NO_POSITION) {
             getPresenter().likeShot(adapter.getShotFromPosition(currentItemPosition));
         }
+        analyticsEventLogger.logEventShotsFABLike();
     }
 
     @OnClick(R.id.fab_bucket_menu)
@@ -137,6 +154,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
             getPresenter().handleAddShotToBucket(
                     adapter.getShotFromPosition(currentItemPosition));
         }
+        analyticsEventLogger.logEventShotsFABAddToBucket();
     }
 
     @OnClick(R.id.fab_comment_menu)
@@ -146,6 +164,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
             getPresenter()
                     .showCommentInput(adapter.getShotFromPosition(currentItemPosition));
         }
+        analyticsEventLogger.logEventShotsFABComment();
     }
 
     @OnClick(R.id.fab_follow_menu)
@@ -155,6 +174,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
             getPresenter()
                     .handleFollowShotAuthor(adapter.getShotFromPosition(currentItemPosition));
         }
+        analyticsEventLogger.logEventShotsFABFollow();
     }
 
     @Override
@@ -189,7 +209,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     private void initRecycler() {
-        adapter = new ShotsAdapter(this, this);
         shotsRecyclerView.setAdapter(adapter);
         shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shotsRecyclerView.setHasFixedSize(true);
@@ -197,6 +216,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
             @Override
             public void requestMoreData() {
                 getPresenter().getMoreShotsFromServer();
+                analyticsEventLogger.logEventShotsListSwipes(SHOTS_TO_LOAD_MORE);
             }
         });
     }
@@ -204,12 +224,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void showMoreItems(List<Shot> items) {
         adapter.addMoreItems(items);
-    }
-
-    @Override
-    public void changeShotLikeStatus(Shot shot) {
-        adapter.updateShot(shot);
-        shotActionListener.shotLikeStatusChanged();
     }
 
     @Override
@@ -226,7 +240,8 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     @Override
-    public void showBucketAddSuccess() {
+    public void showBucketAddSuccessAndUpdateShot(Shot shot) {
+        adapter.updateShot(shot);
         showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
     }
 
@@ -247,7 +262,14 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void onDetailsVisibilityChange(boolean isVisible) {
+        final int currentPosition = shotsRecyclerView.getCurrentItem();
+        shotsRecyclerView.setAdapter(null);
+
+        shotsRecyclerView.setAdapter(adapter);
         adapter.setDetailsVisibilityFlag(isVisible);
+        shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        shotsRecyclerView.scrollToPosition(currentPosition);
 
         if (detailsVisibilityChangeListener != null)
             detailsVisibilityChangeListener.onDetailsChangeVisibility(isVisible);
@@ -270,21 +292,25 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void onShotLikeSwipe(Shot shot) {
         getPresenter().likeShot(shot);
+        analyticsEventLogger.logEventShotSwipeLike();
     }
 
     @Override
     public void onAddShotToBucketSwipe(Shot shot) {
         getPresenter().handleAddShotToBucket(shot);
+        analyticsEventLogger.logEventShotSwipeAddToBucket();
     }
 
     @Override
     public void onCommentShotSwipe(Shot shot) {
         getPresenter().showCommentInput(shot);
+        analyticsEventLogger.logEventShotSwipeComment();
     }
 
     @Override
     public void onFollowUserSwipe(Shot shot) {
         getPresenter().handleFollowShotAuthor(shot);
+        analyticsEventLogger.logEventShotSwipeFollow();
     }
 
     @Override
@@ -295,6 +321,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void onShotSelected(Shot shot) {
         getPresenter().showShotDetails(shot);
+        analyticsEventLogger.logEventShotsItemClick();
     }
 
     @Override

@@ -13,6 +13,7 @@ import co.netguru.android.inbbbox.feature.shared.UserDetailsTabItemType;
 import co.netguru.android.inbbbox.feature.user.info.singleuser.UserInfoFragment;
 import co.netguru.android.inbbbox.feature.user.info.team.TeamInfoFragment;
 import co.netguru.android.inbbbox.feature.user.shots.UserShotsFragment;
+import co.netguru.android.inbbbox.feature.user.projects.ProjectsFragment;
 
 public class UserPagerAdapter<T extends Fragment & RefreshableFragment>
         extends FragmentStatePagerAdapter {
@@ -46,8 +47,7 @@ public class UserPagerAdapter<T extends Fragment & RefreshableFragment>
                 }
                 break;
             case PROJECTS:
-//                 TODO: 20.02 Instantiate ProjectsFragment [not in scope of this task]
-                result = UserShotsFragment.newInstance(user);
+                result = ProjectsFragment.newInstance(user);
                 break;
             case BUCKETS:
 //                TODO: 20.02 Instantiate BucketsFragment [not in scope of this task]
