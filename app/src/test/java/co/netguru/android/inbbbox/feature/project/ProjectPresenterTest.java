@@ -79,8 +79,8 @@ public class ProjectPresenterTest {
         presenter.refreshShots();
 
         // then
-        verify(view, times(1)).setData(shots);
-        verify(view, times(1)).showContent();
+        verify(view).setData(shots);
+        verify(view).showContent();
     }
 
     @Test
@@ -93,7 +93,7 @@ public class ProjectPresenterTest {
         presenter.refreshShots();
 
         // then
-        verify(view, times(1)).showMessageOnServerError(anyString());
+        verify(view).showMessageOnServerError(anyString());
     }
 
 }

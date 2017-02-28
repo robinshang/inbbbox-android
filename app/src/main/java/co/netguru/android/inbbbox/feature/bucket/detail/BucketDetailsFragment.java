@@ -48,7 +48,6 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
         BucketDetailsContract.View, BucketDetailsContract.Presenter>
         implements BucketDetailsContract.View, DeleteBucketDialogFragment.DeleteBucketDialogListener {
 
-
     public static final String TAG = BucketDetailsFragment.class.getSimpleName();
 
     public static final String DELETED_BUCKET_ID_KEY = "deleted_bucket_id_key";
@@ -96,8 +95,7 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            shotClickListener =
-                    (ShotClickListener) context;
+            shotClickListener = (ShotClickListener) context;
         } catch (ClassCastException e) {
             throw new InterfaceNotImplementedException(e, context.toString(), ShotClickListener.class.getSimpleName());
         }

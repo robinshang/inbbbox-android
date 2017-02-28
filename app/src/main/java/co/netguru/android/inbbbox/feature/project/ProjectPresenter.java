@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.feature.project;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
@@ -30,8 +31,10 @@ public class ProjectPresenter extends MvpNullObjectBasePresenter<ProjectContract
     private final ProjectsController projectsController;
     private final ErrorController errorController;
     private final ProjectWithShots projectWithShots;
+    @VisibleForTesting
     @NonNull
     Subscription refreshSubscription;
+    @VisibleForTesting
     @NonNull
     Subscription loadMoreSubscription;
     private int pageNumber = 1;
