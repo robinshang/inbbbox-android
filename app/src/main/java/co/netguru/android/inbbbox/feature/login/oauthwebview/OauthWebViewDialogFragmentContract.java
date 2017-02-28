@@ -2,12 +2,16 @@ package co.netguru.android.inbbbox.feature.login.oauthwebview;
 
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
+import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
+import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
+
 public interface OauthWebViewDialogFragmentContract {
-    interface View extends MvpView {
+    interface View extends MvpView, HttpErrorView {
 
         void loadUrl(String url);
 
@@ -18,6 +22,16 @@ public interface OauthWebViewDialogFragmentContract {
         void finishWithStateKeyNotMatchingError();
 
         void finishWithUnknownError();
+
+        void initializeUserMode(UserModeType guestUserMode);
+
+        void showNextScreen();
+
+        void showInvalidOauthUrlError();
+
+        void showWrongKeyError();
+
+        void finish();
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -25,5 +39,16 @@ public interface OauthWebViewDialogFragmentContract {
         boolean shouldOverrideUrlLoading(Uri uri);
 
         void handleData(String url, String stateKey);
+
+        void handleError(Throwable throwable, String errorText);
+
+        void handleKeysNotMatching();
+
+        void handleOauthCodeReceived(@NonNull String receivedCode);
+
+        void handleUnknownOauthError();
+
+        void handleKnownOauthError(@NonNull String oauthErrorMessage);
+
     }
 }
