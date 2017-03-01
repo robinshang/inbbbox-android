@@ -5,6 +5,7 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import javax.inject.Inject;
 
+import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
@@ -62,6 +63,11 @@ public class UserActivityPresenter extends MvpNullObjectBasePresenter<UserActivi
                             getView().showFollowingAction(false);
                             handleError(e, "Could not start following user");
                         }));
+    }
+
+    @Override
+    public void shareUser(User user) {
+        getView().showShare(Constants.OAUTH.BASE_URL + user.username());
     }
 
     private void handleError(Throwable e, String errorText) {
