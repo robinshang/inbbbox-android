@@ -12,7 +12,7 @@ public class AnimationUtil {
     private static final float TRANSLATION_INITIAL_OFFSET = 550f;
     private static final float SHAKE_START_VALUE = 0f;
     private static final float SHAKE_END_VALUE = 12.56637f;
-    private static final int SHAKE_DURATION = 500;
+    private static final int SHAKE_DURATION_MS = 500;
     private static final int SHAKE_MAX_ANGLE = 30;
 
     private AnimationUtil() {
@@ -74,7 +74,7 @@ public class AnimationUtil {
         final ValueAnimator animator =
                 ValueAnimator.ofFloat(SHAKE_START_VALUE, SHAKE_END_VALUE);
         animator.setInterpolator(new LinearInterpolator());
-        animator.setDuration(SHAKE_DURATION);
+        animator.setDuration(SHAKE_DURATION_MS);
         animator.addUpdateListener(innerAnimator -> {
             final float progress = (float) innerAnimator.getAnimatedValue();
             final float angleRatio = (float) Math.sin(progress);

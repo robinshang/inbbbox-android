@@ -33,7 +33,6 @@ import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
 import co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView;
@@ -410,10 +409,24 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         void shotLikeStatusChanged();
 
         void showShotDetails(Shot shot, List<Shot> nearbyShots, ShotDetailsRequest detailsRequest);
+
+        void onShotAddedToBucket();
+
+        void onUserFollowed();
     }
 
     @Override
-    public void shakeTabIcon(int position) {
-        ((MainActivity) getActivity()).shakeTabIcon(position);
+    public void onShotLiked() {
+        shotActionListener.shotLikeStatusChanged();
+    }
+
+    @Override
+    public void onShotAddedToBucket() {
+        shotActionListener.onShotAddedToBucket();
+    }
+
+    @Override
+    public void onUserFollowed() {
+        shotActionListener.onUserFollowed();
     }
 }

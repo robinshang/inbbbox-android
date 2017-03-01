@@ -69,10 +69,9 @@ public class MainActivity
 
     private static final String EMPTY_STRING = "";
 
-    public static final int TAB_SHOTS = 0;
-    public static final int TAB_LIKES = 1;
-    public static final int TAB_BUCKETS = 2;
-    public static final int TAB_FOLLOWING = 3;
+    private static final int TAB_LIKES = 1;
+    private static final int TAB_BUCKETS = 2;
+    private static final int TAB_FOLLOWING = 3;
 
     @BindColor(R.color.accent)
     int highlightColor;
@@ -313,6 +312,18 @@ public class MainActivity
     @Override
     public void shotLikeStatusChanged() {
         pagerAdapter.refreshFragment(TabItemType.LIKES);
+        shakeTabIcon(TAB_LIKES);
+    }
+
+
+    @Override
+    public void onShotAddedToBucket() {
+        shakeTabIcon(TAB_BUCKETS);
+    }
+
+    @Override
+    public void onUserFollowed() {
+        shakeTabIcon(TAB_FOLLOWING);
     }
 
     @Override
@@ -527,7 +538,7 @@ public class MainActivity
         }
     }
 
-    public void shakeTabIcon(int position) {
+    private void shakeTabIcon(int position) {
         View tabView = ((LinearLayout) tabLayout.getChildAt(0)).getChildAt(position);
         if (tabView != null)
             AnimationUtil.animateShake(tabView);

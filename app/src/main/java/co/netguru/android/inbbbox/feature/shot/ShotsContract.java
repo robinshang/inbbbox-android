@@ -39,7 +39,11 @@ interface ShotsContract {
 
         void showFirstShot();
 
-        void shakeTabIcon(int position);
+        void onShotLiked();
+
+        void onShotAddedToBucket();
+
+        void onUserFollowed();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
