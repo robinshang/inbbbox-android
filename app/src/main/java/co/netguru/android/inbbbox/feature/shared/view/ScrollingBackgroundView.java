@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.animation.LinearInterpolator;
@@ -28,6 +29,7 @@ public class ScrollingBackgroundView extends FrameLayout {
     @BindView(R.id.background_image_two)
     ImageView backgroundViewTwo;
 
+    @Nullable
     private Drawable drawable;
     private int scrollDirection = 0;
     private int startOffset = 0;

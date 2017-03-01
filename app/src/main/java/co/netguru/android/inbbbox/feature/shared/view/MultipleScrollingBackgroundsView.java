@@ -30,12 +30,12 @@ public class MultipleScrollingBackgroundsView extends FrameLayout {
 
     public MultipleScrollingBackgroundsView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initView(context, attrs);
+        initView();
     }
 
     public MultipleScrollingBackgroundsView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initView(context, attrs);
+        initView();
     }
 
     public void startAnimation() {
@@ -45,7 +45,7 @@ public class MultipleScrollingBackgroundsView extends FrameLayout {
         scrollingBackgroundViewFour.startAnimation();
     }
 
-    private void initView(Context context, AttributeSet attrs) {
+    private void initView() {
         LayoutInflater.from(getContext())
                 .inflate(R.layout.view_multiple_scrolling_backgrounds, this, true);
         ButterKnife.bind(this);
