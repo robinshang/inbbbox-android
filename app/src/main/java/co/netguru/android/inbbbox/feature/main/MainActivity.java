@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -39,6 +40,7 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsDrawerListener;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
+import co.netguru.android.inbbbox.common.utils.AnimationUtil;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.adapter.MainActivityPagerAdapter;
@@ -66,6 +68,11 @@ public class MainActivity
     private static final String TOGGLE_BUTTON_STATE = "toggleButtonState";
 
     private static final String EMPTY_STRING = "";
+
+    public static final int TAB_SHOTS = 0;
+    public static final int TAB_LIKES = 1;
+    public static final int TAB_BUCKETS = 2;
+    public static final int TAB_FOLLOWING = 3;
 
     @BindColor(R.color.accent)
     int highlightColor;
@@ -518,5 +525,11 @@ public class MainActivity
                 break;
             default:
         }
+    }
+
+    public void shakeTabIcon(int position) {
+        View tabView = ((LinearLayout) tabLayout.getChildAt(0)).getChildAt(position);
+        if (tabView != null)
+            AnimationUtil.animateShake(tabView);
     }
 }

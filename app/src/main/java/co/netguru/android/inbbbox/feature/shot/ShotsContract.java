@@ -38,6 +38,8 @@ interface ShotsContract {
         void updateShot(Shot shot);
 
         void showFirstShot();
+
+        void shakeTabIcon(int position);
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {

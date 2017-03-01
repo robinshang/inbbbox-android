@@ -23,6 +23,7 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.DetailsVisibilityChangeEvent;
 import co.netguru.android.inbbbox.event.events.ShotUpdatedEvent;
+import co.netguru.android.inbbbox.feature.main.MainActivity;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;
@@ -185,7 +186,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         getView().closeFabMenu();
         subscriptions.add(followersController.followUser(shot.author())
                 .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                .subscribe(() -> Timber.d("Followed shot author"),
+                .subscribe(this::onUserFollowCompleted,
                         throwable -> handleError(throwable, "Error while following shot author")));
     }
 
@@ -212,11 +213,18 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         Timber.d("Shots bucketed: %s", shot);
         getView().showBucketAddSuccess();
         rxBus.send(new ShotUpdatedEvent(updateShotBucketedStatus(shot)));
+        getView().shakeTabIcon(MainActivity.TAB_BUCKETS);
     }
 
     private void onShotLikeCompleted(Shot shot) {
         Timber.d("Shot liked : %s", shot);
         rxBus.send(new ShotUpdatedEvent(updateShotLikeStatus(shot)));
+        getView().shakeTabIcon(MainActivity.TAB_LIKES);
+    }
+
+    private void onUserFollowCompleted() {
+        Timber.d("Followed shot author");
+        getView().shakeTabIcon(MainActivity.TAB_FOLLOWING);
     }
 
     private Shot updateShotBucketedStatus(Shot shot) {
