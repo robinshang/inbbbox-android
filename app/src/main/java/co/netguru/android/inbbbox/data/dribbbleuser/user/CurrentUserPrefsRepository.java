@@ -31,12 +31,11 @@ public class CurrentUserPrefsRepository {
     }
 
     public Completable saveUser(@NonNull UserEntity user) {
-        return Completable.fromCallable(() -> {
+        return Completable.fromAction(() ->
             sharedPreferences.edit()
                     .putString(USER_KEY, gson.toJson(user))
-                    .apply();
-            return null;
-        });
+                    .apply()
+            );
     }
 
     /**
@@ -54,12 +53,11 @@ public class CurrentUserPrefsRepository {
     }
 
     public Completable setGuestModeEnabled(boolean guestModeEnabled) {
-        return Completable.fromCallable(() -> {
+        return Completable.fromAction(() ->
             sharedPreferences.edit()
                     .putBoolean(GUEST_MODE_STATE_KEY, guestModeEnabled)
-                    .apply();
-            return null;
-        });
+                    .apply()
+        );
     }
 
     public Single<Boolean> isGuestModeEnabled() {
@@ -68,17 +66,14 @@ public class CurrentUserPrefsRepository {
         );
     }
 
+    public Completable clear() {
+        return Completable.fromAction(() -> sharedPreferences.edit().clear().apply());
+    }
+
     public static class UserNotFoundException extends IOException {
 
         public UserNotFoundException(String message) {
             super(message);
         }
-    }
-
-    public Completable clear() {
-        return Completable.fromCallable(() -> {
-            sharedPreferences.edit().clear().apply();
-            return null;
-        });
     }
 }

@@ -38,10 +38,7 @@ public class RxTransformerUtil {
             int time, TimeUnit timeUnit, Runnable runnable) {
         return observable ->
                 observable.publish(publishedObservable -> publishedObservable.<T>timeout(time, timeUnit,
-                        Observable.<T>fromCallable(() -> {
-                            runnable.run();
-                            return null;
-                        })
+                        Observable.<T>create(subscriber -> runnable.run())
                                 .ignoreElements()
                                 .mergeWith(publishedObservable))
                 );
