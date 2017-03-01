@@ -26,6 +26,7 @@ import co.netguru.android.inbbbox.common.utils.AnimationUtil;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewDialogFragment;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewListener;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
+import co.netguru.android.inbbbox.feature.shared.view.MultipleScrollingBackgroundsView;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
         implements LoginContract.View, WithComponent<LoginComponent>,
@@ -49,6 +50,9 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
 
     @BindView(R.id.login_relative_layout)
     RelativeLayout loginRelativeLayout;
+
+    @BindView(R.id.scrolling_background)
+    MultipleScrollingBackgroundsView scrollingBackgroundsView;
 
     @OnClick(R.id.btn_login)
     void onLoginClick() {
@@ -88,6 +92,7 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
         if (getIntent().getStringExtra(MESSAGE_KEY) != null) {
             showMessageOnSnackBar(getIntent().getStringExtra(MESSAGE_KEY));
         }
+        scrollingBackgroundsView.startAnimation();
         analyticsEventLogger.logEventScreenLogin();
     }
 
