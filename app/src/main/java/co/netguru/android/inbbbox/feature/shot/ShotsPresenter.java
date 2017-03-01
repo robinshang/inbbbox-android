@@ -185,7 +185,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         getView().closeFabMenu();
         subscriptions.add(followersController.followUser(shot.author())
                 .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                .subscribe(() -> Timber.d("Followed shot author"),
+                .subscribe(this::onUserFollowCompleted,
                         throwable -> handleError(throwable, "Error while following shot author")));
     }
 
@@ -212,11 +212,18 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         Timber.d("Shots bucketed: %s", shot);
         getView().showBucketAddSuccess();
         rxBus.send(new ShotUpdatedEvent(updateShotBucketedStatus(shot)));
+        getView().onShotAddedToBucket();
     }
 
     private void onShotLikeCompleted(Shot shot) {
         Timber.d("Shot liked : %s", shot);
         rxBus.send(new ShotUpdatedEvent(updateShotLikeStatus(shot)));
+        getView().onShotLiked();
+    }
+
+    private void onUserFollowCompleted() {
+        Timber.d("Followed shot author");
+        getView().onUserFollowed();
     }
 
     private Shot updateShotBucketedStatus(Shot shot) {

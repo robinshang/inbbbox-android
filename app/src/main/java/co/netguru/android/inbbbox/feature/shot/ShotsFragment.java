@@ -409,5 +409,24 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         void shotLikeStatusChanged();
 
         void showShotDetails(Shot shot, List<Shot> nearbyShots, ShotDetailsRequest detailsRequest);
+
+        void onShotAddedToBucket();
+
+        void onUserFollowed();
+    }
+
+    @Override
+    public void onShotLiked() {
+        shotActionListener.shotLikeStatusChanged();
+    }
+
+    @Override
+    public void onShotAddedToBucket() {
+        shotActionListener.onShotAddedToBucket();
+    }
+
+    @Override
+    public void onUserFollowed() {
+        shotActionListener.onUserFollowed();
     }
 }

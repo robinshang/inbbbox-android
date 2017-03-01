@@ -38,6 +38,12 @@ interface ShotsContract {
         void updateShot(Shot shot);
 
         void showFirstShot();
+
+        void onShotLiked();
+
+        void onShotAddedToBucket();
+
+        void onUserFollowed();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
