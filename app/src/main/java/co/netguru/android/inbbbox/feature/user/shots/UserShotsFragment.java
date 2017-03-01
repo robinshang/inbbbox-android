@@ -22,10 +22,11 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
-import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.user.info.team.ShotActionListener;
 import co.netguru.android.inbbbox.feature.user.shots.adapter.UserShotsAdapter;
 import timber.log.Timber;
 
@@ -48,10 +49,10 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
     @BindView(R.id.fragment_follower_details_recycler_view)
     RecyclerView recyclerView;
 
-    private OnFollowedShotActionListener onChangeFollowingStatusCompletedListener;
+    private ShotActionListener shotActionListener;
     private UserShotsAdapter adapter;
 
-    public static UserShotsFragment newInstance(UserWithShots user) {
+    public static UserShotsFragment newInstance(User user) {
         final Bundle args = new Bundle();
         args.putParcelable(USER_KEY, user);
 
@@ -64,17 +65,23 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            onChangeFollowingStatusCompletedListener = (OnFollowedShotActionListener) context;
+            shotActionListener = (ShotActionListener) context;
         } catch (ClassCastException e) {
             Timber.e(e, "must implement OnFollowedShotActionListener");
-            throw new InterfaceNotImplementedException(e, context.toString(), OnFollowedShotActionListener.class.getSimpleName());
+            throw new InterfaceNotImplementedException(e, context.toString(), ShotActionListener.class.getSimpleName());
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        shotActionListener = null;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_user, container, false);
+        return inflater.inflate(R.layout.fragment_user_shots, container, false);
     }
 
     @Override
@@ -125,7 +132,7 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
 
     @Override
     public void openShotDetailsScreen(Shot shot, List<Shot> allShots, long userId) {
-        onChangeFollowingStatusCompletedListener.showShotDetails(shot, allShots, userId);
+        shotActionListener.showShotDetails(shot, allShots, userId);
     }
 
     @Override
@@ -156,10 +163,6 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
                 getPresenter().getMoreUserShotsFromServer();
             }
         };
-    }
-
-    public interface OnFollowedShotActionListener {
-        void showShotDetails(Shot shot, List<Shot> allShots, long userId);
     }
 
 }

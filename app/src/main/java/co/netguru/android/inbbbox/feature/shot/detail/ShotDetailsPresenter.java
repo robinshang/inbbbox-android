@@ -21,7 +21,6 @@ import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
-import co.netguru.android.inbbbox.event.events.ShotRemovedFromBucketEvent;
 import co.netguru.android.inbbbox.event.events.ShotUpdatedEvent;
 import rx.Completable;
 import rx.subscriptions.CompositeSubscription;
@@ -356,28 +355,16 @@ public class ShotDetailsPresenter
     }
 
     private void verifyShotBucketsCount(List<Bucket> bucketList) {
-        updateBucketsCount(bucketList.size());
         bucketListShotBelongsTo = bucketList;
         if (bucketList.size() == 1) {
             setShotBucketStates(true, false);
-            updateBucketedStateAndShowDetails(true);
+            updateBucketedDataAndShowDetails(true, bucketList.size());
         } else if (bucketList.size() > 1) {
             setShotBucketStates(false, true);
-            updateBucketedStateAndShowDetails(true);
+            updateBucketedDataAndShowDetails(true, bucketList.size());
         } else {
             setShotBucketStates(false, false);
-            updateBucketedStateAndShowDetails(false);
-        }
-        rxBus.send(new ShotUpdatedEvent(shot));
-    }
-
-    private void updateBucketsCount(int userBucketsCount) {
-        if (bucketListShotBelongsTo != null) {
-            if (userBucketsCount > bucketListShotBelongsTo.size()) {
-                shot = Shot.update(shot).bucketCount(shot.bucketCount() + 1).build();
-            } else if (userBucketsCount < bucketListShotBelongsTo.size()) {
-                shot = Shot.update(shot).bucketCount(shot.bucketCount() - 1).build();
-            }
+            updateBucketedDataAndShowDetails(false, bucketList.size());
         }
     }
 
@@ -386,19 +373,20 @@ public class ShotDetailsPresenter
         this.isInMoreBuckets = isInMoreBuckets;
     }
 
-    private void updateBucketedStateAndShowDetails(boolean isBucketed) {
-        shot = Shot.update(shot).isBucketed(isBucketed).build();
+    private void updateBucketedDataAndShowDetails(boolean isBucketed, int bucketCount) {
+        shot = Shot.update(shot).isBucketed(isBucketed).bucketCount(bucketCount).build();
         getView().showDetails(shot);
     }
 
     private void handleShotRemovedFromBucket(Shot shot) {
         getView().showShotRemoveFromBucketSuccess();
-        rxBus.send(new ShotRemovedFromBucketEvent(shot));
         checkShotBucketsCount(shot);
+        rxBus.send(new ShotUpdatedEvent(shot));
     }
 
     private void updateShotAndShowAddToBucketSuccess(Shot shot) {
         getView().showBucketAddSuccess();
         checkShotBucketsCount(shot);
+        rxBus.send(new ShotUpdatedEvent(shot));
     }
 }

@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.bucket.detail.adapter;
+package co.netguru.android.inbbbox.feature.shared.shotsadapter;
 
 
 import android.support.annotation.NonNull;
@@ -10,30 +10,31 @@ import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 
-public class BucketShotsAdapter extends RecyclerView.Adapter<BucketShotViewHolder> {
+public class SharedShotsAdapter extends RecyclerView.Adapter<SharedShotViewHolder> {
 
     private static final int TYPE_GRID_SHOT_VIEW_TYPE = 1;
     private static final int TYPE_LIST_SHOT_VIEW_TYPE = 2;
 
-    private final BucketShotViewHolder.OnShotInBucketClickListener onShotInBucketClickListener;
+    private final ShotClickListener shotClickListener;
 
     @NonNull
     private List<Shot> shotList;
     private boolean isGridMode;
 
-    public BucketShotsAdapter(@NonNull BucketShotViewHolder.OnShotInBucketClickListener onShotInBucketClickListener) {
-        this.onShotInBucketClickListener = onShotInBucketClickListener;
+    public SharedShotsAdapter(@NonNull ShotClickListener shotClickListener) {
+        this.shotClickListener = shotClickListener;
         shotList = Collections.emptyList();
     }
 
     @Override
-    public BucketShotViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new BucketShotViewHolder(parent, onShotInBucketClickListener);
+    public SharedShotViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new SharedShotViewHolder(parent, shotClickListener);
     }
 
     @Override
-    public void onBindViewHolder(BucketShotViewHolder holder, int position) {
+    public void onBindViewHolder(SharedShotViewHolder holder, int position) {
         holder.bind(shotList.get(position));
     }
 
@@ -46,7 +47,7 @@ public class BucketShotsAdapter extends RecyclerView.Adapter<BucketShotViewHolde
         return shotList;
     }
 
-    public void setNewShots(List<Shot> shotsToSet) {
+    public void setShots(List<Shot> shotsToSet) {
         shotList = shotsToSet;
         notifyDataSetChanged();
     }

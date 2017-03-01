@@ -23,14 +23,13 @@ public class TokenPrefsRepository {
     }
 
     public Completable saveToken(Token token) {
-        return Completable.fromCallable(() -> {
+        return Completable.fromAction(() ->
             sharedPreferences.edit()
                     .putString(TOKEN_ACCESS_TOKEN_KEY, token.getAccessToken())
                     .putString(TOKEN_TYPE_TOKEN_KEY, token.getTokenType())
                     .putString(TOKEN_SCOPE_KEY, token.getScope())
-                    .apply();
-            return null;
-        });
+                    .apply()
+        );
     }
 
     public Token getToken() {
@@ -41,9 +40,6 @@ public class TokenPrefsRepository {
     }
 
     public Completable clear() {
-        return Completable.fromCallable(() -> {
-            sharedPreferences.edit().clear().apply();
-            return null;
-        });
+        return Completable.fromAction(() -> sharedPreferences.edit().clear().apply());
     }
 }

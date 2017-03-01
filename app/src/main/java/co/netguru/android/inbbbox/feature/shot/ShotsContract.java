@@ -27,7 +27,7 @@ interface ShotsContract {
 
         void showBucketChoosing(Shot shot);
 
-        void showBucketAddSuccessAndUpdateShot(Shot shot);
+        void showBucketAddSuccess();
 
         void showShotRemoveFromBucketSuccess();
 
@@ -36,6 +36,8 @@ interface ShotsContract {
         void onDetailsVisibilityChange(boolean isVisible);
 
         void updateShot(Shot shot);
+
+        void showFirstShot();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {

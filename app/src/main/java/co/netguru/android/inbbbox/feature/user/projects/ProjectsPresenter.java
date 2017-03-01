@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
-import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.user.projects.ProjectsController;
 import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
@@ -34,7 +34,7 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
     private final ProjectsController projectsController;
     private final ErrorController errorController;
 
-    private UserWithShots user;
+    private User user;
 
     private boolean hasMoreProjects = true;
     private int projectsPage = 1;
@@ -68,7 +68,7 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
     }
 
     @Override
-    public void userDataReceived(UserWithShots user) {
+    public void userDataReceived(User user) {
         this.user = user;
         getUserProjects();
     }
@@ -80,7 +80,7 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
             loadNextProjectsSubscription.unsubscribe();
             projectsPage = 1;
 
-            refreshSubscription = projectsController.getUserProjectsWithShots(user.user().id(),
+            refreshSubscription = projectsController.getUserProjectsWithShots(user.id(),
                     projectsPage, PROJECTS_PAGE_COUNT, PROJECT_SHOTS_FIRST_PAGE, PROJECT_SHOTS_PAGE_COUNT)
                     .compose(androidIO())
                     .doAfterTerminate(getView()::hideProgressBar)
@@ -93,7 +93,7 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
     public void getMoreUserProjects() {
         if (hasMoreProjects && refreshSubscription.isUnsubscribed() && loadNextProjectsSubscription.isUnsubscribed()) {
             projectsPage++;
-            loadNextProjectsSubscription = projectsController.getUserProjectsWithShots(user.user().id(),
+            loadNextProjectsSubscription = projectsController.getUserProjectsWithShots(user.id(),
                     projectsPage, PROJECTS_PAGE_COUNT, PROJECT_SHOTS_FIRST_PAGE, PROJECT_SHOTS_PAGE_COUNT)
                     .compose(RxTransformerUtil.executeRunnableIfObservableDidntEmitUntilGivenTime(
                             SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
@@ -119,6 +119,11 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
                     .subscribe(shotList -> onGetUserProjectShotsNext(project.id(), shotList),
                             throwable -> handleError(throwable, "Error while getting more project shots from server"));
         }
+    }
+
+    @Override
+    public void onProjectClick(ProjectWithShots projectWithShots) {
+        getView().showProjectDetails(projectWithShots);
     }
 
     @Override

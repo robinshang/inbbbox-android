@@ -8,4 +8,6 @@ import rx.Single;
 public interface TeamController {
     Single<List<User>> getTeamMembers(long teamId, int pageNumber,
                                       int pageCount);
+
+    Single<List<User>> getUserTeams(long userId, int pageNumber, int pageCount);
 }

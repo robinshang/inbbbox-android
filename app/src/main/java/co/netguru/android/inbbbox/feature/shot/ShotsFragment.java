@@ -240,8 +240,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     @Override
-    public void showBucketAddSuccessAndUpdateShot(Shot shot) {
-        adapter.updateShot(shot);
+    public void showBucketAddSuccess() {
         showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
     }
 
@@ -278,6 +277,11 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void updateShot(Shot shot) {
         adapter.updateShot(shot);
+    }
+
+    @Override
+    public void showFirstShot() {
+        shotsRecyclerView.scrollToPosition(0);
     }
 
     @Override

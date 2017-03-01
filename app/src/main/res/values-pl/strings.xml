@@ -121,5 +121,10 @@
     </plurals>
     <string name="tab_info_title">Info</string>
     <string name="tab_projects_title">Projekty</string>
+    <string name="most_popular">Najpopularniejsze</string>
+    <string name="on_teams">W zespołach</string>
+    <string name="followers">obserwujący</string>
+    <string name="shots">shoty</string>
+    <string name="following">obserwowani</string>
 
 </resources>

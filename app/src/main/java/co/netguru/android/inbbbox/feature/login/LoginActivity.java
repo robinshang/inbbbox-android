@@ -24,13 +24,11 @@ import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.utils.AnimationUtil;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewDialogFragment;
-import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewListener;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.feature.shared.view.MultipleScrollingBackgroundsView;
 
 public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract.Presenter>
-        implements LoginContract.View, WithComponent<LoginComponent>,
-        OauthWebViewListener {
+        implements LoginContract.View, WithComponent<LoginComponent> {
 
     private static final int SLIDE_IN_DURATION = 300;
     private static final String MESSAGE_KEY = "message_key";
@@ -154,31 +152,6 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     public void showNextScreen() {
         MainActivity.startActivity(this);
         finish();
-    }
-
-    @Override
-    public void onOauthStateKeyNotMatching() {
-        getPresenter().handleKeysNotMatching();
-    }
-
-    @Override
-    public void onOauthCodeReceive(@NonNull String receivedCode) {
-        getPresenter().handleOauthCodeReceived(receivedCode);
-    }
-
-    @Override
-    public void onOauthUnknownError() {
-        getPresenter().handleUnknownOauthError();
-    }
-
-    @Override
-    public void onOauthKnownError(@NonNull String oauthErrorMessage) {
-        getPresenter().handleKnownOauthError(oauthErrorMessage);
-    }
-
-    @Override
-    public void onOauthFragmentClose() {
-        getPresenter().handleWebViewClose();
     }
 
     @Override
