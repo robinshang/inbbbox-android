@@ -37,4 +37,5 @@
     <color name="darkerGray">#8F8E93</color>
     <color name="textDark">#262626</color>
 
+    <color name="primaryTransparent">#E0F0377E</color>
 </resources>
