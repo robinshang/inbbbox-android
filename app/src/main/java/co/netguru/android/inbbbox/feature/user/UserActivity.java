@@ -63,7 +63,6 @@ public class UserActivity
     private boolean shouldRefreshFollowers;
     private MenuItem itemFollow;
     private MenuItem itemUnfollow;
-    private MenuItem itemShare;
     private User user;
 
     public static void startActivity(Context context, User user) {
@@ -92,7 +91,6 @@ public class UserActivity
         getMenuInflater().inflate(R.menu.follower_details_menu, menu);
         itemFollow = menu.findItem(R.id.action_follow);
         itemUnfollow = menu.findItem(R.id.action_unfollow);
-        itemShare = menu.findItem(R.id.action_share);
         itemFollow.setVisible(false);
         itemUnfollow.setVisible(false);
         return true;
