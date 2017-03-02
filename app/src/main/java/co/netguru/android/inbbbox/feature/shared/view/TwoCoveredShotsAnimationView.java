@@ -40,8 +40,8 @@ public class TwoCoveredShotsAnimationView extends FrameLayout {
     }
 
     public void loadShots(@NonNull Shot firstShot, @NonNull Shot secondShot) {
-        firstShotImageView.loadShot(firstShot);
-        secondShotImageView.loadShot(secondShot);
+        firstShotImageView.loadBlurredShot(firstShot);
+        secondShotImageView.loadBlurredShot(secondShot);
         makeViewsVisible();
     }
 

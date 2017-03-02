@@ -11,6 +11,7 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
+import jp.wasabeef.glide.transformations.BlurTransformation;
 import timber.log.Timber;
 
 public class ShotLoadingUtil {
@@ -36,6 +37,17 @@ public class ShotLoadingUtil {
                 .load(shot.normalImageUrl())
                 .thumbnail(ShotLoadingUtil.getThumbnailRequest(context, shot.thumbnailUrl()))
                 .animate(android.R.anim.fade_in)
+                .into(target);
+    }
+
+    public static void loadListBlurredShot(Context context, ImageView target, ShotImage shot) {
+        target.setImageResource(R.drawable.shot_placeholder);
+        Glide.clear(target);
+        Glide.with(context)
+                .load(shot.normalImageUrl())
+                .thumbnail(ShotLoadingUtil.getThumbnailRequest(context, shot.thumbnailUrl()))
+                .animate(android.R.anim.fade_in)
+                .bitmapTransform(new BlurTransformation(context))
                 .into(target);
     }
 

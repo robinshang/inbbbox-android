@@ -46,6 +46,11 @@ public class RoundedCornersShotImageView extends RoundedCornersView {
         gifLabel.setVisibility(shot.isGif() ? VISIBLE : GONE);
     }
 
+    public void loadBlurredShot(Shot shot) {
+        ShotLoadingUtil.loadListBlurredShot(getContext(), shotImageView, shot);
+        gifLabel.setVisibility(shot.isGif() ? VISIBLE : GONE);
+    }
+
     public void loadPlaceHolder(Drawable drawable) {
         shotImageView.setImageDrawable(drawable);
     }

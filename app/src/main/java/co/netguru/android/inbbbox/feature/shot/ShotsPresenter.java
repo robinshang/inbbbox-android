@@ -40,7 +40,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private static final int FIRST_PAGE = 1;
     private static final int SHOTS_ANIMATION_MIN_SHOTS_COUNT = 3;
     private static final int SHOTS_ANIMATION_FIRST_SHOT = 1;
-    private static final int SHOTS_ANIMATION_SECOND_SHOT = 1;
+    private static final int SHOTS_ANIMATION_SECOND_SHOT = 2;
 
     private final ShotsController shotsController;
     private final ErrorController errorController;
