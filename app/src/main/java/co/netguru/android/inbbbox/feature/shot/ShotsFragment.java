@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +35,7 @@ import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
 import co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView;
 import co.netguru.android.inbbbox.feature.shared.view.BallInterpolator;
+import co.netguru.android.inbbbox.feature.shared.view.CustomLinearLayoutManager;
 import co.netguru.android.inbbbox.feature.shared.view.FogFloatingActionMenu;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import co.netguru.android.inbbbox.feature.shared.view.TwoCoveredShotsAnimationView;
@@ -81,6 +81,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     private Animation shadowAnimation;
     private AnimationSet ballAnimation;
+    private CustomLinearLayoutManager customLinearLayoutManager;
 
     @Inject
     ShotsAdapter adapter;
@@ -200,7 +201,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
         shotsRecyclerView.setAdapter(adapter);
         adapter.setDetailsVisibilityFlag(isVisible);
-        shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         shotsRecyclerView.scrollToPosition(currentPosition);
 
@@ -292,10 +292,14 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void showShotsAnimation(@NonNull Shot firstShot, @NonNull Shot secondShot) {
+        twoCoveredShotsAnimationView.setVisibility(View.VISIBLE);
+        customLinearLayoutManager.setCanScrollVertically(false);
         onDetailsVisibilityChange(false);
         twoCoveredShotsAnimationView.loadShotsAndStartAnimation(firstShot, secondShot, () -> {
             getPresenter().getShotsCustomizationSettings();
             startFabButtonAnimation();
+            customLinearLayoutManager.setCanScrollVertically(true);
+            twoCoveredShotsAnimationView.setVisibility(View.GONE);
         });
     }
 
@@ -386,8 +390,9 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     private void initRecycler() {
+        customLinearLayoutManager = new CustomLinearLayoutManager(getContext());
         shotsRecyclerView.setAdapter(adapter);
-        shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        shotsRecyclerView.setLayoutManager(customLinearLayoutManager);
         shotsRecyclerView.setHasFixedSize(true);
         shotsRecyclerView.addOnScrollListener(new LoadMoreScrollListener(SHOTS_TO_LOAD_MORE) {
             @Override

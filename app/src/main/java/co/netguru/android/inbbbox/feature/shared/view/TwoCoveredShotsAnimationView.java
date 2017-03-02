@@ -3,7 +3,7 @@ package co.netguru.android.inbbbox.feature.shared.view;
 import android.content.Context;
 import android.support.annotation.AnimRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.animation.Animation;
@@ -43,34 +43,47 @@ public class TwoCoveredShotsAnimationView extends FrameLayout {
 
     public void loadShotsAndStartAnimation(@NonNull Shot firstShot, @NonNull Shot secondShot,
                                            @NonNull OnAnimationEndListener onAnimationEndListener) {
-        setVisibility(VISIBLE);
         loadFirstShotWithAnimation(firstShot, secondShot, onAnimationEndListener);
     }
 
     private void loadFirstShotWithAnimation(@NonNull Shot firstShot, @NonNull Shot secondShot,
-                                            @Nullable OnAnimationEndListener onAnimationEndListener) {
+                                            @NonNull OnAnimationEndListener onAnimationEndListener) {
         firstShotImageView.setVisibility(INVISIBLE);
-        firstShotImageView.loadBlurredShotWithListener(firstShot, new RequestListener<String, GlideDrawable>() {
-            @Override
-            public boolean onException(Exception e, String model, Target<GlideDrawable> target,
-                                       boolean isFirstResource) {
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target,
-                                           boolean isFromMemoryCache, boolean isFirstResource) {
-                loadSecondShotWithAnimation(secondShot);
-                startDropDownAnimation(firstShotImageView, R.anim.two_shots_first_shot_drop_down_animation,
-                        onAnimationEndListener);
-                return true;
-            }
-        });
+        firstShotImageView.loadBlurredShotWithListener(firstShot,
+                createRequestListener(firstShotImageView, R.anim.two_shots_load_shot_animation, () -> {
+                    firstShotImageView.setVisibility(VISIBLE);
+                    loadSecondShotWithAnimation(secondShot, onAnimationEndListener);
+                }));
     }
 
-    private void loadSecondShotWithAnimation(@NonNull Shot secondShot) {
+    private void loadSecondShotWithAnimation(@NonNull Shot secondShot,
+                                             @NonNull OnAnimationEndListener onAnimationEndListener) {
         secondShotImageView.setVisibility(INVISIBLE);
-        secondShotImageView.loadBlurredShotWithListener(secondShot, new RequestListener<String, GlideDrawable>() {
+        secondShotImageView.loadBlurredShotWithListener(secondShot,
+                createRequestListener(secondShotImageView, R.anim.two_shots_load_shot_animation, () -> {
+                    secondShotImageView.setVisibility(VISIBLE);
+                    startSecondShotDropDownAnimation(onAnimationEndListener);
+                }));
+    }
+
+    private void startSecondShotDropDownAnimation(OnAnimationEndListener onAnimationEndListener) {
+        startAnimation(secondShotImageView, R.anim.two_shots_second_shot_drop_down_animation, () -> {
+            secondShotImageView.setVisibility(GONE);
+            startFirstShotDropDownAnimation(onAnimationEndListener);
+        });
+    }
+
+    private void startFirstShotDropDownAnimation(@NonNull OnAnimationEndListener onAnimationEndListener) {
+        startAnimation(firstShotImageView, R.anim.two_shots_first_shot_drop_down_animation, () -> {
+            firstShotImageView.setVisibility(GONE);
+            onAnimationEndListener.onAnimationEnd();
+        });
+    }
+
+    private RequestListener<String, GlideDrawable> createRequestListener(RoundedCornersShotImageView view,
+                                                                         @AnimRes int animationRes,
+                                                                         Runnable runnable) {
+        return new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target,
                                        boolean isFirstResource) {
@@ -80,15 +93,15 @@ public class TwoCoveredShotsAnimationView extends FrameLayout {
             @Override
             public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target,
                                            boolean isFromMemoryCache, boolean isFirstResource) {
-                startDropDownAnimation(secondShotImageView, R.anim.two_shots_second_shot_drop_down_animation, null);
+                startAnimation(view, animationRes, runnable);
                 return true;
             }
-        });
+        };
     }
 
-    private void startDropDownAnimation(RoundedCornersShotImageView view, @AnimRes int animationRes,
-                                           @Nullable OnAnimationEndListener onAnimationEndListener) {
-        final Animation animation = AnimationUtils.loadAnimation(getContext(), animationRes);
+    private void startAnimation(RoundedCornersShotImageView view, @AnimRes int animRes,
+                                Runnable runnable) {
+        final Animation animation = AnimationUtils.loadAnimation(getContext(), animRes);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -97,10 +110,7 @@ public class TwoCoveredShotsAnimationView extends FrameLayout {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                view.setVisibility(GONE);
-                if (onAnimationEndListener != null) {
-                    onAnimationEndListener.onAnimationEnd();
-                }
+                runnable.run();
             }
 
             @Override
@@ -109,7 +119,6 @@ public class TwoCoveredShotsAnimationView extends FrameLayout {
             }
         });
         view.startAnimation(animation);
-
     }
 
     private void init() {
