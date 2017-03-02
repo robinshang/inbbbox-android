@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
@@ -39,7 +38,7 @@ import co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView
 import co.netguru.android.inbbbox.feature.shared.view.BallInterpolator;
 import co.netguru.android.inbbbox.feature.shared.view.FogFloatingActionMenu;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
-import co.netguru.android.inbbbox.feature.shared.view.TwoCoveredShotsView;
+import co.netguru.android.inbbbox.feature.shared.view.TwoCoveredShotsAnimationView;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
@@ -52,7 +51,7 @@ import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucket
 public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
         ShotsContract.View, ShotsContract.Presenter> implements RefreshableFragment, ShotsContract.View, ShotSwipeListener,
         AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener,
-        ViewTreeObserver.OnWindowFocusChangeListener, DetailsVisibilityChangeEmitter {
+        DetailsVisibilityChangeEmitter {
 
     private static final int SHOTS_TO_LOAD_MORE = 5;
 
@@ -78,7 +77,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     ImageView ballShadowImageView;
 
     @BindView(R.id.shots_animation_container)
-    TwoCoveredShotsView twoCoveredShotsView;
+    TwoCoveredShotsAnimationView twoCoveredShotsAnimationView;
 
     private Animation shadowAnimation;
     private AnimationSet ballAnimation;
@@ -143,8 +142,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void setData(List<Shot> data) {
-        twoCoveredShotsView.loadShots(data.get(1), data.get(2));
-        twoCoveredShotsView.startAnimation(() -> shotsRecyclerView.setVisibility(View.VISIBLE));
         adapter.setItems(data);
     }
 
@@ -277,23 +274,28 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void showLoadingIndicator(boolean swipeToRefresh) {
-        if (swipeToRefresh) {
-            showLoadingIndicatorInternal();
-        } else {
-            ballImageView.getViewTreeObserver().addOnWindowFocusChangeListener(this);
-        }
+        twoCoveredShotsAnimationView.setVisibility(View.GONE);
+        shotsRecyclerView.setVisibility(View.GONE);
+        loadingBallContainer.setVisibility(View.VISIBLE);
+        ballImageView.post(() -> ballImageView.startAnimation(ballAnimation));
+        ballShadowImageView.post(() -> ballShadowImageView.startAnimation(shadowAnimation));
     }
 
     @Override
     public void hideLoadingIndicator() {
-        if (shotsRecyclerView != null && loadingBallContainer != null
-                && ballImageView != null && ballShadowImageView != null) {
-            ballImageView.getViewTreeObserver().removeOnWindowFocusChangeListener(this);
-            swipeRefreshLayout.setRefreshing(false);
-            loadingBallContainer.post(() -> loadingBallContainer.setVisibility(View.GONE));
-            shotsRecyclerView.setVisibility(View.VISIBLE);
-        }
+        swipeRefreshLayout.setRefreshing(false);
+        loadingBallContainer.post(() -> loadingBallContainer.setVisibility(View.GONE));
+        shotsRecyclerView.setVisibility(View.VISIBLE);
+
     }
+
+    @Override
+    public void showShotsAnimation(@NonNull Shot firstShot, @NonNull Shot secondShot) {
+        onDetailsVisibilityChange(false);
+        twoCoveredShotsAnimationView.loadShots(firstShot, secondShot);
+        twoCoveredShotsAnimationView.startAnimation(getPresenter()::getShotsCustomizationSettings);
+    }
+
 
     @Override
     public void showMessageOnServerError(String errorText) {
@@ -303,14 +305,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void setListener(DetailsVisibilityChangeListener listener) {
         this.detailsVisibilityChangeListener = listener;
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        if (ballImageView != null && ballImageView.getViewTreeObserver() != null) {
-            ballImageView.getViewTreeObserver().removeOnWindowFocusChangeListener(this);
-        }
-        showLoadingIndicatorInternal();
     }
 
     @Override
@@ -412,17 +406,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         ballAnimation = new AnimationSet(false);
         ballAnimation.addAnimation(scaleAnimation);
         ballAnimation.addAnimation(translateAnimation);
-    }
-
-    private void showLoadingIndicatorInternal() {
-        if (shotsRecyclerView != null && loadingBallContainer != null
-                && ballImageView != null && ballShadowImageView != null) {
-
-            shotsRecyclerView.setVisibility(View.GONE);
-            loadingBallContainer.setVisibility(View.VISIBLE);
-            ballImageView.post(() -> ballImageView.startAnimation(ballAnimation));
-            ballShadowImageView.post(() -> ballShadowImageView.startAnimation(shadowAnimation));
-        }
     }
 
     public interface ShotActionListener {

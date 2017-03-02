@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
-public class TwoCoveredShotsView extends FrameLayout {
+public class TwoCoveredShotsAnimationView extends FrameLayout {
 
     @BindView(R.id.two_covered_shots_first_view)
     RoundedCornersShotImageView firstShotImageView;
@@ -24,17 +24,17 @@ public class TwoCoveredShotsView extends FrameLayout {
     @NonNull
     private OnAnimationEndListener onAnimationEndListener = OnAnimationEndListener.NULL;
 
-    public TwoCoveredShotsView(Context context) {
+    public TwoCoveredShotsAnimationView(Context context) {
         super(context);
         init();
     }
 
-    public TwoCoveredShotsView(Context context, AttributeSet attrs) {
+    public TwoCoveredShotsAnimationView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public TwoCoveredShotsView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TwoCoveredShotsAnimationView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -53,7 +53,6 @@ public class TwoCoveredShotsView extends FrameLayout {
 
     private void startViewAnimation(RoundedCornersShotImageView view, @AnimRes int animationRes,
                                          boolean shouldHideParentView) {
-        view.clearAnimation();
         final Animation animation = AnimationUtils.loadAnimation(getContext(), animationRes);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -85,7 +84,7 @@ public class TwoCoveredShotsView extends FrameLayout {
     }
 
     private void init() {
-        LayoutInflater.from(getContext()).inflate(R.layout.two_covered_shots_view, this);
+        LayoutInflater.from(getContext()).inflate(R.layout.two_covered_shots_animation_view, this);
         ButterKnife.bind(this);
     }
 
