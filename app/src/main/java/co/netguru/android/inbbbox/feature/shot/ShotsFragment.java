@@ -39,7 +39,7 @@ import co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView
 import co.netguru.android.inbbbox.feature.shared.view.BallInterpolator;
 import co.netguru.android.inbbbox.feature.shared.view.FogFloatingActionMenu;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
-import co.netguru.android.inbbbox.feature.shared.view.ThreeCoveredShotsView;
+import co.netguru.android.inbbbox.feature.shared.view.TwoCoveredShotsView;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
@@ -78,7 +78,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     ImageView ballShadowImageView;
 
     @BindView(R.id.shots_animation_container)
-    ThreeCoveredShotsView threeCoveredShotsView;
+    TwoCoveredShotsView twoCoveredShotsView;
 
     private Animation shadowAnimation;
     private AnimationSet ballAnimation;
@@ -121,12 +121,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         return component.getPresenter();
     }
 
-    private void initComponent() {
-        component = App.getUserComponent(getContext())
-                .getShotsComponent(new ShotsModule(this, this));
-        component.inject(this);
-    }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -142,45 +136,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         return new RetainingLceViewState<>();
     }
 
-    @OnClick(R.id.fab_like_menu)
-    void onLikeFabClick() {
-        int currentItemPosition = shotsRecyclerView.getCurrentItem();
-        if (currentItemPosition != RecyclerView.NO_POSITION) {
-            getPresenter().likeShot(adapter.getShotFromPosition(currentItemPosition));
-        }
-        analyticsEventLogger.logEventShotsFABLike();
-    }
-
-    @OnClick(R.id.fab_bucket_menu)
-    void onBucketClick() {
-        int currentItemPosition = shotsRecyclerView.getCurrentItem();
-        if (currentItemPosition != RecyclerView.NO_POSITION) {
-            getPresenter().handleAddShotToBucket(
-                    adapter.getShotFromPosition(currentItemPosition));
-        }
-        analyticsEventLogger.logEventShotsFABAddToBucket();
-    }
-
-    @OnClick(R.id.fab_comment_menu)
-    void onCommentClick() {
-        int currentItemPosition = shotsRecyclerView.getCurrentItem();
-        if (currentItemPosition != RecyclerView.NO_POSITION) {
-            getPresenter()
-                    .showCommentInput(adapter.getShotFromPosition(currentItemPosition));
-        }
-        analyticsEventLogger.logEventShotsFABComment();
-    }
-
-    @OnClick(R.id.fab_follow_menu)
-    void onFollowClick() {
-        int currentItemPosition = shotsRecyclerView.getCurrentItem();
-        if (currentItemPosition != RecyclerView.NO_POSITION) {
-            getPresenter()
-                    .handleFollowShotAuthor(adapter.getShotFromPosition(currentItemPosition));
-        }
-        analyticsEventLogger.logEventShotsFABFollow();
-    }
-
     @Override
     public List<Shot> getData() {
         return adapter.getData();
@@ -188,8 +143,9 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void setData(List<Shot> data) {
+        twoCoveredShotsView.loadShots(data.get(1), data.get(2));
+        twoCoveredShotsView.startAnimation(() -> shotsRecyclerView.setVisibility(View.VISIBLE));
         adapter.setItems(data);
-        threeCoveredShotsView.startAnimation();
     }
 
     @Override
@@ -362,6 +318,66 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         getPresenter().removeShotFromBuckets(list, shot);
     }
 
+    @Override
+    public void onShotLiked() {
+        shotActionListener.shotLikeStatusChanged();
+    }
+
+    @Override
+    public void onShotAddedToBucket() {
+        shotActionListener.onShotAddedToBucket();
+    }
+
+    @Override
+    public void onUserFollowed() {
+        shotActionListener.onUserFollowed();
+    }
+
+    @OnClick(R.id.fab_like_menu)
+    void onLikeFabClick() {
+        int currentItemPosition = shotsRecyclerView.getCurrentItem();
+        if (currentItemPosition != RecyclerView.NO_POSITION) {
+            getPresenter().likeShot(adapter.getShotFromPosition(currentItemPosition));
+        }
+        analyticsEventLogger.logEventShotsFABLike();
+    }
+
+    @OnClick(R.id.fab_bucket_menu)
+    void onBucketClick() {
+        int currentItemPosition = shotsRecyclerView.getCurrentItem();
+        if (currentItemPosition != RecyclerView.NO_POSITION) {
+            getPresenter().handleAddShotToBucket(
+                    adapter.getShotFromPosition(currentItemPosition));
+        }
+        analyticsEventLogger.logEventShotsFABAddToBucket();
+    }
+
+    @OnClick(R.id.fab_comment_menu)
+    void onCommentClick() {
+        int currentItemPosition = shotsRecyclerView.getCurrentItem();
+        if (currentItemPosition != RecyclerView.NO_POSITION) {
+            getPresenter()
+                    .showCommentInput(adapter.getShotFromPosition(currentItemPosition));
+        }
+        analyticsEventLogger.logEventShotsFABComment();
+    }
+
+    @OnClick(R.id.fab_follow_menu)
+    void onFollowClick() {
+        int currentItemPosition = shotsRecyclerView.getCurrentItem();
+        if (currentItemPosition != RecyclerView.NO_POSITION) {
+            getPresenter()
+                    .handleFollowShotAuthor(adapter.getShotFromPosition(currentItemPosition));
+        }
+        analyticsEventLogger.logEventShotsFABFollow();
+    }
+
+    private void initComponent() {
+        component = App.getUserComponent(getContext())
+                .getShotsComponent(new ShotsModule(this, this));
+        component.inject(this);
+    }
+
     private void initFabMenu() {
         fabMenu.setOrientation(getResources().getConfiguration().orientation);
         fabMenu.addFogView(fogContainerView);
@@ -402,7 +418,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         if (shotsRecyclerView != null && loadingBallContainer != null
                 && ballImageView != null && ballShadowImageView != null) {
 
-            shotsRecyclerView.setVisibility(View.INVISIBLE);
+            shotsRecyclerView.setVisibility(View.GONE);
             loadingBallContainer.setVisibility(View.VISIBLE);
             ballImageView.post(() -> ballImageView.startAnimation(ballAnimation));
             ballShadowImageView.post(() -> ballShadowImageView.startAnimation(shadowAnimation));
@@ -417,20 +433,5 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         void onShotAddedToBucket();
 
         void onUserFollowed();
-    }
-
-    @Override
-    public void onShotLiked() {
-        shotActionListener.shotLikeStatusChanged();
-    }
-
-    @Override
-    public void onShotAddedToBucket() {
-        shotActionListener.onShotAddedToBucket();
-    }
-
-    @Override
-    public void onUserFollowed() {
-        shotActionListener.onUserFollowed();
     }
 }

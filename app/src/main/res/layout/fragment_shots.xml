@@ -5,36 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/contentView"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <co.netguru.android.inbbbox.feature.shared.view.TwoCoveredShotsView
+                android:id="@+id/shots_animation_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/shot_item_internal_padding"
+                android:visibility="gone" />
 
             <co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView
                 android:id="@+id/shots_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </FrameLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-        <co.netguru.android.inbbbox.feature.shared.view.ThreeCoveredShotsView
-            android:id="@+id/shots_animation_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/shot_item_internal_padding" />
-
-        <View
-            android:id="@+id/container_fog_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.1"
-            android:background="@color/whiteSemiTransparent"
-            android:clickable="false"
-            android:visibility="gone" />
-    </FrameLayout>
+    <View
+        android:id="@+id/container_fog_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.1"
+        android:background="@color/whiteSemiTransparent"
+        android:clickable="false"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/loadingView"
