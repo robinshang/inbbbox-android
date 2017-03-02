@@ -293,8 +293,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void showShotsAnimation(@NonNull Shot firstShot, @NonNull Shot secondShot) {
         onDetailsVisibilityChange(false);
-        twoCoveredShotsAnimationView.loadShots(firstShot, secondShot);
-        twoCoveredShotsAnimationView.startAnimation(() -> {
+        twoCoveredShotsAnimationView.loadShotsAndStartAnimation(firstShot, secondShot, () -> {
             getPresenter().getShotsCustomizationSettings();
             startFabButtonAnimation();
         });

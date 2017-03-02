@@ -8,8 +8,7 @@
         android:layout_gravity="center"
         android:layout_marginEnd="@dimen/shots_animation_third_view_horizontal_margin"
         android:layout_marginStart="@dimen/shots_animation_third_view_horizontal_margin"
-        android:layout_marginTop="@dimen/shots_animation_third_view_top_margin"
-        android:background="@color/gray" />
+        android:layout_marginTop="@dimen/shots_animation_third_view_top_margin" />
 
     <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
         android:id="@+id/two_covered_shots_first_view"

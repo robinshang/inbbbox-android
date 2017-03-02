@@ -40,13 +40,14 @@ public class ShotLoadingUtil {
                 .into(target);
     }
 
-    public static void loadListBlurredShot(Context context, ImageView target, ShotImage shot) {
+    public static void loadListBlurredShotWithListener(Context context, ImageView target, ShotImage shot,
+                                                       RequestListener<String, GlideDrawable> requestListener) {
         target.setImageResource(R.drawable.shot_placeholder);
         Glide.clear(target);
         Glide.with(context)
                 .load(shot.normalImageUrl())
                 .thumbnail(ShotLoadingUtil.getThumbnailRequest(context, shot.thumbnailUrl()))
-                .animate(android.R.anim.fade_in)
+                .listener(requestListener)
                 .bitmapTransform(new BlurTransformation(context))
                 .into(target);
     }
