@@ -126,6 +126,7 @@ public class TwoCoveredShotsAnimationView extends FrameLayout {
         ButterKnife.bind(this);
     }
 
+    @FunctionalInterface
     public interface OnAnimationEndListener {
 
         void onAnimationEnd();
