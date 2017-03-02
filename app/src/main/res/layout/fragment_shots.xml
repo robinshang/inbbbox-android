@@ -5,27 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <co.netguru.android.inbbbox.feature.shared.view.TwoCoveredShotsAnimationView
+        android:id="@+id/shots_animation_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/shot_item_internal_padding"
+        android:visibility="gone" />
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
+        <co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView
+            android:id="@+id/shots_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" />
 
-            <co.netguru.android.inbbbox.feature.shared.view.TwoCoveredShotsAnimationView
-                android:id="@+id/shots_animation_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/shot_item_internal_padding"
-                android:visibility="gone" />
-
-            <co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView
-                android:id="@+id/shots_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </FrameLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <View

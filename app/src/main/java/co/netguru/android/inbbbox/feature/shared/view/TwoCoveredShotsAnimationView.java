@@ -44,15 +44,13 @@ public class TwoCoveredShotsAnimationView extends FrameLayout {
     public void loadShotsAndStartAnimation(@NonNull Shot firstShot, @NonNull Shot secondShot,
                                            @NonNull OnAnimationEndListener onAnimationEndListener) {
         setVisibility(VISIBLE);
-        loadShotWithAnimation(firstShotImageView, firstShot,
-                R.anim.two_shots_first_shot_drop_down_animation, onAnimationEndListener);
-        loadShotWithAnimation(secondShotImageView, secondShot,
-                R.anim.two_shots_second_shot_drop_down_animation, null);
+        loadFirstShotWithAnimation(firstShot, secondShot, onAnimationEndListener);
     }
 
-    private void loadShotWithAnimation(RoundedCornersShotImageView view, Shot shot, @AnimRes int animationRes,
-                                       @Nullable OnAnimationEndListener onAnimationEndListener) {
-        view.loadBlurredShotWithListener(shot, new RequestListener<String, GlideDrawable>() {
+    private void loadFirstShotWithAnimation(@NonNull Shot firstShot, @NonNull Shot secondShot,
+                                            @Nullable OnAnimationEndListener onAnimationEndListener) {
+        firstShotImageView.setVisibility(INVISIBLE);
+        firstShotImageView.loadBlurredShotWithListener(firstShot, new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target,
                                        boolean isFirstResource) {
@@ -62,7 +60,27 @@ public class TwoCoveredShotsAnimationView extends FrameLayout {
             @Override
             public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target,
                                            boolean isFromMemoryCache, boolean isFirstResource) {
-                startDropDownAnimation(view, animationRes, onAnimationEndListener);
+                loadSecondShotWithAnimation(secondShot);
+                startDropDownAnimation(firstShotImageView, R.anim.two_shots_first_shot_drop_down_animation,
+                        onAnimationEndListener);
+                return true;
+            }
+        });
+    }
+
+    private void loadSecondShotWithAnimation(@NonNull Shot secondShot) {
+        secondShotImageView.setVisibility(INVISIBLE);
+        secondShotImageView.loadBlurredShotWithListener(secondShot, new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target,
+                                       boolean isFirstResource) {
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target,
+                                           boolean isFromMemoryCache, boolean isFirstResource) {
+                startDropDownAnimation(secondShotImageView, R.anim.two_shots_second_shot_drop_down_animation, null);
                 return true;
             }
         });
