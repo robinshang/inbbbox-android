@@ -174,5 +174,9 @@
     <dimen name="projects_item_shots_count_padding_start">8dp</dimen>
     <dimen name="projects_shot_item_shot_padding">6dp</dimen>
     <dimen name="projects_shot_item_shot_width">160dp</dimen>
+    <dimen name="shots_animation_second_view_horizontal_margin">16dp</dimen>
+    <dimen name="shots_animation_third_view_horizontal_margin">32dp</dimen>
+    <dimen name="shots_animation_third_view_top_margin">56dp</dimen>
+    <dimen name="shots_animation_second_view_top_margin">28dp</dimen>
 
 </resources>

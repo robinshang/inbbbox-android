@@ -39,6 +39,7 @@ import co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView
 import co.netguru.android.inbbbox.feature.shared.view.BallInterpolator;
 import co.netguru.android.inbbbox.feature.shared.view.FogFloatingActionMenu;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.shared.view.ThreeCoveredShotsView;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
@@ -75,6 +76,9 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @BindView(R.id.loading_ball_shadow)
     ImageView ballShadowImageView;
+
+    @BindView(R.id.shots_animation_container)
+    ThreeCoveredShotsView threeCoveredShotsView;
 
     private Animation shadowAnimation;
     private AnimationSet ballAnimation;
@@ -185,6 +189,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void setData(List<Shot> data) {
         adapter.setItems(data);
+        threeCoveredShotsView.setVisibility(View.GONE);
     }
 
     @Override
@@ -195,30 +200,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void refreshFragmentData() {
         getPresenter().getShotsFromServer(false);
-    }
-
-    private void initFabMenu() {
-        fabMenu.setOrientation(getResources().getConfiguration().orientation);
-        fabMenu.addFogView(fogContainerView);
-
-    }
-
-    private void initRefreshLayout() {
-        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.accent));
-        swipeRefreshLayout.setOnRefreshListener(() -> getPresenter().getShotsFromServer(true));
-    }
-
-    private void initRecycler() {
-        shotsRecyclerView.setAdapter(adapter);
-        shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        shotsRecyclerView.setHasFixedSize(true);
-        shotsRecyclerView.addOnScrollListener(new LoadMoreScrollListener(SHOTS_TO_LOAD_MORE) {
-            @Override
-            public void requestMoreData() {
-                getPresenter().getMoreShotsFromServer();
-                analyticsEventLogger.logEventShotsListSwipes(SHOTS_TO_LOAD_MORE);
-            }
-        });
     }
 
     @Override
@@ -368,6 +349,42 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         this.detailsVisibilityChangeListener = listener;
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        if (ballImageView != null && ballImageView.getViewTreeObserver() != null) {
+            ballImageView.getViewTreeObserver().removeOnWindowFocusChangeListener(this);
+        }
+        showLoadingIndicatorInternal();
+    }
+
+    @Override
+    public void onBucketToRemoveFromForShotSelect(List<Bucket> list, Shot shot) {
+        getPresenter().removeShotFromBuckets(list, shot);
+    }
+
+    private void initFabMenu() {
+        fabMenu.setOrientation(getResources().getConfiguration().orientation);
+        fabMenu.addFogView(fogContainerView);
+    }
+
+    private void initRefreshLayout() {
+        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.accent));
+        swipeRefreshLayout.setOnRefreshListener(() -> getPresenter().getShotsFromServer(true));
+    }
+
+    private void initRecycler() {
+        shotsRecyclerView.setAdapter(adapter);
+        shotsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        shotsRecyclerView.setHasFixedSize(true);
+        shotsRecyclerView.addOnScrollListener(new LoadMoreScrollListener(SHOTS_TO_LOAD_MORE) {
+            @Override
+            public void requestMoreData() {
+                getPresenter().getMoreShotsFromServer();
+                analyticsEventLogger.logEventShotsListSwipes(SHOTS_TO_LOAD_MORE);
+            }
+        });
+    }
+
     private void initLoadingAnimation() {
         Animation scaleAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.ball_animation_scale);
         Animation translateAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.ball_animation_translate);
@@ -392,21 +409,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         }
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        if (ballImageView != null && ballImageView.getViewTreeObserver() != null) {
-            ballImageView.getViewTreeObserver().removeOnWindowFocusChangeListener(this);
-        }
-        showLoadingIndicatorInternal();
-    }
-
-    @Override
-    public void onBucketToRemoveFromForShotSelect(List<Bucket> list, Shot shot) {
-        getPresenter().removeShotFromBuckets(list, shot);
-    }
-
     public interface ShotActionListener {
-        void shotLikeStatusChanged();
 
         void showShotDetails(Shot shot, List<Shot> nearbyShots, ShotDetailsRequest detailsRequest);
 

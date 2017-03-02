@@ -20,6 +20,12 @@
                 android:layout_height="match_parent" />
         </android.support.v4.widget.SwipeRefreshLayout>
 
+        <co.netguru.android.inbbbox.feature.shared.view.ThreeCoveredShotsView
+            android:id="@+id/shots_animation_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/shot_item_internal_padding" />
+
         <View
             android:id="@+id/container_fog_view"
             android:layout_width="match_parent"
