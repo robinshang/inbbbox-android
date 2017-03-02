@@ -20,11 +20,13 @@ class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ShotClickListener shotClickListener;
     private TeamClickListener teamClickListener;
+    private LinkClickListener linkClickListener;
 
     UserInfoAdapter(ShotClickListener shotClickListener,
-                    TeamClickListener teamClickListener) {
+                    TeamClickListener teamClickListener, LinkClickListener linkClickListener) {
         this.shotClickListener = shotClickListener;
         this.teamClickListener = teamClickListener;
+        this.linkClickListener = linkClickListener;
     }
 
     @Override
@@ -36,6 +38,8 @@ class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 return new UserInfoShotsViewHolder(parent, shotClickListener);
             case 2:
                 return new UserInfoTeamsViewHolder(parent, teamClickListener);
+            case 3:
+                return new UserInfoLinksViewHolder(parent, linkClickListener);
             default:
                 throw new IllegalArgumentException(
                         String.format("Could not find view holder for viewType: %d", viewType));
@@ -54,6 +58,8 @@ class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case 2:
                 ((UserInfoTeamsViewHolder) holder).bind(teams);
                 break;
+            case 3:
+                ((UserInfoLinksViewHolder) holder).bind(user.links());
             default:
                 throw new IllegalArgumentException(
                         String.format("Could not bind view holder for position: %d", position));
@@ -67,7 +73,7 @@ class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return teams.isEmpty() ? 2 : 3;
+        return 4;
     }
 
     public void setTeams(List<User> teams) {

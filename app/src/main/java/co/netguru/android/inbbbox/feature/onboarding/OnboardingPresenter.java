@@ -8,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
+import co.netguru.android.inbbbox.data.dribbbleuser.Links;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
 import co.netguru.android.inbbbox.data.onboarding.OnboardingController;
@@ -21,6 +22,7 @@ public class OnboardingPresenter extends MvpNullObjectBasePresenter<OnboardingCo
 
     private static final int NETGURU_ID = 653174;
     private static final User NETGURU_USER = User
+
             .builder()
             .id(NETGURU_ID)
             .name("")
@@ -32,6 +34,7 @@ public class OnboardingPresenter extends MvpNullObjectBasePresenter<OnboardingCo
             .followingsCount(0)
             .bio("")
             .location("")
+            .links(Links.create("", ""))
             .build();
 
     private final OnboardingController onboardingController;

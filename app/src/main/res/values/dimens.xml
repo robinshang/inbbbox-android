@@ -173,5 +173,7 @@
     <dimen name="projects_item_shots_count_padding_start">8dp</dimen>
     <dimen name="projects_shot_item_shot_padding">6dp</dimen>
     <dimen name="projects_shot_item_shot_width">160dp</dimen>
+    <dimen name="user_info_divider_marginTop">24dp</dimen>
+    <dimen name="user_info_links_recycler_marginTop">24dp</dimen>
 
 </resources>
