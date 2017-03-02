@@ -57,6 +57,7 @@
         android:layout_gravity="end|bottom"
         android:layout_marginBottom="@dimen/margin_default"
         android:layout_marginEnd="@dimen/margin_default"
+        android:visibility="gone"
         app:layout_behavior="co.netguru.android.inbbbox.feature.shared.view.behavior.FloatingActionMenuAndButtonBehavior"
         fab:menu_animationDelayPerItem="10"
         fab:menu_colorNormal="@color/secondaryWindowBackground"

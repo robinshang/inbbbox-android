@@ -276,6 +276,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     public void showLoadingIndicator(boolean swipeToRefresh) {
         twoCoveredShotsAnimationView.setVisibility(View.GONE);
         shotsRecyclerView.setVisibility(View.GONE);
+        fabMenu.setVisibility(View.GONE);
         loadingBallContainer.setVisibility(View.VISIBLE);
         ballImageView.post(() -> ballImageView.startAnimation(ballAnimation));
         ballShadowImageView.post(() -> ballShadowImageView.startAnimation(shadowAnimation));
@@ -293,7 +294,10 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     public void showShotsAnimation(@NonNull Shot firstShot, @NonNull Shot secondShot) {
         onDetailsVisibilityChange(false);
         twoCoveredShotsAnimationView.loadShots(firstShot, secondShot);
-        twoCoveredShotsAnimationView.startAnimation(getPresenter()::getShotsCustomizationSettings);
+        twoCoveredShotsAnimationView.startAnimation(() -> {
+            getPresenter().getShotsCustomizationSettings();
+            startFabButtonAnimation();
+        });
     }
 
 
@@ -393,6 +397,28 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
                 analyticsEventLogger.logEventShotsListSwipes(SHOTS_TO_LOAD_MORE);
             }
         });
+    }
+
+    private void startFabButtonAnimation() {
+        final Animation animation = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                //no-op
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                fabMenu.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //no-op
+            }
+        });
+        fabMenu.startAnimation(animation);
+
     }
 
     private void initLoadingAnimation() {
