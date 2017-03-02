@@ -189,7 +189,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void setData(List<Shot> data) {
         adapter.setItems(data);
-        threeCoveredShotsView.setVisibility(View.GONE);
+        threeCoveredShotsView.startAnimation();
     }
 
     @Override
@@ -410,6 +410,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     public interface ShotActionListener {
+        void shotLikeStatusChanged();
 
         void showShotDetails(Shot shot, List<Shot> nearbyShots, ShotDetailsRequest detailsRequest);
 
