@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.data.session.controllers;
 
+import android.net.Uri;
 import android.support.v4.util.Pair;
 
 import java.util.UUID;
@@ -30,19 +31,14 @@ public class TokenParametersController {
     }
 
     private String getAuthorizeUrl(String stateString) {
-        return OAUTH.BASE_URL + OAUTH.OAUTH_AUTHORIZE_ENDPOINT +
-                "?" +
-                OAUTH.CLIENT_ID_KEY +
-                "=" +
-                BuildConfig.DRIBBBLE_CLIENT_KEY +
-                "&" +
-                OAUTH.SCOPE_KEY +
-                "=" +
-                OAUTH.INBBBOX_SCOPE +
-                "&" +
-                OAUTH.STATE_KEY +
-                "=" +
-                stateString;
+        return new Uri.Builder()
+                .scheme(OAUTH.URI_SCHEME)
+                .authority(OAUTH.URI_AUTHORITY)
+                .appendEncodedPath(OAUTH.OAUTH_AUTHORIZE_ENDPOINT)
+                .encodedQuery(OAUTH.SCOPE_KEY + "=" + OAUTH.INBBBOX_SCOPE) //prevent + sign encoding
+                .appendQueryParameter(OAUTH.CLIENT_ID_KEY, BuildConfig.DRIBBBLE_CLIENT_KEY)
+                .appendQueryParameter(OAUTH.STATE_KEY, stateString)
+                .build().toString();
     }
 
     public Single<Token> getUserGuestToken() {
