@@ -42,6 +42,7 @@ public class UserActivity
         implements UserActivityContract.View, ShotActionListener {
 
     private static final String USER_KEY = "user_key";
+    private static final String TEXT_PLAIN = "text/plain";
 
     @BindColor(R.color.white)
     int colorWhite;
@@ -108,6 +109,9 @@ public class UserActivity
             case R.id.action_unfollow:
                 getPresenter().stopFollowing(user);
                 analyticsEventLogger.logEventAppbarFollow(false);
+                return true;
+            case R.id.action_share:
+                getPresenter().shareUser(user);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -188,6 +192,14 @@ public class UserActivity
     @Override
     public void showMessageOnServerError(String errorText) {
         Snackbar.make(userImageView, errorText, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showShare(String toShare) {
+        final Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.setType(TEXT_PLAIN);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, toShare);
+        startActivity(sendIntent);
     }
 
     private void logScreenEvent() {

@@ -6,6 +6,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -138,6 +139,16 @@ public class UserActivityPresenterTest {
         verify(view).showMessageOnServerError(anyString());
         verify(errorController).getThrowableMessage(any(Throwable.class));
         verifyNoMoreInteractions(view, followersController, errorController);
+    }
+
+    @Test
+    public void whenShareUser_thenCallShowShareFunction() {
+        final String username = "test";
+        when(user.username()).thenReturn(username);
+
+        presenter.shareUser(user);
+
+        verify(view).showShare(Matchers.contains(user.username()));
     }
 
     @After
