@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.data.session.controllers;
 
 import android.content.res.Resources;
-import android.support.v4.util.Pair;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,8 +11,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.UUID;
 
 import co.netguru.android.inbbbox.BuildConfig;
 import co.netguru.android.inbbbox.Constants;
@@ -41,21 +38,6 @@ public class TokenParametersControllerTest {
     @Before
     public void setUp() {
         when(resourcesMock.getString(anyInt())).thenReturn(resourceString);
-    }
-
-    @Test
-    public void whenUrlRequested_thenGenerateUrlFromConstants() {
-        String expected = generateExpectedUrl();
-        TestSubscriber<Pair<String, UUID>> testSubscriber = new TestSubscriber<>();
-
-        tokenParametersController.getOauthAuthorizeUrlAndUuidPair().subscribe(testSubscriber);
-
-        testSubscriber.assertNoErrors();
-        String urlString = testSubscriber.getOnNextEvents().get(0).first;
-        UUID uuid = testSubscriber.getOnNextEvents().get(0).second;
-
-        Assert.assertTrue(urlString.startsWith(expected));
-        Assert.assertTrue(urlString.endsWith(uuid.toString()));
     }
 
     @Test
