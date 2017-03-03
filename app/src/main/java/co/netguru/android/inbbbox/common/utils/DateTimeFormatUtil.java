@@ -12,7 +12,7 @@ import org.threeten.bp.format.DateTimeFormatter;
 
 import co.netguru.android.inbbbox.R;
 
-public final class DateTimeFormatUtil {
+public class DateTimeFormatUtil {
 
     private final Context context;
     private static final String DATE_PATTERN = "yyyy-MM-dd";
