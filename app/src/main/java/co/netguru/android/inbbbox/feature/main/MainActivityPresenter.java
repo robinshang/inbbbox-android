@@ -49,6 +49,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     private final CompositeSubscription subscriptions;
     private final RxBus rxBus;
     private final AnalyticsEventLogger analyticsEventLogger;
+    private final DateTimeFormatUtil dateTimeFormatUtil;
     private boolean isFollowing;
     private boolean isNew;
     private boolean isPopular;
@@ -65,7 +66,8 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                           ErrorController errorController,
                           TokenParametersController tokenParametersController,
                           LogoutController logoutController, OnboardingController onboardingController,
-                          RxBus rxBus, AnalyticsEventLogger analyticsEventLogger) {
+                          RxBus rxBus, AnalyticsEventLogger analyticsEventLogger,
+                          DateTimeFormatUtil dateTimeFormatUtil) {
         this.userController = userController;
         this.notificationScheduler = notificationScheduler;
         this.notificationController = notificationController;
@@ -77,6 +79,7 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
         this.rxBus = rxBus;
         this.subscriptions = new CompositeSubscription();
         this.analyticsEventLogger = analyticsEventLogger;
+        this.dateTimeFormatUtil = dateTimeFormatUtil;
     }
 
     @Override
@@ -219,7 +222,8 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
                 .andThen(notificationController.scheduleNotification())
                 .compose(applySingleComputationSchedulers())
                 .subscribe(notificationSettings ->
-                                getView().showNotificationTime(DateTimeFormatUtil.getFormattedTime(hour, minute)),
+                                getView().showNotificationTime(dateTimeFormatUtil
+                                        .getFormattedTime(hour, minute)),
                         this::onScheduleNotificationError));
     }
 
@@ -319,7 +323,8 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
 
     private void setNotificationSettings(NotificationSettings notificationSettings) {
         getView().changeNotificationStatus(notificationSettings.isEnabled());
-        getView().showNotificationTime(DateTimeFormatUtil.getFormattedTime(notificationSettings.getHour(),
+        getView().showNotificationTime(
+                dateTimeFormatUtil.getFormattedTime(notificationSettings.getHour(),
                 notificationSettings.getMinute()));
     }
 

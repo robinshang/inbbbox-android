@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.common.utils;
 
 import android.content.Context;
+import android.text.format.DateFormat;
 
 import org.threeten.bp.Duration;
 import org.threeten.bp.LocalDate;
@@ -13,8 +14,10 @@ import co.netguru.android.inbbbox.R;
 
 public final class DateTimeFormatUtil {
 
+    private final Context context;
     private static final String DATE_PATTERN = "yyyy-MM-dd";
     private static final String TWELVE_HOUR_CLOCK_PATTERN = "h:mm a";
+    private static final String TWENTYFOUR_HOUR_CLOCK_PATTERN = "H:mm";
     private static final String MONTH_SHORT_DAY_AND_YEAR_FORMAT = "MMM dd, yyyy";
 
     private static final long MINUTE_IN_SEC = 60;
@@ -29,13 +32,17 @@ public final class DateTimeFormatUtil {
 
     private static final DateTimeFormatter TWELVE_HOUR_CLOCK_FORMATTER = DateTimeFormatter.ofPattern(TWELVE_HOUR_CLOCK_PATTERN)
             .withZone(ZoneId.systemDefault());
+    private static final DateTimeFormatter TWENTYFOUR_HOUR_CLOCK_FORMATTER = DateTimeFormatter
+            .ofPattern(TWENTYFOUR_HOUR_CLOCK_PATTERN)
+            .withZone(ZoneId.systemDefault());
 
-    private DateTimeFormatUtil() {
-        throw new AssertionError();
+    public DateTimeFormatUtil(Context context) {
+        this.context = context;
     }
 
-    public static String getFormattedTime(int hour, int minute) {
-        return LocalTime.of(hour, minute).format(TWELVE_HOUR_CLOCK_FORMATTER);
+    public String getFormattedTime(int hour, int minute) {
+        return LocalTime.of(hour, minute).format(DateFormat.is24HourFormat(context) ?
+                TWENTYFOUR_HOUR_CLOCK_FORMATTER : TWELVE_HOUR_CLOCK_FORMATTER);
     }
 
     public static String getCurrentDate() {
