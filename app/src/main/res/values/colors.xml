@@ -32,4 +32,10 @@
     <color name="textGrey">#6D6D72</color>
 
     <color name="semiBlack">#8C000000</color>
+
+    <color name="darkGray">#949399</color>
+    <color name="darkerGray">#8F8E93</color>
+    <color name="textDark">#262626</color>
+
+    <color name="primaryTransparent">#E0F0377E</color>
 </resources>

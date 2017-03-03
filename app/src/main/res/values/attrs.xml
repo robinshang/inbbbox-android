@@ -11,4 +11,12 @@
         <attr name="roundedCornersBackgroundColor" format="color|reference"/>
         <attr name="roundingBottomCornersEnabled" format="boolean|reference"/>
     </declare-styleable>
+    <declare-styleable name="ScrollingBackgroundView">
+        <attr name="scrollDirection">
+            <flag name="up" value="-1"/>
+            <flag name="down" value="1"/>
+        </attr>
+        <attr name="imageDrawable" format="reference"/>
+        <attr name="offset" format="integer"/>
+    </declare-styleable>
 </resources>

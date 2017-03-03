@@ -23,6 +23,8 @@ public final class Constants {
         public static final String INBBBOX_SCOPE = "public+write+comment";
         public static final String INBBBOX_GUEST_SCOPE = "public";
         public static final String INBBBOX_DEFAULT_TOKEN_TYPE = "Bearer";
+        public static final String URI_SCHEME = "https";
+        public static final String URI_AUTHORITY = "dribbble.com";
 
         private OAUTH() {
             throw new AssertionError();

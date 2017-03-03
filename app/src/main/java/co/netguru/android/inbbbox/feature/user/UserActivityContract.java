@@ -11,6 +11,8 @@ public interface UserActivityContract {
         void showFollowingAction(boolean following);
 
         void showMessageOnServerError(String errorText);
+
+        void showShare(String toShare);
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -19,5 +21,7 @@ public interface UserActivityContract {
         void startFollowing(User user);
 
         void stopFollowing(User user);
+
+        void shareUser(User user);
     }
 }

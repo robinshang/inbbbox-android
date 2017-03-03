@@ -1,0 +1,135 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/user_info_header_top_height"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="@dimen/common_zero"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/user_followers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/user_info_header_followers_top"
+                android:textSize="@dimen/user_info_header_value_textSize"
+                android:textStyle="bold"
+                tools:text="2024" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/user_info_header_followers_top"
+                android:text="@string/followers"
+                android:textSize="@dimen/user_info_header_value_text_textSize" />
+
+            <View
+                android:layout_width="@dimen/common_1dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@color/gray" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="@dimen/common_zero"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/user_shots"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/user_info_header_followers_top"
+                android:textSize="@dimen/user_info_header_value_textSize"
+                android:textStyle="bold"
+                tools:text="94" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/user_info_header_followers_top"
+                android:text="@string/shots"
+                android:textSize="@dimen/user_info_header_value_text_textSize" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="@dimen/common_zero"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/user_following"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/user_info_header_followers_top"
+                android:textSize="@dimen/user_info_header_value_textSize"
+                android:textStyle="bold"
+                tools:text="667" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/user_info_header_followers_top"
+                android:text="@string/following"
+                android:textSize="@dimen/user_info_header_value_text_textSize" />
+
+            <View
+                android:layout_width="@dimen/common_1dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:background="@color/gray" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_1dp"
+        android:background="@color/gray" />
+
+    <TextView
+        android:id="@+id/user_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/user_info_header_country_marginTop"
+        android:drawableLeft="@drawable/location_glyph_world_pin"
+        android:drawablePadding="@dimen/user_info_header_country_drawable_padding"
+        android:gravity="center_vertical"
+        android:textColor="@color/darkGray"
+
+        android:textSize="@dimen/user_info_header_country_textSize"
+        tools:text="Poland" />
+
+    <TextView
+        android:id="@+id/user_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/user_info_header_bio_marginLeft"
+        android:layout_marginRight="@dimen/user_info_header_bio_marginRight"
+        android:layout_marginTop="@dimen/user_info_header_bio_marginTop"
+        android:gravity="center_horizontal"
+        android:lineSpacingMultiplier="1.2"
+        android:textColor="@color/darkerGray" />
+
+</LinearLayout>

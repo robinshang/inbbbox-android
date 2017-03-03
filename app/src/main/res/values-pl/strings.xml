@@ -14,6 +14,7 @@
     <string name="action_settings">Ustawienia</string>
     <string name="action_unfollow">Przestań obserwować</string>
     <string name="action_warning">Ostrzeżenie</string>
+    <string name="action_share">Udostępnij</string>
     <string name="add_to_bucket">DODAJ DO KOLEKCJI</string>
     <string name="api_error_429">Wykonujesz zbyt wiele akcji! Zwolnij na chwilę</string>
     <string name="authorization_error">Błąd autoryzacji</string>
@@ -121,5 +122,10 @@
     </plurals>
     <string name="tab_info_title">Info</string>
     <string name="tab_projects_title">Projekty</string>
+    <string name="most_popular">Najpopularniejsze</string>
+    <string name="on_teams">W zespołach</string>
+    <string name="followers">obserwujący</string>
+    <string name="shots">shoty</string>
+    <string name="following">obserwowani</string>
 
 </resources>

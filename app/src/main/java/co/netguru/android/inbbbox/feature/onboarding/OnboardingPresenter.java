@@ -28,6 +28,10 @@ public class OnboardingPresenter extends MvpNullObjectBasePresenter<OnboardingCo
             .username("")
             .shotsCount(0)
             .type("team")
+            .followersCount(0)
+            .followingsCount(0)
+            .bio("")
+            .location("")
             .build();
 
     private final OnboardingController onboardingController;
