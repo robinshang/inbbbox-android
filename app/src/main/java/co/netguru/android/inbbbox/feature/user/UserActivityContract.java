@@ -13,6 +13,8 @@ public interface UserActivityContract {
         void showMessageOnServerError(String errorText);
 
         void showShare(String toShare);
+
+        void showUnfollowDialog(String username);
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -23,5 +25,7 @@ public interface UserActivityContract {
         void stopFollowing(User user);
 
         void shareUser(User user);
+
+        void changeFollowingStatus(User user, boolean follow);
     }
 }
