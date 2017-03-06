@@ -6,6 +6,7 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -21,6 +22,10 @@ public interface UserShotsContract {
         void hideProgress();
 
         void openShotDetailsScreen(Shot shot, List<Shot> allShots, long userId);
+
+        void showBucketChooserView(Shot shot);
+
+        void showBucketAddSuccess();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -32,5 +37,9 @@ public interface UserShotsContract {
         void getMoreUserShotsFromServer();
 
         void showShotDetails(Shot shot);
+
+        void onBucketShot(Shot shot);
+
+        void addShotToBucket(Shot shot, Bucket bucket);
     }
 }
