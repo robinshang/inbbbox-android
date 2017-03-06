@@ -77,12 +77,10 @@ public class RoundedViewClipper {
 
         topMaskBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas topMaskCanvas = new Canvas(topMaskBitmap);
-        visiblePaint.setColor(Color.BLACK);
         topMaskCanvas.drawPath(clipPathTop, visiblePaint);
 
         bottomMaskBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas bottomMaskCanvas = new Canvas(bottomMaskBitmap);
-        visiblePaint.setColor(Color.BLACK);
         bottomMaskCanvas.drawPath(clipPathBottom, visiblePaint);
     }
 
@@ -107,6 +105,7 @@ public class RoundedViewClipper {
         drawingPaint.setXfermode(porterDuffXfermode);
         visiblePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         visiblePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        visiblePaint.setColor(Color.BLACK);
     }
 
     private void initClippingPath() {
