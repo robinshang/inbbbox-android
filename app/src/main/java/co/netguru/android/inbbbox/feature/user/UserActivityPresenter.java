@@ -36,7 +36,10 @@ public class UserActivityPresenter extends MvpNullObjectBasePresenter<UserActivi
                 .isUserFollowed(user.id())
                 .compose(RxTransformerUtil.applySingleIoSchedulers())
                 .subscribe(following -> getView().showFollowingAction(!following),
-                        e -> handleError(e, "Could not check following status")));
+                        e -> {
+                            getView().showFollowingAction(true);
+                            handleError(e, "Could not check following status");
+                        }));
     }
 
     @Override
@@ -61,8 +64,16 @@ public class UserActivityPresenter extends MvpNullObjectBasePresenter<UserActivi
                 .subscribe(() -> getView().showFollowingAction(true),
                         e -> {
                             getView().showFollowingAction(false);
-                            handleError(e, "Could not start following user");
+                            handleError(e, "Could not stop following user");
                         }));
+    }
+
+    @Override
+    public void changeFollowingStatus(User user, boolean follow) {
+        if (follow)
+            startFollowing(user);
+        else
+            getView().showUnfollowDialog(user.username());
     }
 
     @Override
