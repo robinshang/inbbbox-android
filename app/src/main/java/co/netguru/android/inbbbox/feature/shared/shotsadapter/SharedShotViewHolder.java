@@ -19,7 +19,7 @@ public class SharedShotViewHolder extends BaseViewHolder<Shot> {
 
     SharedShotViewHolder(ViewGroup parent, ShotClickListener shotClickListener) {
         super(LayoutInflater.from(parent.getContext()).inflate(R.layout.shared_shot_item, parent, false));
-        itemView.setOnClickListener(v -> shotClickListener.onShotClick(currentShot));
+        shotImageView.setOnClickListener(v -> shotClickListener.onShotClick(currentShot));
     }
 
     @Override
@@ -27,5 +27,4 @@ public class SharedShotViewHolder extends BaseViewHolder<Shot> {
         currentShot = item;
         shotImageView.loadShot(item);
     }
-
 }

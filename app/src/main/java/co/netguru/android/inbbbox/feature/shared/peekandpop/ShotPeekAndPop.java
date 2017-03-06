@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,9 +21,7 @@ import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
-import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import de.hdodenhof.circleimageview.CircleImageView;
-import timber.log.Timber;
 
 public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract.View, PeekAndPop.OnGeneralActionListener {
 
@@ -93,6 +90,7 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     private void initComponent() {
         presenter = App.getUserComponent(contentView.getContext())
                 .plusPeekAndPopComponent().getPresenter();
+        presenter.attachView(this);
     }
 
     public void bindPeekAndPop(Shot shot) {
@@ -184,7 +182,7 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
                             break;
 
                         case R.id.details_bucket_imageView:
-                            listener.onShotBucketed(shot);
+                            listener.onBucketShot(shot);
                             break;
                     }
                 }
@@ -195,6 +193,16 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     @Override
     public void showMessageOnServerError(String errorMessage) {
         Snackbar.make(contentView, errorMessage, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showMessageShotLiked() {
+        listener.onShotLiked();
+    }
+
+    @Override
+    public void showMessageShotUnliked() {
+        listener.onShotUnliked();
     }
 
     @Override
@@ -216,7 +224,9 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     }
 
     public interface ShotPeekAndPopListener {
-        void onShotBucketed(Shot shot);
+        void onBucketShot(Shot shot);
+        void onShotLiked();
+        void onShotUnliked();
     }
 
 }

@@ -286,8 +286,18 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     @Override
-    public void onShotBucketed(Shot shot) {
+    public void onBucketShot(Shot shot) {
         getPresenter().onBucketShot(shot);
+    }
+
+    @Override
+    public void onShotLiked() {
+        Snackbar.make(getView(), R.string.shot_liked, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onShotUnliked() {
+        Snackbar.make(getView(), R.string.shot_unliked, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

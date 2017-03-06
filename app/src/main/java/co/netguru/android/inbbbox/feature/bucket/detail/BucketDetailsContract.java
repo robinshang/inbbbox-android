@@ -9,6 +9,7 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
@@ -35,6 +36,8 @@ public interface BucketDetailsContract {
         void showRemoveBucketDialog(@NonNull String bucketName);
 
         void showRefreshedBucketsView(long deletedBucketId);
+
+        void showBucketAddSuccess();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -51,5 +54,6 @@ public interface BucketDetailsContract {
 
         void deleteBucket();
 
+        void addShotToBucket(Shot shot, Bucket bucket);
     }
 }

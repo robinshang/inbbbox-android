@@ -64,7 +64,6 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder> {
                 onGeneralActionListener.onPop(view, i);
             }
         });
-
     }
 
     @Override

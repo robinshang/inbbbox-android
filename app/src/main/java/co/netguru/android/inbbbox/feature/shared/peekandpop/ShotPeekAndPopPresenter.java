@@ -58,12 +58,14 @@ public class ShotPeekAndPopPresenter extends MvpNullObjectBasePresenter<ShotPeek
         subscriptions.clear();
     }
 
-    private void handleUnlikedShot(Shot shot) {
-        rxBus.send(new ShotUpdatedEvent(updateShotUnlikeStatus(shot)));
+    private void handleLikedShot(Shot shot) {
+        getView().showMessageShotLiked();
+        rxBus.send(new ShotUpdatedEvent(updateShotLikeStatus(shot)));
     }
 
-    private void handleLikedShot(Shot shot) {
-        rxBus.send(new ShotUpdatedEvent(updateShotLikeStatus(shot)));
+    private void handleUnlikedShot(Shot shot) {
+        getView().showMessageShotUnliked();
+        rxBus.send(new ShotUpdatedEvent(updateShotUnlikeStatus(shot)));
     }
 
     private void handleLikeError(Throwable throwable) {

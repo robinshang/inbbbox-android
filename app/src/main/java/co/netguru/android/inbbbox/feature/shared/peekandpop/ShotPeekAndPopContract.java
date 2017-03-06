@@ -9,6 +9,8 @@ public interface ShotPeekAndPopContract {
 
     interface View extends MvpView {
         void showMessageOnServerError(String errorMessage);
+        void showMessageShotLiked();
+        void showMessageShotUnliked();
     }
 
     interface Presenter extends MvpPresenter<View> {
