@@ -174,5 +174,13 @@
     <dimen name="projects_item_shots_count_padding_start">8dp</dimen>
     <dimen name="projects_shot_item_shot_padding">6dp</dimen>
     <dimen name="projects_shot_item_shot_width">160dp</dimen>
+    <dimen name="two_shots_animation_first_view_horizontal_margin">16dp</dimen>
+    <dimen name="two_shots_animation_first_view_top_margin">28dp</dimen>
+    <dimen name="two_shots_animation_second_view_horizontal_margin">32dp</dimen>
+    <dimen name="two_shots_animation_second_view_top_margin">56dp</dimen>
+
+    <integer name="two_shots_drop_down_animation_duration">200</integer>
+    <integer name="two_shots_second_shot_drop_down_animation_offset">2000</integer>
+    <integer name="two_shots_load_shot_animation_duration">300</integer>
 
 </resources>

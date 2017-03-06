@@ -7,6 +7,9 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
@@ -43,6 +46,11 @@ public class RoundedCornersShotImageView extends RoundedCornersView {
 
     public void loadShot(Shot shot) {
         ShotLoadingUtil.loadListShot(getContext(), shotImageView, shot);
+        gifLabel.setVisibility(shot.isGif() ? VISIBLE : GONE);
+    }
+
+    public void loadBlurredShotWithListener(Shot shot, RequestListener<String, GlideDrawable> listener) {
+        ShotLoadingUtil.loadListBlurredShotWithListener(getContext(), shotImageView, shot, listener);
         gifLabel.setVisibility(shot.isGif() ? VISIBLE : GONE);
     }
 

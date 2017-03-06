@@ -5,30 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <co.netguru.android.inbbbox.feature.shared.view.TwoCoveredShotsAnimationView
+        android:id="@+id/shots_animation_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/shot_item_internal_padding"
+        android:visibility="gone" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/contentView"
+        <co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView
+            android:id="@+id/shots_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" />
 
-            <co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView
-                android:id="@+id/shots_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </android.support.v4.widget.SwipeRefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-        <View
-            android:id="@+id/container_fog_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.1"
-            android:background="@color/whiteSemiTransparent"
-            android:clickable="false"
-            android:visibility="gone" />
-    </FrameLayout>
+    <View
+        android:id="@+id/container_fog_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.1"
+        android:background="@color/whiteSemiTransparent"
+        android:clickable="false"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/loadingView"
@@ -50,6 +53,7 @@
         android:layout_gravity="end|bottom"
         android:layout_marginBottom="@dimen/margin_default"
         android:layout_marginEnd="@dimen/margin_default"
+        android:visibility="gone"
         app:layout_behavior="co.netguru.android.inbbbox.feature.shared.view.behavior.FloatingActionMenuAndButtonBehavior"
         fab:menu_animationDelayPerItem="10"
         fab:menu_colorNormal="@color/secondaryWindowBackground"

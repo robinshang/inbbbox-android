@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.feature.shot;
 
+import android.support.annotation.NonNull;
+
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
@@ -20,6 +22,8 @@ interface ShotsContract {
         void showLoadingIndicator(boolean pullToRefresh);
 
         void hideLoadingIndicator();
+
+        void showShotsAnimation(@NonNull Shot firstShot, @NonNull Shot secondShot);
 
         void closeFabMenu();
 
@@ -65,5 +69,7 @@ interface ShotsContract {
         void handleFollowShotAuthor(Shot shot);
 
         void removeShotFromBuckets(List<Bucket> list, Shot shot);
+
+        void getShotsCustomizationSettings();
     }
 }
