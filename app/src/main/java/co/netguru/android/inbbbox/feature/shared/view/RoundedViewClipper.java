@@ -32,35 +32,47 @@ public class RoundedViewClipper {
         this.height = height;
         this.width = width;
         this.isRoundingBottomCornersEnabled = isRoundingBottomCornersEnabled;
-        initPaints();
     }
 
+    /**
+     * Call in {@link android.view.View} that you want to clip with its drawing {@link Canvas}
+     * and current width and height
+     *
+     * @param canvas
+     * @param width
+     * @param height
+     */
     public void clip(Canvas canvas, int width, int height) {
         if (!isReady())
             initMask(width, height);
-        drawingPaint.setXfermode(porterDuffXfermode);
         canvas.drawBitmap(topMaskBitmap, 0, 0, drawingPaint);
         if (isRoundingBottomCornersEnabled)
             canvas.drawBitmap(bottomMaskBitmap, 0, 0, drawingPaint);
-        drawingPaint.setXfermode(null);
     }
 
+    /**
+     * Call to return {@link Paint} used for drawing so hardware acceleration can be set in
+     * {@link android.view.View}
+     * @return paint used for drawing
+     */
     public Paint getDrawingPaint() {
         return drawingPaint;
     }
 
-    private void initPaints() {
-        drawingPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        visiblePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        visiblePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        visiblePaint.setAntiAlias(true);
-    }
-
+    /**
+     * Call to init mask in case of size changes with current width and height,
+     * Don't call in {@link com.daimajia.swipe.SwipeLayout}
+     * as it calls onSizeChanged in a way irrelevant to this use
+     * case
+     * @param width
+     * @param height
+     */
     public void initMask(int width, int height) {
         this.height = height;
         this.width = width;
 
         reset();
+        initPaints();
         initClippingPath();
 
         topMaskBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -74,6 +86,29 @@ public class RoundedViewClipper {
         bottomMaskCanvas.drawPath(clipPathBottom, visiblePaint);
     }
 
+    /**
+     * Call when detaching from window to free resources
+     */
+    public void reset() {
+        if (drawingPaint != null)
+            drawingPaint.setXfermode(null);
+
+        if (topMaskBitmap != null) {
+            topMaskBitmap.recycle();
+        }
+
+        if (bottomMaskBitmap != null) {
+            bottomMaskBitmap.recycle();
+        }
+    }
+
+    private void initPaints() {
+        drawingPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        drawingPaint.setXfermode(porterDuffXfermode);
+        visiblePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        visiblePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+    }
+
     private void initClippingPath() {
         clipPathTop.reset();
         RectF clippingRectTop = new RectF(0, 0, width, height + radius);
@@ -82,16 +117,6 @@ public class RoundedViewClipper {
         clipPathBottom.reset();
         RectF clippingRectBottom = new RectF(0, -radius, width, height);
         clipPathBottom.addRoundRect(clippingRectBottom, radius, radius, Path.Direction.CW);
-    }
-
-    public void reset() {
-        if (topMaskBitmap != null) {
-            topMaskBitmap.recycle();
-        }
-
-        if (bottomMaskBitmap != null) {
-            bottomMaskBitmap.recycle();
-        }
     }
 
     private boolean isReady() {
