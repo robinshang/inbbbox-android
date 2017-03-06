@@ -6,6 +6,7 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
@@ -31,6 +32,10 @@ interface LikesViewContract {
         void showEmptyLikesInfo();
 
         void openShowDetailsScreen(Shot shot, List<Shot> shotList);
+
+        void showBucketChooserView(Shot shot);
+
+        void showBucketAddSuccess();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -41,5 +46,9 @@ interface LikesViewContract {
         void showShotDetails(Shot shot, List<Shot> allShots);
 
         void checkDataEmpty(boolean isEmpty);
+
+        void onBucketShot(Shot shot);
+
+        void addShotToBucket(Shot shot, Bucket bucket);
     }
 }

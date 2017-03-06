@@ -11,11 +11,13 @@
         android:layout_centerInParent="true"
         android:background="@color/accent" />
 
+
     <co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout
         android:id="@+id/long_swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
+
         <!-- Bottom View Start-->
         <FrameLayout
             android:id="@+id/bottom_right_wrapper"
@@ -119,6 +121,7 @@
             android:layout_height="wrap_content"
             android:foreground="?selectableItemBackground"
             android:padding="@dimen/shot_background_padding" />
+
         <!-- Surface View End -->
     </co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout>
 

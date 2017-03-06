@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.peekandpop.shalskar.peekandpop.PeekAndPop;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -13,23 +15,33 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
+import timber.log.Timber;
 
 public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
     private final ShotSwipeListener shotSwipeListener;
     private final DetailsVisibilityChangeEmitter emitter;
     private boolean isDetailsVisible;
+    private final PeekAndPop.OnGeneralActionListener onGeneralActionListener;
+
+    private ShotPeekAndPop peekAndPop;
 
     @NonNull
-    private List<Shot> items;
+    private List<Shot> shots;
 
     @Inject
     public ShotsAdapter(@NonNull ShotSwipeListener shotSwipeListener,
-                        @NonNull DetailsVisibilityChangeEmitter emitter) {
+                        @NonNull DetailsVisibilityChangeEmitter emitter, ShotPeekAndPop peekAndPop,
+                        PeekAndPop.OnGeneralActionListener onGeneralActionListener) {
         this.shotSwipeListener = shotSwipeListener;
         this.emitter = emitter;
-        items = Collections.emptyList();
+        shots = Collections.emptyList();
         isDetailsVisible = true;
+        this.peekAndPop = peekAndPop;
+        this.onGeneralActionListener = onGeneralActionListener;
+
+        setupPeekAndPop();
     }
 
     @Override
@@ -41,37 +53,61 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
     @Override
     public void onBindViewHolder(ShotsViewHolder holder, int position) {
-        holder.bind(items.get(position));
+        peekAndPop.addLongClickView(holder.shotImageView, position);
+        holder.bind(shots.get(position));
         holder.onDetailsChangeVisibility(isDetailsVisible);
+    }
+
+    private void setupPeekAndPop() {
+        peekAndPop.setOnGeneralActionListener(new PeekAndPop.OnGeneralActionListener() {
+            @Override
+            public void onPeek(View view, int i) {
+                onGeneralActionListener.onPeek(view, i);
+                peekAndPop.bindPeekAndPop(shots.get(i));
+            }
+
+            @Override
+            public void onPop(View view, int i) {
+                onGeneralActionListener.onPop(view, i);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return shots.size();
     }
 
     public List<Shot> getData() {
-        return items;
+        return shots;
     }
 
-    public List<Shot> getItems() {
-        return items;
+    public List<Shot> getShots() {
+        return shots;
     }
 
-    public void setItems(List<Shot> items) {
-        this.items = items;
+    public void setShots(List<Shot> shots) {
+        this.shots = shots;
         notifyDataSetChanged();
     }
 
     public void addMoreItems(List<Shot> items) {
-        final int currentSize = this.items.size();
-        this.items.addAll(items);
+        final int currentSize = this.shots.size();
+        this.shots.addAll(items);
         notifyItemRangeChanged(currentSize - 1, items.size());
     }
 
     public void updateShot(Shot shot) {
+        try {
+            tryUpdateShot(shot);
+        } catch(IllegalArgumentException e) {
+            // it's ok, updated shot doesn't need to be present in this adapter
+        }
+    }
+
+    private void tryUpdateShot(Shot shot) {
         final int position = findShotPosition(shot.id());
-        items.set(position, shot);
+        shots.set(position, shot);
         notifyItemChanged(position);
     }
 
@@ -80,12 +116,12 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
     }
 
     public Shot getShotFromPosition(int shotPosition) {
-        return items.get(shotPosition);
+        return shots.get(shotPosition);
     }
 
     private int findShotPosition(long id) {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).id() == id) {
+        for (int i = 0; i < shots.size(); i++) {
+            if (shots.get(i).id() == id) {
                 return i;
             }
         }

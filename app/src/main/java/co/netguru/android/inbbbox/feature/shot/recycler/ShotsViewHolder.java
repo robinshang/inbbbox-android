@@ -29,6 +29,7 @@ class ShotsViewHolder extends BaseShotsViewHolder<Shot> implements DetailsVisibi
     View shotDetailsView;
     @BindDrawable(R.drawable.shot_placeholder)
     Drawable shotPlaceHolder;
+
     private Shot shot;
 
     ShotsViewHolder(View itemView, @NonNull ShotSwipeListener shotSwipeListener,
@@ -109,4 +110,5 @@ class ShotsViewHolder extends BaseShotsViewHolder<Shot> implements DetailsVisibi
                 .error(R.drawable.ic_ball)
                 .into(userImageView);
     }
+
 }

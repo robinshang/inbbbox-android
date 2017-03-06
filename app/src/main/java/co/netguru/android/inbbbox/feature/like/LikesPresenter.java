@@ -13,11 +13,14 @@ import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.ShotUpdatedEvent;
 import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
@@ -32,8 +35,9 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
 
     private final LikeShotController likedShotsController;
     private final ErrorController errorController;
+    private final BucketsController bucketsController;
     private final RxBus rxBus;
-
+    private final CompositeSubscription subscriptions = new CompositeSubscription();
     @NonNull
     private Subscription refreshSubscription;
     @NonNull
@@ -45,9 +49,10 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     @Inject
     LikesPresenter(LikeShotController likedShotsController,
                    ErrorController errorController,
-                   RxBus rxBus) {
+                   RxBus rxBus, BucketsController bucketsController) {
         this.likedShotsController = likedShotsController;
         this.errorController = errorController;
+        this.bucketsController = bucketsController;
         this.rxBus = rxBus;
         refreshSubscription = Subscriptions.unsubscribed();
         loadMoreLikesSubscription = Subscriptions.unsubscribed();
@@ -66,6 +71,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
             refreshSubscription.unsubscribe();
             loadMoreLikesSubscription.unsubscribe();
             busSubscription.unsubscribe();
+            subscriptions.clear();
         }
     }
 
@@ -118,6 +124,21 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     }
 
     @Override
+    public void onBucketShot(Shot shot) {
+        getView().showBucketChooserView(shot);
+    }
+
+    @Override
+    public void addShotToBucket(Shot shot, Bucket bucket) {
+        subscriptions.add(
+                bucketsController.addShotToBucket(bucket.id(), shot)
+                        .compose(RxTransformerUtil.applyCompletableIoSchedulers())
+                        .subscribe(() -> onShotBucketedCompleted(shot),
+                                throwable -> handleError(throwable, "Error while adding shot to bucket"))
+        );
+    }
+
+    @Override
     public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
@@ -132,6 +153,17 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     private void onGetMoreLikeShotListNext(List<Shot> likedShotList) {
         hasMore = likedShotList.size() == PAGE_COUNT;
         getView().showMoreLikes(likedShotList);
+    }
+
+    private void onShotBucketedCompleted(Shot shot) {
+        getView().showBucketAddSuccess();
+        rxBus.send(new ShotUpdatedEvent(updateShotBucketedStatus(shot)));
+    }
+
+    private Shot updateShotBucketedStatus(Shot shot) {
+        return Shot.update(shot)
+                .isBucketed(true)
+                .build();
     }
 
     private void setupRxBus() {

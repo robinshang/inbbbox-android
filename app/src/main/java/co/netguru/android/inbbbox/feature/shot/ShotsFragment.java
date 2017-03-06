@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
+import com.peekandpop.shalskar.peekandpop.PeekAndPop;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 import co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView;
 import co.netguru.android.inbbbox.feature.shared.view.BallInterpolator;
 import co.netguru.android.inbbbox.feature.shared.view.FogFloatingActionMenu;
@@ -51,7 +53,8 @@ import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucket
 public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
         ShotsContract.View, ShotsContract.Presenter> implements RefreshableFragment, ShotsContract.View, ShotSwipeListener,
         AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener,
-        ViewTreeObserver.OnWindowFocusChangeListener, DetailsVisibilityChangeEmitter {
+        ViewTreeObserver.OnWindowFocusChangeListener, DetailsVisibilityChangeEmitter, ShotPeekAndPop.ShotPeekAndPopListener,
+        ShotPeekAndPop.OnGeneralActionListener {
 
     private static final int SHOTS_TO_LOAD_MORE = 5;
 
@@ -75,19 +78,16 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @BindView(R.id.loading_ball_shadow)
     ImageView ballShadowImageView;
-
-    private Animation shadowAnimation;
-    private AnimationSet ballAnimation;
-
     @Inject
     ShotsAdapter adapter;
-
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
+    private Animation shadowAnimation;
+    private AnimationSet ballAnimation;
+    private ShotPeekAndPop peekAndPop;
     private ShotActionListener shotActionListener;
     private DetailsVisibilityChangeListener detailsVisibilityChangeListener;
     private ShotsComponent component;
-
-    @Inject
-    AnalyticsEventLogger analyticsEventLogger;
 
     public static ShotsFragment newInstance() {
         return new ShotsFragment();
@@ -107,6 +107,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        initPeekAndPop();
         initComponent();
         return inflater.inflate(R.layout.fragment_shots, container, false);
     }
@@ -119,8 +120,17 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     private void initComponent() {
         component = App.getUserComponent(getContext())
-                .getShotsComponent(new ShotsModule(this, this));
+                .getShotsComponent(new ShotsModule(this, this, peekAndPop, this));
         component.inject(this);
+    }
+
+    private void initPeekAndPop() {
+        peekAndPop = new ShotPeekAndPop(
+                new PeekAndPop.Builder(getActivity())
+                        .blurBackground(true)
+                        .peekLayout(R.layout.peek_shot_details)
+                        .parentViewGroupToDisallowTouchEvents(shotsRecyclerView));
+        peekAndPop.setShotPeekAndPopListener(this);
     }
 
     @Override
@@ -184,7 +194,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void setData(List<Shot> data) {
-        adapter.setItems(data);
+        adapter.setShots(data);
     }
 
     @Override
@@ -256,7 +266,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
                 .isCommentModeEnabled(true)
                 .build();
 
-        shotActionListener.showShotDetails(selectedShot, adapter.getItems(), request);
+        shotActionListener.showShotDetails(selectedShot, adapter.getShots(), request);
     }
 
     @Override
@@ -290,7 +300,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
                 .detailsType(ShotDetailsType.DEFAULT)
                 .build();
 
-        shotActionListener.showShotDetails(shot, adapter.getItems(), request);
+        shotActionListener.showShotDetails(shot, adapter.getShots(), request);
     }
 
     @Override
@@ -405,16 +415,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         getPresenter().removeShotFromBuckets(list, shot);
     }
 
-    public interface ShotActionListener {
-        void shotLikeStatusChanged();
-
-        void showShotDetails(Shot shot, List<Shot> nearbyShots, ShotDetailsRequest detailsRequest);
-
-        void onShotAddedToBucket();
-
-        void onUserFollowed();
-    }
-
     @Override
     public void onShotLiked() {
         shotActionListener.shotLikeStatusChanged();
@@ -428,5 +428,31 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void onUserFollowed() {
         shotActionListener.onUserFollowed();
+    }
+
+    @Override
+    public void onShotBucketed(Shot shot) {
+        getPresenter().handleAddShotToBucket(shot);
+    }
+
+    @Override
+    public void onPeek(View view, int i) {
+        shotsRecyclerView.requestDisallowInterceptTouchEvent(true);
+        swipeRefreshLayout.requestDisallowInterceptTouchEvent(true);
+    }
+
+    @Override
+    public void onPop(View view, int i) {
+        // no-op
+    }
+
+    public interface ShotActionListener {
+        void shotLikeStatusChanged();
+
+        void showShotDetails(Shot shot, List<Shot> nearbyShots, ShotDetailsRequest detailsRequest);
+
+        void onShotAddedToBucket();
+
+        void onUserFollowed();
     }
 }

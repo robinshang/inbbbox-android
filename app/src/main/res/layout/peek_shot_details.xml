@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
+        android:id="@+id/rounded_corners_shot_image_view"
+        app:roundedCornersBackgroundColor="@color/primary"
+        app:roundingBottomCornersEnabled="false"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/details_parallax_image_view_height"
+        android:background="@drawable/shape_rounded_top_corners" />
+
+    <include layout="@layout/item_shot_info_user_info_layout" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/shape_rounded_bottom_corners" />
+
+</LinearLayout>

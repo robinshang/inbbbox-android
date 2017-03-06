@@ -47,6 +47,7 @@ import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucketContract.View, AddToBucketContract.Presenter>
         implements AddToBucketContract.View, BucketViewHolder.BucketClickListener {

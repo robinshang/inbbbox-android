@@ -41,6 +41,7 @@ public class LikeShotControllerApi implements LikeShotController {
         return likesApi.getLikedShots(pageNumber, pageCount)
                 .flatMap(Observable::from)
                 .map(likedShotEntity -> Shot.create(likedShotEntity.shot()))
+                .map(shot -> Shot.update(shot).isLiked(true).build())
                 .toList();
     }
 }
