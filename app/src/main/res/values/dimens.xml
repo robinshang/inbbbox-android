@@ -15,6 +15,7 @@
     <dimen name='activity_login_button_margin_top'>108dp</dimen>
     <dimen name='activity_login_button_drawable_padding'>48dp</dimen>
     <dimen name='activity_login_button_padding_start'>16dp</dimen>
+    <dimen name='activity_login_button_padding_end'>32dp</dimen>
 
     <dimen name="activity_main_tab_height">56dp</dimen>
     <dimen name="activity_main_tab_land_height">34dp</dimen>

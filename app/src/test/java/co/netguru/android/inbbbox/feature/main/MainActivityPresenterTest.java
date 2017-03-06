@@ -10,12 +10,16 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.threeten.bp.LocalTime;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.util.Random;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
 import co.netguru.android.inbbbox.data.onboarding.OnboardingController;
@@ -46,6 +50,9 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MainActivityPresenterTest {
+
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("h:mm a")
+            .withZone(ZoneId.systemDefault());
 
     @Rule
     public TestRule rule = new RxSyncTestRule();
@@ -92,6 +99,9 @@ public class MainActivityPresenterTest {
     @Mock
     AnalyticsEventLogger analyticsEventLoggerMock;
 
+    @Mock
+    DateTimeFormatUtil dateTimeFormatUtilMock;
+
     @InjectMocks
     MainActivityPresenter mainActivityPresenter;
 
@@ -116,6 +126,12 @@ public class MainActivityPresenterTest {
         when(userControllerMock.isGuestModeEnabled()).thenReturn(Single.just(false));
         when(errorControllerMock.getThrowableMessage(any(Throwable.class)))
                 .thenCallRealMethod();
+        when(dateTimeFormatUtilMock.getFormattedTime(anyInt(), anyInt()))
+                .thenAnswer(invocation -> {
+                    Object[] args = invocation.getArguments();
+                    return LocalTime.of((Integer) args[0],
+                            (Integer) args[1]).format(TIME_FORMATTER);
+                });
     }
 
     @Test

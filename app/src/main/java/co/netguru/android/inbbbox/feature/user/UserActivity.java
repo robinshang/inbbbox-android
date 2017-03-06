@@ -34,14 +34,17 @@ import co.netguru.android.inbbbox.feature.shared.view.NonSwipeableViewPager;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
+import co.netguru.android.inbbbox.feature.user.followdialog.UnFollowUserDialogFragment;
 import co.netguru.android.inbbbox.feature.user.info.team.ShotActionListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserActivity
         extends BaseMvpActivity<UserActivityContract.View, UserActivityContract.Presenter>
-        implements UserActivityContract.View, ShotActionListener {
+        implements UserActivityContract.View, ShotActionListener,
+        UnFollowUserDialogFragment.OnUnFollowClickedListener {
 
     private static final String USER_KEY = "user_key";
+    private static final String TEXT_PLAIN = "text/plain";
 
     @BindColor(R.color.white)
     int colorWhite;
@@ -102,12 +105,13 @@ public class UserActivity
                 onBackPressed();
                 return true;
             case R.id.action_follow:
-                getPresenter().startFollowing(user);
-                analyticsEventLogger.logEventAppbarFollow(true);
+                changeFollowingStatus(true);
                 return true;
             case R.id.action_unfollow:
-                getPresenter().stopFollowing(user);
-                analyticsEventLogger.logEventAppbarFollow(false);
+                changeFollowingStatus(false);
+                return true;
+            case R.id.action_share:
+                getPresenter().shareUser(user);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -190,10 +194,35 @@ public class UserActivity
         Snackbar.make(userImageView, errorText, Snackbar.LENGTH_LONG).show();
     }
 
+    @Override
+    public void showShare(String toShare) {
+        final Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.setType(TEXT_PLAIN);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, toShare);
+        startActivity(sendIntent);
+    }
+
     private void logScreenEvent() {
         if (User.TYPE_TEAM.equals(user.type()))
             analyticsEventLogger.logEventScreenTeamDetails();
         else
             analyticsEventLogger.logEventScreenUserDetails();
+    }
+
+    private void changeFollowingStatus(boolean follow) {
+        shouldRefreshFollowers = true;
+        analyticsEventLogger.logEventAppbarFollow(follow);
+        getPresenter().changeFollowingStatus(user, follow);
+    }
+
+    @Override
+    public void showUnfollowDialog(String username) {
+        UnFollowUserDialogFragment.newInstance(username)
+                .show(getSupportFragmentManager(), UnFollowUserDialogFragment.TAG);
+    }
+
+    @Override
+    public void onUnFollowClicked() {
+        getPresenter().stopFollowing(user);
     }
 }
