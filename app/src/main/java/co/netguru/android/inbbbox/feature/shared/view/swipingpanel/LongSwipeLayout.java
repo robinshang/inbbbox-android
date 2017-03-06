@@ -1,12 +1,25 @@
 package co.netguru.android.inbbbox.feature.shared.view.swipingpanel;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.daimajia.swipe.SwipeLayout;
 
+import butterknife.BindDimen;
+import butterknife.ButterKnife;
+import co.netguru.android.inbbbox.R;
+import co.netguru.android.inbbbox.feature.shared.view.RoundedViewClipper;
+
 public class LongSwipeLayout extends SwipeLayout {
+
+    @BindDimen(R.dimen.shot_corner_radius)
+    float radius;
+
+    private boolean isRoundingBottomCornersEnabled;
+    private boolean isRoundingEnabled;
 
     private static final long AUTO_CLOSE_DELAY = 300;
 
@@ -16,6 +29,7 @@ public class LongSwipeLayout extends SwipeLayout {
     private boolean isRightLongSwipeTriggered;
     private ItemSwipeListener itemSwipeListener;
     private int swipeLimitShift = 0;
+    private RoundedViewClipper viewClipper;
 
     public LongSwipeLayout(Context context) {
         super(context);
@@ -24,11 +38,13 @@ public class LongSwipeLayout extends SwipeLayout {
 
     public LongSwipeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+        handleAttrs(context, attrs);
         init();
     }
 
     public LongSwipeLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        handleAttrs(context, attrs);
         init();
     }
 
@@ -58,6 +74,11 @@ public class LongSwipeLayout extends SwipeLayout {
     private void init() {
         setShowMode(ShowMode.LayDown);
         addSwipeListener(getSwipeListener());
+        ButterKnife.bind(this);
+        setWillNotDraw(false);
+        viewClipper = new RoundedViewClipper(radius, getWidth(), getHeight(),
+                isRoundingBottomCornersEnabled);
+        setLayerType(LAYER_TYPE_HARDWARE, viewClipper.getDrawingPaint());
     }
 
     private void handleSwipingActions() {
@@ -156,7 +177,6 @@ public class LongSwipeLayout extends SwipeLayout {
     }
 
     public void setItemSwipeListener(ItemSwipeListener itemSwipeListener) {
-
         this.itemSwipeListener = itemSwipeListener;
     }
 
@@ -193,5 +213,26 @@ public class LongSwipeLayout extends SwipeLayout {
                 delayClose();
             }
         };
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        if (isRoundingEnabled)
+            viewClipper.clip(canvas, getWidth(), getHeight());
+    }
+
+    private void handleAttrs(Context context, AttributeSet attrs) {
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RoundedCornersView);
+        isRoundingBottomCornersEnabled =
+                a.getBoolean(R.styleable.RoundedCornersView_roundingBottomCornersEnabled, true);
+        isRoundingEnabled = a.getBoolean(R.styleable.RoundedCornersView_roundingEnabled, true);
+        a.recycle();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        viewClipper.reset();
+        super.onDetachedFromWindow();
     }
 }
