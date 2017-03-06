@@ -26,7 +26,6 @@
             android:layout_gravity="end"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:gravity="end"
             android:orientation="horizontal">
             <!--What you want to show-->
 
@@ -41,6 +40,7 @@
             <ImageView
                 android:id="@+id/iv_follow_full"
                 style="@style/LongSwipeActionIcons"
+                android:layout_centerVertical="true"
                 android:alpha="0"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_follow_swipe_active" />
@@ -48,11 +48,10 @@
             <ImageView
                 android:id="@+id/iv_comment"
                 style="@style/LongSwipeActionIcons"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/iv_follow"
                 android:layout_width="@dimen/shot_swipe_action_icon_width"
                 android:layout_height="@dimen/shot_swipe_action_icon_width"
-                android:layout_gravity="end|center_vertical"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_comment" />
 
@@ -61,7 +60,9 @@
                 style="@style/LongSwipeActionIcons"
                 android:layout_width="@dimen/shot_swipe_action_icon_width"
                 android:layout_height="@dimen/shot_swipe_action_icon_width"
-                android:layout_gravity="end|center_vertical"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/iv_follow"
                 android:alpha="0"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_comment_filled" />
@@ -86,9 +87,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:clipChildren="false"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:clipToPadding="false">
 
             <ImageView
                 android:id="@+id/iv_like_action"
@@ -111,10 +110,10 @@
                 android:id="@+id/iv_plus_image"
                 android:layout_width="@dimen/shot_swipe_action_plus_size"
                 android:layout_height="@dimen/shot_swipe_action_plus_size"
+                android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_toEndOf="@id/iv_like_action"
-                android:layout_centerInParent="true"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_plus" />
 
@@ -124,7 +123,16 @@
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/iv_plus_image"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_bucket_swipe"/>
+                android:src="@drawable/ic_bucket_swipe" />
+
+            <ImageView
+                android:id="@+id/iv_bucket_action_full"
+                style="@style/LongSwipeActionIcons"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/iv_plus_image"
+                android:alpha="0"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_bucket_swipe_filled" />
 
             <TextView
                 android:id="@+id/like_done_text"
@@ -137,16 +145,6 @@
                 style="@style/LongSwipeActionText"
                 android:layout_below="@id/iv_like_action"
                 android:text="@string/like_and_add_to_bucket_message" />
-
-
-            <ImageView
-                android:id="@+id/iv_bucket_action_full"
-                style="@style/LongSwipeActionIcons"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:alpha="0"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_bucket_swipe_filled" />
 
         </RelativeLayout>
 

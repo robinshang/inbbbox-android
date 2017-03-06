@@ -134,5 +134,9 @@
     <dimen name="user_details_collapsing_toolbar_height">200dp</dimen>
     <dimen name="user_details_circle_image_size">90dp</dimen>
     <dimen name="user_details_circle_image_margin_top">90dp</dimen>
+    <dimen name="onboarding_like_text_top_padding">60dp</dimen>
+    <dimen name="onboarding_bucket_text_top_padding">90dp</dimen>
+    <dimen name="onboarding_comment_land_text_top_padding">90dp</dimen>
+    <dimen name="onboarding_follow_land_text_top_padding">90dp</dimen>
 
 </resources>

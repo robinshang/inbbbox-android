@@ -8,8 +8,6 @@ import com.daimajia.swipe.SwipeLayout;
 
 public class LongSwipeLayout extends SwipeLayout {
 
-    private static final long AUTO_CLOSE_DELAY = 300;
-
     private boolean isLeftSwipeTriggered;
     private boolean isLeftLongSwipeTriggered;
     private boolean isRightSwipeTriggered;
@@ -158,11 +156,6 @@ public class LongSwipeLayout extends SwipeLayout {
         }
     }
 
-    private void delayClose() {
-        postDelayed(() -> close(true, true), AUTO_CLOSE_DELAY);
-    }
-
-
     public SwipeListener getSwipeListener() {
         return new SwipeListener() {
             @Override
@@ -193,7 +186,6 @@ public class LongSwipeLayout extends SwipeLayout {
             @Override
             public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
                 itemSwipeListener.onEndSwipe();
-//                delayClose();
             }
         };
     }
