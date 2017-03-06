@@ -38,6 +38,7 @@ import co.netguru.android.inbbbox.feature.shared.view.BallInterpolator;
 import co.netguru.android.inbbbox.feature.shared.view.CustomLinearLayoutManager;
 import co.netguru.android.inbbbox.feature.shared.view.FogFloatingActionMenu;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.shared.view.OnAnimationEndListener;
 import co.netguru.android.inbbbox.feature.shared.view.TwoCoveredShotsAnimationView;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
@@ -405,22 +406,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     private void startFabButtonAnimation() {
         final Animation animation = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                //no-op
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                fabMenu.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                //no-op
-            }
-        });
+        animation.setAnimationListener(new OnAnimationEndListener(() -> fabMenu.setVisibility(View.VISIBLE)));
         fabMenu.startAnimation(animation);
 
     }

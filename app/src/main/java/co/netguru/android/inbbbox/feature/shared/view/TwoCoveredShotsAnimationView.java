@@ -42,18 +42,18 @@ public class TwoCoveredShotsAnimationView extends FrameLayout {
     }
 
     public void loadShotsAndStartAnimation(@NonNull Shot firstShot, @NonNull Shot secondShot,
-                                           @NonNull OnAnimationEndListener onAnimationEndListener) {
+                                           @NonNull OnAnimationEndCallback onAnimationEndCallback) {
         loadShotWithAnimation(firstShotImageView, firstShot, () -> {
             firstShotImageView.setVisibility(VISIBLE);
-            loadSecondShotWithAnimation(secondShot, onAnimationEndListener);
+            loadSecondShotWithAnimation(secondShot, onAnimationEndCallback);
         });
     }
 
     private void loadSecondShotWithAnimation(@NonNull Shot secondShot,
-                                             @NonNull OnAnimationEndListener onAnimationEndListener) {
+                                             @NonNull OnAnimationEndCallback onAnimationEndCallback) {
         loadShotWithAnimation(secondShotImageView, secondShot, () -> {
             secondShotImageView.setVisibility(VISIBLE);
-            startSecondShotDropDownAnimation(onAnimationEndListener);
+            startSecondShotDropDownAnimation(onAnimationEndCallback);
         });
     }
 
@@ -64,17 +64,17 @@ public class TwoCoveredShotsAnimationView extends FrameLayout {
                 R.anim.two_shots_load_shot_animation, runnable));
     }
 
-    private void startSecondShotDropDownAnimation(OnAnimationEndListener onAnimationEndListener) {
+    private void startSecondShotDropDownAnimation(OnAnimationEndCallback onAnimationEndCallback) {
         startAnimation(secondShotImageView, R.anim.two_shots_second_shot_drop_down_animation, () -> {
             secondShotImageView.setVisibility(GONE);
-            startFirstShotDropDownAnimation(onAnimationEndListener);
+            startFirstShotDropDownAnimation(onAnimationEndCallback);
         });
     }
 
-    private void startFirstShotDropDownAnimation(@NonNull OnAnimationEndListener onAnimationEndListener) {
+    private void startFirstShotDropDownAnimation(@NonNull OnAnimationEndCallback onAnimationEndCallback) {
         startAnimation(firstShotImageView, R.anim.two_shots_first_shot_drop_down_animation, () -> {
             firstShotImageView.setVisibility(GONE);
-            onAnimationEndListener.onAnimationEnd();
+            onAnimationEndCallback.onAnimationEnd();
         });
     }
 
@@ -100,22 +100,7 @@ public class TwoCoveredShotsAnimationView extends FrameLayout {
     private void startAnimation(RoundedCornersShotImageView view, @AnimRes int animRes,
                                 Runnable runnable) {
         final Animation animation = AnimationUtils.loadAnimation(getContext(), animRes);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                // no-op
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                runnable.run();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                // no-op
-            }
-        });
+        animation.setAnimationListener(new OnAnimationEndListener(runnable));
         view.startAnimation(animation);
     }
 
@@ -125,7 +110,7 @@ public class TwoCoveredShotsAnimationView extends FrameLayout {
     }
 
     @FunctionalInterface
-    public interface OnAnimationEndListener {
+    public interface OnAnimationEndCallback {
 
         void onAnimationEnd();
     }
