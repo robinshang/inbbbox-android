@@ -2,7 +2,7 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android">
 
     <translate
-        android:duration="300"
+        android:duration="@integer/two_shots_load_shot_animation_duration"
         android:fromYDelta="-20%"
         android:toYDelta="0%" />
 </set>

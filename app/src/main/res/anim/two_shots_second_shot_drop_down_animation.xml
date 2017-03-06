@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:startOffset="2000">
+    android:startOffset="@integer/two_shots_second_shot_drop_down_animation_offset">
 
     <translate
-        android:duration="200"
+        android:duration="@integer/two_shots_drop_down_animation_duration"
         android:fromYDelta="0"
         android:toYDelta="150%" />
 </set>

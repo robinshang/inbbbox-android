@@ -43,27 +43,25 @@ public class TwoCoveredShotsAnimationView extends FrameLayout {
 
     public void loadShotsAndStartAnimation(@NonNull Shot firstShot, @NonNull Shot secondShot,
                                            @NonNull OnAnimationEndListener onAnimationEndListener) {
-        loadFirstShotWithAnimation(firstShot, secondShot, onAnimationEndListener);
-    }
-
-    private void loadFirstShotWithAnimation(@NonNull Shot firstShot, @NonNull Shot secondShot,
-                                            @NonNull OnAnimationEndListener onAnimationEndListener) {
-        firstShotImageView.setVisibility(INVISIBLE);
-        firstShotImageView.loadBlurredShotWithListener(firstShot,
-                createRequestListener(firstShotImageView, R.anim.two_shots_load_shot_animation, () -> {
-                    firstShotImageView.setVisibility(VISIBLE);
-                    loadSecondShotWithAnimation(secondShot, onAnimationEndListener);
-                }));
+        loadShotWithAnimation(firstShotImageView, firstShot, () -> {
+            firstShotImageView.setVisibility(VISIBLE);
+            loadSecondShotWithAnimation(secondShot, onAnimationEndListener);
+        });
     }
 
     private void loadSecondShotWithAnimation(@NonNull Shot secondShot,
                                              @NonNull OnAnimationEndListener onAnimationEndListener) {
-        secondShotImageView.setVisibility(INVISIBLE);
-        secondShotImageView.loadBlurredShotWithListener(secondShot,
-                createRequestListener(secondShotImageView, R.anim.two_shots_load_shot_animation, () -> {
-                    secondShotImageView.setVisibility(VISIBLE);
-                    startSecondShotDropDownAnimation(onAnimationEndListener);
-                }));
+        loadShotWithAnimation(secondShotImageView, secondShot, () -> {
+            secondShotImageView.setVisibility(VISIBLE);
+            startSecondShotDropDownAnimation(onAnimationEndListener);
+        });
+    }
+
+    private void loadShotWithAnimation(@NonNull RoundedCornersShotImageView view, @NonNull Shot shot,
+                                       Runnable runnable) {
+        view.setVisibility(INVISIBLE);
+        view.loadBlurredShotWithListener(shot, createRequestListener(view,
+                R.anim.two_shots_load_shot_animation, runnable));
     }
 
     private void startSecondShotDropDownAnimation(OnAnimationEndListener onAnimationEndListener) {
