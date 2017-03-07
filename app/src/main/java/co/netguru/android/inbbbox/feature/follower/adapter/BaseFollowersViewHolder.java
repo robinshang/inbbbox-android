@@ -65,6 +65,7 @@ abstract class BaseFollowersViewHolder extends BaseViewHolder<UserWithShots> {
     }
 
     private void loadUserPhoto(String photoUrl) {
+        Glide.clear(userPhoto);
         Glide.with(itemView.getContext())
                 .load(photoUrl)
                 .placeholder(R.drawable.logo_ball)
