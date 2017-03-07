@@ -53,7 +53,5 @@ public interface BucketDetailsContract {
         void onDeleteBucketClick();
 
         void deleteBucket();
-
-        void addShotToBucket(Shot shot, Bucket bucket);
     }
 }

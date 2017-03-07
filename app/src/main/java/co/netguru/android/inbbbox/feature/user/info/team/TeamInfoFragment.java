@@ -33,7 +33,7 @@ import timber.log.Timber;
 
 public class TeamInfoFragment extends BaseMvpFragment
         <TeamInfoContract.View, TeamInfoContract.Presenter> implements TeamInfoContract.View,
-        ShotPeekAndPop.ShotPeekAndPopListener, AddToBucketDialogFragment.BucketSelectListener,
+        AddToBucketDialogFragment.BucketSelectListener,
         PeekAndPop.OnGeneralActionListener {
 
     public static final String TAG = TeamInfoFragment.class.getSimpleName();
@@ -151,6 +151,7 @@ public class TeamInfoFragment extends BaseMvpFragment
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(getScrollListener());
+        recyclerView.setNestedScrollingEnabled(false);
     }
 
     private LoadMoreScrollListener getScrollListener() {
@@ -161,17 +162,6 @@ public class TeamInfoFragment extends BaseMvpFragment
                 getPresenter().loadMoreTeamMembers();
             }
         };
-    }
-
-    @Override
-    public void showBucketChooserView(Shot shot) {
-        AddToBucketDialogFragment.newInstance(this, shot)
-                .show(getActivity().getSupportFragmentManager(), AddToBucketDialogFragment.TAG);
-    }
-
-    @Override
-    public void showBucketAddSuccess() {
-        showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
     }
 
     @Override
@@ -187,22 +177,7 @@ public class TeamInfoFragment extends BaseMvpFragment
     }
 
     @Override
-    public void onBucketShot(Shot shot) {
-        getPresenter().onBucketShot(shot);
-    }
-
-    @Override
-    public void onShotLiked() {
-        Snackbar.make(getView(), R.string.shot_liked, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onShotUnliked() {
-        Snackbar.make(getView(), R.string.shot_unliked, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
     public void onBucketForShotSelect(Bucket bucket, Shot shot) {
-        getPresenter().addShotToBucket(shot, bucket);
+        peekAndPop.onBucketForShotSelect(bucket, shot);
     }
 }

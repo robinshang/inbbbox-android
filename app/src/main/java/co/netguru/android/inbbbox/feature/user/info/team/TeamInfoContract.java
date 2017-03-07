@@ -26,10 +26,6 @@ interface TeamInfoContract {
         void hideLoadingMoreTeamMembersView();
 
         void showMessageOnServerError(String message);
-
-        void showBucketChooserView(Shot shot);
-
-        void showBucketAddSuccess();
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -38,9 +34,5 @@ interface TeamInfoContract {
         void onUserClick(User user);
 
         void loadMoreTeamMembers();
-
-        void onBucketShot(Shot shot);
-
-        void addShotToBucket(Shot shot, Bucket bucket);
     }
 }

@@ -54,7 +54,7 @@ import timber.log.Timber;
 public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
         ShotsContract.View, ShotsContract.Presenter> implements RefreshableFragment, ShotsContract.View, ShotSwipeListener,
         AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener,
-        ViewTreeObserver.OnWindowFocusChangeListener, DetailsVisibilityChangeEmitter, ShotPeekAndPop.ShotPeekAndPopListener,
+        ViewTreeObserver.OnWindowFocusChangeListener, DetailsVisibilityChangeEmitter,
         ShotPeekAndPop.OnGeneralActionListener {
 
     private static final int SHOTS_TO_LOAD_MORE = 5;
@@ -126,13 +126,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     private void initPeekAndPop() {
-        peekAndPop = new ShotPeekAndPop(
-                new PeekAndPop.Builder(getActivity())
-                        .blurBackground(true)
-                        .peekLayout(R.layout.peek_shot_details)
-                        .parentViewGroupToDisallowTouchEvents(shotsRecyclerView));
-        peekAndPop.setShotPeekAndPopListener(this);
-        peekAndPop.setOnGeneralActionListener(this);
+        peekAndPop = ShotPeekAndPop.init(getActivity(), shotsRecyclerView, this, this);
     }
 
     @Override
@@ -424,11 +418,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     @Override
-    public void onShotUnliked() {
-        Snackbar.make(getView(), R.string.shot_unliked, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
     public void onShotAddedToBucket() {
         shotActionListener.onShotAddedToBucket();
     }
@@ -436,11 +425,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void onUserFollowed() {
         shotActionListener.onUserFollowed();
-    }
-
-    @Override
-    public void onBucketShot(Shot shot) {
-        getPresenter().handleAddShotToBucket(shot);
     }
 
     @Override

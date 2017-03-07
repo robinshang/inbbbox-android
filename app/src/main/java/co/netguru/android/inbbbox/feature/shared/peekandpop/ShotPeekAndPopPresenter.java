@@ -6,6 +6,9 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
@@ -21,15 +24,28 @@ public class ShotPeekAndPopPresenter extends MvpNullObjectBasePresenter<ShotPeek
 
     private final LikeShotController likeShotController;
     private final ErrorController errorController;
+    private final BucketsController bucketsController;
     private final RxBus rxBus;
     private final CompositeSubscription subscriptions = new CompositeSubscription();
 
     @Inject
     public ShotPeekAndPopPresenter(LikeShotController likeShotController,
-                                   ErrorController errorController, RxBus rxBus) {
+                                   ErrorController errorController, RxBus rxBus,
+                                   BucketsController bucketsController) {
+        this.bucketsController = bucketsController;
         this.likeShotController = likeShotController;
         this.errorController = errorController;
         this.rxBus = rxBus;
+    }
+
+    @Override
+    public void addShotToBucket(Shot shot, Bucket bucket) {
+        subscriptions.add(
+                bucketsController.addShotToBucket(bucket.id(), shot)
+                        .compose(RxTransformerUtil.applyCompletableIoSchedulers())
+                        .subscribe(() -> onShotBucketedCompleted(shot),
+                                throwable -> handleError(throwable, "Error while adding shot to bucket"))
+        );
     }
 
     @Override
@@ -77,6 +93,11 @@ public class ShotPeekAndPopPresenter extends MvpNullObjectBasePresenter<ShotPeek
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
 
+    @Override
+    public void onBucketShot(Shot shot) {
+        getView().showBucketChooserView(shot);
+    }
+
     private Shot updateShotLikeStatus(Shot shot) {
         return Shot.update(shot)
                 .likesCount(shot.likesCount() + 1)
@@ -88,6 +109,17 @@ public class ShotPeekAndPopPresenter extends MvpNullObjectBasePresenter<ShotPeek
         return Shot.update(shot)
                 .likesCount(shot.likesCount() - 1)
                 .isLiked(false)
+                .build();
+    }
+
+    private void onShotBucketedCompleted(Shot shot) {
+        getView().showBucketAddSuccess();
+        rxBus.send(new ShotUpdatedEvent(updateShotBucketedStatus(shot)));
+    }
+
+    private Shot updateShotBucketedStatus(Shot shot) {
+        return Shot.update(shot)
+                .isBucketed(true)
                 .build();
     }
 }

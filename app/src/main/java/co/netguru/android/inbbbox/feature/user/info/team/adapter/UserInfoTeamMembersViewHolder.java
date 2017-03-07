@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.peekandpop.shalskar.peekandpop.PeekAndPop;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -30,7 +31,7 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
     TextView userName;
 
     @BindView(R.id.user_shots)
-    RecyclerView userShotsRecyclerView;
+    TestRecyclerView userShotsRecyclerView;
 
     private UserClickListener userClickListener;
     private UserShotsAdapter adapter;
@@ -48,6 +49,18 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
                 userShotsRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
 
+        shotPeekAndPop.setOnGeneralActionListener(new PeekAndPop.OnGeneralActionListener() {
+            @Override
+            public void onPeek(View view, int i) {
+                Timber.d("userShotsRecyclerView.requestDisallowInterceptTouchEvent");
+                userShotsRecyclerView.requestDisallowInterceptTouchEvent(true);
+            }
+
+            @Override
+            public void onPop(View view, int i) {
+
+            }
+        });
         adapter = new UserShotsAdapter(shotClickListener, shotPeekAndPop);
 
         userShotsRecyclerView.setLayoutManager(linearLayoutManager);

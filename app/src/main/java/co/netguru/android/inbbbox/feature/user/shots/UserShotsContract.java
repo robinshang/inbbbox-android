@@ -22,10 +22,6 @@ public interface UserShotsContract {
         void hideProgress();
 
         void openShotDetailsScreen(Shot shot, List<Shot> allShots, long userId);
-
-        void showBucketChooserView(Shot shot);
-
-        void showBucketAddSuccess();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -37,9 +33,5 @@ public interface UserShotsContract {
         void getMoreUserShotsFromServer();
 
         void showShotDetails(Shot shot);
-
-        void onBucketShot(Shot shot);
-
-        void addShotToBucket(Shot shot, Bucket bucket);
     }
 }

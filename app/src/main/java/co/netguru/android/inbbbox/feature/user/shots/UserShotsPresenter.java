@@ -33,8 +33,6 @@ public class UserShotsPresenter extends MvpNullObjectBasePresenter<UserShotsCont
     private static final int SHOT_PAGE_COUNT = 30;
 
     private final UserShotsController userShotsController;
-    private final BucketsController bucketsController;
-    private final RxBus rxBus;
 
     private final ErrorController errorController;
     private final CompositeSubscription subscriptions = new CompositeSubscription();
@@ -53,9 +51,7 @@ public class UserShotsPresenter extends MvpNullObjectBasePresenter<UserShotsCont
                        ErrorController errorController, @NonNull User user,
                        BucketsController bucketsController, RxBus rxBus) {
         this.userShotsController = userShotsController;
-        this.bucketsController = bucketsController;
         this.errorController = errorController;
-        this.rxBus = rxBus;
         refreshShotsSubscription = Subscriptions.unsubscribed();
         loadMoreShotsSubscription = Subscriptions.unsubscribed();
         this.user = user;
@@ -118,32 +114,6 @@ public class UserShotsPresenter extends MvpNullObjectBasePresenter<UserShotsCont
     @Override
     public void showShotDetails(Shot shot) {
         getView().openShotDetailsScreen(shot, Collections.emptyList(), user.id());
-    }
-
-    @Override
-    public void onBucketShot(Shot shot) {
-        getView().showBucketChooserView(shot);
-    }
-
-    @Override
-    public void addShotToBucket(Shot shot, Bucket bucket) {
-        subscriptions.add(
-                bucketsController.addShotToBucket(bucket.id(), shot)
-                        .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                        .subscribe(() -> onShotBucketedCompleted(shot),
-                                throwable -> handleError(throwable, "Error while adding shot to bucket"))
-        );
-    }
-
-    private void onShotBucketedCompleted(Shot shot) {
-        getView().showBucketAddSuccess();
-        rxBus.send(new ShotUpdatedEvent(updateShotBucketedStatus(shot)));
-    }
-
-    private Shot updateShotBucketedStatus(Shot shot) {
-        return Shot.update(shot)
-                .isBucketed(true)
-                .build();
     }
 
     @Override

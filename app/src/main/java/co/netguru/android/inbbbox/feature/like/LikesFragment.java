@@ -52,7 +52,7 @@ import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
 public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
         LikesViewContract.View, LikesViewContract.Presenter> implements RefreshableFragment,
         LikesViewContract.View, ShotClickListener, PeekAndPop.OnGeneralActionListener,
-        ShotPeekAndPop.ShotPeekAndPopListener, AddToBucketDialogFragment.BucketSelectListener {
+        AddToBucketDialogFragment.BucketSelectListener {
 
     private static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final int LIKES_TO_LOAD_MORE = 10;
@@ -231,12 +231,6 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     @Override
-    public void showBucketChooserView(Shot shot) {
-        AddToBucketDialogFragment.newInstance(this, shot)
-                .show(getActivity().getSupportFragmentManager(), AddToBucketDialogFragment.TAG);
-    }
-
-    @Override
     public void refreshFragmentData() {
         getPresenter().getLikesFromServer();
     }
@@ -287,28 +281,8 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     @Override
-    public void onBucketShot(Shot shot) {
-        getPresenter().onBucketShot(shot);
-    }
-
-    @Override
-    public void onShotLiked() {
-        Snackbar.make(getView(), R.string.shot_liked, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onShotUnliked() {
-        Snackbar.make(getView(), R.string.shot_unliked, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
     public void onBucketForShotSelect(Bucket bucket, Shot shot) {
-        getPresenter().addShotToBucket(shot, bucket);
-    }
-
-    @Override
-    public void showBucketAddSuccess() {
-        showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
+        peekAndPop.onBucketForShotSelect(bucket, shot);
     }
 
     private void initEmptyView() {
@@ -338,12 +312,6 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     private void initPeekAndPop() {
-        peekAndPop = new ShotPeekAndPop(
-                new PeekAndPop.Builder(getActivity())
-                        .blurBackground(true)
-                        .peekLayout(R.layout.peek_shot_details)
-                        .parentViewGroupToDisallowTouchEvents(recyclerView));
-        peekAndPop.setShotPeekAndPopListener(this);
-        peekAndPop.setOnGeneralActionListener(this);
+        peekAndPop = ShotPeekAndPop.init(getActivity(), recyclerView, this, this);
     }
 }

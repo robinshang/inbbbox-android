@@ -41,9 +41,7 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
     private final TeamController teamController;
     private final UserShotsController userShotsController;
     private final ErrorController errorController;
-    private final BucketsController bucketsController;
     private final CompositeSubscription subscriptions = new CompositeSubscription();
-    private final RxBus rxBus;
 
     private final User user;
     @NonNull
@@ -60,9 +58,7 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
                              BucketsController bucketsController) {
         this.teamController = teamController;
         this.userShotsController = userShotsController;
-        this.bucketsController = bucketsController;
         this.errorController = errorController;
-        this.rxBus = rxBus;
         this.user = user;
         refreshSubscription = Subscriptions.unsubscribed();
         loadNextUsersSubscription = Subscriptions.unsubscribed();
@@ -146,33 +142,7 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
     }
 
     @Override
-    public void onBucketShot(Shot shot) {
-        getView().showBucketChooserView(shot);
-    }
-
-    @Override
-    public void addShotToBucket(Shot shot, Bucket bucket) {
-        subscriptions.add(
-                bucketsController.addShotToBucket(bucket.id(), shot)
-                        .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                        .subscribe(() -> onShotBucketedCompleted(shot),
-                                throwable -> handleError(throwable, "Error while adding shot to bucket"))
-        );
-    }
-
-    @Override
     public void onShotClick(Shot shot) {
         getView().openShotDetails(shot);
-    }
-
-    private void onShotBucketedCompleted(Shot shot) {
-        getView().showBucketAddSuccess();
-        rxBus.send(new ShotUpdatedEvent(updateShotBucketedStatus(shot)));
-    }
-
-    private Shot updateShotBucketedStatus(Shot shot) {
-        return Shot.update(shot)
-                .isBucketed(true)
-                .build();
     }
 }

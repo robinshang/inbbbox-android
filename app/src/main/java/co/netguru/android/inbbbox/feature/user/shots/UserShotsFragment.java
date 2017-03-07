@@ -38,7 +38,7 @@ import timber.log.Timber;
 public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
         UserShotsContract.View, UserShotsContract.Presenter>
         implements UserShotsContract.View, PeekAndPop.OnGeneralActionListener,
-        ShotPeekAndPop.ShotPeekAndPopListener, AddToBucketDialogFragment.BucketSelectListener {
+        AddToBucketDialogFragment.BucketSelectListener {
 
     public static final String TAG = UserShotsFragment.class.getSimpleName();
 
@@ -175,13 +175,7 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
     }
 
     private void initPeekAndPop() {
-        peekAndPop = new ShotPeekAndPop(
-                new PeekAndPop.Builder(getActivity())
-                        .blurBackground(true)
-                        .peekLayout(R.layout.peek_shot_details)
-                        .parentViewGroupToDisallowTouchEvents(recyclerView));
-        peekAndPop.setShotPeekAndPopListener(this);
-        peekAndPop.setOnGeneralActionListener(this);
+        peekAndPop = ShotPeekAndPop.init(getActivity(), recyclerView, this, this);
     }
 
     @Override
@@ -196,33 +190,7 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
     }
 
     @Override
-    public void showBucketChooserView(Shot shot) {
-        AddToBucketDialogFragment.newInstance(this, shot)
-                .show(getActivity().getSupportFragmentManager(), AddToBucketDialogFragment.TAG);
-    }
-
-    @Override
-    public void showBucketAddSuccess() {
-        showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
-    }
-
-    @Override
-    public void onBucketShot(Shot shot) {
-        getPresenter().onBucketShot(shot);
-    }
-
-    @Override
-    public void onShotLiked() {
-        Snackbar.make(getView(), R.string.shot_liked, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onShotUnliked() {
-        Snackbar.make(getView(), R.string.shot_unliked, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
     public void onBucketForShotSelect(Bucket bucket, Shot shot) {
-        getPresenter().addShotToBucket(shot, bucket);
+        peekAndPop.onBucketForShotSelect(bucket, shot);
     }
 }

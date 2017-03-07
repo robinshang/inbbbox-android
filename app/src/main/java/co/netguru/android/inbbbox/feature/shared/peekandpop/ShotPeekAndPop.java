@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,12 +22,15 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
 import co.netguru.android.inbbbox.common.utils.ShotLoadingUtil;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
+import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract.View, PeekAndPop.OnGeneralActionListener {
+public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract.View,
+        PeekAndPop.OnGeneralActionListener {
 
     private static final int VIBRATE_DURATION_MS = 10;
     private static final String APP_NAME_KEY = "${where}";
@@ -56,7 +61,6 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     String infoWhenPattern;
     @BindString(R.string.info_where_pattern)
     String infoWherePattern;
-    private ShotPeekAndPopListener listener;
 
     private Shot shot;
 
@@ -64,14 +68,16 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
 
     private OnGeneralActionListener extraGeneralListener;
 
+    private Fragment fragmentForBucketChooser;
+
     public ShotPeekAndPop(Builder builder) {
         super(builder);
         initHoldAndReleaseViews();
     }
 
     public static ShotPeekAndPop init(Activity activity, RecyclerView recyclerView,
-                                      ShotPeekAndPopListener shotPeekAndPopListener,
-                                      OnGeneralActionListener onGeneralActionListener) {
+                                      OnGeneralActionListener onGeneralActionListener,
+                                      Fragment fragmentForBucketChooser) {
 
         ShotPeekAndPop peekAndPop = new ShotPeekAndPop(
                 new PeekAndPop.Builder(activity)
@@ -79,14 +85,10 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
                         .peekLayout(R.layout.peek_shot_details)
                         .parentViewGroupToDisallowTouchEvents(recyclerView));
 
-        peekAndPop.setShotPeekAndPopListener(shotPeekAndPopListener);
+        peekAndPop.setFragmentForBucketChooser(fragmentForBucketChooser);
         peekAndPop.setOnGeneralActionListener(onGeneralActionListener);
 
         return peekAndPop;
-    }
-
-    public void setShotPeekAndPopListener(ShotPeekAndPopListener listener) {
-        this.listener = listener;
     }
 
     private void initHoldAndReleaseViews() {
@@ -94,6 +96,18 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
         addHoldAndReleaseView(R.id.details_bucket_imageView);
         setOnHoldAndReleaseListener(getHoldAndReleaseListener());
         setOnGeneralActionListener(this);
+    }
+
+    public void setFragmentForBucketChooser(Fragment fragmentForBucketChooser) {
+        if (fragmentForBucketChooser instanceof AddToBucketDialogFragment.BucketSelectListener) {
+            this.fragmentForBucketChooser = fragmentForBucketChooser;
+        } else {
+            throw new IllegalArgumentException("Fragment must implement BucketSelectListener");
+        }
+    }
+
+    public void onBucketForShotSelect(Bucket bucket, Shot shot) {
+        presenter.addShotToBucket(shot, bucket);
     }
 
     @Override
@@ -193,16 +207,14 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
 
             @Override
             public void onRelease(View view, int i) {
-                if (listener != null) {
-                    switch (view.getId()) {
-                        case R.id.details_likes_imageView:
-                            presenter.toggleLikeShot(shot);
-                            break;
+                switch (view.getId()) {
+                    case R.id.details_likes_imageView:
+                        presenter.toggleLikeShot(shot);
+                        break;
 
-                        case R.id.details_bucket_imageView:
-                            listener.onBucketShot(shot);
-                            break;
-                    }
+                    case R.id.details_bucket_imageView:
+                        presenter.onBucketShot(shot);
+                        break;
                 }
             }
         };
@@ -215,17 +227,30 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
 
     @Override
     public void showMessageShotLiked() {
-        listener.onShotLiked();
+        Snackbar.make(fragmentForBucketChooser.getView(),
+                R.string.shot_liked, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void showMessageShotUnliked() {
-        listener.onShotUnliked();
+        Snackbar.make(fragmentForBucketChooser.getView(),
+                R.string.shot_unliked, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showBucketAddSuccess() {
+        showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
+    }
+
+    @Override
+    public void showBucketChooserView(Shot shot) {
+        AddToBucketDialogFragment.newInstance(fragmentForBucketChooser, shot)
+                .show(fragmentForBucketChooser.getActivity().getSupportFragmentManager(),
+                        AddToBucketDialogFragment.TAG);
     }
 
     @Override
     public void onPeek(View view, int i) {
-
         initComponent();
 
         if (extraGeneralListener != null) {
@@ -242,12 +267,10 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
         }
     }
 
-    public interface ShotPeekAndPopListener {
-        void onBucketShot(Shot shot);
-
-        void onShotLiked();
-
-        void onShotUnliked();
+    protected void showTextOnSnackbar(@StringRes int stringRes) {
+        if (fragmentForBucketChooser.getView() != null) {
+            Snackbar.make(fragmentForBucketChooser.getView(), stringRes, Snackbar.LENGTH_LONG).show();
+        }
     }
 
 }

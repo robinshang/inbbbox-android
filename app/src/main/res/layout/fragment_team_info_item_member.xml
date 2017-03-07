@@ -28,7 +28,7 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <android.support.v7.widget.RecyclerView
+    <co.netguru.android.inbbbox.feature.user.info.team.adapter.TestRecyclerView
         android:id="@+id/user_shots"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_member_recycler_height"

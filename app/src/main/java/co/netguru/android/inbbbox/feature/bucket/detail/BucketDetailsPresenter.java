@@ -129,16 +129,6 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     }
 
     @Override
-    public void addShotToBucket(Shot shot, Bucket bucket) {
-        subscriptions.add(
-                bucketsController.addShotToBucket(bucket.id(), shot)
-                        .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                        .subscribe(() -> onShotBucketedCompleted(shot),
-                                throwable -> handleError(throwable, "Error while adding shot to bucket"))
-        );
-    }
-
-    @Override
     public void loadMoreShots() {
         if (canLoadMore && refreshShotsSubscription.isUnsubscribed()
                 && loadNextShotsSubscription.isUnsubscribed()) {
@@ -178,16 +168,5 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         busSubscription = rxBus.getEvents(ShotUpdatedEvent.class)
                 .compose(RxTransformers.androidIO())
                 .subscribe(shotRemovedEvent -> refreshShots());
-    }
-
-    private void onShotBucketedCompleted(Shot shot) {
-        getView().showBucketAddSuccess();
-        rxBus.send(new ShotUpdatedEvent(updateShotBucketedStatus(shot)));
-    }
-
-    private Shot updateShotBucketedStatus(Shot shot) {
-        return Shot.update(shot)
-                .isBucketed(true)
-                .build();
     }
 }

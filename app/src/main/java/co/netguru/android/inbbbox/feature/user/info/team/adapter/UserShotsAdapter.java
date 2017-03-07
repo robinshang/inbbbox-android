@@ -1,21 +1,14 @@
 package co.netguru.android.inbbbox.feature.user.info.team.adapter;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.ViewGroup;
 
-import com.peekandpop.shalskar.peekandpop.PeekAndPop;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
-import timber.log.Timber;
 
 public class UserShotsAdapter extends RecyclerView.Adapter<UserShotHorizontalViewHolder> {
 
@@ -38,7 +31,7 @@ public class UserShotsAdapter extends RecyclerView.Adapter<UserShotHorizontalVie
     @Override
     public void onBindViewHolder(UserShotHorizontalViewHolder holder, int position) {
         // TODO remove null check after adding peek and pop to user info fragment
-        if(peekAndPop != null)
+        if (peekAndPop != null)
             peekAndPop.addLongClickView(holder.shotImageView, position);
         holder.shotImageView.setTag(userPosition);
         holder.bind(user.shotList().get(position));

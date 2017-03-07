@@ -5,10 +5,15 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.event.RxBus;
+import co.netguru.android.inbbbox.event.events.ShotUpdatedEvent;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -84,4 +89,5 @@ public class UserInfoPresenter extends MvpNullObjectBasePresenter<UserInfoContra
         Timber.d(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
+
 }

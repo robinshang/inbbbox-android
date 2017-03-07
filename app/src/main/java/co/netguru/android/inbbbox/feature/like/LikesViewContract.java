@@ -32,10 +32,6 @@ interface LikesViewContract {
         void showEmptyLikesInfo();
 
         void openShowDetailsScreen(Shot shot, List<Shot> shotList);
-
-        void showBucketChooserView(Shot shot);
-
-        void showBucketAddSuccess();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -46,9 +42,5 @@ interface LikesViewContract {
         void showShotDetails(Shot shot, List<Shot> allShots);
 
         void checkDataEmpty(boolean isEmpty);
-
-        void onBucketShot(Shot shot);
-
-        void addShotToBucket(Shot shot, Bucket bucket);
     }
 }

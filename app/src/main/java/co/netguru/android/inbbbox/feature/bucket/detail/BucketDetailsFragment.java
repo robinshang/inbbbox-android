@@ -52,7 +52,7 @@ import timber.log.Timber;
 public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection
         <SwipeRefreshLayout, List<Shot>,  BucketDetailsContract.View, BucketDetailsContract.Presenter>
         implements BucketDetailsContract.View, DeleteBucketDialogFragment.DeleteBucketDialogListener,
-        ShotPeekAndPop.ShotPeekAndPopListener, AddToBucketDialogFragment.BucketSelectListener, PeekAndPop.OnGeneralActionListener {
+        AddToBucketDialogFragment.BucketSelectListener, PeekAndPop.OnGeneralActionListener {
 
     public static final String TAG = BucketDetailsFragment.class.getSimpleName();
 
@@ -137,13 +137,7 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     }
 
     private void initPeekAndPop() {
-        peekAndPop = new ShotPeekAndPop(
-                new PeekAndPop.Builder(getActivity())
-                        .blurBackground(true)
-                        .peekLayout(R.layout.peek_shot_details)
-                        .parentViewGroupToDisallowTouchEvents(recyclerView));
-        peekAndPop.setShotPeekAndPopListener(this);
-        peekAndPop.setOnGeneralActionListener(this);
+        peekAndPop = ShotPeekAndPop.init(getActivity(), recyclerView, this, this);
     }
 
     @NonNull
@@ -303,14 +297,8 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     }
 
     @Override
-    public void onBucketShot(Shot shot) {
-        AddToBucketDialogFragment.newInstance(this, shot)
-                .show(getActivity().getSupportFragmentManager(), AddToBucketDialogFragment.TAG);
-    }
-
-    @Override
     public void onBucketForShotSelect(Bucket bucket, Shot shot) {
-        getPresenter().addShotToBucket(shot, bucket);
+        peekAndPop.onBucketForShotSelect(bucket, shot);
     }
 
     @Override
@@ -322,16 +310,6 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     @Override
     public void onPop(View view, int i) {
         // no-op
-    }
-
-    @Override
-    public void onShotLiked() {
-        Snackbar.make(getView(), R.string.shot_liked, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onShotUnliked() {
-        Snackbar.make(getView(), R.string.shot_unliked, Snackbar.LENGTH_LONG).show();
     }
 
 }

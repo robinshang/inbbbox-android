@@ -9,6 +9,7 @@ import java.util.List;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 import co.netguru.android.inbbbox.feature.user.info.singleuser.teams.TeamClickListener;
 import co.netguru.android.inbbbox.feature.user.info.team.adapter.UserInfoTeamHeaderViewHolder;
 
@@ -20,11 +21,13 @@ class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ShotClickListener shotClickListener;
     private TeamClickListener teamClickListener;
+    private ShotPeekAndPop shotPeekAndPop;
 
     UserInfoAdapter(ShotClickListener shotClickListener,
-                    TeamClickListener teamClickListener) {
+                    TeamClickListener teamClickListener, ShotPeekAndPop shotPeekAndPop) {
         this.shotClickListener = shotClickListener;
         this.teamClickListener = teamClickListener;
+        this.shotPeekAndPop = shotPeekAndPop;
     }
 
     @Override
@@ -33,7 +36,7 @@ class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case 0:
                 return new UserInfoTeamHeaderViewHolder(parent);
             case 1:
-                return new UserInfoShotsViewHolder(parent, shotClickListener);
+                return new UserInfoShotsViewHolder(parent, shotClickListener, shotPeekAndPop);
             case 2:
                 return new UserInfoTeamsViewHolder(parent, teamClickListener);
             default:
@@ -68,6 +71,10 @@ class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemCount() {
         return teams.isEmpty() ? 2 : 3;
+    }
+
+    public List<Shot> getShots() {
+        return shots;
     }
 
     public void setTeams(List<User> teams) {
