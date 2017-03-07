@@ -1,9 +1,11 @@
 package co.netguru.android.inbbbox.feature.shared.peekandpop;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,7 +27,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract.View, PeekAndPop.OnGeneralActionListener {
 
-    private static final int VIBRATE_DURATION_MS = 30;
+    private static final int VIBRATE_DURATION_MS = 10;
     private static final String APP_NAME_KEY = "${where}";
     private static final String DATE_KEY = "${when}";
     @BindView(R.id.rounded_corners_shot_image_view)
@@ -67,6 +69,22 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
         initHoldAndReleaseViews();
     }
 
+    public static ShotPeekAndPop init(Activity activity, RecyclerView recyclerView,
+                                      ShotPeekAndPopListener shotPeekAndPopListener,
+                                      OnGeneralActionListener onGeneralActionListener) {
+
+        ShotPeekAndPop peekAndPop = new ShotPeekAndPop(
+                new PeekAndPop.Builder(activity)
+                        .blurBackground(true)
+                        .peekLayout(R.layout.peek_shot_details)
+                        .parentViewGroupToDisallowTouchEvents(recyclerView));
+
+        peekAndPop.setShotPeekAndPopListener(shotPeekAndPopListener);
+        peekAndPop.setOnGeneralActionListener(onGeneralActionListener);
+
+        return peekAndPop;
+    }
+
     public void setShotPeekAndPopListener(ShotPeekAndPopListener listener) {
         this.listener = listener;
     }
@@ -80,7 +98,7 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
 
     @Override
     public void setOnGeneralActionListener(@Nullable OnGeneralActionListener onGeneralActionListener) {
-        if(onGeneralActionListener == this) {
+        if (onGeneralActionListener == this) {
             super.setOnGeneralActionListener(onGeneralActionListener);
         } else {
             extraGeneralListener = onGeneralActionListener;
@@ -207,9 +225,10 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
 
     @Override
     public void onPeek(View view, int i) {
+
         initComponent();
 
-        if(extraGeneralListener != null) {
+        if (extraGeneralListener != null) {
             extraGeneralListener.onPeek(view, i);
         }
     }
@@ -218,14 +237,16 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     public void onPop(View view, int i) {
         presenter.detach();
 
-        if(extraGeneralListener != null) {
+        if (extraGeneralListener != null) {
             extraGeneralListener.onPop(view, i);
         }
     }
 
     public interface ShotPeekAndPopListener {
         void onBucketShot(Shot shot);
+
         void onShotLiked();
+
         void onShotUnliked();
     }
 

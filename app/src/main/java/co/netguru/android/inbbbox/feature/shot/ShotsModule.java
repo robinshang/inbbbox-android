@@ -17,18 +17,16 @@ public class ShotsModule {
     private final ShotSwipeListener shotSwipeListener;
     private final DetailsVisibilityChangeEmitter emitter;
     private final ShotPeekAndPop peekAndPop;
-    private final PeekAndPop.OnGeneralActionListener peekAndPopListener;
 
     public ShotsModule(ShotSwipeListener shotSwipeListener, DetailsVisibilityChangeEmitter emitter,
-                       ShotPeekAndPop peekAndPop, PeekAndPop.OnGeneralActionListener peekAndPopListener) {
+                       ShotPeekAndPop peekAndPop) {
         this.shotSwipeListener = shotSwipeListener;
         this.emitter = emitter;
         this.peekAndPop = peekAndPop;
-        this.peekAndPopListener = peekAndPopListener;
     }
 
     @Provides
     ShotsAdapter provideShotsAdapter() {
-        return new ShotsAdapter(shotSwipeListener, emitter, peekAndPop, peekAndPopListener);
+        return new ShotsAdapter(shotSwipeListener, emitter, peekAndPop);
     }
 }

@@ -5,6 +5,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -25,6 +26,10 @@ interface TeamInfoContract {
         void hideLoadingMoreTeamMembersView();
 
         void showMessageOnServerError(String message);
+
+        void showBucketChooserView(Shot shot);
+
+        void showBucketAddSuccess();
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -33,5 +38,9 @@ interface TeamInfoContract {
         void onUserClick(User user);
 
         void loadMoreTeamMembers();
+
+        void onBucketShot(Shot shot);
+
+        void addShotToBucket(Shot shot, Bucket bucket);
     }
 }

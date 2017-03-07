@@ -2,53 +2,60 @@ package co.netguru.android.inbbbox.feature.user.info.team.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
+
+import com.peekandpop.shalskar.peekandpop.PeekAndPop;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
+import timber.log.Timber;
 
-public class UserShotsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class UserShotsAdapter extends RecyclerView.Adapter<UserShotHorizontalViewHolder> {
 
-    @NonNull
-    private final List<Shot> shots = new ArrayList<>();
+    private UserWithShots user;
 
     private ShotClickListener listener;
+    private ShotPeekAndPop peekAndPop;
+    private int userPosition;
 
-    public UserShotsAdapter(ShotClickListener listener) {
+    public UserShotsAdapter(ShotClickListener listener, ShotPeekAndPop shotPeekAndPop) {
         this.listener = listener;
+        this.peekAndPop = shotPeekAndPop;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public UserShotHorizontalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new UserShotHorizontalViewHolder(parent, listener);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((UserShotHorizontalViewHolder) holder).bind(shots.get(position));
+    public void onBindViewHolder(UserShotHorizontalViewHolder holder, int position) {
+        // TODO remove null check after adding peek and pop to user info fragment
+        if(peekAndPop != null)
+            peekAndPop.addLongClickView(holder.shotImageView, position);
+        holder.shotImageView.setTag(userPosition);
+        holder.bind(user.shotList().get(position));
     }
 
     @Override
     public int getItemCount() {
-        return shots.size();
+        return user.shotList().size();
     }
 
     public List<Shot> getData() {
-        return shots;
+        return user.shotList();
     }
 
-    public void setShots(@NonNull List<Shot> shots) {
-        this.shots.clear();
-        this.shots.addAll(shots);
+    public void setUser(UserWithShots user, int userPosition) {
+        this.userPosition = userPosition;
+        this.user = user;
         notifyDataSetChanged();
-    }
-
-    public void addMoreShots(List<Shot> shots) {
-        final int currentSize = this.shots.size();
-        this.shots.addAll(shots);
-        notifyItemRangeChanged(currentSize - 1, shots.size());
     }
 }

@@ -23,20 +23,16 @@ public class SharedShotsAdapter extends RecyclerView.Adapter<SharedShotViewHolde
 
     private final ShotClickListener shotClickListener;
     private final ShotPeekAndPop peekAndPop;
-    private final PeekAndPop.OnGeneralActionListener onGeneralActionListener;
 
     @NonNull
     private List<Shot> shotList;
     private boolean isGridMode;
 
-    public SharedShotsAdapter(@NonNull ShotClickListener shotClickListener, ShotPeekAndPop peekAndPop,
-                              PeekAndPop.OnGeneralActionListener onGeneralActionListener) {
+    public SharedShotsAdapter(@NonNull ShotClickListener shotClickListener,
+                              ShotPeekAndPop peekAndPop) {
         this.shotClickListener = shotClickListener;
         this.peekAndPop = peekAndPop;
-        this.onGeneralActionListener = onGeneralActionListener;
         shotList = Collections.emptyList();
-
-        setupPeekAndPop();
     }
 
     @Override
@@ -78,22 +74,5 @@ public class SharedShotsAdapter extends RecyclerView.Adapter<SharedShotViewHolde
     public void setGridMode(boolean isGridMode) {
         this.isGridMode = isGridMode;
         notifyDataSetChanged();
-    }
-
-    private void setupPeekAndPop() {
-        if(peekAndPop != null) {
-            peekAndPop.setOnGeneralActionListener(new PeekAndPop.OnGeneralActionListener() {
-                @Override
-                public void onPeek(View view, int i) {
-                    onGeneralActionListener.onPeek(view, i);
-                    peekAndPop.bindPeekAndPop(shotList.get(i));
-                }
-
-                @Override
-                public void onPop(View view, int i) {
-                    onGeneralActionListener.onPop(view, i);
-                }
-            });
-        }
     }
 }

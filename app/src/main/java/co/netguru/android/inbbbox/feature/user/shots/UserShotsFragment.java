@@ -143,16 +143,6 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
         shotActionListener.showShotDetails(shot, allShots, userId);
     }
 
-    @Override
-    public void showBucketChooserView(Shot shot) {
-        AddToBucketDialogFragment.newInstance(this, shot)
-                .show(getActivity().getSupportFragmentManager(), AddToBucketDialogFragment.TAG);
-    }
-
-    @Override
-    public void showBucketAddSuccess() {
-        showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
-    }
 
     @Override
     public void showMessageOnServerError(String errorText) {
@@ -165,7 +155,7 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
     }
 
     private void initRecyclerView() {
-        adapter = new SharedShotsAdapter(getPresenter()::showShotDetails, peekAndPop, this);
+        adapter = new SharedShotsAdapter(getPresenter()::showShotDetails, peekAndPop);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),
                 GRID_VIEW_COLUMN_COUNT);
 
@@ -191,16 +181,29 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
                         .peekLayout(R.layout.peek_shot_details)
                         .parentViewGroupToDisallowTouchEvents(recyclerView));
         peekAndPop.setShotPeekAndPopListener(this);
+        peekAndPop.setOnGeneralActionListener(this);
     }
 
     @Override
     public void onPeek(View view, int i) {
+        peekAndPop.bindPeekAndPop(adapter.getData().get(i));
         recyclerView.requestDisallowInterceptTouchEvent(true);
     }
 
     @Override
     public void onPop(View view, int i) {
         // no-op
+    }
+
+    @Override
+    public void showBucketChooserView(Shot shot) {
+        AddToBucketDialogFragment.newInstance(this, shot)
+                .show(getActivity().getSupportFragmentManager(), AddToBucketDialogFragment.TAG);
+    }
+
+    @Override
+    public void showBucketAddSuccess() {
+        showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
     }
 
     @Override

@@ -24,20 +24,15 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder> {
 
     private final ShotClickListener likeClickListener;
     private final ShotPeekAndPop peekAndPop;
-    private final PeekAndPop.OnGeneralActionListener onGeneralActionListener;
 
     @NonNull
     private List<Shot> likeList;
 
     @Inject
-    public LikesAdapter(ShotClickListener likeClickListener, ShotPeekAndPop peekAndPop,
-                        PeekAndPop.OnGeneralActionListener onGeneralActionListener) {
+    public LikesAdapter(ShotClickListener likeClickListener, ShotPeekAndPop peekAndPop) {
         this.likeClickListener = likeClickListener;
         this.peekAndPop = peekAndPop;
-        this.onGeneralActionListener = onGeneralActionListener;
         likeList = Collections.emptyList();
-
-        setupPeekAndPop();
     }
 
     @Override
@@ -49,21 +44,6 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder> {
     public void onBindViewHolder(LikesViewHolder holder, int position) {
         peekAndPop.addLongClickView(holder.imageView, position);
         holder.bind(likeList.get(position));
-    }
-
-    private void setupPeekAndPop() {
-        peekAndPop.setOnGeneralActionListener(new PeekAndPop.OnGeneralActionListener() {
-            @Override
-            public void onPeek(View view, int i) {
-                onGeneralActionListener.onPeek(view, i);
-                peekAndPop.bindPeekAndPop(likeList.get(i));
-            }
-
-            @Override
-            public void onPop(View view, int i) {
-                onGeneralActionListener.onPop(view, i);
-            }
-        });
     }
 
     @Override

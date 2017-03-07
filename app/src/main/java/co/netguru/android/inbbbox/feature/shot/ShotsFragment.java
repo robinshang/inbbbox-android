@@ -49,6 +49,7 @@ import co.netguru.android.inbbbox.feature.shot.recycler.DetailsVisibilityChangeL
 import co.netguru.android.inbbbox.feature.shot.recycler.ShotSwipeListener;
 import co.netguru.android.inbbbox.feature.shot.recycler.ShotsAdapter;
 import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucketDialogFragment;
+import timber.log.Timber;
 
 public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
         ShotsContract.View, ShotsContract.Presenter> implements RefreshableFragment, ShotsContract.View, ShotSwipeListener,
@@ -120,7 +121,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     private void initComponent() {
         component = App.getUserComponent(getContext())
-                .getShotsComponent(new ShotsModule(this, this, peekAndPop, this));
+                .getShotsComponent(new ShotsModule(this, this, peekAndPop));
         component.inject(this);
     }
 
@@ -131,6 +132,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
                         .peekLayout(R.layout.peek_shot_details)
                         .parentViewGroupToDisallowTouchEvents(shotsRecyclerView));
         peekAndPop.setShotPeekAndPopListener(this);
+        peekAndPop.setOnGeneralActionListener(this);
     }
 
     @Override
@@ -443,6 +445,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void onPeek(View view, int i) {
+        peekAndPop.bindPeekAndPop(adapter.getData().get(i));
         shotsRecyclerView.requestDisallowInterceptTouchEvent(true);
         swipeRefreshLayout.requestDisallowInterceptTouchEvent(true);
     }

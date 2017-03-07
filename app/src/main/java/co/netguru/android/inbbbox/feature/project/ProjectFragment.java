@@ -154,7 +154,7 @@ public class ProjectFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     private void initRecycler() {
         gridLayoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
         linearLayoutManager = new LinearLayoutManager(getContext());
-        shotsAdapter = new SharedShotsAdapter(getPresenter()::onShotClick, null, null);
+        shotsAdapter = new SharedShotsAdapter(getPresenter()::onShotClick, null);
         recyclerView.setAdapter(shotsAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(getScrollListener());

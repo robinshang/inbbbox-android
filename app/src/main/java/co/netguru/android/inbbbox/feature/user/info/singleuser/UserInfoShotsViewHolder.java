@@ -35,13 +35,14 @@ public class UserInfoShotsViewHolder extends BaseViewHolder<List<Shot>> {
     private void initRecycler(List<Shot> shots) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
                 shotsRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
-        UserShotsAdapter userShotsAdapter = new UserShotsAdapter(shotClickListener);
+        UserShotsAdapter userShotsAdapter = new UserShotsAdapter(shotClickListener, null);
 
         shotsRecyclerView.setLayoutManager(linearLayoutManager);
         shotsRecyclerView.setHasFixedSize(true);
         shotsRecyclerView.setAdapter(userShotsAdapter);
         shotsRecyclerView.setNestedScrollingEnabled(false);
 
-        userShotsAdapter.setShots(shots);
+        // TODO fix that
+//        userShotsAdapter.setShots(shots);
     }
 }

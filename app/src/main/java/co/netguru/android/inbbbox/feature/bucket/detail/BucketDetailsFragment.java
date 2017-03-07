@@ -143,6 +143,7 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
                         .peekLayout(R.layout.peek_shot_details)
                         .parentViewGroupToDisallowTouchEvents(recyclerView));
         peekAndPop.setShotPeekAndPopListener(this);
+        peekAndPop.setOnGeneralActionListener(this);
     }
 
     @NonNull
@@ -271,7 +272,7 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     private void setupRecyclerView() {
         gridLayoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
         linearLayoutManager = new LinearLayoutManager(getContext());
-        bucketShotsAdapter = new SharedShotsAdapter(shotClickListener, peekAndPop, this);
+        bucketShotsAdapter = new SharedShotsAdapter(shotClickListener, peekAndPop);
         recyclerView.setAdapter(bucketShotsAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(
@@ -314,6 +315,7 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
 
     @Override
     public void onPeek(View view, int i) {
+        peekAndPop.bindPeekAndPop(bucketShotsAdapter.getData().get(i));
         recyclerView.requestDisallowInterceptTouchEvent(true);
     }
 

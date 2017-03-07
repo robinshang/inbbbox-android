@@ -277,6 +277,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
 
     @Override
     public void onPeek(View view, int i) {
+        peekAndPop.bindPeekAndPop(likesAdapter.getData().get(i));
         recyclerView.requestDisallowInterceptTouchEvent(true);
     }
 
@@ -323,7 +324,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     private void initRecyclerView() {
-        likesAdapter = new LikesAdapter(this, peekAndPop, this);
+        likesAdapter = new LikesAdapter(this, peekAndPop);
         linearLayoutManager = new LinearLayoutManager(getContext());
         gridLayoutManager = new GridLayoutManager(getContext(), GRID_VIEW_COLUMN_COUNT);
         recyclerView.setHasFixedSize(true);
@@ -343,5 +344,6 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
                         .peekLayout(R.layout.peek_shot_details)
                         .parentViewGroupToDisallowTouchEvents(recyclerView));
         peekAndPop.setShotPeekAndPopListener(this);
+        peekAndPop.setOnGeneralActionListener(this);
     }
 }

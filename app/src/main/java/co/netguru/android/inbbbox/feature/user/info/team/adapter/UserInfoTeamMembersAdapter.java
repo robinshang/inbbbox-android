@@ -10,7 +10,9 @@ import java.util.List;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 import co.netguru.android.inbbbox.feature.user.UserClickListener;
+import timber.log.Timber;
 
 public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -26,12 +28,15 @@ public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private UserClickListener userClickListener;
     private ShotClickListener shotClickListener;
+    private ShotPeekAndPop shotPeekAndPop;
 
     public UserInfoTeamMembersAdapter(UserClickListener userClickListener,
-                                      ShotClickListener shotClickListener) {
+                                      ShotClickListener shotClickListener,
+                                      ShotPeekAndPop shotPeekAndPop) {
         userList = Collections.emptyList();
         this.userClickListener = userClickListener;
         this.shotClickListener = shotClickListener;
+        this.shotPeekAndPop = shotPeekAndPop;
     }
 
     @Override
@@ -41,7 +46,7 @@ public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerVie
                 return new UserInfoTeamHeaderViewHolder(parent);
             case VIEW_TYPE_USER:
                 return new UserInfoTeamMembersViewHolder(parent, userClickListener,
-                        shotClickListener);
+                        shotClickListener, shotPeekAndPop);
             default:
                 throw new IllegalArgumentException("Cannot create view holder for type : " + viewType);
         }
@@ -54,6 +59,7 @@ public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerVie
                 ((UserInfoTeamHeaderViewHolder) holder).bind(team);
                 break;
             case VIEW_TYPE_USER:
+                ((UserInfoTeamMembersViewHolder) holder).setUserPosition(position - 1);
                 ((UserInfoTeamMembersViewHolder) holder).bind(userList.get(position - 1));
                 break;
             default:

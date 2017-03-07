@@ -23,7 +23,6 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
     private final ShotSwipeListener shotSwipeListener;
     private final DetailsVisibilityChangeEmitter emitter;
     private boolean isDetailsVisible;
-    private final PeekAndPop.OnGeneralActionListener onGeneralActionListener;
 
     private ShotPeekAndPop peekAndPop;
 
@@ -32,16 +31,12 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
     @Inject
     public ShotsAdapter(@NonNull ShotSwipeListener shotSwipeListener,
-                        @NonNull DetailsVisibilityChangeEmitter emitter, ShotPeekAndPop peekAndPop,
-                        PeekAndPop.OnGeneralActionListener onGeneralActionListener) {
+                        @NonNull DetailsVisibilityChangeEmitter emitter, ShotPeekAndPop peekAndPop) {
         this.shotSwipeListener = shotSwipeListener;
         this.emitter = emitter;
         shots = Collections.emptyList();
         isDetailsVisible = true;
         this.peekAndPop = peekAndPop;
-        this.onGeneralActionListener = onGeneralActionListener;
-
-        setupPeekAndPop();
     }
 
     @Override
@@ -56,21 +51,6 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
         peekAndPop.addLongClickView(holder.shotImageView, position);
         holder.bind(shots.get(position));
         holder.onDetailsChangeVisibility(isDetailsVisible);
-    }
-
-    private void setupPeekAndPop() {
-        peekAndPop.setOnGeneralActionListener(new PeekAndPop.OnGeneralActionListener() {
-            @Override
-            public void onPeek(View view, int i) {
-                onGeneralActionListener.onPeek(view, i);
-                peekAndPop.bindPeekAndPop(shots.get(i));
-            }
-
-            @Override
-            public void onPop(View view, int i) {
-                onGeneralActionListener.onPop(view, i);
-            }
-        });
     }
 
     @Override
