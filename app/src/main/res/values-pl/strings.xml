@@ -11,7 +11,6 @@
     <string name="action_grid_view">Widok siatki</string>
     <string name="action_list_view">Widok listy</string>
     <string name="action_ok">OK</string>
-    <string name="action_settings">Ustawienia</string>
     <string name="action_unfollow">Przestań obserwować</string>
     <string name="action_warning">Ostrzeżenie</string>
     <string name="action_share">Udostępnij</string>
@@ -22,7 +21,6 @@
     <string name="change_stream_source_error">Przynajmniej jedno źródło powinno być zaznaczone</string>
     <string name="comment">Komentarz</string>
     <string name="comment_deleted_complete">Komentarz został usunięty</string>
-    <string name="comment_edit_hint">Edytuj komentarz</string>
     <string name="comment_input_hint">Napisz komentarz</string>
     <string name="comment_update_complete">Komentarz został edytowany</string>
     <string name="comments_delete_label">Usuń</string>
@@ -70,7 +68,6 @@
     <string name="fragment_buckets_empty_text_after_icon">kolekcji!</string>
     <string name="fragment_followers_empty_text">Najpierw zacznij kogoś obserwować!</string>
     <string name="fragment_like_empty_text">Najpierw dodaj jakiś projekt do ulubionych!</string>
-    <string name="in_label">"w "</string>
     <string name="info_when_pattern">" w dniu ${when}"</string>
     <string name="info_where_pattern">"w ${where}"</string>
     <string name="invalid_outh_url">Nieprawidłowy url</string>
