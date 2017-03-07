@@ -14,6 +14,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<BaseFollowersViewHold
     private static final int TYPE_GRID = 1;
 
     private final OnFollowerClickListener onFollowerClickListener;
+
     private List<UserWithShots> userWithShotsList;
 
     private boolean isGridMode;

@@ -18,12 +18,7 @@ import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersFourImageView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public abstract class BaseFollowersViewHolder extends BaseViewHolder<UserWithShots> {
-
-    protected static final int FIRST_SHOT = 0;
-    protected static final int SECOND_SHOT = 1;
-    protected static final int THIRD_SHOT = 2;
-    protected static final int FOURTH_SHOT = 3;
+abstract class BaseFollowersViewHolder extends BaseViewHolder<UserWithShots> {
 
     @BindString(R.string.follower_item_shot)
     String shotCountString;
