@@ -60,6 +60,7 @@ class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
             case 3:
                 ((UserInfoLinksViewHolder) holder).bind(user.links());
+                break;
             default:
                 throw new IllegalArgumentException(
                         String.format("Could not bind view holder for position: %d", position));

@@ -13,19 +13,25 @@
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginLeft="@dimen/user_links_grid_margin"
+        android:layout_marginRight="@dimen/user_links_grid_margin"
         android:columnCount="5">
 
         <ImageButton
             android:id="@+id/link_web"
-            android:layout_width="64dp"
-            android:layout_height="64dp" />
+            android:layout_width="@dimen/user_link_size"
+            android:layout_height="@dimen/user_link_size"
+            android:src="@drawable/ic_user"
+            android:background="?android:selectableItemBackground"
+            />
 
         <ImageButton
             android:id="@+id/link_twitter"
-            android:layout_width="64dp"
-            android:layout_height="64dp" />
+            android:layout_width="@dimen/user_link_size"
+            android:layout_height="@dimen/user_link_size"
+            android:src="@drawable/ic_twitter"
+            android:background="?android:selectableItemBackground"
+            />
 
     </GridLayout>
 </LinearLayout>

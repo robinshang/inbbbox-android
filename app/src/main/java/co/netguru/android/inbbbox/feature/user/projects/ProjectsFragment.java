@@ -69,6 +69,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
         initSwipeRefreshView();
+
     }
 
     @NonNull
@@ -158,4 +159,5 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
         });
         recyclerView.setAdapter(projectsAdapter);
     }
+
 }

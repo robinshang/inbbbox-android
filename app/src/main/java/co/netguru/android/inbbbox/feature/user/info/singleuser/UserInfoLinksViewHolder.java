@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.feature.user.info.singleuser;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
@@ -11,6 +12,12 @@ import co.netguru.android.inbbbox.data.dribbbleuser.Links;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 
 public class UserInfoLinksViewHolder extends BaseViewHolder<Links> {
+
+    @BindView(R.id.link_twitter)
+    ImageButton twitterLink;
+
+    @BindView(R.id.link_web)
+    ImageButton webLink;
 
     private LinkClickListener linkClickListener;
     private Links links;
@@ -24,6 +31,18 @@ public class UserInfoLinksViewHolder extends BaseViewHolder<Links> {
     @Override
     public void bind(Links links) {
         this.links = links;
+
+        if (links.twitter() != null) {
+            twitterLink.setVisibility(View.VISIBLE);
+        } else {
+            twitterLink.setVisibility(View.GONE);
+        }
+
+        if (links.web() != null) {
+            webLink.setVisibility(View.VISIBLE);
+        } else {
+            webLink.setVisibility(View.GONE);
+        }
     }
 
     @OnClick(R.id.link_twitter)
