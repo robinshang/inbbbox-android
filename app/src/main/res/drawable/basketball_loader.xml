@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <item android:drawable="@drawable/loadgif_0" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_1" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_2" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_3" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_4" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_5" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_6" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_7" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_8" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_9" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_10" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_11" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_12" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_13" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_14" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_15" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_16" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_17" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_18" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_19" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_20" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_21" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_22" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_23" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_24" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_25" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_26" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_27" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_28" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_29" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_30" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_31" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_32" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_33" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_34" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_35" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_36" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_37" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_38" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_39" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_40" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_41" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_42" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_43" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_44" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_45" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_46" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_47" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_48" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_49" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_50" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_51" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_52" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_53" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_54" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_55" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_56" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_57" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_58" android:duration="17" />
+    <item android:drawable="@drawable/loadgif_59" android:duration="17" />
+
+</animation-list>
