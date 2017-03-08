@@ -59,6 +59,9 @@ public class ShotDetailsFragment
     @BindView(R.id.shot_details_recyclerView)
     RecyclerView shotRecyclerView;
 
+    @BindView(R.id.placeholder_image_view)
+    RoundedCornersShotImageView placeHolderImageView;
+
     @BindView(R.id.parallax_image_view)
     RoundedCornersShotImageView parallaxImageView;
 
@@ -259,7 +262,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showMainImage(ShotImage shotImage) {
-        ShotLoadingUtil.loadMainViewShot(getContext(), parallaxImageView.getImageView(), shotImage);
+        ShotLoadingUtil.loadMainViewShot(getContext(), placeHolderImageView.getImageView(), parallaxImageView.getImageView(), shotImage);
     }
 
     @Override

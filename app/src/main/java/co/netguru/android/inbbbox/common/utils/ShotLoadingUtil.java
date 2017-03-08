@@ -23,6 +23,9 @@ public class ShotLoadingUtil {
 
     private final static String GIF_EXTENSION = ".gif";
 
+    private static boolean isLoad = false;
+    private static GlideDrawable glideResource;
+
     private ShotLoadingUtil() {
         throw new AssertionError();
     }
@@ -59,20 +62,23 @@ public class ShotLoadingUtil {
                 .into(target);
     }
 
-    public static void loadMainViewShot(Context context, ImageView target, ShotImage shot) {
-        loadMainViewShotWithListener(context, target, shot, getRequestListener(shot, target));
+    public static void loadMainViewShot(Context context, ImageView placeholder, ImageView target, ShotImage shot) {
+        loadMainViewShotWithListener(context, placeholder, target, shot, getRequestListener(shot));
     }
 
-    public static void loadMainViewShotWithListener(Context context, ImageView target, ShotImage shot,
+    public static void loadMainViewShotWithListener(Context context, ImageView placeholder, ImageView target, ShotImage shot,
                                                     RequestListener<String, GlideDrawable> requestListener) {
         String imageUrl = getImageUrl(shot);
         Timber.d("shot image url: %s", imageUrl);
 
         final boolean isGif = isGif(imageUrl);
         if (isGif) {
-            target.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-            target.setBackgroundResource(R.drawable.basketball_loader);
-            ((AnimationDrawable) target.getBackground()).start();
+            placeholder.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            placeholder.setBackgroundResource(R.drawable.basketball_loader);
+            AnimationDrawable animationDrawable = (AnimationDrawable) placeholder.getBackground();
+            animationDrawable.setCallback(stopAnimation(animationDrawable, target));
+
+            animationDrawable.start();
 
             GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(target);
             Glide.with(context)
@@ -111,7 +117,7 @@ public class ShotLoadingUtil {
         return url.endsWith(GIF_EXTENSION);
     }
 
-    private static RequestListener<String, GlideDrawable> getRequestListener(ShotImage shotImage, ImageView targetImageView) {
+    private static RequestListener<String, GlideDrawable> getRequestListener(ShotImage shotImage) {
         if (isGif(getImageUrl(shotImage))) {
             return new RequestListener<String, GlideDrawable>() {
                 @Override
@@ -121,8 +127,8 @@ public class ShotLoadingUtil {
 
                 @Override
                 public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                    AnimationDrawable animationDrawable = (AnimationDrawable) targetImageView.getBackground();
-                    animationDrawable.setCallback(stopAnimation(animationDrawable, resource, targetImageView));
+                    isLoad = true;
+                    glideResource = resource;
                     return true;
                 }
             };
@@ -131,12 +137,19 @@ public class ShotLoadingUtil {
         }
     }
 
-    private static CallbackAnimationDrawable stopAnimation(final AnimationDrawable animationDrawable, GlideDrawable resourlce, ImageView target) {
+    private static CallbackAnimationDrawable stopAnimation(final AnimationDrawable animationDrawable, ImageView target) {
         return new CallbackAnimationDrawable(animationDrawable, target) {
             @Override
             public void onAnimationComplete() {
-                target.setImageDrawable(resourlce);
-                resourlce.start();
+                if (isLoad) {
+                    animationDrawable.stop();
+                    target.setImageDrawable(glideResource);
+                    glideResource.start();
+                    isLoad = false;
+                    glideResource = null;
+                } else {
+                    animationDrawable.start();
+                }
 
             }
         };
