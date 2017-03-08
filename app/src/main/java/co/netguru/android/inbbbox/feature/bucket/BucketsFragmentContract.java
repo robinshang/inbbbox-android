@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.feature.bucket;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
@@ -10,10 +9,9 @@ import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
 
-
 public interface BucketsFragmentContract {
 
-    interface View extends MvpView, HttpErrorView, MvpLceView<List<BucketWithShots>> {
+    interface View extends HttpErrorView, MvpLceView<List<BucketWithShots>> {
 
         void hideProgressBars();
 
