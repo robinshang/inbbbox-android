@@ -135,7 +135,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     @Override
     public void showContent() {
         super.showContent();
-        getPresenter().checkDataEmpty(getData().isEmpty());
+        getPresenter().showContentForData(getData());
     }
 
     @Override

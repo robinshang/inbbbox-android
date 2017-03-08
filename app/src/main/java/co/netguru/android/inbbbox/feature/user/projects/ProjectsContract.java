@@ -43,6 +43,6 @@ interface ProjectsContract {
 
         void onProjectClick(ProjectWithShots projectWithShots);
 
-        void checkDataEmpty(boolean isEmpty);
+        void showContentForData(List<ProjectWithShots> projectWithShotsList);
     }
 }

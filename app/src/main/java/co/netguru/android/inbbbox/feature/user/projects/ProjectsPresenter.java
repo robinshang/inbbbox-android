@@ -127,8 +127,8 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
     }
 
     @Override
-    public void checkDataEmpty(boolean isEmpty) {
-        if (isEmpty) {
+    public void showContentForData(List<ProjectWithShots> projectWithShotsList) {
+        if (projectWithShotsList.isEmpty()) {
             getView().showEmptyView();
         } else {
             getView().hideEmptyView();
