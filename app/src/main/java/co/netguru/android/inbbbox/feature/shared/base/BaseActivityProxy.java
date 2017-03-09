@@ -110,6 +110,4 @@ class BaseActivityProxy {
         LoginActivity.startActivityClearTaskWithMessage(activity, object.getReason());
         activity.finish();
     }
-
-
 }
