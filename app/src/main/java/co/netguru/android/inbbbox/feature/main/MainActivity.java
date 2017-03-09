@@ -311,7 +311,6 @@ public class MainActivity
 
     @Override
     public void shotLikeStatusChanged() {
-        pagerAdapter.refreshFragment(TabItemType.LIKES);
         shakeTabIcon(TAB_LIKES);
     }
 

@@ -8,6 +8,7 @@ import android.content.res.Resources;
 
 import javax.inject.Singleton;
 
+import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
 import dagger.Module;
 import dagger.Provides;
 
@@ -49,5 +50,11 @@ public class ApplicationModule {
     @Singleton
     AlarmManager provideAlarmManager() {
         return (AlarmManager) application.getSystemService(Context.ALARM_SERVICE);
+    }
+
+    @Provides
+    @Singleton
+    DateTimeFormatUtil provideDateTimeFormatUtil() {
+        return new DateTimeFormatUtil(application);
     }
 }

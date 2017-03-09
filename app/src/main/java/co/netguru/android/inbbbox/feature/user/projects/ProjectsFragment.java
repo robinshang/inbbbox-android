@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
@@ -40,6 +41,8 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.projects_recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.empty_view)
+    FrameLayout emptyView;
     @BindView(R.id.loadingView)
     ProgressBar progressBar;
 
@@ -127,6 +130,24 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     @Override
     public void showProjectDetails(ProjectWithShots projectWithShots) {
         ProjectActivity.startActivity(getContext(), projectWithShots);
+    }
+
+    @Override
+    public void showContent() {
+        super.showContent();
+        getPresenter().showContentForData(getData());
+    }
+
+    @Override
+    public void showEmptyView() {
+        emptyView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideEmptyView() {
+        emptyView.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override

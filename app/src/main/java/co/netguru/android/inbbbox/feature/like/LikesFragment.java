@@ -76,15 +76,15 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     @BindView(R.id.errorLayout)
     LinearLayout errorLayout;
 
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
+
     private Snackbar loadingMoreSnackbar;
     private LikesAdapter likesAdapter;
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
     private ShotsFragment.ShotActionListener shotActionListener;
     private LikesFragmentComponent component;
-
-    @Inject
-    AnalyticsEventLogger analyticsEventLogger;
 
     public static LikesFragment newInstance() {
         return new LikesFragment();
@@ -96,7 +96,8 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         try {
             shotActionListener = (ShotsFragment.ShotActionListener) context;
         } catch (ClassCastException e) {
-            throw new InterfaceNotImplementedException(e, context.toString(), ShotsFragment.ShotActionListener.class.getSimpleName());
+            throw new InterfaceNotImplementedException(e, context.toString(),
+                    ShotsFragment.ShotActionListener.class.getSimpleName());
         }
     }
 
@@ -122,22 +123,10 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         loadingMoreSnackbar = null;
     }
 
-    @Override
-    protected void changeGridMode(boolean isGridMode) {
-        likesAdapter.setGridMode(isGridMode);
-        recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
-        analyticsEventLogger.logEventAppbarCollectionLayoutChange(isGridMode);
-    }
-
     @NonNull
     @Override
     public LikesViewContract.Presenter createPresenter() {
         return component.getPresenter();
-    }
-
-    private void initComponent() {
-        component = App.getUserComponent(getContext()).getLikesFragmentComponent();
-        component.inject(this);
     }
 
     @Override
@@ -248,14 +237,32 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     @Override
+    public void onShotClick(Shot shot) {
+        getPresenter().showShotDetails(shot, likesAdapter.getData());
+        analyticsEventLogger.logEventLikesItemClick();
+    }
+
+    @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
         return errorString;
+    }
+
+    @Override
+    protected void changeGridMode(boolean isGridMode) {
+        likesAdapter.setGridMode(isGridMode);
+        recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
+        analyticsEventLogger.logEventAppbarCollectionLayoutChange(isGridMode);
     }
 
     @OnClick(R.id.refreshButton)
     void onRefreshButtonClick() {
         showLoading(false);
         loadData(true);
+    }
+
+    private void initComponent() {
+        component = App.getUserComponent(getContext()).getLikesFragmentComponent();
+        component.inject(this);
     }
 
     private void initEmptyView() {
@@ -282,11 +289,5 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
                 presenter.getMoreLikesFromServer();
             }
         });
-    }
-
-    @Override
-    public void onShotClick(Shot shot) {
-        getPresenter().showShotDetails(shot, likesAdapter.getData());
-        analyticsEventLogger.logEventLikesItemClick();
     }
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
+        android:id="@+id/two_covered_shots_second_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/two_shots_animation_second_view_horizontal_margin"
+        android:layout_marginStart="@dimen/two_shots_animation_second_view_horizontal_margin"
+        android:layout_marginTop="@dimen/two_shots_animation_second_view_top_margin" />
+
+    <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
+        android:id="@+id/two_covered_shots_first_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/two_shots_animation_first_view_horizontal_margin"
+        android:layout_marginStart="@dimen/two_shots_animation_first_view_horizontal_margin"
+        android:layout_marginTop="@dimen/two_shots_animation_first_view_top_margin" />
+</merge>
