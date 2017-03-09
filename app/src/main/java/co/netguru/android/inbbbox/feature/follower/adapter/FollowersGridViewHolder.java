@@ -7,10 +7,10 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
-public class FollowersGridViewHolder extends BaseFollowersViewHolder {
+class FollowersGridViewHolder extends BaseFollowersViewHolder {
 
-    public FollowersGridViewHolder(ViewGroup parent, OnFollowerClickListener onFollowerClickListener) {
-        super(LayoutInflater.from(parent.getContext()).inflate(R.layout.follower_grid_item, parent, false), onFollowerClickListener);
+    FollowersGridViewHolder(ViewGroup parent, OnFollowerClickListener onFollowerClickListener) {
+        super(LayoutInflater.from(parent.getContext()).inflate(R.layout.follower_item, parent, false), onFollowerClickListener);
     }
 
     @Override

@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/login_relative_layout"
-    android:background="@drawable/bcg_intro"
-    android:fillViewport="true"
-    android:padding="@dimen/margin_default">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/login_relative_layout"
+                android:fillViewport="true"
+                android:clipToPadding="false"
+                android:background="@drawable/bcg_intro"
+                android:padding="@dimen/margin_default">
+
+    <co.netguru.android.inbbbox.feature.shared.view.MultipleScrollingBackgroundsView
+        android:id="@+id/scrolling_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/negative_margin_default"
+        android:layout_marginEnd="@dimen/negative_margin_default"
+        android:layout_marginStart="@dimen/negative_margin_default"
+        android:layout_marginTop="@dimen/negative_margin_default"/>
 
     <ImageView
         android:id="@+id/login_logo_ball"
@@ -45,10 +55,10 @@
         android:layout_marginEnd="@dimen/margin_default"
         android:layout_marginStart="@dimen/margin_default"
         android:background="@drawable/selector_login_button"
-        android:drawablePadding="@dimen/activity_login_button_drawable_padding"
         android:drawableStart="@drawable/ic_ball"
-        android:gravity="start|center_vertical"
+        android:gravity="center"
         android:paddingStart="@dimen/activity_login_button_padding_start"
+        android:paddingEnd="@dimen/activity_login_button_padding_end"
         android:text="@string/login_button_text"
         android:textAllCaps="false" />
 

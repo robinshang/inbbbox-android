@@ -12,7 +12,6 @@ import co.netguru.android.inbbbox.common.analytics.event.RequestEvent;
 import co.netguru.android.inbbbox.common.analytics.event.ScreenViewEvent;
 import co.netguru.android.inbbbox.common.analytics.event.ShotsSwipeEvent;
 import co.netguru.android.inbbbox.common.analytics.event.SourceStreamEvent;
-import co.netguru.android.inbbbox.common.analytics.event.SourceStreamLeaveEvent;
 import co.netguru.android.inbbbox.common.analytics.event.UserInteractionEvent;
 
 class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
@@ -59,6 +58,8 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     private static final String BUTTON_APPBAR_GRID = "appbar: grid";
     private static final String BUTTON_APPBAR_LIST = "appbar: list";
     private static final String BUTTON_APPBAR_DELETE_BUCKET = "appbar: delete bucket";
+    private static final String BUTTON_APPBAR_FOLLOW = "appbar: follow";
+    private static final String BUTTON_APPBAR_UNFOLLOW = "appbar: unfollow";
     private static final String BUTTON_CLOSE_SHOT_DETAILS_X = "close shot details x";
     private static final String BUTTON_CLOSE_SHOT_DETAILS_BACK = "close shot details back";
     private static final String BUTTON_SHOT_DETAILS_LIKE = "shot details like";
@@ -327,6 +328,12 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
         logEvent(new ShotsSwipeEvent(SWIPE_FULLSCREEN, numberOfSwipes));
     }
 
+    @Override
+    public void logEventAppbarFollow(boolean following) {
+        logEvent(new UserInteractionEvent(following ? BUTTON_APPBAR_FOLLOW :
+                BUTTON_APPBAR_UNFOLLOW));
+    }
+
     /**
      * API requests
      */
@@ -337,28 +344,28 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
     }
 
     @Override
-    public void logEventApiFollow() {
-        logEvent(new RequestEvent(REQUEST_FOLLOW));
+    public void logEventApiFollow(int requestsRemaining) {
+        logEvent(new RequestEvent(REQUEST_FOLLOW, requestsRemaining));
     }
 
     @Override
-    public void logEventApiLike() {
-        logEvent(new RequestEvent(REQUEST_LIKE));
+    public void logEventApiLike(int requestsRemaining) {
+        logEvent(new RequestEvent(REQUEST_LIKE, requestsRemaining));
     }
 
     @Override
-    public void logEventApiAddToBucket() {
-        logEvent(new RequestEvent(REQUEST_ADD_TO_BUCKET));
+    public void logEventApiAddToBucket(int requestsRemaining) {
+        logEvent(new RequestEvent(REQUEST_ADD_TO_BUCKET, requestsRemaining));
     }
 
     @Override
-    public void logEventApiComment() {
-        logEvent(new RequestEvent(REQUEST_COMMENT));
+    public void logEventApiComment(int requestsRemaining) {
+        logEvent(new RequestEvent(REQUEST_COMMENT, requestsRemaining));
     }
 
     @Override
-    public void logEventApiOther() {
-        logEvent(new RequestEvent(REQUEST_OTHER));
+    public void logEventApiOther(int requestsRemaining) {
+        logEvent(new RequestEvent(REQUEST_OTHER, requestsRemaining));
     }
 
     /**
@@ -382,26 +389,22 @@ class FirebaseAnalyticsEventLogger implements AnalyticsEventLogger {
 
     @Override
     public void logEventSettingsDebuts(boolean enabled) {
-        logSourceStreamEvent(enabled, SOURCE_DEBUT);
+        logEvent(new SourceStreamEvent(SOURCE_DEBUT, enabled));
     }
 
     @Override
     public void logEventSettingsFollowing(boolean enabled) {
-        logSourceStreamEvent(enabled, SOURCE_FOLLOWING);
+        logEvent(new SourceStreamEvent(SOURCE_FOLLOWING, enabled));
     }
 
     @Override
     public void logEventSettingsNewToday(boolean enabled) {
-        logSourceStreamEvent(enabled, SOURCE_NEW_TODAY);
+        logEvent(new SourceStreamEvent(SOURCE_NEW_TODAY, enabled));
     }
 
     @Override
     public void logEventSettingsPopularToday(boolean enabled) {
-        logSourceStreamEvent(enabled, SOURCE_POPULAR_TODAY);
-    }
-
-    private void logSourceStreamEvent(boolean enabled, String groupId) {
-        logEvent(enabled ? new SourceStreamEvent(groupId) : new SourceStreamLeaveEvent(groupId));
+        logEvent(new SourceStreamEvent(SOURCE_POPULAR_TODAY, enabled));
     }
 
     /**

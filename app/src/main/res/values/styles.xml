@@ -71,6 +71,11 @@
     <style name="Font16.SemiBlack" parent="TextAppearance.AppCompat.Medium">
         <item name="android:textColor">@color/semiBlack</item>
     </style>
+    
+    <style name="Font20.Black" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 
     <style name="Font25.PalePink" parent="TextAppearance.AppCompat.Large">
         <item name="android:textColor">@color/palePink</item>
@@ -78,6 +83,11 @@
 
     <style name="Font25.Gray" parent="TextAppearance.AppCompat.Large">
         <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="Font60.LightGray" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">60sp</item>
+        <item name="android:textColor">@color/lightGrayAlpha</item>
     </style>
 
     <style name="SwipeActionIcons">

@@ -37,11 +37,6 @@
         android:clipToPadding="false">
         <!-- Bottom View Start-->
 
-        <View
-            android:id="@+id/stub_view"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-
         <RelativeLayout
             android:id="@+id/_left_wrapper"
             android:layout_width="@dimen/shot_left_swipe_action_panel_width_half"
@@ -73,6 +68,7 @@
             android:id="@+id/iv_shot_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:padding="@dimen/shot_background_padding" />
         <!-- Surface View End -->
     </co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout>

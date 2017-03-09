@@ -1,10 +1,8 @@
 package co.netguru.android.inbbbox.feature.bucket.detail;
 
-
 import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
@@ -14,9 +12,8 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
 
-
 public interface BucketDetailsContract {
-    interface View extends MvpView, HttpErrorView, MvpLceView<List<Shot>> {
+    interface View extends HttpErrorView, MvpLceView<List<Shot>> {
 
         void setFragmentTitle(String string);
 

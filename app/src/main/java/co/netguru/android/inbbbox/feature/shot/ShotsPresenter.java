@@ -16,6 +16,8 @@ import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.follower.controllers.FollowersController;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
+import co.netguru.android.inbbbox.data.settings.SettingsController;
+import co.netguru.android.inbbbox.data.settings.model.CustomizationSettings;
 import co.netguru.android.inbbbox.data.shot.ShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
@@ -28,6 +30,7 @@ import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applyCompletableIoSchedulers;
+import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applySingleIoSchedulers;
 
 @FragmentScope
 public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.View>
@@ -35,6 +38,9 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     private static final int SHOTS_PER_PAGE = 15;
     private static final int FIRST_PAGE = 1;
+    private static final int SHOTS_ANIMATION_MIN_SHOTS_COUNT = 3;
+    private static final int SHOTS_ANIMATION_FIRST_SHOT = 1;
+    private static final int SHOTS_ANIMATION_SECOND_SHOT = 2;
 
     private final ShotsController shotsController;
     private final ErrorController errorController;
@@ -43,6 +49,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     private final FollowersController followersController;
     private final CompositeSubscription subscriptions;
     private final RxBus rxBus;
+    private final SettingsController settingsController;
 
     @NonNull
     private Subscription refreshSubscription;
@@ -58,7 +65,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     @Inject
     ShotsPresenter(ShotsController shotsController, LikeShotController likeShotController,
                    BucketsController bucketsController, ErrorController errorController,
-                   FollowersController followersController, RxBus rxBus) {
+                   FollowersController followersController, RxBus rxBus, SettingsController settingsController) {
 
         this.shotsController = shotsController;
         this.likeShotController = likeShotController;
@@ -66,6 +73,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         this.errorController = errorController;
         this.followersController = followersController;
         this.rxBus = rxBus;
+        this.settingsController = settingsController;
         subscriptions = new CompositeSubscription();
         refreshSubscription = Subscriptions.unsubscribed();
         loadMoreSubscription = Subscriptions.unsubscribed();
@@ -110,13 +118,8 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
             getView().showLoadingIndicator(pullToRefresh);
             refreshSubscription = shotsController.getShots(pageNumber, SHOTS_PER_PAGE)
                     .compose(androidIO())
-                    .subscribe(shotList -> {
-                        Timber.d("Shots received!");
-                        hasMore = shotList.size() >= SHOTS_PER_PAGE;
-                        getView().hideLoadingIndicator();
-                        getView().setData(shotList);
-                        getView().showContent();
-                    }, throwable -> handleError(throwable, "Error while getting shots"));
+                    .subscribe(this::onGetShotsFromServerNext,
+                            throwable -> handleError(throwable, "Error while getting shots"));
         }
     }
 
@@ -146,7 +149,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         subscriptions.add(
                 bucketsController.addShotToBucket(bucket.id(), shot)
                         .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                        .subscribe(getView()::showBucketAddSuccess,
+                        .subscribe(() -> onShotBucketedCompleted(shot),
                                 throwable -> handleError(throwable, "Error while adding shot to bucket"))
         );
     }
@@ -167,7 +170,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         getView().closeFabMenu();
         subscriptions.add(followersController.followUser(shot.author())
                 .compose(RxTransformerUtil.applyCompletableIoSchedulers())
-                .subscribe(() -> Timber.d("Followed shot author"),
+                .subscribe(this::onUserFollowCompleted,
                         throwable -> handleError(throwable, "Error while following shot author")));
     }
 
@@ -190,15 +193,60 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         }
     }
 
-    private void onShotLikeCompleted(Shot shot) {
-        Timber.d("Shot liked : %s", shot);
-        getView().changeShotLikeStatus(changeShotLikeStatus(shot));
+    @Override
+    public void getShotsCustomizationSettings() {
+        subscriptions.add(settingsController.getCustomizationSettings()
+                .compose(applySingleIoSchedulers())
+                .subscribe(this::showShotsDetail,
+                        throwable -> Timber.e(throwable, "Error getting show details state.")));
     }
 
-    private Shot changeShotLikeStatus(Shot shot) {
+    private void onGetShotsFromServerNext(List<Shot> shotList) {
+        Timber.d("Shots received!");
+        hasMore = shotList.size() >= SHOTS_PER_PAGE;
+        getView().hideLoadingIndicator();
+        getView().setData(shotList);
+        getView().showContent();
+        getView().showFirstShot();
+        if (shotList.size() >= SHOTS_ANIMATION_MIN_SHOTS_COUNT) {
+            getView().showShotsAnimation(shotList.get(SHOTS_ANIMATION_FIRST_SHOT),
+                    shotList.get(SHOTS_ANIMATION_SECOND_SHOT));
+        }
+    }
+
+    private void onShotBucketedCompleted(Shot shot) {
+        Timber.d("Shots bucketed: %s", shot);
+        getView().showBucketAddSuccess();
+        rxBus.send(new ShotUpdatedEvent(updateShotBucketedStatus(shot)));
+        getView().onShotAddedToBucket();
+    }
+
+    private void onShotLikeCompleted(Shot shot) {
+        Timber.d("Shot liked : %s", shot);
+        rxBus.send(new ShotUpdatedEvent(updateShotLikeStatus(shot)));
+        getView().onShotLiked();
+    }
+
+    private void onUserFollowCompleted() {
+        Timber.d("Followed shot author");
+        getView().onUserFollowed();
+    }
+
+    private Shot updateShotBucketedStatus(Shot shot) {
+        return Shot.update(shot.isLiked() ? shot : updateShotLikeStatus(shot))
+                .isBucketed(true)
+                .build();
+    }
+
+    private Shot updateShotLikeStatus(Shot shot) {
         return Shot.update(shot)
+                .likesCount(shot.likesCount() + 1)
                 .isLiked(true)
                 .build();
+    }
+
+    private void showShotsDetail(CustomizationSettings customizationSettings) {
+        getView().onDetailsVisibilityChange(customizationSettings.isShowDetails());
     }
 
     private void setupRxBus() {

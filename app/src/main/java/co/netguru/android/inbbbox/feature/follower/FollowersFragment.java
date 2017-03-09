@@ -65,14 +65,14 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     @BindView(R.id.loadingView)
     ProgressBar progressBar;
 
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
+
     private Snackbar loadingMoreSnackbar;
     private FollowersAdapter adapter;
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
     private FollowersFragmentComponent component;
-
-    @Inject
-    AnalyticsEventLogger analyticsEventLogger;
 
     public static FollowersFragment newInstance() {
         return new FollowersFragment();
@@ -100,22 +100,10 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
         loadingMoreSnackbar = null;
     }
 
-    @Override
-    protected void changeGridMode(boolean isGridMode) {
-        adapter.setGridMode(isGridMode);
-        recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
-        analyticsEventLogger.logEventAppbarCollectionLayoutChange(isGridMode);
-    }
-
     @NonNull
     @Override
     public FollowersContract.Presenter createPresenter() {
         return component.getPresenter();
-    }
-
-    private void initComponent() {
-        component = App.getUserComponent(getContext()).plusFollowersFragmentComponent();
-        component.inject(this);
     }
 
     @NonNull
@@ -151,20 +139,20 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     }
 
     @Override
-    public void hideLoadingMoreBucketsView() {
+    public void hideLoadingMoreFollowersView() {
         if (loadingMoreSnackbar != null) {
             loadingMoreSnackbar.dismiss();
         }
     }
 
     @Override
-    public void hideEmptyLikesInfo() {
+    public void hideEmptyFollowersInfo() {
         emptyView.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void showEmptyLikesInfo() {
+    public void showEmptyFollowersInfo() {
         emptyView.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
     }
@@ -190,18 +178,30 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     }
 
     @Override
-    public void openSingleUserDetails(UserWithShots followedUser) {
-        UserActivity.startActivity(getContext(), followedUser);
-    }
-
-    @Override
-    public void openTeamDetails(UserWithShots followedUser) {
-        UserActivity.startActivity(getContext(), followedUser);
+    public void openUserDetails(UserWithShots userWithShots) {
+        UserActivity.startActivity(getContext(), userWithShots.user());
     }
 
     @Override
     public void refreshFragmentData() {
         getPresenter().getFollowedUsersFromServer();
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorText) {
+        Snackbar.make(recyclerView, errorText, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void changeGridMode(boolean isGridMode) {
+        adapter.setGridMode(isGridMode);
+        recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
+        analyticsEventLogger.logEventAppbarCollectionLayoutChange(isGridMode);
+    }
+
+    private void initComponent() {
+        component = App.getUserComponent(getContext()).plusFollowersFragmentComponent();
+        component.inject(this);
     }
 
     private void initEmptyView() {
@@ -229,10 +229,5 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
     private void initRefreshLayout() {
         swipeRefreshLayout.setColorSchemeColors(accentColor);
         swipeRefreshLayout.setOnRefreshListener(getPresenter()::getFollowedUsersFromServer);
-    }
-
-    @Override
-    public void showMessageOnServerError(String errorText) {
-        Snackbar.make(recyclerView, errorText, Snackbar.LENGTH_LONG).show();
     }
 }

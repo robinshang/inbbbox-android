@@ -7,6 +7,7 @@
     <dimen name="margin_default">16dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_xxsmall">4dp</dimen>
+    <dimen name="negative_margin_default">-16dp</dimen>
 
     <dimen name='activity_login_logo_margin_top'>81dp</dimen>
     <dimen name='activity_login_logo_text_margin_top'>18dp</dimen>
@@ -14,6 +15,7 @@
     <dimen name='activity_login_button_margin_top'>108dp</dimen>
     <dimen name='activity_login_button_drawable_padding'>48dp</dimen>
     <dimen name='activity_login_button_padding_start'>16dp</dimen>
+    <dimen name='activity_login_button_padding_end'>32dp</dimen>
 
     <dimen name="activity_main_tab_height">56dp</dimen>
     <dimen name="activity_main_tab_land_height">34dp</dimen>
@@ -45,10 +47,7 @@
 
     <dimen name="fragment_bucket_empty_view_logo_size">140dp</dimen>
 
-    <dimen name="follower_detail_header_item_height">100dp</dimen>
-    <dimen name="follower_detail_header_item_margin_bottom">36dp</dimen>
     <dimen name="follower_detail_header_item_photo_size">72dp</dimen>
-    <dimen name="follower_detail_header_item_photo_border">5dp</dimen>
 
     <dimen name="fab_menu_label_side_padding">6dp</dimen>
     <dimen name="fab_menu_label_bottom_top_padding">2dp</dimen>
@@ -91,11 +90,10 @@
     <dimen name="details_comment_input_margin">8dp</dimen>
 
     <dimen name="details_comment_load_more_progress_size">32dp</dimen>
-    <dimen name="details_comment_action_icon_size">24dp</dimen>
-    <dimen name="details_comment_action_icon_side_margin">20dp</dimen>
-    <dimen name="details_comment_action_icon_top_margin">12dp</dimen>
-    <dimen name="details_comment_action_label_top">6dp</dimen>
-    <dimen name="details_comment_action_margin">4dp</dimen>
+    <dimen name="details_comment_action_icon_padding">6dp</dimen>
+    <dimen name="details_comment_action_element_side_margin">10dp</dimen>
+    <dimen name="details_comment_action_margin_bottom">4dp</dimen>
+    <dimen name="details_comment_action_margin_top">20dp</dimen>
     <dimen name="details_comment_edit_margin">24dp</dimen>
     <dimen name="recycler_view_with_fab_bottom_padding">88dp</dimen>
     <dimen name="activity_login_divider_width">50dp</dimen>
@@ -134,9 +132,60 @@
     <dimen name="user_details_collapsing_toolbar_height">200dp</dimen>
     <dimen name="user_details_circle_image_size">90dp</dimen>
     <dimen name="user_details_circle_image_margin_top">90dp</dimen>
+
     <dimen name="onboarding_like_text_top_padding">60dp</dimen>
     <dimen name="onboarding_bucket_text_top_padding">90dp</dimen>
     <dimen name="onboarding_comment_land_text_top_padding">90dp</dimen>
     <dimen name="onboarding_follow_land_text_top_padding">90dp</dimen>
+    
+    <dimen name="item_member_margin">16dp</dimen>
+    <dimen name="item_member_image_marginLeft">24dp</dimen>
+    <dimen name="item_member_name_marginLeft">6dp</dimen>
+    <dimen name="item_member_recycler_marginLeft">16dp</dimen>
+    <dimen name="item_member_recycler_height">112dp</dimen>
+    <dimen name="user_info_header_top_height">80dp</dimen>
+    <dimen name="user_info_header_followers_top">16dp</dimen>
+    <dimen name="user_info_header_country_marginTop">32dp</dimen>
+    <dimen name="user_info_header_bio_marginTop">12dp</dimen>
+    <dimen name="user_info_header_bio_marginLeft">20dp</dimen>
+    <dimen name="user_info_header_bio_marginRight">20dp</dimen>
+    <dimen name="user_info_header_country_drawable_padding">8dp</dimen>
+    <dimen name="common_zero">0dp</dimen>
+    <dimen name="user_info_header_value_textSize">24sp</dimen>
+    <dimen name="user_info_header_value_text_textSize">12sp</dimen>
+    <dimen name="common_1dp">1dp</dimen>
+    <dimen name="user_info_header_country_textSize">16sp</dimen>
+    <dimen name="user_info_shots_header_margin">24dp</dimen>
+    <dimen name="user_info_shots_header_textSize">16sp</dimen>
+    <dimen name="user_shots_recyclerView_height">112dp</dimen>
+    <dimen name="user_shots_marginStart">16dp</dimen>
+    <dimen name="user_shots_marginTop">8dp</dimen>
+    <dimen name="item_teams_text_marginStart">24dp</dimen>
+    <dimen name="item_teams_text_marginTop">24dp</dimen>
+    <dimen name="item_teams_text_textSize">16sp</dimen>
+    <dimen name="item_teams_recyclerView_height">112dp</dimen>
+    <dimen name="item_teams_recyclerView_marginStart">16dp</dimen>
+    <dimen name="item_user_shot_marginLeft">8dp</dimen>
+    <dimen name="item_user_shot_marginRight">8dp</dimen>
+    <dimen name="item_user_shot_width">150dp</dimen>
+    <dimen name="item_team_image_size">64dp</dimen>
+    <dimen name="item_team_image_marginLeft">24dp</dimen>
+    <dimen name="item_team_name_maginLeft">6dp</dimen>
+    <dimen name="item_team_name_textSize">16sp</dimen>
+
+    <dimen name="projects_item_shots_padding_start">16dp</dimen>
+    <dimen name="projects_item_shots_padding_top">24dp</dimen>
+    <dimen name="projects_item_shots_count_padding_start">8dp</dimen>
+    <dimen name="projects_shot_item_shot_padding">6dp</dimen>
+    <dimen name="projects_shot_item_shot_width">160dp</dimen>
+    <dimen name="two_shots_animation_first_view_horizontal_margin">16dp</dimen>
+    <dimen name="two_shots_animation_first_view_top_margin">28dp</dimen>
+    <dimen name="two_shots_animation_second_view_horizontal_margin">32dp</dimen>
+    <dimen name="two_shots_animation_second_view_top_margin">56dp</dimen>
+
+    <integer name="two_shots_drop_down_animation_duration">200</integer>
+    <integer name="two_shots_second_shot_drop_down_animation_offset">2000</integer>
+    <integer name="two_shots_load_shot_animation_duration">300</integer>
+>>>>>>> origin
 
 </resources>

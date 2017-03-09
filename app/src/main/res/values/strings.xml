@@ -18,7 +18,6 @@
     <string name="tab_info_title">Info</string>
     <string name="tab_projects_title">Projects</string>
 
-    <string name="action_settings">Settings</string>
     <string name="action_list_view">List view</string>
     <string name="action_grid_view">Grid view</string>
     <string name='action_follow'>Follow</string>
@@ -27,6 +26,7 @@
     <string name="action_create">Create</string>
     <string name="action_delete">Delete</string>
     <string name="action_warning">Warning</string>
+    <string name="action_share">Share</string>
 
     <string name="drawer_group_notification">Notifications</string>
     <string name="drawer_enable_reminder">Enable daily reminder</string>
@@ -56,6 +56,8 @@
     <string name="loading_more_shots">Loading more shots</string>
     <string name="loading_more_likes">Loading more liked shots</string>
     <string name="loading_more_followers">Loading more followers</string>
+    <string name="loading_more_projects">Loading more projects</string>
+    <string name="loading_more_project_shots">Loading more project shots</string>
     <string name="fragment_bucket_is_empty_text_before_icon">Add some shots to this bucket</string>
     <string name="fragment_bucket_is_empty_text_after_icon">first!</string>
 
@@ -96,7 +98,6 @@
     <string name="authorization_error">Authorization error</string>
     <string name="by_label">"by "</string>
     <string name="for_label">" for "</string>
-    <string name="in_label">"in "</string>
     <string name="info_where_pattern">"in ${where}"</string>
     <string name="info_when_pattern">" on ${when}"</string>
     <string name="about_minute_ago">About minute ago</string>
@@ -114,7 +115,6 @@
     <string name="edit_comment_title">Edit comment</string>
     <string name="edit_comment_update">Update comment</string>
     <string name="edit_comment_cancel">Cancel</string>
-    <string name="comment_edit_hint">Edit comment</string>
 
     <string name="error_to_low_rank">You rank is to low, you should be a \'Player\" or a \'Team\' to
         do this
@@ -150,4 +150,10 @@
     <string name="likes_icon_content_description" translatable="false">Likes icon</string>
     <string name="error_no_internet">Couldn\'t connect to the Internet. Please check your connection and try again</string>
     <string name="dont_follow">Don\'t follow &amp; skip</string>
+    <string name="most_popular">Most popular</string>
+    <string name="on_teams">On teams</string>
+    <string name="followers">followers</string>
+    <string name="shots">shots</string>
+    <string name="following">following</string>
+    <string name="projects_empty_view_text">Still waiting for the big shot</string>
 </resources>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/project_item_header"
+        style="@style/Font60.LightGray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textStyle="bold"
+        tools:text="Inbbbox" />
+
+    <LinearLayout
+        android:id="@+id/project_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/projects_item_shots_padding_start"
+        android:paddingTop="@dimen/projects_item_shots_padding_top">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/project_item_small_header"
+                style="@style/Font20.Black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textStyle="bold"
+                tools:text="Inbbbox" />
+
+            <TextView
+                android:id="@+id/project_item_shot_count"
+                style="@style/Font14.Pink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:paddingStart="@dimen/projects_item_shots_count_padding_start"
+                android:textStyle="bold"
+                tools:text="6" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/project_item_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/project_item_click_layer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</FrameLayout>

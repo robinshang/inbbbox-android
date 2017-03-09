@@ -37,15 +37,14 @@ public class SettingsPrefsRepository {
     }
 
     public Completable saveStreamSourceSettingsToPrefs(@NonNull StreamSourceSettings streamSourceSettings) {
-        return Completable.fromCallable(() -> {
+        return Completable.fromAction(() ->
             sharedPreferences.edit()
                     .putBoolean(STREAM_SOURCE_SETTINGS_IS_DEBUT_KEY, streamSourceSettings.isDebut())
                     .putBoolean(STREAM_SOURCE_SETTINGS_IS_FOLLOWING_KEY, streamSourceSettings.isFollowing())
                     .putBoolean(STREAM_SOURCE_SETTINGS_IS_NEW_TODAY_KEY, streamSourceSettings.isNewToday())
                     .putBoolean(STREAM_SOURCE_SETTINGS_IS_POPULAR_TODAY_KEY, streamSourceSettings.isPopularToday())
-                    .apply();
-            return null;
-        });
+                    .apply()
+        );
     }
 
     public Single<StreamSourceSettings> getStreamSourceSettings() {
@@ -59,14 +58,13 @@ public class SettingsPrefsRepository {
     }
 
     public Completable saveNotificationSettings(@NonNull NotificationSettings notificationSettings) {
-        return Completable.fromCallable(() -> {
+        return Completable.fromAction(() ->
             sharedPreferences.edit()
                     .putBoolean(NOTIFICATION_SETTINGS_IS_ENABLED_KEY, notificationSettings.isEnabled())
                     .putInt(NOTIFICATION_SETTINGS_HOUR_KEY, notificationSettings.getHour())
                     .putInt(NOTIFICATION_SETTINGS_MINUTE_KEY, notificationSettings.getMinute())
-                    .apply();
-            return null;
-        });
+                    .apply()
+        );
     }
 
     public Single<NotificationSettings> getNotificationsSettings() {
@@ -79,21 +77,18 @@ public class SettingsPrefsRepository {
     }
 
     public Completable saveDetailsShowed(boolean showed) {
-        return Completable.fromCallable(() -> {
+        return Completable.fromAction(() ->
             sharedPreferences.edit()
                     .putBoolean(DETAILS_SHOWED_KEY, showed)
-                    .apply();
-            return null;
-        });
+                    .apply()
+        );
     }
 
     public Completable saveNightMode(boolean isEnabled) {
-        return Completable.fromCallable(() -> {
+        return Completable.fromAction(() ->
             sharedPreferences.edit()
                     .putBoolean(DETAILS_NIGHT_MODE, isEnabled)
-                    .apply();
-            return null;
-        });
+                    .apply());
     }
 
     public Single<CustomizationSettings> getCustomizationSettings() {
@@ -104,9 +99,6 @@ public class SettingsPrefsRepository {
     }
 
     public Completable clear() {
-        return Completable.fromCallable(() -> {
-            sharedPreferences.edit().clear().apply();
-            return null;
-        });
+        return Completable.fromAction(() -> sharedPreferences.edit().clear().commit());
     }
 }
