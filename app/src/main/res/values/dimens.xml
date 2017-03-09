@@ -173,5 +173,6 @@
     <dimen name="projects_item_shots_count_padding_start">8dp</dimen>
     <dimen name="projects_shot_item_shot_padding">6dp</dimen>
     <dimen name="projects_shot_item_shot_width">160dp</dimen>
+    <dimen name="bottom_sheet_elevation">16dp</dimen>
 
 </resources>
