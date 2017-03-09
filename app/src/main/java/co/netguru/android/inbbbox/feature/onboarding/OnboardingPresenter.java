@@ -27,6 +27,8 @@ public class OnboardingPresenter extends MvpNullObjectBasePresenter<OnboardingCo
             .avatarUrl("")
             .username("")
             .shotsCount(0)
+            .bucketsCount(0)
+            .projectsCount(0)
             .type("team")
             .followersCount(0)
             .followingsCount(0)
