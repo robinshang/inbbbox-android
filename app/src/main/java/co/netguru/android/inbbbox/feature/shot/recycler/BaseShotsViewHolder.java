@@ -186,7 +186,7 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
         animateActionViews(new View[]{commentIcon, followIcon, commentDoneText},
                 new View[]{commentIconFull},
                 commentIconFull,
-                followDoneText,
+                commentDoneText,
                 false);
 
         finishAction(new View[]{commentDoneText, commentIconFull},
