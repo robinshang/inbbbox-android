@@ -3,7 +3,6 @@ package co.netguru.android.inbbbox.feature.shared.base;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -13,109 +12,74 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.app.App;
-import co.netguru.android.inbbbox.event.events.CriticalLogoutEvent;
-import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.shared.base.bottomsheet.BottomSheetActivityCallback;
-import co.netguru.android.inbbbox.feature.shared.base.bottomsheet.HidingBottomSheetActivityDelegate;
 import co.netguru.android.inbbbox.feature.shared.base.bottomsheet.HidingBottomSheetBearer;
-import rx.Subscription;
 
 public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<V>>
         extends MvpActivity<V, P> implements BottomSheetActivityCallback, HidingBottomSheetBearer {
-
-    @BindView(android.R.id.content)
-    View contentView;
-    @Nullable
-    @BindView(R.id.bottom_sheet_fragment_container)
-    View bottomSheetView;
 
     @Nullable
     @BindView(R.id.bottom_sheet_background)
     View bottomSheetBackground;
 
-    @Nullable
-    private HidingBottomSheetActivityDelegate bottomSheetActivityDelegate;
+    private BaseActivityProxy proxy;
 
-    private Subscription criticalLogoutSubscription;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        proxy = new BaseActivityProxy(this);
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
-        ButterKnife.bind(this);
-        if (bottomSheetView != null) {
-            bottomSheetActivityDelegate = new HidingBottomSheetActivityDelegate(this, bottomSheetView);
-        }
+        proxy.setContentView();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (bottomSheetActivityDelegate != null) {
-            bottomSheetActivityDelegate.onSaveInstanceState(outState);
-        }
+        proxy.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (bottomSheetActivityDelegate != null) {
-            bottomSheetActivityDelegate.onRestoreInstanceState(savedInstanceState);
-        }
+        proxy.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        criticalLogoutSubscription = App.getAppComponent(this).rxBus()
-                .getEvents(CriticalLogoutEvent.class)
-                .compose(RxTransformers.androidIO())
-                .subscribe(this::handleUnauthorisedEvent);
+        proxy.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        criticalLogoutSubscription.unsubscribe();
+        proxy.onPause();
     }
 
     @Override
     public void onBackPressed() {
-        if (bottomSheetActivityDelegate != null && bottomSheetActivityDelegate.isBottomSheetOpen()) {
-            bottomSheetActivityDelegate.hideBottomSheet();
-            App.getAppComponent(this).analyticsEventLogger().logEventShotDetailsCloseBack();
-        } else {
+        if (!proxy.onBackPressed()) {
             super.onBackPressed();
         }
     }
 
     @Override
     public FragmentTransaction replaceFragment(int containerViewId, Fragment fragment, String tag) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(containerViewId, fragment, tag);
-        return ft;
+        return proxy.replaceFragment(containerViewId, fragment, tag);
     }
 
     protected void showTextOnSnackbar(String text) {
-        Snackbar.make(contentView, text, Snackbar.LENGTH_LONG).show();
+        proxy.showTextOnSnackbar(text);
     }
 
     @Override
     public void showBottomSheet(Fragment fragment, String tag) {
-        if (bottomSheetActivityDelegate != null) {
-            bottomSheetActivityDelegate.showBottomSheet(fragment, tag);
-        } else {
-            throw new IllegalStateException("BottomSheetActivity delegate is null." +
-                    " Did you provide bottom_sheet_fragment_container view for this activity?");
-        }
-    }
-
-    private void handleUnauthorisedEvent(CriticalLogoutEvent object) {
-        LoginActivity.startActivityClearTaskWithMessage(this, object.getReason());
-        finish();
+        proxy.showBottomSheet(fragment, tag);
     }
 
     @Override
