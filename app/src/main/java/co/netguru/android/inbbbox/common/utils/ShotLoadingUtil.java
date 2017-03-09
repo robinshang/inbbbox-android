@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableTypeRequest;
@@ -63,7 +64,7 @@ public class ShotLoadingUtil {
     }
 
     public static void loadMainViewShot(Context context, ImageView placeholder, ImageView target, ShotImage shot) {
-        loadMainViewShotWithListener(context, placeholder, target, shot, getRequestListener(shot));
+        loadMainViewShotWithListener(context, placeholder, target, shot, getRequestListener(shot, placeholder, target));
     }
 
     public static void loadMainViewShotWithListener(Context context, ImageView placeholder, ImageView target, ShotImage shot,
@@ -73,10 +74,12 @@ public class ShotLoadingUtil {
 
         final boolean isGif = isGif(imageUrl);
         if (isGif) {
+            target.setVisibility(View.GONE);
+
             placeholder.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
             placeholder.setBackgroundResource(R.drawable.basketball_loader);
             AnimationDrawable animationDrawable = (AnimationDrawable) placeholder.getBackground();
-            animationDrawable.setCallback(stopAnimation(animationDrawable, target));
+            animationDrawable.setCallback(stopAnimation(animationDrawable, target, placeholder));
 
             animationDrawable.start();
 
@@ -85,10 +88,14 @@ public class ShotLoadingUtil {
                     .load(imageUrl)
                     .listener(requestListener)
                     .error(R.drawable.logo_empty)
+                    .override(placeholder.getMaxWidth(), placeholder.getMaxHeight())
                     .animate(android.R.anim.fade_in)
                     .into(imageViewTarget);
 
         } else {
+
+            placeholder.setVisibility(View.GONE);
+
             GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(target);
             Glide.with(context)
                     .load(imageUrl)
@@ -117,7 +124,7 @@ public class ShotLoadingUtil {
         return url.endsWith(GIF_EXTENSION);
     }
 
-    private static RequestListener<String, GlideDrawable> getRequestListener(ShotImage shotImage) {
+    private static RequestListener<String, GlideDrawable> getRequestListener(ShotImage shotImage, ImageView placeholder, ImageView targetView) {
         if (isGif(getImageUrl(shotImage))) {
             return new RequestListener<String, GlideDrawable>() {
                 @Override
@@ -127,9 +134,17 @@ public class ShotLoadingUtil {
 
                 @Override
                 public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                    isLoad = true;
-                    glideResource = resource;
-                    return true;
+                    if (!isFromMemoryCache) {
+                        isLoad = true;
+                        glideResource = resource;
+                        ((AnimationDrawable) placeholder.getBackground()).run();
+                        return true;
+                    } else {
+                        ((AnimationDrawable) placeholder.getBackground()).stop();
+                        placeholder.setVisibility(View.GONE);
+                        targetView.setVisibility(View.VISIBLE);
+                        return false;
+                    }
                 }
             };
         } else {
@@ -137,8 +152,8 @@ public class ShotLoadingUtil {
         }
     }
 
-    private static CallbackAnimationDrawable stopAnimation(final AnimationDrawable animationDrawable, ImageView target) {
-        return new CallbackAnimationDrawable(animationDrawable, target) {
+    private static CallbackAnimationDrawable stopAnimation(final AnimationDrawable animationDrawable, ImageView target, ImageView placeHolder) {
+        return new CallbackAnimationDrawable(animationDrawable, placeHolder) {
             @Override
             public void onAnimationComplete() {
                 if (isLoad) {
