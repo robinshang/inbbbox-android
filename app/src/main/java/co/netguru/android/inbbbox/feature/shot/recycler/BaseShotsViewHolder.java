@@ -139,46 +139,26 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
     }
 
     protected void animateAndFinishLike(FinishSwipeActionListener finishSwipeActionListener) {
-        setVisibility(new View[]{likeIcon, bucketIconFull}, View.INVISIBLE);
-        int leftWrapperOnScreenX = getOnScreenX(leftWrapper);
-        int halfShotWidth = shotImageView.getWidth() / 2;
-        int center = leftWrapperOnScreenX + halfShotWidth - likeIconFull.getWidth() / 2;
-        int toMove = center - getOnScreenX(likeIconFull);
-
         fadeLikeAnimation();
-        likeIconFull.startAnimation(getCenterIconAnimation(toMove));
+        animateActionViews(new View[]{likeIcon, bucketIconFull},
+                new View[]{likeIconFull},
+                likeIconFull,
+                likeDoneText,
+                true);
 
-        int startTextPosition = leftWrapperOnScreenX - getOnScreenX(likeDoneText) + longSwipeLayout.getWidth();
-        int endTextPosition = halfShotWidth - likeDoneText.getWidth() / 2;
-        animateActionText(likeDoneText, startTextPosition, endTextPosition);
-
-        longSwipeLayout.postDelayed(() -> {
-            longSwipeLayout.close();
-            shotImageView.clearAnimation();
-            if (finishSwipeActionListener != null)
-                finishSwipeActionListener.finishSwipeAction();
-            longSwipeLayout.postDelayed(() -> {
-                clearAnimations(new View[]{likeIconFull, likeDoneText, plusIcon, bucketIcon});
-                setVisibility(new View[]{bucketIconFull, likeIcon}, View.VISIBLE);
-            }, CLOSE_SHOT_DELAY_MS);
-        }, FINISH_ACTION_DELAY_MS);
+        finishAction(new View[]{likeIconFull, likeDoneText, plusIcon, bucketIcon},
+                new View[]{bucketIconFull, likeIcon},
+                CLOSE_SHOT_DELAY_MS,
+                FINISH_ACTION_DELAY_MS,
+                finishSwipeActionListener);
     }
 
     protected void animateAndFinishAddToBucket(FinishSwipeActionListener finishSwipeActionListener) {
-        setVisibility(new View[]{bucketIcon, likeIcon}, View.INVISIBLE);
-        int leftWrapperOnScreenX = getOnScreenX(leftWrapper);
-        int halfShotWidth = shotImageView.getWidth() / 2;
-        int center = leftWrapperOnScreenX + halfShotWidth - plusIcon.getWidth() / 2;
-        int toMove = center - getOnScreenX(plusIcon);
-
-        TranslateAnimation centerIconAnimation = getCenterIconAnimation(toMove);
-        plusIcon.startAnimation(centerIconAnimation);
-        bucketIconFull.startAnimation(centerIconAnimation);
-        likeIconFull.startAnimation(centerIconAnimation);
-
-        int startTextPosition = leftWrapperOnScreenX - getOnScreenX(bucketDoneText) + longSwipeLayout.getWidth();
-        int endTextPosition = halfShotWidth - bucketDoneText.getWidth() / 2;
-        animateActionText(bucketDoneText, startTextPosition, endTextPosition);
+        animateActionViews(new View[]{bucketIcon, likeIcon},
+                new View[]{plusIcon, bucketIconFull, likeIconFull},
+                plusIcon,
+                bucketDoneText,
+                true);
 
         finishAction(new View[]{likeIconFull, bucketDoneText, plusIcon, bucketIconFull},
                 new View[]{bucketIcon, likeIcon},
@@ -188,16 +168,11 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
     }
 
     protected void animateAndFinishFollowUser(FinishSwipeActionListener finishSwipeActionListener) {
-        followIcon.setVisibility(View.INVISIBLE);
-        int longSwipeLayoutOnScreenX = getOnScreenX(longSwipeLayout);
-        int halfShotWidth = shotImageView.getWidth() / 2;
-        int center = longSwipeLayoutOnScreenX + halfShotWidth - followIconFull.getWidth() / 2;
-        int toMove = center - getOnScreenX(followIconFull);
-        followIconFull.startAnimation(getCenterIconAnimation(toMove));
-
-        int startTextPosition = longSwipeLayoutOnScreenX - getOnScreenX(followDoneText);
-        int endTextPosition = halfShotWidth - followDoneText.getWidth() / 2;
-        animateActionText(followDoneText, startTextPosition, -endTextPosition);
+        animateActionViews(new View[]{followIcon},
+                new View[]{followIconFull},
+                followIconFull,
+                followDoneText,
+                false);
 
         finishAction(new View[]{followDoneText, followIconFull},
                 new View[]{followIcon},
@@ -207,18 +182,12 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
     }
 
     protected void animateAndFinishComment(FinishSwipeActionListener finishSwipeActionListener) {
-        setVisibility(new View[]{commentIcon, followIcon}, View.INVISIBLE);
-        int longSwipeLayoutOnScreenX = getOnScreenX(longSwipeLayout);
-        int halfShotWidth = shotImageView.getWidth() / 2;
-        int center = longSwipeLayoutOnScreenX + halfShotWidth - commentIconFull.getWidth() / 2;
-        int toMove = center - getOnScreenX(commentIconFull);
-
         commentIconFull.setAlpha(ALPHA_MAX);
-        commentIconFull.startAnimation(getCenterIconAnimation(toMove));
-
-        int startTextPosition = longSwipeLayoutOnScreenX - getOnScreenX(commentDoneText);
-        int endTextPosition = halfShotWidth - commentDoneText.getWidth() / 2;
-        animateActionText(commentDoneText, startTextPosition, -endTextPosition);
+        animateActionViews(new View[]{commentIcon, followIcon, commentDoneText},
+                new View[]{commentIconFull},
+                commentIconFull,
+                followDoneText,
+                false);
 
         finishAction(new View[]{commentDoneText, commentIconFull},
                 new View[]{followIcon, commentIcon},
@@ -233,6 +202,39 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
         translateAnimation.setFillAfter(true);
         translateAnimation.setDuration(SHOT_MOVE_ANIMATION_DURATION);
         shotImageView.startAnimation(translateAnimation);
+    }
+
+    private void animateActionViews(View[] toInvisible,
+                                    View[] iconsToCenter,
+                                    View centerIcon,
+                                    TextView textToCenter,
+                                    boolean rightSwipe) {
+        setVisibility(toInvisible, View.INVISIBLE);
+        centerIcons(iconsToCenter, centerIcon);
+        animateActionText(textToCenter, rightSwipe);
+    }
+
+    private void centerIcons(View[] icons, View centerIcon) {
+        int toMove = getToCenterDistance(centerIcon);
+        TranslateAnimation centerAnimation = getCenterIconAnimation(toMove);
+        for (View view : icons) {
+            view.startAnimation(centerAnimation);
+        }
+    }
+
+    private void animateActionText(TextView textView, boolean swipeRight) {
+        int startTextPosition = getOnScreenX(longSwipeLayout) - getOnScreenX(textView);
+        int endTextPosition = (shotImageView.getWidth() / 2) - textView.getWidth() / 2;
+        if (swipeRight)
+            startTextPosition += longSwipeLayout.getWidth();
+        else
+            endTextPosition = -endTextPosition;
+        animateActionText(textView, startTextPosition, endTextPosition);
+    }
+
+    private int getToCenterDistance(View centerView) {
+        int center = getOnScreenX(leftWrapper) + (shotImageView.getWidth() / 2) - (centerView.getWidth() / 2);
+        return center - getOnScreenX(centerView);
     }
 
     private void handleLeftSwipe(float progress, int swipePosition) {
@@ -331,7 +333,11 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
             bucketIcon.startAnimation(fadeAnimation);
     }
 
-    private void finishAction(View[] toClearAnimation, View[] toVisible, int delay1, int delay2, FinishSwipeActionListener finishSwipeActionListener) {
+    private void finishAction(View[] toClearAnimation,
+                              View[] toVisible,
+                              int delay1,
+                              int delay2,
+                              FinishSwipeActionListener finishSwipeActionListener) {
         longSwipeLayout.postDelayed(() -> {
             longSwipeLayout.close();
             shotImageView.clearAnimation();
