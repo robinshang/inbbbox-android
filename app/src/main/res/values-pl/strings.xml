@@ -126,4 +126,9 @@
     <string name="shots">shoty</string>
     <string name="following">obserwowani</string>
 
+    <string name="like_finish_message">Dodano do polubionych</string>
+    <string name="like_and_add_to_bucket_message">Projekt polubiony, dodawanie do kolekcji… </string>
+    <string name="commenting_message">Dodawanie komentarza…</string>
+    <string name="following_finish_message">Dodano autora do obserwowanych</string>
+
 </resources>

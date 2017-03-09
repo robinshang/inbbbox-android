@@ -104,6 +104,23 @@
         <item name="android:layout_marginRight">@dimen/shot_long_swipe_action_side_margin</item>
     </style>
 
+    <style name="LongSwipeActionText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <!--quickhack - without it text is slightly shifted-->
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginRight">0dp</item>
+        <item name="android:layout_marginEnd">@dimen/swipe_action_text_margin</item>
+        <item name="android:layout_marginStart">@dimen/swipe_action_text_margin</item>
+        <item name="android:layout_marginTop">@dimen/swipe_action_text_margin</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/swipe_action_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+
     <style name="FabMenuLabel">
         <item name="android:background">@drawable/fab_menu_label_background</item>
         <item name="android:paddingLeft">@dimen/fab_menu_label_side_padding</item>

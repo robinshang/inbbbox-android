@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.shot.recycler;
 
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,7 +7,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
@@ -27,8 +25,7 @@ class ShotsViewHolder extends BaseShotsViewHolder<Shot> implements DetailsVisibi
     ImageView userImageView;
     @BindView(R.id.shot_details_layout)
     View shotDetailsView;
-    @BindDrawable(R.drawable.shot_placeholder)
-    Drawable shotPlaceHolder;
+
     private Shot shot;
 
     ShotsViewHolder(View itemView, @NonNull ShotSwipeListener shotSwipeListener,
@@ -53,22 +50,26 @@ class ShotsViewHolder extends BaseShotsViewHolder<Shot> implements DetailsVisibi
 
     @Override
     public void onLeftSwipe() {
-        shotSwipeListener.onShotLikeSwipe(shot);
+        animateShotView(false);
+        animateAndFinishLike(() -> shotSwipeListener.onShotLikeSwipe(shot));
     }
 
     @Override
     public void onLeftLongSwipe() {
-        shotSwipeListener.onAddShotToBucketSwipe(shot);
+        animateShotView(false);
+        animateAndFinishAddToBucket(() -> shotSwipeListener.onLikeAndAddShotToBucketSwipe(shot));
     }
 
     @Override
     public void onRightSwipe() {
-        shotSwipeListener.onCommentShotSwipe(shot);
+        animateShotView(true);
+        animateAndFinishComment(() -> shotSwipeListener.onCommentShotSwipe(shot));
     }
 
     @Override
     public void onRightLongSwipe() {
-        shotSwipeListener.onFollowUserSwipe(shot);
+        animateShotView(true);
+        animateAndFinishFollowUser(() -> shotSwipeListener.onFollowUserSwipe(shot));
     }
 
     @Override
