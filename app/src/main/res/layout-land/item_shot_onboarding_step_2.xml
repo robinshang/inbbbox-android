@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:padding="@dimen/shot_item_internal_padding">
 
     <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
@@ -10,17 +12,37 @@
         android:layout_centerInParent="true"
         android:background="@color/accent" />
 
+    <LinearLayout
+        android:layout_width="@dimen/shot_item_width_landscape"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/onboarding_bucket_text_top_padding">
+
+        <TextView
+            android:id="@+id/add_to_bucket_done_text"
+            style="@style/LongSwipeActionText"
+            android:text="@string/like_and_add_to_bucket_message" />
+
+    </LinearLayout>
+
     <co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout
         android:id="@+id/long_swipe_layout"
         android:layout_width="@dimen/shot_item_width_landscape"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:clipChildren="false"
+        android:clipToPadding="false">
         <!-- Bottom View Start-->
         <RelativeLayout
             android:id="@+id/_left_wrapper"
             android:layout_width="@dimen/shot_left_swipe_action_panel_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:gravity="center_vertical">
 
             <ImageView
