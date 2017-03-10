@@ -13,7 +13,7 @@
         android:background="@color/accent" />
 
     <LinearLayout
-        android:layout_width="@dimen/shot_item_width_landscape"
+        android:layout_width="@dimen/shot_left_swipe_action_panel_width"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
