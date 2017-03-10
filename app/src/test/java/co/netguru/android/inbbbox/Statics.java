@@ -71,6 +71,7 @@ public final class Statics {
             .avatarUrl("")
             .bio("")
             .bucketsCount(1)
+            .projectsCount(2)
             .likesCount(2)
             .updatedAt(ZonedDateTime.now().minusDays(2))
             .createdAt(ZonedDateTime.now().minusDays(3))
@@ -115,6 +116,8 @@ public final class Statics {
             .name("team")
             .username("team")
             .shotsCount(2)
+            .projectsCount(2)
+            .bucketsCount(2)
             .avatarUrl("")
             .build();
 
@@ -227,6 +230,8 @@ public final class Statics {
             .type("Player")
             .followersCount(1)
             .followingsCount(1)
+            .projectsCount(1)
+            .bucketsCount(1)
             .bio("")
             .location("")
             .build();
