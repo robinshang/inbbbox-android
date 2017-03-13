@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import java.util.List;
 
@@ -55,6 +56,17 @@ public class ProjectActivity extends BaseActivity implements ProjectShotClickLis
 
         final Fragment fragment = ShotDetailsFragment.newInstance(shot, allShots, request);
         showBottomSheet(fragment, ShotDetailsFragment.TAG);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void initializeFragment() {
