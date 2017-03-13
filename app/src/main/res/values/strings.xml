@@ -156,6 +156,6 @@
     <string name="shots">shots</string>
     <string name="following">following</string>
     <string name="projects_empty_view_text">Still waiting for the big shot</string>
-    <string name="web">web</string>
-    <string name="twitter">twitter</string>
+    <string name="web" translatable="false">web</string>
+    <string name="twitter" translatable="false">twitter</string>
 </resources>
