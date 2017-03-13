@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.data.follower.controllers;
 
+import co.netguru.android.inbbbox.data.Cache;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.FollowersApi;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
@@ -14,17 +15,25 @@ public abstract class BaseFollowersController {
 
     protected final FollowersApi followersApi;
     private final ShotsApi shotsApi;
+    private final Cache<UserWithShots> userWithShotsCache;
 
     protected BaseFollowersController(FollowersApi followersApi, ShotsApi shotsApi) {
         this.followersApi = followersApi;
         this.shotsApi = shotsApi;
+        userWithShotsCache = new Cache<>();
     }
 
     protected Observable<UserWithShots> getFollowersFromApi(int pageNumber, int pageCount, int followerShotPageCount) {
         return followersApi.getFollowedUsers(pageNumber, pageCount)
                 .flatMap(Observable::from)
                 .map(followerEntity -> User.create(followerEntity.user()))
-                .flatMap(user -> getFollowerWithShots(user, followerShotPageCount));
+                .flatMap(user -> {
+                    UserWithShots userWithShots = userWithShotsCache.get(user.id());
+                    if (userWithShots != null) {
+                        return Observable.just(userWithShots);
+                    } else
+                        return getFollowerWithShots(user, followerShotPageCount);
+                });
     }
 
     protected Observable<UserWithShots> getFollowerWithShots(User user, int followerShotsPageCount) {
@@ -33,7 +42,11 @@ public abstract class BaseFollowersController {
                 .map(Shot::create)
                 .map(shot -> Shot.update(shot).author(user).build())
                 .toList()
-                .map(shotList -> UserWithShots.create(user, shotList))
+                .map(shotList -> {
+                    UserWithShots userWithShots = UserWithShots.create(user, shotList);
+                    userWithShotsCache.add(userWithShots);
+                    return userWithShots;
+                })
                 .subscribeOn(Schedulers.io());
     }
 
