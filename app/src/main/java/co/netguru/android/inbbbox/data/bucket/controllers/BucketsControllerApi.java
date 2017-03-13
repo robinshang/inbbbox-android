@@ -57,21 +57,6 @@ public class BucketsControllerApi implements BucketsController {
                 .toSingle();
     }
 
-    public Observable<BucketWithShots> getFromCacheOrCreate(Bucket bucket1, int pageNumber, int shotsCount) {
-        BucketWithShots bucketWithShots = bucketWithShotsCache.get(bucket1.id());
-        if (bucketWithShots != null) {
-            return Observable.just(bucketWithShots);
-        } else {
-            return Observable.just(bucket1)
-                    .flatMap(bucket -> getShotsListObservableFromBucket(bucket.id(), pageNumber, shotsCount),
-                            BucketWithShots::create)
-                    .flatMap(bucketWithShots1 -> {
-                        bucketWithShotsCache.add(bucketWithShots1);
-                        return Observable.just(bucketWithShots1);
-                    });
-        }
-    }
-
     @Override
     public Single<List<Shot>> getShotsListFromBucket(long bucketId, int pageNumber, int pageCount) {
         return getShotsListObservableFromBucket(bucketId, pageNumber, pageCount).toSingle();
@@ -105,27 +90,28 @@ public class BucketsControllerApi implements BucketsController {
     }
 
     private Observable<List<Shot>> getShotsListObservableFromBucket(long bucketId, int pageNumber, int pageCount) {
+        return Observable.just(bucketCache.get(bucketId).shots())
+                .filter(val -> val != null)
+                .switchIfEmpty(downloadAndCacheShotsList(bucketId, pageNumber, pageCount));
+    }
 
-        BucketWithShots bucketWithShots = bucketCache.get(bucketId);
+    private Observable<List<Shot>> downloadAndCacheShotsList(long bucketId, int pageNumber, int pageCount) {
+        return bucketApi.getBucketShotsList(bucketId, pageNumber, pageCount)
+                .flatMapObservable(Observable::from)
+                .map(Shot::create)
+                .toList()
+                .map(list -> addShotsToCache(bucketId, list));
+    }
 
-        if (bucketWithShots != null) {
-            return Observable.just(bucketWithShots.shots());
-        } else {
-            return bucketApi.getBucketShotsList(bucketId, pageNumber, pageCount)
-                    .flatMapObservable(Observable::from)
-                    .map(Shot::create)
-                    .toList()
-                    .map(list -> {
-                        Bucket bucket = Bucket.builder()
-                                .id(bucketId)
-                                .name("")
-                                .createdAt(ZonedDateTime.now())
-                                .shotsCount(list.size())
-                                .build();
-                        bucketCache.add(BucketWithShots.create(bucket, list));
-                        return list;
-                    });
-        }
+    private List<Shot> addShotsToCache(long bucketId, List<Shot> shots) {
+        Bucket bucket = Bucket.builder()
+                .id(bucketId)
+                .name("")
+                .createdAt(ZonedDateTime.now())
+                .shotsCount(shots.size())
+                .build();
+        bucketCache.add(BucketWithShots.create(bucket, shots));
+        return shots;
     }
 
     private Single<List<Bucket>> getUserBucketsListForShot(long userId, long shotId) {
@@ -148,5 +134,21 @@ public class BucketsControllerApi implements BucketsController {
                 .map(bucket -> bucket.user() != null ? bucket.user().id() : Constants.UNDEFINED)
                 .contains(userId)
                 .toSingle();
+    }
+
+    private Observable<BucketWithShots> fetchAndCacheBucket(Bucket parameterBucket, int pageNumber, int shotsCount) {
+        return Observable.just(parameterBucket)
+                .flatMap(bucket -> getShotsListObservableFromBucket(bucket.id(), pageNumber, shotsCount),
+                        BucketWithShots::create)
+                .flatMap(bucketWithShots -> {
+                    bucketWithShotsCache.add(bucketWithShots);
+                    return Observable.just(bucketWithShots);
+                });
+    }
+
+    private Observable<BucketWithShots> getFromCacheOrCreate(Bucket parameterBucket, int pageNumber, int shotsCount) {
+        return Observable.just(bucketWithShotsCache.get(parameterBucket.id()))
+                .filter(cachedBucketWithShots -> cachedBucketWithShots != null)
+                .switchIfEmpty(fetchAndCacheBucket(parameterBucket, pageNumber, shotsCount));
     }
 }
