@@ -6,6 +6,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -36,6 +37,7 @@ public class UserActivityPresenterTest {
     private static final long USER_ID = 123;
     private static final boolean FOLLOWING = true;
     private static final String ERROR_MESSAGE = "error message";
+    private static final String USERNAME = "username";
 
     @Rule
     public RxSyncTestRule rxSyncTestRule = new RxSyncTestRule();
@@ -59,6 +61,7 @@ public class UserActivityPresenterTest {
     public void setUp() throws Exception {
         presenter.attachView(view);
         when(user.id()).thenReturn(USER_ID);
+        when(user.username()).thenReturn(USERNAME);
         when(errorController.getThrowableMessage(any(Throwable.class))).thenReturn(ERROR_MESSAGE);
     }
 
@@ -106,6 +109,7 @@ public class UserActivityPresenterTest {
 
         verify(followersController).isUserFollowed(eq(USER_ID));
         verify(view).showMessageOnServerError(anyString());
+        verify(view).showFollowingAction(eq(true));
         verify(errorController).getThrowableMessage(any(Throwable.class));
         verifyNoMoreInteractions(view, followersController, errorController);
     }
@@ -138,6 +142,41 @@ public class UserActivityPresenterTest {
         verify(view).showMessageOnServerError(anyString());
         verify(errorController).getThrowableMessage(any(Throwable.class));
         verifyNoMoreInteractions(view, followersController, errorController);
+    }
+
+    @Test
+    public void givenUserUnfollowed_whenChangeFollowingStatus_thenCallStartFollowing() throws
+            Exception {
+        when(followersController.followUser(any(User.class)))
+                .thenReturn(Completable.complete());
+
+        presenter.changeFollowingStatus(user, true);
+
+        verify(followersController).followUser(eq(user));
+        verify(view, times(2)).showFollowingAction(eq(false));
+        verifyNoMoreInteractions(view, followersController);
+    }
+
+    @Test
+    public void givenUserFollowed_whenChangeFollowingStatus_thenShowDialog() throws
+            Exception {
+        when(followersController.followUser(any(User.class)))
+                .thenReturn(Completable.error(new Throwable()));
+
+        presenter.changeFollowingStatus(user, false);
+
+        verify(view).showUnfollowDialog(eq(user.username()));
+        verifyNoMoreInteractions(view, followersController);
+    }
+
+    @Test
+    public void whenShareUser_thenCallShowShareFunction() {
+        final String username = "test";
+        when(user.username()).thenReturn(username);
+
+        presenter.shareUser(user);
+
+        verify(view).showShare(Matchers.contains(user.username()));
     }
 
     @After

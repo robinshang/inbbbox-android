@@ -127,6 +127,15 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
     }
 
     @Override
+    public void showContentForData(List<ProjectWithShots> projectWithShotsList) {
+        if (projectWithShotsList.isEmpty()) {
+            getView().showEmptyView();
+        } else {
+            getView().hideEmptyView();
+        }
+    }
+
+    @Override
     public void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));

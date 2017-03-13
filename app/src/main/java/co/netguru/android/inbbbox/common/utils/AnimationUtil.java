@@ -1,6 +1,8 @@
 package co.netguru.android.inbbbox.common.utils;
 
+import android.animation.ValueAnimator;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 public class AnimationUtil {
 
@@ -8,6 +10,10 @@ public class AnimationUtil {
     public static final float ALPHA_MAX = 1f;
     private static final float SLID_IN_DESIGNATED_TRANSLATION = 0;
     private static final float TRANSLATION_INITIAL_OFFSET = 550f;
+    private static final float SHAKE_START_VALUE = 0f;
+    private static final float SHAKE_END_VALUE = 12.56637f;
+    private static final int SHAKE_DURATION_MS = 500;
+    private static final int SHAKE_MAX_ANGLE = 30;
 
     private AnimationUtil() {
         throw new AssertionError();
@@ -62,5 +68,18 @@ public class AnimationUtil {
             float alpha = (currentProgress - fromProgress) / (toProgress - fromProgress);
             view.setAlpha(reverse ? 1 - alpha : alpha);
         }
+    }
+
+    public static void animateShake(View view) {
+        final ValueAnimator animator =
+                ValueAnimator.ofFloat(SHAKE_START_VALUE, SHAKE_END_VALUE);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(SHAKE_DURATION_MS);
+        animator.addUpdateListener(innerAnimator -> {
+            final float progress = (float) innerAnimator.getAnimatedValue();
+            final float angleRatio = (float) Math.sin(progress);
+            view.setRotation(angleRatio * SHAKE_MAX_ANGLE);
+        });
+        animator.start();
     }
 }

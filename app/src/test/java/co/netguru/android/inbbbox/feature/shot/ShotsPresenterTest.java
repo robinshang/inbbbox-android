@@ -226,17 +226,25 @@ public class ShotsPresenterTest {
     }
 
     @Test
-    public void whenShotsDetailsIsEnableAtStart_showDetails() {
-        verify(viewMock, times(1)).onDetailsVisibilityChange(true);
+    public void whenShotsDetailsIsEnabled_showDetails() {
+        //given
+        customizationSettings = new CustomizationSettings(true, true);
+        when(settingsControllerMock.getCustomizationSettings()).thenReturn(Single.just(customizationSettings));
+        //when
+        presenter.getShotsCustomizationSettings();
+        //then
+        verify(viewMock).onDetailsVisibilityChange(true);
     }
 
     @Test
-    public void whenShotsDetailsIsDisableAtStart_notShowDetails() {
+    public void whenShotsDetailsIsDisabled_notShowDetails() {
+        //given
         customizationSettings = new CustomizationSettings(false, true);
         when(settingsControllerMock.getCustomizationSettings()).thenReturn(Single.just(customizationSettings));
-        
-        presenter.attachView(viewMock);
-        verify(viewMock, times(1)).onDetailsVisibilityChange(false);
+        //when
+        presenter.getShotsCustomizationSettings();
+        //then
+        verify(viewMock).onDetailsVisibilityChange(false);
     }
 
 }

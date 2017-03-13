@@ -11,9 +11,9 @@
     <string name="action_grid_view">Widok siatki</string>
     <string name="action_list_view">Widok listy</string>
     <string name="action_ok">OK</string>
-    <string name="action_settings">Ustawienia</string>
     <string name="action_unfollow">Przestań obserwować</string>
     <string name="action_warning">Ostrzeżenie</string>
+    <string name="action_share">Udostępnij</string>
     <string name="add_to_bucket">DODAJ DO KOLEKCJI</string>
     <string name="api_error_429">Wykonujesz zbyt wiele akcji! Zwolnij na chwilę</string>
     <string name="authorization_error">Błąd autoryzacji</string>
@@ -21,7 +21,6 @@
     <string name="change_stream_source_error">Przynajmniej jedno źródło powinno być zaznaczone</string>
     <string name="comment">Komentarz</string>
     <string name="comment_deleted_complete">Komentarz został usunięty</string>
-    <string name="comment_edit_hint">Edytuj komentarz</string>
     <string name="comment_input_hint">Napisz komentarz</string>
     <string name="comment_update_complete">Komentarz został edytowany</string>
     <string name="comments_delete_label">Usuń</string>
@@ -69,7 +68,6 @@
     <string name="fragment_buckets_empty_text_after_icon">kolekcji!</string>
     <string name="fragment_followers_empty_text">Najpierw zacznij kogoś obserwować!</string>
     <string name="fragment_like_empty_text">Najpierw dodaj jakiś projekt do ulubionych!</string>
-    <string name="in_label">"w "</string>
     <string name="info_when_pattern">" w dniu ${when}"</string>
     <string name="info_where_pattern">"w ${where}"</string>
     <string name="invalid_outh_url">Nieprawidłowy url</string>
@@ -112,6 +110,7 @@
     <string name="fragment_unfollow_details_dialog_text">Usunąć użytkownika %s z obserwowanych?</string>
     <string name="shot">Projekt</string>
     <string name="error_no_internet">Nie udało się połączyć z internetem. Sprawdź prosze swoje połączenie i spróbuj ponownie</string>
+    <string name="projects_empty_view_text">Nie dodano jeszcze żadnych projektów</string>
 
     <plurals name="fragment_buckets_shots_string">
         <item quantity="zero">Nie dodano jeszcze żadnych projektów</item>
@@ -126,5 +125,10 @@
     <string name="followers">obserwujący</string>
     <string name="shots">shoty</string>
     <string name="following">obserwowani</string>
+
+    <string name="like_finish_message">Dodano do polubionych</string>
+    <string name="like_and_add_to_bucket_message">Projekt polubiony, dodawanie do kolekcji… </string>
+    <string name="commenting_message">Dodawanie komentarza…</string>
+    <string name="following_finish_message">Dodano autora do obserwowanych</string>
 
 </resources>

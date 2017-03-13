@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:padding="@dimen/shot_item_internal_padding">
 
     <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
@@ -10,19 +12,38 @@
         android:layout_centerInParent="true"
         android:background="@color/accent" />
 
+    <LinearLayout
+        android:layout_width="@dimen/shot_left_swipe_action_panel_width"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/onboarding_like_text_top_padding">
+
+        <TextView
+            android:id="@+id/comment_done_text"
+            style="@style/LongSwipeActionText"
+            android:text="@string/commenting_message" />
+
+    </LinearLayout>
+
     <co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout
         android:id="@+id/long_swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:clipChildren="false"
+        android:clipToPadding="false">
         <!-- Bottom View Start-->
 
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/bottom_right_wrapper"
             android:layout_width="@dimen/shot_right_swipe_action_panel_width_half"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:gravity="center_vertical|end"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:orientation="horizontal">
             <!--What you want to show-->
 
@@ -31,7 +52,8 @@
                 style="@style/LongSwipeActionIcons"
                 android:layout_width="@dimen/shot_swipe_action_icon_width"
                 android:layout_height="@dimen/shot_swipe_action_icon_width"
-                android:layout_gravity="end|center_vertical"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_comment" />
 
@@ -40,12 +62,13 @@
                 style="@style/LongSwipeActionIcons"
                 android:layout_width="@dimen/shot_swipe_action_icon_width"
                 android:layout_height="@dimen/shot_swipe_action_icon_width"
-                android:layout_gravity="end|center_vertical"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:alpha="0"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_comment_filled" />
 
-        </FrameLayout>
+        </RelativeLayout>
 
         <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
             android:id="@+id/iv_shot_image"

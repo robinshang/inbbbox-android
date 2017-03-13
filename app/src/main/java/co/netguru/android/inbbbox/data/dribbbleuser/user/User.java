@@ -33,6 +33,10 @@ public abstract class User implements Parcelable {
 
     public abstract int followingsCount();
 
+    public abstract int bucketsCount();
+
+    public abstract int projectsCount();
+
     public abstract String bio();
 
     public abstract String location();
@@ -61,6 +65,10 @@ public abstract class User implements Parcelable {
 
         public abstract User.Builder followingsCount(int followingsCount);
 
+        public abstract User.Builder bucketsCount(int bucketsCount);
+
+        public abstract User.Builder projectsCount(int projectsCount);
+
         public abstract User.Builder bio(String bio);
 
         public abstract User.Builder location(String location);
@@ -80,6 +88,8 @@ public abstract class User implements Parcelable {
                 .type(entity.type())
                 .followersCount(entity.followersCount())
                 .followingsCount(entity.followingsCount())
+                .bucketsCount(entity.bucketsCount())
+                .projectsCount(entity.projectsCount())
                 .bio(entity.bio())
                 .location(entity.location() == null ? "Unknown" : entity.location())
                 .links(entity.links())
@@ -93,6 +103,8 @@ public abstract class User implements Parcelable {
                 .avatarUrl(team.avatarUrl())
                 .username(team.username())
                 .shotsCount(team.shotsCount())
+                .bucketsCount(team.bucketsCount())
+                .projectsCount(team.projectsCount())
                 .type(TYPE_TEAM)
                 .build();
     }
@@ -104,6 +116,8 @@ public abstract class User implements Parcelable {
                 .avatarUrl(userDB.getAvatarUrl())
                 .username(userDB.getUsername())
                 .shotsCount(userDB.getShotsCount())
+                .projectsCount(userDB.getProjectsCount())
+                .bucketsCount(userDB.getBucketsCount())
                 .type(userDB.getType())
                 .build();
     }

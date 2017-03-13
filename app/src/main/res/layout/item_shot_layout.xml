@@ -15,20 +15,25 @@
         android:id="@+id/long_swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:clipChildren="false"
+        android:clipToPadding="false">
         <!-- Bottom View Start-->
-        <FrameLayout
+
+        <RelativeLayout
             android:id="@+id/bottom_right_wrapper"
             android:layout_width="@dimen/shot_right_swipe_action_panel_width"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:gravity="center_vertical|end"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:orientation="horizontal">
             <!--What you want to show-->
 
             <ImageView
                 android:id="@+id/iv_follow"
                 style="@style/LongSwipeActionIcons"
+                android:layout_centerVertical="true"
                 android:alpha="0"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_follow_swipe" />
@@ -36,6 +41,7 @@
             <ImageView
                 android:id="@+id/iv_follow_full"
                 style="@style/LongSwipeActionIcons"
+                android:layout_centerVertical="true"
                 android:alpha="0"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_follow_swipe_active" />
@@ -45,7 +51,8 @@
                 style="@style/LongSwipeActionIcons"
                 android:layout_width="@dimen/shot_swipe_action_icon_width"
                 android:layout_height="@dimen/shot_swipe_action_icon_width"
-                android:layout_gravity="end|center_vertical"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_comment" />
 
@@ -54,19 +61,34 @@
                 style="@style/LongSwipeActionIcons"
                 android:layout_width="@dimen/shot_swipe_action_icon_width"
                 android:layout_height="@dimen/shot_swipe_action_icon_width"
-                android:layout_gravity="end|center_vertical"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/iv_follow"
                 android:alpha="0"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_comment_filled" />
 
-        </FrameLayout>
+            <TextView
+                android:id="@+id/comment_done_text"
+                style="@style/LongSwipeActionText"
+                android:layout_below="@id/iv_follow"
+                android:text="@string/commenting_message" />
+
+            <TextView
+                android:id="@+id/follow_done_text"
+                style="@style/LongSwipeActionText"
+                android:layout_below="@id/iv_follow"
+                android:text="@string/following_finish_message" />
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/_left_wrapper"
             android:layout_width="@dimen/shot_left_swipe_action_panel_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:gravity="center_vertical">
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
             <ImageView
                 android:id="@+id/iv_like_action"
@@ -90,26 +112,40 @@
                 android:layout_width="@dimen/shot_swipe_action_plus_size"
                 android:layout_height="@dimen/shot_swipe_action_plus_size"
                 android:layout_centerInParent="true"
-                android:layout_gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_toEndOf="@id/iv_like_action"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_plus" />
 
             <ImageView
                 android:id="@+id/iv_bucket_action"
                 style="@style/LongSwipeActionIcons"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/iv_plus_image"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_bucket_swipe" />
 
             <ImageView
                 android:id="@+id/iv_bucket_action_full"
                 style="@style/LongSwipeActionIcons"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/iv_plus_image"
                 android:alpha="0"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_bucket_swipe_filled" />
+
+            <TextView
+                android:id="@+id/like_done_text"
+                style="@style/LongSwipeActionText"
+                android:layout_below="@id/iv_like_action"
+                android:text="@string/like_finish_message" />
+
+            <TextView
+                android:id="@+id/add_to_bucket_done_text"
+                style="@style/LongSwipeActionText"
+                android:layout_below="@id/iv_like_action"
+                android:text="@string/like_and_add_to_bucket_message" />
 
         </RelativeLayout>
 
@@ -177,7 +213,6 @@
             android:layout_toStartOf="@+id/comment_imageView" />
 
         <ImageView
-            android:id="@+id/likes_imageView"
             android:layout_width="@dimen/shot_details_shots_tab_image_size"
             android:layout_height="@dimen/shot_details_shots_tab_image_size"
             android:layout_centerVertical="true"

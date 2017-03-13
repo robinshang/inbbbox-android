@@ -7,16 +7,12 @@ import android.view.ViewGroup;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 
 import static co.netguru.android.inbbbox.Constants.UNDEFINED;
 
-@FragmentScope
 public class LikesAdapter extends RecyclerView.Adapter<BaseViewHolder<Shot>> {
 
     private static final int TYPE_GRID = 0;
@@ -28,7 +24,6 @@ public class LikesAdapter extends RecyclerView.Adapter<BaseViewHolder<Shot>> {
     private List<Shot> likeList;
     private boolean isGridMode;
 
-    @Inject
     public LikesAdapter(ShotClickListener likeClickListener) {
         this.likeClickListener = likeClickListener;
         likeList = Collections.emptyList();
@@ -65,7 +60,7 @@ public class LikesAdapter extends RecyclerView.Adapter<BaseViewHolder<Shot>> {
         return likeList;
     }
 
-    public void setLikeList(List<Shot> likeList) {
+    public void setLikeList(@NonNull List<Shot> likeList) {
         this.likeList = likeList;
         notifyDataSetChanged();
     }
