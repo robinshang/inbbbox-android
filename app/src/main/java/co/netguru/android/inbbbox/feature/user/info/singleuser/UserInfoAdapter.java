@@ -9,6 +9,7 @@ import java.util.List;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
+import co.netguru.android.inbbbox.feature.user.info.LinkClickListener;
 import co.netguru.android.inbbbox.feature.user.info.singleuser.teams.TeamClickListener;
 import co.netguru.android.inbbbox.feature.user.info.team.adapter.UserInfoTeamHeaderViewHolder;
 

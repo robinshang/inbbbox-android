@@ -25,6 +25,8 @@ interface TeamInfoContract {
         void hideLoadingMoreTeamMembersView();
 
         void showMessageOnServerError(String message);
+
+        void openUrl(String url);
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -33,5 +35,7 @@ interface TeamInfoContract {
         void onUserClick(User user);
 
         void loadMoreTeamMembers();
+
+        void onLinkClick(String url);
     }
 }

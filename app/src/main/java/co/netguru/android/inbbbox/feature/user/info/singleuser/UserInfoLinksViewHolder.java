@@ -10,6 +10,7 @@ import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.dribbbleuser.Links;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
+import co.netguru.android.inbbbox.feature.user.info.LinkClickListener;
 
 public class UserInfoLinksViewHolder extends BaseViewHolder<Links> {
 
