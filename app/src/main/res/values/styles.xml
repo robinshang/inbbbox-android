@@ -90,6 +90,11 @@
         <item name="android:textColor">@color/lightGrayAlpha</item>
     </style>
 
+    <style name="Font16.UserName" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/textDark</item>
+    </style>
+
     <style name="SwipeActionIcons">
         <item name="android:layout_width">@dimen/shot_swipe_action_icon_width</item>
         <item name="android:layout_height">@dimen/shot_swipe_action_icon_width</item>

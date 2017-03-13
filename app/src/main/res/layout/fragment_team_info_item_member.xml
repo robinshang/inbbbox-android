@@ -19,13 +19,12 @@
 
     <TextView
         android:id="@+id/user_name"
+        style="@style/Font16.UserName"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/shot_details_shots_tab_height"
         android:layout_marginLeft="@dimen/item_member_name_marginLeft"
         android:layout_toRightOf="@id/user_image"
         android:gravity="center_vertical"
-        android:textColor="@color/textDark"
-        android:textSize="16sp"
         android:textStyle="bold" />
 
     <android.support.v7.widget.RecyclerView
