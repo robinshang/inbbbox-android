@@ -109,6 +109,8 @@
     <dimen name="loading_ball_shadow_paddingTop">16dp</dimen>
     <dimen name="loading_text_marginTop">16dp</dimen>
     <dimen name="shot_load_more_text_padding_bottom">2dp</dimen>
+    <dimen name="swipe_action_text_margin">10dp</dimen>
+    <dimen name="swipe_action_text_size">16sp</dimen>
     <dimen name="shot_left_swipe_action_panel_width_half">70dp</dimen>
     <dimen name="shot_right_swipe_action_panel_width_half">70dp</dimen>
     <dimen name="details_parallax_image_view_height_land">200dp</dimen>
@@ -130,6 +132,12 @@
     <dimen name="user_details_collapsing_toolbar_height">200dp</dimen>
     <dimen name="user_details_circle_image_size">90dp</dimen>
     <dimen name="user_details_circle_image_margin_top">90dp</dimen>
+
+    <dimen name="onboarding_like_text_top_padding">60dp</dimen>
+    <dimen name="onboarding_bucket_text_top_padding">90dp</dimen>
+    <dimen name="onboarding_comment_land_text_top_padding">90dp</dimen>
+    <dimen name="onboarding_follow_land_text_top_padding">90dp</dimen>
+    
     <dimen name="item_member_margin">16dp</dimen>
     <dimen name="item_member_image_marginLeft">24dp</dimen>
     <dimen name="item_member_name_marginLeft">6dp</dimen>
@@ -170,13 +178,15 @@
     <dimen name="projects_item_shots_count_padding_start">8dp</dimen>
     <dimen name="projects_shot_item_shot_padding">6dp</dimen>
     <dimen name="projects_shot_item_shot_width">160dp</dimen>
+    <dimen name="bottom_sheet_elevation">16dp</dimen>
     <dimen name="two_shots_animation_first_view_horizontal_margin">16dp</dimen>
     <dimen name="two_shots_animation_first_view_top_margin">28dp</dimen>
     <dimen name="two_shots_animation_second_view_horizontal_margin">32dp</dimen>
     <dimen name="two_shots_animation_second_view_top_margin">56dp</dimen>
+    <dimen name="tab_layout_number_indicator_padding_bottom">16dp</dimen>
 
     <integer name="two_shots_drop_down_animation_duration">200</integer>
-    <integer name="two_shots_second_shot_drop_down_animation_offset">2000</integer>
+    <integer name="two_shots_second_shot_drop_down_animation_offset">200</integer>
     <integer name="two_shots_load_shot_animation_duration">300</integer>
 
 </resources>

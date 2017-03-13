@@ -12,7 +12,7 @@ public class UserDBMapper {
     }
 
     public static UserDB fromUser(@NonNull User user) {
-        return new UserDB(user.id(), user.name(),
-                user.avatarUrl(), user.username(), user.shotsCount(), user.type());
+        return new UserDB(user.id(), user.name(), user.avatarUrl(), user.username(),
+                user.shotsCount(), user.bucketsCount(), user.projectsCount(), user.type());
     }
 }

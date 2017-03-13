@@ -6,6 +6,7 @@
     <color name="windowBackground">#303030</color>
     <color name="secondaryWindowBackground">#424242</color>
     <color name="tabBackground">#212121</color>
+    <color name="userTabBackground">#000000</color>
     <color name="textColor">#FFFFFF</color>
 
     <color name="disabledGray">#80FFFFFF</color>
@@ -17,6 +18,7 @@
     <color name="shadowBlack">#04000000</color>
     <color name="lightGray">#BDBDBD</color>
     <color name="lightGrayAlpha">#f8f8f8f8</color>
+    <color name="backgroundShotText">#f8202020</color>
     <color name="lightShadow">#1f000000</color>
     <color name="whiteAlphaBackground">#34ffffff</color>
     <color name="gray">#DEDEDE</color>
@@ -28,6 +30,7 @@
     <color name="actionButtonLabelColor">#95a5ae</color>
 
     <color name="textGrey">#6D6D72</color>
+
 
     <color name="semiBlack">#8C000000</color>
     <color name="primaryTransparent">#E0212121</color>

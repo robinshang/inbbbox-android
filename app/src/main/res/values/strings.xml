@@ -139,6 +139,12 @@
     <string name="shot">Shot</string>
     <string name="error_server">Something went wrong while fetching data. Try again.</string>
     <string name="refresh">Refresh</string>
+
+    <string name="like_finish_message">Added to likes</string>
+    <string name="like_and_add_to_bucket_message">Shot liked, adding to bucket… </string>
+    <string name="commenting_message">Commenting…</string>
+    <string name="following_finish_message">Following author</string>
+
     <string name="user_image_content_description" translatable="false">User image</string>
     <string name="comment_icon_content_description" translatable="false">Comment icon</string>
     <string name="likes_icon_content_description" translatable="false">Likes icon</string>

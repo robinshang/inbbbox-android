@@ -7,7 +7,6 @@ import com.bumptech.glide.Glide;
 
 import butterknife.OnClick;
 import butterknife.Optional;
-import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingShotSwipeListener;
 import co.netguru.android.inbbbox.feature.onboarding.OnboardingStep;
@@ -18,7 +17,7 @@ import static co.netguru.android.inbbbox.common.utils.UnitsUtils.dpToPx;
 
 public class OnboardingShotsViewHolder extends BaseShotsViewHolder<OnboardingStep> {
 
-    public static final int ONBOARDING_SWIPE_LIMIT_SHIFT_DP = -24;
+    private static final int ONBOARDING_SWIPE_LIMIT_SHIFT_DP = -24;
 
     private final OnboardingShotSwipeListener shotSwipeListener;
     private OnboardingStep onboardingShot;
@@ -29,17 +28,6 @@ public class OnboardingShotsViewHolder extends BaseShotsViewHolder<OnboardingSte
         this.shotSwipeListener = shotSwipeListener;
     }
 
-    @OnClick(R.id.iv_shot_image)
-    void onShotClick() {
-        shotSwipeListener.onShotSelected(onboardingShot);
-    }
-  
-    @OnClick(R.id.skip_follow)
-    @Optional
-    void onSkipClick() {
-        shotSwipeListener.onSkip(onboardingShot);
-    }
-  
     @Override
     public void bind(OnboardingStep item) {
         this.onboardingShot = item;
@@ -49,22 +37,46 @@ public class OnboardingShotsViewHolder extends BaseShotsViewHolder<OnboardingSte
 
     @Override
     public void onLeftSwipe() {
-        shotSwipeListener.onShotLikeSwipe(onboardingShot);
+        if (onboardingShot.getStep() == OnboardingStepData.STEP_LIKE.getStep()) {
+            animateShotView(false);
+            animateAndFinishLike(() -> shotSwipeListener.onShotLikeSwipe(onboardingShot));
+        } else {
+            longSwipeLayout.close();
+        }
     }
 
     @Override
     public void onLeftLongSwipe() {
-        shotSwipeListener.onAddShotToBucketSwipe(onboardingShot);
+        if (onboardingShot.getStep() == OnboardingStepData.STEP_BUCKET.getStep()) {
+            animateShotView(false);
+            animateAndFinishAddToBucket(() -> shotSwipeListener.onAddShotToBucketSwipe(onboardingShot));
+        } else if (onboardingShot.getStep() == OnboardingStepData.STEP_LIKE.getStep()) {
+            animateShotView(false);
+            animateAndFinishLike(() -> shotSwipeListener.onShotLikeSwipe(onboardingShot));
+        } else {
+            longSwipeLayout.close();
+        }
     }
 
     @Override
     public void onRightSwipe() {
-        shotSwipeListener.onCommentShotSwipe(onboardingShot);
+        if (onboardingShot.getStep() == OnboardingStepData.STEP_COMMENT.getStep()) {
+            animateShotView(true);
+            animateAndFinishComment(() -> shotSwipeListener.onCommentShotSwipe(onboardingShot));
+        } else
+            longSwipeLayout.close();
     }
 
     @Override
     public void onRightLongSwipe() {
-        shotSwipeListener.onFollowUserSwipe(onboardingShot);
+        if (onboardingShot.getStep() == OnboardingStepData.STEP_FOLLOW.getStep()) {
+            animateShotView(true);
+            animateAndFinishFollowUser(() -> shotSwipeListener.onFollowUserSwipe(onboardingShot));
+        } else if (onboardingShot.getStep() == OnboardingStepData.STEP_COMMENT.getStep()) {
+            animateShotView(true);
+            animateAndFinishComment(() -> shotSwipeListener.onCommentShotSwipe(onboardingShot));
+        } else
+            longSwipeLayout.close();
     }
 
     @Override
@@ -75,6 +87,17 @@ public class OnboardingShotsViewHolder extends BaseShotsViewHolder<OnboardingSte
     @Override
     public void onEndSwipe() {
         // no-op
+    }
+
+    @OnClick(R.id.iv_shot_image)
+    void onShotClick() {
+        shotSwipeListener.onShotSelected(onboardingShot);
+    }
+
+    @OnClick(R.id.skip_follow)
+    @Optional
+    void onSkipClick() {
+        shotSwipeListener.onSkip(onboardingShot);
     }
 
     @Override
