@@ -233,7 +233,7 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
     }
 
     private int getToCenterDistance(View centerView) {
-        int center = getOnScreenX(leftWrapper) + (shotImageView.getWidth() / 2) - (centerView.getWidth() / 2);
+        int center = getOnScreenX(longSwipeLayout) + (shotImageView.getWidth() / 2) - (centerView.getWidth() / 2);
         return center - getOnScreenX(centerView);
     }
 

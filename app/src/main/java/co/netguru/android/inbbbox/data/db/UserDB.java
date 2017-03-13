@@ -13,16 +13,20 @@ public class UserDB {
     private String avatarUrl;
     private String username;
     private int shotsCount;
+    private int bucketsCount;
+    private int projectsCount;
     private String type;
 
-    @Generated(hash = 1852646248)
+    @Generated(hash = 617444720)
     public UserDB(Long id, String name, String avatarUrl, String username,
-            int shotsCount, String type) {
+                  int shotsCount, int bucketsCount, int projectsCount, String type) {
         this.id = id;
         this.name = name;
         this.avatarUrl = avatarUrl;
         this.username = username;
         this.shotsCount = shotsCount;
+        this.bucketsCount = bucketsCount;
+        this.projectsCount = projectsCount;
         this.type = type;
     }
 
@@ -70,6 +74,22 @@ public class UserDB {
         this.shotsCount = shotsCount;
     }
 
+    public int getBucketsCount() {
+        return this.bucketsCount;
+    }
+
+    public void setBucketsCount(int bucketsCount) {
+        this.bucketsCount = bucketsCount;
+    }
+
+    public int getProjectsCount() {
+        return this.projectsCount;
+    }
+
+    public void setProjectsCount(int projectsCount) {
+        this.projectsCount = projectsCount;
+    }
+
     public String getType() {
         return this.type;
     }
@@ -77,5 +97,4 @@ public class UserDB {
     public void setType(String type) {
         this.type = type;
     }
-
 }
