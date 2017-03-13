@@ -81,7 +81,7 @@
         <item name="android:textColor">@color/semiBlack</item>
     </style>
 
-  <style name="Font20.ProjectTitle" parent="TextAppearance.AppCompat.Large">
+    <style name="Font20.ProjectTitle" parent="TextAppearance.AppCompat.Large">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
