@@ -10,7 +10,6 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
-import co.netguru.android.inbbbox.feature.user.projects.adapter.ProjectClickListener;
 
 public class ProjectShotsViewHolder extends BaseViewHolder<Shot> {
 

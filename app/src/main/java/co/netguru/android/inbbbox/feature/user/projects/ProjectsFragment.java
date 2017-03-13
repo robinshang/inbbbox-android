@@ -79,6 +79,12 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        shotActionListener = null;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
