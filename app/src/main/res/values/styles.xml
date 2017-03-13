@@ -81,7 +81,7 @@
         <item name="android:textColor">@color/semiBlack</item>
     </style>
 
-    <style name="Font20.Black" parent="TextAppearance.AppCompat.Large">
+    <style name="Font20.ProjectTitle" parent="TextAppearance.AppCompat.Large">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
@@ -97,6 +97,11 @@
     <style name="Font60.LightGray" parent="TextAppearance.AppCompat.Large">
         <item name="android:textSize">60sp</item>
         <item name="android:textColor">@color/lightGrayAlpha</item>
+    </style>
+
+    <style name="Font16.UserName" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/textDark</item>
     </style>
 
     <style name="SwipeActionIcons">
