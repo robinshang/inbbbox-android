@@ -1,6 +1,8 @@
 package co.netguru.android.inbbbox.feature.user.info.singleuser;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -98,6 +100,12 @@ public class UserInfoFragment extends BaseMvpFragment<UserInfoContract.View, Use
     }
 
     @Override
+    public void openUrl(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
+    }
+
+    @Override
     public void openTeam(User user) {
         UserActivity.startActivity(getContext(), user);
     }
@@ -111,7 +119,8 @@ public class UserInfoFragment extends BaseMvpFragment<UserInfoContract.View, Use
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         userInfoAdapter = new UserInfoAdapter(
                 getPresenter()::onShotClick,
-                getPresenter()::onTeamClick);
+                getPresenter()::onTeamClick,
+                getPresenter()::onLinkClick);
         userInfoAdapter.setUser(getArguments().getParcelable(KEY_USER));
 
         recyclerView.setLayoutManager(linearLayoutManager);

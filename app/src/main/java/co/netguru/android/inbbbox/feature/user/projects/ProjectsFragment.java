@@ -96,6 +96,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
         initSwipeRefreshView();
+
     }
 
     @NonNull

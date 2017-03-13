@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
 import co.netguru.android.inbbbox.data.db.UserDB;
+import co.netguru.android.inbbbox.data.dribbbleuser.Links;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
 
@@ -40,6 +41,8 @@ public abstract class User implements Parcelable {
 
     public abstract String location();
 
+    public abstract Links links();
+
     public static User.Builder builder() {
         return new AutoValue_User.Builder();
     }
@@ -70,6 +73,8 @@ public abstract class User implements Parcelable {
 
         public abstract User.Builder location(String location);
 
+        public abstract User.Builder links(Links links);
+
         public abstract User build();
     }
 
@@ -87,6 +92,7 @@ public abstract class User implements Parcelable {
                 .projectsCount(entity.projectsCount())
                 .bio(entity.bio())
                 .location(entity.location() == null ? "Unknown" : entity.location())
+                .links(entity.links())
                 .build();
     }
 

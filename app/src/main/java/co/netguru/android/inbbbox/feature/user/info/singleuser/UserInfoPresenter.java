@@ -62,6 +62,11 @@ public class UserInfoPresenter extends MvpNullObjectBasePresenter<UserInfoContra
         getView().openShot(shot);
     }
 
+    @Override
+    public void onLinkClick(String url) {
+        getView().openUrl(url);
+    }
+
     private void getUserTeams() {
         subscriptions.add(teamController.getUserTeams(user.id(), PAGE, TEAMS_PAGE_COUNT)
                 .compose(applySingleIoSchedulers())

@@ -134,6 +134,11 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
     }
 
     @Override
+    public void onLinkClick(String url) {
+        getView().openUrl(url);
+    }
+
+    @Override
     public void onShotClick(Shot shot) {
         getView().openShotDetails(shot);
     }

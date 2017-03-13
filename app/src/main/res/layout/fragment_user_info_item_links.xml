@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_1dp"
+        android:layout_marginTop="@dimen/user_info_links_divider_marginTop"
+        android:background="@color/gray" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/user_links_grid_margin"
+        android:layout_marginRight="@dimen/user_links_grid_margin"
+        android:columnCount="5">
+
+        <ImageButton
+            android:id="@+id/link_web"
+            android:layout_width="@dimen/user_link_size"
+            android:layout_height="@dimen/user_link_size"
+            android:src="@drawable/ic_user"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="@string/web"
+            />
+
+        <ImageButton
+            android:id="@+id/link_twitter"
+            android:layout_width="@dimen/user_link_size"
+            android:layout_height="@dimen/user_link_size"
+            android:src="@drawable/ic_twitter"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="@string/twitter"
+            />
+
+    </GridLayout>
+</LinearLayout>

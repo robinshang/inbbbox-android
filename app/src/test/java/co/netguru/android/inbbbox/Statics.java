@@ -234,6 +234,7 @@ public final class Statics {
             .bucketsCount(1)
             .bio("")
             .location("")
+            .links(Links.create("https://www.netguru.co/", "https://twitter.com/netguru"))
             .build();
 
     public static final BucketDB BUCKET_DB = new BucketDB(1L, "test", "test", 2, ZonedDateTime.now());
