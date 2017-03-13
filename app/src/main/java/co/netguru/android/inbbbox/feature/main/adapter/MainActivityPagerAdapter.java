@@ -18,6 +18,7 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment>
 
     private SparseArray<T> activeRefreshableFragments;
     private boolean isOnboardingPassed;
+    private boolean shouldShowShotsAnimation = true;
 
     public MainActivityPagerAdapter(FragmentManager fm, boolean isOnboardingPassed) {
         super(fm);
@@ -33,7 +34,8 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment>
         switch (TabItemType.getTabItemForPosition(position)) {
             case SHOTS:
                 if (isOnboardingPassed) {
-                    result = ShotsFragment.newInstance();
+                    result = ShotsFragment.newInstance(shouldShowShotsAnimation);
+                    shouldShowShotsAnimation = false;
                 } else {
                     result = OnboardingFragment.newInstance();
                 }

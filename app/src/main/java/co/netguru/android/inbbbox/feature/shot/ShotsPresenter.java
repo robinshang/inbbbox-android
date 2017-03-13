@@ -111,14 +111,14 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
     }
 
     @Override
-    public void getShotsFromServer(boolean pullToRefresh) {
+    public void getShotsFromServer(boolean pullToRefresh, boolean shouldShowShotsAnimation) {
         if (refreshSubscription.isUnsubscribed()) {
             loadMoreSubscription.unsubscribe();
             pageNumber = FIRST_PAGE;
             getView().showLoadingIndicator(pullToRefresh);
             refreshSubscription = shotsController.getShots(pageNumber, SHOTS_PER_PAGE)
                     .compose(androidIO())
-                    .subscribe(this::onGetShotsFromServerNext,
+                    .subscribe(shots -> onGetShotsFromServerNext(shots, shouldShowShotsAnimation),
                             throwable -> handleError(throwable, "Error while getting shots"));
         }
     }
@@ -201,16 +201,18 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
                         throwable -> Timber.e(throwable, "Error getting show details state.")));
     }
 
-    private void onGetShotsFromServerNext(List<Shot> shotList) {
+    private void onGetShotsFromServerNext(List<Shot> shotList, boolean shouldShowShotsAnimation) {
         Timber.d("Shots received!");
         hasMore = shotList.size() >= SHOTS_PER_PAGE;
         getView().hideLoadingIndicator();
         getView().setData(shotList);
         getView().showContent();
         getView().showFirstShot();
-        if (shotList.size() >= SHOTS_ANIMATION_MIN_SHOTS_COUNT) {
+        if (shouldShowShotsAnimation && shotList.size() >= SHOTS_ANIMATION_MIN_SHOTS_COUNT) {
             getView().showShotsAnimation(shotList.get(SHOTS_ANIMATION_FIRST_SHOT),
                     shotList.get(SHOTS_ANIMATION_SECOND_SHOT));
+        } else {
+            getShotsCustomizationSettings();
         }
     }
 
