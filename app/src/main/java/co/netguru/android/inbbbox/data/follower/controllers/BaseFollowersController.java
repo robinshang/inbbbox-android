@@ -1,5 +1,8 @@
 package co.netguru.android.inbbbox.data.follower.controllers;
 
+import java.util.List;
+
+import co.netguru.android.inbbbox.data.Cache;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.FollowersApi;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
@@ -14,6 +17,7 @@ public abstract class BaseFollowersController {
 
     protected final FollowersApi followersApi;
     private final ShotsApi shotsApi;
+    private final Cache<UserWithShots> userWithShotsCache = new Cache<>();
 
     protected BaseFollowersController(FollowersApi followersApi, ShotsApi shotsApi) {
         this.followersApi = followersApi;
@@ -24,7 +28,7 @@ public abstract class BaseFollowersController {
         return followersApi.getFollowedUsers(pageNumber, pageCount)
                 .flatMap(Observable::from)
                 .map(followerEntity -> User.create(followerEntity.user()))
-                .flatMap(user -> getFollowerWithShots(user, followerShotPageCount));
+                .flatMap(user -> fetchAndCacheUserWithShots(user, followerShotPageCount));
     }
 
     protected Observable<UserWithShots> getFollowerWithShots(User user, int followerShotsPageCount) {
@@ -33,8 +37,20 @@ public abstract class BaseFollowersController {
                 .map(Shot::create)
                 .map(shot -> Shot.update(shot).author(user).build())
                 .toList()
-                .map(shotList -> UserWithShots.create(user, shotList))
+                .map(shotList -> cacheUserWithShots(user, shotList))
                 .subscribeOn(Schedulers.io());
+    }
+
+    private Observable<UserWithShots> fetchAndCacheUserWithShots(User user, int followerShotPageCount) {
+        return Observable.just(userWithShotsCache.get(user.id()))
+                .filter(val -> val != null)
+                .switchIfEmpty(getFollowerWithShots(user, followerShotPageCount));
+    }
+
+    private UserWithShots cacheUserWithShots(User user, List<Shot> shotList) {
+        UserWithShots userWithShots = UserWithShots.create(user, shotList);
+        userWithShotsCache.add(userWithShots);
+        return userWithShots;
     }
 
 }
