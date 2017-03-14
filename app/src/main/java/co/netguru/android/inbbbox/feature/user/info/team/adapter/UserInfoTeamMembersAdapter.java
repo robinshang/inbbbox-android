@@ -11,13 +11,16 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.user.UserClickListener;
+import co.netguru.android.inbbbox.feature.user.info.LinkClickListener;
+import co.netguru.android.inbbbox.feature.user.info.singleuser.UserInfoLinksViewHolder;
 
 public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int VIEW_TYPE_HEADER = 0;
     private static final int VIEW_TYPE_USER = 1;
+    private static final int VIEW_TYPE_LINKS = 2;
 
-    private static final int HEADER_ADD_SIZE = 1;
+    private static final int HEADER_FOOTER_ADD_SIZE = 2;
 
     @NonNull
     private List<UserWithShots> userList;
@@ -26,12 +29,15 @@ public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private UserClickListener userClickListener;
     private ShotClickListener shotClickListener;
+    private LinkClickListener linkClickListener;
 
     public UserInfoTeamMembersAdapter(UserClickListener userClickListener,
-                                      ShotClickListener shotClickListener) {
+                                      ShotClickListener shotClickListener,
+                                      LinkClickListener linkClickListener ) {
         userList = Collections.emptyList();
         this.userClickListener = userClickListener;
         this.shotClickListener = shotClickListener;
+        this.linkClickListener = linkClickListener;
     }
 
     @Override
@@ -42,6 +48,8 @@ public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerVie
             case VIEW_TYPE_USER:
                 return new UserInfoTeamMembersViewHolder(parent, userClickListener,
                         shotClickListener);
+            case VIEW_TYPE_LINKS:
+                return new UserInfoLinksViewHolder(parent, linkClickListener);
             default:
                 throw new IllegalArgumentException("Cannot create view holder for type : " + viewType);
         }
@@ -56,6 +64,9 @@ public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerVie
             case VIEW_TYPE_USER:
                 ((UserInfoTeamMembersViewHolder) holder).bind(userList.get(position - 1));
                 break;
+            case VIEW_TYPE_LINKS:
+                ((UserInfoLinksViewHolder) holder).bind(team.links());
+                break;
             default:
                 throw new IllegalArgumentException("Couldn't bind position: " + position);
         }
@@ -65,6 +76,8 @@ public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerVie
     public int getItemViewType(int position) {
         if (position == 0) {
             return VIEW_TYPE_HEADER;
+        } else if(position == userList.size() + 1) {
+            return VIEW_TYPE_LINKS;
         } else {
             return VIEW_TYPE_USER;
         }
@@ -72,7 +85,7 @@ public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemCount() {
-        return userList.size() + HEADER_ADD_SIZE;
+        return userList.size() + HEADER_FOOTER_ADD_SIZE;
     }
 
     public void setTeam(User team) {

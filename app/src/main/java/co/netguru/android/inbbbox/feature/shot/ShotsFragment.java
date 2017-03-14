@@ -54,6 +54,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener,
         DetailsVisibilityChangeEmitter {
 
+    private static final String KEY_SHOULD_SHOW_SHOTS_ANIMATION = "key:should_show_shots_animation";
     private static final int SHOTS_TO_LOAD_MORE = 5;
 
     @BindView(R.id.shots_recycler_view)
@@ -94,8 +95,13 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Inject
     AnalyticsEventLogger analyticsEventLogger;
 
-    public static ShotsFragment newInstance() {
-        return new ShotsFragment();
+    public static ShotsFragment newInstance(boolean shouldShowShotsAnimation) {
+        final Bundle bundle = new Bundle();
+        bundle.putBoolean(KEY_SHOULD_SHOW_SHOTS_ANIMATION, shouldShowShotsAnimation);
+        final ShotsFragment fragment = new ShotsFragment();
+        fragment.setArguments(bundle);
+
+        return fragment;
     }
 
     @Override
@@ -149,12 +155,13 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        getPresenter().getShotsFromServer(pullToRefresh);
+        getPresenter().getShotsFromServer(pullToRefresh,
+                getArguments().getBoolean(KEY_SHOULD_SHOW_SHOTS_ANIMATION, false));
     }
 
     @Override
     public void refreshFragmentData() {
-        getPresenter().getShotsFromServer(false);
+        getPresenter().getShotsFromServer(false, false);
     }
 
     @Override
@@ -388,7 +395,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     private void initRefreshLayout() {
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.accent));
-        swipeRefreshLayout.setOnRefreshListener(() -> getPresenter().getShotsFromServer(true));
+        swipeRefreshLayout.setOnRefreshListener(() -> getPresenter().getShotsFromServer(true, false));
     }
 
     private void initRecycler() {

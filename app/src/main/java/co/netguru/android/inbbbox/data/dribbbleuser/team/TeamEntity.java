@@ -33,6 +33,9 @@ public abstract class TeamEntity implements Parcelable {
     @SerializedName("buckets_count")
     public abstract int bucketsCount();
 
+    @SerializedName("projects_count")
+    public abstract int projectsCount();
+
     @SerializedName("followers_count")
     public abstract int followersCount();
 
@@ -77,6 +80,8 @@ public abstract class TeamEntity implements Parcelable {
         public abstract Builder links(Links links);
 
         public abstract Builder bucketsCount(int bucketsCount);
+
+        public abstract Builder projectsCount(int projectsCount);
 
         public abstract Builder followersCount(int followersCount);
 

@@ -16,7 +16,7 @@ import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import co.netguru.android.inbbbox.feature.user.projects.adapter.shots.ProjectShotsAdapter;
 
-public class ProjectsViewHolder extends BaseViewHolder<ProjectWithShots> {
+class ProjectsViewHolder extends BaseViewHolder<ProjectWithShots> {
 
     private static final int SHOTS_TO_LOAD_MORE = 10;
     private final ProjectsAdapter.OnGetMoreProjectShotsListener onGetMoreProjectShotsListener;
@@ -43,7 +43,8 @@ public class ProjectsViewHolder extends BaseViewHolder<ProjectWithShots> {
         initializeRecyclerView(parent.getContext());
     }
 
-    @OnClick({R.id.project_item_click_layer})
+
+    @OnClick(R.id.project_item_small_header)
     void onProjectClick() {
         projectClickListener.onProjectClick(currentItem);
     }
@@ -58,9 +59,11 @@ public class ProjectsViewHolder extends BaseViewHolder<ProjectWithShots> {
     }
 
     private void initializeRecyclerView(Context context) {
-        adapter = new ProjectShotsAdapter();
+        adapter = new ProjectShotsAdapter(
+                shot -> projectClickListener.onShotClick(shot, currentItem));
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context,
+                LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(new LoadMoreScrollListener(SHOTS_TO_LOAD_MORE) {

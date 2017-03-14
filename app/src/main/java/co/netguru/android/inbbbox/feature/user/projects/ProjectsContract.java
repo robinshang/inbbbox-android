@@ -26,6 +26,8 @@ interface ProjectsContract {
 
         void showProjectDetails(ProjectWithShots projectWithShots);
 
+        void showShotDetails(Shot shot, List<Shot> allShots);
+
         void showEmptyView();
 
         void hideEmptyView();
@@ -44,5 +46,7 @@ interface ProjectsContract {
         void onProjectClick(ProjectWithShots projectWithShots);
 
         void showContentForData(List<ProjectWithShots> projectWithShotsList);
+
+        void onShotClick(Shot shot, ProjectWithShots inProject);
     }
 }

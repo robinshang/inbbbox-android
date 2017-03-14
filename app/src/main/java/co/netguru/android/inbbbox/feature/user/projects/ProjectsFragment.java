@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.user.projects;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,17 +22,21 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
 import co.netguru.android.inbbbox.feature.project.ProjectActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.user.info.team.ShotActionListener;
+import co.netguru.android.inbbbox.feature.user.projects.adapter.ProjectClickListener;
 import co.netguru.android.inbbbox.feature.user.projects.adapter.ProjectsAdapter;
+import timber.log.Timber;
 
 public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<ProjectWithShots>,
         ProjectsContract.View, ProjectsContract.Presenter> implements ProjectsContract.View,
-        ProjectsAdapter.OnGetMoreProjectShotsListener {
+        ProjectsAdapter.OnGetMoreProjectShotsListener, ProjectClickListener {
 
     private static final String USER_KEY = "userKey";
 
@@ -51,6 +56,8 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
 
     private ProjectsAdapter projectsAdapter;
 
+    private ShotActionListener shotActionListener;
+
     public static ProjectsFragment newInstance(User user) {
         final Bundle args = new Bundle();
         args.putParcelable(USER_KEY, user);
@@ -59,6 +66,23 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
         fragment.setArguments(args);
 
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            shotActionListener = (ShotActionListener) context;
+        } catch (ClassCastException e) {
+            Timber.e(e, "must implement OnFollowedShotActionListener");
+            throw new InterfaceNotImplementedException(e, context.toString(), ShotActionListener.class.getSimpleName());
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        shotActionListener = null;
     }
 
     @Nullable
@@ -72,6 +96,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
         initSwipeRefreshView();
+
     }
 
     @NonNull
@@ -133,6 +158,11 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     }
 
     @Override
+    public void showShotDetails(Shot shot, List<Shot> allShots) {
+        shotActionListener.showShotDetails(shot, allShots, shot.author().id());
+    }
+
+    @Override
     public void showContent() {
         super.showContent();
         getPresenter().showContentForData(getData());
@@ -166,8 +196,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     }
 
     private void initRecyclerView() {
-        projectsAdapter = new ProjectsAdapter(getPresenter()::getMoreShotsFromProject,
-                getPresenter()::onProjectClick);
+        projectsAdapter = new ProjectsAdapter(getPresenter()::getMoreShotsFromProject, this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
@@ -179,4 +208,15 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
         });
         recyclerView.setAdapter(projectsAdapter);
     }
+
+    @Override
+    public void onProjectClick(ProjectWithShots projectWithShots) {
+        getPresenter().onProjectClick(projectWithShots);
+    }
+
+    @Override
+    public void onShotClick(Shot shot, ProjectWithShots projectWithShots) {
+        getPresenter().onShotClick(shot, projectWithShots);
+    }
+
 }

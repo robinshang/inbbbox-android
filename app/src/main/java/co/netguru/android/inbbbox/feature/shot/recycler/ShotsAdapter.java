@@ -29,7 +29,6 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
         this.shotSwipeListener = shotSwipeListener;
         this.emitter = emitter;
         items = Collections.emptyList();
-        isDetailsVisible = true;
     }
 
     @Override

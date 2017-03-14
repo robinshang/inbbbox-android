@@ -21,6 +21,10 @@ public abstract class Team implements Parcelable {
 
     public abstract int shotsCount();
 
+    public abstract int bucketsCount();
+
+    public abstract int projectsCount();
+
     public static Team.Builder builder() {
         return new AutoValue_Team.Builder();
     }
@@ -37,6 +41,10 @@ public abstract class Team implements Parcelable {
 
         public abstract Team.Builder shotsCount(int shotsCount);
 
+        public abstract Team.Builder bucketsCount(int bucketsCount);
+
+        public abstract Team.Builder projectsCount(int projectsCount);
+
         public abstract Team build();
     }
 
@@ -47,6 +55,8 @@ public abstract class Team implements Parcelable {
                 .username(entity.username())
                 .avatarUrl(entity.avatarUrl())
                 .shotsCount(entity.shotsCount())
+                .bucketsCount(entity.bucketsCount())
+                .projectsCount(entity.projectsCount())
                 .build();
     }
 
@@ -54,6 +64,9 @@ public abstract class Team implements Parcelable {
         return Team.builder()
                 .id(teamDB.getId())
                 .name(teamDB.getName())
+                .shotsCount(teamDB.getShotsCount())
+                .bucketsCount(teamDB.getBucketsCount())
+                .projectsCount(teamDB.getProjectsCount())
                 .build();
     }
 

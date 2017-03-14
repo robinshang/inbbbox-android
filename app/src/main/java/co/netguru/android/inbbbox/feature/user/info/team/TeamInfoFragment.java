@@ -1,6 +1,8 @@
 package co.netguru.android.inbbbox.feature.user.info.team;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -126,9 +128,15 @@ public class TeamInfoFragment extends BaseMvpFragment
         Snackbar.make(recyclerView, message, Snackbar.LENGTH_LONG).show();
     }
 
+    @Override
+    public void openUrl(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
+    }
+
     private void initRecycler() {
         adapter = new UserInfoTeamMembersAdapter(getPresenter()::onUserClick,
-                getPresenter()::onShotClick);
+                getPresenter()::onShotClick, getPresenter()::onLinkClick);
         adapter.setTeam(getArguments().getParcelable(KEY_USER));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
