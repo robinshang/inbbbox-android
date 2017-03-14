@@ -208,7 +208,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
         getView().setData(shotList);
         getView().showContent();
         getView().showFirstShot();
-        if (shouldShowShotsAnimation && shotList.size() >= SHOTS_ANIMATION_MIN_SHOTS_COUNT) {
+        if (canShowShotsAnimation(shouldShowShotsAnimation, shotList.size())) {
             getView().showShotsAnimation(shotList.get(SHOTS_ANIMATION_FIRST_SHOT),
                     shotList.get(SHOTS_ANIMATION_SECOND_SHOT));
         } else {
@@ -249,6 +249,10 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
 
     private void showShotsDetail(CustomizationSettings customizationSettings) {
         getView().onDetailsVisibilityChange(customizationSettings.isShowDetails());
+    }
+
+    private boolean canShowShotsAnimation(boolean shouldShowShotsAnimation, int shotListSize) {
+        return shouldShowShotsAnimation && shotListSize >= SHOTS_ANIMATION_MIN_SHOTS_COUNT;
     }
 
     private void setupRxBus() {

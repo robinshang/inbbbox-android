@@ -33,12 +33,7 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment>
 
         switch (TabItemType.getTabItemForPosition(position)) {
             case SHOTS:
-                if (isOnboardingPassed) {
-                    result = ShotsFragment.newInstance(shouldShowShotsAnimation);
-                    shouldShowShotsAnimation = false;
-                } else {
-                    result = OnboardingFragment.newInstance();
-                }
+                result = getProperFragmentForShotsTab(isOnboardingPassed);
                 break;
             case LIKES:
                 result = LikesFragment.newInstance();
@@ -80,5 +75,10 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment>
         if (refreshableFragment != null) {
             refreshableFragment.refreshFragmentData();
         }
+    }
+
+    private Fragment getProperFragmentForShotsTab(boolean isOnboardingPassed) {
+        return isOnboardingPassed ? ShotsFragment.newInstance(shouldShowShotsAnimation)
+                : OnboardingFragment.newInstance();
     }
 }

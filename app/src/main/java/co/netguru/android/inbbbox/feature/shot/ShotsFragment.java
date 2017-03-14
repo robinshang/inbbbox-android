@@ -54,7 +54,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener,
         DetailsVisibilityChangeEmitter {
 
-    private static final String SHOULD_SHOW_SHOTS_ANIMATION_KEY = "shouldShowShotsAnimationKey";
+    private static final String KEY_SHOULD_SHOW_SHOTS_ANIMATION = "key:should_show_shots_animation";
     private static final int SHOTS_TO_LOAD_MORE = 5;
 
     @BindView(R.id.shots_recycler_view)
@@ -97,7 +97,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     public static ShotsFragment newInstance(boolean shouldShowShotsAnimation) {
         final Bundle bundle = new Bundle();
-        bundle.putBoolean(SHOULD_SHOW_SHOTS_ANIMATION_KEY, shouldShowShotsAnimation);
+        bundle.putBoolean(KEY_SHOULD_SHOW_SHOTS_ANIMATION, shouldShowShotsAnimation);
         final ShotsFragment fragment = new ShotsFragment();
         fragment.setArguments(bundle);
 
@@ -156,7 +156,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void loadData(boolean pullToRefresh) {
         getPresenter().getShotsFromServer(pullToRefresh,
-                getArguments().getBoolean(SHOULD_SHOW_SHOTS_ANIMATION_KEY, false));
+                getArguments().getBoolean(KEY_SHOULD_SHOW_SHOTS_ANIMATION, false));
     }
 
     @Override
