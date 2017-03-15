@@ -9,6 +9,8 @@ import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.data.bucket.BucketApi;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
+import co.netguru.android.inbbbox.data.cache.CacheStrategy;
+import co.netguru.android.inbbbox.data.cache.CacheValidator;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserApi;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
@@ -23,10 +25,12 @@ public class BucketsControllerApi implements BucketsController {
     private final UserApi userApi;
     private final BucketApi bucketApi;
     private final UserController userController;
+    private final CacheValidator cacheValidator;
 
     public BucketsControllerApi(UserApi userApi, BucketApi bucketApi,
-                                UserController userController) {
+                                UserController userController, CacheValidator cacheValidator) {
         this.userApi = userApi;
+        this.cacheValidator = cacheValidator;
         this.bucketApi = bucketApi;
         this.userController = userController;
     }
@@ -42,18 +46,25 @@ public class BucketsControllerApi implements BucketsController {
     }
 
     @Override
-    public Single<List<BucketWithShots>> getUserBucketsWithShots(int pageNumber, int pageCount, int shotsCount) {
+    public Single<List<BucketWithShots>> getUserBucketsWithShots
+            (int pageNumber, int pageCount, int shotsCount, boolean shouldCache) {
         return userApi.getUserBucketsList(pageNumber, pageCount)
                 .flatMapObservable(Observable::from)
-                .flatMap(bucket -> getShotsListObservableFromBucket(bucket.id(), FIRST_PAGE_NUMBER, shotsCount),
+                .flatMap(bucket -> getShotsListObservableFromBucket(bucket.id(),
+                        FIRST_PAGE_NUMBER, shotsCount, shouldCache),
                         BucketWithShots::create)
                 .toList()
+                .map(bucketWithShotses -> {
+                    cacheValidator.validateCache(CacheValidator.CACHE_BUCKET_SHOTS).subscribe();
+                    return bucketWithShotses;
+                })
                 .toSingle();
     }
 
     @Override
-    public Single<List<Shot>> getShotsListFromBucket(long bucketId, int pageNumber, int pageCount) {
-        return getShotsListObservableFromBucket(bucketId, pageNumber, pageCount).toSingle();
+    public Single<List<Shot>> getShotsListFromBucket(long bucketId, int pageNumber,
+                                                     int pageCount, boolean shouldCache) {
+        return getShotsListObservableFromBucket(bucketId, pageNumber, pageCount, shouldCache).toSingle();
     }
 
     @Override
@@ -83,8 +94,13 @@ public class BucketsControllerApi implements BucketsController {
         return bucketApi.removeShotFromBucket(bucketId, shot.id());
     }
 
-    private Observable<List<Shot>> getShotsListObservableFromBucket(long bucketId, int pageNumber, int pageCount) {
-        return bucketApi.getBucketShotsList(bucketId, pageNumber, pageCount)
+    private Observable<List<Shot>> getShotsListObservableFromBucket(long bucketId, int pageNumber,
+                                                                    int pageCount, boolean shouldCache) {
+        return cacheValidator.isCacheValid(CacheValidator.CACHE_BUCKET_SHOTS)
+                .flatMap(isCacheValid -> bucketApi.getBucketShotsList(bucketId,
+                        pageNumber, pageCount,
+                        shouldCache && isCacheValid ?
+                                CacheStrategy.mediumCache() : CacheStrategy.noCache()))
                 .flatMapObservable(Observable::from)
                 .map(Shot::create)
                 .toList();
@@ -111,4 +127,5 @@ public class BucketsControllerApi implements BucketsController {
                 .contains(userId)
                 .toSingle();
     }
+
 }

@@ -5,6 +5,7 @@ import co.netguru.android.inbbbox.data.bucket.GuestModeBucketsRepository;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsControllerApi;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsControllerGuest;
+import co.netguru.android.inbbbox.data.cache.CacheValidator;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamApi;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamController;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamControllerApi;
@@ -61,12 +62,13 @@ public class UserModule {
     @Provides
     BucketsController provideBucketsController(UserApi userApi, BucketApi bucketApi,
                                                GuestModeBucketsRepository guestModeBucketsRepository,
-                                               UserController userController) {
+                                               UserController userController,
+                                               CacheValidator cacheValidator) {
         if (mode == UserModeType.GUEST_USER_MODE) {
             return new BucketsControllerGuest(guestModeBucketsRepository);
         }
 
-        return new BucketsControllerApi(userApi, bucketApi, userController);
+        return new BucketsControllerApi(userApi, bucketApi, userController, cacheValidator);
     }
 
     @UserScope

@@ -30,12 +30,14 @@ interface FollowersContract {
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
 
-        void getFollowedUsersFromServer();
+        void getFollowedUsersFromServer(boolean canUseCacheForShots);
 
         void getMoreFollowedUsersFromServer();
 
         void checkDataEmpty(List<UserWithShots> data);
 
         void onFollowedUserSelect(UserWithShots userWithShots);
+
+        void refreshFollowedUsers();
     }
 }

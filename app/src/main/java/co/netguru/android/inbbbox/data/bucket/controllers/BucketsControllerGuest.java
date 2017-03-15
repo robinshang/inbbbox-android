@@ -31,12 +31,14 @@ public class BucketsControllerGuest implements BucketsController {
     }
 
     @Override
-    public Single<List<BucketWithShots>> getUserBucketsWithShots(int pageNumber, int pageCount, int shotsCount) {
+    public Single<List<BucketWithShots>> getUserBucketsWithShots(int pageNumber, int pageCount,
+                                                                 int shotsCount, boolean shouldCache) {
         return guestModeBucketsRepository.getUserBucketsWithShots();
     }
 
     @Override
-    public Single<List<Shot>> getShotsListFromBucket(long bucketId, int pageNumber, int pageCount) {
+    public Single<List<Shot>> getShotsListFromBucket(long bucketId, int pageNumber,
+                                                     int pageCount, boolean shouldCache) {
         return guestModeBucketsRepository.getShotsListFromBucket(bucketId);
     }
 

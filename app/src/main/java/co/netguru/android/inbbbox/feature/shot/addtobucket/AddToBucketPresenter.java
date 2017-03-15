@@ -14,6 +14,7 @@ import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
+import co.netguru.android.inbbbox.data.cache.CacheValidator;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.BucketCreatedEvent;
@@ -29,6 +30,7 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
 
     private final BucketsController bucketsController;
+    private final CacheValidator cacheValidator;
     private final ErrorController errorController;
 
     private final RxBus rxBus;
@@ -43,9 +45,11 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
     private boolean apiHasMoreBuckets = true;
 
     @Inject
-    AddToBucketPresenter(BucketsController bucketsController, ErrorController errorController, RxBus rxBus) {
+    AddToBucketPresenter(BucketsController bucketsController, ErrorController errorController,
+                         RxBus rxBus, CacheValidator cacheValidator) {
         this.bucketsController = bucketsController;
         this.errorController = errorController;
+        this.cacheValidator = cacheValidator;
         this.rxBus = rxBus;
         refreshSubscription = Subscriptions.unsubscribed();
         loadNextBucketsSubscription = Subscriptions.unsubscribed();
@@ -119,6 +123,7 @@ public class AddToBucketPresenter extends MvpNullObjectBasePresenter<AddToBucket
 
     @Override
     public void handleBucketClick(Bucket bucket) {
+        cacheValidator.invalidateCache(CacheValidator.CACHE_BUCKET_SHOTS).subscribe();
         getView().passResultAndCloseFragment(bucket, shot);
     }
 

@@ -38,7 +38,7 @@ public interface BucketsFragmentContract {
 
     interface Presenter extends MvpPresenter<BucketsFragmentContract.View>, ErrorPresenter {
 
-        void loadBucketsWithShots();
+        void loadBucketsWithShots(boolean tryFromCache);
 
         void loadMoreBucketsWithShots();
 
@@ -49,5 +49,7 @@ public interface BucketsFragmentContract {
         void checkEmptyData(List<BucketWithShots> data);
 
         void handleDeleteBucket(long deletedBucketId);
+
+        void refreshBuckets();
     }
 }
