@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.shot.detail;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,6 +35,7 @@ import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
+import co.netguru.android.inbbbox.feature.shared.view.AnimationDrawableCallback;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenActivity;
@@ -84,6 +86,7 @@ public class ShotDetailsFragment
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
     private ShotDetailsComponent component;
+    private AnimationDrawableCallback gifLoadingAnimationCallback;
 
     public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots,
                                                   ShotDetailsRequest detailsRequest) {
@@ -156,6 +159,7 @@ public class ShotDetailsFragment
         shotRecyclerView.addOnScrollListener(createScrollListener());
         shotRecyclerView.setAdapter(adapter);
         appBarLayout.addOnOffsetChangedListener((layout, offset) -> verifyInputVisibility());
+        placeHolderImageView.getImageView().setBackgroundResource(R.drawable.basketball_loader);
     }
 
     @Override
@@ -262,7 +266,14 @@ public class ShotDetailsFragment
 
     @Override
     public void showMainImage(ShotImage shotImage) {
-        ShotLoadingUtil.loadMainViewShot(getContext(), placeHolderImageView.getImageView(), parallaxImageView.getImageView(), shotImage);
+        ShotLoadingUtil.loadMainViewShot(getContext(), placeHolderImageView.getImageView(),
+                parallaxImageView.getImageView(), shotImage);
+    }
+
+    @Override
+    public void showMainImageWithGifAnimation(ShotImage shotImage) {
+        ShotLoadingUtil.loadMainShotWithGifAnimation(getContext(), placeHolderImageView.getImageView(),
+                parallaxImageView.getImageView(), shotImage, prepareGifLoadingAnimationDrawable());
     }
 
     @Override
@@ -399,6 +410,24 @@ public class ShotDetailsFragment
     @Override
     public void showTeamView(UserWithShots userWithShots) {
         UserActivity.startActivity(getContext(), userWithShots.user());
+    }
+
+    private AnimationDrawable prepareGifLoadingAnimationDrawable() {
+        final AnimationDrawable animationDrawable =
+                (AnimationDrawable) placeHolderImageView.getImageView().getBackground();
+
+        gifLoadingAnimationCallback = new AnimationDrawableCallback(animationDrawable,
+                placeHolderImageView.getImageView()) {
+            @Override
+            public void onAnimationComplete() {
+                animationDrawable.stop();
+                placeHolderImageView.getImageView().setVisibility(View.GONE);
+                parallaxImageView.getImageView().setVisibility(View.VISIBLE);
+            }
+        };
+        animationDrawable.setCallback(gifLoadingAnimationCallback);
+
+        return animationDrawable;
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {

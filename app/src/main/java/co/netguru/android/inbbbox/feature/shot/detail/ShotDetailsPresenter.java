@@ -245,10 +245,18 @@ public class ShotDetailsPresenter
 
     private void initializeView() {
         getView().initView();
-        getView().showMainImage(shot);
+        showShotMainImage();
         getView().updateLoadMoreState(commentLoadMoreState);
         getView().setInputShowingEnabled(false);
         showShotDetails(shot);
+    }
+
+    private void showShotMainImage() {
+        if (shot.isGif()) {
+            getView().showMainImageWithGifAnimation(shot);
+        } else {
+            getView().showMainImage(shot);
+        }
     }
 
     private void enableInputWhenIfInCommentMode() {

@@ -2,8 +2,6 @@ package co.netguru.android.inbbbox.common.utils;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -15,30 +13,15 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.bumptech.glide.request.target.Target;
 
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.common.graphics.CallbackAnimationDrawable;
 import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
+import co.netguru.android.inbbbox.feature.shared.view.AnimationDrawableCallback;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import timber.log.Timber;
 
 public class ShotLoadingUtil {
 
-    private final static String GIF_EXTENSION = ".gif";
-
-    private static boolean isLoad = false;
-    private static GlideDrawable glideResource;
-
     private ShotLoadingUtil() {
         throw new AssertionError();
-    }
-
-    private static String getImageUrl(ShotImage shot) {
-        return (shot.hiDpiImageUrl() != null && !shot.hiDpiImageUrl().isEmpty())
-                ? shot.hiDpiImageUrl() : shot.normalImageUrl();
-    }
-
-    private static DrawableTypeRequest<String> getThumbnailRequest(Context context, String url) {
-        return Glide.with(context)
-                .load(url);
     }
 
     public static void loadListShot(Context context, ImageView target, ShotImage shot) {
@@ -64,47 +47,47 @@ public class ShotLoadingUtil {
     }
 
     public static void loadMainViewShot(Context context, ImageView placeholder, ImageView target, ShotImage shot) {
-        loadMainViewShotWithListener(context, placeholder, target, shot, getRequestListener(shot, placeholder, target));
+        loadMainViewShotWithListener(context, placeholder, target, shot, null);
     }
 
-    public static void loadMainViewShotWithListener(Context context, ImageView placeholder, ImageView target, ShotImage shot,
+    public static void loadMainViewShotWithListener(Context context, ImageView placeholderView,
+                                                    ImageView targetView, ShotImage shot,
                                                     RequestListener<String, GlideDrawable> requestListener) {
+        Glide.clear(placeholderView);
+        Glide.clear(targetView);
         String imageUrl = getImageUrl(shot);
-        Timber.d("shot image url: %s", imageUrl);
+        placeholderView.setVisibility(View.GONE);
 
-        final boolean isGif = isGif(imageUrl);
-        if (isGif) {
-            target.setVisibility(View.GONE);
+        GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(targetView);
+        Glide.with(context)
+                .load(imageUrl)
+                .listener(requestListener)
+                .placeholder(R.drawable.shot_placeholder)
+                .thumbnail(ShotLoadingUtil.getThumbnailRequest(context, shot.thumbnailUrl()))
+                .animate(android.R.anim.fade_in)
+                .into(imageViewTarget);
 
-            placeholder.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-            placeholder.setBackgroundResource(R.drawable.basketball_loader);
-            AnimationDrawable animationDrawable = (AnimationDrawable) placeholder.getBackground();
-            animationDrawable.setCallback(stopAnimation(animationDrawable, target, placeholder));
+    }
 
-            animationDrawable.start();
+    public static void loadMainShotWithGifAnimation(Context context, ImageView placeholderView,
+                                                    ImageView targetView, ShotImage shot,
+                                                    AnimationDrawable animationDrawable) {
+        placeholderView.setVisibility(View.VISIBLE);
+        targetView.setVisibility(View.GONE);
 
-            GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(target);
-            Glide.with(context)
-                    .load(imageUrl)
-                    .listener(requestListener)
-                    .error(R.drawable.logo_empty)
-                    .override(placeholder.getMaxWidth(), placeholder.getMaxHeight())
-                    .animate(android.R.anim.fade_in)
-                    .into(imageViewTarget);
+        final String imageUrl = getImageUrl(shot);
+        Glide.clear(placeholderView);
+        Glide.clear(targetView);
 
-        } else {
+        animationDrawable.start();
 
-            placeholder.setVisibility(View.GONE);
-
-            GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(target);
-            Glide.with(context)
-                    .load(imageUrl)
-                    .listener(requestListener)
-                    .placeholder(R.drawable.shot_placeholder)
-                    .thumbnail(ShotLoadingUtil.getThumbnailRequest(context, shot.thumbnailUrl()))
-                    .animate(android.R.anim.fade_in)
-                    .into(imageViewTarget);
-        }
+        Glide.with(context)
+                .load(imageUrl)
+                .listener(createRequestListener(placeholderView, targetView, animationDrawable))
+                .error(R.drawable.logo_empty)
+                .dontAnimate()
+                .override(targetView.getMaxWidth(), targetView.getMaxHeight())
+                .into(new GlideDrawableImageViewTarget(targetView));
     }
 
     public static void loadMainViewShotNoPlaceholder(Context context,
@@ -120,53 +103,42 @@ public class ShotLoadingUtil {
                 .into(imageViewTarget);
     }
 
-    private static boolean isGif(@NonNull String url) {
-        return url.endsWith(GIF_EXTENSION);
-    }
-
-    private static RequestListener<String, GlideDrawable> getRequestListener(ShotImage shotImage, ImageView placeholder, ImageView targetView) {
-        if (isGif(getImageUrl(shotImage))) {
-            return new RequestListener<String, GlideDrawable>() {
-                @Override
-                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                    return false;
-                }
-
-                @Override
-                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                    if (!isFromMemoryCache) {
-                        isLoad = true;
-                        glideResource = resource;
-                        ((AnimationDrawable) placeholder.getBackground()).run();
-                        return true;
-                    } else {
-                        ((AnimationDrawable) placeholder.getBackground()).stop();
-                        placeholder.setVisibility(View.GONE);
-                        targetView.setVisibility(View.VISIBLE);
-                        return false;
-                    }
-                }
-            };
-        } else {
-            return null;
-        }
-    }
-
-    private static CallbackAnimationDrawable stopAnimation(final AnimationDrawable animationDrawable, ImageView target, ImageView placeHolder) {
-        return new CallbackAnimationDrawable(animationDrawable, placeHolder) {
+    private static RequestListener<String, GlideDrawable> createRequestListener(ImageView placeholderView,
+                                                                                ImageView targetView,
+                                                                                AnimationDrawable animationDrawable) {
+        return new RequestListener<String, GlideDrawable>() {
             @Override
-            public void onAnimationComplete() {
-                if (isLoad) {
-                    animationDrawable.stop();
-                    target.setImageDrawable(glideResource);
-                    glideResource.start();
-                    isLoad = false;
-                    glideResource = null;
-                } else {
-                    animationDrawable.start();
-                }
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target,
+                                       boolean isFirstResource) {
+                return false;
+            }
 
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target,
+                                           boolean isFromMemoryCache, boolean isFirstResource) {
+                if (!isFromMemoryCache) {
+                    final AnimationDrawableCallback animationCallback =
+                            (AnimationDrawableCallback) animationDrawable.getCallback();
+                    if (animationCallback != null) {
+                        animationCallback.setShouldFinishAnimation(true);
+                    }
+                } else {
+                    animationDrawable.stop();
+                    placeholderView.setVisibility(View.GONE);
+                    targetView.setVisibility(View.VISIBLE);
+                }
+                return false;
             }
         };
+    }
+
+    private static String getImageUrl(ShotImage shot) {
+        return (shot.hiDpiImageUrl() != null && !shot.hiDpiImageUrl().isEmpty())
+                ? shot.hiDpiImageUrl() : shot.normalImageUrl();
+    }
+
+    private static DrawableTypeRequest<String> getThumbnailRequest(Context context, String url) {
+        return Glide.with(context)
+                .load(url);
     }
 }
