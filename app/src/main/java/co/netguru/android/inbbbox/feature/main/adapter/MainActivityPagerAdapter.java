@@ -71,12 +71,13 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment>
     }
 
     private Fragment getProperFragmentForShotsTab() {
-        shouldShowShotsAnimation = false;
-
+        Fragment result;
         if (isOnboardingPassed) {
-            return ShotsFragment.newInstance(shouldShowShotsAnimation);
+            result = ShotsFragment.newInstance(shouldShowShotsAnimation);
         } else {
-            return OnboardingFragment.newInstance();
+            result = OnboardingFragment.newInstance();
         }
+        shouldShowShotsAnimation = false;
+        return result;
     }
 }
