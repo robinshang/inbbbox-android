@@ -24,7 +24,7 @@ import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersContract.View>
         implements FollowersContract.Presenter {
 
-    private static final int FOLLOWERS_PAGE_COUNT = 15;
+    private static final int FOLLOWERS_PAGE_COUNT = 10;
     private static final int FOLLOWERS_SHOT_PAGE_COUNT = 30;
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
 
@@ -57,12 +57,12 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     }
 
     @Override
-    public void getFollowedUsersFromServer() {
+    public void getFollowedUsersFromServer(boolean canUseCacheForShots) {
         if (refreshSubscription.isUnsubscribed()) {
             pageNumber = 1;
             loadNextBucketSubscription.unsubscribe();
             refreshSubscription = followersController.getFollowedUsers(pageNumber,
-                    FOLLOWERS_PAGE_COUNT, FOLLOWERS_SHOT_PAGE_COUNT)
+                    FOLLOWERS_PAGE_COUNT, FOLLOWERS_SHOT_PAGE_COUNT, canUseCacheForShots)
                     .toList()
                     .compose(androidIO())
                     .doAfterTerminate(getView()::hideProgressBars)
@@ -76,7 +76,7 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
         if (hasMore && refreshSubscription.isUnsubscribed() && loadNextBucketSubscription.isUnsubscribed()) {
             pageNumber++;
             loadNextBucketSubscription = followersController.getFollowedUsers(pageNumber,
-                    FOLLOWERS_PAGE_COUNT, FOLLOWERS_SHOT_PAGE_COUNT)
+                    FOLLOWERS_PAGE_COUNT, FOLLOWERS_SHOT_PAGE_COUNT, false)
                     .compose(RxTransformerUtil.executeRunnableIfObservableDidntEmitUntilGivenTime(
                             SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
                             getView()::showLoadingMoreFollowersView))
@@ -103,6 +103,11 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     @Override
     public void onFollowedUserSelect(UserWithShots userWithShots) {
         getView().openUserDetails(userWithShots);
+    }
+
+    @Override
+    public void refreshFollowedUsers() {
+        getFollowedUsersFromServer(false);
     }
 
     @Override

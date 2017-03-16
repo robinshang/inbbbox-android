@@ -124,7 +124,7 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        getPresenter().getFollowedUsersFromServer();
+        getPresenter().getFollowedUsersFromServer(!pullToRefresh);
     }
 
     @Override
@@ -184,7 +184,7 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
 
     @Override
     public void refreshFragmentData() {
-        getPresenter().getFollowedUsersFromServer();
+        getPresenter().refreshFollowedUsers();
     }
 
     @Override
@@ -228,6 +228,6 @@ public class FollowersFragment extends BaseMvpLceFragmentWithListTypeSelection<S
 
     private void initRefreshLayout() {
         swipeRefreshLayout.setColorSchemeColors(accentColor);
-        swipeRefreshLayout.setOnRefreshListener(getPresenter()::getFollowedUsersFromServer);
+        swipeRefreshLayout.setOnRefreshListener(getPresenter()::refreshFollowedUsers);
     }
 }

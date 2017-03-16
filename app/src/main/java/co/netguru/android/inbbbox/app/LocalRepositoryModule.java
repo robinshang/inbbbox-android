@@ -11,6 +11,7 @@ import org.greenrobot.greendao.database.Database;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import co.netguru.android.inbbbox.data.cache.CacheValidator;
 import co.netguru.android.inbbbox.data.db.DaoMaster;
 import co.netguru.android.inbbbox.data.db.DaoSession;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.CurrentUserPrefsRepository;
@@ -29,6 +30,7 @@ public class LocalRepositoryModule {
     private static final String TOKEN_SHARED_PREFERENCES_NAME = "token";
     private static final String USER_SHARED_PREFERENCES_NAME = "user";
     private static final String ONBOARDING_SHARED_PREFERENCES_NAME = "onboarding";
+    private static final String CACHE_SHARED_PREFERENCES_NAME = "cache";
 
     @Named(SETTINGS_SHARED_PREFERENCES_NAME)
     @Provides
@@ -62,6 +64,14 @@ public class LocalRepositoryModule {
                 .concat(ONBOARDING_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
     }
 
+    @Named(CACHE_SHARED_PREFERENCES_NAME)
+    @Provides
+    @Singleton
+    SharedPreferences provideCacheSharedPreferences(Context context) {
+        return context.getSharedPreferences(context.getPackageName()
+                .concat(CACHE_SHARED_PREFERENCES_NAME), Context.MODE_PRIVATE);
+    }
+
     @Provides
     @Singleton
     SettingsPrefsRepository provideSettingsPrefsRepository(
@@ -74,6 +84,13 @@ public class LocalRepositoryModule {
     TokenPrefsRepository provideTokenPrefsRepository(
             @Named(TOKEN_SHARED_PREFERENCES_NAME) SharedPreferences sharedPreferences) {
         return new TokenPrefsRepository(sharedPreferences);
+    }
+
+    @Provides
+    @Singleton
+    CacheValidator provideCacheValidator(
+            @Named(CACHE_SHARED_PREFERENCES_NAME) SharedPreferences sharedPreferences) {
+        return new CacheValidator(sharedPreferences);
     }
 
     @Provides

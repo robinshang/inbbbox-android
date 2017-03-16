@@ -19,10 +19,13 @@ public class FollowersControllerGuest extends BaseFollowersController implements
     }
 
     @Override
-    public Observable<UserWithShots> getFollowedUsers(int pageNumber, int pageCount, int followerShotPageCount) {
+    public Observable<UserWithShots> getFollowedUsers(int pageNumber, int pageCount,
+                                                      int followerShotPageCount,
+                                                      boolean canUseCacheForShots) {
         if (pageNumber == FIRST_PAGE) {
             return guestModeFollowersRepository.getFollowersWithoutShots()
-                    .flatMap(user -> getFollowerWithShots(user, followerShotPageCount));
+                    .flatMap(user -> getFollowerWithShots(user, followerShotPageCount,
+                            canUseCacheForShots));
         }
         return Observable.empty();
     }

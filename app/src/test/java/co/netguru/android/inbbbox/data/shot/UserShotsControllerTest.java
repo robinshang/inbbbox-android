@@ -21,6 +21,7 @@ import rx.observers.TestSubscriber;
 
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -42,7 +43,7 @@ public class UserShotsControllerTest {
     @Before
     public void setUp() {
         inputList = Statics.getShotsEntityList(TEST_ITEMS_COUNT);
-        when(shotsApi.getUserShots(anyLong(), anyInt(), anyInt()))
+        when(shotsApi.getUserShots(anyLong(), anyInt(), anyInt(), anyString()))
                 .thenReturn(Observable.just(inputList));
     }
 

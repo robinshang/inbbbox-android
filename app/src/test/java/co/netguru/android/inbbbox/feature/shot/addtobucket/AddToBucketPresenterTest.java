@@ -15,11 +15,13 @@ import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
+import co.netguru.android.inbbbox.data.cache.CacheValidator;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.BucketCreatedEvent;
 import co.netguru.android.testcommons.RxSyncTestRule;
+import rx.Completable;
 import rx.Observable;
 import rx.Single;
 
@@ -39,6 +41,9 @@ public class AddToBucketPresenterTest {
 
     @Mock
     BucketsController bucketsControllerMock;
+
+    @Mock
+    CacheValidator cacheValidatorMock;
 
     @Mock
     RxBus rxBusMock;
@@ -129,6 +134,7 @@ public class AddToBucketPresenterTest {
     @Test
     public void whenBucketSelected_thenPassResult() {
         setupWithEmptyRxBus();
+        when(cacheValidatorMock.invalidateCache(anyString())).thenReturn(Completable.complete());
         //given
         presenter.handleShot(Statics.LIKED_SHOT_NOT_BUCKETED);
         //when

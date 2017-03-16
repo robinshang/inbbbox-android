@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
+import co.netguru.android.inbbbox.data.cache.CacheStrategy;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Observable;
 
@@ -24,7 +25,7 @@ public class UserShotsController {
     }
 
     public Observable<List<Shot>> getUserShotsList(long id, int pageNumber, int pageCount) {
-        return shotsApi.getUserShots(id, pageNumber, pageCount)
+        return shotsApi.getUserShots(id, pageNumber, pageCount, CacheStrategy.noCache())
                 .flatMap(Observable::from)
                 .map(Shot::create)
                 .toList();

@@ -29,27 +29,19 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment>
     @SuppressLint("DefaultLocale")
     @Override
     public Fragment getItem(int position) {
-        Fragment result;
-
         switch (TabItemType.getTabItemForPosition(position)) {
             case SHOTS:
-                result = getProperFragmentForShotsTab(isOnboardingPassed);
-                shouldShowShotsAnimation = false;
-                break;
+                return getProperFragmentForShotsTab();
             case LIKES:
-                result = LikesFragment.newInstance();
-                break;
+                return LikesFragment.newInstance();
             case BUCKETS:
-                result = BucketsFragment.newInstance();
-                break;
+                return BucketsFragment.newInstance();
             case FOLLOWERS:
-                result = FollowersFragment.newInstance();
-                break;
+                return FollowersFragment.newInstance();
             default:
                 throw new IllegalArgumentException(String.format(
                         "There is no fragment defined for position: %d", position));
         }
-        return result;
     }
 
     @Override
@@ -78,8 +70,14 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment>
         }
     }
 
-    private Fragment getProperFragmentForShotsTab(boolean isOnboardingPassed) {
-        return isOnboardingPassed ? ShotsFragment.newInstance(shouldShowShotsAnimation)
-                : OnboardingFragment.newInstance();
+    private Fragment getProperFragmentForShotsTab() {
+        Fragment result;
+        if (isOnboardingPassed) {
+            result = ShotsFragment.newInstance(shouldShowShotsAnimation);
+        } else {
+            result = OnboardingFragment.newInstance();
+        }
+        shouldShowShotsAnimation = false;
+        return result;
     }
 }

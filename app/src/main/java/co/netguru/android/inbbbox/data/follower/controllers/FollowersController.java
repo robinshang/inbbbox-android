@@ -8,7 +8,8 @@ import rx.Single;
 
 public interface FollowersController {
 
-    Observable<UserWithShots> getFollowedUsers(int pageNumber, int pageCount, int followerShotPageCount);
+    Observable<UserWithShots> getFollowedUsers(int pageNumber, int pageCount,
+                                               int followerShotPageCount, boolean canUseCacheForShots);
 
     Completable unFollowUser(long id);
 

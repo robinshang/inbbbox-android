@@ -73,6 +73,8 @@ public class MainActivity
     private static final int TAB_BUCKETS = 2;
     private static final int TAB_FOLLOWING = 3;
 
+    private static final int OFFSCREEN_PAGE_LIMIT = 2;
+
     @BindColor(R.color.accent)
     int highlightColor;
 
@@ -356,6 +358,7 @@ public class MainActivity
     @Override
     public void initializePager(boolean isOnboardingPassed) {
         pagerAdapter = new MainActivityPagerAdapter(getSupportFragmentManager(), isOnboardingPassed);
+        viewPager.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 

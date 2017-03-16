@@ -169,7 +169,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        getPresenter().loadBucketsWithShots();
+        getPresenter().loadBucketsWithShots(!pullToRefresh);
     }
 
     @Override
@@ -260,13 +260,13 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
 
     private void initRefreshLayout() {
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.accent));
-        swipeRefreshLayout.setOnRefreshListener(getPresenter()::loadBucketsWithShots);
+        swipeRefreshLayout.setOnRefreshListener(getPresenter()::refreshBuckets);
     }
 
     @Override
     public void refreshFragmentData() {
         swipeRefreshLayout.setRefreshing(true);
-        getPresenter().loadBucketsWithShots();
+        getPresenter().refreshBuckets();
     }
 
     @Override

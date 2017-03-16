@@ -9,6 +9,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -16,6 +17,8 @@ import retrofit2.http.Query;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
+
+import static co.netguru.android.inbbbox.data.cache.CacheStrategy.HEADER_CACHE_CONTROL;
 
 public interface ShotsApi {
 
@@ -32,8 +35,9 @@ public interface ShotsApi {
     Observable<List<ShotEntity>> getFollowingShots(@Query("page") int pageNumber, @Query("per_page") int pageCount);
 
     @GET("users/{user}/shots")
-    Observable<List<ShotEntity>> getUserShots(@Path("user") long userId,
-                                              @Query("page") int pageNumber, @Query("per_page") int pageCount);
+    Observable<List<ShotEntity>> getUserShots(@Path("user") long userId, @Query("page") int pageNumber,
+                                              @Query("per_page") int pageCount,
+                                              @Header(HEADER_CACHE_CONTROL) String cacheControl);
 
     @GET("shots/{shotId}/comments")
     Observable<List<CommentEntity>> getShotComments(
