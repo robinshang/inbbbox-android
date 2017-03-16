@@ -18,6 +18,7 @@ import co.netguru.android.inbbbox.common.gson.AutoGsonAdapterFactory;
 import co.netguru.android.inbbbox.common.gson.DateTimeConverter;
 import co.netguru.android.inbbbox.common.retrofit.UpdatedRxJavaCallAdapter;
 import co.netguru.android.inbbbox.data.cache.CacheRequestInterceptor;
+import co.netguru.android.inbbbox.data.cache.CacheResponseInterceptor;
 import co.netguru.android.inbbbox.data.session.RequestInterceptor;
 import co.netguru.android.inbbbox.data.session.TokenPrefsRepository;
 import co.netguru.android.inbbbox.data.session.controllers.LogoutController;
@@ -62,19 +63,25 @@ public class ConfigurationModule {
 
     @Provides
     @Singleton
+    CacheResponseInterceptor provideCacheResponseInterceptor() {
+        return new CacheResponseInterceptor();
+    }
+
+    @Provides
+    @Singleton
     OkHttpClient provideOkHttpClient(RequestInterceptor interceptor,
                                      AnalyticsInterceptor analyticsInterceptor,
-                                     Cache cache, CacheRequestInterceptor cacheRequestInterceptor) {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .addInterceptor(cacheRequestInterceptor)
+                                     Cache cache, CacheRequestInterceptor cacheRequestInterceptor,
+                                     CacheResponseInterceptor cacheResponseInterceptor) {
+        return new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BASIC))
                 .addInterceptor(interceptor)
                 .addInterceptor(analyticsInterceptor)
-                .cache(cache);
-        builder.networkInterceptors().add(cacheRequestInterceptor);
-
-        return builder.build();
+                .addInterceptor(cacheRequestInterceptor)
+                .addNetworkInterceptor(cacheResponseInterceptor)
+                .cache(cache)
+                .build();
     }
 
     @Provides

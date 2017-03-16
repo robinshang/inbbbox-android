@@ -21,14 +21,14 @@ import retrofit2.http.Query;
 import rx.Completable;
 import rx.Single;
 
-import static co.netguru.android.inbbbox.data.cache.CacheStrategy.HEADER_CACHE_STRATEGY;
+import static co.netguru.android.inbbbox.data.cache.CacheStrategy.HEADER_CACHE_CONTROL;
 
 public interface BucketApi {
 
     @GET("buckets/{id}/shots")
     Single<List<ShotEntity>> getBucketShotsList(@Path("id") long id, @Query("page") int pageNumber,
                                                 @Query("per_page") int pageCount,
-                                                @Header(HEADER_CACHE_STRATEGY) String cacheStrategy);
+                                                @Header(HEADER_CACHE_CONTROL) String cacheControl);
 
     @FormUrlEncoded
     @PUT("buckets/{id}/shots")

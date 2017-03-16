@@ -18,7 +18,7 @@ import rx.Completable;
 import rx.Observable;
 import rx.Single;
 
-import static co.netguru.android.inbbbox.data.cache.CacheStrategy.HEADER_CACHE_STRATEGY;
+import static co.netguru.android.inbbbox.data.cache.CacheStrategy.HEADER_CACHE_CONTROL;
 
 public interface ShotsApi {
 
@@ -37,7 +37,7 @@ public interface ShotsApi {
     @GET("users/{user}/shots")
     Observable<List<ShotEntity>> getUserShots(@Path("user") long userId, @Query("page") int pageNumber,
                                               @Query("per_page") int pageCount,
-                                              @Header(HEADER_CACHE_STRATEGY) String cacheStrategy);
+                                              @Header(HEADER_CACHE_CONTROL) String cacheControl);
 
     @GET("shots/{shotId}/comments")
     Observable<List<CommentEntity>> getShotComments(
