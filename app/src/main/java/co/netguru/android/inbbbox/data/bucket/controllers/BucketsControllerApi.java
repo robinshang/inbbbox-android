@@ -90,8 +90,9 @@ public class BucketsControllerApi implements BucketsController {
     }
 
     private Observable<List<Shot>> getShotsListObservableFromBucket(long bucketId, int pageNumber, int pageCount) {
-        return Observable.just(bucketCache.get(bucketId).shots())
-                .filter(val -> val != null)
+        return Observable.just(bucketCache.get(bucketId))
+                .filter(bucketWithShots -> bucketWithShots != null)
+                .map(BucketWithShots::shots)
                 .switchIfEmpty(downloadAndCacheShotsList(bucketId, pageNumber, pageCount));
     }
 
