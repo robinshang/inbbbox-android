@@ -76,7 +76,7 @@ public class UserInfoPresenter extends MvpNullObjectBasePresenter<UserInfoContra
 
     private void getUserShots() {
         subscriptions.add(userShotsController.getUserShotsList(user.id(),
-                PAGE, SHOTS_PAGE_COUNT)
+                PAGE, SHOTS_PAGE_COUNT, true)
                 .compose(androidIO())
                 .compose(fromListObservable())
                 .map(shot -> Shot.update(shot).author(user).build())

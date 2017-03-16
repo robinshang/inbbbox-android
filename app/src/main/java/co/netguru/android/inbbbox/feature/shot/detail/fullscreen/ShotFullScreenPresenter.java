@@ -82,7 +82,7 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
                     break;
                 case ShotDetailsType.USER:
                     requestMoreObservable = userShotsController
-                            .getUserShotsList(detailsRequest.id(), currentPage, SHOTS_PER_PAGE);
+                            .getUserShotsList(detailsRequest.id(), currentPage, SHOTS_PER_PAGE, true);
                     break;
                 default:
                     return;
