@@ -54,10 +54,8 @@ public class BucketsControllerApi implements BucketsController {
                         FIRST_PAGE_NUMBER, shotsCount, shouldCache),
                         BucketWithShots::create)
                 .toList()
-                .map(bucketWithShotses -> {
-                    cacheValidator.validateCache(CacheValidator.CACHE_BUCKET_SHOTS).subscribe();
-                    return bucketWithShotses;
-                })
+                .doOnNext(bucketWithShotses ->
+                        cacheValidator.validateCache(CacheValidator.CACHE_BUCKET_SHOTS).subscribe())
                 .toSingle();
     }
 

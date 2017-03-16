@@ -35,6 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ConfigurationModule {
 
     private static final int HTTP_CACHE_SIZE = 1024 * 1024 * 20;
+    private static final String HTTP_CACHE_DIRECTORY = "cache";
 
     @Provides
     @Singleton
@@ -87,7 +88,7 @@ public class ConfigurationModule {
     @Provides
     @Singleton
     Cache provideHttpCache(Context context) {
-        File cacheDirectory = new File(context.getCacheDir(), "http");
+        File cacheDirectory = new File(context.getCacheDir(), HTTP_CACHE_DIRECTORY);
         return new Cache(cacheDirectory, HTTP_CACHE_SIZE);
     }
 
