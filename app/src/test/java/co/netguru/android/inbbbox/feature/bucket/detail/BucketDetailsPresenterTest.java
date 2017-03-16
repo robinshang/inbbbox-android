@@ -25,6 +25,7 @@ import rx.observers.TestSubscriber;
 import rx.subscriptions.Subscriptions;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
@@ -106,7 +107,7 @@ public class BucketDetailsPresenterTest {
         TestSubscriber loadNextShotsSubscription = new TestSubscriber();
         presenter.refreshShotsSubscription = Subscriptions.unsubscribed();
         presenter.loadNextShotsSubscription = loadNextShotsSubscription;
-        when(bucketsControllerMock.getShotsListFromBucket(anyLong(), anyInt(), anyInt()))
+        when(bucketsControllerMock.getShotsListFromBucket(anyLong(), anyInt(), anyInt(), anyBoolean()))
                 .thenReturn(Single.just(shots));
         //when
         presenter.refreshShots();
