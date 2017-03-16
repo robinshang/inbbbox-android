@@ -53,7 +53,7 @@ interface ShotsContract {
 
         void likeShot(Shot shot);
 
-        void getShotsFromServer(boolean pullToRefresh);
+        void getShotsFromServer(boolean pullToRefresh, boolean shouldShowShotsAnimation);
 
         void getMoreShotsFromServer();
 

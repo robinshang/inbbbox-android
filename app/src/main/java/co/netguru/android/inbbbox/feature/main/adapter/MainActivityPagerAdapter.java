@@ -18,6 +18,7 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment>
 
     private SparseArray<T> activeRefreshableFragments;
     private boolean isOnboardingPassed;
+    private boolean shouldShowShotsAnimation = true;
 
     public MainActivityPagerAdapter(FragmentManager fm, boolean isOnboardingPassed) {
         super(fm);
@@ -30,7 +31,7 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment>
     public Fragment getItem(int position) {
         switch (TabItemType.getTabItemForPosition(position)) {
             case SHOTS:
-                return getShotsOrOnboardingFragment();
+                return getProperFragmentForShotsTab();
             case LIKES:
                 return LikesFragment.newInstance();
             case BUCKETS:
@@ -69,9 +70,11 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment>
         }
     }
 
-    private Fragment getShotsOrOnboardingFragment() {
+    private Fragment getProperFragmentForShotsTab() {
+        shouldShowShotsAnimation = false;
+
         if (isOnboardingPassed) {
-            return ShotsFragment.newInstance();
+            return ShotsFragment.newInstance(shouldShowShotsAnimation);
         } else {
             return OnboardingFragment.newInstance();
         }
