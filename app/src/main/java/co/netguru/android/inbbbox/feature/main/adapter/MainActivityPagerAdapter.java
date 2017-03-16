@@ -34,6 +34,7 @@ public class MainActivityPagerAdapter<T extends Fragment & RefreshableFragment>
         switch (TabItemType.getTabItemForPosition(position)) {
             case SHOTS:
                 result = getProperFragmentForShotsTab(isOnboardingPassed);
+                shouldShowShotsAnimation = false;
                 break;
             case LIKES:
                 result = LikesFragment.newInstance();
