@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.feature.shot.detail;
 
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
@@ -34,6 +37,7 @@ import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
+import co.netguru.android.inbbbox.feature.shared.view.AnimationDrawableCallback;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.fullscreen.ShotFullscreenActivity;
@@ -59,6 +63,9 @@ public class ShotDetailsFragment
     @BindView(R.id.shot_details_recyclerView)
     RecyclerView shotRecyclerView;
 
+    @BindView(R.id.placeholder_image_view)
+    ImageView placeHolderImageView;
+
     @BindView(R.id.parallax_image_view)
     RoundedCornersShotImageView parallaxImageView;
 
@@ -81,6 +88,15 @@ public class ShotDetailsFragment
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
     private ShotDetailsComponent component;
+    private AnimationDrawable gifLoadingAnimationDrawable;
+
+    /**
+     * This field is needed to provide a strong reference for {@link AnimationDrawableCallback},
+     * because this callback is used with {@link AnimationDrawable}
+     * which creates a {@link java.lang.ref.WeakReference} to it
+     * for more information see {@link android.graphics.drawable.AnimationDrawable#setCallback(Drawable.Callback)}
+     */
+    private AnimationDrawableCallback gifLoadingAnimationCallback;
 
     public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots,
                                                   ShotDetailsRequest detailsRequest) {
@@ -115,6 +131,15 @@ public class ShotDetailsFragment
         getPresenter().retrieveInitialData();
         getPresenter().downloadData();
         getPresenter().checkShotBucketsCount(getArguments().getParcelable(ARG_SHOT));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (gifLoadingAnimationDrawable != null) {
+            gifLoadingAnimationDrawable.stop();
+            gifLoadingAnimationDrawable = null;
+        }
     }
 
     private void initComponent() {
@@ -259,7 +284,15 @@ public class ShotDetailsFragment
 
     @Override
     public void showMainImage(ShotImage shotImage) {
-        ShotLoadingUtil.loadMainViewShot(getContext(), parallaxImageView.getImageView(), shotImage);
+        ShotLoadingUtil.loadMainViewShot(getContext(), placeHolderImageView,
+                parallaxImageView.getImageView(), shotImage);
+    }
+
+    @Override
+    public void showMainImageWithGifAnimation(ShotImage shotImage) {
+        prepareGifLoadingAnimationDrawable();
+        ShotLoadingUtil.loadMainShotWithGifAnimation(getContext(), placeHolderImageView,
+                parallaxImageView.getImageView(), shotImage, gifLoadingAnimationDrawable);
     }
 
     @Override
@@ -396,6 +429,22 @@ public class ShotDetailsFragment
     @Override
     public void showTeamView(UserWithShots userWithShots) {
         UserActivity.startActivity(getContext(), userWithShots.user());
+    }
+
+    private void prepareGifLoadingAnimationDrawable() {
+        placeHolderImageView.setBackgroundResource(R.drawable.basketball_loader);
+        gifLoadingAnimationDrawable = (AnimationDrawable) placeHolderImageView.getBackground();
+
+        gifLoadingAnimationCallback = new AnimationDrawableCallback(gifLoadingAnimationDrawable,
+                placeHolderImageView) {
+            @Override
+            public void onAnimationComplete() {
+                gifLoadingAnimationDrawable.stop();
+                placeHolderImageView.setVisibility(View.GONE);
+                parallaxImageView.getImageView().setVisibility(View.VISIBLE);
+            }
+        };
+        gifLoadingAnimationDrawable.setCallback(gifLoadingAnimationCallback);
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {

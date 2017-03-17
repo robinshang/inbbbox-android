@@ -15,7 +15,7 @@ import co.netguru.android.inbbbox.data.shot.model.ui.ShotImage;
 import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
 
-public interface ShotDetailsContract {
+interface ShotDetailsContract {
 
     interface View extends MvpView, HttpErrorView {
 
@@ -24,6 +24,8 @@ public interface ShotDetailsContract {
         void addCommentsToList(List<Comment> commentList);
 
         void showMainImage(ShotImage shotImage);
+
+        void showMainImageWithGifAnimation(ShotImage shotImage);
 
         void initView();
 

@@ -1,5 +1,4 @@
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,12 +24,18 @@
                 android:id="@+id/parallax_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/details_parallax_image_view_height"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center_horizontal|top"
-                android:fitsSystemWindows="true"
-                android:background="@drawable/shape_rounded_top_corners"
+                android:background="@color/white"
                 app:layout_collapseMode="parallax"
-                app:roundingBottomCornersEnabled="false"/>
+                app:roundingBottomCornersEnabled="false" />
+
+            <ImageView
+                android:id="@+id/placeholder_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/details_parallax_image_view_height"
+                android:layout_marginEnd="@dimen/shot_details_gif_placeholder_horizontal_padding"
+                android:layout_marginStart="@dimen/shot_details_gif_placeholder_horizontal_padding"
+                android:visibility="gone"
+                app:layout_collapseMode="parallax" />
 
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
@@ -47,9 +52,9 @@
                     android:layout_margin="@dimen/details_close_button_margin"
                     android:alpha="0.7"
                     android:clickable="true"
-                    android:minHeight="?attr/actionBarSize"
                     android:contentDescription="@null"
-                    android:src="@drawable/selector_details_close"/>
+                    android:minHeight="?attr/actionBarSize"
+                    android:src="@drawable/selector_details_close" />
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -59,9 +64,9 @@
         android:id="@+id/shot_details_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
         android:background="@drawable/shot_details_background"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:overScrollMode="never"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <RelativeLayout
         android:id="@+id/comment_input_panel"
@@ -76,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/details_comment_shadow_height"
             android:layout_alignParentTop="true"
-            android:background="@drawable/shadow"/>
+            android:background="@drawable/shadow" />
 
 
         <android.support.design.widget.TextInputLayout
@@ -85,8 +90,8 @@
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/margin_default"
             android:layout_marginEnd="@dimen/details_comment_input_right_margin"
+            android:layout_marginStart="@dimen/margin_default"
             android:layout_toStartOf="@+id/comment_send_container"
             android:paddingTop="@dimen/details_comment_input_margin"
             android:theme="@style/TextInputStyle">
@@ -98,7 +103,7 @@
                 android:layout_marginBottom="@dimen/details_comment_input_margin"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
-                android:hint="@string/comment_input_hint"/>
+                android:hint="@string/comment_input_hint" />
         </android.support.design.widget.TextInputLayout>
 
         <FrameLayout
@@ -114,16 +119,16 @@
                 android:layout_width="@dimen/details_comment_send_button_size"
                 android:layout_height="@dimen/details_comment_send_button_size"
                 android:indeterminate="true"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/comment_send_imageView"
                 android:layout_width="@dimen/details_comment_send_button_size"
                 android:layout_height="@dimen/details_comment_send_button_size"
                 android:background="@drawable/selector_send_button_selector"
-                android:padding="@dimen/details_comment_input_margin"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_send"/>
+                android:padding="@dimen/details_comment_input_margin"
+                android:src="@drawable/ic_send" />
         </FrameLayout>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
