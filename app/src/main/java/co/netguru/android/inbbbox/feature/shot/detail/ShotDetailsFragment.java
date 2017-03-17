@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.feature.shot.detail;
 
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -87,8 +88,15 @@ public class ShotDetailsFragment
     private LinearLayoutManager linearLayoutManager;
     private boolean isInputPanelShowingEnabled;
     private ShotDetailsComponent component;
-    private AnimationDrawableCallback gifLoadingAnimationCallback;
     private AnimationDrawable gifLoadingAnimationDrawable;
+
+    /**
+     * This field is needed to provide a strong reference for {@link AnimationDrawableCallback},
+     * because this callback is used with {@link AnimationDrawable}
+     * which creates a {@link java.lang.ref.WeakReference} to it
+     * for more information see {@link android.graphics.drawable.AnimationDrawable#setCallback(Drawable.Callback)}
+     */
+    private AnimationDrawableCallback gifLoadingAnimationCallback;
 
     public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots,
                                                   ShotDetailsRequest detailsRequest) {

@@ -116,20 +116,26 @@ public class ShotLoadingUtil {
             @Override
             public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target,
                                            boolean isFromMemoryCache, boolean isFirstResource) {
-                if (!isFromMemoryCache) {
-                    final AnimationDrawableCallback animationCallback =
-                            (AnimationDrawableCallback) animationDrawable.getCallback();
-                    if (animationCallback != null) {
-                        animationCallback.setShouldFinishAnimation(true);
-                    }
-                } else {
-                    animationDrawable.stop();
-                    placeholderView.setVisibility(View.GONE);
-                    targetView.setVisibility(View.VISIBLE);
-                }
+                stopAnimationIfGifFromCacheOrNotifyGifReady(isFromMemoryCache, placeholderView, targetView, animationDrawable);
                 return false;
             }
         };
+    }
+
+    private static void stopAnimationIfGifFromCacheOrNotifyGifReady(boolean isFromMemoryCache,
+                                                                    ImageView placeholderView, ImageView targetView,
+                                                                    AnimationDrawable animationDrawable) {
+        if (!isFromMemoryCache) {
+            final AnimationDrawableCallback animationCallback =
+                    (AnimationDrawableCallback) animationDrawable.getCallback();
+            if (animationCallback != null) {
+                animationCallback.setShouldFinishAnimation(true);
+            }
+        } else {
+            animationDrawable.stop();
+            placeholderView.setVisibility(View.GONE);
+            targetView.setVisibility(View.VISIBLE);
+        }
     }
 
     private static String getImageUrl(ShotImage shot) {

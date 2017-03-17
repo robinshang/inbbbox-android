@@ -25,13 +25,7 @@ public abstract class AnimationDrawableCallback implements Callback {
         if (callback != null) {
             callback.invalidateDrawable(who);
         }
-
-        final Drawable lastFrame = lastFrameWeakReference.get();
-
-        if (shouldFinishAnimation && lastFrame != null && lastFrame.equals(who.getCurrent())) {
-            shouldFinishAnimation = false;
-            onAnimationComplete();
-        }
+        checkCanFinishAnimation(who);
     }
 
     @Override
@@ -55,4 +49,13 @@ public abstract class AnimationDrawableCallback implements Callback {
     }
 
     public abstract void onAnimationComplete();
+
+    private void checkCanFinishAnimation(@NonNull Drawable who) {
+        final Drawable lastFrame = lastFrameWeakReference.get();
+
+        if (shouldFinishAnimation && lastFrame != null && lastFrame.equals(who.getCurrent())) {
+            shouldFinishAnimation = false;
+            onAnimationComplete();
+        }
+    }
 }
