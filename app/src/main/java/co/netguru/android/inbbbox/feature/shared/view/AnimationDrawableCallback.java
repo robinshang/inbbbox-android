@@ -9,12 +9,13 @@ import java.lang.ref.WeakReference;
 
 public abstract class AnimationDrawableCallback implements Callback {
 
-    private Drawable lastFrame;
+    private WeakReference<Drawable> lastFrameWeakReference;
     private WeakReference<Callback> callbackWeakReference;
     private boolean shouldFinishAnimation = false;
 
     public AnimationDrawableCallback(AnimationDrawable animationDrawable, Callback callback) {
-        lastFrame = animationDrawable.getFrame(animationDrawable.getNumberOfFrames() - 1);
+        lastFrameWeakReference = new WeakReference<>(
+                animationDrawable.getFrame(animationDrawable.getNumberOfFrames() - 1));
         callbackWeakReference = new WeakReference<>(callback);
     }
 
@@ -24,6 +25,8 @@ public abstract class AnimationDrawableCallback implements Callback {
         if (callback != null) {
             callback.invalidateDrawable(who);
         }
+
+        final Drawable lastFrame = lastFrameWeakReference.get();
 
         if (shouldFinishAnimation && lastFrame != null && lastFrame.equals(who.getCurrent())) {
             shouldFinishAnimation = false;

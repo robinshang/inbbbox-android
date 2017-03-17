@@ -20,27 +20,22 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <FrameLayout
+            <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
+                android:id="@+id/parallax_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/details_parallax_image_view_height"
-                app:layout_collapseMode="parallax">
+                android:background="@color/white"
+                app:layout_collapseMode="parallax"
+                app:roundingBottomCornersEnabled="false" />
 
-                <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
-                    android:id="@+id/parallax_image_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    app:roundingBottomCornersEnabled="false" />
-
-                <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
-                    android:id="@+id/placeholder_image_view"
-                    android:paddingStart="@dimen/shot_details_gif_placeholder_horizontal_padding"
-                    android:paddingEnd="@dimen/shot_details_gif_placeholder_horizontal_padding"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:roundingBottomCornersEnabled="false" />
-            </FrameLayout>
-
+            <ImageView
+                android:id="@+id/placeholder_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/details_parallax_image_view_height"
+                android:layout_marginEnd="@dimen/shot_details_gif_placeholder_horizontal_padding"
+                android:layout_marginStart="@dimen/shot_details_gif_placeholder_horizontal_padding"
+                android:visibility="gone"
+                app:layout_collapseMode="parallax" />
 
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"

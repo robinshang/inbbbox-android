@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class ShotDetailsFragment
     RecyclerView shotRecyclerView;
 
     @BindView(R.id.placeholder_image_view)
-    RoundedCornersShotImageView placeHolderImageView;
+    ImageView placeHolderImageView;
 
     @BindView(R.id.parallax_image_view)
     RoundedCornersShotImageView parallaxImageView;
@@ -87,6 +88,7 @@ public class ShotDetailsFragment
     private boolean isInputPanelShowingEnabled;
     private ShotDetailsComponent component;
     private AnimationDrawableCallback gifLoadingAnimationCallback;
+    private AnimationDrawable gifLoadingAnimationDrawable;
 
     public static ShotDetailsFragment newInstance(Shot shot, List<Shot> allShots,
                                                   ShotDetailsRequest detailsRequest) {
@@ -121,6 +123,15 @@ public class ShotDetailsFragment
         getPresenter().retrieveInitialData();
         getPresenter().downloadData();
         getPresenter().checkShotBucketsCount(getArguments().getParcelable(ARG_SHOT));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (gifLoadingAnimationDrawable != null) {
+            gifLoadingAnimationDrawable.stop();
+            gifLoadingAnimationDrawable = null;
+        }
     }
 
     private void initComponent() {
@@ -159,7 +170,6 @@ public class ShotDetailsFragment
         shotRecyclerView.addOnScrollListener(createScrollListener());
         shotRecyclerView.setAdapter(adapter);
         appBarLayout.addOnOffsetChangedListener((layout, offset) -> verifyInputVisibility());
-        placeHolderImageView.getImageView().setBackgroundResource(R.drawable.basketball_loader);
     }
 
     @Override
@@ -266,14 +276,15 @@ public class ShotDetailsFragment
 
     @Override
     public void showMainImage(ShotImage shotImage) {
-        ShotLoadingUtil.loadMainViewShot(getContext(), placeHolderImageView.getImageView(),
+        ShotLoadingUtil.loadMainViewShot(getContext(), placeHolderImageView,
                 parallaxImageView.getImageView(), shotImage);
     }
 
     @Override
     public void showMainImageWithGifAnimation(ShotImage shotImage) {
-        ShotLoadingUtil.loadMainShotWithGifAnimation(getContext(), placeHolderImageView.getImageView(),
-                parallaxImageView.getImageView(), shotImage, prepareGifLoadingAnimationDrawable());
+        prepareGifLoadingAnimationDrawable();
+        ShotLoadingUtil.loadMainShotWithGifAnimation(getContext(), placeHolderImageView,
+                parallaxImageView.getImageView(), shotImage, gifLoadingAnimationDrawable);
     }
 
     @Override
@@ -412,22 +423,20 @@ public class ShotDetailsFragment
         UserActivity.startActivity(getContext(), userWithShots.user());
     }
 
-    private AnimationDrawable prepareGifLoadingAnimationDrawable() {
-        final AnimationDrawable animationDrawable =
-                (AnimationDrawable) placeHolderImageView.getImageView().getBackground();
+    private void prepareGifLoadingAnimationDrawable() {
+        placeHolderImageView.setBackgroundResource(R.drawable.basketball_loader);
+        gifLoadingAnimationDrawable = (AnimationDrawable) placeHolderImageView.getBackground();
 
-        gifLoadingAnimationCallback = new AnimationDrawableCallback(animationDrawable,
-                placeHolderImageView.getImageView()) {
+        gifLoadingAnimationCallback = new AnimationDrawableCallback(gifLoadingAnimationDrawable,
+                placeHolderImageView) {
             @Override
             public void onAnimationComplete() {
-                animationDrawable.stop();
-                placeHolderImageView.getImageView().setVisibility(View.GONE);
+                gifLoadingAnimationDrawable.stop();
+                placeHolderImageView.setVisibility(View.GONE);
                 parallaxImageView.getImageView().setVisibility(View.VISIBLE);
             }
         };
-        animationDrawable.setCallback(gifLoadingAnimationCallback);
-
-        return animationDrawable;
+        gifLoadingAnimationDrawable.setCallback(gifLoadingAnimationCallback);
     }
 
     private RecyclerView.OnScrollListener createScrollListener() {
