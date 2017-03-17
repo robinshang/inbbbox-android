@@ -51,7 +51,7 @@ public class UserShotsControllerTest {
     public void whenGetUserShotsSubscribed_thenReturnShotsList() {
         TestSubscriber<List<Shot>> testSubscriber = new TestSubscriber<>();
 
-        shotsController.getUserShotsList(99, 1, 1).subscribe(testSubscriber);
+        shotsController.getUserShotsList(99, 1, 1, true).subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
         List<Shot> resultList = testSubscriber.getOnNextEvents().get(0);
