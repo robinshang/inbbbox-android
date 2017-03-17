@@ -222,7 +222,8 @@ public class ShotDetailsPresenter
 
     @Override
     public void getTeamUserWithShots(Team team) {
-        subscriptions.add(userShotsController.getTeamUserWithShots(team, pageNumber, SHOT_PAGE_COUNT)
+        subscriptions.add(userShotsController.getTeamUserWithShots(team, pageNumber,
+                SHOT_PAGE_COUNT, true)
                 .compose(androidIO())
                 .subscribe(this::showTeamView,
                         throwable -> handleError(throwable, "Error while getting user wit shots")));
