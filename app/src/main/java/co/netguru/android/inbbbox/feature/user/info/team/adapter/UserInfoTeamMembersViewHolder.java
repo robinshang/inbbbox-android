@@ -39,6 +39,8 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
     private User user;
     private int userPosition;
 
+    private PeekAndPop.OnGeneralActionListener peekAndPopListener;
+
     UserInfoTeamMembersViewHolder(ViewGroup parent, UserClickListener userClickListener,
                                   ShotClickListener shotClickListener, ShotPeekAndPop shotPeekAndPop) {
         super(LayoutInflater.from(parent.getContext())
@@ -49,18 +51,6 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
                 userShotsRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
 
-//        shotPeekAndPop.setOnGeneralActionListener(new PeekAndPop.OnGeneralActionListener() {
-//            @Override
-//            public void onPeek(View view, int i) {
-//                Timber.d("userShotsRecyclerView.requestDisallowInterceptTouchEvent");
-//                userShotsRecyclerView.requestDisallowInterceptTouchEvent(true);
-//            }
-//
-//            @Override
-//            public void onPop(View view, int i) {
-//
-//            }
-//        });
         adapter = new UserShotsAdapter(shotClickListener, shotPeekAndPop);
 
         userShotsRecyclerView.setLayoutManager(linearLayoutManager);
@@ -101,5 +91,22 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
                 .fitCenter()
                 .error(R.drawable.ic_ball)
                 .into(userImage);
+    }
+
+    PeekAndPop.OnGeneralActionListener getPeekAndPopListener() {
+        if(peekAndPopListener == null) {
+            peekAndPopListener = new PeekAndPop.OnGeneralActionListener() {
+                @Override
+                public void onPeek(View view, int i) {
+                    userShotsRecyclerView.requestDisallowInterceptTouchEvent(true);
+                }
+
+                @Override
+                public void onPop(View view, int i) {
+                    // no-op
+                }
+            };
+        }
+        return peekAndPopListener;
     }
 }

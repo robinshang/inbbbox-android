@@ -68,6 +68,24 @@ public class UserInfoTeamMembersAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        if(holder instanceof UserInfoTeamMembersViewHolder) {
+            shotPeekAndPop.addOnGeneralActionListener(
+                    ((UserInfoTeamMembersViewHolder) holder).getPeekAndPopListener());
+        }
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        if(holder instanceof UserInfoTeamMembersViewHolder) {
+            shotPeekAndPop.removeOnGeneralActionListener(
+                    ((UserInfoTeamMembersViewHolder) holder).getPeekAndPopListener());
+        }
+        super.onViewDetachedFromWindow(holder);
+    }
+
+    @Override
     public int getItemViewType(int position) {
         if (position == 0) {
             return VIEW_TYPE_HEADER;

@@ -269,7 +269,9 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
 
     @Override
     public void onPop(View view, int i) {
-        presenter.detach();
+        if(presenter != null) {
+            presenter.detach();
+        }
 
         for (OnGeneralActionListener listener : extraGeneralListeners) {
             listener.onPop(view, i);
