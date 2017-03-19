@@ -431,12 +431,12 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     public void onPeek(View view, int i) {
         peekAndPop.bindPeekAndPop(adapter.getData().get(i));
         shotsRecyclerView.requestDisallowInterceptTouchEvent(true);
-        swipeRefreshLayout.requestDisallowInterceptTouchEvent(true);
+        swipeRefreshLayout.setEnabled(false);
     }
 
     @Override
     public void onPop(View view, int i) {
-        // no-op
+        swipeRefreshLayout.setEnabled(true);
     }
 
     public interface ShotActionListener {
