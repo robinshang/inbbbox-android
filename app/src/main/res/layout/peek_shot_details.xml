@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="@dimen/peek_shot_margin">
 
     <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
         android:id="@+id/rounded_corners_shot_image_view"
@@ -18,7 +18,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="@dimen/peek_shot_bottom_height"
         android:background="@drawable/shape_rounded_bottom_corners" />
 
 </LinearLayout>

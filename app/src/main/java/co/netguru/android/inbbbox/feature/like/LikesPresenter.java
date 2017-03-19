@@ -18,7 +18,6 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.ShotUpdatedEvent;
 import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
@@ -34,7 +33,6 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     private final LikeShotController likedShotsController;
     private final ErrorController errorController;
     private final RxBus rxBus;
-    private final CompositeSubscription subscriptions = new CompositeSubscription();
     @NonNull
     private Subscription refreshSubscription;
     @NonNull
@@ -67,7 +65,6 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
             refreshSubscription.unsubscribe();
             loadMoreLikesSubscription.unsubscribe();
             busSubscription.unsubscribe();
-            subscriptions.clear();
         }
     }
 

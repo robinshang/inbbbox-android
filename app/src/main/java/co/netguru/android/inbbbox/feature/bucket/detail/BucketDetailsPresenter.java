@@ -22,7 +22,6 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.ShotUpdatedEvent;
 import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
@@ -31,7 +30,9 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         implements BucketDetailsContract.Presenter {
 
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
-
+    private final BucketsController bucketsController;
+    private final ErrorController errorController;
+    private final RxBus rxBus;
     @VisibleForTesting
     @NonNull
     Subscription refreshShotsSubscription;
@@ -40,13 +41,6 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     Subscription loadNextShotsSubscription;
     @NonNull
     Subscription busSubscription;
-
-    private final CompositeSubscription subscriptions = new CompositeSubscription();
-
-    private final BucketsController bucketsController;
-    private final ErrorController errorController;
-    private final RxBus rxBus;
-
     private int shotsPerPage;
     private int pageNumber = 1;
     private boolean canLoadMore;
@@ -77,7 +71,6 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         refreshShotsSubscription.unsubscribe();
         loadNextShotsSubscription.unsubscribe();
         busSubscription.unsubscribe();
-        subscriptions.clear();
     }
 
     @Override

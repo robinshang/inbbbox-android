@@ -4,7 +4,7 @@ import co.netguru.android.commons.di.FragmentScope;
 import dagger.Subcomponent;
 
 @FragmentScope
-@Subcomponent
+@Subcomponent(modules = {ShotPeekAndPopModule.class})
 public interface ShotPeekAndPopComponent {
 
     ShotPeekAndPopPresenter getPresenter();

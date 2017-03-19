@@ -180,4 +180,6 @@
     <dimen name="image_height">320dp</dimen>
     <dimen name="thumbnail_width">180dp</dimen>
     <dimen name="thumbnail_height">180dp</dimen>
+    <dimen name="peek_shot_margin">24dp</dimen>
+    <dimen name="peek_shot_bottom_height">40dp</dimen>
 </resources>

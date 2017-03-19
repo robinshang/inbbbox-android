@@ -31,7 +31,7 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
     TextView userName;
 
     @BindView(R.id.user_shots)
-    TestRecyclerView userShotsRecyclerView;
+    RecyclerView userShotsRecyclerView;
 
     private UserClickListener userClickListener;
     private UserShotsAdapter adapter;

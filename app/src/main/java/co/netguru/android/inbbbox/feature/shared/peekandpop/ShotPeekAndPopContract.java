@@ -10,16 +10,23 @@ public interface ShotPeekAndPopContract {
 
     interface View extends MvpView {
         void showMessageOnServerError(String errorMessage);
+
         void showMessageShotLiked();
+
         void showMessageShotUnliked();
+
         void showBucketAddSuccess();
+
         void showBucketChooserView(Shot shot);
     }
 
     interface Presenter extends MvpPresenter<View> {
         void addShotToBucket(Shot shot, Bucket bucket);
-        void toggleLikeShot(Shot shot);
+
+        void toggleLikeShot();
+
         void detach();
-        void onBucketShot(Shot shot);
+
+        void onBucketShot();
     }
 }

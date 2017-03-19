@@ -31,7 +31,6 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import de.hdodenhof.circleimageview.CircleImageView;
-import timber.log.Timber;
 
 public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract.View,
         PeekAndPop.OnGeneralActionListener {
@@ -66,7 +65,6 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     String infoWhenPattern;
     @BindString(R.string.info_where_pattern)
     String infoWherePattern;
-    private Shot shot;
     private ShotPeekAndPopPresenter presenter;
     private Fragment fragmentForBucketChooser;
 
@@ -97,7 +95,7 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
         setOnGeneralActionListener(this);
     }
 
-    public void setFragmentForBucketChooser(Fragment fragmentForBucketChooser) {
+    void setFragmentForBucketChooser(Fragment fragmentForBucketChooser) {
         if (fragmentForBucketChooser instanceof AddToBucketDialogFragment.BucketSelectListener) {
             this.fragmentForBucketChooser = fragmentForBucketChooser;
         } else {
@@ -110,12 +108,10 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     }
 
     public void addOnGeneralActionListener(OnGeneralActionListener onGeneralActionListener) {
-        Timber.d(fragmentForBucketChooser.getClass().getSimpleName() + " add: Listeners so far: " + extraGeneralListeners.size() + ", already contains? " + extraGeneralListeners.contains(onGeneralActionListener));
         extraGeneralListeners.add(onGeneralActionListener);
     }
 
     public void removeOnGeneralActionListener(OnGeneralActionListener onGeneralActionListener) {
-        Timber.d(fragmentForBucketChooser.getClass().getSimpleName() + " remove: Listeners so far: " + extraGeneralListeners.size() + ", already contains? " + extraGeneralListeners.contains(onGeneralActionListener));
         extraGeneralListeners.remove(onGeneralActionListener);
     }
 
@@ -128,14 +124,7 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
         }
     }
 
-    private void initComponent() {
-        presenter = App.getUserComponent(contentView.getContext())
-                .plusPeekAndPopComponent().getPresenter();
-        presenter.attachView(this);
-    }
-
     public void bindPeekAndPop(Shot shot) {
-        this.shot = shot;
         ButterKnife.bind(this, getPeekView());
 
         titleTextView.setText(shot.title());
@@ -144,9 +133,70 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
         showTeamInfo(shot.team());
         showInfo(shot.projectUrl(), DateTimeFormatUtil.getShotDetailsDate(shot.creationDate()));
         showCounters(shot.likesCount(), shot.bucketCount());
-        setIcons();
+        setIcons(shot);
         ShotLoadingUtil.loadMainViewShot(getPeekView().getContext(),
                 shotImageView.getImageView(), shot);
+
+        initComponent(shot);
+    }
+
+    @Override
+    public void showMessageOnServerError(String errorMessage) {
+        Snackbar.make(contentView, errorMessage, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showMessageShotLiked() {
+        Snackbar.make(fragmentForBucketChooser.getView(),
+                R.string.shot_liked, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showMessageShotUnliked() {
+        Snackbar.make(fragmentForBucketChooser.getView(),
+                R.string.shot_unliked, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showBucketAddSuccess() {
+        showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
+    }
+
+    @Override
+    public void showBucketChooserView(Shot shot) {
+        AddToBucketDialogFragment.newInstance(fragmentForBucketChooser, shot)
+                .show(fragmentForBucketChooser.getActivity().getSupportFragmentManager(),
+                        AddToBucketDialogFragment.TAG);
+    }
+
+    @Override
+    public void onPeek(View view, int i) {
+        for (OnGeneralActionListener listener : extraGeneralListeners) {
+            listener.onPeek(view, i);
+        }
+    }
+
+    @Override
+    public void onPop(View view, int i) {
+        if (presenter != null) {
+            presenter.detach();
+        }
+
+        for (OnGeneralActionListener listener : extraGeneralListeners) {
+            listener.onPop(view, i);
+        }
+    }
+
+    protected void showTextOnSnackbar(@StringRes int stringRes) {
+        if (fragmentForBucketChooser.getView() != null) {
+            Snackbar.make(fragmentForBucketChooser.getView(), stringRes, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    private void initComponent(Shot shot) {
+        presenter = App.getUserComponent(contentView.getContext())
+                .plusPeekAndPopComponent(new ShotPeekAndPopModule(shot)).getPresenter();
+        presenter.attachView(this);
     }
 
     private void showTeamInfo(Team team) {
@@ -191,7 +241,7 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
         bucketsCountTextView.setText(bucketCount.toString());
     }
 
-    private void setIcons() {
+    private void setIcons(Shot shot) {
         likeImageView.setActivated(shot.isLiked());
         bucketImageView.setActivated(shot.isBucketed());
     }
@@ -218,70 +268,14 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
             public void onRelease(View view, int i) {
                 switch (view.getId()) {
                     case R.id.details_likes_imageView:
-                        presenter.toggleLikeShot(shot);
+                        presenter.toggleLikeShot();
                         break;
 
                     case R.id.details_bucket_imageView:
-                        presenter.onBucketShot(shot);
+                        presenter.onBucketShot();
                         break;
                 }
             }
         };
     }
-
-    @Override
-    public void showMessageOnServerError(String errorMessage) {
-        Snackbar.make(contentView, errorMessage, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void showMessageShotLiked() {
-        Snackbar.make(fragmentForBucketChooser.getView(),
-                R.string.shot_liked, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void showMessageShotUnliked() {
-        Snackbar.make(fragmentForBucketChooser.getView(),
-                R.string.shot_unliked, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void showBucketAddSuccess() {
-        showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
-    }
-
-    @Override
-    public void showBucketChooserView(Shot shot) {
-        AddToBucketDialogFragment.newInstance(fragmentForBucketChooser, shot)
-                .show(fragmentForBucketChooser.getActivity().getSupportFragmentManager(),
-                        AddToBucketDialogFragment.TAG);
-    }
-
-    @Override
-    public void onPeek(View view, int i) {
-        initComponent();
-
-        for (OnGeneralActionListener listener : extraGeneralListeners) {
-            listener.onPeek(view, i);
-        }
-    }
-
-    @Override
-    public void onPop(View view, int i) {
-        if(presenter != null) {
-            presenter.detach();
-        }
-
-        for (OnGeneralActionListener listener : extraGeneralListeners) {
-            listener.onPop(view, i);
-        }
-    }
-
-    protected void showTextOnSnackbar(@StringRes int stringRes) {
-        if (fragmentForBucketChooser.getView() != null) {
-            Snackbar.make(fragmentForBucketChooser.getView(), stringRes, Snackbar.LENGTH_LONG).show();
-        }
-    }
-
 }

@@ -5,6 +5,7 @@ import co.netguru.android.inbbbox.feature.bucket.createbucket.CreateBucketCompon
 import co.netguru.android.inbbbox.feature.bucket.detail.BucketsDetailsComponent;
 import co.netguru.android.inbbbox.feature.follower.FollowersFragmentComponent;
 import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPopComponent;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPopModule;
 import co.netguru.android.inbbbox.feature.user.info.singleuser.UserInfoComponent;
 import co.netguru.android.inbbbox.feature.user.info.singleuser.UserInfoModule;
 import co.netguru.android.inbbbox.feature.user.info.team.TeamInfoComponent;
@@ -67,7 +68,7 @@ public interface UserComponent {
 
     ProjectComponent plusProjectComponent(ProjectModule projectModule);
 
-    ShotPeekAndPopComponent plusPeekAndPopComponent();
+    ShotPeekAndPopComponent plusPeekAndPopComponent(ShotPeekAndPopModule module);
 
     @Subcomponent.Builder
     interface Builder {

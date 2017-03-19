@@ -27,15 +27,17 @@ public class ShotPeekAndPopPresenter extends MvpNullObjectBasePresenter<ShotPeek
     private final BucketsController bucketsController;
     private final RxBus rxBus;
     private final CompositeSubscription subscriptions = new CompositeSubscription();
+    private Shot shot;
 
     @Inject
     public ShotPeekAndPopPresenter(LikeShotController likeShotController,
                                    ErrorController errorController, RxBus rxBus,
-                                   BucketsController bucketsController) {
+                                   BucketsController bucketsController, Shot shot) {
         this.bucketsController = bucketsController;
         this.likeShotController = likeShotController;
         this.errorController = errorController;
         this.rxBus = rxBus;
+        this.shot = shot;
     }
 
     @Override
@@ -49,12 +51,22 @@ public class ShotPeekAndPopPresenter extends MvpNullObjectBasePresenter<ShotPeek
     }
 
     @Override
-    public void toggleLikeShot(Shot shot) {
-        if(!shot.isLiked()) {
+    public void toggleLikeShot() {
+        if (!shot.isLiked()) {
             likeShot(shot);
         } else {
             unlikeShot(shot);
         }
+    }
+
+    @Override
+    public void onBucketShot() {
+        getView().showBucketChooserView(shot);
+    }
+
+    @Override
+    public void detach() {
+        subscriptions.clear();
     }
 
     private void likeShot(Shot shot) {
@@ -67,11 +79,6 @@ public class ShotPeekAndPopPresenter extends MvpNullObjectBasePresenter<ShotPeek
         subscriptions.add(likeShotController.unLikeShot(shot)
                 .compose(applyCompletableIoSchedulers())
                 .subscribe(() -> handleUnlikedShot(shot), this::handleLikeError));
-    }
-
-    @Override
-    public void detach() {
-        subscriptions.clear();
     }
 
     private void handleLikedShot(Shot shot) {
@@ -91,11 +98,6 @@ public class ShotPeekAndPopPresenter extends MvpNullObjectBasePresenter<ShotPeek
     private void handleError(Throwable throwable, String errorText) {
         Timber.e(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
-    }
-
-    @Override
-    public void onBucketShot(Shot shot) {
-        getView().showBucketChooserView(shot);
     }
 
     private Shot updateShotLikeStatus(Shot shot) {
