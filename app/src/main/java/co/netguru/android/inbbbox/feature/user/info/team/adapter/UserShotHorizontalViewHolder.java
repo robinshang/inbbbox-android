@@ -17,7 +17,7 @@ public class UserShotHorizontalViewHolder extends BaseViewHolder<Shot> {
     private final ShotClickListener shotClickListener;
 
     @BindView(R.id.shot_image)
-    RoundedCornersShotImageView shotImageView;
+    public RoundedCornersShotImageView shotImageView;
 
     private Shot item;
 
@@ -36,6 +36,5 @@ public class UserShotHorizontalViewHolder extends BaseViewHolder<Shot> {
     public void bind(Shot item) {
         this.item = item;
         shotImageView.loadShot(item);
-        Timber.d("userPosition C: "+shotImageView.getTag());
     }
 }

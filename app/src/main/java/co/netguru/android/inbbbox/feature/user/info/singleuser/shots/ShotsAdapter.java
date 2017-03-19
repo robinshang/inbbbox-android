@@ -1,24 +1,23 @@
-package co.netguru.android.inbbbox.feature.user.info.team.adapter;
+package co.netguru.android.inbbbox.feature.user.info.singleuser.shots;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
+import co.netguru.android.inbbbox.feature.user.info.team.adapter.UserShotHorizontalViewHolder;
 
-public class UserShotsAdapter extends RecyclerView.Adapter<UserShotHorizontalViewHolder> {
+public class ShotsAdapter extends RecyclerView.Adapter<UserShotHorizontalViewHolder> {
 
-    private UserWithShots user;
+    private List<Shot> shotList;
 
     private ShotClickListener listener;
     private ShotPeekAndPop peekAndPop;
-    private int userPosition;
 
-    public UserShotsAdapter(ShotClickListener listener, ShotPeekAndPop shotPeekAndPop) {
+    public ShotsAdapter(ShotClickListener listener, ShotPeekAndPop shotPeekAndPop) {
         this.listener = listener;
         this.peekAndPop = shotPeekAndPop;
     }
@@ -31,22 +30,20 @@ public class UserShotsAdapter extends RecyclerView.Adapter<UserShotHorizontalVie
     @Override
     public void onBindViewHolder(UserShotHorizontalViewHolder holder, int position) {
         peekAndPop.addLongClickView(holder.shotImageView, position);
-        holder.shotImageView.setTag(userPosition);
-        holder.bind(user.shotList().get(position));
+        holder.bind(shotList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return user.shotList().size();
+        return shotList.size();
     }
 
     public List<Shot> getData() {
-        return user.shotList();
+        return shotList;
     }
 
-    public void setUser(UserWithShots user, int userPosition) {
-        this.userPosition = userPosition;
-        this.user = user;
+    public void setShots(List<Shot> shotList) {
+        this.shotList = shotList;
         notifyDataSetChanged();
     }
 }
