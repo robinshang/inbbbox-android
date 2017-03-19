@@ -15,6 +15,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.peekandpop.shalskar.peekandpop.PeekAndPop;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +31,7 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract.View,
         PeekAndPop.OnGeneralActionListener {
@@ -35,6 +39,7 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     private static final int VIBRATE_DURATION_MS = 10;
     private static final String APP_NAME_KEY = "${where}";
     private static final String DATE_KEY = "${when}";
+    private final Set<OnGeneralActionListener> extraGeneralListeners = new HashSet<>();
     @BindView(R.id.rounded_corners_shot_image_view)
     RoundedCornersShotImageView shotImageView;
     @BindView(R.id.details_user_imageView)
@@ -61,13 +66,8 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     String infoWhenPattern;
     @BindString(R.string.info_where_pattern)
     String infoWherePattern;
-
     private Shot shot;
-
     private ShotPeekAndPopPresenter presenter;
-
-    private OnGeneralActionListener extraGeneralListener;
-
     private Fragment fragmentForBucketChooser;
 
     public ShotPeekAndPop(Builder builder) {
@@ -78,7 +78,6 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     public static ShotPeekAndPop init(Activity activity, RecyclerView recyclerView,
                                       OnGeneralActionListener onGeneralActionListener,
                                       Fragment fragmentForBucketChooser) {
-
         ShotPeekAndPop peekAndPop = new ShotPeekAndPop(
                 new PeekAndPop.Builder(activity)
                         .blurBackground(true)
@@ -86,7 +85,7 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
                         .parentViewGroupToDisallowTouchEvents(recyclerView));
 
         peekAndPop.setFragmentForBucketChooser(fragmentForBucketChooser);
-        peekAndPop.setOnGeneralActionListener(onGeneralActionListener);
+        peekAndPop.addOnGeneralActionListener(onGeneralActionListener);
 
         return peekAndPop;
     }
@@ -110,12 +109,22 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
         presenter.addShotToBucket(shot, bucket);
     }
 
+    public void addOnGeneralActionListener(OnGeneralActionListener onGeneralActionListener) {
+        Timber.d(fragmentForBucketChooser.getClass().getSimpleName() + " add: Listeners so far: " + extraGeneralListeners.size() + ", already contains? " + extraGeneralListeners.contains(onGeneralActionListener));
+        extraGeneralListeners.add(onGeneralActionListener);
+    }
+
+    public void removeOnGeneralActionListener(OnGeneralActionListener onGeneralActionListener) {
+        Timber.d(fragmentForBucketChooser.getClass().getSimpleName() + " remove: Listeners so far: " + extraGeneralListeners.size() + ", already contains? " + extraGeneralListeners.contains(onGeneralActionListener));
+        extraGeneralListeners.remove(onGeneralActionListener);
+    }
+
     @Override
     public void setOnGeneralActionListener(@Nullable OnGeneralActionListener onGeneralActionListener) {
         if (onGeneralActionListener == this) {
             super.setOnGeneralActionListener(onGeneralActionListener);
         } else {
-            extraGeneralListener = onGeneralActionListener;
+            throw new RuntimeException("Call addOnGeneralActionListener instead");
         }
     }
 
@@ -253,8 +262,8 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     public void onPeek(View view, int i) {
         initComponent();
 
-        if (extraGeneralListener != null) {
-            extraGeneralListener.onPeek(view, i);
+        for (OnGeneralActionListener listener : extraGeneralListeners) {
+            listener.onPeek(view, i);
         }
     }
 
@@ -262,8 +271,8 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     public void onPop(View view, int i) {
         presenter.detach();
 
-        if (extraGeneralListener != null) {
-            extraGeneralListener.onPop(view, i);
+        for (OnGeneralActionListener listener : extraGeneralListeners) {
+            listener.onPop(view, i);
         }
     }
 

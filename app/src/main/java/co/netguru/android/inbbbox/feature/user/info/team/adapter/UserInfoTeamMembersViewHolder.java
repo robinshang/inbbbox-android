@@ -49,18 +49,18 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
                 userShotsRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
 
-        shotPeekAndPop.setOnGeneralActionListener(new PeekAndPop.OnGeneralActionListener() {
-            @Override
-            public void onPeek(View view, int i) {
-                Timber.d("userShotsRecyclerView.requestDisallowInterceptTouchEvent");
-                userShotsRecyclerView.requestDisallowInterceptTouchEvent(true);
-            }
-
-            @Override
-            public void onPop(View view, int i) {
-
-            }
-        });
+//        shotPeekAndPop.setOnGeneralActionListener(new PeekAndPop.OnGeneralActionListener() {
+//            @Override
+//            public void onPeek(View view, int i) {
+//                Timber.d("userShotsRecyclerView.requestDisallowInterceptTouchEvent");
+//                userShotsRecyclerView.requestDisallowInterceptTouchEvent(true);
+//            }
+//
+//            @Override
+//            public void onPop(View view, int i) {
+//
+//            }
+//        });
         adapter = new UserShotsAdapter(shotClickListener, shotPeekAndPop);
 
         userShotsRecyclerView.setLayoutManager(linearLayoutManager);

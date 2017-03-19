@@ -54,6 +54,18 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
     }
 
     @Override
+    public void onViewAttachedToWindow(ShotsViewHolder holder) {
+        peekAndPop.addOnGeneralActionListener(holder.getPeekAndPopListener());
+        super.onViewAttachedToWindow(holder);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(ShotsViewHolder holder) {
+        peekAndPop.removeOnGeneralActionListener(holder.getPeekAndPopListener());
+        super.onViewDetachedFromWindow(holder);
+    }
+
+    @Override
     public int getItemCount() {
         return shots.size();
     }

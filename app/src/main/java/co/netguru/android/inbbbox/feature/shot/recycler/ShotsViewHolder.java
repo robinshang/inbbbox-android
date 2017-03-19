@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.peekandpop.shalskar.peekandpop.PeekAndPop;
 
 import butterknife.BindDrawable;
 import butterknife.BindView;
@@ -31,6 +32,7 @@ class ShotsViewHolder extends BaseShotsViewHolder<Shot> implements DetailsVisibi
     Drawable shotPlaceHolder;
 
     private Shot shot;
+    private PeekAndPop.OnGeneralActionListener listener;
 
     ShotsViewHolder(View itemView, @NonNull ShotSwipeListener shotSwipeListener,
                     @NonNull DetailsVisibilityChangeEmitter emitter) {
@@ -42,6 +44,24 @@ class ShotsViewHolder extends BaseShotsViewHolder<Shot> implements DetailsVisibi
     @OnClick(R.id.iv_shot_image)
     void onShotClick() {
         shotSwipeListener.onShotSelected(shot);
+    }
+
+    PeekAndPop.OnGeneralActionListener getPeekAndPopListener() {
+        if (listener == null) {
+            listener = new PeekAndPop.OnGeneralActionListener() {
+                @Override
+                public void onPeek(View view, int i) {
+                    longSwipeLayout.setSwipeEnabled(false);
+                }
+
+                @Override
+                public void onPop(View view, int i) {
+                    longSwipeLayout.setSwipeEnabled(true);
+                }
+            };
+        }
+
+        return listener;
     }
 
     @Override
