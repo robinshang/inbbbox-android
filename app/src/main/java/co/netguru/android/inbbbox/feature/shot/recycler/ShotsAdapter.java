@@ -14,6 +14,8 @@ import javax.inject.Inject;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
+import static co.netguru.android.inbbbox.Constants.UNDEFINED;
+
 public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
     private final ShotSwipeListener shotSwipeListener;
@@ -69,10 +71,12 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
         notifyItemRangeChanged(currentSize - 1, items.size());
     }
 
-    public void updateShot(Shot shot) {
+    public void updateShotIfExists(Shot shot) {
         final int position = findShotPosition(shot.id());
-        items.set(position, shot);
-        notifyItemChanged(position);
+        if (position != UNDEFINED) {
+            items.set(position, shot);
+            notifyItemChanged(position);
+        }
     }
 
     public void setDetailsVisibilityFlag(boolean isVisible) {
@@ -89,6 +93,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
                 return i;
             }
         }
-        throw new IllegalArgumentException("There is no shot with id :" + id);
+
+        return UNDEFINED;
     }
 }

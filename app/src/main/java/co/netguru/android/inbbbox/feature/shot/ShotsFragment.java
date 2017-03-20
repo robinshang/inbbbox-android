@@ -218,7 +218,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void updateShot(Shot shot) {
-        adapter.updateShot(shot);
+        adapter.updateShotIfExists(shot);
     }
 
     @Override
