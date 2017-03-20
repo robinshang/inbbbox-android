@@ -100,6 +100,18 @@ public class GuestModeBucketsRepository extends BaseGuestModeRepository {
                 .toSingle();
     }
 
+    public Single<List<Bucket>> getBucketsListForShot(long shotId) {
+        Timber.d("Getting buckets list for shot from local repository");
+        return daoSession.getBucketDBDao()
+                .queryBuilder()
+                .rx()
+                .oneByOne()
+                .filter(bucketDB -> checkBucketContainsShot(bucketDB, shotId))
+                .map(Bucket::fromDB)
+                .toList()
+                .toSingle();
+    }
+
     private Observable<BucketDB> addShotAndCreateRelation(BucketDB bucketDB, Shot shot) {
         return daoSession.rxTx().run(() -> {
             insertUserIfExists(shot);
@@ -135,6 +147,15 @@ public class GuestModeBucketsRepository extends BaseGuestModeRepository {
         shotToAdd.setBucketCount(shotToAdd.getBucketCount() + 1);
 
         return shotToAdd;
+    }
+
+    private boolean checkBucketContainsShot(BucketDB bucketDB, long shotId) {
+        for (final ShotDB shotDB : bucketDB.getShots()) {
+            if (shotDB.getId().equals(shotId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void increaseBucketShotsCount(BucketDB bucketDB) {
