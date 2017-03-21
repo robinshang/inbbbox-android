@@ -114,7 +114,7 @@ public class GuestModeBucketsRepository extends BaseGuestModeRepository {
 
     private Observable<BucketDB> addShotAndCreateRelation(BucketDB bucketDB, Shot shot) {
         return daoSession.rxTx().run(() -> {
-            insertUserIfExists(shot);
+            insertUserIfExists(shot.author());
             final ShotDB shotToAdd = createShotToAdd(shot);
             daoSession.insertOrReplace(new JoinBucketsWithShots(null, bucketDB.getId(), shotToAdd.getId()));
             daoSession.insertOrReplace(shotToAdd);

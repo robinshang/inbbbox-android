@@ -7,7 +7,6 @@ import co.netguru.android.inbbbox.data.BaseGuestModeRepository;
 import co.netguru.android.inbbbox.data.db.DaoSession;
 import co.netguru.android.inbbbox.data.db.FollowerDBDao;
 import co.netguru.android.inbbbox.data.db.mappers.FollowerDBMapper;
-import co.netguru.android.inbbbox.data.db.mappers.UserDBMapper;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import rx.Completable;
 import rx.Observable;
@@ -42,7 +41,7 @@ public class GuestModeFollowersRepository extends BaseGuestModeRepository {
         Timber.d("Adding follower to local repository");
         return daoSession.rxTx().run(() -> {
             daoSession.getFollowerDBDao().insertOrReplace(FollowerDBMapper.fromUser(user));
-            daoSession.getUserDBDao().insertOrReplace(UserDBMapper.fromUser(user));
+            insertUserIfExists(user);
         }).toCompletable();
     }
 
