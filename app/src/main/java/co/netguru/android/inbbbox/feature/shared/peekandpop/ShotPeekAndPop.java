@@ -58,10 +58,10 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     TextView likesCountTextView;
     @BindView(R.id.details_buckets_count_textView)
     TextView bucketsCountTextView;
-    @BindString(R.string.info_when_pattern)
-    String infoWhenPattern;
-    @BindString(R.string.info_where_pattern)
-    String infoWherePattern;
+    @BindString(R.string.info_when_format)
+    String infoWhenFormat;
+    @BindString(R.string.info_where_format)
+    String infoWhereFormat;
     private ShotPeekAndPopPresenter presenter;
     private Fragment fragmentForBucketChooser;
 
@@ -229,10 +229,10 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     private void showInfo(String projectName, String date) {
         String info = "";
         if (projectName != null && !projectName.isEmpty()) {
-            infoWherePattern = infoWherePattern.replace(APP_NAME_KEY, projectName);
-            info += infoWherePattern;
+            info += String.format(infoWhereFormat, projectName);
         }
-        info += infoWhenPattern.replace(DATE_KEY, date);
+        info += String.format(infoWhenFormat, date);
+
         dateTextView.setText(info);
     }
 
