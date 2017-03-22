@@ -15,6 +15,13 @@ import co.netguru.android.inbbbox.feature.user.info.team.adapter.UserInfoTeamHea
 
 class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final int VIEW_TYPE_HEADER = 0;
+    private static final int VIEW_TYPE_SHOTS = 1;
+    private static final int VIEW_TYPE_TEAMS = 2;
+
+    private static final int ALL_VIEWS_AMOUNT = 3;
+    private static final int VIEWS_EXCEPT_TEAMS_AMOUNT = 2;
+
     private final List<User> teams = new ArrayList<>();
     private final List<Shot> shots = new ArrayList<>();
     private User user;
@@ -33,11 +40,11 @@ class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case 0:
+            case VIEW_TYPE_HEADER:
                 return new UserInfoTeamHeaderViewHolder(parent);
-            case 1:
+            case VIEW_TYPE_SHOTS:
                 return new UserInfoShotsViewHolder(parent, shotClickListener, shotPeekAndPop);
-            case 2:
+            case VIEW_TYPE_TEAMS:
                 return new UserInfoTeamsViewHolder(parent, teamClickListener);
             default:
                 throw new IllegalArgumentException(
@@ -48,13 +55,13 @@ class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (position) {
-            case 0:
+            case VIEW_TYPE_HEADER:
                 ((UserInfoTeamHeaderViewHolder) holder).bind(user);
                 break;
-            case 1:
+            case VIEW_TYPE_SHOTS:
                 ((UserInfoShotsViewHolder) holder).bind(shots);
                 break;
-            case 2:
+            case VIEW_TYPE_TEAMS:
                 ((UserInfoTeamsViewHolder) holder).bind(teams);
                 break;
             default:
@@ -70,22 +77,22 @@ class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return teams.isEmpty() ? 2 : 3;
+        return teams.isEmpty() ? VIEWS_EXCEPT_TEAMS_AMOUNT : ALL_VIEWS_AMOUNT;
     }
 
     public List<Shot> getShots() {
         return shots;
     }
 
-    public void setTeams(List<User> teams) {
-        this.teams.clear();
-        this.teams.addAll(teams);
-        notifyDataSetChanged();
-    }
-
     public void setShots(List<Shot> shots) {
         this.shots.clear();
         this.shots.addAll(shots);
+        notifyDataSetChanged();
+    }
+
+    public void setTeams(List<User> teams) {
+        this.teams.clear();
+        this.teams.addAll(teams);
         notifyDataSetChanged();
     }
 

@@ -28,5 +28,7 @@ public interface ShotPeekAndPopContract {
         void detach();
 
         void onBucketShot();
+
+        void vibrate();
     }
 }

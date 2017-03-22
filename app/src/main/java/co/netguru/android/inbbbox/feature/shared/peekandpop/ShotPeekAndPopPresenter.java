@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.common.other.VibrationController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
@@ -22,22 +23,27 @@ import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applyCom
 public class ShotPeekAndPopPresenter extends MvpNullObjectBasePresenter<ShotPeekAndPopContract.View>
         implements ShotPeekAndPopContract.Presenter {
 
+    private static final int VIBRATE_DURATION_MS = 10;
+
     private final LikeShotController likeShotController;
     private final ErrorController errorController;
     private final BucketsController bucketsController;
     private final RxBus rxBus;
+    private final VibrationController vibrationController;
     private final CompositeSubscription subscriptions = new CompositeSubscription();
     private Shot shot;
 
     @Inject
     public ShotPeekAndPopPresenter(LikeShotController likeShotController,
                                    ErrorController errorController, RxBus rxBus,
-                                   BucketsController bucketsController, Shot shot) {
+                                   BucketsController bucketsController, Shot shot,
+                                   VibrationController vibrationController) {
         this.bucketsController = bucketsController;
         this.likeShotController = likeShotController;
         this.errorController = errorController;
         this.rxBus = rxBus;
         this.shot = shot;
+        this.vibrationController = vibrationController;
     }
 
     @Override
@@ -62,6 +68,11 @@ public class ShotPeekAndPopPresenter extends MvpNullObjectBasePresenter<ShotPeek
     @Override
     public void onBucketShot() {
         getView().showBucketChooserView(shot);
+    }
+
+    @Override
+    public void vibrate() {
+        vibrationController.vibrate(VIBRATE_DURATION_MS);
     }
 
     @Override

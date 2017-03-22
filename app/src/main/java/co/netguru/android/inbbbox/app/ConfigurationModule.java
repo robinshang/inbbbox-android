@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.app;
 
 import android.content.Context;
+import android.os.Vibrator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -70,5 +71,11 @@ public class ConfigurationModule {
                 .baseUrl(Constants.API.DRIBBLE_BASE_URL)
                 .client(okHttpClient)
                 .build();
+    }
+
+    @Provides
+    @Singleton
+    Vibrator provideVibrator(Context context) {
+        return (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 }

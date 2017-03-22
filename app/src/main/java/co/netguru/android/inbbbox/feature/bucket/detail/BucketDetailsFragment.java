@@ -302,8 +302,8 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     }
 
     @Override
-    public void onPeek(View view, int i) {
-        peekAndPop.bindPeekAndPop(bucketShotsAdapter.getData().get(i));
+    public void onPeek(View view, int positionInAdapter) {
+        peekAndPop.bindPeekAndPop(bucketShotsAdapter.getData().get(positionInAdapter));
         recyclerView.requestDisallowInterceptTouchEvent(true);
     }
 

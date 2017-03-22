@@ -62,12 +62,12 @@ class UserInfoShotsViewHolder extends BaseViewHolder<List<Shot>> {
         if (peekAndPopListener == null) {
             peekAndPopListener = new PeekAndPop.OnGeneralActionListener() {
                 @Override
-                public void onPeek(View view, int i) {
+                public void onPeek(View view, int positionInAdapter) {
                     shotsRecyclerView.requestDisallowInterceptTouchEvent(true);
                 }
 
                 @Override
-                public void onPop(View view, int i) {
+                public void onPop(View view, int positionInAdapter) {
                     // no-op
                 }
             };

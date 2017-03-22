@@ -34,8 +34,8 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
                         @NonNull DetailsVisibilityChangeEmitter emitter, ShotPeekAndPop peekAndPop) {
         this.shotSwipeListener = shotSwipeListener;
         this.emitter = emitter;
-        shots = Collections.emptyList();
-        isDetailsVisible = true;
+        this.shots = Collections.emptyList();
+        this.isDetailsVisible = true;
         this.peekAndPop = peekAndPop;
     }
 

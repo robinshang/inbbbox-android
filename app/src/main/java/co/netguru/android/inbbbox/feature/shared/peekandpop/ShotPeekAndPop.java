@@ -1,8 +1,6 @@
 package co.netguru.android.inbbbox.feature.shared.peekandpop;
 
 import android.app.Activity;
-import android.content.Context;
-import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
@@ -35,7 +33,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract.View,
         PeekAndPop.OnGeneralActionListener {
 
-    private static final int VIBRATE_DURATION_MS = 10;
     private static final String APP_NAME_KEY = "${where}";
     private static final String DATE_KEY = "${when}";
     private final Set<OnGeneralActionListener> extraGeneralListeners = new HashSet<>();
@@ -202,12 +199,15 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     private void showTeamInfo(Team team) {
         if (team != null) {
             teamTextView.setText(team.name());
-            teamTextView.setVisibility(View.VISIBLE);
-            forLabel.setVisibility(View.VISIBLE);
+            setLabelsVisibility(View.VISIBLE);
         } else {
-            teamTextView.setVisibility(View.GONE);
-            forLabel.setVisibility(View.GONE);
+            setLabelsVisibility(View.GONE);
         }
+    }
+
+    private void setLabelsVisibility(int visibility) {
+        teamTextView.setVisibility(visibility);
+        forLabel.setVisibility(visibility);
     }
 
     private void showAuthorInfo(String author) {
@@ -246,36 +246,36 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
         bucketImageView.setActivated(shot.isBucketed());
     }
 
-    private void vibrate() {
-        Vibrator v = (Vibrator) getPeekView().getContext().getSystemService(Context.VIBRATOR_SERVICE);
-        v.vibrate(VIBRATE_DURATION_MS);
-    }
-
     private PeekAndPop.OnHoldAndReleaseListener getHoldAndReleaseListener() {
         return new PeekAndPop.OnHoldAndReleaseListener() {
             @Override
-            public void onHold(View view, int i) {
+            public void onHold(View view, int positionInAdapter) {
                 view.setActivated(true);
-                vibrate();
+                presenter.vibrate();
             }
 
             @Override
-            public void onLeave(View view, int i) {
+            public void onLeave(View view, int positionInAdapter) {
                 view.setActivated(false);
             }
 
             @Override
-            public void onRelease(View view, int i) {
-                switch (view.getId()) {
-                    case R.id.details_likes_imageView:
-                        presenter.toggleLikeShot();
-                        break;
-
-                    case R.id.details_bucket_imageView:
-                        presenter.onBucketShot();
-                        break;
-                }
+            public void onRelease(View view, int positionInAdapter) {
+                onFingerReleaseWhilePeeking(view);
             }
         };
     }
+
+    private void onFingerReleaseWhilePeeking(View onView) {
+        switch (onView.getId()) {
+            case R.id.details_likes_imageView:
+                presenter.toggleLikeShot();
+                break;
+
+            case R.id.details_bucket_imageView:
+                presenter.onBucketShot();
+                break;
+        }
+    }
+
 }
