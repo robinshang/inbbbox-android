@@ -7,6 +7,7 @@ import co.netguru.android.inbbbox.app.usercomponent.UserComponent;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsModule;
 import co.netguru.android.inbbbox.event.RxBus;
+import co.netguru.android.inbbbox.app.usercomponent.UserComponentRestorer;
 import co.netguru.android.inbbbox.feature.login.LoginComponent;
 import co.netguru.android.inbbbox.feature.login.LoginModule;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewDialogFragmentComponent;
@@ -43,4 +44,6 @@ public interface ApplicationComponent extends BaseComponent {
     void inject(NotificationAlarmReceiver receiver);
 
     AnalyticsEventLogger analyticsEventLogger();
+
+    UserComponentRestorer userComponentRestorer();
 }
