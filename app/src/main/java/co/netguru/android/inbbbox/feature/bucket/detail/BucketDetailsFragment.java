@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
+import com.peekandpop.shalskar.peekandpop.PeekAndPop;
 
 import java.util.List;
 
@@ -37,16 +38,20 @@ import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 import co.netguru.android.inbbbox.feature.shared.shotsadapter.SharedShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 
-public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
-        BucketDetailsContract.View, BucketDetailsContract.Presenter>
-        implements BucketDetailsContract.View, DeleteBucketDialogFragment.DeleteBucketDialogListener {
+public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection
+        <SwipeRefreshLayout, List<Shot>, BucketDetailsContract.View, BucketDetailsContract.Presenter>
+        implements BucketDetailsContract.View, DeleteBucketDialogFragment.DeleteBucketDialogListener,
+        AddToBucketDialogFragment.BucketSelectListener, PeekAndPop.OnGeneralActionListener {
 
     public static final String TAG = BucketDetailsFragment.class.getSimpleName();
 
@@ -77,6 +82,7 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     private Snackbar loadingMoreSnackbar;
     private SharedShotsAdapter bucketShotsAdapter;
     private BucketsDetailsComponent component;
+    private ShotPeekAndPop peekAndPop;
 
     private ShotClickListener shotClickListener;
 
@@ -104,6 +110,7 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        initPeekAndPop();
         initComponent();
         analyticsEventLogger.logEventScreenBucketDetails();
         return inflater.inflate(R.layout.fragment_bucket_details, container, false);
@@ -126,6 +133,10 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     private void initComponent() {
         component = App.getUserComponent(getContext()).plusBucketDetailsComponent();
         component.inject(this);
+    }
+
+    private void initPeekAndPop() {
+        peekAndPop = ShotPeekAndPop.init(getActivity(), recyclerView, this, this);
     }
 
     @NonNull
@@ -242,6 +253,11 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     }
 
     @Override
+    public void showBucketAddSuccess() {
+        showTextOnSnackbar(R.string.shots_fragment_add_shot_to_bucket_success);
+    }
+
+    @Override
     public void showMessageOnServerError(String errorText) {
         showTextOnSnackbar(errorText);
     }
@@ -249,7 +265,7 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     private void setupRecyclerView() {
         gridLayoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
         linearLayoutManager = new LinearLayoutManager(getContext());
-        bucketShotsAdapter = new SharedShotsAdapter(shotClickListener);
+        bucketShotsAdapter = new SharedShotsAdapter(shotClickListener, peekAndPop);
         recyclerView.setAdapter(bucketShotsAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(
@@ -278,4 +294,21 @@ public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelecti
     public void onDeleteBucket() {
         getPresenter().deleteBucket();
     }
+
+    @Override
+    public void onBucketForShotSelect(Bucket bucket, Shot shot) {
+        peekAndPop.onBucketForShotSelect(bucket, shot);
+    }
+
+    @Override
+    public void onPeek(View view, int positionInAdapter) {
+        peekAndPop.bindPeekAndPop(bucketShotsAdapter.getData().get(positionInAdapter));
+        recyclerView.requestDisallowInterceptTouchEvent(true);
+    }
+
+    @Override
+    public void onPop(View view, int i) {
+        // no-op
+    }
+
 }

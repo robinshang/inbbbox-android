@@ -56,7 +56,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     private static final String SHOT_ARG_KEY = "shot_arg_key";
     private static final int FRAGMENT_REQUEST_CODE = 1;
     private static final int LAST_X_BUCKETS_VISIBLE_TO_LOAD_MORE = 10;
-
+    private final BucketsAdapter bucketsAdapter = new BucketsAdapter(this);
     @BindView(R.id.shot_preview_image)
     ImageView shotPreviewImage;
     @BindView(R.id.author_avatar_circle_image)
@@ -73,24 +73,18 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
     ProgressBar bucketListProgressBar;
     @BindView(R.id.no_buckets_text)
     TextView noBucketsText;
-
     @BindColor(R.color.pink)
     int pinkColor;
-
     float heightPercentage;
-
     @BindString(R.string.fragment_add_to_bucket_shot_created_on)
     String shotCreatedOnString;
     @BindString(R.string.fragment_add_to_bucket_shot_created_by)
     String shotCreatedByString;
     @BindString(R.string.fragment_add_to_bucket_shot_created_for)
     String shotCreatedForString;
-
-    private final BucketsAdapter bucketsAdapter = new BucketsAdapter(this);
-    private AddToBucketComponent component;
-
     @Inject
     AnalyticsEventLogger analyticsEventLogger;
+    private AddToBucketComponent component;
 
     public static AddToBucketDialogFragment newInstance(@NonNull Fragment targetFragment, @NonNull Shot shot) {
         Bundle args = new Bundle();
@@ -248,7 +242,7 @@ public class AddToBucketDialogFragment extends BaseMvpDialogFragment<AddToBucket
 
     @Override
     public void showBucketListLoadingMore() {
-        showMessageOnSnackbar(getResources().getString( R.string.loading_more_buckets));
+        showMessageOnSnackbar(getResources().getString(R.string.loading_more_buckets));
     }
 
     @Override

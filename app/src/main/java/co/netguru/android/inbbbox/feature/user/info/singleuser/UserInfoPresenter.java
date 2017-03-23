@@ -89,4 +89,5 @@ public class UserInfoPresenter extends MvpNullObjectBasePresenter<UserInfoContra
         Timber.d(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
     }
+
 }

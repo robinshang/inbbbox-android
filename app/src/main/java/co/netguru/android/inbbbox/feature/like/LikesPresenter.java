@@ -33,7 +33,6 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     private final LikeShotController likedShotsController;
     private final ErrorController errorController;
     private final RxBus rxBus;
-
     @NonNull
     private Subscription refreshSubscription;
     @NonNull

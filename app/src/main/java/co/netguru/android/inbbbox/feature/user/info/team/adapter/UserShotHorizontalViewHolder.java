@@ -16,7 +16,7 @@ public class UserShotHorizontalViewHolder extends BaseViewHolder<Shot> {
     private final ShotClickListener shotClickListener;
 
     @BindView(R.id.shot_image)
-    RoundedCornersShotImageView shotImageView;
+    public RoundedCornersShotImageView shotImageView;
 
     private Shot item;
 

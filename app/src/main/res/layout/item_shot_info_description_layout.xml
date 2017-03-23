@@ -6,6 +6,8 @@
     android:paddingBottom="@dimen/details_comment_divider_padding_bottom"
     android:background="@color/windowBackground">
 
+    <View style="@style/Divider" />
+
     <FrameLayout
         style="@style/ShotDetailsSectionContainer"
         android:layout_width="match_parent"

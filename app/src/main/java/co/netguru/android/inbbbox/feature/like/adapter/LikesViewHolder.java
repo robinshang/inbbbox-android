@@ -11,7 +11,7 @@ import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 
-public class LikesListViewHolder extends BaseViewHolder<Shot> {
+public class LikesViewHolder extends BaseViewHolder<Shot> {
 
     @BindView(R.id.like_item_image_view)
     RoundedCornersShotImageView imageView;
@@ -19,7 +19,7 @@ public class LikesListViewHolder extends BaseViewHolder<Shot> {
     private final ShotClickListener likeClickListener;
     private Shot item;
 
-    LikesListViewHolder(ViewGroup parent, ShotClickListener likeClickListener) {
+    LikesViewHolder(ViewGroup parent, ShotClickListener likeClickListener) {
         super(LayoutInflater.from(parent.getContext()).inflate(R.layout.like_item, parent, false));
         this.likeClickListener = likeClickListener;
     }

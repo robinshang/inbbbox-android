@@ -11,15 +11,18 @@ import javax.inject.Inject;
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.TeamController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.feature.user.UserClickListener;
 import rx.Observable;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
@@ -36,6 +39,7 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
     private final TeamController teamController;
     private final UserShotsController userShotsController;
     private final ErrorController errorController;
+    private final CompositeSubscription subscriptions = new CompositeSubscription();
 
     private final User user;
     @NonNull
@@ -48,7 +52,8 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
 
     @Inject
     public TeamInfoPresenter(TeamController teamController, UserShotsController userShotsController,
-                             ErrorController errorController, User user) {
+                             ErrorController errorController, User user, RxBus rxBus,
+                             BucketsController bucketsController) {
         this.teamController = teamController;
         this.userShotsController = userShotsController;
         this.errorController = errorController;
@@ -69,6 +74,7 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
         super.detachView(retainInstance);
         refreshSubscription.unsubscribe();
         loadNextUsersSubscription.unsubscribe();
+        subscriptions.clear();
     }
 
     private void loadTeamData() {

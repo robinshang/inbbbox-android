@@ -9,11 +9,18 @@ import java.util.List;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 import co.netguru.android.inbbbox.feature.user.info.LinkClickListener;
 import co.netguru.android.inbbbox.feature.user.info.singleuser.teams.TeamClickListener;
 import co.netguru.android.inbbbox.feature.user.info.team.adapter.UserInfoTeamHeaderViewHolder;
 
 class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final int VIEW_TYPE_HEADER = 0;
+    private static final int VIEW_TYPE_SHOTS = 1;
+    private static final int VIEW_TYPE_TEAMS = 2;
+
+    private static final int ALL_VIEWS_AMOUNT = 4;
 
     private final List<User> teams = new ArrayList<>();
     private final List<Shot> shots = new ArrayList<>();
@@ -21,23 +28,25 @@ class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ShotClickListener shotClickListener;
     private TeamClickListener teamClickListener;
+    private ShotPeekAndPop shotPeekAndPop;
     private LinkClickListener linkClickListener;
 
-    UserInfoAdapter(ShotClickListener shotClickListener,
-                    TeamClickListener teamClickListener, LinkClickListener linkClickListener) {
+    UserInfoAdapter(ShotClickListener shotClickListener, TeamClickListener teamClickListener,
+                    ShotPeekAndPop shotPeekAndPop, LinkClickListener linkClickListener) {
         this.shotClickListener = shotClickListener;
         this.teamClickListener = teamClickListener;
+        this.shotPeekAndPop = shotPeekAndPop;
         this.linkClickListener = linkClickListener;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case 0:
+            case VIEW_TYPE_HEADER:
                 return new UserInfoTeamHeaderViewHolder(parent);
-            case 1:
-                return new UserInfoShotsViewHolder(parent, shotClickListener);
-            case 2:
+            case VIEW_TYPE_SHOTS:
+                return new UserInfoShotsViewHolder(parent, shotClickListener, shotPeekAndPop);
+            case VIEW_TYPE_TEAMS:
                 return new UserInfoTeamsViewHolder(parent, teamClickListener);
             case 3:
                 return new UserInfoLinksViewHolder(parent, linkClickListener);
@@ -50,13 +59,13 @@ class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (position) {
-            case 0:
+            case VIEW_TYPE_HEADER:
                 ((UserInfoTeamHeaderViewHolder) holder).bind(user);
                 break;
-            case 1:
+            case VIEW_TYPE_SHOTS:
                 ((UserInfoShotsViewHolder) holder).bind(shots);
                 break;
-            case 2:
+            case VIEW_TYPE_TEAMS:
                 ((UserInfoTeamsViewHolder) holder).bind(teams);
                 break;
             case 3:
@@ -75,18 +84,22 @@ class UserInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return 4;
+        return ALL_VIEWS_AMOUNT;
     }
 
-    public void setTeams(List<User> teams) {
-        this.teams.clear();
-        this.teams.addAll(teams);
-        notifyDataSetChanged();
+    public List<Shot> getShots() {
+        return shots;
     }
 
     public void setShots(List<Shot> shots) {
         this.shots.clear();
         this.shots.addAll(shots);
+        notifyDataSetChanged();
+    }
+
+    public void setTeams(List<User> teams) {
+        this.teams.clear();
+        this.teams.addAll(teams);
         notifyDataSetChanged();
     }
 

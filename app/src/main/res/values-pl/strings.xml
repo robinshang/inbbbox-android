@@ -70,6 +70,8 @@
     <string name="fragment_like_empty_text">Najpierw dodaj jakiś projekt do ulubionych!</string>
     <string name="info_when_pattern">" w dniu ${when}"</string>
     <string name="info_where_pattern">"w ${where}"</string>
+    <string name="info_where_format" formatted="false">"w %s"</string>
+    <string name="info_when_format">"w dniu %s"</string>
     <string name="invalid_outh_url">Nieprawidłowy url</string>
     <string name="invalid_user_error">Nieprawidłowy użytkownik</string>
     <string name="like">POLUB</string>

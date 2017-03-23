@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.peekandpop.shalskar.peekandpop.PeekAndPop;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -19,17 +21,22 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpFragment;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.user.UserActivity;
 import co.netguru.android.inbbbox.feature.user.info.team.adapter.UserInfoTeamMembersAdapter;
 import timber.log.Timber;
 
 public class TeamInfoFragment extends BaseMvpFragment
-        <TeamInfoContract.View, TeamInfoContract.Presenter> implements TeamInfoContract.View {
+        <TeamInfoContract.View, TeamInfoContract.Presenter> implements TeamInfoContract.View,
+        AddToBucketDialogFragment.BucketSelectListener,
+        PeekAndPop.OnGeneralActionListener {
 
     public static final String TAG = TeamInfoFragment.class.getSimpleName();
     private static final String KEY_USER = "key_user";
@@ -41,6 +48,7 @@ public class TeamInfoFragment extends BaseMvpFragment
     private UserInfoTeamMembersAdapter adapter;
     private ShotActionListener shotActionListener;
     private Snackbar loadingMoreSnackbar;
+    private ShotPeekAndPop peekAndPop;
 
     public static TeamInfoFragment newInstance(User user) {
         final Bundle args = new Bundle();
@@ -85,6 +93,7 @@ public class TeamInfoFragment extends BaseMvpFragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initPeekAndPop();
         initRecycler();
     }
 
@@ -128,6 +137,10 @@ public class TeamInfoFragment extends BaseMvpFragment
         Snackbar.make(recyclerView, message, Snackbar.LENGTH_LONG).show();
     }
 
+    private void initPeekAndPop() {
+        peekAndPop = ShotPeekAndPop.init(getActivity(), recyclerView, this, this);
+    }
+
     @Override
     public void openUrl(String url) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -136,7 +149,7 @@ public class TeamInfoFragment extends BaseMvpFragment
 
     private void initRecycler() {
         adapter = new UserInfoTeamMembersAdapter(getPresenter()::onUserClick,
-                getPresenter()::onShotClick, getPresenter()::onLinkClick);
+        getPresenter()::onShotClick, getPresenter()::onLinkClick, peekAndPop);
         adapter.setTeam(getArguments().getParcelable(KEY_USER));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
@@ -146,6 +159,7 @@ public class TeamInfoFragment extends BaseMvpFragment
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(getScrollListener());
+        recyclerView.setNestedScrollingEnabled(false);
     }
 
     private LoadMoreScrollListener getScrollListener() {
@@ -156,5 +170,22 @@ public class TeamInfoFragment extends BaseMvpFragment
                 getPresenter().loadMoreTeamMembers();
             }
         };
+    }
+
+    @Override
+    public void onPeek(View view, int i) {
+        int userPosition = (int) view.getTag();
+        peekAndPop.bindPeekAndPop(adapter.getData().get(userPosition).shotList().get(i));
+        recyclerView.requestDisallowInterceptTouchEvent(true);
+    }
+
+    @Override
+    public void onPop(View view, int i) {
+        // no-op
+    }
+
+    @Override
+    public void onBucketForShotSelect(Bucket bucket, Shot shot) {
+        peekAndPop.onBucketForShotSelect(bucket, shot);
     }
 }

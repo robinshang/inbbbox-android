@@ -284,7 +284,7 @@ public class ShotDetailsFragment
 
     @Override
     public void showMainImage(ShotImage shotImage) {
-        ShotLoadingUtil.loadMainViewShot(getContext(), placeHolderImageView,
+        ShotLoadingUtil.loadMainViewShotWithPlaceholder(getContext(), placeHolderImageView,
                 parallaxImageView.getImageView(), shotImage);
     }
 

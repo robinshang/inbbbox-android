@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
+import com.peekandpop.shalskar.peekandpop.PeekAndPop;
 
 import java.util.List;
 
@@ -35,18 +36,23 @@ import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.common.utils.TextFormatterUtil;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.like.adapter.LikesAdapter;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import co.netguru.android.inbbbox.feature.shot.ShotsFragment;
+import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsRequest;
 import co.netguru.android.inbbbox.feature.shot.detail.ShotDetailsType;
 
 public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
-        LikesViewContract.View, LikesViewContract.Presenter> implements RefreshableFragment, LikesViewContract.View, ShotClickListener {
+        LikesViewContract.View, LikesViewContract.Presenter> implements RefreshableFragment,
+        LikesViewContract.View, ShotClickListener, PeekAndPop.OnGeneralActionListener,
+        AddToBucketDialogFragment.BucketSelectListener {
 
     private static final int GRID_VIEW_COLUMN_COUNT = 2;
     private static final int LIKES_TO_LOAD_MORE = 10;
@@ -75,10 +81,9 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     ProgressBar progressBar;
     @BindView(R.id.errorLayout)
     LinearLayout errorLayout;
-
     @Inject
     AnalyticsEventLogger analyticsEventLogger;
-
+    private ShotPeekAndPop peekAndPop;
     private Snackbar loadingMoreSnackbar;
     private LikesAdapter likesAdapter;
     private GridLayoutManager gridLayoutManager;
@@ -105,6 +110,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        initPeekAndPop();
         initComponent();
         return inflater.inflate(R.layout.fragment_likes, container, false);
     }
@@ -122,7 +128,6 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         super.onDestroyView();
         loadingMoreSnackbar = null;
     }
-
     @NonNull
     @Override
     public LikesViewContract.Presenter createPresenter() {
@@ -237,19 +242,12 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     @Override
-    public void onShotClick(Shot shot) {
-        getPresenter().showShotDetails(shot, likesAdapter.getData());
-        analyticsEventLogger.logEventLikesItemClick();
-    }
-
-    @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
         return errorString;
     }
 
     @Override
     protected void changeGridMode(boolean isGridMode) {
-        likesAdapter.setGridMode(isGridMode);
         recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
         analyticsEventLogger.logEventAppbarCollectionLayoutChange(isGridMode);
     }
@@ -258,6 +256,29 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     void onRefreshButtonClick() {
         showLoading(false);
         loadData(true);
+    }
+
+    @Override
+    public void onShotClick(Shot shot) {
+        getPresenter().showShotDetails(shot, likesAdapter.getData());
+        analyticsEventLogger.logEventLikesItemClick();
+    }
+
+    @Override
+    public void onPeek(View view, int i) {
+        peekAndPop.bindPeekAndPop(likesAdapter.getData().get(i));
+        recyclerView.requestDisallowInterceptTouchEvent(true);
+    }
+
+    @Override
+    public void onPop(View view, int i) {
+        // no-op
+    }
+
+    @Override
+    public void onBucketForShotSelect(Bucket bucket, Shot shot) {
+        peekAndPop.onBucketForShotSelect(bucket, shot);
+
     }
 
     private void initComponent() {
@@ -278,7 +299,7 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     }
 
     private void initRecyclerView() {
-        likesAdapter = new LikesAdapter(this);
+        likesAdapter = new LikesAdapter(this, peekAndPop);
         linearLayoutManager = new LinearLayoutManager(getContext());
         gridLayoutManager = new GridLayoutManager(getContext(), GRID_VIEW_COLUMN_COUNT);
         recyclerView.setHasFixedSize(true);
@@ -289,5 +310,9 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
                 presenter.getMoreLikesFromServer();
             }
         });
+    }
+
+    private void initPeekAndPop() {
+        peekAndPop = ShotPeekAndPop.init(getActivity(), recyclerView, this, this);
     }
 }

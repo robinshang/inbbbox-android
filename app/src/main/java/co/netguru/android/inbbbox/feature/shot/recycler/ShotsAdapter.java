@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 
 import static co.netguru.android.inbbbox.Constants.UNDEFINED;
 
@@ -22,15 +23,19 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
     private final DetailsVisibilityChangeEmitter emitter;
     private boolean isDetailsVisible;
 
+    private ShotPeekAndPop peekAndPop;
+
     @NonNull
-    private List<Shot> items;
+    private List<Shot> shots;
 
     @Inject
     public ShotsAdapter(@NonNull ShotSwipeListener shotSwipeListener,
-                        @NonNull DetailsVisibilityChangeEmitter emitter) {
+                        @NonNull DetailsVisibilityChangeEmitter emitter, ShotPeekAndPop peekAndPop) {
         this.shotSwipeListener = shotSwipeListener;
         this.emitter = emitter;
-        items = Collections.emptyList();
+        this.shots = Collections.emptyList();
+        this.isDetailsVisible = true;
+        this.peekAndPop = peekAndPop;
     }
 
     @Override
@@ -42,39 +47,51 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
     @Override
     public void onBindViewHolder(ShotsViewHolder holder, int position) {
-        holder.bind(items.get(position));
+        peekAndPop.addLongClickView(holder.shotImageView, position);
+        holder.bind(shots.get(position));
         holder.onDetailsChangeVisibility(isDetailsVisible);
     }
 
     @Override
+    public void onViewAttachedToWindow(ShotsViewHolder holder) {
+        peekAndPop.addOnGeneralActionListener(holder.getPeekAndPopListener());
+        super.onViewAttachedToWindow(holder);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(ShotsViewHolder holder) {
+        peekAndPop.removeOnGeneralActionListener(holder.getPeekAndPopListener());
+        super.onViewDetachedFromWindow(holder);
+    }
+
+    @Override
     public int getItemCount() {
-        return items.size();
+        return shots.size();
     }
 
     public List<Shot> getData() {
-        return items;
+        return shots;
     }
 
-    @NonNull
-    public List<Shot> getItems() {
-        return items;
+    public List<Shot> getShots() {
+        return shots;
     }
 
-    public void setItems(@NonNull List<Shot> items) {
-        this.items = items;
+    public void setShots(List<Shot> shots) {
+        this.shots = shots;
         notifyDataSetChanged();
     }
 
     public void addMoreItems(List<Shot> items) {
-        final int currentSize = this.items.size();
-        this.items.addAll(items);
+        final int currentSize = this.shots.size();
+        this.shots.addAll(items);
         notifyItemRangeChanged(currentSize - 1, items.size());
     }
 
     public void updateShotIfExists(Shot shot) {
         final int position = findShotPosition(shot.id());
         if (position != UNDEFINED) {
-            items.set(position, shot);
+            shots.set(position, shot);
             notifyItemChanged(position);
         }
     }
@@ -84,12 +101,12 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
     }
 
     public Shot getShotFromPosition(int shotPosition) {
-        return items.get(shotPosition);
+        return shots.get(shotPosition);
     }
 
     private int findShotPosition(long id) {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).id() == id) {
+        for (int i = 0; i < shots.size(); i++) {
+            if (shots.get(i).id() == id) {
                 return i;
             }
         }

@@ -52,6 +52,10 @@ public class LongSwipeLayout extends SwipeLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (!isSwipeEnabled()) {
+            return super.onTouchEvent(event);
+        }
+
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             initSwipeActionHandling();
         } else if (event.getAction() == MotionEvent.ACTION_UP) {

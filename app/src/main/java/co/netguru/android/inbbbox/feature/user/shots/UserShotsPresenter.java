@@ -10,10 +10,13 @@ import javax.inject.Inject;
 
 import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.UserShotsController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.event.RxBus;
 import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
@@ -27,7 +30,9 @@ public class UserShotsPresenter extends MvpNullObjectBasePresenter<UserShotsCont
     private static final int SHOT_PAGE_COUNT = 30;
 
     private final UserShotsController userShotsController;
+
     private final ErrorController errorController;
+    private final CompositeSubscription subscriptions = new CompositeSubscription();
     @NonNull
     private Subscription loadMoreShotsSubscription;
 
@@ -40,7 +45,8 @@ public class UserShotsPresenter extends MvpNullObjectBasePresenter<UserShotsCont
 
     @Inject
     UserShotsPresenter(UserShotsController userShotsController,
-                       ErrorController errorController, @NonNull User user) {
+                       ErrorController errorController, @NonNull User user,
+                       BucketsController bucketsController, RxBus rxBus) {
         this.userShotsController = userShotsController;
         this.errorController = errorController;
         refreshShotsSubscription = Subscriptions.unsubscribed();
@@ -54,6 +60,7 @@ public class UserShotsPresenter extends MvpNullObjectBasePresenter<UserShotsCont
         if (!retainInstance) {
             loadMoreShotsSubscription.unsubscribe();
             refreshShotsSubscription.unsubscribe();
+            subscriptions.clear();
         }
     }
 

@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.shared.shotsadapter;
 
-
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 
 public class SharedShotsAdapter extends RecyclerView.Adapter<SharedShotViewHolder> {
 
@@ -18,13 +18,16 @@ public class SharedShotsAdapter extends RecyclerView.Adapter<SharedShotViewHolde
     private static final int TYPE_LIST_SHOT_VIEW_TYPE = 2;
 
     private final ShotClickListener shotClickListener;
+    private final ShotPeekAndPop peekAndPop;
 
     @NonNull
     private List<Shot> shotList;
     private boolean isGridMode;
 
-    public SharedShotsAdapter(@NonNull ShotClickListener shotClickListener) {
+    public SharedShotsAdapter(@NonNull ShotClickListener shotClickListener,
+                              ShotPeekAndPop peekAndPop) {
         this.shotClickListener = shotClickListener;
+        this.peekAndPop = peekAndPop;
         shotList = Collections.emptyList();
     }
 
@@ -35,6 +38,7 @@ public class SharedShotsAdapter extends RecyclerView.Adapter<SharedShotViewHolde
 
     @Override
     public void onBindViewHolder(SharedShotViewHolder holder, int position) {
+        peekAndPop.addLongClickView(holder.shotImageView, position);
         holder.bind(shotList.get(position));
     }
 

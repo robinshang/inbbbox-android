@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.peekandpop.shalskar.peekandpop.PeekAndPop;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -16,8 +17,10 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 import co.netguru.android.inbbbox.feature.user.UserClickListener;
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
 
@@ -34,9 +37,12 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
     private UserShotsAdapter adapter;
 
     private User user;
+    private int userPosition;
+
+    private PeekAndPop.OnGeneralActionListener peekAndPopListener;
 
     UserInfoTeamMembersViewHolder(ViewGroup parent, UserClickListener userClickListener,
-                                  ShotClickListener shotClickListener) {
+                                  ShotClickListener shotClickListener, ShotPeekAndPop shotPeekAndPop) {
         super(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_team_info_item_member, parent, false));
 
@@ -45,7 +51,7 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
                 userShotsRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
 
-        adapter = new UserShotsAdapter(shotClickListener);
+        adapter = new UserShotsAdapter(shotClickListener, shotPeekAndPop);
 
         userShotsRecyclerView.setLayoutManager(linearLayoutManager);
         userShotsRecyclerView.setNestedScrollingEnabled(false);
@@ -66,10 +72,14 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
         initRecyclerView(item);
     }
 
+    public void setUserPosition(int position) {
+        this.userPosition = position;
+    }
+
     private void initRecyclerView(UserWithShots user) {
         if (!user.shotList().isEmpty()) {
             userShotsRecyclerView.setVisibility(View.VISIBLE);
-            adapter.setShots(user.shotList());
+            adapter.setUser(user, userPosition);
         } else {
             userShotsRecyclerView.setVisibility(View.GONE);
         }
@@ -81,5 +91,22 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
                 .fitCenter()
                 .error(R.drawable.ic_ball)
                 .into(userImage);
+    }
+
+    PeekAndPop.OnGeneralActionListener getPeekAndPopListener() {
+        if(peekAndPopListener == null) {
+            peekAndPopListener = new PeekAndPop.OnGeneralActionListener() {
+                @Override
+                public void onPeek(View view, int i) {
+                    userShotsRecyclerView.requestDisallowInterceptTouchEvent(true);
+                }
+
+                @Override
+                public void onPop(View view, int i) {
+                    // no-op
+                }
+            };
+        }
+        return peekAndPopListener;
     }
 }

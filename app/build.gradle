@@ -190,6 +190,9 @@ dependencies {
 
     compile libs.mosbyViewState
 
+    // Peek And Pop (3d Touch)
+    compile libs.peekAndPop
+
     // Dagger
     compile libs.dagger
     apt proc.dagger

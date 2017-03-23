@@ -7,53 +7,45 @@ import android.view.ViewGroup;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
-import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 
 import static co.netguru.android.inbbbox.Constants.UNDEFINED;
 
-public class LikesAdapter extends RecyclerView.Adapter<BaseViewHolder<Shot>> {
-
-    private static final int TYPE_GRID = 0;
-    private static final int TYPE_LIST = 1;
+@FragmentScope
+public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder> {
 
     private final ShotClickListener likeClickListener;
+    private final ShotPeekAndPop peekAndPop;
 
     @NonNull
     private List<Shot> likeList;
-    private boolean isGridMode;
 
-    public LikesAdapter(ShotClickListener likeClickListener) {
+    @Inject
+    public LikesAdapter(ShotClickListener likeClickListener, ShotPeekAndPop peekAndPop) {
         this.likeClickListener = likeClickListener;
+        this.peekAndPop = peekAndPop;
         likeList = Collections.emptyList();
     }
 
     @Override
-    public BaseViewHolder<Shot> onCreateViewHolder(ViewGroup parent, int viewType) {
-        switch (viewType) {
-            case TYPE_GRID:
-                return new LikesGridViewHolder(parent, likeClickListener);
-            case TYPE_LIST:
-                return new LikesListViewHolder(parent, likeClickListener);
-            default:
-                throw new IllegalArgumentException("Cannot create view holder for type : " + viewType);
-        }
+    public LikesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new LikesViewHolder(parent, likeClickListener);
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder<Shot> holder, int position) {
+    public void onBindViewHolder(LikesViewHolder holder, int position) {
+        peekAndPop.addLongClickView(holder.imageView, position);
         holder.bind(likeList.get(position));
     }
 
     @Override
     public int getItemCount() {
         return likeList.size();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return isGridMode ? TYPE_GRID : TYPE_LIST;
     }
 
     public List<Shot> getData() {
@@ -88,11 +80,6 @@ public class LikesAdapter extends RecyclerView.Adapter<BaseViewHolder<Shot>> {
             likeList.remove(shotPosition);
             notifyItemRemoved(shotPosition);
         }
-    }
-
-    public void setGridMode(boolean isGridMode) {
-        this.isGridMode = isGridMode;
-        notifyDataSetChanged();
     }
 
     private int getShotIndexIfExists(Shot likedShot) {

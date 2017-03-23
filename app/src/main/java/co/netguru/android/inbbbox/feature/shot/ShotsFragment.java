@@ -33,6 +33,7 @@ import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 import co.netguru.android.inbbbox.feature.shared.view.AutoItemScrollRecyclerView;
 import co.netguru.android.inbbbox.feature.shared.view.BallInterpolator;
 import co.netguru.android.inbbbox.feature.shared.view.CustomLinearLayoutManager;
@@ -52,7 +53,7 @@ import co.netguru.android.inbbbox.feature.shot.removefrombucket.RemoveFromBucket
 public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
         ShotsContract.View, ShotsContract.Presenter> implements RefreshableFragment, ShotsContract.View, ShotSwipeListener,
         AddToBucketDialogFragment.BucketSelectListener, RemoveFromBucketDialogFragment.BucketSelectListener,
-        DetailsVisibilityChangeEmitter {
+        ShotPeekAndPop.OnGeneralActionListener, DetailsVisibilityChangeEmitter {
 
     private static final String KEY_SHOULD_SHOW_SHOTS_ANIMATION = "key:should_show_shots_animation";
     private static final int SHOTS_TO_LOAD_MORE = 5;
@@ -80,20 +81,17 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @BindView(R.id.shots_animation_container)
     TwoCoveredShotsAnimationView twoCoveredShotsAnimationView;
-
-    private Animation shadowAnimation;
-    private AnimationSet ballAnimation;
-    private CustomLinearLayoutManager customLinearLayoutManager;
-
     @Inject
     ShotsAdapter adapter;
-
+    @Inject
+    AnalyticsEventLogger analyticsEventLogger;
+    private CustomLinearLayoutManager customLinearLayoutManager;
+    private Animation shadowAnimation;
+    private AnimationSet ballAnimation;
+    private ShotPeekAndPop peekAndPop;
     private ShotActionListener shotActionListener;
     private DetailsVisibilityChangeListener detailsVisibilityChangeListener;
     private ShotsComponent component;
-
-    @Inject
-    AnalyticsEventLogger analyticsEventLogger;
 
     public static ShotsFragment newInstance(boolean shouldShowShotsAnimation) {
         final Bundle bundle = new Bundle();
@@ -118,6 +116,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        initPeekAndPop();
         initComponent();
         return inflater.inflate(R.layout.fragment_shots, container, false);
     }
@@ -126,6 +125,16 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public ShotsContract.Presenter createPresenter() {
         return component.getPresenter();
+    }
+
+    private void initComponent() {
+        component = App.getUserComponent(getContext())
+                .getShotsComponent(new ShotsModule(this, this, peekAndPop));
+        component.inject(this);
+    }
+
+    private void initPeekAndPop() {
+        peekAndPop = ShotPeekAndPop.init(getActivity(), shotsRecyclerView, this, this);
     }
 
     @Override
@@ -150,7 +159,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void setData(List<Shot> data) {
-        adapter.setItems(data);
+        adapter.setShots(data);
     }
 
     @Override
@@ -199,7 +208,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
                 .isCommentModeEnabled(true)
                 .build();
 
-        shotActionListener.showShotDetails(selectedShot, adapter.getItems(), request);
+        shotActionListener.showShotDetails(selectedShot, adapter.getShots(), request);
     }
 
     @Override
@@ -232,7 +241,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
                 .detailsType(ShotDetailsType.DEFAULT)
                 .build();
 
-        shotActionListener.showShotDetails(shot, adapter.getItems(), request);
+        shotActionListener.showShotDetails(shot, adapter.getShots(), request);
     }
 
     @Override
@@ -329,11 +338,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     }
 
     @Override
-    public void onShotLiked() {
-        shotActionListener.shotLikeStatusChanged();
-    }
-
-    @Override
     public void onShotAddedToBucket() {
         shotActionListener.onShotAddedToBucket();
     }
@@ -372,6 +376,13 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         analyticsEventLogger.logEventShotsFABComment();
     }
 
+    @Override
+    public void onShotLiked() {
+        Snackbar.make(getView(), R.string.shot_liked, Snackbar.LENGTH_LONG).show();
+        shotActionListener.shotLikeStatusChanged();
+
+    }
+
     @OnClick(R.id.fab_follow_menu)
     void onFollowClick() {
         int currentItemPosition = shotsRecyclerView.getCurrentItem();
@@ -380,12 +391,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
                     .handleFollowShotAuthor(adapter.getShotFromPosition(currentItemPosition));
         }
         analyticsEventLogger.logEventShotsFABFollow();
-    }
-
-    private void initComponent() {
-        component = App.getUserComponent(getContext())
-                .getShotsComponent(new ShotsModule(this, this));
-        component.inject(this);
     }
 
     private void initFabMenu() {
@@ -432,6 +437,18 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         ballAnimation.addAnimation(translateAnimation);
     }
 
+    @Override
+    public void onPeek(View view, int i) {
+        peekAndPop.bindPeekAndPop(adapter.getData().get(i));
+        shotsRecyclerView.requestDisallowInterceptTouchEvent(true);
+        swipeRefreshLayout.setEnabled(false);
+    }
+
+    @Override
+    public void onPop(View view, int i) {
+        swipeRefreshLayout.setEnabled(true);
+    }
+
     public interface ShotActionListener {
         void shotLikeStatusChanged();
 
@@ -441,4 +458,5 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
 
         void onUserFollowed();
     }
+
 }

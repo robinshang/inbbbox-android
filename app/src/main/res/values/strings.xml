@@ -100,6 +100,8 @@
     <string name="for_label">" for "</string>
     <string name="info_where_pattern">"in ${where}"</string>
     <string name="info_when_pattern">" on ${when}"</string>
+    <string name="info_where_format" formatted="false">"in %s"</string>
+    <string name="info_when_format">"on %s"</string>
     <string name="about_minute_ago">About minute ago</string>
     <string name="about_sec_ago">About second ago</string>
     <string name="about_hour_ago">About hour ago</string>
@@ -155,6 +157,8 @@
     <string name="followers">followers</string>
     <string name="shots">shots</string>
     <string name="following">following</string>
+    <string name="shot_liked">Shot liked</string>
+    <string name="shot_unliked">Shot unliked</string>
     <string name="projects_empty_view_text">Still waiting for the big shot</string>
     <string name="web" translatable="false">web</string>
     <string name="twitter" translatable="false">twitter</string>

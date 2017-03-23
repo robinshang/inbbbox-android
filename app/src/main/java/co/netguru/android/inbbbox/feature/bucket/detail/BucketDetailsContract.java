@@ -32,6 +32,8 @@ public interface BucketDetailsContract {
         void showRemoveBucketDialog(@NonNull String bucketName);
 
         void showRefreshedBucketsView(long deletedBucketId);
+
+        void showBucketAddSuccess();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -47,6 +49,5 @@ public interface BucketDetailsContract {
         void onDeleteBucketClick();
 
         void deleteBucket();
-
     }
 }

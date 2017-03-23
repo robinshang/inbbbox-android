@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
+import com.peekandpop.shalskar.peekandpop.PeekAndPop;
 
 import java.util.List;
 
@@ -22,16 +23,20 @@ import co.netguru.android.commons.di.FragmentScope;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpLceFragmentWithListTypeSelection;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 import co.netguru.android.inbbbox.feature.shared.shotsadapter.SharedShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 
 @FragmentScope
-public class ProjectFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout, List<Shot>,
-        ProjectContract.View, ProjectContract.Presenter> implements ProjectContract.View {
+public class ProjectFragment extends BaseMvpLceFragmentWithListTypeSelection<SwipeRefreshLayout,
+        List<Shot>, ProjectContract.View, ProjectContract.Presenter> implements ProjectContract.View,
+        PeekAndPop.OnGeneralActionListener, AddToBucketDialogFragment.BucketSelectListener {
 
     public static final String TAG = ProjectFragment.class.getSimpleName();
     private static final String KEY_PROJECT = "key:project";
@@ -45,6 +50,7 @@ public class ProjectFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     private LinearLayoutManager linearLayoutManager;
     private SharedShotsAdapter shotsAdapter;
     private ProjectShotClickListener projectShotClickListener;
+    private ShotPeekAndPop peekAndPop;
 
     public static ProjectFragment newInstance(ProjectWithShots projectWithShots) {
         Bundle args = new Bundle();
@@ -76,6 +82,7 @@ public class ProjectFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initPeekAndPop();
         initRecycler();
         initRefreshLayout();
     }
@@ -154,9 +161,29 @@ public class ProjectFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
     private void initRecycler() {
         gridLayoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
         linearLayoutManager = new LinearLayoutManager(getContext());
-        shotsAdapter = new SharedShotsAdapter(getPresenter()::onShotClick);
+        shotsAdapter = new SharedShotsAdapter(getPresenter()::onShotClick, peekAndPop);
         recyclerView.setAdapter(shotsAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(getScrollListener());
+    }
+
+    private void initPeekAndPop() {
+        peekAndPop = ShotPeekAndPop.init(getActivity(), recyclerView, this, this);
+    }
+
+    @Override
+    public void onPeek(View view, int i) {
+        peekAndPop.bindPeekAndPop(shotsAdapter.getData().get(i));
+        recyclerView.requestDisallowInterceptTouchEvent(true);
+    }
+
+    @Override
+    public void onPop(View view, int i) {
+        // no-op
+    }
+
+    @Override
+    public void onBucketForShotSelect(Bucket bucket, Shot shot) {
+        peekAndPop.onBucketForShotSelect(bucket, shot);
     }
 }

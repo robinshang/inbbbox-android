@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
+import com.peekandpop.shalskar.peekandpop.PeekAndPop;
 
 import java.util.List;
 
@@ -22,17 +23,21 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
+import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
+import co.netguru.android.inbbbox.feature.shared.shotsadapter.SharedShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.user.info.team.ShotActionListener;
-import co.netguru.android.inbbbox.feature.user.shots.adapter.UserShotsAdapter;
 import timber.log.Timber;
 
 public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,
         UserShotsContract.View, UserShotsContract.Presenter>
-        implements UserShotsContract.View {
+        implements UserShotsContract.View, PeekAndPop.OnGeneralActionListener,
+        AddToBucketDialogFragment.BucketSelectListener {
 
     public static final String TAG = UserShotsFragment.class.getSimpleName();
 
@@ -50,7 +55,8 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
     RecyclerView recyclerView;
 
     private ShotActionListener shotActionListener;
-    private UserShotsAdapter adapter;
+    private SharedShotsAdapter adapter;
+    private ShotPeekAndPop peekAndPop;
 
     public static UserShotsFragment newInstance(User user) {
         final Bundle args = new Bundle();
@@ -87,6 +93,7 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initPeekAndPop();
         initRefreshLayout();
         initRecyclerView();
     }
@@ -112,7 +119,7 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
 
     @Override
     public void setData(List<Shot> data) {
-        adapter.setUserShots(data);
+        adapter.setShots(data);
     }
 
     @Override
@@ -122,7 +129,7 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
 
     @Override
     public void showMoreUserShots(List<Shot> shotList) {
-        adapter.addMoreUserShots(shotList);
+        adapter.addNewShots(shotList);
     }
 
     @Override
@@ -135,6 +142,7 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
         shotActionListener.showShotDetails(shot, allShots, userId);
     }
 
+
     @Override
     public void showMessageOnServerError(String errorText) {
         Snackbar.make(recyclerView, errorText, Snackbar.LENGTH_SHORT).show();
@@ -146,7 +154,7 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
     }
 
     private void initRecyclerView() {
-        adapter = new UserShotsAdapter(getPresenter()::showShotDetails);
+        adapter = new SharedShotsAdapter(getPresenter()::showShotDetails, peekAndPop);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),
                 GRID_VIEW_COLUMN_COUNT);
 
@@ -165,4 +173,23 @@ public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayo
         };
     }
 
+    private void initPeekAndPop() {
+        peekAndPop = ShotPeekAndPop.init(getActivity(), recyclerView, this, this);
+    }
+
+    @Override
+    public void onPeek(View view, int i) {
+        peekAndPop.bindPeekAndPop(adapter.getData().get(i));
+        recyclerView.requestDisallowInterceptTouchEvent(true);
+    }
+
+    @Override
+    public void onPop(View view, int i) {
+        // no-op
+    }
+
+    @Override
+    public void onBucketForShotSelect(Bucket bucket, Shot shot) {
+        peekAndPop.onBucketForShotSelect(bucket, shot);
+    }
 }

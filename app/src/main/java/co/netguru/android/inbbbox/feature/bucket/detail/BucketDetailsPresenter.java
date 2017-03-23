@@ -30,7 +30,9 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
         implements BucketDetailsContract.Presenter {
 
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
-
+    private final BucketsController bucketsController;
+    private final ErrorController errorController;
+    private final RxBus rxBus;
     @VisibleForTesting
     @NonNull
     Subscription refreshShotsSubscription;
@@ -39,11 +41,6 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     Subscription loadNextShotsSubscription;
     @NonNull
     Subscription busSubscription;
-
-    private final BucketsController bucketsController;
-    private final ErrorController errorController;
-    private final RxBus rxBus;
-
     private int shotsPerPage;
     private int pageNumber = 1;
     private boolean canLoadMore;
@@ -52,7 +49,8 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
     private String currentBucketName;
 
     @Inject
-    BucketDetailsPresenter(BucketsController bucketsController, ErrorController errorController, RxBus rxBus) {
+    BucketDetailsPresenter(BucketsController bucketsController,
+                           ErrorController errorController, RxBus rxBus) {
         this.bucketsController = bucketsController;
         this.errorController = errorController;
         this.rxBus = rxBus;

@@ -46,16 +46,28 @@ public class ShotLoadingUtil {
                 .into(target);
     }
 
-    public static void loadMainViewShot(Context context, ImageView placeholder, ImageView target, ShotImage shot) {
-        loadMainViewShotWithListener(context, placeholder, target, shot, null);
+    public static void loadMainViewShot(Context context, ImageView targetView, ShotImage shot) {
+        GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(targetView);
+        Glide.with(context)
+                .load(getImageUrl(shot))
+                .placeholder(R.drawable.shot_placeholder)
+                .thumbnail(ShotLoadingUtil.getThumbnailRequest(context, shot.thumbnailUrl()))
+                .animate(android.R.anim.fade_in)
+                .into(imageViewTarget);
     }
 
-    public static void loadMainViewShotWithListener(Context context, ImageView placeholderView,
-                                                    ImageView targetView, ShotImage shot,
-                                                    RequestListener<String, GlideDrawable> requestListener) {
-        Glide.clear(placeholderView);
+    public static void loadMainViewShotWithPlaceholder(Context context, ImageView placeholder,
+                                                       ImageView target, ShotImage shot) {
+        loadMainViewShotWithPlaceholderAndListener(context, placeholder, target, shot, null);
+    }
+
+    public static void loadMainViewShotWithPlaceholderAndListener(Context context, ImageView placeholderView,
+                                                                  ImageView targetView, ShotImage shot,
+                                                                  RequestListener<String, GlideDrawable> requestListener) {
         Glide.clear(targetView);
         String imageUrl = getImageUrl(shot);
+
+        Glide.clear(placeholderView);
         placeholderView.setVisibility(View.GONE);
 
         GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(targetView);
