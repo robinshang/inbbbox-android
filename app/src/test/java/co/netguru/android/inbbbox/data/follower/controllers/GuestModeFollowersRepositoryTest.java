@@ -17,6 +17,7 @@ import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.data.db.DaoSession;
 import co.netguru.android.inbbbox.data.db.FollowerDB;
 import co.netguru.android.inbbbox.data.db.FollowerDBDao;
+import co.netguru.android.inbbbox.data.db.LinksDBDao;
 import co.netguru.android.inbbbox.data.db.UserDB;
 import co.netguru.android.inbbbox.data.db.UserDBDao;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
@@ -44,6 +45,8 @@ public class GuestModeFollowersRepositoryTest {
     @Mock
     FollowerDBDao followerDBDao;
     @Mock
+    LinksDBDao linksDBDao;
+    @Mock
     UserDBDao userDBDao;
     @Mock
     RxDao<FollowerDB, Long> followerRxDao;
@@ -62,6 +65,7 @@ public class GuestModeFollowersRepositoryTest {
         rxTransaction = new RxTransaction(daoSession);
         when(daoSession.getFollowerDBDao()).thenReturn(followerDBDao);
         when(daoSession.getUserDBDao()).thenReturn(userDBDao);
+        when(daoSession.getLinksDBDao()).thenReturn(linksDBDao);
         when(followerDBDao.rx()).thenReturn(followerRxDao);
         when(daoSession.rxTx()).thenReturn(rxTransaction);
         doAnswer(invocation -> {

@@ -17,6 +17,7 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.data.db.DaoSession;
+import co.netguru.android.inbbbox.data.db.LinksDBDao;
 import co.netguru.android.inbbbox.data.db.ShotDB;
 import co.netguru.android.inbbbox.data.db.ShotDBDao;
 import co.netguru.android.inbbbox.data.db.TeamDB;
@@ -50,6 +51,8 @@ public class GuestModeLikesRepositoryTest {
     @Mock
     TeamDBDao teamDBDao;
     @Mock
+    LinksDBDao linksDBDao;
+    @Mock
     RxDao<ShotDB, Long> shotRxDao;
     @Mock
     QueryBuilder<ShotDB> shotDBQueryBuilder;
@@ -67,6 +70,7 @@ public class GuestModeLikesRepositoryTest {
         when(daoSession.getShotDBDao()).thenReturn(shotDBDao);
         when(daoSession.getUserDBDao()).thenReturn(userDBDao);
         when(daoSession.getTeamDBDao()).thenReturn(teamDBDao);
+        when(daoSession.getLinksDBDao()).thenReturn(linksDBDao);
         when(shotDBDao.rx()).thenReturn(shotRxDao);
         when(daoSession.rxTx()).thenReturn(rxTransaction);
         when(shotDBDao.queryBuilder()).thenReturn(shotDBQueryBuilder);
