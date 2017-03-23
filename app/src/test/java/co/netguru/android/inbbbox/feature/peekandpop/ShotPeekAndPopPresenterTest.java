@@ -11,6 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.common.error.ErrorController;
+import co.netguru.android.inbbbox.common.other.VibrationController;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.like.controllers.LikeShotController;
@@ -55,6 +56,9 @@ public class ShotPeekAndPopPresenterTest {
 
     @Mock
     Shot shotMock;
+
+    @Mock
+    VibrationController vibrationControllerMock;
 
     Shot likedShot = Statics.LIKED_SHOT_NOT_BUCKETED;
     Shot unlikedShot = Statics.NOT_LIKED_SHOT;
@@ -196,13 +200,13 @@ public class ShotPeekAndPopPresenterTest {
 
     private void createPresenterWithUnlikedShot() {
         presenter = new ShotPeekAndPopPresenter(likeShotControllerMock, errorControllerMock,
-                rxBusMock, bucketsControllerMock, unlikedShot);
+                rxBusMock, bucketsControllerMock, unlikedShot, vibrationControllerMock);
         presenter.attachView(viewMock);
     }
 
     private void createPresenterWithLikedShot() {
         presenter = new ShotPeekAndPopPresenter(likeShotControllerMock, errorControllerMock,
-                rxBusMock, bucketsControllerMock, likedShot);
+                rxBusMock, bucketsControllerMock, likedShot, vibrationControllerMock);
         presenter.attachView(viewMock);
     }
 
