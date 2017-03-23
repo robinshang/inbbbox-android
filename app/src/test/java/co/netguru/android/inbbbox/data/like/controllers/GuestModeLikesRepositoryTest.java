@@ -23,6 +23,7 @@ import co.netguru.android.inbbbox.data.db.TeamDB;
 import co.netguru.android.inbbbox.data.db.TeamDBDao;
 import co.netguru.android.inbbbox.data.db.UserDB;
 import co.netguru.android.inbbbox.data.db.UserDBDao;
+import co.netguru.android.inbbbox.data.like.GuestModeLikesRepository;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;

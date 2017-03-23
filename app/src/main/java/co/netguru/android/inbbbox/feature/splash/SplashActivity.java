@@ -51,7 +51,7 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
 
     @Override
     public void initializeOnlineUserMode() {
-        App.initUserComponent(this, UserModeType.ONLINE_USER_MODE);
+        App.initUserComponent(this, UserModeType.ONLINE_USER_MODE); // TODO: 22.03.2017 BUG
     }
 
     @Override

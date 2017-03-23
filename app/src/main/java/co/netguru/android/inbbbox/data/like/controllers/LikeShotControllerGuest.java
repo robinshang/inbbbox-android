@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.data.like.controllers;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.data.like.GuestModeLikesRepository;
 import co.netguru.android.inbbbox.data.like.LikesApi;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Completable;

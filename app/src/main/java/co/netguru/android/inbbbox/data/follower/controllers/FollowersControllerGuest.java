@@ -2,6 +2,7 @@ package co.netguru.android.inbbbox.data.follower.controllers;
 
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.FollowersApi;
+import co.netguru.android.inbbbox.data.follower.GuestModeFollowersRepository;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
 import co.netguru.android.inbbbox.data.shot.ShotsApi;
 import rx.Completable;

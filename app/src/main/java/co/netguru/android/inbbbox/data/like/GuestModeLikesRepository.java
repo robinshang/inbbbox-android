@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.data.like.controllers;
+package co.netguru.android.inbbbox.data.like;
 
 import android.support.annotation.NonNull;
 

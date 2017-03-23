@@ -20,6 +20,7 @@ import co.netguru.android.inbbbox.data.db.FollowerDBDao;
 import co.netguru.android.inbbbox.data.db.UserDB;
 import co.netguru.android.inbbbox.data.db.UserDBDao;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.follower.GuestModeFollowersRepository;
 import co.netguru.android.inbbbox.data.follower.model.api.FollowerEntity;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
