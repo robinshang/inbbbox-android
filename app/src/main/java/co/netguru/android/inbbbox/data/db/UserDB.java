@@ -15,11 +15,16 @@ public class UserDB {
     private int shotsCount;
     private int bucketsCount;
     private int projectsCount;
+    private int followersCount;
+    private int followingsCount;
+    private String bio;
+    private String location;
     private String type;
 
-    @Generated(hash = 617444720)
+    @Generated(hash = 1675469231)
     public UserDB(Long id, String name, String avatarUrl, String username,
-                  int shotsCount, int bucketsCount, int projectsCount, String type) {
+                  int shotsCount, int bucketsCount, int projectsCount, int followersCount,
+                  int followingsCount, String bio, String location, String type) {
         this.id = id;
         this.name = name;
         this.avatarUrl = avatarUrl;
@@ -27,6 +32,10 @@ public class UserDB {
         this.shotsCount = shotsCount;
         this.bucketsCount = bucketsCount;
         this.projectsCount = projectsCount;
+        this.followersCount = followersCount;
+        this.followingsCount = followingsCount;
+        this.bio = bio;
+        this.location = location;
         this.type = type;
     }
 
@@ -88,6 +97,38 @@ public class UserDB {
 
     public void setProjectsCount(int projectsCount) {
         this.projectsCount = projectsCount;
+    }
+
+    public int getFollowersCount() {
+        return this.followersCount;
+    }
+
+    public void setFollowersCount(int followersCount) {
+        this.followersCount = followersCount;
+    }
+
+    public int getFollowingsCount() {
+        return this.followingsCount;
+    }
+
+    public void setFollowingsCount(int followingsCount) {
+        this.followingsCount = followingsCount;
+    }
+
+    public String getBio() {
+        return this.bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getLocation() {
+        return this.location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getType() {

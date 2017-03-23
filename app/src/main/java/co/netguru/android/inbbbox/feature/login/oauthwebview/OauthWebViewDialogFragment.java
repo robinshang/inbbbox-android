@@ -132,10 +132,16 @@ public class OauthWebViewDialogFragment
         super.dismiss();
     }
 
+    private void cleanUpWebView() {
+        webView.destroy();
+        webView = null;
+    }
+
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        cleanUpWebView();
         getPresenter().detachView(false);
+        super.onDestroyView();
     }
 
     @NonNull
