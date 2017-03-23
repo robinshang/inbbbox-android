@@ -47,10 +47,9 @@ import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 import co.netguru.android.inbbbox.feature.shared.shotsadapter.SharedShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
-import timber.log.Timber;
 
 public class BucketDetailsFragment extends BaseMvpLceFragmentWithListTypeSelection
-        <SwipeRefreshLayout, List<Shot>,  BucketDetailsContract.View, BucketDetailsContract.Presenter>
+        <SwipeRefreshLayout, List<Shot>, BucketDetailsContract.View, BucketDetailsContract.Presenter>
         implements BucketDetailsContract.View, DeleteBucketDialogFragment.DeleteBucketDialogListener,
         AddToBucketDialogFragment.BucketSelectListener, PeekAndPop.OnGeneralActionListener {
 

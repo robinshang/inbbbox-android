@@ -32,7 +32,6 @@ import co.netguru.android.inbbbox.feature.shared.shotsadapter.SharedShotsAdapter
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import co.netguru.android.inbbbox.feature.shot.addtobucket.AddToBucketDialogFragment;
 import co.netguru.android.inbbbox.feature.user.info.team.ShotActionListener;
-import co.netguru.android.inbbbox.feature.user.shots.adapter.UserShotsAdapter;
 import timber.log.Timber;
 
 public class UserShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<Shot>,

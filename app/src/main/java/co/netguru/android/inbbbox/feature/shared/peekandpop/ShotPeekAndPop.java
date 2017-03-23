@@ -33,8 +33,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract.View,
         PeekAndPop.OnGeneralActionListener {
 
-    private static final String APP_NAME_KEY = "${where}";
-    private static final String DATE_KEY = "${when}";
     private final Set<OnGeneralActionListener> extraGeneralListeners = new HashSet<>();
     @BindView(R.id.rounded_corners_shot_image_view)
     RoundedCornersShotImageView shotImageView;
@@ -267,14 +265,10 @@ public class ShotPeekAndPop extends PeekAndPop implements ShotPeekAndPopContract
     }
 
     private void onFingerReleaseWhilePeeking(View onView) {
-        switch (onView.getId()) {
-            case R.id.details_likes_imageView:
-                presenter.toggleLikeShot();
-                break;
-
-            case R.id.details_bucket_imageView:
-                presenter.onBucketShot();
-                break;
+        if (onView.getId() == R.id.details_likes_imageView) {
+            presenter.toggleLikeShot();
+        } else if (onView.getId() == R.id.details_bucket_imageView) {
+            presenter.onBucketShot();
         }
     }
 

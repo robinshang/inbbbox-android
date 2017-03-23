@@ -1,12 +1,8 @@
 package co.netguru.android.inbbbox.feature.shared.shotsadapter;
 
-
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.ViewGroup;
-
-import com.peekandpop.shalskar.peekandpop.PeekAndPop;
 
 import java.util.Collection;
 import java.util.Collections;

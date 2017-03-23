@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.feature.shot;
 
-import com.peekandpop.shalskar.peekandpop.PeekAndPop;
-
 import co.netguru.android.commons.di.ActivityScope;
 import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 import co.netguru.android.inbbbox.feature.shot.recycler.DetailsVisibilityChangeEmitter;

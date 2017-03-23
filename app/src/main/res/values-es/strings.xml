@@ -70,6 +70,8 @@
     <string name="fragment_like_empty_text">¡Primero le debe gustar un projecto!</string>
     <string name="info_when_pattern">" el ${when}"</string>
     <string name="info_where_pattern">"en ${where}"</string>
+    <string name="info_where_format" formatted="false">"el %s"</string>
+    <string name="info_when_format">"en %s"</string>
     <string name="invalid_outh_url">url inválido</string>
     <string name="invalid_user_error">Usuario inválido</string>
     <string name="like">ME GUSTA</string>

@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.peekandpop.shalskar.peekandpop.PeekAndPop;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -16,7 +14,6 @@ import javax.inject.Inject;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
-import timber.log.Timber;
 
 import static co.netguru.android.inbbbox.Constants.UNDEFINED;
 
