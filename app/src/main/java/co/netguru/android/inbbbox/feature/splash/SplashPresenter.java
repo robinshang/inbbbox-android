@@ -93,13 +93,8 @@ public class SplashPresenter extends MvpNullObjectBasePresenter<SplashContract.V
         compositeSubscription.add(
                 userController.requestUser()
                         .compose(androidIO())
-                        .subscribe(user -> handleLoggedUser(),
+                        .subscribe(user -> getView().showMainScreen(),
                                 throwable -> handleError(throwable, "Error while requesting user"))
         );
-    }
-
-    private void handleLoggedUser() {
-        getView().initializeOnlineUserMode();
-        getView().showMainScreen();
     }
 }

@@ -20,7 +20,6 @@ import butterknife.OnClick;
 import co.netguru.android.commons.di.WithComponent;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
-import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.utils.AnimationUtil;
 import co.netguru.android.inbbbox.feature.login.oauthwebview.OauthWebViewDialogFragment;
@@ -141,11 +140,6 @@ public class LoginActivity extends MvpActivity<LoginContract.View, LoginContract
     public void showGuestModeLoginButton() {
         AnimationUtil.startSlideInFromBottomShowAnimation(guestModeDivider, SLIDE_IN_DURATION);
         AnimationUtil.startSlideInFromBottomShowAnimation(guestButton, SLIDE_IN_DURATION);
-    }
-
-    @Override
-    public void initializeUserMode(UserModeType mode) {
-        App.initUserComponent(this, mode);
     }
 
     @Override

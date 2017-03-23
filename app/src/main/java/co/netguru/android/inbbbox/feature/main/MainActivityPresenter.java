@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.main;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
@@ -105,10 +106,10 @@ public final class MainActivityPresenter extends MvpNullObjectBasePresenter<Main
     }
 
     @Override
-    public void performLogout() {
+    public void performLogout(Context context) {
         notificationScheduler.cancelNotification();
         subscriptions.add(
-                logoutController.performLogout()
+                logoutController.performLogout(context)
                         .subscribe(getView()::showLoginActivity,
                                 throwable -> handleError(throwable, "critical logout error"))
         );

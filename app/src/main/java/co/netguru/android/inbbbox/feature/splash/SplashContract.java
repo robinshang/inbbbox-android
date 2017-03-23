@@ -13,8 +13,6 @@ interface SplashContract {
 
         void showMainScreen();
 
-        void initializeOnlineUserMode();
-
         void setDefaultNightMode(boolean isNightMode);
     }
 

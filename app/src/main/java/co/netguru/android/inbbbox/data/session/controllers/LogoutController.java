@@ -1,8 +1,11 @@
 package co.netguru.android.inbbbox.data.session.controllers;
 
+import android.content.Context;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.CurrentUserPrefsRepository;
 import co.netguru.android.inbbbox.data.session.CookieCacheManager;
 import co.netguru.android.inbbbox.data.session.TokenPrefsRepository;
@@ -29,11 +32,14 @@ public class LogoutController {
         this.cacheController = cacheController;
     }
 
-    public Completable performLogout() {
+    public Completable performLogout(Context context) {
         return Completable.merge(
-                cacheController.clearCache(),
-                tokenPrefsRepository.clear(),
-                currentUserPrefsRepository.clear(),
-                settingsPrefsRepository.clear());
+                cacheController.clearCache(), tokenPrefsRepository.clear(),
+                currentUserPrefsRepository.clear(), settingsPrefsRepository.clear())
+                .doOnCompleted(() -> resetUserComponentAfterLogout(context));
+    }
+
+    private void resetUserComponentAfterLogout(Context context) {
+        App.releaseUserComponent(context);
     }
 }
