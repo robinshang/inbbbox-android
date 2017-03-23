@@ -31,12 +31,14 @@ public class BucketsControllerGuest implements BucketsController {
     }
 
     @Override
-    public Single<List<BucketWithShots>> getUserBucketsWithShots(int pageNumber, int pageCount, int shotsCount) {
+    public Single<List<BucketWithShots>> getUserBucketsWithShots(int pageNumber, int pageCount,
+                                                                 int shotsCount, boolean shouldCache) {
         return guestModeBucketsRepository.getUserBucketsWithShots();
     }
 
     @Override
-    public Single<List<Shot>> getShotsListFromBucket(long bucketId, int pageNumber, int pageCount) {
+    public Single<List<Shot>> getShotsListFromBucket(long bucketId, int pageNumber,
+                                                     int pageCount, boolean shouldCache) {
         return guestModeBucketsRepository.getShotsListFromBucket(bucketId);
     }
 
@@ -57,13 +59,11 @@ public class BucketsControllerGuest implements BucketsController {
 
     @Override
     public Single<List<Bucket>> getListBucketsForShot(long shotId) {
-        // TODO 12.01.2017 Not in scope of task
-        return null;
+        return guestModeBucketsRepository.getBucketsListForShot(shotId);
     }
 
     @Override
     public Completable removeShotFromBucket(long bucketId, Shot shot) {
-        // TODO 12.01.2017 Not in scope of task
-        return null;
+        return guestModeBucketsRepository.removeShotFromBucket(bucketId, shot);
     }
 }

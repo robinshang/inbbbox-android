@@ -1,12 +1,14 @@
 package co.netguru.android.inbbbox.data.dribbbleuser.user;
 
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
 import co.netguru.android.inbbbox.data.db.UserDB;
+import co.netguru.android.inbbbox.data.dribbbleuser.Links;
 import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.model.api.UserEntity;
 
@@ -32,9 +34,16 @@ public abstract class User implements Parcelable {
 
     public abstract int followingsCount();
 
+    public abstract int bucketsCount();
+
+    public abstract int projectsCount();
+
     public abstract String bio();
 
     public abstract String location();
+
+    @Nullable
+    public abstract Links links(); // TODO: 20.03.2017 Add Links table to DB
 
     public static User.Builder builder() {
         return new AutoValue_User.Builder();
@@ -58,9 +67,15 @@ public abstract class User implements Parcelable {
 
         public abstract User.Builder followingsCount(int followingsCount);
 
+        public abstract User.Builder bucketsCount(int bucketsCount);
+
+        public abstract User.Builder projectsCount(int projectsCount);
+
         public abstract User.Builder bio(String bio);
 
         public abstract User.Builder location(String location);
+
+        public abstract User.Builder links(Links links);
 
         public abstract User build();
     }
@@ -75,8 +90,11 @@ public abstract class User implements Parcelable {
                 .type(entity.type())
                 .followersCount(entity.followersCount())
                 .followingsCount(entity.followingsCount())
+                .bucketsCount(entity.bucketsCount())
+                .projectsCount(entity.projectsCount())
                 .bio(entity.bio())
                 .location(entity.location() == null ? "Unknown" : entity.location())
+                .links(entity.links())
                 .build();
     }
 
@@ -87,6 +105,8 @@ public abstract class User implements Parcelable {
                 .avatarUrl(team.avatarUrl())
                 .username(team.username())
                 .shotsCount(team.shotsCount())
+                .bucketsCount(team.bucketsCount())
+                .projectsCount(team.projectsCount())
                 .type(TYPE_TEAM)
                 .build();
     }
@@ -98,6 +118,12 @@ public abstract class User implements Parcelable {
                 .avatarUrl(userDB.getAvatarUrl())
                 .username(userDB.getUsername())
                 .shotsCount(userDB.getShotsCount())
+                .projectsCount(userDB.getProjectsCount())
+                .bucketsCount(userDB.getBucketsCount())
+                .followersCount(userDB.getFollowersCount())
+                .followingsCount(userDB.getFollowingsCount())
+                .bio(userDB.getBio())
+                .location(userDB.getLocation())
                 .type(userDB.getType())
                 .build();
     }

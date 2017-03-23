@@ -37,7 +37,9 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
     private Subscription refreshSubscription;
     @NonNull
     private Subscription loadMoreLikesSubscription;
+    @NonNull
     private Subscription busSubscription;
+
     private boolean hasMore = true;
     private int pageNumber = 1;
 
@@ -50,6 +52,7 @@ public final class LikesPresenter extends MvpNullObjectBasePresenter<LikesViewCo
         this.rxBus = rxBus;
         refreshSubscription = Subscriptions.unsubscribed();
         loadMoreLikesSubscription = Subscriptions.unsubscribed();
+        busSubscription = Subscriptions.unsubscribed();
     }
 
     @Override

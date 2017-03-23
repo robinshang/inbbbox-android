@@ -16,6 +16,16 @@
         <item name="colorAccent">@color/accent</item>
     </style>
 
+    <style name="Font20.ProjectTitle" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/textGrey</item>
+    </style>
+
+    <style name="Font16.UserName" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/textGrey</item>
+    </style>
+
     <style name="AlertDialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="colorAccent">@color/accent</item>
         <item name="android:background">@color/secondaryWindowBackground</item>
@@ -39,8 +49,14 @@
         <item name="android:windowMinWidthMinor">40%</item>
     </style>
 
+    <style name="Font60.LightGray" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">60sp</item>
+        <item name="android:textColor">@color/backgroundShotText</item>
+    </style>
+
     <style name="Font12.Gray" parent="TextAppearance.AppCompat.Small">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/disabledGray</item>
     </style>
+
 </resources>

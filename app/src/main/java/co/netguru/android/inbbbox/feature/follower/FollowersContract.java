@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.feature.follower;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import java.util.List;
@@ -12,33 +11,33 @@ import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
 
 interface FollowersContract {
 
-    interface View extends MvpView, HttpErrorView, MvpLceView<List<UserWithShots>> {
+    interface View extends HttpErrorView, MvpLceView<List<UserWithShots>> {
 
         void showMoreFollowedUsers(List<UserWithShots> userWithShotsList);
 
-        void hideLoadingMoreBucketsView();
+        void hideLoadingMoreFollowersView();
 
-        void hideEmptyLikesInfo();
+        void hideEmptyFollowersInfo();
 
-        void showEmptyLikesInfo();
+        void showEmptyFollowersInfo();
 
         void showLoadingMoreFollowersView();
 
         void hideProgressBars();
 
-        void openSingleUserDetails(UserWithShots followedUser);
-
-        void openTeamDetails(UserWithShots followedUser);
+        void openUserDetails(UserWithShots userWithShots);
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
 
-        void getFollowedUsersFromServer();
+        void getFollowedUsersFromServer(boolean canUseCacheForShots);
 
         void getMoreFollowedUsersFromServer();
 
         void checkDataEmpty(List<UserWithShots> data);
 
-        void onFollowedUserSelect(UserWithShots followedUser);
+        void onFollowedUserSelect(UserWithShots userWithShots);
+
+        void refreshFollowedUsers();
     }
 }

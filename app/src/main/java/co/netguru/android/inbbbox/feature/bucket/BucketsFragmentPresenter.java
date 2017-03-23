@@ -6,7 +6,6 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -27,7 +26,6 @@ import timber.log.Timber;
 public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<BucketsFragmentContract.View>
         implements BucketsFragmentContract.Presenter {
 
-    private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
     private static final int BUCKETS_PER_PAGE_COUNT = 10;
     private static final int BUCKET_SHOTS_PER_PAGE_COUNT = 30;
 
@@ -46,7 +44,8 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     private Subscription shotRemovedBusSubscription;
 
     @Inject
-    BucketsFragmentPresenter(BucketsController bucketsController, RxBus rxBus, ErrorController errorController) {
+    BucketsFragmentPresenter(BucketsController bucketsController, RxBus rxBus,
+                             ErrorController errorController) {
         this.bucketsController = bucketsController;
         this.rxBus = rxBus;
         this.errorController = errorController;
@@ -69,15 +68,16 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     public void attachView(BucketsFragmentContract.View view) {
         super.attachView(view);
         setupBucketCreatedRxBus();
-        setupShotRemovedRxBus();
+        setupShotUpdatedBus();
     }
 
     @Override
-    public void loadBucketsWithShots() {
+    public void loadBucketsWithShots(boolean tryFromCache) {
         if (refreshSubscription.isUnsubscribed()) {
             loadNextBucketSubscription.unsubscribe();
             pageNumber = 1;
-            refreshSubscription = bucketsController.getUserBucketsWithShots(pageNumber, BUCKETS_PER_PAGE_COUNT, BUCKET_SHOTS_PER_PAGE_COUNT)
+            refreshSubscription = bucketsController.getUserBucketsWithShots
+                    (pageNumber, BUCKETS_PER_PAGE_COUNT, BUCKET_SHOTS_PER_PAGE_COUNT, tryFromCache)
                     .compose(RxTransformerUtil.applySingleIoSchedulers())
                     .doAfterTerminate(getView()::hideProgressBars)
                     .subscribe(bucketWithShotsList -> {
@@ -91,13 +91,13 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
 
     @Override
     public void loadMoreBucketsWithShots() {
-        if (apiHasMoreBuckets && refreshSubscription.isUnsubscribed() && loadNextBucketSubscription.isUnsubscribed()) {
+        if (apiHasMoreBuckets && refreshSubscription.isUnsubscribed()
+                && loadNextBucketSubscription.isUnsubscribed()) {
             pageNumber++;
-            loadNextBucketSubscription = bucketsController.getUserBucketsWithShots(pageNumber, BUCKETS_PER_PAGE_COUNT, BUCKET_SHOTS_PER_PAGE_COUNT)
+            getView().showLoadingMoreBucketsView();
+            loadNextBucketSubscription = bucketsController.getUserBucketsWithShots
+                    (pageNumber, BUCKETS_PER_PAGE_COUNT, BUCKET_SHOTS_PER_PAGE_COUNT, false)
                     .toObservable()
-                    .compose(RxTransformerUtil.executeRunnableIfObservableDidntEmitUntilGivenTime(
-                            SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
-                            getView()::showLoadingMoreBucketsView))
                     .compose(RxTransformers.androidIO())
                     .doAfterTerminate(() -> {
                         getView().hideProgressBars();
@@ -135,6 +135,11 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
     }
 
     @Override
+    public void refreshBuckets() {
+        loadBucketsWithShots(false);
+    }
+
+    @Override
     public void handleError(Throwable throwable, String errorText) {
         Timber.d(throwable, errorText);
         getView().showMessageOnServerError(errorController.getThrowableMessage(throwable));
@@ -144,16 +149,16 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
         bucketCreatedBusSubscription = rxBus.getEvents(BucketCreatedEvent.class)
                 .compose(RxTransformers.androidIO())
                 .subscribe(bucketCreatedEvent -> {
-                    BucketWithShots bucketWithShots = BucketWithShots.create(bucketCreatedEvent.getBucket(),
-                            Collections.emptyList());
+                    BucketWithShots bucketWithShots = BucketWithShots.create(
+                            bucketCreatedEvent.getBucket(), Collections.emptyList());
                     getView().addNewBucketWithShotsOnTop(bucketWithShots);
                     getView().scrollToTop();
                 });
     }
 
-    private void setupShotRemovedRxBus() {
+    private void setupShotUpdatedBus() {
         shotRemovedBusSubscription = rxBus.getEvents(ShotUpdatedEvent.class)
                 .compose(RxTransformers.androidIO())
-                .subscribe(bucketCreatedEvent -> loadBucketsWithShots());
+                .subscribe(shotUpdatedEvent -> loadBucketsWithShots(false));
     }
 }

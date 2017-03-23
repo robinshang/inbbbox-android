@@ -21,11 +21,15 @@ public interface UserInfoContract {
         void showShots(List<Shot> shots);
 
         void showMessageOnServerError(String message);
+
+        void openUrl(String url);
     }
 
     interface Presenter extends MvpPresenter<View> {
         void onTeamClick(User team);
 
         void onShotClick(Shot shot);
+
+        void onLinkClick(String url);
     }
 }

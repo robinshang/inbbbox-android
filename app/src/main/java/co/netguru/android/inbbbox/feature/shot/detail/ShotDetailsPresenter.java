@@ -222,7 +222,8 @@ public class ShotDetailsPresenter
 
     @Override
     public void getTeamUserWithShots(Team team) {
-        subscriptions.add(userShotsController.getTeamUserWithShots(team, pageNumber, SHOT_PAGE_COUNT)
+        subscriptions.add(userShotsController.getTeamUserWithShots(team, pageNumber,
+                SHOT_PAGE_COUNT, true)
                 .compose(androidIO())
                 .subscribe(this::showTeamView,
                         throwable -> handleError(throwable, "Error while getting user wit shots")));
@@ -244,10 +245,18 @@ public class ShotDetailsPresenter
 
     private void initializeView() {
         getView().initView();
-        getView().showMainImage(shot);
+        showShotMainImage();
         getView().updateLoadMoreState(commentLoadMoreState);
         getView().setInputShowingEnabled(false);
         showShotDetails(shot);
+    }
+
+    private void showShotMainImage() {
+        if (shot.isGif()) {
+            getView().showMainImageWithGifAnimation(shot);
+        } else {
+            getView().showMainImage(shot);
+        }
     }
 
     private void enableInputWhenIfInCommentMode() {

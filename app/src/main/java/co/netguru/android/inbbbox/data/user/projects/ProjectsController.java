@@ -12,6 +12,8 @@ import co.netguru.android.inbbbox.feature.user.projects.ProjectsPresenter;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
+import static co.netguru.android.inbbbox.data.cache.CacheStrategy.longCache;
+
 @Singleton
 public class ProjectsController {
 
@@ -33,7 +35,7 @@ public class ProjectsController {
 
     public Observable<List<Shot>> getShotsFromProject(long projectId, int shotsPageNumber,
                                                       int shotsPageCount) {
-        return projectsApi.getShotsFromProject(projectId, shotsPageNumber, shotsPageCount)
+        return projectsApi.getShotsFromProject(projectId, shotsPageNumber, shotsPageCount, longCache())
                 .flatMap(Observable::from)
                 .map(Shot::create)
                 .toList();
@@ -41,7 +43,7 @@ public class ProjectsController {
 
     private Observable<ProjectWithShots> getProjectWithShots(ProjectEntity projectEntity,
                                                             int shotsPageNumber, int shotsPageCount) {
-        return projectsApi.getShotsFromProject(projectEntity.id(), shotsPageNumber, shotsPageCount)
+        return projectsApi.getShotsFromProject(projectEntity.id(), shotsPageNumber, shotsPageCount, longCache())
                 .flatMap(Observable::from)
                 .map(Shot::create)
                 .toList()

@@ -87,7 +87,8 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
             refreshSubscription = teamController.getTeamMembers(user.id(), pageNumber,
                     USERS_PAGE_COUNT)
                     .flatMapObservable(Observable::from)
-                    .flatMap(member -> userShotsController.getUserShotsList(member.id(), 1, SHOTS_PER_USER)
+                    .flatMap(member -> userShotsController.getUserShotsList(member.id(), 1,
+                            SHOTS_PER_USER, true)
                             .flatMap(Observable::from)
                             .map(shot -> Shot.update(shot).author(member).build())
                             .toList()
@@ -124,7 +125,8 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
                             getView()::showLoadingMoreTeamMembersView))
                     .toSingle()
                     .flatMapObservable(Observable::from)
-                    .flatMap(member -> userShotsController.getUserShotsList(member.id(), 1, SHOTS_PER_USER)
+                    .flatMap(member -> userShotsController.getUserShotsList(member.id(), 1,
+                            SHOTS_PER_USER, true)
                             .flatMap(Observable::from)
                             .map(shot -> Shot.update(shot).author(member).build())
                             .toList()
@@ -139,6 +141,11 @@ public class TeamInfoPresenter extends MvpNullObjectBasePresenter<TeamInfoContra
                             },
                             throwable -> handleError(throwable, "Error while loading team members"));
         }
+    }
+
+    @Override
+    public void onLinkClick(String url) {
+        getView().openUrl(url);
     }
 
     @Override

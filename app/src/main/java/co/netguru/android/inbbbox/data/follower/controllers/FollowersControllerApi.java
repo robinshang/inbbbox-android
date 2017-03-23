@@ -19,8 +19,10 @@ public class FollowersControllerApi extends BaseFollowersController implements F
     }
 
     @Override
-    public Observable<UserWithShots> getFollowedUsers(int pageNumber, int pageCount, int followerShotPageCount) {
-        return getFollowersFromApi(pageNumber, pageCount, followerShotPageCount);
+    public Observable<UserWithShots> getFollowedUsers(int pageNumber, int pageCount,
+                                                      int followerShotPageCount,
+                                                      boolean canUseCacheForShots) {
+        return getFollowersFromApi(pageNumber, pageCount, followerShotPageCount, canUseCacheForShots);
     }
 
     @Override

@@ -27,6 +27,7 @@ import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
@@ -71,13 +72,13 @@ public class UserPresenterTest {
 
     @Test
     public void whenUserWithoutShotsReceived_thenDownloadUserUsingUserController() {
-        when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
+        when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt(), anyBoolean()))
                 .thenReturn(Observable.empty());
         when(userMock.id()).thenReturn(EXAMPLE_ID);
 
         followerDetailsPresenter.userDataReceived(userMock);
 
-        verify(userShotsControllerMock).getUserShotsList(eq(EXAMPLE_ID), anyInt(), anyInt());
+        verify(userShotsControllerMock).getUserShotsList(eq(EXAMPLE_ID), anyInt(), anyInt(), anyBoolean());
     }
 
     //ERRORS
@@ -86,7 +87,7 @@ public class UserPresenterTest {
         String message = "test";
         Throwable throwable = new Throwable(message);
         UserWithShots exampleUser = UserWithShots.create(Statics.USER, null);
-        when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt()))
+        when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt(), anyBoolean()))
                 .thenReturn(Observable.error(throwable));
 
         followerDetailsPresenter.userDataReceived(userMock);

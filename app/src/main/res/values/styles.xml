@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="SplashTheme" parent="AppTheme.TranslucentStatus">
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
@@ -41,6 +42,14 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <style name="Font10" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="Font12" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="Font12.Primary" parent="TextAppearance.AppCompat.Small">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/pink</item>
@@ -71,8 +80,8 @@
     <style name="Font16.SemiBlack" parent="TextAppearance.AppCompat.Medium">
         <item name="android:textColor">@color/semiBlack</item>
     </style>
-    
-    <style name="Font20.Black" parent="TextAppearance.AppCompat.Large">
+
+    <style name="Font20.ProjectTitle" parent="TextAppearance.AppCompat.Large">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
@@ -90,6 +99,11 @@
         <item name="android:textColor">@color/lightGrayAlpha</item>
     </style>
 
+    <style name="Font16.UserName" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/textDark</item>
+    </style>
+
     <style name="SwipeActionIcons">
         <item name="android:layout_width">@dimen/shot_swipe_action_icon_width</item>
         <item name="android:layout_height">@dimen/shot_swipe_action_icon_width</item>
@@ -102,6 +116,23 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_marginLeft">@dimen/shot_long_swipe_action_side_margin</item>
         <item name="android:layout_marginRight">@dimen/shot_long_swipe_action_side_margin</item>
+    </style>
+
+    <style name="LongSwipeActionText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <!--quickhack - without it text is slightly shifted-->
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginRight">0dp</item>
+        <item name="android:layout_marginEnd">@dimen/swipe_action_text_margin</item>
+        <item name="android:layout_marginStart">@dimen/swipe_action_text_margin</item>
+        <item name="android:layout_marginTop">@dimen/swipe_action_text_margin</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/swipe_action_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:visibility">invisible</item>
     </style>
 
     <style name="FabMenuLabel">

@@ -20,7 +20,12 @@ public class App extends Application {
     }
 
     public static UserComponent getUserComponent(Context context) {
-        return ((App) context.getApplicationContext()).userComponent;
+        App app = (App) context.getApplicationContext();
+
+        if (app.userComponent == null) {
+            app.appComponent.userComponentRestorer().restoreUserComponent();
+        }
+        return app.userComponent;
     }
 
     public static void initUserComponent(Context context, UserModeType userModeType) {

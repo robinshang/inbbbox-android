@@ -7,18 +7,22 @@ import java.util.Collections;
 import java.util.List;
 
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
+import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
+import co.netguru.android.inbbbox.feature.user.projects.adapter.ProjectClickListener;
 
 public class ProjectShotsAdapter extends RecyclerView.Adapter<ProjectShotsViewHolder> {
 
     private List<Shot> shotList;
+    private ShotClickListener shotClickListener;
 
-    public ProjectShotsAdapter() {
+    public ProjectShotsAdapter(ShotClickListener shotClickListener) {
         shotList = Collections.emptyList();
+        this.shotClickListener = shotClickListener;
     }
 
     @Override
     public ProjectShotsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ProjectShotsViewHolder(parent);
+        return new ProjectShotsViewHolder(parent, shotClickListener);
     }
 
     @Override

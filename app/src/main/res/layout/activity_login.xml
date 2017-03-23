@@ -55,10 +55,10 @@
         android:layout_marginEnd="@dimen/margin_default"
         android:layout_marginStart="@dimen/margin_default"
         android:background="@drawable/selector_login_button"
-        android:drawablePadding="@dimen/activity_login_button_drawable_padding"
         android:drawableStart="@drawable/ic_ball"
-        android:gravity="start|center_vertical"
+        android:gravity="center"
         android:paddingStart="@dimen/activity_login_button_padding_start"
+        android:paddingEnd="@dimen/activity_login_button_padding_end"
         android:text="@string/login_button_text"
         android:textAllCaps="false" />
 

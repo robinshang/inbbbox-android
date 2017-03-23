@@ -2,10 +2,7 @@ package co.netguru.android.inbbbox.feature.like.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.ViewGroup;
-
-import com.peekandpop.shalskar.peekandpop.PeekAndPop;
 
 import java.util.Collections;
 import java.util.List;
@@ -55,7 +52,7 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder> {
         return likeList;
     }
 
-    public void setLikeList(List<Shot> likeList) {
+    public void setLikeList(@NonNull List<Shot> likeList) {
         this.likeList = likeList;
         notifyDataSetChanged();
     }

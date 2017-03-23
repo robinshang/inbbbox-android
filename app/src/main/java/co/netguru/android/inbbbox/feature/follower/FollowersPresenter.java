@@ -19,14 +19,12 @@ import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
 import static co.netguru.android.commons.rx.RxTransformers.androidIO;
-import static co.netguru.android.inbbbox.data.dribbbleuser.user.User.TYPE_SINGLE_USER;
-import static co.netguru.android.inbbbox.data.dribbbleuser.user.User.TYPE_TEAM;
 
 @FragmentScope
 public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersContract.View>
         implements FollowersContract.Presenter {
 
-    private static final int FOLLOWERS_PAGE_COUNT = 15;
+    private static final int FOLLOWERS_PAGE_COUNT = 10;
     private static final int FOLLOWERS_SHOT_PAGE_COUNT = 30;
     private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
 
@@ -35,7 +33,6 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
 
     @NonNull
     private Subscription refreshSubscription;
-
     @NonNull
     private Subscription loadNextBucketSubscription;
 
@@ -60,17 +57,17 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
     }
 
     @Override
-    public void getFollowedUsersFromServer() {
+    public void getFollowedUsersFromServer(boolean canUseCacheForShots) {
         if (refreshSubscription.isUnsubscribed()) {
             pageNumber = 1;
             loadNextBucketSubscription.unsubscribe();
             refreshSubscription = followersController.getFollowedUsers(pageNumber,
-                    FOLLOWERS_PAGE_COUNT, FOLLOWERS_SHOT_PAGE_COUNT)
-                                          .toList()
-                                          .compose(androidIO())
-                                          .doAfterTerminate(getView()::hideProgressBars)
-                                          .subscribe(this::onGetFollowersNext,
-                                                  throwable -> handleError(throwable, "Error while getting followed users form server"));
+                    FOLLOWERS_PAGE_COUNT, FOLLOWERS_SHOT_PAGE_COUNT, canUseCacheForShots)
+                    .toList()
+                    .compose(androidIO())
+                    .doAfterTerminate(getView()::hideProgressBars)
+                    .subscribe(this::onGetFollowersNext,
+                            throwable -> handleError(throwable, "Error while getting followed users form server"));
         }
     }
 
@@ -79,37 +76,38 @@ public class FollowersPresenter extends MvpNullObjectBasePresenter<FollowersCont
         if (hasMore && refreshSubscription.isUnsubscribed() && loadNextBucketSubscription.isUnsubscribed()) {
             pageNumber++;
             loadNextBucketSubscription = followersController.getFollowedUsers(pageNumber,
-                    FOLLOWERS_PAGE_COUNT, FOLLOWERS_SHOT_PAGE_COUNT)
-                                                 .compose(RxTransformerUtil.executeRunnableIfObservableDidntEmitUntilGivenTime(
-                                                         SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
-                                                         getView()::showLoadingMoreFollowersView))
-                                                 .toList()
-                                                 .compose(androidIO())
-                                                 .doAfterTerminate(() -> {
-                                                     getView().hideProgressBars();
-                                                     getView().hideLoadingMoreBucketsView();
-                                                 })
-                                                 .subscribe(this::onGetMoreFollowersNext,
-                                                         throwable -> handleError(throwable, "Error while getting followed users form server"));
+                    FOLLOWERS_PAGE_COUNT, FOLLOWERS_SHOT_PAGE_COUNT, false)
+                    .compose(RxTransformerUtil.executeRunnableIfObservableDidntEmitUntilGivenTime(
+                            SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
+                            getView()::showLoadingMoreFollowersView))
+                    .toList()
+                    .compose(androidIO())
+                    .doAfterTerminate(() -> {
+                        getView().hideProgressBars();
+                        getView().hideLoadingMoreFollowersView();
+                    })
+                    .subscribe(this::onGetMoreFollowersNext,
+                            throwable -> handleError(throwable, "Error while getting followed users form server"));
         }
     }
 
     @Override
     public void checkDataEmpty(List<UserWithShots> data) {
         if (data.isEmpty()) {
-            getView().showEmptyLikesInfo();
+            getView().showEmptyFollowersInfo();
         } else {
-            getView().hideEmptyLikesInfo();
+            getView().hideEmptyFollowersInfo();
         }
     }
 
     @Override
-    public void onFollowedUserSelect(UserWithShots followedUser) {
-        if (TYPE_SINGLE_USER.equals(followedUser.user().type())) {
-            getView().openSingleUserDetails(followedUser);
-        } else if (TYPE_TEAM.equals(followedUser.user().type())) {
-            getView().openTeamDetails(followedUser);
-        }
+    public void onFollowedUserSelect(UserWithShots userWithShots) {
+        getView().openUserDetails(userWithShots);
+    }
+
+    @Override
+    public void refreshFollowedUsers() {
+        getFollowedUsersFromServer(false);
     }
 
     @Override

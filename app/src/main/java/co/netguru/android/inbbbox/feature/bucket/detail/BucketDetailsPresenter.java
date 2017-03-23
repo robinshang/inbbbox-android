@@ -90,8 +90,7 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
             loadNextShotsSubscription.unsubscribe();
             pageNumber = 1;
             refreshShotsSubscription = bucketsController.getShotsListFromBucket(currentBucketId,
-                    pageNumber,
-                    shotsPerPage)
+                    pageNumber, shotsPerPage, false)
                     .compose(RxTransformerUtil.applySingleIoSchedulers())
                     .doAfterTerminate(getView()::hideProgressbar)
                     .subscribe(this::handleNewShots,
@@ -127,8 +126,7 @@ public class BucketDetailsPresenter extends MvpNullObjectBasePresenter<BucketDet
                 && loadNextShotsSubscription.isUnsubscribed()) {
             pageNumber++;
             loadNextShotsSubscription = bucketsController.getShotsListFromBucket(currentBucketId,
-                    pageNumber,
-                    shotsPerPage)
+                    pageNumber, shotsPerPage, false)
                     .toObservable()
                     .compose(RxTransformerUtil
                             .executeRunnableIfObservableDidntEmitUntilGivenTime(

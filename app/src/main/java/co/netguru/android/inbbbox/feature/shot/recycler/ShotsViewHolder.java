@@ -74,22 +74,26 @@ class ShotsViewHolder extends BaseShotsViewHolder<Shot> implements DetailsVisibi
 
     @Override
     public void onLeftSwipe() {
-        shotSwipeListener.onShotLikeSwipe(shot);
+        animateShotView(false);
+        animateAndFinishLike(() -> shotSwipeListener.onShotLikeSwipe(shot));
     }
 
     @Override
     public void onLeftLongSwipe() {
-        shotSwipeListener.onAddShotToBucketSwipe(shot);
+        animateShotView(false);
+        animateAndFinishAddToBucket(() -> shotSwipeListener.onLikeAndAddShotToBucketSwipe(shot));
     }
 
     @Override
     public void onRightSwipe() {
-        shotSwipeListener.onCommentShotSwipe(shot);
+        animateShotView(true);
+        animateAndFinishComment(() -> shotSwipeListener.onCommentShotSwipe(shot));
     }
 
     @Override
     public void onRightLongSwipe() {
-        shotSwipeListener.onFollowUserSwipe(shot);
+        animateShotView(true);
+        animateAndFinishFollowUser(() -> shotSwipeListener.onFollowUserSwipe(shot));
     }
 
     @Override

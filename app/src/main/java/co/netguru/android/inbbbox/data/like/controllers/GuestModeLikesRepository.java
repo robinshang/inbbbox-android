@@ -29,7 +29,7 @@ public class GuestModeLikesRepository extends BaseGuestModeRepository {
         return daoSession.rxTx()
                 .run(() -> {
                     daoSession.getShotDBDao().insertOrReplace(likeShot(shot));
-                    insertUserIfExists(shot);
+                    insertUserIfExists(shot.author());
                     if (shot.team() != null) {
                         daoSession.getTeamDBDao().insertOrReplace(TeamDBMapper.fromTeam(shot.team()));
                     }

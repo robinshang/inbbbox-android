@@ -247,6 +247,7 @@ dependencies {
 
     //Glide
     compile libs.glide
+    compile libs.glideTransformations
 
     //Swipe layout
     compile libs.swipeLayout

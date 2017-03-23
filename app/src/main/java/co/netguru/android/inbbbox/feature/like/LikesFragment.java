@@ -101,7 +101,8 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         try {
             shotActionListener = (ShotsFragment.ShotActionListener) context;
         } catch (ClassCastException e) {
-            throw new InterfaceNotImplementedException(e, context.toString(), ShotsFragment.ShotActionListener.class.getSimpleName());
+            throw new InterfaceNotImplementedException(e, context.toString(),
+                    ShotsFragment.ShotActionListener.class.getSimpleName());
         }
     }
 
@@ -127,22 +128,10 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         super.onDestroyView();
         loadingMoreSnackbar = null;
     }
-
-    @Override
-    protected void changeGridMode(boolean isGridMode) {
-        recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
-        analyticsEventLogger.logEventAppbarCollectionLayoutChange(isGridMode);
-    }
-
     @NonNull
     @Override
     public LikesViewContract.Presenter createPresenter() {
         return component.getPresenter();
-    }
-
-    private void initComponent() {
-        component = App.getUserComponent(getContext()).getLikesFragmentComponent();
-        component.inject(this);
     }
 
     @Override
@@ -257,6 +246,12 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
         return errorString;
     }
 
+    @Override
+    protected void changeGridMode(boolean isGridMode) {
+        recyclerView.setLayoutManager(isGridMode ? gridLayoutManager : linearLayoutManager);
+        analyticsEventLogger.logEventAppbarCollectionLayoutChange(isGridMode);
+    }
+
     @OnClick(R.id.refreshButton)
     void onRefreshButtonClick() {
         showLoading(false);
@@ -283,6 +278,12 @@ public class LikesFragment extends BaseMvpLceFragmentWithListTypeSelection<Swipe
     @Override
     public void onBucketForShotSelect(Bucket bucket, Shot shot) {
         peekAndPop.onBucketForShotSelect(bucket, shot);
+
+    }
+
+    private void initComponent() {
+        component = App.getUserComponent(getContext()).getLikesFragmentComponent();
+        component.inject(this);
     }
 
     private void initEmptyView() {

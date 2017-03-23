@@ -18,6 +18,8 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.peekandpop.ShotPeekAndPop;
 import timber.log.Timber;
 
+import static co.netguru.android.inbbbox.Constants.UNDEFINED;
+
 public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
 
     private final ShotSwipeListener shotSwipeListener;
@@ -89,18 +91,12 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
         notifyItemRangeChanged(currentSize - 1, items.size());
     }
 
-    public void updateShot(Shot shot) {
-        try {
-            tryUpdateShot(shot);
-        } catch(IllegalArgumentException e) {
-            // it's ok, updated shot doesn't need to be present in this adapter
-        }
-    }
-
-    private void tryUpdateShot(Shot shot) {
+    public void updateShotIfExists(Shot shot) {
         final int position = findShotPosition(shot.id());
-        shots.set(position, shot);
-        notifyItemChanged(position);
+        if (position != UNDEFINED) {
+            shots.set(position, shot);
+            notifyItemChanged(position);
+        }
     }
 
     public void setDetailsVisibilityFlag(boolean isVisible) {
@@ -117,6 +113,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsViewHolder> {
                 return i;
             }
         }
-        throw new IllegalArgumentException("There is no shot with id :" + id);
+
+        return UNDEFINED;
     }
 }

@@ -11,7 +11,7 @@ import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
 import co.netguru.android.inbbbox.feature.shared.base.ErrorPresenter;
 import co.netguru.android.inbbbox.feature.shared.base.HttpErrorView;
 
-public interface ProjectsContract {
+interface ProjectsContract {
 
     interface View extends MvpLceView<List<ProjectWithShots>>, HttpErrorView {
         void hideProgressBar();
@@ -25,6 +25,12 @@ public interface ProjectsContract {
         void showLoadingMoreProjectsView();
 
         void showProjectDetails(ProjectWithShots projectWithShots);
+
+        void showShotDetails(Shot shot, List<Shot> allShots);
+
+        void showEmptyView();
+
+        void hideEmptyView();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
@@ -38,5 +44,9 @@ public interface ProjectsContract {
         void getMoreShotsFromProject(ProjectWithShots projectWithShots);
 
         void onProjectClick(ProjectWithShots projectWithShots);
+
+        void showContentForData(List<ProjectWithShots> projectWithShotsList);
+
+        void onShotClick(Shot shot, ProjectWithShots inProject);
     }
 }

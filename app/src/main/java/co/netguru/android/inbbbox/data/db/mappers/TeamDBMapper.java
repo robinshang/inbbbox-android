@@ -10,6 +10,7 @@ public class TeamDBMapper {
     }
 
     public static TeamDB fromTeam(Team team) {
-        return new TeamDB(team.id(), team.name());
+        return new TeamDB(team.id(), team.name(), team.shotsCount(),
+                team.bucketsCount(), team.projectsCount());
     }
 }

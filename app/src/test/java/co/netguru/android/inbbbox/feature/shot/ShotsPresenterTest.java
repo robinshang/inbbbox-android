@@ -94,7 +94,7 @@ public class ShotsPresenterTest {
     @Test
     public void whenDataLoadedCalled_thenRequestDataFromProvider() {
 
-        presenter.getShotsFromServer(false);
+        presenter.getShotsFromServer(false, false);
 
         verify(shotsControllerMock, times(1)).getShots(SHOT_PAGE, SHOT_PAGE_COUNT);
     }
@@ -103,7 +103,7 @@ public class ShotsPresenterTest {
     public void whenDataLoadedCorrectly_thenHideLoadingIndicator() {
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.just(new ArrayList<>()));
 
-        presenter.getShotsFromServer(false);
+        presenter.getShotsFromServer(false, false);
 
         verify(viewMock, times(1)).hideLoadingIndicator();
     }
@@ -113,7 +113,7 @@ public class ShotsPresenterTest {
         List<Shot> expectedShots = new ArrayList<>();
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.just(expectedShots));
 
-        presenter.getShotsFromServer(false);
+        presenter.getShotsFromServer(false, false);
 
         verify(viewMock, times(1)).setData(expectedShots);
     }
@@ -121,7 +121,7 @@ public class ShotsPresenterTest {
     @Test
     public void whenShotNotLikedAndLikeActionCalled_thenCallLikeShotMethod() {
         when(likeShotControllerApiMock.likeShot(NOT_LIKED_SHOT)).thenReturn(Completable.complete());
-        presenter.getShotsFromServer(false);
+        presenter.getShotsFromServer(false, false);
 
         presenter.likeShot(NOT_LIKED_SHOT);
 
@@ -131,7 +131,7 @@ public class ShotsPresenterTest {
     @Test
     public void whenShotLiked_thenSendShotUpdatedEvent() {
         when(likeShotControllerApiMock.likeShot(any(Shot.class))).thenReturn(Completable.complete());
-        presenter.getShotsFromServer(false);
+        presenter.getShotsFromServer(false, false);
         Shot expectedShot = Shot.update(Statics.LIKED_SHOT_NOT_BUCKETED)
                 .id(NOT_LIKED_SHOT.id())
                 .isLiked(true)
@@ -150,7 +150,7 @@ public class ShotsPresenterTest {
     public void whenShotLikedAndLikeActionCalled_thenDoNotCallLikeShotMethod() {
         when(likeShotControllerApiMock.likeShot(any(Shot.class))).thenReturn(Completable.complete());
 
-        presenter.getShotsFromServer(false);
+        presenter.getShotsFromServer(false, false);
 
         presenter.likeShot(LIKED_SHOT_NOT_BUCKETED);
 
@@ -164,7 +164,7 @@ public class ShotsPresenterTest {
         Exception exampleException = new Exception(message);
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.error(exampleException));
 
-        presenter.getShotsFromServer(false);
+        presenter.getShotsFromServer(false, false);
 
         verify(viewMock, times(1)).hideLoadingIndicator();
     }
@@ -176,7 +176,7 @@ public class ShotsPresenterTest {
         when(shotsControllerMock.getShots(SHOT_PAGE, SHOT_PAGE_COUNT)).thenReturn(Observable.error(exampleException));
         when(errorControllerMock.getThrowableMessage(exampleException)).thenCallRealMethod();
 
-        presenter.getShotsFromServer(false);
+        presenter.getShotsFromServer(false, false);
 
         verify(viewMock, times(1)).showMessageOnServerError(message);
     }
@@ -188,7 +188,7 @@ public class ShotsPresenterTest {
         when(likeShotControllerApiMock.likeShot(any(Shot.class))).thenReturn(Completable.error(exampleException));
         when(errorControllerMock.getThrowableMessage(exampleException)).thenCallRealMethod();
 
-        presenter.getShotsFromServer(false);
+        presenter.getShotsFromServer(false, false);
 
         presenter.likeShot(NOT_LIKED_SHOT);
 
@@ -226,17 +226,25 @@ public class ShotsPresenterTest {
     }
 
     @Test
-    public void whenShotsDetailsIsEnableAtStart_showDetails() {
-        verify(viewMock, times(1)).onDetailsVisibilityChange(true);
+    public void whenShotsDetailsIsEnabled_showDetails() {
+        //given
+        customizationSettings = new CustomizationSettings(true, true);
+        when(settingsControllerMock.getCustomizationSettings()).thenReturn(Single.just(customizationSettings));
+        //when
+        presenter.getShotsCustomizationSettings();
+        //then
+        verify(viewMock).onDetailsVisibilityChange(true);
     }
 
     @Test
-    public void whenShotsDetailsIsDisableAtStart_notShowDetails() {
+    public void whenShotsDetailsIsDisabled_notShowDetails() {
+        //given
         customizationSettings = new CustomizationSettings(false, true);
         when(settingsControllerMock.getCustomizationSettings()).thenReturn(Single.just(customizationSettings));
-        
-        presenter.attachView(viewMock);
-        verify(viewMock, times(1)).onDetailsVisibilityChange(false);
+        //when
+        presenter.getShotsCustomizationSettings();
+        //then
+        verify(viewMock).onDetailsVisibilityChange(false);
     }
 
 }

@@ -81,7 +81,7 @@ public class UserShotsPresenter extends MvpNullObjectBasePresenter<UserShotsCont
             loadMoreShotsSubscription.unsubscribe();
             pageNumber = 1;
             loadMoreShotsSubscription = userShotsController.getUserShotsList(user.id(),
-                    pageNumber, SHOT_PAGE_COUNT)
+                    pageNumber, SHOT_PAGE_COUNT, true)
                     .compose(androidIO())
                     .compose(fromListObservable())
                     .map(shot -> Shot.update(shot).author(user).build())
@@ -99,7 +99,7 @@ public class UserShotsPresenter extends MvpNullObjectBasePresenter<UserShotsCont
         if (hasMore && refreshShotsSubscription.isUnsubscribed() && loadMoreShotsSubscription.isUnsubscribed()) {
             pageNumber++;
             loadMoreShotsSubscription = userShotsController.getUserShotsList(user.id(),
-                    pageNumber, SHOT_PAGE_COUNT)
+                    pageNumber, SHOT_PAGE_COUNT, true)
                     .compose(fromListObservable())
                     .map(shot -> Shot.update(shot).author(user).build())
                     .toList()
