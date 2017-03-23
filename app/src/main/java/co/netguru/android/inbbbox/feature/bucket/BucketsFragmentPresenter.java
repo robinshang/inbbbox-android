@@ -6,7 +6,6 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -16,7 +15,6 @@ import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
-import co.netguru.android.inbbbox.data.cache.CacheValidator;
 import co.netguru.android.inbbbox.event.RxBus;
 import co.netguru.android.inbbbox.event.events.BucketCreatedEvent;
 import co.netguru.android.inbbbox.event.events.ShotUpdatedEvent;
@@ -28,7 +26,6 @@ import timber.log.Timber;
 public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<BucketsFragmentContract.View>
         implements BucketsFragmentContract.Presenter {
 
-    private static final int SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE = 1;
     private static final int BUCKETS_PER_PAGE_COUNT = 10;
     private static final int BUCKET_SHOTS_PER_PAGE_COUNT = 30;
 
@@ -97,12 +94,10 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
         if (apiHasMoreBuckets && refreshSubscription.isUnsubscribed()
                 && loadNextBucketSubscription.isUnsubscribed()) {
             pageNumber++;
+            getView().showLoadingMoreBucketsView();
             loadNextBucketSubscription = bucketsController.getUserBucketsWithShots
                     (pageNumber, BUCKETS_PER_PAGE_COUNT, BUCKET_SHOTS_PER_PAGE_COUNT, false)
                     .toObservable()
-                    .compose(RxTransformerUtil.executeRunnableIfObservableDidntEmitUntilGivenTime(
-                            SECONDS_TIMEOUT_BEFORE_SHOWING_LOADING_MORE, TimeUnit.SECONDS,
-                            getView()::showLoadingMoreBucketsView))
                     .compose(RxTransformers.androidIO())
                     .doAfterTerminate(() -> {
                         getView().hideProgressBars();
