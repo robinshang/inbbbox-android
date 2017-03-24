@@ -62,7 +62,7 @@ public class RequestInterceptor implements Interceptor {
     }
 
     private void performLogout(String message) {
-        logoutController.performLogout(context)
+        logoutController.performLogout()
                 .subscribe(() -> sendCriticalLogoutEvent(message),
                         throwable -> Timber.e(throwable, "critical logout error"));
     }

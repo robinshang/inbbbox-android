@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.main;
 
-import android.content.Context;
 import android.support.annotation.StringRes;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
@@ -60,7 +59,7 @@ interface MainViewContract {
 
         void toggleButtonChanged(boolean isChecked);
 
-        void performLogout(Context context);
+        void performLogout();
 
         void prepareUserData();
 

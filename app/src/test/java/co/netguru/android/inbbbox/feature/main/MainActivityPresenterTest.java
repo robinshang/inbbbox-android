@@ -1,7 +1,5 @@
 package co.netguru.android.inbbbox.feature.main;
 
-import android.content.Context;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -99,9 +97,6 @@ public class MainActivityPresenterTest {
     public OnboardingController onboardingController;
 
     @Mock
-    Context context;
-
-    @Mock
     AnalyticsEventLogger analyticsEventLoggerMock;
 
     @Mock
@@ -125,7 +120,7 @@ public class MainActivityPresenterTest {
                 .thenReturn(Single.just(settingsMock));
         when(settingsControllerMock.getNotificationSettings())
                 .thenReturn(Single.just(notificationSettingsMock));
-        when(logoutControllerMock.performLogout(any(Context.class))).thenReturn(Completable.complete());
+        when(logoutControllerMock.performLogout()).thenReturn(Completable.complete());
         when(onboardingController.isOnboardingPassed()).thenReturn(Single.just(true));
 
         when(userControllerMock.isGuestModeEnabled()).thenReturn(Single.just(false));
@@ -207,15 +202,15 @@ public class MainActivityPresenterTest {
     @Test
     public void whenLogoutClicked_thenPreformLogoutActionOnLogoutController() {
 
-        mainActivityPresenter.performLogout(context);
+        mainActivityPresenter.performLogout();
 
-        verify(logoutControllerMock, times(1)).performLogout(any(Context.class));
+        verify(logoutControllerMock, times(1)).performLogout();
     }
 
     @Test
     public void whenLogoutComplete_thenShowLoginView() {
 
-        mainActivityPresenter.performLogout(context);
+        mainActivityPresenter.performLogout();
 
         verify(viewMock, times(1)).showLoginActivity();
     }

@@ -479,7 +479,7 @@ public class MainActivity
         int i = item.getItemId();
         boolean result = false;
         if (i == R.id.drawer_item_logout) {
-            getPresenter().performLogout(this);
+            getPresenter().performLogout();
         }
         return result;
     }

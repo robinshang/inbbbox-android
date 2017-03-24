@@ -19,20 +19,22 @@ public class LogoutController {
     private final CurrentUserPrefsRepository currentUserPrefsRepository;
     private final SettingsPrefsRepository settingsPrefsRepository;
     private final CookieCacheManager cacheController;
+    private final Context context;
 
     @Inject
     public LogoutController(TokenPrefsRepository tokenPrefsRepository,
                             CurrentUserPrefsRepository currentUserPrefsRepository,
                             SettingsPrefsRepository settingsPrefsRepository,
-                            CookieCacheManager cacheController) {
-
+                            CookieCacheManager cacheController,
+                            Context context) {
         this.tokenPrefsRepository = tokenPrefsRepository;
         this.currentUserPrefsRepository = currentUserPrefsRepository;
         this.settingsPrefsRepository = settingsPrefsRepository;
         this.cacheController = cacheController;
+        this.context = context;
     }
 
-    public Completable performLogout(Context context) {
+    public Completable performLogout() {
         return Completable.merge(
                 cacheController.clearCache(), tokenPrefsRepository.clear(),
                 currentUserPrefsRepository.clear(), settingsPrefsRepository.clear())
