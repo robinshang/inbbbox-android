@@ -65,7 +65,8 @@ public class UserModule {
                                                UserController userController,
                                                CacheValidator cacheValidator) {
         if (mode == UserModeType.GUEST_USER_MODE) {
-            return new BucketsControllerGuest(guestModeBucketsRepository);
+            return new BucketsControllerGuest(guestModeBucketsRepository, userApi, bucketApi,
+                    userController, cacheValidator);
         }
 
         return new BucketsControllerApi(userApi, bucketApi, userController, cacheValidator);

@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.bucket;
+package co.netguru.android.inbbbox.feature.bucket.currentuser;
 
 import android.support.annotation.NonNull;
 
@@ -76,7 +76,7 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
         if (refreshSubscription.isUnsubscribed()) {
             loadNextBucketSubscription.unsubscribe();
             pageNumber = 1;
-            refreshSubscription = bucketsController.getUserBucketsWithShots
+            refreshSubscription = bucketsController.getCurrentUserBucketsWithShots
                     (pageNumber, BUCKETS_PER_PAGE_COUNT, BUCKET_SHOTS_PER_PAGE_COUNT, tryFromCache)
                     .compose(RxTransformerUtil.applySingleIoSchedulers())
                     .doAfterTerminate(getView()::hideProgressBars)
@@ -95,7 +95,7 @@ public class BucketsFragmentPresenter extends MvpNullObjectBasePresenter<Buckets
                 && loadNextBucketSubscription.isUnsubscribed()) {
             pageNumber++;
             getView().showLoadingMoreBucketsView();
-            loadNextBucketSubscription = bucketsController.getUserBucketsWithShots
+            loadNextBucketSubscription = bucketsController.getCurrentUserBucketsWithShots
                     (pageNumber, BUCKETS_PER_PAGE_COUNT, BUCKET_SHOTS_PER_PAGE_COUNT, false)
                     .toObservable()
                     .compose(RxTransformers.androidIO())

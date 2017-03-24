@@ -5,18 +5,25 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
+import co.netguru.android.inbbbox.data.bucket.BucketApi;
 import co.netguru.android.inbbbox.data.bucket.GuestModeBucketsRepository;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
+import co.netguru.android.inbbbox.data.cache.CacheValidator;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.UserApi;
+import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Completable;
 import rx.Single;
 
-public class BucketsControllerGuest implements BucketsController {
+public class BucketsControllerGuest extends BaseBucketsController implements BucketsController {
 
     private final GuestModeBucketsRepository guestModeBucketsRepository;
 
-    public BucketsControllerGuest(GuestModeBucketsRepository guestModeBucketsRepository) {
+    public BucketsControllerGuest(GuestModeBucketsRepository guestModeBucketsRepository,
+                                UserApi userApi, BucketApi bucketApi,
+                                UserController userController, CacheValidator cacheValidator) {
+        super(userApi, bucketApi,userController, cacheValidator);
         this.guestModeBucketsRepository = guestModeBucketsRepository;
     }
 
@@ -31,9 +38,16 @@ public class BucketsControllerGuest implements BucketsController {
     }
 
     @Override
-    public Single<List<BucketWithShots>> getUserBucketsWithShots(int pageNumber, int pageCount,
-                                                                 int shotsCount, boolean shouldCache) {
+    public Single<List<BucketWithShots>> getCurrentUserBucketsWithShots(int pageNumber, int pageCount,
+                                                                        int shotsCount, boolean shouldCache) {
         return guestModeBucketsRepository.getUserBucketsWithShots();
+    }
+
+    @Override
+    public Single<List<BucketWithShots>> getUserBucketsWithShots(long userId, int pageNumber,
+                                                                 int pageCount, int shotsCount,
+                                                                 boolean shouldCache) {
+        return super.getUserBucketsWithShots(userId, pageNumber, pageCount, shotsCount, shouldCache);
     }
 
     @Override

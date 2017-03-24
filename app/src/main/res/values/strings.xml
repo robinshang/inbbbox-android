@@ -162,4 +162,5 @@
     <string name="projects_empty_view_text">Still waiting for the big shot</string>
     <string name="web" translatable="false">web</string>
     <string name="twitter" translatable="false">twitter</string>
+    <string name="no_buckets">No buckets yet</string>
 </resources>
