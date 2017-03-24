@@ -5,7 +5,6 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import javax.inject.Inject;
 
 import co.netguru.android.commons.di.ActivityScope;
-import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
@@ -75,7 +74,6 @@ public final class LoginPresenter
     }
 
     private void handleGuestLogin() {
-        getView().initializeUserMode(UserModeType.GUEST_USER_MODE);
         getView().showNextScreen();
         analyticsEventLogger.logEventLoginGuest();
     }

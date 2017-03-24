@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.feature.login.oauthwebview;
 
-
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -10,7 +9,6 @@ import javax.inject.Inject;
 
 import co.netguru.android.inbbbox.BuildConfig;
 import co.netguru.android.inbbbox.Constants;
-import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsEventLogger;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.common.utils.StringUtil;
@@ -126,7 +124,6 @@ public class OauthWebViewDialogFragmentPresenter extends MvpNullObjectBasePresen
 
     @SuppressWarnings("unused")
     private void handleOnlineUserLogin() {
-        getView().initializeUserMode(UserModeType.ONLINE_USER_MODE);
         getView().showNextScreen();
         getView().finish();
         analyticsEventLogger.logEventLoginSuccess();
