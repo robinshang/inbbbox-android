@@ -224,7 +224,7 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
 
     private void animateActionText(TextView textView, boolean swipeRight) {
         int startTextPosition = getOnScreenX(longSwipeLayout) - getOnScreenX(textView);
-        int endTextPosition = (shotImageView.getWidth() / 2) - textView.getWidth() / 2;
+        int endTextPosition = (longSwipeLayout.getWidth() / 2) - textView.getWidth() / 2;
         if (swipeRight)
             startTextPosition += longSwipeLayout.getWidth();
         else
