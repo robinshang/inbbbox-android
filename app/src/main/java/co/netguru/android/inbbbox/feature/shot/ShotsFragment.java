@@ -305,7 +305,7 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         swipeRefreshLayout.setRefreshing(false);
         loadingBallContainer.post(() -> loadingBallContainer.setVisibility(View.GONE));
         shotsRecyclerView.setVisibility(View.VISIBLE);
-
+        fabMenu.setVisibility(View.VISIBLE);
     }
 
     @Override
