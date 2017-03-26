@@ -22,24 +22,23 @@ public class NotificationController {
     }
 
     public Single<NotificationSettings> scheduleNotification() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return settingsController.getNotificationSettings()
-                    .doOnSuccess(settings -> notificationScheduler.scheduleRepeatingNotification(settings.getHour(),
-                            settings.getMinute()));
-        }
-
         return settingsController.getNotificationSettings()
-                .doOnSuccess(settings -> notificationScheduler.scheduleNotificationWhileIdle(settings.getHour(),
-                        settings.getMinute()));
+                .doOnSuccess(this::scheduleNotificationForRightBuildVersion);
     }
 
-    public Single<Boolean> rescheduleNotification() {
+    private void scheduleNotificationForRightBuildVersion(NotificationSettings settings) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return Single.just(Boolean.FALSE);
+            notificationScheduler.scheduleExactNotification(settings.getHour(),
+                    settings.getMinute());
+        } else {
+            notificationScheduler.scheduleExactNotificationWhileIdle(settings.getHour(),
+                    settings.getMinute());
         }
+    }
+
+    Single<Boolean> rescheduleNotification() {
         return settingsController.getNotificationSettings()
-                .doOnSuccess(settings -> notificationScheduler.scheduleNotificationWhileIdle(settings.getHour(),
-                        settings.getMinute()))
+                .doOnSuccess(this::scheduleNotificationForRightBuildVersion)
                 .flatMap(notificationSettings -> Single.just(Boolean.TRUE));
     }
 }
