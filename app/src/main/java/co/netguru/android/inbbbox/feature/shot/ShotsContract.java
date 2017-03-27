@@ -47,6 +47,8 @@ interface ShotsContract {
         void onShotAddedToBucket();
 
         void onUserFollowed();
+
+        void showSideMenu();
     }
 
     interface Presenter extends MvpPresenter<View>, ErrorPresenter {
