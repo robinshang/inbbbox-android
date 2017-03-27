@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.feature.shot.detail.recycler;
 
 import android.support.annotation.NonNull;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
+import co.netguru.android.inbbbox.feature.shared.view.ClickableLinkOnTouchListener;
 import co.netguru.android.inbbbox.feature.shot.detail.Comment;
 
 import static co.netguru.android.inbbbox.common.utils.StringUtil.PARAGRAPH_TAG_END;
@@ -89,7 +89,7 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder<Comment> {
         commentTextTextView.setText(getParsedHtmlTextSpanned(text
                 .replace(PARAGRAPH_TAG_START, "")
                 .replace(PARAGRAPH_TAG_END, "")));
-        commentTextTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        commentTextTextView.setOnTouchListener(new ClickableLinkOnTouchListener());
     }
 
     private void showAvatar(String authorAvatarUrl) {
