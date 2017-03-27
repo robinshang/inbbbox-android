@@ -44,17 +44,17 @@ public class UserShotsController {
                 .map(shotList -> UserWithShots.create(User.createFromTeam(team), shotList));
     }
 
-    private Observable<List<Shot>> getTeamShotsList(long teamId, int pageNumber, int pageCount,
-                                                    boolean canUseCacheForShots) {
-        return shotsApi.getTeamShots(teamId, pageNumber, pageCount,
-                canUseCacheForShots ? CacheStrategy.longCache() : CacheStrategy.noCache())
-                .compose(createShots());
-    }
-
     public Observable<List<Shot>> getUserShotsList(long userId, int pageNumber, int pageCount,
                                                    boolean canUseCache) {
         return shotsApi.getUserShots(userId, pageNumber, pageCount,
                 canUseCache ? CacheStrategy.longCache() : CacheStrategy.noCache())
+                .compose(createShots());
+    }
+
+    private Observable<List<Shot>> getTeamShotsList(long teamId, int pageNumber, int pageCount,
+                                                    boolean canUseCacheForShots) {
+        return shotsApi.getTeamShots(teamId, pageNumber, pageCount,
+                canUseCacheForShots ? CacheStrategy.longCache() : CacheStrategy.noCache())
                 .compose(createShots());
     }
 
