@@ -37,8 +37,7 @@ public class NotificationController {
     }
 
     Single<Boolean> rescheduleNotification() {
-        return settingsController.getNotificationSettings()
-                .doOnSuccess(this::scheduleNotificationForRightBuildVersion)
+        return scheduleNotification()
                 .flatMap(notificationSettings -> Single.just(Boolean.TRUE));
     }
 }
