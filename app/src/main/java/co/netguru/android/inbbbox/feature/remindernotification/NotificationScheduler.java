@@ -29,17 +29,19 @@ public class NotificationScheduler {
         this.appContext = appContext;
     }
 
-    public void scheduleRepeatingNotification(int hour, int minute) {
-        Timber.d("Scheduling repeating notification at : %s", LocalTime.of(hour, minute));
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, DateTimeFormatUtil.getSecondsFromTime(hour, minute),
-                AlarmManager.INTERVAL_DAY,
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public void scheduleExactNotification(int hour, int minute) {
+        Timber.d("Scheduling exact notification at : %s", LocalTime.of(hour, minute));
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,
+                DateTimeFormatUtil.getSecondsFromTime(hour, minute),
                 createBroadcastPendingIntent());
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    public void scheduleNotificationWhileIdle(int hour, int minute) {
-        Timber.d("Scheduling idle notification at : %s", LocalTime.of(hour, minute));
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, DateTimeFormatUtil.getSecondsFromTime(hour, minute),
+    public void scheduleExactNotificationWhileIdle(int hour, int minute) {
+        Timber.d("Scheduling exact idle notification at : %s", LocalTime.of(hour, minute));
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
+                DateTimeFormatUtil.getSecondsFromTime(hour, minute),
                 createBroadcastPendingIntent());
     }
 

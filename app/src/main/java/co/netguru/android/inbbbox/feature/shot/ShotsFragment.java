@@ -305,7 +305,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         swipeRefreshLayout.setRefreshing(false);
         loadingBallContainer.post(() -> loadingBallContainer.setVisibility(View.GONE));
         shotsRecyclerView.setVisibility(View.VISIBLE);
-
     }
 
     @Override
@@ -345,6 +344,11 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
     @Override
     public void onUserFollowed() {
         shotActionListener.onUserFollowed();
+    }
+
+    @Override
+    public void showSideMenu() {
+        fabMenu.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.fab_like_menu)
@@ -421,7 +425,6 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         final Animation animation = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
         animation.setAnimationListener(new OnAnimationEndListener(() -> fabMenu.setVisibility(View.VISIBLE)));
         fabMenu.startAnimation(animation);
-
     }
 
     private void initLoadingAnimation() {

@@ -212,6 +212,7 @@ public class ShotsPresenter extends MvpNullObjectBasePresenter<ShotsContract.Vie
             getView().showShotsAnimation(shotList.get(SHOTS_ANIMATION_FIRST_SHOT),
                     shotList.get(SHOTS_ANIMATION_SECOND_SHOT));
         } else {
+            getView().showSideMenu();
             getShotsCustomizationSettings();
         }
     }
