@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import co.netguru.android.inbbbox.data.db.DaoSession;
 import co.netguru.android.inbbbox.data.db.ShotDB;
 import co.netguru.android.inbbbox.data.db.ShotDBDao;
+import co.netguru.android.inbbbox.data.db.mappers.LinksDBMapper;
 import co.netguru.android.inbbbox.data.db.mappers.ShotDBMapper;
 import co.netguru.android.inbbbox.data.db.mappers.UserDBMapper;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
@@ -33,6 +34,7 @@ public abstract class BaseGuestModeRepository {
     protected void insertUserIfExists(@Nullable User user) {
         if (user != null) {
             daoSession.getUserDBDao().insertOrReplace(UserDBMapper.fromUser(user));
+            daoSession.getLinksDBDao().insertOrReplace(LinksDBMapper.fromLinks(user.id(), user.links()));
         }
     }
 }

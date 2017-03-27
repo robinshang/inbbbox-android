@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.data.dribbbleuser.user;
 
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
@@ -42,8 +41,7 @@ public abstract class User implements Parcelable {
 
     public abstract String location();
 
-    @Nullable
-    public abstract Links links(); // TODO: 20.03.2017 Add Links table to DB
+    public abstract Links links();
 
     public static User.Builder builder() {
         return new AutoValue_User.Builder();
@@ -125,6 +123,7 @@ public abstract class User implements Parcelable {
                 .bio(userDB.getBio())
                 .location(userDB.getLocation())
                 .type(userDB.getType())
+                .links(Links.create(userDB.getLinks().getWeb(), userDB.getLinks().getTwitter()))
                 .build();
     }
 

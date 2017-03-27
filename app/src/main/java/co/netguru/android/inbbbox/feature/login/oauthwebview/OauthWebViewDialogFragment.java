@@ -19,7 +19,6 @@ import android.webkit.WebViewClient;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
-import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpDialogFragment;
@@ -94,11 +93,6 @@ public class OauthWebViewDialogFragment
     @Override
     public void finishWithUnknownError() {
         getPresenter().handleUnknownOauthError();
-    }
-
-    @Override
-    public void initializeUserMode(UserModeType mode) {
-        App.initUserComponent(getActivity(), mode);
     }
 
     @Override
