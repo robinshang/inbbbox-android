@@ -38,15 +38,26 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder<Comment> {
     @BindView(R.id.comment_action_menu)
     View actionMenu;
 
-    @BindView(R.id.comment_container)
-    ViewGroup commentContainerLayout;
-
     private Comment currentComment;
 
     ShotDetailsCommentViewHolder(ViewGroup parent, DetailsViewActionCallback actionCallback) {
         super(LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.item_shot_comment_layout, parent, false), actionCallback);
+    }
+
+    @Override
+    public void bind(@NonNull Comment comment) {
+        actionMenu.setVisibility(View.GONE);
+        currentComment = comment;
+
+        authorTextView.setText(currentComment.author());
+
+        setCommentText(currentComment.text());
+
+        showAvatar(currentComment.authorAvatarUrl());
+        dateTextView.setText(DateTimeFormatUtil
+                .getTimeLabel(itemView.getContext(), currentComment.date()));
     }
 
     @OnClick(R.id.comment_action_edit)
@@ -66,26 +77,12 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder<Comment> {
         actionMenu.setVisibility(View.GONE);
     }
 
-    @OnLongClick(R.id.comment_text_textView)
+    @OnLongClick(R.id.comment_container)
     boolean onCommentLongClick() {
         if (currentComment.isCurrentUserAuthor()) {
             actionMenu.setVisibility(View.VISIBLE);
         }
         return true;
-    }
-
-    @Override
-    public void bind(@NonNull Comment comment) {
-        actionMenu.setVisibility(View.GONE);
-        currentComment = comment;
-
-        authorTextView.setText(currentComment.author());
-
-        setCommentText(currentComment.text());
-
-        showAvatar(currentComment.authorAvatarUrl());
-        dateTextView.setText(DateTimeFormatUtil
-                .getTimeLabel(itemView.getContext(), currentComment.date()));
     }
 
     private void setCommentText(String text) {
