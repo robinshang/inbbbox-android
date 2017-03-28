@@ -30,10 +30,12 @@
 
             <ImageView
                 android:id="@+id/placeholder_image_view"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/details_parallax_image_view_height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/shot_details_gif_placeholder_horizontal_padding"
                 android:layout_marginStart="@dimen/shot_details_gif_placeholder_horizontal_padding"
+                android:scaleType="centerCrop"
                 android:visibility="gone"
                 app:layout_collapseMode="parallax" />
 
