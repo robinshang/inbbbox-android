@@ -105,7 +105,12 @@ public abstract class User implements Parcelable {
                 .shotsCount(team.shotsCount())
                 .bucketsCount(team.bucketsCount())
                 .projectsCount(team.projectsCount())
+                .followersCount(team.followersCount())
+                .followingsCount(team.followingsCount())
+                .bio(team.bio())
+                .location(team.location())
                 .type(TYPE_TEAM)
+                .links(Links.create(team.links().web(), team.links().twitter()))
                 .build();
     }
 

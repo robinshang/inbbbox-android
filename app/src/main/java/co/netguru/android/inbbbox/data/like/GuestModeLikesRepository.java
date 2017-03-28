@@ -11,7 +11,6 @@ import co.netguru.android.inbbbox.data.BaseGuestModeRepository;
 import co.netguru.android.inbbbox.data.db.DaoSession;
 import co.netguru.android.inbbbox.data.db.ShotDB;
 import co.netguru.android.inbbbox.data.db.ShotDBDao;
-import co.netguru.android.inbbbox.data.db.mappers.TeamDBMapper;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Completable;
 import rx.Observable;
@@ -30,9 +29,7 @@ public class GuestModeLikesRepository extends BaseGuestModeRepository {
                 .run(() -> {
                     daoSession.getShotDBDao().insertOrReplace(likeShot(shot));
                     insertUserIfExists(shot.author());
-                    if (shot.team() != null) {
-                        daoSession.getTeamDBDao().insertOrReplace(TeamDBMapper.fromTeam(shot.team()));
-                    }
+                    insertTeamIfExists(shot.team());
                 })
                 .toCompletable();
     }
