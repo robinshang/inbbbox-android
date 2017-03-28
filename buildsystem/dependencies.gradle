@@ -1,6 +1,6 @@
 ext {
     // Versions
-    butterKnifeVersion = '8.4.0'
+    butterKnifeVersion = '8.5.1'
     constraintLayoutVersion = '1.0.0-beta4'
     daggerVersion = '2.8'
     dexmakerVersion = '1.2'

@@ -1,7 +1,6 @@
 package co.netguru.android.inbbbox.feature.shot.detail.recycler;
 
 import android.support.annotation.NonNull;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.common.utils.DateTimeFormatUtil;
+import co.netguru.android.inbbbox.feature.shared.view.ClickableLinkOnTouchListener;
 import co.netguru.android.inbbbox.feature.shot.detail.Comment;
 
 import static co.netguru.android.inbbbox.common.utils.StringUtil.PARAGRAPH_TAG_END;
@@ -38,15 +38,26 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder<Comment> {
     @BindView(R.id.comment_action_menu)
     View actionMenu;
 
-    @BindView(R.id.comment_container)
-    ViewGroup commentContainerLayout;
-
     private Comment currentComment;
 
     ShotDetailsCommentViewHolder(ViewGroup parent, DetailsViewActionCallback actionCallback) {
         super(LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.item_shot_comment_layout, parent, false), actionCallback);
+    }
+
+    @Override
+    public void bind(@NonNull Comment comment) {
+        actionMenu.setVisibility(View.GONE);
+        currentComment = comment;
+
+        authorTextView.setText(currentComment.author());
+
+        setCommentText(currentComment.text());
+
+        showAvatar(currentComment.authorAvatarUrl());
+        dateTextView.setText(DateTimeFormatUtil
+                .getTimeLabel(itemView.getContext(), currentComment.date()));
     }
 
     @OnClick(R.id.comment_action_edit)
@@ -66,7 +77,7 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder<Comment> {
         actionMenu.setVisibility(View.GONE);
     }
 
-    @OnLongClick(R.id.comment_text_textView)
+    @OnLongClick(R.id.comment_container)
     boolean onCommentLongClick() {
         if (currentComment.isCurrentUserAuthor()) {
             actionMenu.setVisibility(View.VISIBLE);
@@ -74,25 +85,11 @@ class ShotDetailsCommentViewHolder extends ShotDetailsViewHolder<Comment> {
         return true;
     }
 
-    @Override
-    public void bind(@NonNull Comment comment) {
-        actionMenu.setVisibility(View.GONE);
-        currentComment = comment;
-
-        authorTextView.setText(currentComment.author());
-
-        setCommentText(currentComment.text());
-
-        showAvatar(currentComment.authorAvatarUrl());
-        dateTextView.setText(DateTimeFormatUtil
-                .getTimeLabel(itemView.getContext(), currentComment.date()));
-    }
-
     private void setCommentText(String text) {
         commentTextTextView.setText(getParsedHtmlTextSpanned(text
                 .replace(PARAGRAPH_TAG_START, "")
                 .replace(PARAGRAPH_TAG_END, "")));
-        commentTextTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        commentTextTextView.setOnTouchListener(new ClickableLinkOnTouchListener());
     }
 
     private void showAvatar(String authorAvatarUrl) {
