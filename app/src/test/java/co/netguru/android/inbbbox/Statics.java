@@ -24,7 +24,7 @@ import co.netguru.android.inbbbox.feature.shot.detail.Comment;
 
 public final class Statics {
 
-    public static final int ITEM_COUNT = 15;
+    private static final int ITEM_COUNT = 15;
     private static final int COMMENTS_COUNT = 15;
     private static final int SHOTS_COUNT = 10;
 
@@ -118,6 +118,11 @@ public final class Statics {
             .shotsCount(2)
             .projectsCount(2)
             .bucketsCount(2)
+            .followingsCount(2)
+            .followersCount(2)
+            .bio("")
+            .location("")
+            .links(Links.create("https://www.netguru.co/", "https://twitter.com/netguru"))
             .avatarUrl("")
             .build();
 
