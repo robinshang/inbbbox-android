@@ -6,7 +6,7 @@
     <color name="windowBackground">#303030</color>
     <color name="secondaryWindowBackground">#424242</color>
     <color name="tabBackground">#212121</color>
-    <color name="userTabBackground">#000000</color>
+    <color name="userTabBackground">#212121</color>
     <color name="textColor">#FFFFFF</color>
 
     <color name="disabledGray">#80FFFFFF</color>
