@@ -15,7 +15,6 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Observable;
 import rx.Single;
-import timber.log.Timber;
 
 abstract class BaseBucketsController {
 

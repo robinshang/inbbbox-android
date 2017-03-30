@@ -48,13 +48,6 @@ public class BucketsControllerApi extends BaseBucketsController implements Bucke
     }
 
     @Override
-    public Single<List<BucketWithShots>> getUserBucketsWithShots(long userId, int pageNumber,
-                                                                 int pageCount, int shotsCount,
-                                                                 boolean shouldCache) {
-        return super.getUserBucketsWithShots(userId, pageNumber, pageCount, shotsCount, shouldCache);
-    }
-
-    @Override
     public Single<List<Shot>> getShotsListFromBucket(long bucketId, int pageNumber,
                                                      int pageCount, boolean shouldCache) {
         return getShotsListObservableFromBucket(bucketId, pageNumber, pageCount, shouldCache).toSingle();
