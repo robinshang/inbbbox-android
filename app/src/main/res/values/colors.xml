@@ -40,4 +40,7 @@
     <color name="textDark">#262626</color>
 
     <color name="primaryTransparent">#E0F0377E</color>
+
+    <color name="dividerUserInfo">#DEDEDE</color>
+    <color name="textColorUserInfo">#000000</color>
 </resources>
