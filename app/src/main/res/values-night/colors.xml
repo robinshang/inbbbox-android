@@ -11,6 +11,8 @@
 
     <color name="materialButtonColorPressed">#40CCCCCC</color>
 
+    <color name="projectBackgroundTextColor">#40424242</color>
+
     <color name="backgroundShotText">#f8202020</color>
     <color name="lightShadow">#1f000000</color>
 
