@@ -44,8 +44,7 @@ public class BucketsControllerGuest extends BaseBucketsController implements Buc
     }
 
     @Override
-    public Single<List<Shot>> getShotsListFromBucket(long bucketId, int pageNumber,
-                                                     int pageCount, boolean shouldCache) {
+    public Single<List<Shot>> getShotsFromBucket(long bucketId, int pageNumber, int pageCount, boolean shouldCache) {
         return guestModeBucketsRepository.getShotsListFromBucket(bucketId);
     }
 

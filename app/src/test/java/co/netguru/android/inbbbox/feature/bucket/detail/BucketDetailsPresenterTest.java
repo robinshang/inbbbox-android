@@ -107,7 +107,7 @@ public class BucketDetailsPresenterTest {
         TestSubscriber loadNextShotsSubscription = new TestSubscriber();
         presenter.refreshShotsSubscription = Subscriptions.unsubscribed();
         presenter.loadNextShotsSubscription = loadNextShotsSubscription;
-        when(bucketsControllerMock.getShotsListFromBucket(anyLong(), anyInt(), anyInt(), anyBoolean()))
+        when(bucketsControllerMock.getShotsFromBucket(anyLong(), anyInt(), anyInt(), anyBoolean()))
                 .thenReturn(Single.just(shots));
         //when
         presenter.refreshShots();

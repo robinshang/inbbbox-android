@@ -71,15 +71,20 @@ public class UserBucketsPresenter extends MvpNullObjectBasePresenter<UserBuckets
                     (user.id(), pageNumber, BUCKETS_PER_PAGE_COUNT, BUCKET_SHOTS_PER_PAGE_COUNT, false)
                     .toObservable()
                     .compose(RxTransformers.androidIO())
-                    .doAfterTerminate(() -> {
-                        getView().hideProgressBars();
-                        getView().hideLoadingMoreBucketsView();
-                    })
-                    .subscribe(bucketWithShotsList -> {
-                        canLoadMore = bucketWithShotsList.size() == BUCKETS_PER_PAGE_COUNT;
-                        getView().addMoreBucketsWithShots(bucketWithShotsList);
-                    }, throwable -> handleError(throwable, "Error while loading more buckets"));
+                    .doAfterTerminate(this::hideLoadingViews)
+                    .subscribe(this::handleMoreShots,
+                            throwable -> handleError(throwable, "Error while loading more buckets"));
         }
+    }
+
+    private void hideLoadingViews() {
+        getView().hideProgressBars();
+        getView().hideLoadingMoreBucketsView();
+    }
+
+    private void handleMoreShots(List<BucketWithShots> bucketWithShotsList) {
+        canLoadMore = bucketWithShotsList.size() == BUCKETS_PER_PAGE_COUNT;
+        getView().addMoreBucketsWithShots(bucketWithShotsList);
     }
 
     @Override

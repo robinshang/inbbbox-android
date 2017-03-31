@@ -24,7 +24,7 @@ public interface BucketsController {
                                                                  int shotsCount, boolean shouldCache);
 
 
-    Single<List<Shot>> getShotsListFromBucket(long bucketId, int pageNumber,
+    Single<List<Shot>> getShotsFromBucket(long bucketId, int pageNumber,
                                               int pageCount, boolean shouldCache);
 
     Single<Bucket> createBucket(@NonNull String name, @Nullable String description);

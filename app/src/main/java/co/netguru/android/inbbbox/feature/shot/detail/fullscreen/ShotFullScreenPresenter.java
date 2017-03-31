@@ -76,7 +76,7 @@ public class ShotFullScreenPresenter extends MvpNullObjectBasePresenter<ShotFull
                             .getLikedShots(currentPage, SHOTS_PER_PAGE);
                     break;
                 case ShotDetailsType.BUCKET:
-                    requestMoreObservable = bucketsController.getShotsListFromBucket(
+                    requestMoreObservable = bucketsController.getShotsFromBucket(
                             detailsRequest.id(), currentPage, SHOTS_PER_PAGE, false)
                                                     .toObservable();
                     break;

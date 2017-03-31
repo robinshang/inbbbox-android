@@ -9,6 +9,7 @@ import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.data.bucket.BucketApi;
 import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
+import co.netguru.android.inbbbox.data.cache.CacheStrategy;
 import co.netguru.android.inbbbox.data.cache.CacheValidator;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.UserApi;
@@ -40,7 +41,8 @@ public class BucketsControllerApi extends BaseBucketsController implements Bucke
             (int pageNumber, int pageCount, int shotsCount, boolean shouldCache) {
         return userApi.getAuthenticatedUserBucketsList(pageNumber, pageCount)
                 .flatMapObservable(Observable::from)
-                .flatMap(bucket -> getFromCacheOrCreate(bucket, FIRST_PAGE_NUMBER, shotsCount, shouldCache))
+                .flatMap(bucket -> getShotsFromBucketObservable(bucket.id(), FIRST_PAGE_NUMBER,
+                        shotsCount, shouldCache), BucketWithShots::create)
                 .toList()
                 .doOnNext(bucketWithShotses ->
                         cacheValidator.validateCache(CacheValidator.CACHE_BUCKET_SHOTS).subscribe())
@@ -48,9 +50,8 @@ public class BucketsControllerApi extends BaseBucketsController implements Bucke
     }
 
     @Override
-    public Single<List<Shot>> getShotsListFromBucket(long bucketId, int pageNumber,
-                                                     int pageCount, boolean shouldCache) {
-        return getShotsListObservableFromBucket(bucketId, pageNumber, pageCount, shouldCache).toSingle();
+    public Single<List<Shot>> getShotsFromBucket(long bucketId, int pageNumber, int pageCount, boolean shouldCache) {
+        return getShotsFromBucketObservable(bucketId, pageNumber, pageCount, shouldCache).toSingle();
     }
 
     @Override
@@ -102,22 +103,4 @@ public class BucketsControllerApi extends BaseBucketsController implements Bucke
                 .toSingle();
     }
 
-    private Observable<BucketWithShots> fetchAndCacheBucket(Bucket parameterBucket, int pageNumber,
-                                                            int shotsCount, boolean shouldCache) {
-        return Observable.just(parameterBucket)
-                .flatMap(bucket -> getShotsListObservableFromBucket(bucket.id(), pageNumber,
-                        shotsCount, shouldCache),
-                        BucketWithShots::create)
-                .flatMap(bucketWithShots -> {
-                    bucketWithShotsCache.add(bucketWithShots);
-                    return Observable.just(bucketWithShots);
-                });
-    }
-
-    private Observable<BucketWithShots> getFromCacheOrCreate(Bucket parameterBucket, int pageNumber,
-                                                             int shotsCount, boolean shouldCache) {
-        return Observable.just(bucketWithShotsCache.get(parameterBucket.id()))
-                .filter(cachedBucketWithShots -> cachedBucketWithShots != null)
-                .switchIfEmpty(fetchAndCacheBucket(parameterBucket, pageNumber, shotsCount, shouldCache));
-    }
 }

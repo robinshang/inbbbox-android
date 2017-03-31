@@ -121,7 +121,6 @@ public class UserBucketsPresenterTest {
         verify(viewMock).showMessageOnServerError(exampleException.getMessage());
     }
 
-
     @Test
     public void whenLoadMoreBucketsWithShotsThenShowMoreBuckets() {
         when(bucketsControllerMock.getUserBucketsWithShots(anyLong(), anyInt(),
@@ -167,5 +166,4 @@ public class UserBucketsPresenterTest {
 
         verify(viewMock).hideEmptyView();
     }
-
 }

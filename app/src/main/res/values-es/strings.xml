@@ -132,4 +132,5 @@
     <string name="like_and_add_to_bucket_message">Este proyecto te gusta, agregado a la colección… </string>
     <string name="commenting_message">Comentando…</string>
     <string name="following_finish_message">Siguiendo autor</string>
+    <string name="no_buckets">No buckets yet</string>
 </resources>
