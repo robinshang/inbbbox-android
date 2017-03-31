@@ -21,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/user_info_header_followers_top"
+                android:textColor="@color/textColorUserInfo"
                 android:textSize="@dimen/user_info_header_value_textSize"
                 android:textStyle="bold"
                 tools:text="2024" />
@@ -32,13 +33,14 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/user_info_header_followers_top"
                 android:text="@string/followers"
+                android:textColor="@color/textColorUserInfo"
                 android:textSize="@dimen/user_info_header_value_text_textSize" />
 
             <View
                 android:layout_width="@dimen/common_1dp"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:background="@color/gray" />
+                android:layout_alignParentEnd="true"
+                android:background="@color/dividerUserInfo" />
 
         </RelativeLayout>
 
@@ -53,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/user_info_header_followers_top"
+                android:textColor="@color/textColorUserInfo"
                 android:textSize="@dimen/user_info_header_value_textSize"
                 android:textStyle="bold"
                 tools:text="94" />
@@ -64,6 +67,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/user_info_header_followers_top"
                 android:text="@string/shots"
+                android:textColor="@color/textColorUserInfo"
                 android:textSize="@dimen/user_info_header_value_text_textSize" />
 
         </RelativeLayout>
@@ -79,6 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/user_info_header_followers_top"
+                android:textColor="@color/textColorUserInfo"
                 android:textSize="@dimen/user_info_header_value_textSize"
                 android:textStyle="bold"
                 tools:text="667" />
@@ -90,13 +95,14 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/user_info_header_followers_top"
                 android:text="@string/following"
+                android:textColor="@color/textColorUserInfo"
                 android:textSize="@dimen/user_info_header_value_text_textSize" />
 
             <View
                 android:layout_width="@dimen/common_1dp"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:background="@color/gray" />
+                android:layout_alignParentStart="true"
+                android:background="@color/dividerUserInfo" />
 
         </RelativeLayout>
 
@@ -105,7 +111,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/common_1dp"
-        android:background="@color/gray" />
+        android:background="@color/dividerUserInfo" />
 
     <TextView
         android:id="@+id/user_country"
@@ -113,11 +119,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/user_info_header_country_marginTop"
-        android:drawableLeft="@drawable/location_glyph_world_pin"
         android:drawablePadding="@dimen/user_info_header_country_drawable_padding"
+        android:drawableStart="@drawable/location_glyph_world_pin"
         android:gravity="center_vertical"
         android:textColor="@color/darkGray"
-
         android:textSize="@dimen/user_info_header_country_textSize"
         tools:text="Poland" />
 
@@ -125,11 +130,10 @@
         android:id="@+id/user_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/user_info_header_bio_marginLeft"
-        android:layout_marginRight="@dimen/user_info_header_bio_marginRight"
+        android:layout_marginEnd="@dimen/user_info_header_bio_marginRight"
+        android:layout_marginStart="@dimen/user_info_header_bio_marginLeft"
         android:layout_marginTop="@dimen/user_info_header_bio_marginTop"
         android:gravity="center_horizontal"
         android:lineSpacingMultiplier="1.2"
         android:textColor="@color/darkerGray" />
-
 </LinearLayout>

@@ -12,6 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
+import co.netguru.android.inbbbox.data.like.GuestModeLikesRepository;
 import co.netguru.android.inbbbox.data.like.LikesApi;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;

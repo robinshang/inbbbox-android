@@ -8,7 +8,6 @@ import android.widget.Toast;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 import co.netguru.android.inbbbox.app.App;
-import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
 import co.netguru.android.inbbbox.feature.login.LoginActivity;
 import co.netguru.android.inbbbox.feature.main.MainActivity;
 
@@ -47,11 +46,6 @@ public class SplashActivity extends MvpActivity<SplashContract.View, SplashContr
     public void showMainScreen() {
         MainActivity.startActivity(this);
         finish();
-    }
-
-    @Override
-    public void initializeOnlineUserMode() {
-        App.initUserComponent(this, UserModeType.ONLINE_USER_MODE);
     }
 
     @Override

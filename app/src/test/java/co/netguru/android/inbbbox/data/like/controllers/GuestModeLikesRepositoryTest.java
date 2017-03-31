@@ -17,12 +17,15 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.data.db.DaoSession;
+import co.netguru.android.inbbbox.data.db.LinksDB;
+import co.netguru.android.inbbbox.data.db.LinksDBDao;
 import co.netguru.android.inbbbox.data.db.ShotDB;
 import co.netguru.android.inbbbox.data.db.ShotDBDao;
 import co.netguru.android.inbbbox.data.db.TeamDB;
 import co.netguru.android.inbbbox.data.db.TeamDBDao;
 import co.netguru.android.inbbbox.data.db.UserDB;
 import co.netguru.android.inbbbox.data.db.UserDBDao;
+import co.netguru.android.inbbbox.data.like.GuestModeLikesRepository;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.testcommons.RxSyncTestRule;
 import rx.Observable;
@@ -31,6 +34,7 @@ import rx.observers.TestSubscriber;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -49,6 +53,8 @@ public class GuestModeLikesRepositoryTest {
     @Mock
     TeamDBDao teamDBDao;
     @Mock
+    LinksDBDao linksDBDao;
+    @Mock
     RxDao<ShotDB, Long> shotRxDao;
     @Mock
     QueryBuilder<ShotDB> shotDBQueryBuilder;
@@ -66,6 +72,7 @@ public class GuestModeLikesRepositoryTest {
         when(daoSession.getShotDBDao()).thenReturn(shotDBDao);
         when(daoSession.getUserDBDao()).thenReturn(userDBDao);
         when(daoSession.getTeamDBDao()).thenReturn(teamDBDao);
+        when(daoSession.getLinksDBDao()).thenReturn(linksDBDao);
         when(shotDBDao.rx()).thenReturn(shotRxDao);
         when(daoSession.rxTx()).thenReturn(rxTransaction);
         when(shotDBDao.queryBuilder()).thenReturn(shotDBQueryBuilder);
@@ -90,24 +97,26 @@ public class GuestModeLikesRepositoryTest {
     }
 
     @Test
-    public void shouldInsertUserIntoDBWhenAddingLike() {
+    public void shouldInsertUserWithLinksIntoDBWhenAddingLike() {
         //given
         final TestSubscriber subscriber = new TestSubscriber();
         //when
         repository.addLikedShot(Statics.NOT_LIKED_SHOT).subscribe(subscriber);
         //then
         verify(userDBDao).insertOrReplace(any(UserDB.class));
+        verify(linksDBDao, times(2)).insertOrReplace(any(LinksDB.class)); // first time for user, second for the team
         subscriber.assertNoErrors();
     }
 
     @Test
-    public void shouldInsertTeamIntoDBWhenAddingLike() {
+    public void shouldInsertTeamWithLinksIntoDBWhenAddingLike() {
         //given
         final TestSubscriber subscriber = new TestSubscriber();
         //when
         repository.addLikedShot(Statics.NOT_LIKED_SHOT).subscribe(subscriber);
         //then
         verify(teamDBDao).insertOrReplace(any(TeamDB.class));
+        verify(linksDBDao, times(2)).insertOrReplace(any(LinksDB.class)); // first time for user, second for the team
         subscriber.assertNoErrors();
     }
 
@@ -165,7 +174,7 @@ public class GuestModeLikesRepositoryTest {
     @Test
     public void shouldReturnTrueWhenShotIsLiked() {
         //given
-        final TestSubscriber subscriber = new TestSubscriber();
+        final TestSubscriber<Boolean> subscriber = new TestSubscriber<>();
         when(shotDBDao.queryBuilder()).thenReturn(shotDBQueryBuilder);
         when(shotDBQueryBuilder.where(any())).thenReturn(shotDBQueryBuilder);
         when(shotDBQueryBuilder.rx()).thenReturn(shotDBRxQuery);
@@ -181,7 +190,7 @@ public class GuestModeLikesRepositoryTest {
     @Test
     public void shouldReturnFalseWhenShotIsNotLiked() {
         //given
-        final TestSubscriber subscriber = new TestSubscriber();
+        final TestSubscriber<Boolean> subscriber = new TestSubscriber<>();
         when(shotDBDao.queryBuilder()).thenReturn(shotDBQueryBuilder);
         when(shotDBQueryBuilder.where(any())).thenReturn(shotDBQueryBuilder);
         when(shotDBQueryBuilder.rx()).thenReturn(shotDBRxQuery);

@@ -32,6 +32,10 @@ public class App extends Application {
         ((App) context.getApplicationContext()).setupUserComponent(userModeType);
     }
 
+    public static void releaseUserComponent(Context context) {
+        ((App) context.getApplicationContext()).userComponent = null;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

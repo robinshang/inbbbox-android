@@ -20,12 +20,13 @@
     <color name="shadowBlack">#04000000</color>
     <color name="lightGray">#BDBDBD</color>
     <color name="lightGrayAlpha">#f8f8f8f8</color>
-    <color name="backgroundShotText">#f8f8f8f8</color>
     <color name="lightShadow">#b58b8b8b</color>
     <color name="whiteAlphaBackground">#34ffffff</color>
     <color name="gray">#DEDEDE</color>
     <color name="palePink">#F9D4E2</color>
     <color name="pink">#F0377E</color>
+
+    <color name="projectBackgroundTextColor">#f8f8f8f8</color>
 
     <color name="materialDivider">#1f000000</color>
     <color name="shotDetailsBackground">#F6F8F8</color>
@@ -40,4 +41,7 @@
     <color name="textDark">#262626</color>
 
     <color name="primaryTransparent">#E0F0377E</color>
+
+    <color name="dividerUserInfo">#DEDEDE</color>
+    <color name="textColorUserInfo">#000000</color>
 </resources>

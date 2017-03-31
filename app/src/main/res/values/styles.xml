@@ -81,8 +81,7 @@
         <item name="android:textColor">@color/semiBlack</item>
     </style>
 
-    <style name="Font20.ProjectTitle" parent="TextAppearance.AppCompat.Large">
-        <item name="android:textSize">20sp</item>
+    <style name="Font18.ProjectTitle" parent="TextAppearance.AppCompat.Medium">
         <item name="android:textColor">@color/black</item>
     </style>
 
@@ -94,9 +93,9 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
-    <style name="Font60.LightGray" parent="TextAppearance.AppCompat.Large">
+    <style name="Font60.ProjectBackground" parent="TextAppearance.AppCompat.Large">
         <item name="android:textSize">60sp</item>
-        <item name="android:textColor">@color/lightGrayAlpha</item>
+        <item name="android:textColor">@color/projectBackgroundTextColor</item>
     </style>
 
     <style name="Font16.UserName" parent="TextAppearance.AppCompat.Large">
@@ -119,7 +118,7 @@
     </style>
 
     <style name="LongSwipeActionText">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentEnd">true</item>
         <!--quickhack - without it text is slightly shifted-->

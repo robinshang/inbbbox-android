@@ -10,8 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.LinkedList;
-
 import co.netguru.android.inbbbox.Statics;
 import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
@@ -72,13 +70,13 @@ public class UserPresenterTest {
 
     @Test
     public void whenUserWithoutShotsReceived_thenDownloadUserUsingUserController() {
-        when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt(), anyBoolean()))
+        when(userShotsControllerMock.getUserOrTeamShots(any(User.class), anyInt(), anyInt(), anyBoolean()))
                 .thenReturn(Observable.empty());
         when(userMock.id()).thenReturn(EXAMPLE_ID);
 
         followerDetailsPresenter.userDataReceived(userMock);
 
-        verify(userShotsControllerMock).getUserShotsList(eq(EXAMPLE_ID), anyInt(), anyInt(), anyBoolean());
+        verify(userShotsControllerMock).getUserOrTeamShots(any(User.class), anyInt(), anyInt(), anyBoolean());
     }
 
     //ERRORS
@@ -87,7 +85,7 @@ public class UserPresenterTest {
         String message = "test";
         Throwable throwable = new Throwable(message);
         UserWithShots exampleUser = UserWithShots.create(Statics.USER, null);
-        when(userShotsControllerMock.getUserShotsList(anyLong(), anyInt(), anyInt(), anyBoolean()))
+        when(userShotsControllerMock.getUserOrTeamShots(any(User.class), anyInt(), anyInt(), anyBoolean()))
                 .thenReturn(Observable.error(throwable));
 
         followerDetailsPresenter.userDataReceived(userMock);

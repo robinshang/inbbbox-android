@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.data.follower.controllers;
+package co.netguru.android.inbbbox.data.follower;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

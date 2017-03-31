@@ -84,7 +84,6 @@ public class UserActivity
         initializeToolbar();
         setupImage();
         shouldRefreshFollowers = false;
-        getPresenter().checkFollowingStatus(user);
         logScreenEvent();
     }
 
@@ -93,8 +92,8 @@ public class UserActivity
         getMenuInflater().inflate(R.menu.follower_details_menu, menu);
         itemFollow = menu.findItem(R.id.action_follow);
         itemUnfollow = menu.findItem(R.id.action_unfollow);
-        itemFollow.setVisible(false);
-        itemUnfollow.setVisible(false);
+
+        getPresenter().checkFollowingStatus(user);
         return true;
     }
 

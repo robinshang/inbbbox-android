@@ -39,6 +39,11 @@ public interface ShotsApi {
                                               @Query("per_page") int pageCount,
                                               @Header(HEADER_CACHE_CONTROL) String cacheControl);
 
+    @GET("teams/{team}/shots")
+    Observable<List<ShotEntity>> getTeamShots(@Path("team") long teamId, @Query("page") int pageNumber,
+                                              @Query("per_page") int shotsPerPage,
+                                              @Query(HEADER_CACHE_CONTROL) String cacheControl);
+
     @GET("shots/{shotId}/comments")
     Observable<List<CommentEntity>> getShotComments(
             @Path("shotId") String shotId,
