@@ -20,7 +20,6 @@
     <color name="shadowBlack">#04000000</color>
     <color name="lightGray">#BDBDBD</color>
     <color name="lightGrayAlpha">#f8f8f8f8</color>
-    <color name="backgroundShotText">#f8f8f8f8</color>
     <color name="lightShadow">#b58b8b8b</color>
     <color name="whiteAlphaBackground">#34ffffff</color>
     <color name="gray">#DEDEDE</color>
