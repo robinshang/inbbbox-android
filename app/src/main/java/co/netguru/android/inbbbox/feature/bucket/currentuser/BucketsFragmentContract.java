@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.bucket;
+package co.netguru.android.inbbbox.feature.bucket.currentuser;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;

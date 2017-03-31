@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.bucket;
+package co.netguru.android.inbbbox.feature.bucket.currentuser;
 
 import co.netguru.android.commons.di.FragmentScope;
 import dagger.Subcomponent;
