@@ -11,19 +11,17 @@
         android:id="@+id/team_image"
         android:layout_width="@dimen/item_team_image_size"
         android:layout_height="@dimen/item_team_image_size"
-        android:layout_marginLeft="@dimen/item_team_image_marginLeft"
+        android:layout_marginStart="@dimen/item_team_image_marginLeft"
         android:contentDescription="@string/user_image_content_description"
-        app:civ_border_color="@color/white"
-        app:civ_border_width="@dimen/drawer_header_photo_border"
         app:civ_fill_color="@color/lightGray" />
 
     <TextView
         android:id="@+id/team_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/item_team_name_maginLeft"
+        android:layout_marginStart="@dimen/item_team_name_maginLeft"
         android:gravity="center_vertical"
-        android:textColor="@color/textDark"
+        android:textColor="@color/textColorUserInfo"
         android:textSize="@dimen/item_team_name_textSize"
         android:textStyle="bold"
         tools:text="Team" />

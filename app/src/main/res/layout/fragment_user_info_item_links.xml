@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/common_1dp"
         android:layout_marginTop="@dimen/user_info_links_divider_marginTop"
-        android:background="@color/gray" />
+        android:background="@color/dividerUserInfo" />
 
     <GridLayout
         android:layout_width="match_parent"

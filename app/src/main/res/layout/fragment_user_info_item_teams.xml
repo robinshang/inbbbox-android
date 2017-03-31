@@ -11,7 +11,7 @@
         android:layout_marginStart="@dimen/item_teams_text_marginStart"
         android:layout_marginTop="@dimen/item_teams_text_marginTop"
         android:text="@string/on_teams"
-        android:textColor="@color/textDark"
+        android:textColor="@color/textColorUserInfo"
         android:textSize="@dimen/item_teams_text_textSize"
         android:textStyle="bold" />
 

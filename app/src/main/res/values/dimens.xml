@@ -168,9 +168,9 @@
     <dimen name="item_user_shot_marginLeft">8dp</dimen>
     <dimen name="item_user_shot_marginRight">8dp</dimen>
     <dimen name="item_user_shot_width">150dp</dimen>
-    <dimen name="item_team_image_size">64dp</dimen>
-    <dimen name="item_team_image_marginLeft">24dp</dimen>
-    <dimen name="item_team_name_maginLeft">6dp</dimen>
+    <dimen name="item_team_image_size">48dp</dimen>
+    <dimen name="item_team_image_marginLeft">12dp</dimen>
+    <dimen name="item_team_name_maginLeft">12dp</dimen>
     <dimen name="item_team_name_textSize">16sp</dimen>
 
     <dimen name="projects_item_shots_padding_start">16dp</dimen>
@@ -198,4 +198,6 @@
     <dimen name="thumbnail_height">180dp</dimen>
     <dimen name="peek_shot_margin">24dp</dimen>
     <dimen name="peek_shot_bottom_height">40dp</dimen>
+    <dimen name="team_info_user_image_size">18dp</dimen>
+    <dimen name="project_item_header_margin_start">6dp</dimen>
 </resources>
