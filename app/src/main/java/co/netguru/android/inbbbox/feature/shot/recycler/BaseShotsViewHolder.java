@@ -15,6 +15,7 @@ import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.ItemSwipeListener;
 import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout;
+import timber.log.Timber;
 
 import static co.netguru.android.inbbbox.common.utils.AnimationUtil.ALPHA_MAX;
 import static co.netguru.android.inbbbox.common.utils.AnimationUtil.ALPHA_MIN;
@@ -261,6 +262,8 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
                     FOLLOW_ICON_ALPHA_ANIMATION_END_PROGRESS, progress);
             animateAlpha(followIconFull, FOLLOW_ICON_FILLED_ALPHA_ANIMATION_START_PROGRESS,
                     FOLLOW_ICON_ALPHA_ANIMATION_END_PROGRESS, progress);
+            followIcon.setX(commentIcon.getX());
+            followIconFull.setX(commentIcon.getX());
         }
     }
 
