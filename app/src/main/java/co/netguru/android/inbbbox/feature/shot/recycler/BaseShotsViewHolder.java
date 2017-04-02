@@ -15,14 +15,13 @@ import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
 import co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView;
 import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.ItemSwipeListener;
 import co.netguru.android.inbbbox.feature.shared.view.swipingpanel.LongSwipeLayout;
-import timber.log.Timber;
 
 import static co.netguru.android.inbbbox.common.utils.AnimationUtil.ALPHA_MAX;
 import static co.netguru.android.inbbbox.common.utils.AnimationUtil.ALPHA_MIN;
 import static co.netguru.android.inbbbox.common.utils.AnimationUtil.animateAlpha;
-import static co.netguru.android.inbbbox.common.utils.UnitsUtils.dpToPx;
 import static co.netguru.android.inbbbox.common.utils.AnimationUtil.scaleView;
 import static co.netguru.android.inbbbox.common.utils.AnimationUtil.translateView;
+import static co.netguru.android.inbbbox.common.utils.UnitsUtils.dpToPx;
 
 public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
         implements ItemSwipeListener {
