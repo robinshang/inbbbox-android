@@ -190,6 +190,8 @@ dependencies {
 
     compile libs.mosbyViewState
 
+    compile libs.cardView
+
     // Peek And Pop (3d Touch)
     compile libs.peekAndPop
 
