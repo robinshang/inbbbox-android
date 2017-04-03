@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.bucket;
+package co.netguru.android.inbbbox.feature.bucket.currentuser;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -311,13 +311,7 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
         gridLayoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
         bucketsRecyclerView.setHasFixedSize(true);
         bucketsRecyclerView.setAdapter(adapter);
-        bucketsRecyclerView.addOnScrollListener(
-                new LoadMoreScrollListener(LAST_X_BUCKETS_VISIBLE_TO_LOAD_MORE) {
-                    @Override
-                    public void requestMoreData() {
-                        presenter.loadMoreBucketsWithShots();
-                    }
-                });
+        bucketsRecyclerView.addOnScrollListener(getLoadMoreScrollListener());
     }
 
     private void initEmptyView() {
@@ -326,5 +320,14 @@ public class BucketsFragment extends BaseMvpLceFragmentWithListTypeSelection<Swi
         emptyTextDrawable.setBounds(0, 0, lineHeight, lineHeight);
         emptyViewText.setText(TextFormatterUtil
                 .addDrawableBetweenStrings(emptyStringBeforeIcon, emptyStringAfterIcon, emptyTextDrawable));
+    }
+
+    private LoadMoreScrollListener getLoadMoreScrollListener() {
+        return new LoadMoreScrollListener(LAST_X_BUCKETS_VISIBLE_TO_LOAD_MORE) {
+            @Override
+            public void requestMoreData() {
+                presenter.loadMoreBucketsWithShots();
+            }
+        };
     }
 }

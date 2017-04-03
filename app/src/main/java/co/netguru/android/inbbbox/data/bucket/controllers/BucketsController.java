@@ -17,11 +17,14 @@ public interface BucketsController {
 
     Completable addShotToBucket(long bucketId, Shot shot);
 
-    Single<List<BucketWithShots>> getUserBucketsWithShots(int pageNumber, int pageCount,
-                                                          int shotsCount, boolean shouldCache);
+    Single<List<BucketWithShots>> getCurrentUserBucketsWithShots(int pageNumber, int pageCount,
+                                                                 int shotsCount, boolean shouldCache);
+
+    Single<List<BucketWithShots>> getUserBucketsWithShots(long userId, int pageNumber, int pageCount,
+                                                                 int shotsCount, boolean shouldCache);
 
 
-    Single<List<Shot>> getShotsListFromBucket(long bucketId, int pageNumber,
+    Single<List<Shot>> getShotsFromBucket(long bucketId, int pageNumber,
                                               int pageCount, boolean shouldCache);
 
     Single<Bucket> createBucket(@NonNull String name, @Nullable String description);

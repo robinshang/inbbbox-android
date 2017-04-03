@@ -8,6 +8,7 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.feature.user.buckets.UserBucketsFragment;
 import co.netguru.android.inbbbox.feature.main.adapter.RefreshableFragment;
 import co.netguru.android.inbbbox.feature.shared.UserDetailsTabItemType;
 import co.netguru.android.inbbbox.feature.user.info.singleuser.UserInfoFragment;
@@ -43,8 +44,7 @@ public class UserPagerAdapter<T extends Fragment & RefreshableFragment>
                 result = ProjectsFragment.newInstance(user);
                 break;
             case BUCKETS:
-//                TODO: 20.02 Instantiate BucketsFragment [not in scope of this task]
-                result = UserShotsFragment.newInstance(user);
+                result = UserBucketsFragment.newInstance(user);
                 break;
             default:
                 throw new IllegalArgumentException(String.format(
