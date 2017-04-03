@@ -11,7 +11,7 @@
         android:layout_marginStart="@dimen/user_info_shots_header_margin"
         android:layout_marginTop="@dimen/user_info_shots_header_margin"
         android:text="@string/most_popular"
-        android:textColor="@color/textDark"
+        android:textColor="@color/textColorUserInfo"
         android:textSize="@dimen/user_info_shots_header_textSize"
         android:textStyle="bold" />
 

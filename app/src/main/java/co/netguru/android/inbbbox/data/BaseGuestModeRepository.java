@@ -1,6 +1,5 @@
 package co.netguru.android.inbbbox.data;
 
-
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -9,10 +8,11 @@ import co.netguru.android.inbbbox.data.db.ShotDB;
 import co.netguru.android.inbbbox.data.db.ShotDBDao;
 import co.netguru.android.inbbbox.data.db.mappers.LinksDBMapper;
 import co.netguru.android.inbbbox.data.db.mappers.ShotDBMapper;
+import co.netguru.android.inbbbox.data.db.mappers.TeamDBMapper;
 import co.netguru.android.inbbbox.data.db.mappers.UserDBMapper;
+import co.netguru.android.inbbbox.data.dribbbleuser.team.Team;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-
 
 public abstract class BaseGuestModeRepository {
 
@@ -35,6 +35,14 @@ public abstract class BaseGuestModeRepository {
         if (user != null) {
             daoSession.getUserDBDao().insertOrReplace(UserDBMapper.fromUser(user));
             daoSession.getLinksDBDao().insertOrReplace(LinksDBMapper.fromLinks(user.id(), user.links()));
+        }
+    }
+
+    protected void insertTeamIfExists(@Nullable Team team) {
+        if (team != null) {
+            daoSession.getTeamDBDao().insertOrReplace(TeamDBMapper.fromTeam(team));
+            daoSession.getLinksDBDao().insertOrReplace(LinksDBMapper.fromLinks(team.id(),
+                    team.links()));
         }
     }
 }

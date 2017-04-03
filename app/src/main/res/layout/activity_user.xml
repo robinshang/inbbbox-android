@@ -56,7 +56,7 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="bottom"
             app:tabIndicatorColor="@android:color/white"
-            app:tabTextColor="@color/palePink"
+            app:tabTextColor="@color/whiteSemiTransparent"
             app:tabSelectedTextColor="@color/white"/>
 
         <co.netguru.android.inbbbox.feature.shared.view.NonSwipeableViewPager

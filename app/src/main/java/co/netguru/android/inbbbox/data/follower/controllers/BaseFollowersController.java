@@ -3,10 +3,10 @@ package co.netguru.android.inbbbox.data.follower.controllers;
 import java.util.List;
 
 import co.netguru.android.inbbbox.data.Cache;
+import co.netguru.android.inbbbox.data.cache.CacheStrategy;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.follower.FollowersApi;
 import co.netguru.android.inbbbox.data.follower.model.ui.UserWithShots;
-import co.netguru.android.inbbbox.data.cache.CacheStrategy;
 import co.netguru.android.inbbbox.data.shot.ShotsApi;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Observable;

@@ -1,6 +1,7 @@
 package co.netguru.android.inbbbox.data.dribbbleuser.team;
 
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
@@ -26,6 +27,13 @@ public abstract class TeamEntity implements Parcelable {
 
     @SerializedName("bio")
     public abstract String bio();
+
+    /**
+     * WARNING: undocumented api behaviour null might be returned for location
+     */
+    @SerializedName("location")
+    @Nullable
+    public abstract String location();
 
     @SerializedName("links")
     public abstract Links links();
@@ -76,6 +84,8 @@ public abstract class TeamEntity implements Parcelable {
         public abstract Builder avatarUrl(String avatarUrl);
 
         public abstract Builder bio(String bio);
+
+        public abstract Builder location(String location);
 
         public abstract Builder links(Links links);
 

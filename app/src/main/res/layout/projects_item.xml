@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/project_item_header"
-        style="@style/Font60.LightGray"
+        style="@style/Font60.ProjectBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -27,11 +27,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/project_item_header_margin_start">
 
             <TextView
                 android:id="@+id/project_item_small_header"
-                style="@style/Font20.ProjectTitle"
+                style="@style/Font18.ProjectTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -54,5 +55,4 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
 </FrameLayout>
