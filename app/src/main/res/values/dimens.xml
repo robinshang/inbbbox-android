@@ -134,7 +134,7 @@
     <dimen name="user_details_circle_image_margin_top">90dp</dimen>
 
     <dimen name="onboarding_like_text_top_padding">60dp</dimen>
-    <dimen name="onboarding_bucket_text_top_padding">90dp</dimen>
+    <dimen name="onboarding_bucket_text_top_padding">130dp</dimen>
     <dimen name="onboarding_comment_land_text_top_padding">90dp</dimen>
     <dimen name="onboarding_follow_land_text_top_padding">90dp</dimen>
     
@@ -176,7 +176,7 @@
     <dimen name="projects_item_shots_padding_start">16dp</dimen>
     <dimen name="projects_item_shots_padding_top">24dp</dimen>
     <dimen name="projects_item_shots_count_padding_start">8dp</dimen>
-    <dimen name="projects_shot_item_shot_padding">6dp</dimen>
+    <dimen name="projects_shot_item_shot_padding">16dp</dimen>
     <dimen name="projects_shot_item_shot_width">160dp</dimen>
     <dimen name="user_info_links_divider_marginTop">24dp</dimen>
     <dimen name="user_links_grid_margin">24dp</dimen>
@@ -198,4 +198,12 @@
     <dimen name="thumbnail_height">180dp</dimen>
     <dimen name="peek_shot_margin">24dp</dimen>
     <dimen name="peek_shot_bottom_height">40dp</dimen>
+    <dimen name="shot_cardview_corner_radius">10dp</dimen>
+    <dimen name="shot_cardview_elevation">15dp</dimen>
+    <dimen name="rounded_shot_view_padding">1dp</dimen>
+    <dimen name="follow_done_text_padding_top">130dp</dimen>
+    <dimen name="onboarding_comment_done_text_padding_top">120dp</dimen>
+    <dimen name="like_item_cardview_margin">18dp</dimen>
+    <dimen name="project_shot_item_cardview_bottom_margin">30dp</dimen>
+    <dimen name="shared_shot_item_card_margin">19dp</dimen>
 </resources>
