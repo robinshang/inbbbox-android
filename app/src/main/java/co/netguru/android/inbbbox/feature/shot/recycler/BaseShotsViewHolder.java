@@ -30,11 +30,11 @@ public abstract class BaseShotsViewHolder<T> extends BaseViewHolder<T>
     private static final int LOCATION_ON_SCREEN_COORDINATES_NUMBER = 2;
     private static final int CLOSE_SHOT_DELAY_MS = 200;
     private static final int COMMENT_CLOSE_SHOT_DELAY_MS = 300;
-    private static final int FINISH_ACTION_DELAY_MS = 1200;
-    private static final int SHOT_MOVE_ANIMATION_DURATION = 1000;
+    private static final int FINISH_ACTION_DELAY_MS = 650;
+    private static final int SHOT_MOVE_ANIMATION_DURATION = 700;
     private static final int LIKE_FADE_ANIMATION_DURATION = 50;
-    private static final int TEXT_CENTER_ANIMATION_DURATION = 900;
-    private static final int ICON_CENTER_ANIMATION_DURATION = 1000;
+    private static final int TEXT_CENTER_ANIMATION_DURATION = 400;
+    private static final int ICON_CENTER_ANIMATION_DURATION = 400;
     private static final float HALF = 0.5f;
     private static final float COMMENT_FILLED_ICON_ALPHA_START_PROGRESS = 0.25f;
     private static final float COMMENT_ICON_FADE_START_PROGRESS = 0.8f;
