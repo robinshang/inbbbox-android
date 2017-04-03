@@ -1,65 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foreground="?selectableItemBackground">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/bucket_card_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="@dimen/margin_default"
-        app:cardCornerRadius="@dimen/shot_cardview_corner_radius"
-        app:cardElevation="@dimen/shot_cardview_elevation">
-
-        <android.support.percent.PercentFrameLayout
-            android:id="@+id/bucket_image_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <co.netguru.android.inbbbox.feature.shared.view.BucketImageView
-                android:id="@+id/four_images_view"
-                app:layout_aspectRatio="133%"
-                app:layout_widthPercent="100%" />
-
-            <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
-                android:id="@+id/one_image_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <ImageView
-                android:id="@+id/empty_view"
-                android:contentDescription="@string/empty_bucket_item_description"
-                android:scaleType="centerInside"
-                android:src="@drawable/logo_ball"
-                android:tint="@color/lightGray"
-                app:layout_aspectRatio="133%"
-                app:layout_widthPercent="100%" />
-        </android.support.percent.PercentFrameLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <TextView
-        android:id="@+id/bucket_name_text_view"
-        style="@style/Font14.Pink"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@id/bucket_card_view"
-        android:layout_below="@id/bucket_card_view"
-        android:ellipsize="end"
-        android:lines="1"
-        tools:text="UI Mobile Apps" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/bucket_shots_count_text_view"
-        style="@style/Font12.Gray"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/bucket_card_view"
-        android:layout_below="@id/bucket_card_view"
-        android:gravity="center_vertical"
-        tools:text="7 shots" />
-</RelativeLayout>
+        <android.support.v7.widget.CardView
+            android:id="@+id/bucket_card_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/margin_default"
+            app:cardCornerRadius="@dimen/shot_cardview_corner_radius"
+            app:cardElevation="@dimen/shot_cardview_elevation">
+
+            <android.support.percent.PercentFrameLayout
+                android:id="@+id/bucket_image_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <co.netguru.android.inbbbox.feature.shared.view.BucketImageView
+                    android:id="@+id/four_images_view"
+                    app:layout_aspectRatio="133%"
+                    app:layout_widthPercent="100%" />
+
+                <co.netguru.android.inbbbox.feature.shared.view.RoundedCornersShotImageView
+                    android:id="@+id/one_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:id="@+id/empty_view"
+                    android:contentDescription="@string/empty_bucket_item_description"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/logo_ball"
+                    android:tint="@color/lightGray"
+                    app:layout_aspectRatio="133%"
+                    app:layout_widthPercent="100%" />
+            </android.support.percent.PercentFrameLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:id="@+id/bucket_name_text_view"
+            style="@style/Font14.Pink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/bucket_card_view"
+            android:layout_below="@id/bucket_card_view"
+            android:ellipsize="end"
+            android:lines="1"
+            tools:text="UI Mobile Apps" />
+
+        <TextView
+            android:id="@+id/bucket_shots_count_text_view"
+            style="@style/Font12.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/bucket_card_view"
+            android:layout_below="@id/bucket_card_view"
+            android:gravity="center_vertical"
+            tools:text="7 shots" />
+    </RelativeLayout>
+</FrameLayout>
