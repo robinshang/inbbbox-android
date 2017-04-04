@@ -32,7 +32,8 @@
 
             <TextView
                 android:id="@+id/project_item_small_header"
-                style="@style/Font18.ProjectTitle"
+                android:textColor="@color/black"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

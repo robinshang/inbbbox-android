@@ -50,8 +50,8 @@
     <string name="loading_more_buckets">Loading more buckets</string>
     <plurals name="fragment_buckets_shots_string">
         <item quantity="zero">No shots added</item>
-        <item quantity="one">%d shot</item>
-        <item quantity="other">%d shots</item>
+        <item quantity="one">%1d shot</item>
+        <item quantity="other">%1d shots</item>
     </plurals>
     <string name="loading_more_shots">Loading more shots</string>
     <string name="loading_more_likes">Loading more liked shots</string>
@@ -61,7 +61,7 @@
     <string name="fragment_bucket_is_empty_text_before_icon">Add some shots to this bucket</string>
     <string name="fragment_bucket_is_empty_text_after_icon">first!</string>
 
-    <string name="fragment_bucket_details_delete_are_you_sure_msg">Delete this %s bucket?</string>
+    <string name="fragment_bucket_details_delete_are_you_sure_msg">Delete this %1s bucket?</string>
 
     <string name="shots_fragment_add_shot_to_bucket_success">Shot successfully added to bucket</string>
     <string name="shots_fragment_remove_shot_from_bucket_success">Shot successfully removed from buckets</string>
@@ -76,16 +76,16 @@
     <string name="add_to_bucket">ADD TO BUCKET</string>
     <string name="comment">Comment</string>
 
-    <string name="fragment_add_to_bucket_shots">%d shots</string>
+    <string name="fragment_add_to_bucket_shots">%1d shots</string>
     <string name="fragment_add_to_bucket_shot_created_by">by </string>
     <string name="fragment_add_to_bucket_shot_created_for">for </string>
-    <string name="fragment_add_to_bucket_shot_created_on">on %s</string>
+    <string name="fragment_add_to_bucket_shot_created_on">on %1s</string>
     <string name="fragment_add_to_bucket_there_are_no_buckets_add_one_first">There are no buckets, add one first.</string>
     <string name="fragment_add_to_bucket_title">Add to bucket</string>
     <string name="fragment_remove_from_bucket_title">Remove from bucket</string>
 
-    <string name="fragment_unfollow_details_dialog_text">Unfollow %s ?</string>
-    <string name="fragment_follow_details_dialog_text">Follow %s ?</string>
+    <string name="fragment_unfollow_details_dialog_text">Unfollow %1s ?</string>
+    <string name="fragment_follow_details_dialog_text">Follow %1s ?</string>
 
     <string name="dialog_fragment_create_bucket_name">Name</string>
     <string name="dialog_fragment_create_bucket_optional">Description (optional)</string>
@@ -100,8 +100,8 @@
     <string name="for_label">" for "</string>
     <string name="info_where_pattern">"in ${where}"</string>
     <string name="info_when_pattern">" on ${when}"</string>
-    <string name="info_where_format" formatted="false">"in %s"</string>
-    <string name="info_when_format">"on %s"</string>
+    <string name="info_where_format" formatted="false">"in %1s"</string>
+    <string name="info_when_format">"on %1s"</string>
     <string name="about_minute_ago">About minute ago</string>
     <string name="about_sec_ago">About second ago</string>
     <string name="about_hour_ago">About hour ago</string>
@@ -163,4 +163,5 @@
     <string name="web" translatable="false">web</string>
     <string name="twitter" translatable="false">twitter</string>
     <string name="no_buckets">No buckets yet</string>
+    <string name="team_info_user_name_size">16sp</string>
 </resources>

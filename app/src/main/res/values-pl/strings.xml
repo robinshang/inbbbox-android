@@ -57,11 +57,11 @@
     <string name="for_label">&#160;dla&#160;</string>
     <string name="fragment_add_to_bucket_shot_created_by">przez</string>
     <string name="fragment_add_to_bucket_shot_created_for">dla</string>
-    <string name="fragment_add_to_bucket_shot_created_on">na %s</string>
-    <string name="fragment_add_to_bucket_shots">%d projektów</string>
+    <string name="fragment_add_to_bucket_shot_created_on">na %1s</string>
+    <string name="fragment_add_to_bucket_shots">%1d projektów</string>
     <string name="fragment_add_to_bucket_there_are_no_buckets_add_one_first">Nie ma żadnych projektów, najpierw dodaj jeden.</string>
     <string name="fragment_add_to_bucket_title">Dodaj do kolekcji</string>
-    <string name="fragment_bucket_details_delete_are_you_sure_msg">Jesteś pewien, że chcesz usunąć tę kolekcję: %s ?</string>
+    <string name="fragment_bucket_details_delete_are_you_sure_msg">Jesteś pewien, że chcesz usunąć tę kolekcję: %1s ?</string>
     <string name="fragment_bucket_is_empty_text_before_icon">Dodaj najpierw kilka projektów do</string>
     <string name="fragment_bucket_is_empty_text_after_icon">tej kolekcji!</string>
     <string name="fragment_buckets_empty_text_before_icon">Najpierw stwórz kilka</string>
@@ -70,8 +70,8 @@
     <string name="fragment_like_empty_text">Najpierw dodaj jakiś projekt do ulubionych!</string>
     <string name="info_when_pattern">" w dniu ${when}"</string>
     <string name="info_where_pattern">"w ${where}"</string>
-    <string name="info_where_format" formatted="false">"w %s"</string>
-    <string name="info_when_format">"w dniu %s"</string>
+    <string name="info_where_format" formatted="false">"w %1s"</string>
+    <string name="info_when_format">"w dniu %1s"</string>
     <string name="invalid_outh_url">Nieprawidłowy url</string>
     <string name="invalid_user_error">Nieprawidłowy użytkownik</string>
     <string name="like">POLUB</string>
@@ -108,17 +108,17 @@
     <string name="fragment_remove_from_bucket_title">Usuń z kolekcji</string>
     <string name="remove_from_bucket_fragment_remove">Usuń projekt z powyższych kolekcji</string>
     <string name="shots_fragment_remove_shot_from_bucket_success">Projekt usunięty z kolekcji</string>
-    <string name="fragment_follow_details_dialog_text">Dodać użytkownika %s do obserwowanych?</string>
-    <string name="fragment_unfollow_details_dialog_text">Usunąć użytkownika %s z obserwowanych?</string>
+    <string name="fragment_follow_details_dialog_text">Dodać użytkownika %1s do obserwowanych?</string>
+    <string name="fragment_unfollow_details_dialog_text">Usunąć użytkownika %1s z obserwowanych?</string>
     <string name="shot">Projekt</string>
     <string name="error_no_internet">Nie udało się połączyć z internetem. Sprawdź prosze swoje połączenie i spróbuj ponownie</string>
     <string name="projects_empty_view_text">Nie dodano jeszcze żadnych projektów</string>
 
     <plurals name="fragment_buckets_shots_string">
         <item quantity="zero">Nie dodano jeszcze żadnych projektów</item>
-        <item quantity="one">%d projekt</item>
-        <item quantity="few">%d projekty</item>
-        <item quantity="many">%d projektów</item>
+        <item quantity="one">%1d projekt</item>
+        <item quantity="few">%1d projekty</item>
+        <item quantity="many">%1d projektów</item>
     </plurals>
     <string name="tab_info_title">Info</string>
     <string name="tab_projects_title">Projekty</string>
