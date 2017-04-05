@@ -70,6 +70,10 @@
         <item name="android:textColor">@color/textDark</item>
     </style>
 
+    <style name="Font18.ProjectTitle" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="Font25.PalePink" parent="TextAppearance.AppCompat.Large">
         <item name="android:textColor">@color/palePink</item>
     </style>
