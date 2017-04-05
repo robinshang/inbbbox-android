@@ -5,7 +5,7 @@
 
     <TextView
         android:id="@+id/tab_layout_main_text_view"
-        style="@style/Font12"
+        android:textSize="@dimen/tab_layout_main_text_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/tab_layout_number_indicator_text_view"
-        style="@style/Font10"
+        android:textSize="@dimen/tab_layouot_indicator_text_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

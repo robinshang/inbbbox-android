@@ -42,14 +42,6 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="Font10" parent="TextAppearance.AppCompat.Small">
-        <item name="android:textSize">10sp</item>
-    </style>
-
-    <style name="Font12" parent="TextAppearance.AppCompat.Small">
-        <item name="android:textSize">12sp</item>
-    </style>
-
     <style name="Font12.Primary" parent="TextAppearance.AppCompat.Small">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/pink</item>
@@ -65,10 +57,6 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="Font14.Black" parent="TextAppearance.AppCompat.Small">
-        <item name="android:textColor">@color/black</item>
-    </style>
-
     <style name="Font14.White" parent="TextAppearance.AppCompat.Small">
         <item name="android:textColor">@color/white</item>
     </style>
@@ -77,8 +65,9 @@
         <item name="android:textColor">@color/pink</item>
     </style>
 
-    <style name="Font16.SemiBlack" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:textColor">@color/semiBlack</item>
+    <style name="Font16.UserName" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/textDark</item>
     </style>
 
     <style name="Font18.ProjectTitle" parent="TextAppearance.AppCompat.Medium">
@@ -96,11 +85,6 @@
     <style name="Font60.ProjectBackground" parent="TextAppearance.AppCompat.Large">
         <item name="android:textSize">60sp</item>
         <item name="android:textColor">@color/projectBackgroundTextColor</item>
-    </style>
-
-    <style name="Font16.UserName" parent="TextAppearance.AppCompat.Large">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/textDark</item>
     </style>
 
     <style name="SwipeActionIcons">
