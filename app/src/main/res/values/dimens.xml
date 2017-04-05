@@ -210,6 +210,7 @@
     <dimen name="project_item_header_margin_start">6dp</dimen>
     <dimen name="tab_layout_main_text_size">12sp</dimen>
     <dimen name="tab_layouot_indicator_text_size">10sp</dimen>
-    <dimen name="team_info_user_name_size">16sp</dimen>
+    <dimen name="splash_logo_left_offset">282dp</dimen>
+    <dimen name="splash_logo_top_offset">22dp</dimen>
 
 </resources>

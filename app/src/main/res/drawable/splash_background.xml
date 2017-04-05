@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/bcg_intro" />
-    <item android:left="282dp" android:top="22dp">
+    <item android:left="@dimen/splash_logo_left_offset" android:top="@dimen/splash_logo_top_offset">
         <bitmap android:src="@drawable/splash_logo_land"
             android:gravity="top" />
     </item>

@@ -65,6 +65,11 @@
         <item name="android:textColor">@color/pink</item>
     </style>
 
+    <style name="Font16.UserName" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/textDark</item>
+    </style>
+
     <style name="Font25.PalePink" parent="TextAppearance.AppCompat.Large">
         <item name="android:textColor">@color/palePink</item>
     </style>
