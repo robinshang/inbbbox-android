@@ -163,5 +163,4 @@
     <string name="web" translatable="false">web</string>
     <string name="twitter" translatable="false">twitter</string>
     <string name="no_buckets">No buckets yet</string>
-    <string name="team_info_user_name_size">16sp</string>
 </resources>
