@@ -30,13 +30,14 @@ import co.netguru.android.inbbbox.feature.project.ProjectActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import co.netguru.android.inbbbox.feature.user.info.team.ShotActionListener;
-import co.netguru.android.inbbbox.feature.user.projects.adapter.ProjectClickListener;
-import co.netguru.android.inbbbox.feature.user.projects.adapter.ProjectsAdapter;
+import co.netguru.android.inbbbox.feature.shared.collectionadapter.CollectionClickListener;
+import co.netguru.android.inbbbox.feature.shared.collectionadapter.CollectionAdapter;
 import timber.log.Timber;
 
 public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, List<ProjectWithShots>,
         ProjectsContract.View, ProjectsContract.Presenter> implements ProjectsContract.View,
-        ProjectsAdapter.OnGetMoreProjectShotsListener, ProjectClickListener {
+        CollectionAdapter.OnGetMoreCollectionShotsListener<ProjectWithShots>,
+        CollectionClickListener<ProjectWithShots> {
 
     private static final String USER_KEY = "userKey";
 
@@ -54,7 +55,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     @BindColor(R.color.accent)
     int accentColor;
 
-    private ProjectsAdapter projectsAdapter;
+    private CollectionAdapter projectsAdapter;
 
     private ShotActionListener shotActionListener;
 
@@ -113,12 +114,12 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
 
     @Override
     public List<ProjectWithShots> getData() {
-        return projectsAdapter.getProjectList();
+        return projectsAdapter.getCollectionsList();
     }
 
     @Override
     public void setData(List<ProjectWithShots> data) {
-        projectsAdapter.setProjectList(data);
+        projectsAdapter.setCollectionsList(data);
     }
 
     @Override
@@ -134,7 +135,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
 
     @Override
     public void addMoreProjectShots(long projectId, List<Shot> shotList) {
-        projectsAdapter.addMoreProjectShots(projectId, shotList);
+        projectsAdapter.addMoreCollectionShots(projectId, shotList);
     }
 
     @Override
@@ -144,7 +145,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
 
     @Override
     public void addMoreProjects(List<ProjectWithShots> projects) {
-        projectsAdapter.addMoreProjects(projects);
+        projectsAdapter.addMoreCollections(projects);
     }
 
     @Override
@@ -186,7 +187,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     }
 
     @Override
-    public void onGetMoreProjectShots(ProjectWithShots project) {
+    public void onGetMoreCollectionShots(ProjectWithShots project) {
         getPresenter().getMoreShotsFromProject(project);
     }
 
@@ -196,7 +197,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     }
 
     private void initRecyclerView() {
-        projectsAdapter = new ProjectsAdapter(getPresenter()::getMoreShotsFromProject, this);
+        projectsAdapter = new CollectionAdapter<ProjectWithShots>(this, this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
@@ -210,7 +211,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     }
 
     @Override
-    public void onProjectClick(ProjectWithShots projectWithShots) {
+    public void onCollectionClick(ProjectWithShots projectWithShots) {
         getPresenter().onProjectClick(projectWithShots);
     }
 

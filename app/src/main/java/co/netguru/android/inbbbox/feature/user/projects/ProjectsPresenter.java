@@ -137,7 +137,7 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
 
     @Override
     public void onShotClick(Shot shot, ProjectWithShots inProject) {
-        getView().showShotDetails(shot, inProject.shotList());
+        getView().showShotDetails(shot, inProject.shots());
     }
 
     @Override

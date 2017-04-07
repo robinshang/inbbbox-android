@@ -22,15 +22,21 @@ import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.bucket.adapter.BaseBucketViewHolder;
 import co.netguru.android.inbbbox.feature.bucket.adapter.BucketsAdapter;
 import co.netguru.android.inbbbox.feature.bucket.detail.BucketDetailsActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
+import co.netguru.android.inbbbox.feature.shared.collectionadapter.CollectionAdapter;
+import co.netguru.android.inbbbox.feature.shared.collectionadapter.CollectionClickListener;
+import co.netguru.android.inbbbox.feature.shared.collectionadapter.ShotsCollection;
+import co.netguru.android.inbbbox.feature.shared.collectionadapter.shots.CollectionShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 
 public class UserBucketsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout,
         List<BucketWithShots>, UserBucketsContract.View, UserBucketsContract.Presenter>
-        implements UserBucketsContract.View, BaseBucketViewHolder.BucketClickListener {
+        implements UserBucketsContract.View, CollectionAdapter.OnGetMoreCollectionShotsListener<BucketWithShots>,
+        CollectionClickListener<BucketWithShots> {
 
     private static final int BUCKET_DETAILS_VIEW_REQUEST_CODE = 1;
     private static final int LAST_X_BUCKETS_VISIBLE_TO_LOAD_MORE = 5;
@@ -44,7 +50,7 @@ public class UserBucketsFragment extends BaseMvpViewStateFragment<SwipeRefreshLa
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.loadingView)
     ProgressBar progressBar;
-    private BucketsAdapter adapter;
+    private CollectionAdapter<BucketWithShots> adapter;
     private Snackbar loadingMoreSnackbar;
 
     public static UserBucketsFragment newInstance(User user) {
@@ -82,7 +88,7 @@ public class UserBucketsFragment extends BaseMvpViewStateFragment<SwipeRefreshLa
 
     @Override
     public void setData(List<BucketWithShots> bucketsWithShotsList) {
-        adapter.setNewBucketsWithShots(bucketsWithShotsList);
+        adapter.setCollectionsList(bucketsWithShotsList);
     }
 
     @Override
@@ -95,11 +101,6 @@ public class UserBucketsFragment extends BaseMvpViewStateFragment<SwipeRefreshLa
     @Override
     public void loadData(boolean pullToRefresh) {
         getPresenter().loadBucketsWithShots(!pullToRefresh);
-    }
-
-    @Override
-    public void onBucketClick(BucketWithShots bucketWithShots) {
-        getPresenter().handleBucketWithShotsClick(bucketWithShots);
     }
 
     private LoadMoreScrollListener getLoadMoreScrollListener() {
@@ -139,7 +140,7 @@ public class UserBucketsFragment extends BaseMvpViewStateFragment<SwipeRefreshLa
 
     @Override
     public void addMoreBucketsWithShots(List<BucketWithShots> bucketsWithShotsList) {
-        adapter.addNewBucketsWithShots(bucketsWithShotsList);
+        adapter.addMoreCollections(bucketsWithShotsList);
     }
 
     @Override
@@ -172,7 +173,7 @@ public class UserBucketsFragment extends BaseMvpViewStateFragment<SwipeRefreshLa
     }
 
     private void initRecyclerView() {
-        adapter = new BucketsAdapter(this);
+        adapter = new CollectionAdapter<>(this, this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         bucketsRecyclerView.setHasFixedSize(true);
         bucketsRecyclerView.setLayoutManager(linearLayoutManager);
@@ -180,4 +181,18 @@ public class UserBucketsFragment extends BaseMvpViewStateFragment<SwipeRefreshLa
         bucketsRecyclerView.addOnScrollListener(getLoadMoreScrollListener());
     }
 
+    @Override
+    public void onCollectionClick(BucketWithShots bucketWithShots) {
+        getPresenter().handleBucketWithShotsClick(bucketWithShots);
+    }
+
+    @Override
+    public void onShotClick(Shot shot, BucketWithShots bucketWithShots) {
+        getPresenter().onShotClick(shot, bucketWithShots);
+    }
+
+    @Override
+    public void onGetMoreCollectionShots(BucketWithShots bucketWithShots) {
+        getPresenter().getMoreShotsFromBucket(bucketWithShots);
+    }
 }

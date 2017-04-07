@@ -11,6 +11,7 @@ import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Subscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
@@ -104,6 +105,16 @@ public class UserBucketsPresenter extends MvpNullObjectBasePresenter<UserBuckets
         } else {
             getView().hideEmptyView();
         }
+    }
+
+    @Override
+    public void onShotClick(Shot shot, BucketWithShots bucketWithShots) {
+        // TODO
+    }
+
+    @Override
+    public void getMoreShotsFromBucket(BucketWithShots bucketWithShots) {
+        // TODO
     }
 
     public void handleError(Throwable throwable, String errorText) {

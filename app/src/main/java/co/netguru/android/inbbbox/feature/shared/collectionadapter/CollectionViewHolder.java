@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.user.projects.adapter;
+package co.netguru.android.inbbbox.feature.shared.collectionadapter;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -11,16 +11,15 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import co.netguru.android.inbbbox.R;
-import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
 import co.netguru.android.inbbbox.feature.shared.base.BaseViewHolder;
+import co.netguru.android.inbbbox.feature.shared.collectionadapter.shots.CollectionShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
-import co.netguru.android.inbbbox.feature.user.projects.adapter.shots.ProjectShotsAdapter;
 
-class ProjectsViewHolder extends BaseViewHolder<ProjectWithShots> {
+class CollectionViewHolder extends BaseViewHolder<ShotsCollection> {
 
     private static final int SHOTS_TO_LOAD_MORE = 10;
-    private final ProjectsAdapter.OnGetMoreProjectShotsListener onGetMoreProjectShotsListener;
-    private final ProjectClickListener projectClickListener;
+    private final CollectionAdapter.OnGetMoreCollectionShotsListener onGetMoreCollectionShotsListener;
+    private final CollectionClickListener collectionClickListener;
     @BindView(R.id.project_item_header)
     TextView headerTextView;
     @BindView(R.id.project_item_small_header)
@@ -29,38 +28,37 @@ class ProjectsViewHolder extends BaseViewHolder<ProjectWithShots> {
     TextView shotCountTextView;
     @BindView(R.id.project_item_recycler_view)
     RecyclerView recyclerView;
-    private ProjectShotsAdapter adapter;
+    private CollectionShotsAdapter adapter;
 
     @Nullable
-    private ProjectWithShots currentItem;
+    private ShotsCollection currentItem;
 
-    ProjectsViewHolder(ViewGroup parent, ProjectsAdapter.OnGetMoreProjectShotsListener onGetMoreProjectShotsListener,
-                       ProjectClickListener projectClickListener) {
+    CollectionViewHolder(ViewGroup parent, CollectionAdapter.OnGetMoreCollectionShotsListener onGetMoreProjectShotsListener,
+                         CollectionClickListener projectClickListener) {
         super(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.projects_item, parent, false));
-        this.onGetMoreProjectShotsListener = onGetMoreProjectShotsListener;
-        this.projectClickListener = projectClickListener;
+        this.onGetMoreCollectionShotsListener = onGetMoreProjectShotsListener;
+        this.collectionClickListener = projectClickListener;
         initializeRecyclerView(parent.getContext());
     }
 
-
     @OnClick(R.id.project_item_small_header)
     void onProjectClick() {
-        projectClickListener.onProjectClick(currentItem);
+        collectionClickListener.onCollectionClick(currentItem);
     }
 
     @Override
-    public void bind(ProjectWithShots item) {
+    public void bind(ShotsCollection item) {
         currentItem = item;
-        headerTextView.setText(item.name());
-        smallHeaderTextView.setText(item.name());
-        shotCountTextView.setText(String.valueOf(item.shotsCount()));
-        adapter.setShotList(item.shotList());
+        headerTextView.setText(item.getName());
+        smallHeaderTextView.setText(item.getName());
+        shotCountTextView.setText(String.valueOf(item.shots().size()));
+        adapter.setShotList(item.shots());
     }
 
     private void initializeRecyclerView(Context context) {
-        adapter = new ProjectShotsAdapter(
-                shot -> projectClickListener.onShotClick(shot, currentItem));
+        adapter = new CollectionShotsAdapter(
+                shot -> collectionClickListener.onShotClick(shot, currentItem));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context,
                 LinearLayoutManager.HORIZONTAL, false));
@@ -70,7 +68,7 @@ class ProjectsViewHolder extends BaseViewHolder<ProjectWithShots> {
             @Override
             public void requestMoreData() {
                 if (currentItem != null) {
-                    onGetMoreProjectShotsListener.onGetMoreProjectShots(currentItem);
+                    onGetMoreCollectionShotsListener.onGetMoreCollectionShots(currentItem);
                 }
             }
         });
