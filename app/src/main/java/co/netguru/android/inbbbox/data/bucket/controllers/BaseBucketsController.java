@@ -3,6 +3,7 @@ package co.netguru.android.inbbbox.data.bucket.controllers;
 import java.util.List;
 
 import co.netguru.android.inbbbox.data.bucket.BucketApi;
+import co.netguru.android.inbbbox.data.bucket.model.api.Bucket;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.cache.CacheStrategy;
 import co.netguru.android.inbbbox.data.cache.CacheValidator;
@@ -11,6 +12,7 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Observable;
 import rx.Single;
+import rx.functions.Func2;
 
 abstract class BaseBucketsController {
 
@@ -34,7 +36,8 @@ abstract class BaseBucketsController {
         return userApi.getUserBucketsList(userId, pageNumber, pageCount)
                 .flatMapObservable(Observable::from)
                 .flatMap(bucket -> getShotsFromBucketObservable(bucket.id(), FIRST_PAGE_NUMBER,
-                        shotsCount, shouldCache), BucketWithShots::create)
+                        shotsCount, shouldCache), ((Bucket bucket, List<Shot> shots) ->
+                                BucketWithShots.create(bucket, shots,  shots.size() >= shotsCount)))
                 .toList()
                 .toSingle();
     }

@@ -23,6 +23,7 @@ import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
 import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
+import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.data.user.projects.model.ui.ProjectWithShots;
@@ -55,7 +56,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     @BindColor(R.color.accent)
     int accentColor;
 
-    private CollectionAdapter projectsAdapter;
+    private CollectionAdapter<ProjectWithShots> collectionAdapter;
 
     private ShotActionListener shotActionListener;
 
@@ -114,12 +115,12 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
 
     @Override
     public List<ProjectWithShots> getData() {
-        return projectsAdapter.getCollectionsList();
+        return collectionAdapter.getCollectionsList();
     }
 
     @Override
     public void setData(List<ProjectWithShots> data) {
-        projectsAdapter.setCollectionsList(data);
+        collectionAdapter.setCollectionsList(data);
     }
 
     @Override
@@ -134,8 +135,13 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     }
 
     @Override
-    public void addMoreProjectShots(long projectId, List<Shot> shotList) {
-        projectsAdapter.addMoreCollectionShots(projectId, shotList);
+    public void addMoreProjectShots(long projectId, List<Shot> shotList, int shotsPerPage) {
+        final int index = collectionAdapter.findCollectionIndex(projectId);
+        ProjectWithShots currentProject = collectionAdapter.getData().get(index);
+        currentProject.shots().addAll(shotList);
+
+        ProjectWithShots projectWithShots = ProjectWithShots.update(currentProject, shotList.size() >= shotsPerPage);
+        collectionAdapter.updateProjectShotPageStatus(index, projectWithShots);
     }
 
     @Override
@@ -145,7 +151,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
 
     @Override
     public void addMoreProjects(List<ProjectWithShots> projects) {
-        projectsAdapter.addMoreCollections(projects);
+        collectionAdapter.addMoreCollections(projects);
     }
 
     @Override
@@ -197,7 +203,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
     }
 
     private void initRecyclerView() {
-        projectsAdapter = new CollectionAdapter<ProjectWithShots>(this, this);
+        collectionAdapter = new CollectionAdapter<ProjectWithShots>(this, this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
@@ -207,7 +213,7 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
                 getPresenter().getMoreUserProjects();
             }
         });
-        recyclerView.setAdapter(projectsAdapter);
+        recyclerView.setAdapter(collectionAdapter);
     }
 
     @Override

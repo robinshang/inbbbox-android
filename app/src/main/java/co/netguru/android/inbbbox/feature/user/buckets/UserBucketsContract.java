@@ -26,6 +26,10 @@ interface UserBucketsContract {
         void showEmptyView();
 
         void hideEmptyView();
+
+        void showShotDetails(Shot shot, List<Shot> allShots);
+
+        void addMoreBucketShots(long bucketId, List<Shot> newShots, int shotsPerPage);
     }
 
     interface Presenter extends MvpPresenter<View> {

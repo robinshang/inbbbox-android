@@ -1,5 +1,6 @@
 package co.netguru.android.inbbbox.feature.user.buckets;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -20,6 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import co.netguru.android.inbbbox.R;
 import co.netguru.android.inbbbox.app.App;
+import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedException;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
@@ -32,6 +34,8 @@ import co.netguru.android.inbbbox.feature.shared.collectionadapter.CollectionCli
 import co.netguru.android.inbbbox.feature.shared.collectionadapter.ShotsCollection;
 import co.netguru.android.inbbbox.feature.shared.collectionadapter.shots.CollectionShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
+import co.netguru.android.inbbbox.feature.user.info.team.ShotActionListener;
+import timber.log.Timber;
 
 public class UserBucketsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout,
         List<BucketWithShots>, UserBucketsContract.View, UserBucketsContract.Presenter>
@@ -52,6 +56,7 @@ public class UserBucketsFragment extends BaseMvpViewStateFragment<SwipeRefreshLa
     ProgressBar progressBar;
     private CollectionAdapter<BucketWithShots> adapter;
     private Snackbar loadingMoreSnackbar;
+    private ShotActionListener shotActionListener;
 
     public static UserBucketsFragment newInstance(User user) {
         UserBucketsFragment fragment = new UserBucketsFragment();
@@ -60,6 +65,23 @@ public class UserBucketsFragment extends BaseMvpViewStateFragment<SwipeRefreshLa
 
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            shotActionListener = (ShotActionListener) context;
+        } catch (ClassCastException e) {
+            Timber.e(e, "must implement OnFollowedShotActionListener");
+            throw new InterfaceNotImplementedException(e, context.toString(), ShotActionListener.class.getSimpleName());
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        shotActionListener = null;
     }
 
     @Nullable
@@ -165,6 +187,21 @@ public class UserBucketsFragment extends BaseMvpViewStateFragment<SwipeRefreshLa
     public void hideEmptyView() {
         emptyView.setVisibility(View.GONE);
         bucketsRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showShotDetails(Shot shot, List<Shot> allShots) {
+        shotActionListener.showShotDetails(shot, allShots, shot.author().id());
+    }
+
+    @Override
+    public void addMoreBucketShots(long bucketId, List<Shot> newShots, int shotsPerPage) {
+        final int index = adapter.findCollectionIndex(bucketId);
+        BucketWithShots currentBucket = adapter.getData().get(index);
+        currentBucket.shots().addAll(newShots);
+
+        BucketWithShots bucketWithShots = BucketWithShots.update(currentBucket, newShots.size() >= shotsPerPage);
+        adapter.updateProjectShotPageStatus(index, bucketWithShots);
     }
 
     private void initRefreshLayout() {

@@ -6,6 +6,14 @@ import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
 public interface ShotsCollection {
     List<Shot> shots();
+
     long getId();
+
     String getName();
+
+    boolean hasMoreShots();
+
+    int nextShotPage();
+
+    ShotsCollection updatePageStatus(boolean hasMoreShots);
 }

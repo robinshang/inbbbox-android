@@ -22,19 +22,15 @@ public abstract class ProjectWithShots implements Parcelable, ShotsCollection {
 
     public abstract int shotsCount();
 
-    public abstract boolean hasMoreShots();
-
-    public abstract int nextShotPage();
-
     public static ProjectWithShots create(@NonNull ProjectEntity projectEntity,
                                           @NonNull List<Shot> shotList, boolean hasMoreShots) {
-        return new AutoValue_ProjectWithShots(shotList, projectEntity.id(), projectEntity.name(),
-                projectEntity.shotsCount(), hasMoreShots, FIRST_NEXT_SHOT_PAGE);
+        return new AutoValue_ProjectWithShots(shotList, hasMoreShots, FIRST_NEXT_SHOT_PAGE, projectEntity.id(), projectEntity.name(),
+                projectEntity.shotsCount());
     }
 
     public static ProjectWithShots update(ProjectWithShots project, boolean hasMoreShots) {
-        return new AutoValue_ProjectWithShots(project.shots(), project.id(), project.name(),
-                project.shotsCount(), hasMoreShots, project.nextShotPage() + 1);
+        return new AutoValue_ProjectWithShots(project.shots(), hasMoreShots,
+                project.nextShotPage() + 1, project.id(), project.name(), project.shotsCount());
     }
 
     @Override
@@ -45,5 +41,10 @@ public abstract class ProjectWithShots implements Parcelable, ShotsCollection {
     @Override
     public String getName() {
         return name();
+    }
+
+    @Override
+    public ProjectWithShots updatePageStatus(boolean hasMoreShots) {
+        return update(this, hasMoreShots);
     }
 }

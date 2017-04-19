@@ -158,6 +158,6 @@ public class ProjectsPresenter extends MvpNullObjectBasePresenter<ProjectsContra
     }
 
     private void onGetUserProjectShotsNext(long projectId, List<Shot> shotList) {
-        getView().addMoreProjectShots(projectId, shotList);
+        getView().addMoreProjectShots(projectId, shotList, PROJECT_SHOTS_PAGE_COUNT);
     }
 }

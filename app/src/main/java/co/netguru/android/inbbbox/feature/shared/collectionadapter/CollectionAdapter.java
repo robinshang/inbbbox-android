@@ -57,16 +57,13 @@ public class CollectionAdapter<C extends ShotsCollection> extends RecyclerView.A
         notifyDataSetChanged();
     }
 
-    public void addMoreCollectionShots(long collectionId, List<Shot> shotList) {
-        final int index = findCollectionIndex(collectionId);
-        final ShotsCollection collection = collectionsList.get(index);
-        collection.shots().addAll(shotList);
-//        updateProjectShotPageStatus(index, collection, shotList.size() >= ProjectsPresenter.PROJECT_SHOTS_PAGE_COUNT);
+//    public void addMoreCollectionShots(long collectionId, List<Shot> shotList) {
+//        final int index = findCollectionIndex(collectionId);
+//        final ShotsCollection collection = collectionsList.get(index);
+//        collection.shots().addAll(shotList);
+//    }
 
-        notifyItemChanged(index);
-    }
-
-    private int findCollectionIndex(long projectId) {
+    public int findCollectionIndex(long projectId) {
         for (int i = 0; i < collectionsList.size(); i++) {
             if (collectionsList.get(i).getId() == projectId) {
                 return i;
@@ -75,9 +72,10 @@ public class CollectionAdapter<C extends ShotsCollection> extends RecyclerView.A
         throw new IllegalArgumentException("There is no collection with id: " + projectId);
     }
 
-//    private void updateProjectShotPageStatus(int index, ProjectWithShots project, boolean hasMoreShots) {
-//        collectionsList.set(index, ProjectWithShots.update(project, hasMoreShots));
-//    }
+    public void updateProjectShotPageStatus(int index, C collection) {
+        collectionsList.set(index, collection);
+        notifyItemChanged(index);
+    }
 
     @FunctionalInterface
     public interface OnGetMoreCollectionShotsListener<C extends ShotsCollection> {

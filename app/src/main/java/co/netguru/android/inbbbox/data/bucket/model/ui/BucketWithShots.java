@@ -13,11 +13,25 @@ import co.netguru.android.inbbbox.feature.shared.collectionadapter.ShotsCollecti
 
 @AutoValue
 public abstract class BucketWithShots implements Parcelable, Cacheable, ShotsCollection {
-    public abstract Bucket bucket();
+
+    private static final int FIRST_NEXT_SHOT_PAGE = 2;
 
     public static BucketWithShots create(Bucket bucket, List<Shot> shots) {
-        return new AutoValue_BucketWithShots(shots, bucket);
+        return create(bucket, shots, true);
     }
+
+    public static BucketWithShots create(Bucket bucket, List<Shot> shots, boolean hasMoreShots) {
+        // na pewno has more zamiast true ?
+        return new AutoValue_BucketWithShots(shots, hasMoreShots, BucketWithShots.FIRST_NEXT_SHOT_PAGE, bucket);
+    }
+
+    public static BucketWithShots update(BucketWithShots bucketWithShots, boolean hasMoreShots) {
+        return new AutoValue_BucketWithShots(bucketWithShots.shots(), hasMoreShots,
+                bucketWithShots.nextShotPage() + 1, bucketWithShots.bucket());
+
+    }
+
+    public abstract Bucket bucket();
 
     @Override
     public long getId() {
@@ -27,5 +41,10 @@ public abstract class BucketWithShots implements Parcelable, Cacheable, ShotsCol
     @Override
     public String getName() {
         return bucket().name();
+    }
+
+    @Override
+    public BucketWithShots updatePageStatus(boolean hasMoreShots) {
+        return update(this, hasMoreShots);
     }
 }
