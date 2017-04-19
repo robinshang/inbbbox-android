@@ -44,7 +44,7 @@ public abstract class ProjectWithShots implements Parcelable, ShotsCollection {
     }
 
     @Override
-    public ProjectWithShots updatePageStatus(boolean hasMoreShots) {
+    public ShotsCollection updatePageStatus(boolean hasMoreShots) {
         return update(this, hasMoreShots);
     }
 }

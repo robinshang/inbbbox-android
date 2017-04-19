@@ -21,7 +21,6 @@ public abstract class BucketWithShots implements Parcelable, Cacheable, ShotsCol
     }
 
     public static BucketWithShots create(Bucket bucket, List<Shot> shots, boolean hasMoreShots) {
-        // na pewno has more zamiast true ?
         return new AutoValue_BucketWithShots(shots, hasMoreShots, BucketWithShots.FIRST_NEXT_SHOT_PAGE, bucket);
     }
 
@@ -44,7 +43,7 @@ public abstract class BucketWithShots implements Parcelable, Cacheable, ShotsCol
     }
 
     @Override
-    public BucketWithShots updatePageStatus(boolean hasMoreShots) {
+    public ShotsCollection updatePageStatus(boolean hasMoreShots) {
         return update(this, hasMoreShots);
     }
 }

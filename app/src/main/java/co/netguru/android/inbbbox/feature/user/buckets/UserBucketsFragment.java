@@ -25,14 +25,10 @@ import co.netguru.android.inbbbox.common.exceptions.InterfaceNotImplementedExcep
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
-import co.netguru.android.inbbbox.feature.bucket.adapter.BaseBucketViewHolder;
-import co.netguru.android.inbbbox.feature.bucket.adapter.BucketsAdapter;
 import co.netguru.android.inbbbox.feature.bucket.detail.BucketDetailsActivity;
 import co.netguru.android.inbbbox.feature.shared.base.BaseMvpViewStateFragment;
 import co.netguru.android.inbbbox.feature.shared.collectionadapter.CollectionAdapter;
 import co.netguru.android.inbbbox.feature.shared.collectionadapter.CollectionClickListener;
-import co.netguru.android.inbbbox.feature.shared.collectionadapter.ShotsCollection;
-import co.netguru.android.inbbbox.feature.shared.collectionadapter.shots.CollectionShotsAdapter;
 import co.netguru.android.inbbbox.feature.shared.view.LoadMoreScrollListener;
 import co.netguru.android.inbbbox.feature.user.info.team.ShotActionListener;
 import timber.log.Timber;
@@ -196,12 +192,13 @@ public class UserBucketsFragment extends BaseMvpViewStateFragment<SwipeRefreshLa
 
     @Override
     public void addMoreBucketShots(long bucketId, List<Shot> newShots, int shotsPerPage) {
-        final int index = adapter.findCollectionIndex(bucketId);
-        BucketWithShots currentBucket = adapter.getData().get(index);
-        currentBucket.shots().addAll(newShots);
-
-        BucketWithShots bucketWithShots = BucketWithShots.update(currentBucket, newShots.size() >= shotsPerPage);
-        adapter.updateProjectShotPageStatus(index, bucketWithShots);
+//        final int index = adapter.findCollectionIndex(bucketId);
+//        BucketWithShots currentBucket = adapter.getData().get(index);
+//        currentBucket.shots().addAll(newShots);
+//
+//        BucketWithShots bucketWithShots = BucketWithShots.update(currentBucket, newShots.size() >= shotsPerPage);
+//        adapter.updateCollection(index, bucketWithShots);
+        adapter.addMoreCollectionShots(bucketId, newShots, shotsPerPage);
     }
 
     private void initRefreshLayout() {

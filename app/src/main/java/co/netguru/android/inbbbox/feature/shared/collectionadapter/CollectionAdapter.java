@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import java.util.Collections;
 import java.util.List;
 
+import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
 public class CollectionAdapter<C extends ShotsCollection> extends RecyclerView.Adapter<CollectionViewHolder> {
@@ -57,11 +58,13 @@ public class CollectionAdapter<C extends ShotsCollection> extends RecyclerView.A
         notifyDataSetChanged();
     }
 
-//    public void addMoreCollectionShots(long collectionId, List<Shot> shotList) {
-//        final int index = findCollectionIndex(collectionId);
-//        final ShotsCollection collection = collectionsList.get(index);
-//        collection.shots().addAll(shotList);
-//    }
+    public void addMoreCollectionShots(long collectionId, List<Shot> shotList, int shotsPerPage) {
+        final int index = findCollectionIndex(collectionId);
+        final C collection = collectionsList.get(index);
+        collection.shots().addAll(shotList);
+        C newCollection = (C) collection.updatePageStatus(shotList.size() >= shotsPerPage);
+        updateCollection(index, newCollection);
+    }
 
     public int findCollectionIndex(long projectId) {
         for (int i = 0; i < collectionsList.size(); i++) {
@@ -72,7 +75,7 @@ public class CollectionAdapter<C extends ShotsCollection> extends RecyclerView.A
         throw new IllegalArgumentException("There is no collection with id: " + projectId);
     }
 
-    public void updateProjectShotPageStatus(int index, C collection) {
+    public void updateCollection(int index, C collection) {
         collectionsList.set(index, collection);
         notifyItemChanged(index);
     }

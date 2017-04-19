@@ -12,7 +12,6 @@ import co.netguru.android.inbbbox.data.dribbbleuser.user.UserController;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Observable;
 import rx.Single;
-import rx.functions.Func2;
 
 abstract class BaseBucketsController {
 
@@ -36,14 +35,14 @@ abstract class BaseBucketsController {
         return userApi.getUserBucketsList(userId, pageNumber, pageCount)
                 .flatMapObservable(Observable::from)
                 .flatMap(bucket -> getShotsFromBucketObservable(bucket.id(), FIRST_PAGE_NUMBER,
-                        shotsCount, shouldCache), ((Bucket bucket, List<Shot> shots) ->
-                                BucketWithShots.create(bucket, shots,  shots.size() >= shotsCount)))
+                        shotsCount, shouldCache), (Bucket bucket, List<Shot> shots) ->
+                        BucketWithShots.create(bucket, shots, shots.size() >= shotsCount))
                 .toList()
                 .toSingle();
     }
 
     Observable<List<Shot>> getShotsFromBucketObservable(long bucketId, int pageNumber,
-                                                      int pageCount, boolean shouldCache) {
+                                                        int pageCount, boolean shouldCache) {
         return cacheValidator.isCacheValid(CacheValidator.CACHE_BUCKET_SHOTS)
                 .flatMap(isCacheValid -> bucketApi.getBucketShotsList(bucketId,
                         pageNumber, pageCount,
