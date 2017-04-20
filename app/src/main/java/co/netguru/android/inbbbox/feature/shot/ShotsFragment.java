@@ -121,6 +121,13 @@ public class ShotsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayout, 
         return inflater.inflate(R.layout.fragment_shots, container, false);
     }
 
+    @Override
+    public void onViewStateInstanceRestored(boolean instanceStateRetained) {
+        if (instanceStateRetained) {
+            startFabButtonAnimation();
+        }
+    }
+
     @NonNull
     @Override
     public ShotsContract.Presenter createPresenter() {
