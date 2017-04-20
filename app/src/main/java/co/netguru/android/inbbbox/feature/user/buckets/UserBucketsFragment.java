@@ -192,12 +192,6 @@ public class UserBucketsFragment extends BaseMvpViewStateFragment<SwipeRefreshLa
 
     @Override
     public void addMoreBucketShots(long bucketId, List<Shot> newShots, int shotsPerPage) {
-//        final int index = adapter.findCollectionIndex(bucketId);
-//        BucketWithShots currentBucket = adapter.getData().get(index);
-//        currentBucket.shots().addAll(newShots);
-//
-//        BucketWithShots bucketWithShots = BucketWithShots.update(currentBucket, newShots.size() >= shotsPerPage);
-//        adapter.updateCollection(index, bucketWithShots);
         adapter.addMoreCollectionShots(bucketId, newShots, shotsPerPage);
     }
 

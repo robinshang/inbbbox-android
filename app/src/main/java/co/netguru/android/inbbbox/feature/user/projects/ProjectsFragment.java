@@ -135,12 +135,6 @@ public class ProjectsFragment extends BaseMvpViewStateFragment<SwipeRefreshLayou
 
     @Override
     public void addMoreProjectShots(long projectId, List<Shot> shotList, int shotsPerPage) {
-//        final int index = collectionAdapter.findCollectionIndex(projectId);
-//        ProjectWithShots currentProject = collectionAdapter.getData().get(index);
-//        currentProject.shots().addAll(shotList);
-//
-//        ProjectWithShots projectWithShots = ProjectWithShots.update(currentProject, shotList.size() >= shotsPerPage);
-//        collectionAdapter.updateCollection(index, projectWithShots);
         collectionAdapter.addMoreCollectionShots(projectId, shotList, shotsPerPage);
     }
 

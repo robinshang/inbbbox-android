@@ -5,13 +5,11 @@ import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import co.netguru.android.commons.rx.RxTransformers;
 import co.netguru.android.inbbbox.common.error.ErrorController;
-import co.netguru.android.inbbbox.common.utils.RxTransformerUtil;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
@@ -20,7 +18,6 @@ import rx.Subscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
-import static co.netguru.android.commons.rx.RxTransformers.androidIO;
 import static co.netguru.android.inbbbox.common.utils.RxTransformerUtil.applySingleIoSchedulers;
 
 public class UserBucketsPresenter extends MvpNullObjectBasePresenter<UserBucketsContract.View>

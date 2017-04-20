@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import java.util.Collections;
 import java.util.List;
 
-import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
 public class CollectionAdapter<C extends ShotsCollection> extends RecyclerView.Adapter<CollectionViewHolder> {
