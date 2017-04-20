@@ -22,17 +22,6 @@ public abstract class ProjectWithShots implements Parcelable, ShotsCollection {
 
     public abstract int shotsCount();
 
-    public static ProjectWithShots create(@NonNull ProjectEntity projectEntity,
-                                          @NonNull List<Shot> shotList, boolean hasMoreShots) {
-        return new AutoValue_ProjectWithShots(shotList, hasMoreShots, FIRST_NEXT_SHOT_PAGE, projectEntity.id(), projectEntity.name(),
-                projectEntity.shotsCount());
-    }
-
-    public static ProjectWithShots update(ProjectWithShots project, boolean hasMoreShots) {
-        return new AutoValue_ProjectWithShots(project.shots(), hasMoreShots,
-                project.nextShotPage() + 1, project.id(), project.name(), project.shotsCount());
-    }
-
     @Override
     public long getId() {
         return id();
@@ -47,4 +36,50 @@ public abstract class ProjectWithShots implements Parcelable, ShotsCollection {
     public ShotsCollection updatePageStatus(boolean hasMoreShots) {
         return update(this, hasMoreShots);
     }
+
+    @AutoValue.Builder
+    public abstract static class Builder {
+        public abstract ProjectWithShots.Builder id(long id);
+
+        public abstract ProjectWithShots.Builder name(String name);
+
+        public abstract ProjectWithShots.Builder shotsCount(int shotsCount);
+
+        public abstract ProjectWithShots.Builder shots(List<Shot> shots);
+
+        public abstract ProjectWithShots.Builder hasMoreShots(boolean hasMoreShots);
+
+        public abstract ProjectWithShots.Builder nextShotPage(int nextShotPage);
+
+        public abstract ProjectWithShots build();
+    }
+
+    public static ProjectWithShots create(@NonNull ProjectEntity projectEntity,
+                                          @NonNull List<Shot> shotList, boolean hasMoreShots) {
+        return ProjectWithShots.builder()
+                .id(projectEntity.id())
+                .name(projectEntity.name())
+                .shotsCount(projectEntity.shotsCount())
+                .shots(shotList)
+                .hasMoreShots(hasMoreShots)
+                .nextShotPage(FIRST_NEXT_SHOT_PAGE)
+                .build();
+    }
+
+    public static ProjectWithShots update(ProjectWithShots project, boolean hasMoreShots) {
+        return ProjectWithShots.builder()
+                .id(project.id())
+                .name(project.name())
+                .shotsCount(project.shotsCount())
+                .shots(project.shots())
+                .hasMoreShots(hasMoreShots)
+                .nextShotPage(project.nextShotPage() + 1)
+                .build();
+    }
+
+
+    public static ProjectWithShots.Builder builder() {
+        return new AutoValue_ProjectWithShots.Builder();
+    }
+
 }

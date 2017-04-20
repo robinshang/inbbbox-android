@@ -16,20 +16,6 @@ public abstract class BucketWithShots implements Parcelable, Cacheable, ShotsCol
 
     private static final int FIRST_NEXT_SHOT_PAGE = 2;
 
-    public static BucketWithShots create(Bucket bucket, List<Shot> shots) {
-        return create(bucket, shots, true);
-    }
-
-    public static BucketWithShots create(Bucket bucket, List<Shot> shots, boolean hasMoreShots) {
-        return new AutoValue_BucketWithShots(shots, hasMoreShots, BucketWithShots.FIRST_NEXT_SHOT_PAGE, bucket);
-    }
-
-    public static BucketWithShots update(BucketWithShots bucketWithShots, boolean hasMoreShots) {
-        return new AutoValue_BucketWithShots(bucketWithShots.shots(), hasMoreShots,
-                bucketWithShots.nextShotPage() + 1, bucketWithShots.bucket());
-
-    }
-
     public abstract Bucket bucket();
 
     @Override
@@ -45,5 +31,44 @@ public abstract class BucketWithShots implements Parcelable, Cacheable, ShotsCol
     @Override
     public ShotsCollection updatePageStatus(boolean hasMoreShots) {
         return update(this, hasMoreShots);
+    }
+
+    @AutoValue.Builder
+    public abstract static class Builder {
+        public abstract BucketWithShots.Builder bucket(Bucket bucket);
+
+        public abstract BucketWithShots.Builder shots(List<Shot> shots);
+
+        public abstract BucketWithShots.Builder hasMoreShots(boolean hasMoreShots);
+
+        public abstract BucketWithShots.Builder nextShotPage(int nextShotPage);
+
+        public abstract BucketWithShots build();
+    }
+
+    public static BucketWithShots create(Bucket bucket, List<Shot> shots) {
+        return create(bucket, shots, true);
+    }
+
+    public static BucketWithShots.Builder builder() {
+        return new AutoValue_BucketWithShots.Builder();
+    }
+
+    public static BucketWithShots create(Bucket bucket, List<Shot> shots, boolean hasMoreShots) {
+        return BucketWithShots.builder()
+                .bucket(bucket)
+                .shots(shots)
+                .hasMoreShots(hasMoreShots)
+                .nextShotPage(BucketWithShots.FIRST_NEXT_SHOT_PAGE)
+                .build();
+    }
+
+    public static BucketWithShots update(BucketWithShots bucketWithShots, boolean hasMoreShots) {
+        return BucketWithShots.builder()
+                .bucket(bucketWithShots.bucket())
+                .shots(bucketWithShots.shots())
+                .hasMoreShots(hasMoreShots)
+                .nextShotPage(bucketWithShots.nextShotPage() + 1)
+                .build();
     }
 }
