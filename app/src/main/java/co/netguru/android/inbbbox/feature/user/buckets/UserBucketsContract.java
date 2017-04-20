@@ -6,6 +6,7 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import java.util.List;
 
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 
 interface UserBucketsContract {
 
@@ -25,6 +26,10 @@ interface UserBucketsContract {
         void showEmptyView();
 
         void hideEmptyView();
+
+        void showShotDetails(Shot shot, List<Shot> allShots);
+
+        void addMoreBucketShots(long bucketId, List<Shot> newShots, int shotsPerPage);
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -38,5 +43,10 @@ interface UserBucketsContract {
         void refreshBuckets();
 
         void showContentForData(List<BucketWithShots> bucketsWithShotsList);
+
+        void onShotClick(Shot shot, BucketWithShots bucketWithShots);
+
+        void getMoreShotsFromBucket(BucketWithShots bucketWithShots);
+
     }
 }

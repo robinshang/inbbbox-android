@@ -5,7 +5,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -24,7 +23,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,7 +32,7 @@ public class ProjectPresenterTest {
     private static final List<Shot> shots = Statics.generateShots();
     private static final ProjectWithShots PROJECT_WITH_SHOTS = ProjectWithShots.create
             (Statics.PROJECT_ENTITY, shots, false);
-    private static final int PER_PAGE = PROJECT_WITH_SHOTS.shotList().size();
+    private static final int PER_PAGE = PROJECT_WITH_SHOTS.shots().size();
 
     @Rule
     public TestRule rule = new RxSyncTestRule();

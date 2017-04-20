@@ -1,4 +1,4 @@
-package co.netguru.android.inbbbox.feature.user.projects.adapter.shots;
+package co.netguru.android.inbbbox.feature.shared.collectionadapter.shots;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -8,25 +8,24 @@ import java.util.List;
 
 import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import co.netguru.android.inbbbox.feature.shared.ShotClickListener;
-import co.netguru.android.inbbbox.feature.user.projects.adapter.ProjectClickListener;
 
-public class ProjectShotsAdapter extends RecyclerView.Adapter<ProjectShotsViewHolder> {
+public class CollectionShotsAdapter extends RecyclerView.Adapter<CollectionShotsViewHolder> {
 
     private List<Shot> shotList;
     private ShotClickListener shotClickListener;
 
-    public ProjectShotsAdapter(ShotClickListener shotClickListener) {
+    public CollectionShotsAdapter(ShotClickListener shotClickListener) {
         shotList = Collections.emptyList();
         this.shotClickListener = shotClickListener;
     }
 
     @Override
-    public ProjectShotsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ProjectShotsViewHolder(parent, shotClickListener);
+    public CollectionShotsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new CollectionShotsViewHolder(parent, shotClickListener);
     }
 
     @Override
-    public void onBindViewHolder(ProjectShotsViewHolder holder, int position) {
+    public void onBindViewHolder(CollectionShotsViewHolder holder, int position) {
         holder.bind(shotList.get(position));
     }
 

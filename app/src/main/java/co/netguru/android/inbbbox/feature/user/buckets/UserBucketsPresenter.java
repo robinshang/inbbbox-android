@@ -1,5 +1,7 @@
 package co.netguru.android.inbbbox.feature.user.buckets;
 
+import android.support.annotation.NonNull;
+
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import java.util.List;
@@ -11,6 +13,7 @@ import co.netguru.android.inbbbox.common.error.ErrorController;
 import co.netguru.android.inbbbox.data.bucket.controllers.BucketsController;
 import co.netguru.android.inbbbox.data.bucket.model.ui.BucketWithShots;
 import co.netguru.android.inbbbox.data.dribbbleuser.user.User;
+import co.netguru.android.inbbbox.data.shot.model.ui.Shot;
 import rx.Subscription;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
@@ -27,6 +30,10 @@ public class UserBucketsPresenter extends MvpNullObjectBasePresenter<UserBuckets
     private final ErrorController errorController;
     private Subscription loadNextSubscription;
     private Subscription refreshSubscription;
+
+    @NonNull
+    private Subscription loadNextShotsSubscription;
+
     private int pageNumber = 1;
     private boolean canLoadMore = true;
     private User user;
@@ -36,8 +43,9 @@ public class UserBucketsPresenter extends MvpNullObjectBasePresenter<UserBuckets
                                 ErrorController errorController, User user) {
         this.bucketsController = bucketsController;
         this.errorController = errorController;
-        loadNextSubscription = Subscriptions.unsubscribed();
         refreshSubscription = Subscriptions.unsubscribed();
+        loadNextSubscription = Subscriptions.unsubscribed();
+        loadNextShotsSubscription = Subscriptions.unsubscribed();
         this.user = user;
     }
 
@@ -104,6 +112,27 @@ public class UserBucketsPresenter extends MvpNullObjectBasePresenter<UserBuckets
         } else {
             getView().hideEmptyView();
         }
+    }
+
+    @Override
+    public void onShotClick(Shot shot, BucketWithShots bucketWithShots) {
+        getView().showShotDetails(shot, bucketWithShots.shots());
+    }
+
+    @Override
+    public void getMoreShotsFromBucket(BucketWithShots bucketWithShots) {
+        if (bucketWithShots.hasMoreShots() && refreshSubscription.isUnsubscribed()
+                && loadNextShotsSubscription.isUnsubscribed()) {
+            loadNextShotsSubscription = bucketsController.getShotsFromBucket(bucketWithShots.getId(),
+                    bucketWithShots.nextShotPage(), BUCKET_SHOTS_PER_PAGE_COUNT, true)
+                    .compose(applySingleIoSchedulers())
+                    .subscribe(shotList -> onGetBucketShotsNext(bucketWithShots.getId(), shotList),
+                            throwable -> handleError(throwable, "Error while getting more project shots from server"));
+        }
+    }
+
+    private void onGetBucketShotsNext(long bucketId, List<Shot> shots) {
+        getView().addMoreBucketShots(bucketId, shots, BUCKET_SHOTS_PER_PAGE_COUNT);
     }
 
     public void handleError(Throwable throwable, String errorText) {

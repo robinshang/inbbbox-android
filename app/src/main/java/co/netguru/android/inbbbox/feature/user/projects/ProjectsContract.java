@@ -16,7 +16,7 @@ interface ProjectsContract {
     interface View extends MvpLceView<List<ProjectWithShots>>, HttpErrorView {
         void hideProgressBar();
 
-        void addMoreProjectShots(long projectId, List<Shot> shotList);
+        void addMoreProjectShots(long projectId, List<Shot> shotList, int shotsPerPage);
 
         void showLoadingMoreShotsFromProjectView();
 
