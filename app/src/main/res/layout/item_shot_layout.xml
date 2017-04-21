@@ -12,7 +12,7 @@
         android:layout_marginTop="@dimen/shot_item_internal_padding"
         android:layout_marginStart="@dimen/shot_item_internal_padding"
         android:layout_marginEnd="@dimen/shot_item_internal_padding"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="@dimen/shot_item_card_margin_bottom"
         android:clipChildren="false"
         android:clipToPadding="false"
         app:cardCornerRadius="@dimen/shot_cardview_corner_radius"
