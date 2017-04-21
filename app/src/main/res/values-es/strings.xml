@@ -132,5 +132,8 @@
     <string name="like_and_add_to_bucket_message">Este proyecto te gusta, agregado a la colección… </string>
     <string name="commenting_message">Comentando…</string>
     <string name="following_finish_message">Siguiendo autor</string>
-    <string name="no_buckets">No buckets yet</string>
+    <string name="dont_follow">No seguir y saltear</string>
+    <string name="shot_liked">Proyecto gustado</string>
+    <string name="shot_unliked">Proyecto no gustado</string>
+    <string name="no_buckets">Aún no hay colecciones</string>
 </resources>

@@ -51,7 +51,7 @@
                 android:id="@+id/_left_wrapper"
                 android:layout_width="@dimen/shot_left_swipe_action_panel_width"
                 android:layout_height="match_parent"
-                android:layout_gravity="start"
+                android:layout_gravity="start|center_vertical"
                 android:clipChildren="false"
                 android:clipToPadding="false">
 
