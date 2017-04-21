@@ -212,6 +212,9 @@
     <dimen name="tab_layouot_indicator_text_size">10sp</dimen>
     <dimen name="splash_logo_left_offset">282dp</dimen>
     <dimen name="splash_logo_top_offset">22dp</dimen>
+    <dimen name="shared_shot_item_padding_top">10dp</dimen>
+    <dimen name="shared_shot_item_card_margin_bottom">24dp</dimen>
+    <dimen name="shared_shot_item_card_margin_top">14dp</dimen>
     <dimen name="user_info_shot_card_margin_top">4dp</dimen>
     <dimen name="user_info_shot_vertical_margin">10dp</dimen>
     <dimen name="user_info_shot_bottom_margin">20dp</dimen>
