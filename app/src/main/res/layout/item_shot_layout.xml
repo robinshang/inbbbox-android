@@ -9,7 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_margin="@dimen/shot_item_internal_padding"
+        android:layout_marginTop="@dimen/shot_item_internal_padding"
+        android:layout_marginStart="@dimen/shot_item_internal_padding"
+        android:layout_marginEnd="@dimen/shot_item_internal_padding"
+        android:layout_marginBottom="6dp"
         android:clipChildren="false"
         android:clipToPadding="false"
         app:cardCornerRadius="@dimen/shot_cardview_corner_radius"
@@ -174,6 +177,8 @@
         android:layout_height="@dimen/shot_details_shots_tab_height"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/bucket_card_view"
+        android:layout_marginEnd="@dimen/shot_item_internal_padding"
+        android:layout_marginStart="@dimen/shot_item_internal_padding"
         android:layout_marginTop="@dimen/shot_details_shots_tab_margin">
 
         <de.hdodenhof.circleimageview.CircleImageView
