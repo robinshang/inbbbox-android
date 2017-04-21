@@ -133,5 +133,8 @@
     <string name="commenting_message">Dodawanie komentarza…</string>
     <string name="following_finish_message">Dodano autora do obserwowanych</string>
     <string name="no_buckets">Nie dodano jeszcze żadnych kolekcji</string>
+    <string name="dont_follow">Nie obserwuj i pomiń krok</string>
+    <string name="shot_liked">Projekt polubiony</string>
+    <string name="shot_unliked">Projekt usunięty z polubionych</string>
 
 </resources>
