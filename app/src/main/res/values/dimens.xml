@@ -212,5 +212,6 @@
     <dimen name="tab_layouot_indicator_text_size">10sp</dimen>
     <dimen name="splash_logo_left_offset">282dp</dimen>
     <dimen name="splash_logo_top_offset">22dp</dimen>
+    <dimen name="fragment_team_info_margin_bottom">10dp</dimen>
 
 </resources>
