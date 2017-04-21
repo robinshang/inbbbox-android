@@ -161,7 +161,7 @@
     <dimen name="user_shots_marginStart">16dp</dimen>
     <dimen name="user_shots_marginTop">8dp</dimen>
     <dimen name="item_teams_text_marginStart">24dp</dimen>
-    <dimen name="item_teams_text_marginTop">24dp</dimen>
+    <dimen name="item_teams_text_marginTop">10dp</dimen>
     <dimen name="item_teams_text_textSize">16sp</dimen>
     <dimen name="item_teams_recyclerView_height">112dp</dimen>
     <dimen name="item_teams_recyclerView_marginStart">16dp</dimen>
@@ -213,5 +213,13 @@
     <dimen name="splash_logo_left_offset">282dp</dimen>
     <dimen name="splash_logo_top_offset">22dp</dimen>
     <dimen name="fragment_team_info_margin_bottom">10dp</dimen>
+    <dimen name="shared_shot_item_padding_top">10dp</dimen>
+    <dimen name="shared_shot_item_card_margin_bottom">24dp</dimen>
+    <dimen name="shared_shot_item_card_margin_top">14dp</dimen>
+    <dimen name="user_info_shot_card_margin_top">4dp</dimen>
+    <dimen name="user_info_shot_vertical_margin">10dp</dimen>
+    <dimen name="user_info_shot_bottom_margin">20dp</dimen>
+    <dimen name="projects_shot_item_margin_bottom">24dp</dimen>
+    <dimen name="projects_shot_item_margin_top">14dp</dimen>
 
 </resources>
