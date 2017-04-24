@@ -61,9 +61,8 @@ android {
     }
 
     productFlavors {
-        mock {
-            versionNameSuffix "-MOCK"
-            applicationIdSuffix ".mock"
+        nointegrations {
+
         }
         production {
 
@@ -302,4 +301,7 @@ dependencies {
     }
 }
 
-apply plugin: 'com.google.gms.google-services'
+if (!getGradle().getStartParameter().getTaskRequests()
+        .toString().toLowerCase().contains("nointegrations")){
+    apply plugin: 'com.google.gms.google-services'
+}
