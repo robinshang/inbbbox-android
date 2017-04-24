@@ -20,7 +20,7 @@
 
 With Inbbbox you can discover excellent visual works from Dribbble, the global directory for digital design. If you want to grab a copy for yourself just go straight to [Google Play](https://www.netguru.co/opensource) (link needed). However, if you are interested in the core of Inbbbox, check out [Configuration](#configuration) section. Note that Dribbble account is necessary for using the app.
 
-We at Netguru strongly believe in open-source software. Inbbbox isn’t our only project repo where you can find the app’s full source code. Explore other [open source projects](https://www.netguru.co/opensource) created by our team.
+We at Netguru strongly believe in open-source software. Inbbbox isn’t our only project repo where you can find the app’s full source code. Explore other [open source projects](https://www.netguru.co/resources) created by our team.
 
 ## Configuration
 
@@ -71,5 +71,6 @@ You're more than welcome to contribute or report an issue in case of any problem
     * [Grzegorz Podbielski](https://github.com/Dabler)
     * [Gonzalo Acosta](https://github.com/GNZ)
     * [Maciej Janusz](https://github.com/maciekjanusz)
+    * [Rafał Adasiewicz] (https://github.com/adasiewiczr)
 
 Copyright © 2016 [Netguru](http://netguru.co).
