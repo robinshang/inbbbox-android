@@ -8,7 +8,6 @@
     <color name="tabBackground">#212121</color>
     <color name="userTabBackground">#212121</color>
     <color name="textColor">#FFFFFF</color>
-    <color name="timeDialogBackgroundColor">@color/whiteAlphaBackground</color>
     <color name="noCollectionTextColor">@color/veryLightGray</color>
     <color name="materialButtonColorPressed">#40CCCCCC</color>
 
