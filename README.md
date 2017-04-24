@@ -74,3 +74,5 @@ You're more than welcome to contribute or report an issue in case of any problem
     * [Maciej Janusz](https://github.com/maciekjanusz)
 
 Copyright © 2016 [Netguru](http://netguru.co).
+
+Licensed under the [GPLv3 License](LICENSE).
