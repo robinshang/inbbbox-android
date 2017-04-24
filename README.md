@@ -29,12 +29,12 @@ We at Netguru strongly believe in open-source software. Inbbbox isn’t our only
 1. Clone repo at `https://github.com/netguru/inbbbox-android.git`
 2. Register your app for dribbble api [here](https://dribbble.com/account/applications/)
 2. Create secret.properties file in main folder (inbbbox-android) and paste following contents:
-`Dribbbleclientkey=[1]
-Dribbbleclientsecret=[2]
-Dribbbleclienttoken=[3]
-Dribbbleoauthredirect=[4]
-Hockeyappappiddev=optional
-Hockeyappappidprod=optional
+`DribbbleClientKey=[1]
+DribbbleClientSecret=[2]
+DribbbleClientToken=[3]
+DribbbleOauthRedirect=[4]
+HockeyAppAppIdDev=optional
+HockeyAppAppIdProd=optional
 SonarAccessToken=optional
 GithubOauthToken=optional
 GithubRepoName=optional
@@ -74,3 +74,5 @@ You're more than welcome to contribute or report an issue in case of any problem
     * [Maciej Janusz](https://github.com/maciekjanusz)
 
 Copyright © 2016 [Netguru](http://netguru.co).
+
+Licensed under the [GPLv3 License](LICENSE).
