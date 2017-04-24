@@ -8,6 +8,7 @@
     <color name="tabBackground">@color/white</color>
     <color name="userTabBackground">@color/pink</color>
     <color name="textColor">@color/black</color>
+    <color name="noCollectionTextColor">@color/projectBackgroundTextColor</color>
 
     <color name="disabledGray">#80FFFFFF</color>
     <color name="materialButtonColorPressed">@color/lightGrayAlpha</color>

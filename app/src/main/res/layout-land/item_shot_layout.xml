@@ -140,7 +140,7 @@
                 android:layout_width="@dimen/shot_details_shots_tab_user_image_size_land"
                 android:layout_height="@dimen/shot_details_shots_tab_user_image_size_land"
                 android:layout_centerVertical="true"
-                app:civ_border_color="@color/white"
+                app:civ_border_color="@color/windowBackground"
                 app:civ_border_width="@dimen/drawer_header_photo_border"
                 app:civ_fill_color="@color/lightGray" />
 

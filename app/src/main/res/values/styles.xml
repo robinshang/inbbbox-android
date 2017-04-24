@@ -87,6 +87,11 @@
         <item name="android:textColor">@color/projectBackgroundTextColor</item>
     </style>
 
+    <style name="Font60.NoColectionText" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">60sp</item>
+        <item name="android:textColor">@color/projectBackgroundTextColor</item>
+    </style>
+
     <style name="SwipeActionIcons">
         <item name="android:layout_width">@dimen/shot_swipe_action_icon_width</item>
         <item name="android:layout_height">@dimen/shot_swipe_action_icon_width</item>
@@ -148,6 +153,7 @@
     </style>
 
     <style name="GifLabel" parent="Font12.Gray">
+        <item name="android:textColor">@color/black</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:text">@string/gif</item>

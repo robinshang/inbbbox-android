@@ -14,7 +14,7 @@
         android:layout_marginStart="@dimen/margin_default"
         android:layout_marginTop="@dimen/drawer_header_photo_margin_top"
         android:src="@drawable/layer_list_guest_avatar"
-        app:civ_border_color="@color/white"
+        app:civ_border_color="@color/primary"
         app:civ_border_width="@dimen/drawer_header_photo_border"
         app:civ_fill_color="@color/lightGray"/>
 

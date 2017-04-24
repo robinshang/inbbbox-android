@@ -8,7 +8,7 @@
     <color name="tabBackground">#212121</color>
     <color name="userTabBackground">#212121</color>
     <color name="textColor">#FFFFFF</color>
-
+    <color name="noCollectionTextColor">@color/veryLightGray</color>
     <color name="materialButtonColorPressed">#40CCCCCC</color>
 
     <color name="projectBackgroundTextColor">#26424242</color>
@@ -22,4 +22,5 @@
 
     <color name="dividerUserInfo">#212121</color>
     <color name="textColorUserInfo">#8F8E93</color>
+    <color name="veryLightGray">#DCFFFFFF</color>
 </resources>

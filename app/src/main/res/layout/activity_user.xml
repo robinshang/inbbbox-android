@@ -25,7 +25,7 @@
                 android:layout_height="@dimen/user_details_circle_image_size"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/user_details_circle_image_margin_top"
-                app:civ_border_color="@color/white"
+                app:civ_border_color="?attr/colorPrimary"
                 app:civ_border_width="@dimen/drawer_header_photo_border"
                 app:civ_fill_color="@color/lightGray"/>
 

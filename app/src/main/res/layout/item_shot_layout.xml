@@ -187,7 +187,7 @@
             android:layout_height="@dimen/shot_details_shots_tab_height"
             android:layout_centerVertical="true"
             android:contentDescription="@string/user_image_content_description"
-            app:civ_border_color="@color/white"
+            app:civ_border_color="@color/windowBackground"
             app:civ_border_width="@dimen/drawer_header_photo_border"
             app:civ_fill_color="@color/lightGray" />
 
