@@ -24,11 +24,6 @@ We at Netguru strongly believe in open-source software. Inbbbox isn’t our only
 
 ## Configuration
 
-### Integrations
-<!-- Describe external service and hardware integrations, link to reference docs, use #### headings -->
-Inbbbox app is integrated with dribbble.com service using [Dribbble API v1](http://developer.dribbble.com/v1/)
-Inbbbox uses Firebase Analytics for user involvement tracking.
-
 ### Instructions
 
 1. Clone repo at `https://github.com/netguru/inbbbox-android.git`
