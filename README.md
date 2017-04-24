@@ -64,6 +64,7 @@ You're more than welcome to contribute or report an issue in case of any problem
 * [Developers Team](https://github.com/netguru/inbbbox-android/graphs/contributors)
 
     * [Maciej Markiewicz](https://github.com/mmarkiew)
+    * [Rafał Adasiewicz](https://github.com/adasiewiczr)
     * [Filip Zych](https://github.com/navarionek)
     * [Joanna Jasnowska](https://github.com/a-jottt)
     * [Rafał Naniewicz](https://github.com/freszu)
@@ -71,6 +72,5 @@ You're more than welcome to contribute or report an issue in case of any problem
     * [Grzegorz Podbielski](https://github.com/Dabler)
     * [Gonzalo Acosta](https://github.com/GNZ)
     * [Maciej Janusz](https://github.com/maciekjanusz)
-    * [Rafał Adasiewicz] (https://github.com/adasiewiczr)
 
 Copyright © 2016 [Netguru](http://netguru.co).
