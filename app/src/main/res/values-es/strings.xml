@@ -119,6 +119,7 @@
         <item quantity="one">%1d proyecto</item>
         <item quantity="few">%1d proyectos</item>
         <item quantity="many">%1d proyectos</item>
+        <item quantity="other">%1d proyectos</item>
     </plurals>
     <string name="tab_info_title">Información</string>
     <string name="tab_projects_title">Proyectos</string>
