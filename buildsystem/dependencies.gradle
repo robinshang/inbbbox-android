@@ -10,7 +10,7 @@ ext {
     jacocoBuild = '0.7.7.201606060606'
     jsonAssertVersion = '1.4.0'
     mosbyVersion = '2.0.1'
-    okHttpVersion = '3.5.0'
+    okHttpVersion = '3.7.0'
     onActivityResultVersion = '0.6.0'
     //todo when bumping retrofit to >2.1.0 remove custom rx call adapter
     retrofitVersion = '2.1.0'
