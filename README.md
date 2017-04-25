@@ -15,132 +15,64 @@
 <!-- METADATA -->
 <!-- Add links to JIRA, Google Drive, mailing list and other relevant resources -->
 <!-- Add links to CI configs with build status and deployment environment, e.g.: -->
-| environment |Jira            | deployment            |  build status      |  coverage          |
-|-------------|-----------------------|-----------------------|--------------------|--------------------|
-| Android     |[`JIRA`](https://netguru.atlassian.net/secure/RapidBoard.jspa?rapidView=214&projectKey=IA) |[`HockeyApp`](https://rink.hockeyapp.net/manage/apps/404535) | [![Build Status](https://www.bitrise.io/app/cf503ac188f43ade.svg?token=k9n-sH184dmLSBSQRnW_qg&branch=master)](https://www.bitrise.io/app/cf503ac188f43ade) |[![codecov](https://codecov.io/gh/netguru/inbbbox-android/branch/master/graph/badge.svg?token=0UKDDNsV4s)](https://codecov.io/gh/netguru/inbbbox-android) |
-<!--- If applies, add link to app on Google Play -->
 
+[![Build Status](https://www.bitrise.io/app/cf503ac188f43ade.svg?token=k9n-sH184dmLSBSQRnW_qg&branch=master)](https://www.bitrise.io/app/cf503ac188f43ade) [![codecov](https://codecov.io/gh/netguru/inbbbox-android/branch/master/graph/badge.svg?token=0UKDDNsV4s)](https://codecov.io/gh/netguru/inbbbox-android)
 
-## Synopsis
-<!-- Describe the project in few sentences -->
-Inbbbox is Android client app of dribbble.com service.
+With Inbbbox you can discover excellent visual works from Dribbble, the global directory for digital design. If you want to grab a copy for yourself just go straight to [Google Play](https://www.netguru.co/opensource) (link needed). However, if you are interested in the core of Inbbbox, check out [Configuration](#configuration) section. Note that Dribbble account is necessary for using the app.
 
-## Development
+We at Netguru strongly believe in open-source software. Inbbbox isn’t our only project repo where you can find the app’s full source code. Explore other [open source projects](https://www.netguru.co/resources) created by our team.
 
-### Architecture
-Reactive MVP with Dagger2 dependency injection.
-<!-- Describe the main architectural pattern used in the project, optionally put a flowchart -->
+## Configuration
 
-### Integrations
-<!-- Describe external service and hardware integrations, link to reference docs, use #### headings -->
-Inbbbox app is integrated with dribbble.com service using [Dribbble API v1](http://developer.dribbble.com/v1/)
-Inbbbox uses Firebase Analytics for user involvement tracking.
+### Instructions
 
-### Coding guidelines
-[Netguru Android code style guide](https://netguru.atlassian.net/wiki/display/ANDROID/Android+best+practices)
-<!-- OPTIONAL: Describe any additional coding guidelines (if non-standard) -->
+1. Clone repo at `https://github.com/netguru/inbbbox-android.git`
+2. Register your app for dribbble api [here](https://dribbble.com/account/applications/)
+2. Create secret.properties file in main folder (inbbbox-android) and paste following contents:
+`DribbbleClientKey=[1]
+DribbbleClientSecret=[2]
+DribbbleClientToken=[3]
+DribbbleOauthRedirect=[4]
+HockeyAppAppIdDev=optional
+HockeyAppAppIdProd=optional
+SonarAccessToken=optional
+GithubOauthToken=optional
+GithubRepoName=optional
+GithubOwnerName=optional`
+3. Fill the gap [1] with Client ID from your [dribble app](https://dribbble.com/account/applications/)
+4. Fill the gap [2] with Client Secret from your [dribble app](https://dribbble.com/account/applications/)
+5. Fill the gap [3] with Client Access Token from your [dribble app](https://dribbble.com/account/applications/)
+6. Fill the gap [4] with the scheme of Callback URL you set in your [dribble app](https://dribbble.com/account/applications/), e.g. for inbbbox://example.com it would be inbbbox
+7. Open project in Android Studio
+8. Remember to check if Build Variant is set to noIntegrationsDebug
+9. That's it!
 
-### Workflow & code review
-[Netguru development workflow](https://netguru.atlassian.net/wiki/display/DT2015/Netguru+development+flow)
-<!-- OPTIONAL: Describe workflow and code review process (if non-standard) --> 
+## Contribution
 
-## Testing
-<!-- Describe the project's testing methodology -->
-<!-- Examples: TDD? Using Espresso for views? What parts must be tested? etc -->
- - Unit Testing using Mockito + JUnit. Tests concerns Presnters layer and partially Model layer of MVP architecture
+You're more than welcome to contribute or report an issue in case of any problems, questions or improvement proposals.
 
+## Authors
 
-## Building
-<!-- Aim to explain the process so that any new or external developer not familiar with the project can perform build and deploy -->
-Extra files needed:
- - google-services.json (available in Bitrise)
+* [Designers Team](https://dribbble.com/netguru)
 
-### Build types
-<!-- List and describe build types -->
-#### debug
- - debuggable
- - disabled ProGuard
- - uses built-in shrinking (no obfuscation)
- 
-#### release
- - uses full ProGuard configuration
- - enables zipAlign, shrinkResources
- - non-debuggable
+    * [Bartosz Białek](https://dribbble.com/bkbl)
+    * [Mateusz Czajka](https://dribbble.com/czajkovsky)
+    * [Michał Parulski](https://dribbble.com/Shuma87)
+    * [Dawid Woźniak](https://dribbble.com/dawidw)
+    * [Paweł Kontek](https://dribbble.com/pawelkontek)
 
-### Product flavors
-<!-- List and describe product flavors, purposes and dedicated deployment channels -->
-#### mock
- - mocked data, functional testing
- 
-#### production
- - production API, real data,release
+* [Developers Team](https://github.com/netguru/inbbbox-android/graphs/contributors)
 
-### Build properties
-<!-- List all build properties that have to be supplied, including secrets. Describe the method of supplying them, both on local builds and CI -->
+    * [Maciej Markiewicz](https://github.com/mmarkiew)
+    * [Rafał Adasiewicz](https://github.com/adasiewiczr)
+    * [Filip Zych](https://github.com/navarionek)
+    * [Joanna Jasnowska](https://github.com/a-jottt)
+    * [Rafał Naniewicz](https://github.com/freszu)
+    * [Łukasz Janyga](https://github.com/alvarg93)
+    * [Grzegorz Podbielski](https://github.com/Dabler)
+    * [Gonzalo Acosta](https://github.com/GNZ)
+    * [Maciej Janusz](https://github.com/maciekjanusz)
 
-| Property         | External property name | Environment variable |
-|------------------|------------------------|----------------------|
-| HockeyApp App ID production | HockeyAppAppIdProd            | hockeyAppIdProd        |
-| Dribble client key | DribbbleClientKey            | dribbbleClientSecret        |
-| Dribble client secret | DribbbleClientSecret            | dribbbleClientSecret        |
-| Dribble client redirect key | DribbbleOauthRedirect            | dribbbleOauthRedirect        |
-| Dribble client token | DribbbleClientToken            | dribbbleClientToken        |
+Copyright © 2016 [Netguru](http://netguru.co).
 
-#### Secrets
-Follow [this guide](https://netguru.atlassian.net/wiki/pages/viewpage.action?pageId=33030753) 
-
-#### Other properties
- - SONAR_ACCESS_TOKEN - with access token to sonarQube server;
- - CODECOV_TOKEN - token for upload code coverage reports for CodeCove account;
- - GithubRepoName - repository name
- - GithubOwnerName - repository owner name
-
-### ProGuard
-<!-- Describe ProGuard configuration: is it enabled? Any unusual stuff? -->
-Proguard configuration is placed in proguard-rules.pro. Proguard is enabled only for Release build variants.
-In proguard-rules.pro file there are rules for such libs/tools like:
- - app compat-v7
- - FragmentArgs
- - Gson
- - retrofit
- - dagger
- - xlog
- - stetho
- - leak canary
- - fabric
- - rx
- - glide
- - BugTags
- - AutoBundle
- - AutoGson
- - AutoParcel
- - GreenDao
-
-## Deployment
-<!-- Aim to explain the process so that any new or external developer can perform deploy -->
-
-### Bitrise
-<!-- Describe the Continuous Integration process: Bitrise workflows, global configs etc. -->
- Bitrise is separated for workflow mentioned below. Feature,
- - feature - workflow triggered on Push to feature or bug brunch;
- - MasterPR -  workflow triggered on Pull Request for feature/bug brunch to Master brunch
- - Master - workflow triggered on Push or PR marge to Master brunch;
-
- Each workflows has defined such steps us:
-  - Unit tests,
-  - CodeCove rapports upload,
-  - SonarCube analysis,
-  - lintAnalysis
-  - build of productionRelease flavour of the application;
-  - build upload build apk file to bitrise;
-  Additionally MasterPR step there is SigningApk step and deploy to HockeyApp step
-
-### HockeyApp / Fabric environments
-<!-- Describe the deployment channels -->
- - Project use HockeyApp for beta distribution and Crash managing and monitoring. Deploy to Hockeyapp is performed automatically by Bitrise system in Master step.
-
-
-### Supported devices
-<!-- Describe the supported and target devices (do not put stuff that can be easily found in build.gradle files) -->
- - all devices from API level 19 - Android 4.4+
- - no devices restricted yet
+Licensed under the [GPLv3 License](LICENSE).
