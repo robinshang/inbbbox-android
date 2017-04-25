@@ -26,10 +26,10 @@ android {
 
     defaultConfig {
         applicationId "co.netguru.android.inbbbox"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode isBitrise ? Integer.parseInt(bitrise.io.buildNumber) : 1
-        versionName "1.0.0"
+        versionName "1.0.1"
 
         buildConfigField 'String', 'DRIBBBLE_CLIENT_KEY', '"' + secrets.dribbbleClientKey + '"'
         buildConfigField 'String', 'DRIBBBLE_CLIENT_SECRET', '"' + secrets.dribbbleClientSecret + '"'
