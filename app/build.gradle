@@ -42,11 +42,11 @@ android {
             versionNameSuffix "-DEBUG"
             applicationIdSuffix ".debug"
             debuggable true
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources false
-            useProguard false
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro',
                               'proguard-rules-test.pro'])
+            multiDexEnabled true
         }
         release {
             debuggable false
@@ -271,6 +271,13 @@ dependencies {
 
     //Analytics
     compile libs.firebaseAnalytics
+
+    compile 'com.android.support:multidex:1.0.1'
+
+    compile 'com.madgag.spongycastle:core:1.56.0.0'
+    compile 'com.madgag.spongycastle:prov:1.56.0.0'
+    compile 'com.madgag.spongycastle:pkix:1.54.0.0'
+    compile 'com.madgag.spongycastle:pg:1.54.0.0'
 
     //Debug tools
     // Stetho

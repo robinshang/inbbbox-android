@@ -1,20 +1,24 @@
 package co.netguru.android.inbbbox.app;
 
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
+
+import java.security.Security;
 
 import co.netguru.android.inbbbox.app.usercomponent.UserComponent;
 import co.netguru.android.inbbbox.app.usercomponent.UserModeType;
 import co.netguru.android.inbbbox.app.usercomponent.UserModule;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsModule;
 
-public class App extends Application {
+public class App extends MultiDexApplication {
 
+    static {
+        Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
+    }
     private ApplicationComponent appComponent;
     private UserComponent userComponent;
-
     public static ApplicationComponent getAppComponent(Context context) {
         return ((App) context.getApplicationContext()).appComponent;
     }

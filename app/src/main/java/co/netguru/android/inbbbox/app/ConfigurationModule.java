@@ -9,9 +9,16 @@ import com.google.gson.GsonBuilder;
 import org.threeten.bp.ZonedDateTime;
 
 import java.io.File;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 
 import javax.inject.Singleton;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsInterceptor;
@@ -41,7 +48,6 @@ public class ConfigurationModule {
 
     private static final int HTTP_CACHE_SIZE = 1024 * 1024 * 20;
     private static final String HTTP_CACHE_DIRECTORY = "cache";
-
     @Provides
     @Singleton
     Gson provideGson() {
@@ -77,25 +83,38 @@ public class ConfigurationModule {
     @Singleton
     OkHttpClient provideOkHttpClient(RequestInterceptor interceptor,
                                      AnalyticsInterceptor analyticsInterceptor,
-                                     Cache cache, CacheRequestInterceptor cacheRequestInterceptor,
+                                     Cache cache, Context context, CacheRequestInterceptor cacheRequestInterceptor,
                                      CacheResponseInterceptor cacheResponseInterceptor) {
+        X509TrustManager trustManager = getTrustManager();
+        TLSSocketFactory tlsSocketFactory = null;
+        try {
+            tlsSocketFactory = new TLSSocketFactory(context);
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
                 .tlsVersions(TlsVersion.TLS_1_2)
                 .cipherSuites(
-                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-                        CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
-                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
-                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
-                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
-                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
-                        CipherSuite.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,
-                        CipherSuite.TLS_ECDHE_RSA_WITH_RC4_128_SHA,
-                        CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
-                        CipherSuite.TLS_DHE_DSS_WITH_AES_128_CBC_SHA,
-                        CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
+//                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 //this one
+//                        org.spongycastle.crypto.tls.CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+
+//                        CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
+//                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
+//                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+//                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+//                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+//                        CipherSuite.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,
+//                        CipherSuite.TLS_ECDHE_RSA_WITH_RC4_128_SHA,
+//                        CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
+//                        CipherSuite.TLS_DHE_DSS_WITH_AES_128_CBC_SHA,
+//                        CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+                )
                 .build();
          return new OkHttpClient.Builder()
+                 .sslSocketFactory(tlsSocketFactory, trustManager)
                 .connectionSpecs(Collections.singletonList(spec))
                 .addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BASIC))
@@ -130,5 +149,28 @@ public class ConfigurationModule {
     @Singleton
     Vibrator provideVibrator(Context context) {
         return (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+    }
+
+    private static X509TrustManager getTrustManager() {
+        TrustManagerFactory trustManagerFactory = null;
+        try {
+            trustManagerFactory =
+                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init((KeyStore) null);
+
+            TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+            if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
+                //throw new IllegalStateException(
+                //    "Unexpected default trust managers:" + Arrays.toString(trustManagers));
+                return null;
+            }
+            return (X509TrustManager) trustManagers[0];
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
