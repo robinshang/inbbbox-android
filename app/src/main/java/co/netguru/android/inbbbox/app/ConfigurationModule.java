@@ -13,8 +13,6 @@ import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.Security;
-import java.util.Collections;
 
 import javax.inject.Singleton;
 import javax.net.ssl.TrustManager;

@@ -18,7 +18,7 @@
 
 [![Build Status](https://www.bitrise.io/app/cf503ac188f43ade.svg?token=k9n-sH184dmLSBSQRnW_qg&branch=master)](https://www.bitrise.io/app/cf503ac188f43ade) [![codecov](https://codecov.io/gh/netguru/inbbbox-android/branch/master/graph/badge.svg?token=0UKDDNsV4s)](https://codecov.io/gh/netguru/inbbbox-android)
 
-With Inbbbox you can discover excellent visual works from Dribbble, the global directory for digital design. If you want to grab a copy for yourself just go straight to [Google Play](https://www.netguru.co/opensource) (link needed). However, if you are interested in the core of Inbbbox, check out [Configuration](#configuration) section. Note that Dribbble account is necessary for using the app.
+With Inbbbox you can discover excellent visual works from Dribbble, the global directory for digital design. If you want to grab a copy for yourself just go straight to [Google Play](https://play.google.com/store/apps/details?id=co.netguru.android.inbbbox&hl=en). However, if you are interested in the core of Inbbbox, check out [Configuration](#configuration) section. Note that Dribbble account is necessary for using the app.
 
 We at Netguru strongly believe in open-source software. Inbbbox isn’t our only project repo where you can find the app’s full source code. Explore other [open source projects](https://www.netguru.co/resources) created by our team.
 
