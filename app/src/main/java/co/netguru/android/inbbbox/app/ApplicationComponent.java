@@ -43,6 +43,8 @@ public interface ApplicationComponent extends BaseComponent {
 
     void inject(NotificationAlarmReceiver receiver);
 
+    void inject(OkHttpGlideModule glideModule);
+
     AnalyticsEventLogger analyticsEventLogger();
 
     UserComponentRestorer userComponentRestorer();

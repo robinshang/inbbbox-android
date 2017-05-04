@@ -61,5 +61,4 @@ public class App extends Application {
                 .userModule(new UserModule(userModeType))
                 .build();
     }
-
 }

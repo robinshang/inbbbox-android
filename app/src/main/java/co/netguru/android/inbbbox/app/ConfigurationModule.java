@@ -9,8 +9,15 @@ import com.google.gson.GsonBuilder;
 import org.threeten.bp.ZonedDateTime;
 
 import java.io.File;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.inject.Singleton;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 import co.netguru.android.inbbbox.Constants;
 import co.netguru.android.inbbbox.common.analytics.AnalyticsInterceptor;
@@ -31,6 +38,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import timber.log.Timber;
 
 @Module
 public class ConfigurationModule {
@@ -74,8 +82,17 @@ public class ConfigurationModule {
     OkHttpClient provideOkHttpClient(RequestInterceptor interceptor,
                                      AnalyticsInterceptor analyticsInterceptor,
                                      Cache cache, CacheRequestInterceptor cacheRequestInterceptor,
-                                     CacheResponseInterceptor cacheResponseInterceptor) {
+                                     CacheResponseInterceptor cacheResponseInterceptor,
+                                     X509TrustManager trustManager) {
+        NoSSLv3Factory tlsSocketFactory = null;
+        try {
+            tlsSocketFactory = new NoSSLv3Factory();
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            Timber.e(e);
+        }
+
         return new OkHttpClient.Builder()
+                 .sslSocketFactory(tlsSocketFactory, trustManager)
                 .addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BASIC))
                 .addInterceptor(interceptor)
@@ -109,5 +126,25 @@ public class ConfigurationModule {
     @Singleton
     Vibrator provideVibrator(Context context) {
         return (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+    }
+
+    @Provides
+    @Singleton
+    X509TrustManager provideTrustManager() {
+        TrustManagerFactory trustManagerFactory = null;
+        try {
+            trustManagerFactory =
+                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init((KeyStore) null);
+
+            TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+            if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
+                return null;
+            }
+            return (X509TrustManager) trustManagers[0];
+        } catch (NoSuchAlgorithmException | KeyStoreException e) {
+            Timber.e(e);
+            return null;
+        }
     }
 }

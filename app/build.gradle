@@ -42,11 +42,11 @@ android {
             versionNameSuffix "-DEBUG"
             applicationIdSuffix ".debug"
             debuggable true
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources false
-            useProguard false
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro',
                               'proguard-rules-test.pro'])
+            multiDexEnabled true
         }
         release {
             debuggable false
@@ -271,6 +271,10 @@ dependencies {
 
     //Analytics
     compile libs.firebaseAnalytics
+
+    compile ('com.github.bumptech.glide:okhttp3-integration:1.4.0'){
+        exclude group: 'glide-parent'
+    }
 
     //Debug tools
     // Stetho
