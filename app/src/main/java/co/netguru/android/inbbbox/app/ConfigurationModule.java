@@ -13,6 +13,7 @@ import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.util.Collections;
 
 import javax.inject.Singleton;
@@ -35,19 +36,18 @@ import co.netguru.android.inbbbox.event.RxBus;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
-import okhttp3.CipherSuite;
-import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
-import okhttp3.TlsVersion;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import timber.log.Timber;
 
 @Module
 public class ConfigurationModule {
 
     private static final int HTTP_CACHE_SIZE = 1024 * 1024 * 20;
     private static final String HTTP_CACHE_DIRECTORY = "cache";
+
     @Provides
     @Singleton
     Gson provideGson() {
@@ -83,39 +83,18 @@ public class ConfigurationModule {
     @Singleton
     OkHttpClient provideOkHttpClient(RequestInterceptor interceptor,
                                      AnalyticsInterceptor analyticsInterceptor,
-                                     Cache cache, Context context, CacheRequestInterceptor cacheRequestInterceptor,
-                                     CacheResponseInterceptor cacheResponseInterceptor) {
-        X509TrustManager trustManager = getTrustManager();
-        TLSSocketFactory tlsSocketFactory = null;
+                                     Cache cache, CacheRequestInterceptor cacheRequestInterceptor,
+                                     CacheResponseInterceptor cacheResponseInterceptor,
+                                     X509TrustManager trustManager) {
+        NoSSLv3Factory tlsSocketFactory = null;
         try {
-            tlsSocketFactory = new TLSSocketFactory(context);
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            tlsSocketFactory = new NoSSLv3Factory();
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            Timber.e(e);
         }
-        ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-                .tlsVersions(TlsVersion.TLS_1_2)
-                .cipherSuites(
-//                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 //this one
-//                        org.spongycastle.crypto.tls.CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
 
-//                        CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
-//                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
-//                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
-//                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
-//                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
-//                        CipherSuite.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,
-//                        CipherSuite.TLS_ECDHE_RSA_WITH_RC4_128_SHA,
-//                        CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
-//                        CipherSuite.TLS_DHE_DSS_WITH_AES_128_CBC_SHA,
-//                        CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA
-                )
-                .build();
-         return new OkHttpClient.Builder()
+        return new OkHttpClient.Builder()
                  .sslSocketFactory(tlsSocketFactory, trustManager)
-                .connectionSpecs(Collections.singletonList(spec))
                 .addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BASIC))
                 .addInterceptor(interceptor)
@@ -151,7 +130,9 @@ public class ConfigurationModule {
         return (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
-    private static X509TrustManager getTrustManager() {
+    @Provides
+    @Singleton
+    X509TrustManager provideTrustManager() {
         TrustManagerFactory trustManagerFactory = null;
         try {
             trustManagerFactory =
@@ -160,8 +141,6 @@ public class ConfigurationModule {
 
             TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
             if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
-                //throw new IllegalStateException(
-                //    "Unexpected default trust managers:" + Arrays.toString(trustManagers));
                 return null;
             }
             return (X509TrustManager) trustManagers[0];
@@ -169,7 +148,7 @@ public class ConfigurationModule {
             e.printStackTrace();
             return null;
         } catch (KeyStoreException e) {
-            e.printStackTrace();
+            Timber.e(e);
             return null;
         }
     }

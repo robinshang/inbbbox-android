@@ -272,12 +272,9 @@ dependencies {
     //Analytics
     compile libs.firebaseAnalytics
 
-    compile 'com.android.support:multidex:1.0.1'
-
-    compile 'com.madgag.spongycastle:core:1.56.0.0'
-    compile 'com.madgag.spongycastle:prov:1.56.0.0'
-    compile 'com.madgag.spongycastle:pkix:1.54.0.0'
-    compile 'com.madgag.spongycastle:pg:1.54.0.0'
+    compile ('com.github.bumptech.glide:okhttp3-integration:1.4.0'){
+        exclude group: 'glide-parent'
+    }
 
     //Debug tools
     // Stetho

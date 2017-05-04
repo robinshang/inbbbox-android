@@ -17,6 +17,10 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
 
+    <meta-data
+        android:name="co.netguru.android.inbbbox.app.OkHttpGlideModule"
+        android:value="GlideModule" />
+
         <activity
             android:name=".feature.login.LoginActivity"
             android:autoRemoveFromRecents="true"
