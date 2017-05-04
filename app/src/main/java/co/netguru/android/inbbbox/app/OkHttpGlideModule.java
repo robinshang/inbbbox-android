@@ -11,7 +11,6 @@ import java.io.InputStream;
 import javax.inject.Inject;
 
 import okhttp3.OkHttpClient;
-import timber.log.Timber;
 
 public class OkHttpGlideModule implements com.bumptech.glide.module.GlideModule {
 

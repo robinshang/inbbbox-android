@@ -142,10 +142,7 @@ public class ConfigurationModule {
                 return null;
             }
             return (X509TrustManager) trustManagers[0];
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        } catch (KeyStoreException e) {
+        } catch (NoSuchAlgorithmException | KeyStoreException e) {
             Timber.e(e);
             return null;
         }
