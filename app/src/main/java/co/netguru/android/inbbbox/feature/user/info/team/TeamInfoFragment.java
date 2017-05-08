@@ -149,7 +149,7 @@ public class TeamInfoFragment extends BaseMvpFragment
 
     private void initRecycler() {
         adapter = new UserInfoTeamMembersAdapter(getPresenter()::onUserClick,
-        getPresenter()::onShotClick, getPresenter()::onLinkClick, peekAndPop);
+                getPresenter()::onShotClick, getPresenter()::onLinkClick, peekAndPop);
         adapter.setTeam(getArguments().getParcelable(KEY_USER));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
@@ -159,7 +159,6 @@ public class TeamInfoFragment extends BaseMvpFragment
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(getScrollListener());
-        recyclerView.setNestedScrollingEnabled(false);
     }
 
     private LoadMoreScrollListener getScrollListener() {
