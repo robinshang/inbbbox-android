@@ -3,33 +3,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/fragment_team_info_margin_bottom"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/item_member_image_marginLeft"
-        android:orientation="horizontal">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/user_image"
-            android:layout_width="@dimen/team_info_user_image_size"
-            android:layout_height="@dimen/team_info_user_image_size"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/user_image_content_description"
-            app:civ_fill_color="@color/lightGray" />
+        android:paddingStart="@dimen/project_item_header_margin_start">
 
         <TextView
-            android:id="@+id/user_name"
-            style="@style/Font16.UserName"
+            android:id="@+id/user_name_header"
+            style="@style/Font60.ProjectBackground"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/shot_details_shots_tab_height"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/item_member_name_marginLeft"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
             android:textStyle="bold" />
-    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/item_member_image_marginLeft"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/projects_item_shots_padding_top">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_image"
+                android:layout_width="@dimen/team_info_user_image_size"
+                android:layout_height="@dimen/team_info_user_image_size"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/user_image_content_description"
+                app:civ_fill_color="@color/lightGray" />
+
+            <TextView
+                android:id="@+id/user_name"
+                style="@style/Font16.UserName"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/shot_details_shots_tab_height"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/item_member_name_marginLeft"
+                android:gravity="center_vertical"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </FrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/user_shots"
