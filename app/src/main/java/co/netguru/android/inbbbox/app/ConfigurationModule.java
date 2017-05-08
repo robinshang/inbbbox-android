@@ -15,6 +15,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 
 import javax.inject.Singleton;
+import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
@@ -84,7 +85,7 @@ public class ConfigurationModule {
                                      Cache cache, CacheRequestInterceptor cacheRequestInterceptor,
                                      CacheResponseInterceptor cacheResponseInterceptor,
                                      X509TrustManager trustManager) {
-        NoSSLv3Factory tlsSocketFactory = null;
+        SSLSocketFactory tlsSocketFactory = null;
         try {
             tlsSocketFactory = new NoSSLv3Factory();
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
@@ -92,9 +93,9 @@ public class ConfigurationModule {
         }
 
         return new OkHttpClient.Builder()
-                 .sslSocketFactory(tlsSocketFactory, trustManager)
+                .sslSocketFactory(tlsSocketFactory, trustManager)
                 .addInterceptor(new HttpLoggingInterceptor()
-                        .setLevel(HttpLoggingInterceptor.Level.BASIC))
+                        .setLevel(HttpLoggingInterceptor.Level.BODY))
                 .addInterceptor(interceptor)
                 .addInterceptor(analyticsInterceptor)
                 .addInterceptor(cacheRequestInterceptor)
