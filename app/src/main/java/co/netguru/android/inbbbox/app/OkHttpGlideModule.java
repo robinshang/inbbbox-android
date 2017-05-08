@@ -26,7 +26,9 @@ public class OkHttpGlideModule implements com.bumptech.glide.module.GlideModule 
     public void registerComponents(Context context, Glide glide) {
         App.getAppComponent(context).inject(this);
 
-        glide.register(GlideUrl.class, InputStream.class,
-                new com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader.Factory(okHttpClient));
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+            glide.register(GlideUrl.class, InputStream.class,
+                    new com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader.Factory(okHttpClient));
+        }
     }
 }
