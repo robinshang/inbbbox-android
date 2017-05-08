@@ -30,6 +30,9 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
     @BindView(R.id.user_name)
     TextView userName;
 
+    @BindView(R.id.user_name_header)
+    TextView userNameHeader;
+
     @BindView(R.id.user_shots)
     RecyclerView userShotsRecyclerView;
 
@@ -68,6 +71,7 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
     public void bind(UserWithShots item) {
         this.user = item.user();
         this.userName.setText(item.user().name());
+        this.userNameHeader.setText(item.user().name());
         loadUserImage(item.user().avatarUrl());
         initRecyclerView(item);
     }
@@ -94,7 +98,7 @@ class UserInfoTeamMembersViewHolder extends BaseViewHolder<UserWithShots> {
     }
 
     PeekAndPop.OnGeneralActionListener getPeekAndPopListener() {
-        if(peekAndPopListener == null) {
+        if (peekAndPopListener == null) {
             peekAndPopListener = new PeekAndPop.OnGeneralActionListener() {
                 @Override
                 public void onPeek(View view, int i) {

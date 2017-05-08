@@ -9,10 +9,8 @@
         android:id="@+id/bucket_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/user_info_shot_card_margin_top"
         android:layout_marginStart="@dimen/user_info_shot_vertical_margin"
         android:layout_marginEnd="@dimen/user_info_shot_vertical_margin"
-        android:layout_marginBottom="@dimen/user_info_shot_bottom_margin"
         app:cardCornerRadius="@dimen/shot_cardview_corner_radius"
         app:cardElevation="@dimen/shot_cardview_elevation">
 
