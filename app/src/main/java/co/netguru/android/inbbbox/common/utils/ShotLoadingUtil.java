@@ -29,18 +29,7 @@ public class ShotLoadingUtil {
         Glide.clear(target);
         Glide.with(context)
                 .load(shot.normalImageUrl())
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        Timber.e(e);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        return false;
-                    }
-                })
+                .listener(getRequestListener())
                 .thumbnail(ShotLoadingUtil.getThumbnailRequest(context, shot.thumbnailUrl()))
                 .animate(android.R.anim.fade_in)
                 .into(target);
@@ -170,5 +159,20 @@ public class ShotLoadingUtil {
     private static DrawableTypeRequest<String> getThumbnailRequest(Context context, String url) {
         return Glide.with(context)
                 .load(url);
+    }
+
+    private static RequestListener<String, GlideDrawable> getRequestListener() {
+        return new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                Timber.e(e);
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                return false;
+            }
+        };
     }
 }
